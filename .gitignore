@@ -19,7 +19,9 @@
 # Private job-application materials (postings, prep notes)
 jobs/
 
-# Non-redistributable fonts (keep locally; résumé uses Fontin + Alegreya)
+# Non-redistributable fonts (keep locally; not used by résumé or book builds)
+# OFL fonts (Alegreya Sans, Alegreya serif) are committed under fonts/ and
+# books/short-reach-optics/fonts/.
 fonts/adobe-clean/
 fonts/gill-sans-nova/
 fonts/minion-pro/
