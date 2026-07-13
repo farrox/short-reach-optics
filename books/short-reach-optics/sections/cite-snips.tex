@@ -1,0 +1,67 @@
+% Short margin text for \firstcite{key} (first use = linked sidenote; later = inline [n]).
+\makeatletter
+\newcommand{\declarecitesnip}[2]{\expandafter\gdef\csname citesnip@#1\endcsname{#2}}
+\newcommand{\firstcite}[1]{%
+  \begingroup
+  \let\@fc@sep\@empty
+  \@for\@fc@key:=#1\do{%
+    \expandafter\ifx\csname fcited@\@fc@key\endcsname\relax
+      \expandafter\gdef\csname fcited@\@fc@key\endcsname{}%
+      \ifcsname citesnip@\@fc@key\endcsname
+        \sidenote{\citehref{\@fc@key}{\csname citesnip@\@fc@key\endcsname}}%
+        \citep{\@fc@key}%
+      \else
+        \citep{\@fc@key}%
+      \fi
+    \else
+      \citep{\@fc@key}%
+    \fi
+  }%
+  \endgroup
+}
+\makeatother
+
+\declarecitesnip{cei448}{OIF, \emph{Next Generation CEI-448G Framework} (OIF-FD-CEI-448G-01.0, 2025).}
+\declarecitesnip{ieee8023dj}{IEEE P802.3dj: 200/400/800/1600G Ethernet (200G/lane; SA ballot 2026).}
+\declarecitesnip{huawei448}{OIF 448G AI Workshop: native modulation vs.\ gearboxed 224G (2025).}
+\declarecitesnip{synopsys448}{Synopsys, \emph{Designing for 448G} white paper (2025).}
+\declarecitesnip{tfmln32t}{St-Arnault \emph{et al.}, 3.2~Tb/s IM/DD with TFLN modulators (arXiv:2503.24147, preprint).}
+\declarecitesnip{tfln224}{Liu \emph{et al.}, TFLN MZM 224-Gb/s PAM4, 108-GHz EO BW (OFC 2025 M3K.2; arXiv:2311.05119).}
+\declarecitesnip{tfln390}{He \emph{et al.}, dual-band TFLN MZM 390-Gb/s PAM8, 220-GHz extrapolated BW (Laser Photonics Rev.\ 2025; arXiv:2411.15037).}
+\declarecitesnip{tfln200mm}{OFC 2026 W1A.3: 200-mm TFLN platform, 110-GHz EO, $V_\pi L=1.9$~V$\cdot$cm.}
+\declarecitesnip{he2019}{He \emph{et al.}, hybrid Si--LN integration (Nature Photonics 2019).}
+\declarecitesnip{hyperlight110}{HyperLight, 110-GHz packaged TFLN IQ modulators for 240-GBaud class (Sept.\ 2025 announcement).}
+\declarecitesnip{ring224}{Lin \emph{et al.}, 90-GHz Si microring, 224-Gb/s PAM4, inductive tuning (OFC 2026 Th2A.14).}
+\declarecitesnip{ring400}{Peng \emph{et al.}, Si microring $>$400~Gbps PAM4, T-coil peaking (OFC 2026 M2A.2).}
+\declarecitesnip{ring256}{OFC 2026 M2A.1: Euler Si microring, 256-Gb/s PAM4, $>$67-GHz EO BW, 3-THz FSR.}
+\declarecitesnip{simzm400}{Dong \emph{et al.}, 400G/lane Si MZM PAM4 with SiGe driver (OFC 2026 postdeadline Th4A.4).}
+\declarecitesnip{simzmcompact}{OFC 2026 M2A.6: 500-$\mu$m Si MZM, 94.7-GHz median EO BW, 2.4-dB IL (300-mm platform).}
+\declarecitesnip{simzmdiff}{OFC 2026 W3E.5: differential-drive Si MZM, 81.8-GHz 3-dB BW, 100-GBd PAM8 eyes.}
+\declarecitesnip{macom448}{MACOM 448G/lane PAM4 drivers (MAOM-025408/022404): $>$120~GHz RF BW (OFC 2026).}
+\declarecitesnip{semtech224}{Semtech 224G/lane MZM drivers + TIAs (GN1834 family) for LPO/LRO/CPO (OFC 2026).}
+\declarecitesnip{semtech448demo}{Semtech OFC 2026: 448G/lane TN14740 TIA + TN622 driver demos (provisional).}
+\declarecitesnip{tia112}{112G PAM4 linear TIA in 16-nm CMOS: $16.9$~pA$/\sqrt{\mathrm{Hz}}$; $-8.2$~dBm.}
+\declarecitesnip{tia224}{224G SiGe TIA: 65~GHz BW, $13.2$~pA$/\sqrt{\mathrm{Hz}}$, $\sim$1.2~pJ/bit.}
+\declarecitesnip{apd}{Ge/Si UMC-APD: 105~GHz BW; 224/260G PAM4 at $-10.9$/$-10.1$~dBm.}
+\declarecitesnip{gesiapd100}{JLT 2026: waveguide Ge/Si APD $>$100~GHz; 2~A/W at 70~GHz.}
+\declarecitesnip{ofc360apd}{OFC 2026 Th3F.2: Ge-on-Si APD to 180~GBd PAM4 (O/C-band).}
+\declarecitesnip{rfic460drv}{RFIC 2026: 105.7~GHz SiGe distributed driver; 232~GBd PAM4 into TFLN (research).}
+\declarecitesnip{ofc420tosa}{OFC 2026 W4J.4: 210~GBd / 420~Gb/s PAM4 TFLN TOSA (co-designed driver).}
+\declarecitesnip{ofc180drv}{OFC 2026 W3E.6: 180~GBd PAM4 InP MZM + 224G-class EML driver.}
+\declarecitesnip{tflndiffdrv}{OFC 2026 M4D.4: differential SiGe+TFLN; 140~GBd PAM8 at 1.4~pJ/bit.}
+\declarecitesnip{cignal448}{Cignal AI on OIF 448G workshop (April 2025).}
+\declarecitesnip{e4ai448}{IEEE 802.3 Ethernet for AI ad hoc (400G/lane CFI, 2025--26).}
+\declarecitesnip{ieee400gpl}{IEEE 802.3 400~Gb/s/lane Signaling Study Group (chartered March 2026).}
+\declarecitesnip{lpo}{IEEE EPS, Linear Pluggable Optics overview (2026).}
+\declarecitesnip{lpomsa}{LPO MSA 100G-DR-LPO v1.0: 53.125~GBd PAM4 SMF to 500~m; TDECQ/TECQ $\le$3.4~dB; builds on 802.3 + CEI-112G-LINEAR.}
+\declarecitesnip{ualink200}{UALink Consortium, UALink 200G 1.0 scale-up specification (April 2025).}
+\declarecitesnip{uec10}{Ultra Ethernet Consortium, UEC Specification 1.0 (June 2025).}
+\declarecitesnip{snia448}{SNIA SFF TA-1043 / OIF 448G workshop: backplane 448G scope (2025).}
+\declarecitesnip{ocpai}{OCP Open Systems for AI; OCS subproject for AI cluster fabrics (2025).}
+\declarecitesnip{elsfp}{OIF ELSFP Implementation Agreement (OIF-ELSFP-02.0, 2023): 24-pin card edge, CMIS, blind-mate MT.}
+\declarecitesnip{cwwdm}{CW-WDM MSA Rev~1.0 (2021): O-band 8/16/32-$\lambda$ CW
+  grids (9/18/36~nm spans); modular vs integrated ports; RIN/SMSR/linewidth methods.}
+\declarecitesnip{gr468}{Telcordia GR-468-CORE: reliability assurance for optoelectronic devices.}
+\declarecitesnip{rinspec}{IEEE 802.3 / 100G Lambda MSA: $\mathrm{RIN}_{17.1}\mathrm{OMA}\le-136$~dB/Hz.}
+\declarecitesnip{koherondrv200}{Koheron DRV200: low-noise CW laser driver; $i_n$ at 1~kHz by current range.}
+\declarecitesnip{ayar}{Ayar Labs SuperNova CW-WDM source and TeraPHY optical I/O.}

@@ -1,0 +1,30 @@
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.nav
+*.snm
+*.vrb
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.xdv
+
+# OS
+.DS_Store
+
+# Private job-application materials (postings, prep notes)
+jobs/
+
+# Non-redistributable fonts (keep locally; résumé uses Fontin + Alegreya)
+fonts/adobe-clean/
+
+# Local citation PDFs (gitignored; citeurls.tex falls back to public URLs)
+books/short-reach-optics/docs/*
+!books/short-reach-optics/docs/README.md
+
+# Cursor hook runtime files
+.cursor/hooks/.tex-compile.stamp

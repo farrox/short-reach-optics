@@ -1,0 +1,307 @@
+% Preamble for the tufte-book template.
+% Layout: tufte-book (asymmetric margins, sidenotes). Body face: Alegreya Sans.
+
+% natbib must be configured before \documentclass{tufte-book} loads it.
+\PassOptionsToPackage{numbers,sort&compress}{natbib}
+
+\documentclass[
+    justified,
+    twoside,
+    paperwidth=8.5in,
+    paperheight=11in,
+    inner=1in,
+    outer=1in,
+    top=1in,
+    bottom=1in,
+    marginparwidth=2in,
+    marginparsep=0.15in
+]{tufte-book}
+
+% --- Fonts (XeLaTeX) ---
+\usepackage{fontspec}
+
+\setmainfont[
+    Path = ./fonts/,
+    UprightFont = AlegreyaSans-Regular.ttf,
+    BoldFont = AlegreyaSans-Bold.ttf,
+    ItalicFont = AlegreyaSans-Italic.ttf,
+    BoldItalicFont = AlegreyaSans-BoldItalic.ttf,
+    UprightFeatures = {Ligatures=TeX},
+    BoldFeatures = {Ligatures=TeX},
+    ItalicFeatures = {Ligatures=TeX},
+    BoldItalicFeatures = {Ligatures=TeX},
+]{Alegreya Sans}
+
+\setsansfont[
+    Path = ./fonts/,
+    UprightFont = AlegreyaSans-Regular.ttf,
+    BoldFont = AlegreyaSans-Bold.ttf,
+    ItalicFont = AlegreyaSans-Italic.ttf,
+    BoldItalicFont = AlegreyaSans-BoldItalic.ttf,
+]{Alegreya Sans}
+
+% Prefer Latin Modern Mono (TeX Live); fall back to system fonts, then body face.
+\IfFontExistsTF{Latin Modern Mono}{%
+  \setmonofont{Latin Modern Mono}%
+}{%
+  \IfFontExistsTF{Menlo}{%
+    \setmonofont{Menlo}%
+  }{%
+    \IfFontExistsTF{Courier New}{%
+      \setmonofont{Courier New}%
+    }{%
+      \setmonofont[
+        Path = ./fonts/,
+        UprightFont = AlegreyaSans-Regular.ttf,
+        BoldFont = AlegreyaSans-Bold.ttf,
+        ItalicFont = AlegreyaSans-Italic.ttf,
+        BoldItalicFont = AlegreyaSans-BoldItalic.ttf,
+      ]{Alegreya Sans}%
+    }%
+  }%
+}
+
+\newfontfamily\AlegreyaLight[
+    Path = ./fonts/,
+    UprightFont = AlegreyaSans-Light.ttf,
+    ItalicFont = AlegreyaSans-LightItalic.ttf,
+    BoldFont = AlegreyaSans-Medium.ttf,
+    BoldItalicFont = AlegreyaSans-MediumItalic.ttf,
+]{Alegreya Sans}
+
+\newfontfamily\AlegreyaDisplay[
+    Path = ./fonts/,
+    UprightFont = AlegreyaSans-Medium.ttf,
+    ItalicFont = AlegreyaSans-MediumItalic.ttf,
+    BoldFont = AlegreyaSans-Bold.ttf,
+    BoldItalicFont = AlegreyaSans-BoldItalic.ttf,
+]{Alegreya Sans}
+
+% --- Math + tables + graphics ---
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{graphicx}
+\usepackage{etoolbox}
+\usepackage{microtype}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{polar}
+\usepackage{tikz}
+\usetikzlibrary{matrix, calc, decorations.pathmorphing, positioning, arrows.meta}
+\usepackage{booktabs, multirow, siunitx, xspace, fancyvrb, tabularx}
+\usepackage{placeins}
+\usepackage[svgnames]{xcolor}
+\usepackage{listings}
+
+% --- Math font matches the body ---
+% Without this, math mode falls back to Computer Modern, so digits (e.g. table
+% values like $-136$) and variables look foreign next to the Alegreya Sans body.
+% mathastext routes math letters and digits through the current text font
+% (Alegreya Sans), leaving operators, delimiters, and Greek in Computer Modern.
+% Load after amsmath/amssymb and the main font; `italic` slants variables while
+% keeping upright digits, and `\mathrm`/`\mathcal` keep working.
+\usepackage[italic]{mathastext}
+
+% --- Hyperlinks ---
+\usepackage{hyperref}
+\definecolor{linkInternal}{HTML}{1F4E5F}
+\definecolor{linkCitation}{HTML}{6F2A6F}
+\definecolor{linkExternal}{HTML}{1F4E5F}
+\definecolor{citeLink}{HTML}{005FA3}
+\hypersetup{
+  colorlinks = true,
+  linkcolor  = linkInternal,
+  citecolor  = linkCitation,
+  urlcolor   = linkExternal,
+  linktoc    = all,
+  pdfborder  = {0 0 0},
+}
+\urlstyle{same}
+\input{sections/citeurls}
+\input{sections/cite-snips}
+\input{sections/term-snips}
+\newcommand{\citehref}[2]{%
+  \ifcsname citeurl@#1\endcsname
+    \href{\csname citeurl@#1\endcsname}{\textcolor{citeLink}{#2}}%
+  \else
+    \textbf{??}#2%
+  \fi
+}
+
+\usepackage[capitalise,nameinlink]{cleveref}
+\crefname{section}{section}{sections}
+\Crefname{section}{Section}{Sections}
+\crefname{subsection}{section}{sections}
+\Crefname{subsection}{Section}{Sections}
+\crefname{chapter}{chapter}{chapters}
+\Crefname{chapter}{Chapter}{Chapters}
+\crefname{table}{table}{tables}
+\Crefname{table}{Table}{Tables}
+\crefname{figure}{figure}{figures}
+\Crefname{figure}{Figure}{Figures}
+
+% --- tufte-book + amsmath float-reference fix (tufte-latex issues #185--187) ---
+% tufte-book defers caption/label processing into a boxed minipage; recent
+% amsmath breaks the deferred label so \ref/\Cref to floats resolve to the
+% section (or blank). Making \label robust and placing each \label INSIDE its
+% \caption restores correct figure/table references. Keep labels in captions.
+\AtBeginDocument{\robustify\label}
+\crefname{equation}{equation}{equations}
+\Crefname{equation}{Equation}{Equations}
+
+% Avoid duplicate ``Bibliography'' + ``References'' headings.
+\makeatletter
+\renewenvironment{thebibliography}[1]
+     {\list{\@biblabel{\@arabic\c@enumiv}}%
+           {\settowidth\labelwidth{\@biblabel{#1}}%
+            \leftmargin\labelwidth
+            \advance\leftmargin\labelsep
+            \@openbib@code
+            \usecounter{enumiv}%
+            \let\p@enumiv\@empty
+            \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+      \sloppy
+      \clubpenalty4000
+      \@clubpenalty \clubpenalty
+      \widowpenalty4000%
+      \sfcode`\.\@m}
+     {\def\@noitemerr
+       {\@latex@warning{Empty `thebibliography' environment}}%
+      \endlist}
+\makeatother
+
+% --- Tufte fullwidth-float caption fix ---
+\makeatletter
+\renewcommand{\@tufte@float@fullwidth}[3][0pt]{%
+  \ifthenelse{\equal{\floatalignment}{b}}%
+    {%
+      \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}%
+        {\hfill\raisebox{#1}{\usebox{#3}}\par\medskip\usebox{#2}%
+         \@tufte@float@debug{Caption position: [above right, no smash]}}%
+        {\raisebox{#1}{\usebox{#3}}\hfill\par\medskip\usebox{#2}%
+         \@tufte@float@debug{Caption position: [above left, no smash]}}%
+    }{%
+      \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}%
+        {\usebox{#2}\par\medskip\hfill\raisebox{#1}{\usebox{#3}}%
+         \@tufte@float@debug{Caption position: [below right, no smash]}}%
+        {\usebox{#2}\par\medskip\raisebox{#1}{\usebox{#3}}\hfill%
+         \@tufte@float@debug{Caption position: [below left, no smash]}}%
+    }%
+}
+\makeatother
+
+\sloppy
+\setlength{\emergencystretch}{3em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5\baselineskip}
+
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+
+% --- Code listings ---
+\definecolor{codebg}{HTML}{F6F2EA}
+\definecolor{codecmt}{HTML}{6A737D}
+\definecolor{codestr}{HTML}{6F8E3F}
+\definecolor{codekey}{HTML}{6E518A}
+\lstset{
+  basicstyle    = \ttfamily\small,
+  commentstyle  = \color{codecmt}\itshape,
+  keywordstyle  = \color{codekey}\bfseries,
+  stringstyle   = \color{codestr},
+  backgroundcolor = \color{codebg},
+  frame         = single,
+  framerule     = 0pt,
+  rulecolor     = \color{codebg},
+  breaklines    = true,
+  breakatwhitespace = false,
+  postbreak     = \mbox{\textcolor{gray}{$\hookrightarrow$}\space},
+  showstringspaces = false,
+  tabsize       = 2,
+  xleftmargin   = 0pt,
+  xrightmargin  = 0pt,
+  language      = Python,
+  morekeywords  = {self},
+}
+
+% --- Custom title page ---
+\makeatletter
+\newcommand{\@subtitle}{}
+\newcommand{\subtitle}[1]{\renewcommand{\@subtitle}{#1}}
+\renewcommand{\maketitle}{%
+  \begin{fullwidth}%
+    \thispagestyle{empty}
+    \vspace*{\fill}
+    \begin{center}
+      {\AlegreyaDisplay\fontsize{30pt}{34pt}\selectfont
+       \textcolor{DarkSlateGray}{\@title}\par}
+      \vspace{1.5em}
+      {\fontsize{14pt}{18pt}\selectfont
+       \textcolor{DarkSlateGray}{\textit{\@subtitle}}\par}
+      \vspace{2.5em}
+      {\AlegreyaDisplay\fontsize{16pt}{20pt}\selectfont
+       \textcolor{DarkSlateGray}{\@author}\par}
+      \vspace{1em}
+      {\fontsize{11pt}{14pt}\selectfont
+       \textcolor{DarkSlateGray}{\@date}\par}
+    \end{center}
+    \vspace*{\fill}
+  \end{fullwidth}
+  \clearpage
+}
+\makeatother
+
+% --- Heading typography ---
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\AlegreyaDisplay\huge\color{DarkSlateGray}}
+  {\chaptername\ \thechapter}{16pt}{\Huge}
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{DarkSlateGray}}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+
+% --- Convenience macros ---
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\term}[1]{\textit{#1}}
+\providecommand{\aside}[1]{\sidenote{#1}}
+
+% Tufte \cite{} puts empty \bibentry{} sidenotes with a hand-coded bibliography.
+% main.tex overrides \cite and \@tufte@normal@cite to \citep after \begin{document}
+% (tufte restores the latter whenever a \sidenote ends). Use \firstcite{key} for a
+% linked margin note on first use (see cite-snips.tex); \mcite{key}{text} for one-offs.
+\newcommand{\mcite}[2]{\sidenote{\citehref{#1}{#2}}}
+
+\newcommand{\keyidea}[1]{%
+  \par\medskip\noindent
+  \colorbox{codebg}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+    \textbf{Key idea.~}#1}}\par\medskip
+}
+
+% Draft stub for sections still to be written (greppable via rg '\\fillme\\{').
+\definecolor{fillmebg}{HTML}{FFF6D9}
+\definecolor{fillmerule}{HTML}{B07F1A}
+\newcommand{\fillme}[5]{%
+  \par\smallskip\noindent
+  \fcolorbox{fillmerule}{fillmebg}{%
+    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+      \footnotesize
+      \textbf{\textsc{To fill}} \quad \texttt{#1} \quad --- \quad \textbf{#2}\par
+      \smallskip
+      \textit{Brief.} #3\par
+      \textit{Sources.} #4\par
+      \textit{Target.} #5
+    \end{minipage}%
+  }\par\smallskip
+}
+
+% --- Running-head letterspacing fix ---
+% tufte-book letterspaces its running heads (small caps) via the soul package.
+% Under recent LaTeX kernels, \MakeTextLowercase (used on the marks) emits
+% brace groups that soul cannot letterspace ("Reconstruction failed"), which
+% crashes any chapter long enough to place a section title in the header.
+% Route tufte's letterspacing through microtype's \textls, which handles braces
+% robustly, and make it degrade gracefully if \textls is unavailable.
+\AtBeginDocument{%
+  \providecommand{\textls}[2][]{#2}%
+  \renewcommand{\allcapsspacing}[1]{\textls[80]{#1}}%
+  \renewcommand{\smallcapsspacing}[1]{\textls[40]{#1}}%
+}

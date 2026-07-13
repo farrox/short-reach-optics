@@ -1,0 +1,25 @@
+# XeLaTeX build artifacts
+.build/
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+
+# Optional: ignore PDF output (remove this line if you track main.pdf)
+main.pdf
+
+# Python simulation environment and caches
+.venv/
+.mplcache/
+.cache/
+__pycache__/
+sims/__pycache__/

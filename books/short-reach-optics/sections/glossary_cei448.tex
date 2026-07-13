@@ -1,0 +1,90 @@
+\chapter{Abbreviations}
+\label{ch:abbrev}
+
+This glossary is adapted from the OIF \emph{Next Generation CEI-448G Framework}
+glossary (pages 7--11, OIF-FD-CEI-448G-01.0, September 2025)~\cite{cei448}.
+Some entries include material from public reference sources noted in the original.
+
+\small
+\begin{description}
+\item[ADC] An analog-to-digital converter is a system that converts an analog signal into a digital signal.
+\item[AI] Artificial intelligence.
+\item[ACC] Active copper cable. ACCs are a type of active copper cable used in data centers. ACCs primarily use Redriver chips and Continuous Time Linear Equalization (CTLE) to amplify and equalize the signal and provide longer reach than DACs. ACCs generally are lower power and cost than AECs (another type of active copper cable), but provide shorter reach than AECs.
+\item[AEC] Active electrical cable. AECs are a type of active copper cable used in data centers. AECs utilize Retimer chips with Clock and Data Recovery (CDR) to reshape and retransmit signals which generally offer longer reach and better signal integrity compared to ACCs, but at a higher cost.
+\item[Application spaces] Portions of equipment or network architecture that could benefit from having a defined set of interconnection parameters.
+\item[ASIC] An application-specific integrated circuit is an integrated circuit (IC) customized for a particular use, rather than intended for general-purpose use.
+\item[Backplane] A group of electrical connections used as a backbone to connect several printed circuit boards together to make up a switch, computing or storage system.
+\item[BER] Bit error ratio is a measure of the number of bit errors that occur during data transmission, expressed as a ratio of erroneous bits to the total number of bits transmitted.
+\item[BoW] Bunch of wires is a die-to-die interface specification. It is part of the open compute project (OCP) and, like UCIe, is used to connect chiplets within a package.
+\item[Cabled host] An implementation where twinaxial cable is used instead of PCB traces expressly for the insertion loss benefits or 3D architecture.
+\item[CDR] Clock and data recovery, a component that re-establishes the timing of a signal that may have degraded due to impairments on a transmission line, the retimed signal is able to continue further to its destination.
+\item[CEI] Common Electrical IO, an OIF Implementation Agreement containing clauses defining electrical interface specifications, each optimized for various reaches at minimal power.
+\item[Coded modulation] Coded modulation is a technique in digital communication that combines error-control coding with modulation to enhance reliability and efficiency. Its main goal is to balance bandwidth efficiency, power efficiency, and error probability.
+\item[CMIS] Common management information specification.
+\item[CMIS-LT] CMIS-based link training provides a message set and exchange mechanism for out-of-band link training or tuning between a pluggable module and a host.
+\item[CMIS-VCS] CMIS versatile control set extends the base CMIS standard to allow for more advanced and flexible signal integrity (SI) capabilities.
+\item[CPC] Co-packaged copper is an emerging interconnect technology where copper cables are directly attached to the top of an Application-Specific Integrated Circuit (ASIC) or other high-speed integrated circuit within a single package. This design minimizes the length of high-speed electrical signals on the printed circuit board (PCB) and package, addressing the limitations of traditional copper traces at increasingly high data rates (e.g., 224G and above).
+\item[CPO] Co-packaged optics. An electrical to optical device intended to be mounted on the host package.
+\item[CTLE] Continuous time linear equalizer.
+\item[DAC] Direct attach copper cable. A high-speed cable assembly made of copper twinaxial cable with fixed passive transceiver modules on each end. DAC cables enable direct, electrical connections between networking devices over short distances.
+\item[DER] Detector error ratio.
+\item[DFE] Decision feedback equalizer. An equalizer by adding a filtered version of previous symbol estimates to the original filter output.
+\item[DSP] Digital signal processing.
+\item[ENOB] Effective number of bits. A measure of the dynamic performance of an analog-to-digital converter (ADC).
+\item[Faceplate] A plate, cover, or bezel on the front of a device which may contain I/O ports.
+\item[FEC] Forward error correction gives a receiver the ability to correct errors without needing a reverse channel to request retransmission of data.
+\item[FFE] Feed forward equalizer.
+\item[Gbps] Gigabits per second. The throughput or data rate of a port or piece of equipment. Gbps is $1\times10^{9}$ bits per second.
+\item[GBd] The baud rate is the number of electrical transitions per second, also called symbol rate. Giga Baud is $1\times10^{9}$ symbols per second.
+\item[Gearbox] A component used for managing and manipulating data streams, primarily by converting multiple serial data streams at one rate to multiple streams at another rate,
+\item[Hamming codes] A type of linear error-correcting code used in digital communication and data storage systems. It enhances data integrity by detecting and correcting single-bit errors that may occur during transmission or storage.
+\item[HPC] High performance compute.
+\item[HPDC] High-performance data center. A general term for data centers designed for high-compute workloads like AI/HPC.
+\item[IA] Implementation Agreements, what the OIF names their defined interface specifications.
+\item[IC] Integrated circuit.
+\item[IMDD] Intensity modulation direct detection is a method where the intensity of a light source is modulated by an electrical signal. This modulated light then travels through an optical medium (like a fiber optic cable) and is directly detected by a photo detector at the receiving end. This is a common and relatively straightforward technique for transmitting information over optical links.
+\item[I/O] Input Output, a common name for describing a port or ports on equipment.
+\item[ISI] Intersymbol interference.
+\item[KP4 FEC] A specific Reed-Solomon FEC (544,514) defined in IEEE 802.3 Clause 91, commonly used in Ethernet standards.
+\item[LDPC] A low-density parity-check code is a linear error correcting code, a method of transmitting a message over a noisy transmission channel. An LDPC is constructed using a sparse Tanner graph. LDPC codes are capacity-approaching codes.
+\item[LR] Long reach. CEI LR specifies backplane/midplane and copper cable electrical interfaces.
+\item[LPO] Linear pluggable optic is a technology used in optical transceivers that simplifies the design of pluggable optical modules by removing the traditional Digital Signal Processor (DSP) and Clock Data Recovery (CDR) chips. Instead, LPO utilizes a direct-drive linear approach where the signal path is considered linear, relying on the capabilities of the Application Specific Integrated Circuit (ASIC) in the host system (like a switch or Network Interface Card) to perform signal conditioning and equalization.
+\item[MCM] Multi chip module, a specialized electronic package where multiple integrated circuits (ICs), semiconductor dies or other discrete components are packaged onto a unifying substrate, facilitating their use as a single component (as though a larger IC).
+\item[Mid-board optics] an optical transceiver that is mounted on a PCBA away from the PCBA edge, close to a switch ASIC to reduce the amount of PCBA trace loss between an ASIC and the optical transceiver. This is in contrast to the common practice today of locating optical transceivers at the PCBA edge.
+\item[Midplane] Some backplanes are constructed with slots for connecting to devices on both sides and are referred to as midplanes.
+\item[MLSD] Maximum likelihood sequence detection is a mathematical algorithm to extract useful data out of a noisy data stream.
+\item[MR] Medium reach. CEI MR specifies chip-to-chip electrical interfaces.
+\item[NG] Next generation.
+\item[NRZ (PAM2)] Non return to zero, a binary code in which 1s are represented by one significant condition (usually a positive voltage) and 0s are represented by some other significant condition (usually a negative voltage), with no other neutral or rest condition.
+\item[NPC] Near-package copper. NPC uses a copper cable to bring the front panel signal to a location close to the host silicon to minimize the host PCB losses. It reduces PCB losses by bringing the signals to a connector on the PCB close to the ASIC whereas CPC (Co-packaged copper) brings the signal to a connector on the ASIC package.
+\item[NPO] Near-package optics. Similar to CPO (Co-packaged optics) and NPC (Near-package copper), NPO is an electrical to optical device intended to be mounted on the host PCB at a location adjacent to the host silicon to minimize host PCB traces to minimize electrical signaling requirements.
+\item[OE] Optical engine.
+\item[O-to-E and E-to-O] Optical to electrical interface and Electrical to optical interface, a component that converts an optical signal to an electrical signal or vice versa.
+\item[PAM] Pulse amplitude modulation, a form of signal modulation where the message information is encoded in the amplitude of a series of signal pulses. For optical links it refers to intensity modulation.
+\item[PAM4] Pulse amplitude modulation-4 is a two-bit modulation that takes two bits at a time and maps the signal amplitude to one of four possible levels.
+\item[PAM6] A digital signal modulation scheme that encodes information by varying the amplitude of a pulse across six distinct voltage levels. Each of these six levels can represent approximately 2.5 bits of data.
+\item[PAM8] A digital signal modulation scheme that encodes information by varying the amplitude of a pulse across eight distinct voltage levels. Each of these eight levels can represent 3 bits of data.
+\item[PCB/PCBA] Printed circuit board (PCB) assembly, an assembly of electrical components built on a rigid glass-reinforced epoxy-based board.
+\item[Repeater] A low-latency electronic device that receives a signal and retransmits it. Repeaters are used to extend transmissions so that the signal can cover a longer distance. Besides signal equalization, clock and data recovery (CDR) functions could be also added to remove jitter from received signals effectively.
+\item[RoCE] RDMA over Converged Ethernet (CE) is a network protocol which allows remote direct memory access (RDMA) over an Ethernet network.
+\item[RS] Reed Solomon FEC coding is a type of block code. Block codes work on fixed-size blocks (packets) of bits or symbols of predetermined size. It can detect and correct multiple random and burst errors.
+\item[RTLR] (Retimed Transmit, Linear Receive) also generically referred to as Linear receive optic (LRO), is a type of optical transceiver technology used primarily in high-speed data center and networking applications, especially within AI clusters. The RTLR naming convention is within OIF. LRO is characterized by the presence of a Digital Signal Processor (DSP) solely on the transmit path, while the receive path operates with a linear, non-retimed architecture. This differs from fully retimed optical modules that utilize DSPs on both transmit and receive paths, and also from Linear Pluggable Optics (LPO) that eliminate DSPs entirely.
+\item[Scale out] also known as horizontal scaling, refers to the process of increasing capacity and performance by adding more individual machines or nodes to a distributed system.
+\item[Scale up] also known as vertical scaling, refers to the process of increasing the capacity or performance of a single server or system within an AI data center by adding more resources.
+\item[SDO] standard development organizations.
+\item[SerDes] A Serializer/Deserializer is a pair of functional blocks commonly used in high-speed communications to transfer data over a relatively low number of lanes.
+\item[SFP] Small form-factor pluggable connector is a modular, hot-pluggable interface used in networking devices to connect to various types of fiber optic or copper cables. It uses a PCB card edge interface.
+\item[SI] Signal integrity is a set of measures of the quality of an electrical signal.
+\item[SNDR] Signal-to-noise-and-distortion ratio is a measurement of the purity of a signal.
+\item[SNR] Signal-to-noise ratio.
+\item[TBD] To be determined.
+\item[Tbps] Terabits per second. The throughput or data rate of a port or piece of equipment. Tbps is $1\times10^{12}$ bits per second.
+\item[TCM] Trellis coded modulation is a technique that combines convolutional coding and modulation to improve data transmission efficiency over bandwidth-limited channels, like telephone lines. It achieves this by intelligently integrating the encoding and modulation processes, increasing the distance between signal points in the constellation to enhance error correction without expanding bandwidth.
+\item[TME] Test and measurement equipment.
+\item[Twinax copper cable] A type of copper cable similar to coaxial cable, but with two inner conductors instead of one.
+\item[UCIe] Universal chiplet interconnect express is an open industry standard that defines the interconnect between chiplets, or small component dies, within a single package.
+\item[VLC] Vertical line card. A new line card design in which vertical I/O connectors and ASIC are mounted side by side, reducing the signal trace distance.
+\item[VSR] Very short reach. CEI VSR specifies chip-to-module electrical interfaces.
+\item[XSR] Extra short reach. CEI XSR specifies die-to-optical engine (D2OE) and die-to-die (D2D) electrical interfaces.
+\item[448G] A generic name for an expected technology enabling data rates (including overhead) of approximately 448 Gbps per lane.
+\end{description}

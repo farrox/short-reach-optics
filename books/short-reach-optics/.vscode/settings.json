@@ -1,0 +1,25 @@
+{
+  "latex-workshop.latex.tools": [
+    {
+      "name": "compile-book",
+      "command": "bash",
+      "args": ["compile.sh"],
+      "env": {}
+    }
+  ],
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "compile.sh (atomic)",
+      "tools": ["compile-book"]
+    }
+  ],
+  "latex-workshop.latex.recipe.default": "compile.sh (atomic)",
+  "latex-workshop.latex.build.forceRecipeUsage": true,
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.latex.autoBuild.interval": 1500,
+  "latex-workshop.latex.watch.pdf.delay": 2000,
+  "latex-workshop.latex.clean.subfolder.enabled": true,
+  "latex-workshop.view.pdf.viewer": "tab",
+  "latex-workshop.view.pdf.ref.viewer": "auto",
+  "latex-workshop.synctex.afterBuild.enabled": true
+}

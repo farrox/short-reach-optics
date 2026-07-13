@@ -1,0 +1,80 @@
+% Canonical URLs for \citehref{key}{...} (sidenotes and inline cites).
+% Local PDFs in ../docs/ take precedence when present (see \defciteurllocal).
+% Preferred filename: {bibkey}.pdf (e.g. chang2023.pdf, miller2009.pdf).
+\makeatletter
+\newcommand{\defciteurl}[2]{\expandafter\gdef\csname citeurl@#1\endcsname{#2}}
+\newcommand{\defciteurllocal}[3]{%
+  \IfFileExists{#2}{%
+    \expandafter\gdef\csname citeurl@#1\endcsname{#2}%
+  }{%
+    \expandafter\gdef\csname citeurl@#1\endcsname{#3}%
+  }%
+}
+\makeatother
+
+\defciteurllocal{miller2009}{../docs/miller2009.pdf}{https://doi.org/10.1109/JPROC.2009.2014298}
+\defciteurllocal{miller2017}{../docs/miller2017.pdf}{https://doi.org/10.1109/JLT.2017.2647779}
+\defciteurllocal{daudlin2025}{../docs/daudlin2025.pdf}{https://doi.org/10.1038/s41566-025-01633-0}
+\defciteurllocal{chang2023}{../docs/chang2023.pdf}{https://doi.org/10.1109/JLT.2023.3291704}
+\defciteurllocal{pirmoradi2025}{../docs/pirmoradi2025.pdf}{https://arxiv.org/abs/2507.12452}
+\defciteurllocal{avicena2025}{../docs/avicena2025.pdf}{https://www.avicena.tech/}
+\defciteurllocal{sackinger2018}{../docs/sackinger2018.pdf}{https://doi.org/10.1002/9781119264422}
+\defciteurl{jalapeno2026}{https://investors.broadcom.com/news-releases/news-release-details/openai-and-broadcom-unveil-llm-optimized-intelligence-processor}
+\defciteurllocal{ayar}{../docs/ayar.pdf}{https://ayarlabs.com/supernova/}
+\defciteurllocal{elsfp}{../docs/elsfp.pdf}{https://www.oiforum.com/wp-content/uploads/OIF-ELSFP-02.0.pdf}
+\defciteurllocal{cwwdm}{../docs/cwwdm.pdf}{https://cw-wdm.org/}
+\defciteurllocal{gr468}{../docs/gr468.pdf}{https://telecom-info.njdepot.com/}
+\defciteurllocal{rinspec}{../docs/rinspec.pdf}{https://www.ieee802.org/3/bs/public/}
+\defciteurllocal{koherondrv200}{../docs/koheron-drv200.pdf}{https://i-wave.com/wp-content/uploads/5648-DRV200.pdf}
+\defciteurllocal{cei448}{../docs/cei448.pdf}{https://www.oiforum.com/wp-content/uploads/OIF-FD-CEI-448G-01.0.pdf}
+\defciteurllocal{cei224}{../docs/OIF-FD-CEI-224G-01.0.pdf}{https://www.oiforum.com/wp-content/uploads/OIF-FD-CEI-224G-01.0.pdf}
+\defciteurllocal{cei224demo}{../docs/OIF_CEI_Demo_OFC2025.pdf}{https://www.oiforum.com/wp-content/uploads/OIF_CEI_Demo_OFC2025.pdf}
+\defciteurl{ieee8023bj}{https://standards.ieee.org/standard/802_3bj-2014.html}
+\defciteurllocal{ieee8023dj}{../docs/ieee8023dj.pdf}{https://www.ieee802.org/3/dj/}
+\defciteurllocal{e4ai448}{../docs/e4ai448.pdf}{https://www.ieee802.org/3/ad_hoc/E4AI/}
+\defciteurllocal{ieee400gpl}{../docs/ieee400gpl.pdf}{https://www.ieee802.org/3/400GPL/}
+\defciteurllocal{huawei448}{../docs/huawei448.pdf}{https://www.oiforum.com/wp-content/uploads/OIF-448G-AI-Workshop-Huawei-Kuschnerov_Matuz.pdf}
+\defciteurllocal{synopsys448}{../docs/synopsys448.pdf}{https://www.synopsys.com/content/dam/synopsys/white-papers/designing-for-448g-modulation-dsp-wp.pdf}
+\defciteurllocal{cignal448}{../docs/cignal448.pdf}{https://cignal.ai/2025/04/oifs-448g-workshop-the-need-for-speed/}
+\defciteurllocal{tfmln32t}{../docs/tfmln32t.pdf}{https://arxiv.org/html/2503.24147}
+\defciteurllocal{tfln224}{../docs/tfln224.pdf}{https://arxiv.org/abs/2311.05119}
+\defciteurllocal{tfln390}{../docs/tfln390.pdf}{https://arxiv.org/abs/2411.15037}
+\defciteurllocal{tfln200mm}{../docs/tfln200mm.pdf}{https://doi.org/10.1364/OFC.2026.W1A.3}
+\defciteurllocal{he2019}{../docs/he2019.pdf}{https://doi.org/10.1038/s41566-019-0378-6}
+\defciteurllocal{hyperlight110}{../docs/hyperlight110.pdf}{https://www.hyperlightcorp.com/news/hyperlight-announces-110-ghz-modulators}
+\defciteurllocal{macom448}{../docs/macom448.html}{https://www.macom.com/updates/news/2026/macom-announces-two-new-448g-per-lane-drivers-for-3-2t-data-cent}
+\defciteurllocal{semtech224}{../docs/semtech224.html}{https://www.semtech.com/company/press/semtech-launches-224-gbps-ic-family-for-linear-optics-era}
+\defciteurllocal{lpomsa}{../docs/lpomsa.pdf}{https://www.lpo-msa.org/files/live/sites/lpomsa/files/specs/LPO_MSA_Specification_v1p01.pdf}
+\defciteurl{semtech448demo}{https://www.semiconductor-today.com/news_items/2026/mar/semtech-160326.shtml}
+\defciteurl{apd}{https://doi.org/10.1038/s41467-025-66047-6}
+\defciteurl{gesiapd100}{https://doi.org/10.1109/JLT.2026.3670103}
+\defciteurl{ofc360apd}{https://doi.org/10.1364/OFC.2026.Th3F.2}
+\defciteurl{rfic460drv}{https://rfic-ieee.org/paper_abstract/1148}
+\defciteurl{ofc420tosa}{https://doi.org/10.1364/OFC.2026.W4J.4}
+\defciteurl{ofc180drv}{https://doi.org/10.1364/OFC.2026.W3E.6}
+\defciteurl{tflndiffdrv}{https://doi.org/10.1364/OFC.2026.M4D.4}
+\defciteurllocal{ring224}{../docs/ring224.pdf}{https://doi.org/10.1364/OFC.2026.Th2A.14}
+\defciteurllocal{ring400}{../docs/ring400.pdf}{https://doi.org/10.1364/OFC.2026.M2A.2}
+\defciteurllocal{ring256}{../docs/ring256.pdf}{https://doi.org/10.1364/OFC.2026.M2A.1}
+\defciteurllocal{simzm400}{../docs/simzm400.pdf}{https://doi.org/10.1364/OFC.2026.Th4A.4}
+\defciteurllocal{simzmcompact}{../docs/simzmcompact.pdf}{https://doi.org/10.1364/OFC.2026.M2A.6}
+\defciteurllocal{simzmdiff}{../docs/simzmdiff.pdf}{https://doi.org/10.1364/OFC.2026.W3E.5}
+\defciteurllocal{ualink200}{../docs/ualink200.pdf}{https://ualinkconsortium.org/specifications/}
+\defciteurllocal{uec10}{../docs/uec10.pdf}{https://ultraethernet.org/specification/}
+\defciteurllocal{snia448}{../docs/snia448.pdf}{https://www.oiforum.com/wp-content/uploads/OIF_448G_AI_Workshop-SNIA-2025-03-31_v2_AConstantine.pdf}
+\defciteurllocal{ocpai}{../docs/ocpai.pdf}{https://www.opencompute.org/projects/optical-circuit-switching}
+\defciteurllocal{oif400zr}{../docs/oif400zr.pdf}{https://www.oiforum.com/technical-work/400zr/}
+\defciteurllocal{cmis53}{../docs/cmis53.pdf}{https://www.oiforum.com/wp-content/uploads/OIF-CMIS-05.3.pdf}
+\defciteurl{iec60825}{https://webstore.iec.ch/en/publication/74712}
+\defciteurl{g664}{https://www.itu.int/rec/T-REC-G.664-201202-I/en}
+
+% Legacy filenames in ../docs/ (override {bibkey}.pdf when present):
+\IfFileExists{../docs/A_3D_Integrated_Energy-Efficient_Transceiver_Realized_by_Direct_Bond_Interconnect_of_Co-Designed_12_nm_FinFET_and_Silicon_Photonic_Integrated_Circuits.pdf}{%
+  \defciteurl{chang2023}{../docs/A_3D_Integrated_Energy-Efficient_Transceiver_Realized_by_Direct_Bond_Interconnect_of_Co-Designed_12_nm_FinFET_and_Silicon_Photonic_Integrated_Circuits.pdf}%
+}{}
+\IfFileExists{../docs/s41566-025-01633-0.pdf}{%
+  \defciteurl{daudlin2025}{../docs/s41566-025-01633-0.pdf}%
+}{}
+\IfFileExists{../docs/Analysis and Design of Transimpedance Amplifiers for Optical Receivers.pdf}{%
+  \defciteurl{sackinger2018}{../docs/Analysis and Design of Transimpedance Amplifiers for Optical Receivers.pdf}%
+}{}

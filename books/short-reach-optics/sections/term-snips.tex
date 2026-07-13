@@ -1,0 +1,209 @@
+% Margin glosses for acronyms and jargon (\firstterm{key} on first use).
+\makeatletter
+\newcommand{\declaretermsnip}[2]{\expandafter\gdef\csname termsnip@#1\endcsname{#2}}
+\newcommand{\firstterm}[1]{%
+  \expandafter\ifx\csname termused@#1\endcsname\relax
+    \expandafter\gdef\csname termused@#1\endcsname{}%
+    \ifcsname termsnip@#1\endcsname
+      \sidenote{\csname termsnip@#1\endcsname}%
+    \fi
+  \fi
+}
+\makeatother
+
+\declaretermsnip{FEC}{Forward error correction: parity symbols let the receiver fix
+  bit errors without retransmit. Datacom links specify a \emph{pre-FEC} BER the code
+  must correct.}
+
+\declaretermsnip{KP4}{IEEE 802.3 Clause~91 FEC for PAM4: Reed--Solomon RS(544,514) on
+  10-bit symbols, 5.5\% overhead. Pre-FEC BER target $2.4\times10^{-4}$.}
+
+\declaretermsnip{RS544514}{Reed--Solomon block code: 544 symbols out, 514 payload, 30
+  parity. Corrects up to 15 symbol errors per codeword.}
+
+\declaretermsnip{preFEC}{Pre-FEC BER: measured before the FEC decoder. Standards and
+  validation sweeps use this number, not post-FEC.}
+
+\declaretermsnip{postFEC}{Post-FEC BER: after FEC correction. Target is effectively
+  error-free ($<10^{-12}$ class).}
+
+\declaretermsnip{MLC}{Multi-level coding: coded modulation paired with PAM6/PAM8. OIF
+  448G workshop models often add a strong outer RS code; $\sim$12\% overhead vs.\ KP4
+  at 5.5\%.}
+
+\declaretermsnip{HDFEC}{Hard-decision FEC: high-overhead codes used in optical demos and
+  long-reach products (10--15\% OH), not the host KP4 budget.}
+
+\declaretermsnip{OH}{Coding overhead: fraction of line rate spent on parity symbols
+  (KP4 $\approx$5.5\%).}
+
+\declaretermsnip{TDECQ}{Transmitter and dispersion eye closure quaternary (TDECQ):
+  headline PAM4 transmitter-quality metric after a reference receiver and bounded
+  FFE, including a test fiber. Lower is better; LPO MSA 100G-DR caps near 3.4~dB.
+  Replaced simple eye-mask tests. Stressed counterpart: SECQ.}
+
+\declaretermsnip{TECQ}{Transmitter eye closure quaternary (TECQ): same measurement as
+  TDECQ without the test fiber. Used with TDECQ in LPO MSA OMA tables.}
+
+\declaretermsnip{SECQ}{Stressed eye closure quaternary: receiver-side stressed test,
+  analog of TDECQ. Applies calibrated optical stress before BER test.}
+
+\declaretermsnip{EAM}{Electro-absorption modulator: voltage-controlled absorption on InP;
+  low chirp vs DML; paired with DFB in EML.}
+
+\declaretermsnip{APD}{Avalanche photodiode: internal gain improves sensitivity; excess
+  noise factor and bias complexity vs PIN.}
+
+\declaretermsnip{TIA}{Transimpedance amplifier: converts PD current to voltage; input
+  capacitance sets input-referred noise.}
+
+\declaretermsnip{PIN}{PIN photodiode: no internal gain; Ge-on-Si mainstream at 100--224G.}
+
+\declaretermsnip{gearbox}{Rate/format converter between electrical and optical lanes;
+  common in 448G transition; incompatible with strict LPO.}
+
+\declaretermsnip{CMIS}{Common Management Interface Specification: module management,
+  monitors, link training at 224G/448G.}
+
+\declaretermsnip{RMA}{Return merchandise authorization: field-failed unit returned for
+  FA. Distinct failure codes keep fleet FIT honest.}
+
+\declaretermsnip{ATP}{Acceptance test plan: measurable ship tests that prove the
+  requirements contract with a supplier (often mapped to GR-468 stresses).}
+
+\declaretermsnip{SPC}{Statistical process control: control charts on key parameters
+  ($I_\mathrm{th}$, SMSR, power, burn-in fallout) to catch drift qual lots missed.}
+
+\declaretermsnip{eightD}{Eight disciplines (8D) corrective action: contain, root-cause,
+  correct, and prevent with the supplier; close only with verification evidence.}
+
+\declaretermsnip{DPA}{Destructive physical analysis: cross-section / EDX on failed
+  units to confirm facet, solder, or FAU failure modes.}
+
+\declaretermsnip{LOS}{Loss of signal: receiver (or host) flag that optical input is
+  below the detect threshold.}
+
+\declaretermsnip{LOL}{Loss of lock: CDR or SerDes unlocked; electrical path not
+  recovered even if light is present.}
+
+\declaretermsnip{FAIR}{First-article inspection report: re-qualify after tooling, site,
+  epi, or CMIS firmware change before open volume.}
+
+\declaretermsnip{DML}{Directly modulated laser: modulate bias current; high chirp, low cost.}
+
+\declaretermsnip{VCSEL}{Vertical-cavity surface-emitting laser: 850~nm class, MMF SR links.}
+
+\declaretermsnip{LIV}{Light--current--voltage curve: threshold, slope efficiency, kink-free
+  range, and thermal rollover versus bias.}
+
+\declaretermsnip{SMSR}{Side-mode suppression ratio: power difference (dB) between the lasing
+  mode and the strongest side mode (OSA).}
+
+\declaretermsnip{RIN}{Relative intensity noise: laser amplitude noise spectral density
+  (dB/Hz). Specs often quote stressed $\mathrm{RIN}_x\mathrm{OMA}$ under fixed ORL.}
+
+\declaretermsnip{APC}{Automatic power control: feedback loop from a monitor PD that
+  holds average optical power; slow loop BW keeps it out of the RIN band.}
+
+\declaretermsnip{ELSFP}{External Laser Small Form-Factor Pluggable (OIF): faceplate CW laser
+  module for CPO; 24-pin card edge, CMIS, blind-mate MT.}
+
+\declaretermsnip{Arrhenius}{Life-acceleration model: temperature stress multiplies wear-out
+  by $\exp[(E_a/k)(1/T_\mathrm{use}-1/T_\mathrm{stress})]$.}
+
+\declaretermsnip{wavelengthLocker}{Wavelength locker: etalon + dual-PD error signal that
+  trims laser TEC or current onto a grid slot (common on discrete DFB/EML).}
+
+\declaretermsnip{thermalCrosstalk}{Thermal crosstalk: heater or self-heating on one ring
+  shifts neighbors' resonances; worst case is full-bank traffic at max case $T$.}
+
+\declaretermsnip{ACC}{Active copper cable: redriver (CTLE+VGA) inside cable; extends DAC reach.}
+
+\declaretermsnip{AEC}{Active electrical cable: retimer (EQ+CDR) inside cable; longer twinax.}
+
+\declaretermsnip{RLM}{Relative level mismatch: PAM4 level spacing uniformity. 1.0 is
+  perfectly even; CEI often requires $\ge$0.95.}
+
+\declaretermsnip{OMA}{Optical modulation amplitude: outer PAM4 level swing
+  $P_1-P_0$.}
+
+\declaretermsnip{COM}{Channel operating margin: statistical SNR of the fully equalized
+  link. CEI go/no-go is typically COM $\ge$3~dB.}
+
+\declaretermsnip{ISI}{Inter-symbol interference: energy from neighboring symbols
+  overlapping the current unit interval.}
+
+\declaretermsnip{DFE}{Decision-feedback equalizer: cancels post-cursor ISI using past
+  symbol decisions.}
+
+\declaretermsnip{CTLE}{Continuous-time linear equalizer: analog high-frequency boost in
+  SerDes or TIA.}
+
+\declaretermsnip{FFE}{Feed-forward equalizer: FIR filter. TDECQ applies a bounded FFE as
+  the reference equalizer.}
+
+\declaretermsnip{SNDR}{Signal-to-noise-and-distortion ratio: transmitter quality ceiling
+  including nonlinearity.}
+
+\declaretermsnip{UI}{Unit interval: one symbol period ($=1/R_{\mathrm{sym}}$). Jitter
+  specs are in UI.}
+
+\declaretermsnip{PMD}{Physical medium dependent: the optical transceiver (Tx/Rx) in
+  IEEE 802.3.}
+
+\declaretermsnip{PCS}{Physical coding sublayer: 64B/66B line coding, 256B/257B
+  transcoding, scrambling, and RS-FEC. Maps MAC data to the coded line stream.}
+
+\declaretermsnip{PMA}{Physical medium attachment: serialization, lane multiplexing,
+  and clock recovery. The SerDes lives here.}
+
+\declaretermsnip{AUI}{Attachment unit interface: the electrical serial lanes between
+  host and module (e.g.\ 400GAUI-4, at the faceplate cage).}
+
+\declaretermsnip{xMII}{Media-independent interface: a wide parallel bus between MAC and
+  PCS inside the chip (e.g.\ 400GMII).}
+
+\declaretermsnip{LPO}{Linear pluggable optics: no retimer/DSP in the module; host SerDes
+  drives the modulator directly.}
+
+\declaretermsnip{LRO}{Linear retimed optics: retimer in the module but no heavy DSP;
+  lighter than fully retimed pluggables.}
+
+\declaretermsnip{XSR}{CEI extra-short reach: die-to-die or die-to-OE, mm-scale traces.}
+
+\declaretermsnip{CPC}{Co-packaged copper: copper I/O at the package edge (OIF map);
+  feeds faceplate cages or short copper without an on-package optical engine.}
+
+\declaretermsnip{VSR}{CEI very short reach: host PCB plus one module connector
+  ($\sim$200~mm).}
+
+\declaretermsnip{MR}{CEI medium reach: longer host plus module channel than VSR.}
+
+\declaretermsnip{LR}{CEI long reach: longest CEI copper class before optics take over.}
+
+\declaretermsnip{FR8DR8}{802.3 800G single-mode reaches: FR8 = 2~km, DR8 = 500~m
+  (eight lanes per direction).}
+
+\declaretermsnip{SerDes}{Serializer/deserializer: high-speed I/O that maps parallel
+  data to PAM4 on the wire.}
+
+\declaretermsnip{dspserdes}{DSP-based SerDes: ADC on the Rx lane, digital FFE/DFE and
+  timing recovery, DAC on Tx. Standard above $\sim$50~GBd; the ``DSP'' that cancels ISI
+  at 224G lives inside the SerDes.}
+
+\declaretermsnip{GBd}{Gigabaud: $10^9$ symbols per second. Line rate = baud
+  $\times$ bits per symbol.}
+
+\declaretermsnip{PHY}{Physical layer: PCS plus PMD; maps MAC frames to the line code.}
+
+\declaretermsnip{DCA}{Digital communication analyzer: sampling oscilloscope used for
+  eye diagrams and TDECQ.}
+
+\declaretermsnip{CDR}{Clock-data recovery: extracts bit clock from the data stream;
+  present in retimed modules, absent in LPO.}
+
+\declaretermsnip{EML}{Electro-absorption modulated laser: DFB plus EAM on one InP chip;
+  dominant 100--200G/lane pluggable Tx.}
+
+\declaretermsnip{UEC}{Ultra Ethernet Consortium: open Ethernet stack for AI/HPC scale-out (UET transport, PHY extensions).}
+\declaretermsnip{UALink}{Ultra Accelerator Link: open scale-up fabric for accelerator load/store (200G/lane class).}

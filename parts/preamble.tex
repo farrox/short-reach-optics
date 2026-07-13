@@ -1,0 +1,80 @@
+% Layout and typography
+\usepackage[margin=0.75in,top=0.5in,bottom=1in]{geometry}
+\usepackage{parskip}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{array}
+
+% Shared date | content columns (experience, education)
+\makeatletter
+\newenvironment{resumetabular}{%
+  \begin{tabular}{@{}>{\raggedleft\arraybackslash}p{1.2cm}@{\hspace{0.35em}}|@{\hspace{0.45em}}>{\raggedright\arraybackslash}p{\dimexpr\textwidth-1.2cm-0.35em-0.45em\relax}@{}}%
+}{%
+  \end{tabular}%
+}
+\makeatother
+
+
+% Graphics, color, links
+\usepackage{graphicx}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[hidelinks,breaklinks]{hyperref}
+\usepackage{url}
+
+% Header, footer, page count
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+
+% Icons (contact block in parts/header.tex)
+\usepackage{fontawesome5}
+
+% Fonts (XeLaTeX)
+\defaultfontfeatures{Mapping=tex-text}
+
+\setmainfont[
+    Path = fonts/alegreya-sans/,
+    BoldFont = AlegreyaSans-Bold.ttf,
+    ItalicFont = AlegreyaSans-Italic.ttf,
+    BoldItalicFont = AlegreyaSans-BoldItalic.ttf
+]{AlegreyaSans-Regular.ttf}
+\setsansfont[
+    Path = fonts/alegreya-sans/,
+    BoldFont = AlegreyaSans-Bold.ttf,
+    ItalicFont = AlegreyaSans-Italic.ttf,
+    BoldItalicFont = AlegreyaSans-BoldItalic.ttf
+]{AlegreyaSans-Regular.ttf}
+\newfontfamily\fontinsc[Path = fonts/fontin-sans/]{Fontin_Sans_SC_45b.otf}
+\newfontfamily\fontinbf[Path = fonts/fontin-sans/]{Fontin_Sans_B_45b.otf}
+
+% Line breaking: discourage hyphenation; stretch spacing before breaking words
+\hyphenpenalty=5000
+\exhyphenpenalty=5000
+\doublehyphendemerits=10000
+\lefthyphenmin=3
+\righthyphenmin=3
+
+
+% Section titles
+\titleformat{\section}{\fontinsc\large\raggedright}{}{0cm}{}[\titlerule]
+\titlespacing{\section}{0pt}{7pt}{10pt}
+\addtolength{\voffset}{0.7cm}
+
+% Hyperlinks
+\hypersetup{
+    colorlinks,
+    linkcolor = {red!50!black},
+    citecolor = {blue!50!black},
+    urlcolor = {blue!50!black}
+}
+
+% Contact icons (parts/header.tex)
+\newcommand{\contacticon}[1]{\makebox[1.15em][c]{\small #1}}
+
+% Page style
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{\scriptsize Page \thepage\ of \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[C]{\fontinsc Ed (Ehsan) Shah Hosseini}
+\renewcommand{\footrulewidth}{0.2pt}

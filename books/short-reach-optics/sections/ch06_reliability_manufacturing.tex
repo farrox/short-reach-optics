@@ -1,0 +1,334 @@
+\chapter{Reliability and manufacturing at scale}
+\label{ch:reliability}
+
+A link that closes in the lab can still fail the business case if lasers die in
+the field or suppliers cannot hold yield. At gigawatt, multi-generation scale,
+reliability and manufacturability stop being afterthoughts and become design
+constraints: they decide whether you put the laser on the ASIC package or in a
+replaceable module, how hard you derate, and what ATP language you freeze with
+partners. This chapter covers the vocabulary of failure at scale, the
+qualification flows that project field life, and the supplier-execution work these
+systems demand.
+
+\section{The language of scale: FIT and DPPM}
+\label{sec:fit-dppm}
+
+Fleet arguments need two different numbers. One is about life in the field; the
+other is about quality at the factory door.
+
+\begin{description}
+\item[FIT (failures in time)] failures per $10^{9}$ device-hours. Multiply a
+      per-laser FIT by the number of lasers in a fleet and by hours to estimate
+      failures per day.
+\item[DPPM (defective parts per million)] the manufacturing-quality counterpart,
+      measured at incoming or outgoing inspection.
+\end{description}
+
+\aside{An order-of-magnitude exercise: a
+$100{,}000$-GPU cluster with several optical links per GPU has on the order of
+$10^{5}$--$10^{6}$ lasers. Even a small per-laser FIT then implies a nontrivial
+number of link failures per day, which is exactly why field-replaceable external
+laser sources and redundancy are attractive.}
+
+\section{Qualification flows}
+
+Optoelectronics inherited a common qualification language from telecom:
+\term{Telcordia GR-468-CORE}. The core stress tests still show up on every laser
+and module program:
+
+\begin{itemize}
+\item HTOL (high-temperature operating life) and burn-in.
+\item Temperature cycling and damp heat.
+\item Electrostatic-discharge and mechanical stress.
+\end{itemize}
+
+\term{Arrhenius} acceleration underpins life projection: raising temperature
+accelerates wear-out by a factor set by the activation energy, so a bounded
+high-temperature test projects years of field life. Screening (burn-in) removes
+infant-mortality parts before deployment.
+
+\paragraph{GR-468 in practice.}
+\label{sec:gr468}
+
+Telcordia GR-468-CORE is the common qualification language for optoelectronic
+modules and discrete lasers. For optical engineers the actionable pieces are
+test-plan alignment (map your ATP to GR-468 stress sequences such as HTOL,
+temperature cycle, damp heat, and ESD so supplier and customer agree on
+pass/fail), activation energy (FIT projections use Arrhenius acceleration;
+document $E_a$ and confidence bounds when converting 1000-hour HTOL to field
+years), sample-size humility (qualification lots are small; production SPC catches
+drift that qual missed, \Cref{tab:npi}), and boundary clarity: qualify the laser
+die, the hermetic package, and the module assembly separately when failures split
+across those boundaries
+(\Cref{sec:photonic-packaging,sec:laser-aging,sec:elsfp}).
+
+\paragraph{ATP sketch: EML module or ELSFP.}
+A short acceptance sketch lives with the qual hooks in \Cref{sec:elsfp}; the full
+ATP-as-contract, SPC, and 8D workflow is in \Cref{sec:supplier-exec}. Failures that
+pass qual but fail field usually sit in derating policy or connector contamination
+(\Cref{sec:laser-aging,sec:fleet-triage}).
+
+\section{Wear-out modes to know}
+\label{sec:wearout-modes}
+
+Arrhenius math, derating, and the worked FIT example live in
+\Cref{sec:laser-aging}. This section is the mechanism catalog: how each failure
+shows up in ATP and telemetry, and which triage bucket owns it
+(\Cref{sec:fleet-triage}). Do not run process CAPA on a wear-out part, and do not
+burn FIT math on a dirty connector.
+
+\paragraph{Infant mortality versus wear-out versus packaging.}
+Field failures come in three clocks, and mixing them up wastes CAPA. Infant
+mortality is early fails from latent defects; burn-in and HTOL screens remove them
+before ship (\Cref{sec:gr468}). Wear-out is gradual or sudden end-of-life in the
+laser or EAM under temperature, current, and optical power, projected with
+Arrhenius and derating (\Cref{sec:laser-aging}). Packaging and assembly faults
+(FAU align, epoxy creep, solder voids, connector wear) often dominate field
+returns once lasers are screened (\Cref{sec:photonic-packaging}).
+Destructive physical analysis (facet cross-section, EDX, FAU section) is required
+when the signature is ambiguous or when you need evidence for supplier 8D
+(\Cref{sec:supplier-exec}).
+
+\paragraph{Mechanism map.}
+\Cref{tab:wearout-map} is the working list for laser-bearing modules and CPO/ELS
+paths. Customize limits in the ATP; keep the classification discipline.
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:wearout-map}%
+\centering
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
+\begin{tabular}{@{}p{0.16\linewidth}p{0.22\linewidth}p{0.28\linewidth}p{0.26\linewidth}@{}}
+\toprule
+Mechanism & Observable & ATP / telemetry & Triage bucket \\
+\midrule
+COD (facet) & Sudden dark or hard fail; was healthy & Dark LIV; DPA facet; date-code cluster? & Reliability (COD) or mfg (ESD) \\
+Gradual facet / active region & $I_\mathrm{th}$ up, slope down over life & LIV trend vs ship ATP; HTOL lot history & Reliability (wear-out) \\
+SMSR collapse & Side modes rise; modal noise / BER & OSA SMSR vs floor at $T$ & Reliability; watch aging \\
+EAM aging (EML) & TDECQ/RLM creep at fixed bias & EAM bias sweep + DCA; bias creep log & Reliability (EAM) \\
+RIN rise & BER floor up; feedback sensitive & RIN @ ORL; isolator / connector check & Perf if ORL; reliability if isolator \\
+TEC / thermal control & Unlock or $\lambda$ walk; LIV may look fine & TEC current, case $T$, lock status & Perf (lock) or reliability (TEC) \\
+Coupling / FAU / solder & Loss step, intermittent LOS, shock-related & ORL, mate cycles, DPA FAU/solder & Manufacturability / packaging \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Wear-out and packaging mechanisms
+versus observables. Arrhenius projection and derating for the laser rows:
+\Cref{sec:laser-aging}. Field classification workflow:
+\Cref{sec:fleet-triage}.\par}
+\end{table*}
+
+\term{Catastrophic optical damage} (COD) is the sudden facet failure under optical
+or electrical overstress. Gradual facet and active-region degradation move
+threshold and slope on a slower clock. EAM aging shifts the absorption curve and
+shows up as transmitter and dispersion eye closure quaternary (TDECQ) or RLM
+drift before the DFB LIV looks dead. TEC and lock failures
+mimic optical wear-out until you bisect heater versus laser
+(\Cref{sec:lock-validation}). Coupling and FAU faults belong with packaging, not
+with Arrhenius $E_a$ arguments.
+
+\section{Photonic packaging and module-level failures}
+\label{sec:photonic-packaging}
+
+Fleet FIT is not only laser wear-out. Once lasers are screened and derated,
+module and packaging failures often dominate field returns: the part that shipped
+with a clean LIV still loses light after shock, humidity, or a thousand ELSFP mate
+cycles. Fiber attach and FAU alignment fail from shock, humidity ingress, and
+epoxy creep; CPO fiber-array units add assembly steps that wafer test cannot catch
+(\Cref{sec:cpo-status}). Hybrid stacks (TFLN-on-Si, InP laser on Si, flip-chip
+drivers) introduce solder voids, underfill cracks, and RF return-loss drift
+(\Cref{sec:tfln-mzm,sec:drivers}). Thermal paths matter too: uncooled datacom
+versus liquid-cooled XPO/CPO, and TEC failure that looks like wavelength drift off
+grid or off ring (\Cref{sec:siring,ch:wdm}). ELSFP cycling adds connector wear and
+contamination that raise ORL (\Cref{sec:optical-channel,sec:elsfp}).
+
+Destructive physical analysis (cross-section, EDX) and structured 8D/CAPA with
+suppliers close the loop from RMA to design rule
+(\Cref{sec:supplier-exec,sec:fleet-triage}). Without that loop, packaging FIT gets
+mis-attributed to laser Arrhenius models and the wrong part gets redesigned.
+
+\section{Production test at volume}
+\label{sec:hvm-test}
+
+\subsection{Test time is a cost, coverage is a risk}
+
+Every second in the acceptance test plan (ATP) times millions of units is line
+capacity and real money. Every skipped measurement is escaped DPPM in the field
+(\Cref{sec:fit-dppm}). The core tension in high-volume manufacturing is not
+``test or don't test'' but how much coverage you buy per second. The expensive
+optical steps are thermal soak and corner runs, TDECQ on a sampling scope, BER
+dwell long enough to trust a low pre-FEC target, laser burn-in, and mate-cycle
+stress on ELSFP connectors. Some screens are statistical (sample burn-in from a
+lot, audit TDECQ on a subset). Others must be 100\%: CMIS state machine sanity,
+basic LIV/SMSR pass, and any test that catches a safety or enable-sequence fault
+(\Cref{sec:cmis,sec:laser-safety}).
+
+\subsection{Where the test happens: wafer, die, module, system}
+
+Push defect detection as far upstream as correlation allows. Wafer-level or PIC
+probe catches process shifts (waveguide loss, ring resonance drift, bad heaters)
+before fiber attach and packaging spend. Killing a bad die at probe is orders of
+magnitude cheaper than an RMA (\Cref{sec:photonic-packaging}). Module ATP is the
+full functional test: optical power class, TDECQ or proxy, sensitivity spot-check,
+CMIS bring-up, and connector/ORL on ELS parts. System or golden-host bring-up
+catches interop: media type, firmware rev, equalizer defaults, and the corners in
+\Cref{sec:prod-corners}. Wafer test cannot catch fiber attach, FAU alignment,
+epoxy creep, or connector wear. Those failures must survive to module ATP and,
+for some signatures, to fleet telemetry (\Cref{sec:fleet-triage}).
+
+\subsection{ATE-to-bench correlation}
+
+Production testers are built for speed and cost, not lab fidelity. The number that
+matters is correlation: does the ATE TDECQ, OMA, or sensitivity track the DCA/BERT
+reference within a known offset and spread? Set ATP limits with guardbands derived
+from that spread. A drifting tester or a stale golden unit shows up as a yield
+cliff or a DPPM escape. Keep a golden module (and golden laser subassembly for
+ELS), run gauge R\&R across testers and shifts, and correlate CMIS monitors to
+bench instruments the same way you correlate TDECQ (\Cref{sec:cmis}). If the ATE
+and the DCA disagree, fix the correlation before you argue with the supplier about
+spec.
+
+\subsection{Screens, guardbanding, and SPC}
+
+Burn-in and HTOL screens trade infant-mortality escape rate against test time and
+cost (\Cref{sec:wearout-modes,sec:gr468}). Test limits are usually guardbanded
+tighter than the customer spec so field DPPM stays inside target under drift.
+SPC control charts on LIV, SMSR, RIN, TDECQ, and mate-cycle yield by lot, site,
+and date code catch a process shift before it becomes an 8D (\Cref{sec:supplier-exec}).
+Production test is a yield, DPPM, and cost trade under a fixed reliability target.
+It is not a pass/fail checkbox after the optics already work on a golden bench.
+
+\section{Supplier execution playbook}
+\label{sec:supplier-exec}
+
+The supplier path is milestones, performance targets, quality, and
+manufacturability triage. That is not a soft skill. It is a concrete contract:
+requirements, gates, acceptance tests, process control, and corrective action when
+a lot goes wrong.
+
+\paragraph{NPI gates and exit criteria.}
+\Cref{tab:npi} is the usual stage map. For lasers and IM/DD modules, write exit
+criteria that a supplier can fail clearly, not slogans.
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:npi}%
+\centering
+\setlength{\tabcolsep}{4pt}%
+\footnotesize
+\begin{tabular}{@{}p{0.10\linewidth}p{0.22\linewidth}p{0.34\linewidth}p{0.28\linewidth}@{}}
+\toprule
+Gate & Question & Laser / optics exit criteria (examples) & Who signs \\
+\midrule
+EVT & Does it work at all? & First light; CMIS bring-up sequence (\Cref{sec:bringup}); LIV/SMSR/RIN on engineering samples; one link closes BER & Optical eng + supplier FAE \\
+DVT & Spec across corners? & Full ATP at $T$/$V$ corners; prod-rep corners (\Cref{sec:prod-corners}); TDECQ/OMA/sensitivity; GR-468 stress plan frozen; FIT model agreed & Optical eng + reliability \\
+PVT & Buildable at yield? & Multi-lot yield vs ATP; SPC charts live; burn-in escape rate; FAIR on production tooling; bring-up on production host & Optical eng + SQE / mfg \\
+MP & Sustained quality? & Steady DPPM; RMA Pareto owned; ECO control on CMIS/firmware and process & Program + supplier QM \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} NPI gates with laser-relevant exit
+criteria. EVT/DVT/PVT/MP are stage names, not a schedule; dates and sample sizes
+belong in the program plan with the supplier.\par}
+\end{table*}
+
+Hold a gate if the exit data are missing. Shipping PVT material without frozen
+ATP limits is how field NFF and FIT arguments start (\Cref{sec:fleet-triage}).
+
+\paragraph{Requirements and ATP are the contract.}
+ATP\firstterm{ATP} and the requirements doc are the contract. Write both and keep
+them versioned together:
+
+\begin{enumerate}
+\item \textbf{Requirements / PRD slice for the laser path:} fill
+      \Cref{tab:laser-prd,sec:laser-reqs} (power class, grid, RIN@ORL, SMSR,
+      derating, CMIS, FIT). Version it with the ATP.
+\item \textbf{Acceptance test plan (ATP):} the measurable tests that prove those
+      requirements on every ship lot (or on a defined sample). Map each ATP line to
+      a GR-468 or design-validation stress where life is claimed (\Cref{sec:gr468}).
+\end{enumerate}
+
+\Cref{tab:atp-laser} is a working ATP checklist for an EML pluggable or an ELSFP
+CW module. Customize limits from the datasheet and the link budget; do not invent
+numbers in the ATP itself.
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:atp-laser}%
+\centering
+\setlength{\tabcolsep}{3.5pt}%
+\footnotesize
+\begin{tabular}{@{}p{0.20\linewidth}p{0.22\linewidth}p{0.28\linewidth}p{0.24\linewidth}@{}}
+\toprule
+ATP item & Instrument / method & Pass intent & Ties to \\
+\midrule
+LIV ($I_\mathrm{th}$, slope, kink) & SMU + power meter & kink-free bias window at rated $T$ & wear-out, derate (\Cref{sec:laser-params}) \\
+SMSR & OSA & single-mode vs.\ spec floor & modal noise, aging \\
+RIN (intrinsic + stressed ORL) & PD + ESA & $\mathrm{RIN}_x\mathrm{OMA}$ / quiet floor & BER floor (\Cref{sec:rin-values}) \\
+Wavelength / grid & OSA / wavemeter & channel ID; $d\lambda/dT$ & WDM lock (\Cref{ch:wdm}) \\
+Optical power class & power meter & ELSFP / MSA class met & link budget \\
+EAM bias / chirp (EML) & bias sweep + DCA & ER, RLM, TDECQ at baud & Tx quality (\Cref{sec:tdecq}) \\
+CMIS / TWI bring-up & host or CMIS tool & registers, alarms, state machine & field telemetry \\
+Connector / ORL & mate cycles + ORL meter & cycles + ORL limit & packaging (\Cref{sec:elsfp}) \\
+Burn-in screen & HTOL sample or 100\% screen & infant mortality culled & GR-468 (\Cref{sec:gr468}) \\
+Thermal class & chamber at case $T$ & LIV/RIN/CMIS still pass & derate policy \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Acceptance checklist for laser-bearing
+modules (EML or ELSFP). Limits are program-specific; the structure is what you
+negotiate with the supplier.\par}
+\end{table*}
+
+\paragraph{Incoming QC and SPC.}
+Qual lots are small. Production catches drift that qual missed.
+
+\begin{itemize}
+\item \textbf{Incoming:} sample or 100\% screen against a subset of the ATP (at least
+      power, CMIS, and a laser LIV/SMSR sample). Track DPPM by date code and site.
+\item \textbf{SPC}\firstterm{SPC}: control charts on $I_\mathrm{th}$, slope, SMSR, Tx
+      power, and burn-in fallout. A process shift is a hold, not a hope.
+\item \textbf{First-article / FAIR:} when tooling, epi, or assembly site changes,
+      rerun a defined FAIR package before open PO volume. Treat CMIS firmware revs
+      the same way as process changes.
+\end{itemize}
+
+\paragraph{Excursions: 8D / CAPA.}
+When a lot fails ATP, incoming, or field triage lands in the manufacturability
+bucket (\Cref{sec:fleet-triage}), run structured corrective action:
+
+\begin{enumerate}
+\item \textbf{Contain:} quarantine WIP and ship holds; identify suspect date codes
+      in the fleet.
+\item \textbf{Evidence pack:} failing ATP rows, CMIS dumps, LIV/SMSR/RIN plots, DPA
+      photos (facet, solder, FAU cross-section) compared to a golden unit.
+\item \textbf{8D / CAPA}\firstterm{eightD}: root cause with the supplier (process step,
+      material lot, firmware), corrective action, and preventive control (ATP tighten,
+      SPC limit, poke-yoke).
+\item \textbf{Verify:} re-run FAIR on the corrected process; watch field RMA codes
+      for that date-code family for a defined burn-in window.
+\end{enumerate}
+
+Do not close 8D on ``operator error'' without a control that would have caught it
+at ATP. If FA shows laser wear-out on a young unit, it may be a reliability screen
+gap, not a supplier process bug; reclassify with \Cref{sec:fleet-triage} before you
+argue FIT.
+
+\paragraph{Milestone hygiene with partners.}
+Align the partner calendar to gates, not slideware:
+
+\begin{itemize}
+\item freeze requirements before DVT samples are built;
+\item freeze ATP limits before PVT yield is claimed;
+\item freeze FIT/$E_a$ assumptions before reliability marketing numbers ship;
+\item require ECO notice on laser die revision, TEC vendor, FAU epoxy, and CMIS
+      firmware.
+\end{itemize}
+
+Your job in those meetings is to name the measurement that would kill the gate.
+If nobody can point to an ATP row or a corner, the milestone is not real.
+
+\keyidea{Reliability at scale is mechanism discipline plus supplier gates.
+Classify failures with the wear-out map (\Cref{tab:wearout-map}) before you argue
+FIT or open 8D. Supplier execution is a gated contract: requirements and ATP at
+DVT, multi-lot SPC and FAIR at PVT, then 8D with evidence when a lot or field
+Pareto says manufacturability. Do not run process CAPA on a wear-out failure or
+burn FIT on a dirty connector.}

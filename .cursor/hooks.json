@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": ".cursor/hooks/recompile-on-tex-save.sh"
+      }
+    ],
+    "afterTabFileEdit": [
+      {
+        "command": ".cursor/hooks/recompile-on-tex-save.sh"
+      }
+    ]
+  }
+}

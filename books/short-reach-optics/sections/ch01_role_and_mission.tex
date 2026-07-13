@@ -1,0 +1,94 @@
+\chapter{Why the interconnect matters}
+\label{ch:role}
+
+\section{The two themes of this book}
+
+Large AI systems fail or succeed as much on wiring as on FLOPs. The short-reach
+optics that connect accelerators, switches, and memory sit on the critical path
+for latency, power, and uptime, and two parts of that layer decide whether the
+system scales: the \term{lasers} that generate the light, and the discipline of
+\term{IM/DD validation}\sidenote{IM/DD = intensity modulation with direct
+detection: the short-reach datacenter transceiver style. See \Cref{ch:imdd}.}
+that proves those links work from the first bench eye through production and
+fleet life. This book keeps returning to those two themes. Modulation formats,
+WDM, reliability, and network architecture matter because they serve them.
+
+\keyidea{Two things dominate short-reach optics at scale: \emph{lasers} and
+\emph{IM/DD validation}. Everything else orbits those two.}
+
+\section{The context: purpose-built inference silicon}
+
+The pressure on the interconnect is not abstract. It comes from a shift in how
+large AI systems are built: vertically integrated, purpose-built silicon
+deployed at gigawatt scale, with networking named as a first-order design axis
+beside compute and memory. A representative example is \term{Jalapeño}, a purpose-built LLM \emph{inference}
+accelerator Broadcom and a hyperscaler partner announced in 2026 as a blank-slate
+design, the first chip in a multi-generation compute
+platform.\sidenote{Source: \citehref{jalapeno2026}{Broadcom and partner, ``LLM-optimized
+inference chip,'' 24 June 2026}.} Its public
+features are typical of the class:
+
+\begin{itemize}
+\item \textbf{Partners and integration.} Broadcom provides silicon implementation
+      and networking (including \term{Tomahawk} switch silicon); Celestica
+      provides board, rack, and system integration.
+\item \textbf{Cadence.} A roughly nine-month design-to-tape-out cycle, with the
+      designers' own models used to accelerate parts of the flow.
+\item \textbf{Scale.} Deployment at gigawatt scale, over multiple generations,
+      beginning in late 2026.
+\item \textbf{Design thesis.} ``Reduce data movement and balance compute, memory,
+      and \emph{networking} resources'' to reach realized utilization close to
+      theoretical peak.
+\end{itemize}
+
+That last point is the hook for this book. Purpose-built inference silicon does
+not treat networking as a commodity NIC bolted on after the die is done; it
+budgets interconnect power and latency alongside FLOPs and HBM. Partners and
+cadence matter because they set who owns the switch ASIC and how fast generations
+turn: Broadcom for silicon and networking (including Tomahawk), Celestica for
+board and rack, a roughly nine-month design-to-tape-out cycle, and gigawatt-scale
+deployment planned across multiple generations from late 2026. Once networking
+sits on that line, the optical interconnect is how the system scales past a
+single package to a gigawatt cluster, and laser quality plus IM/DD validation
+become infrastructure problems rather than module afterthoughts.
+
+\section{Why inference makes the interconnect matter}
+
+Inference is not training. Once a model is trained, serving it is dominated by
+two phases with very different bottlenecks (developed fully in
+\Cref{ch:networking}):
+
+\begin{description}
+\item[Prefill] processing the prompt: highly parallel and compute-bound, much
+      like training.
+\item[Decode] generating tokens one at a time: autoregressive and
+      \emph{memory-bandwidth-bound}, because every token streams the model
+      weights through the compute units again.
+\end{description}
+
+Frontier models do not fit on one chip. They are sharded across many
+accelerators, so every generated token triggers \term{collective communication}
+across the fabric: all-reduce for tensor parallelism, all-to-all for
+mixture-of-experts routing, point-to-point for pipeline stages. The interconnect
+therefore sits on the \emph{latency critical path} of inference, not merely the
+plumbing between training runs.
+
+\keyidea{Reliable, low-power IM/DD links directly set how large and how
+dependable an inference fabric can be. That is why the optical layer has become
+central to AI system design.}
+
+\section{How to read this book}
+
+The chapters build from physics to fleet scale:
+
+\begin{enumerate}
+\item \Cref{ch:firstprinciples,ch:imdd}: energy, IM/DD vocabulary, modulators, FEC, equalization.
+\item \Cref{ch:models}: quantitative noise, RIN, sensitivity (use with \Cref{sec:link-budget}).
+\item \Cref{ch:lasers}: light sources (DFB/EML, LIV/SMSR/RIN, aging, ELSFP/CW-WDM).
+\item \Cref{ch:wdm}: wavelength locking, thermal crosstalk, CW-WDM, on-chip MUX.
+\item \Cref{ch:validation,ch:reliability}: measurement ladder, link budgets, qual, packaging.
+\item \Cref{ch:networking}: scale-up/out, pluggables, CPO/XPO, inference collectives.
+\end{enumerate}
+
+To use the book as a design drill, pick one link style (retimed 800G DR, LPO, or
+CPO WDM) and trace it end to end through \Cref{sec:txrx-chain,sec:pluggables,sec:cpo-status}.

@@ -1,0 +1,53 @@
+% Barebone tufte-book template (XeLaTeX).
+% Copy this directory, edit title/author below, add chapters under sections/,
+% then run ./compile.sh.
+
+\input{preamble}
+
+\title{Short-Reach Optics for AI Compute}
+\subtitle{From First Principles to the State of the Art: Energy, Lasers, IM/DD, WDM, and Validation}
+\author{Ed (Ehsan) Shah Hosseini}
+\date{\today}
+
+\begin{document}
+% Tufte sets \cite to \@tufte@normal@cite (margin \bibentry{} notes). Each
+% \sidenote restores that definition on exit, so patch both \cite and the
+% restore target. Use \firstcite{key} for a linked margin note on first use.
+\makeatletter
+\let\cite\citep
+\let\@tufte@normal@cite\citep
+\makeatother
+
+\maketitle
+\input{sections/copyright}
+
+\frontmatter
+
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+\input{sections/preface}
+
+\tableofcontents
+\clearpage
+
+\mainmatter
+
+\input{sections/ch01_role_and_mission}
+\input{sections/ch_first_principles}
+\input{sections/ch02_imdd_fundamentals}
+\input{sections/ch_models}
+\input{sections/ch03_lasers}
+\input{sections/ch04_wdm_wavelength_locking}
+\input{sections/ch05_validation}
+\input{sections/ch06_reliability_manufacturing}
+\input{sections/ch07_ai_datacenter_networking}
+
+\backmatter
+
+\input{sections/glossary_cei448}
+
+\chapter*{References}
+\addcontentsline{toc}{chapter}{References}
+\input{sections/references}
+
+\end{document}
