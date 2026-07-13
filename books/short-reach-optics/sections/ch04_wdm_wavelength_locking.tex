@@ -26,9 +26,14 @@ run IM/DD \emph{per wavelength}.
 Historically the industry climbed a ladder of spacing. Coarse CWDM4 used
 $\approx$20~nm slots and uncooled lasers. LAN-WDM tightened that for 2~km-class
 FR4. Dense grids and then CW-WDM O-band combs for CPO pushed spacing into the
-100--800~GHz class and made active locking mandatory.
-\Cref{tab:wdm-grids} is that ladder as you will meet it in short-reach AI optics
-today.
+100--800~GHz class and made active locking mandatory. Those spacings are
+standardized grids, not vendor choices: the 20~nm CWDM slots follow the ITU-T
+G.694.2 wavelength grid (18 channels, 1271--1611~nm), and the 50/100/200~GHz
+datacom DWDM spacings follow the ITU-T G.694.1 frequency grid anchored at
+193.1~THz~\firstcite{ituG694}. CWDM4 uses the four O-band lines of that CWDM
+grid; the CW-WDM combs in \Cref{sec:cwwdm} define their own O-band grids for
+dense integration. \Cref{tab:wdm-grids} is that ladder as you will meet it in
+short-reach AI optics today.
 
 \begin{table*}[ht]
 \refstepcounter{table}\label{tab:wdm-grids}%
@@ -288,6 +293,110 @@ RIN under the specified ORL, and absolute wavelength stable enough that ring
 heaters stay in range
 (\Cref{sec:thermal-xtalk,sec:cwwdm-laser}). Miss any one and a single $\lambda$
 will look like a modulator or lock-loop failure when the source is the real cause.
+
+\subsection{Comb sources: one device, many lines}
+\label{sec:comb-sources}
+
+The SuperNova approach builds its comb from an array of discrete lasers, one
+distributed-feedback (DFB) die per wavelength, combined onto the output fiber.
+That is the shipping answer, and it scales cleanly to the 8 and 16 lines the MSA
+grids call for. Past a few dozen lines the die count, the combining loss, and the
+per-die wavelength trimming start to hurt, which is why a single device that emits
+a whole comb is attractive. Three device classes compete.
+
+\newthought{Quantum-dot mode-locked lasers} (\term{QD-MLL}s) are the front-runner
+for a monolithic O-band comb. Mode locking in a single cavity produces evenly
+spaced lines at the cavity round-trip rate; quantum-dot gain adds low RIN, a
+near-zero linewidth-enhancement factor, and strong optical-feedback tolerance, the
+same properties that make quantum-dot lasers attractive for isolator-free
+co-packaging~\firstcite{qdcomb}\cite{qdrin}. Reported O-band demos carry
+14$\times$100~Gb/s PAM4 over 10~km at $\sim$284~fJ/bit, and isolator-free variants
+target interconnect capacity beyond 3.2~Tb/s. These are research results, not
+qualified products, so treat the line counts and efficiencies as provisional.
+
+\newthought{Kerr microcombs} take the opposite route: pump one high-$Q$
+microresonator and let four-wave mixing fill in many evenly spaced lines on a
+chip~\firstcite{microcomb}. The line count and the spacing uniformity are
+excellent, and a 2025 demonstration added a monolithic demultiplexer that
+autonomously locks to and tracks the comb lines. The catch is power.
+Pump-to-comb conversion efficiency is modest, so each line leaves the chip weak and
+usually needs a booster or per-line amplifier before it reaches the modulator bank
+(\Cref{sec:soa-distribution}). Microcombs also need a clean pump laser and careful
+thermal control to hold the soliton state.
+
+\newthought{Gain-switched and quantum-dash combs} sit between the two: a directly
+driven laser produces a flatter, lower-line-count comb with simple electronics.
+They have reached multi-terabit aggregate rates in the lab but see less datacom
+traction than QD-MLLs.
+
+For any of them the contract from the MSA does not change: the source must hold
+per-line power flatness, SMSR, RIN, and grid placement across temperature with
+every port active (\Cref{sec:cwwdm-laser}). A comb that delivers 32 lines but
+drops 6~dB across the band, or whose edge lines miss the grid, buys nothing over an
+array of DFBs the PIC already knows how to drive.
+
+\subsection{Gain and power distribution across the bank}
+\label{sec:soa-distribution}
+
+Whatever generates the comb, the light still has to survive the trip to the
+modulators. One source feeds a multiplexer, a splitter tree, and per-line routing
+before it reaches a ring, and each stage takes its cut. When the source is a
+chip-scale comb with weak lines (\Cref{sec:comb-sources}), or when the fan-out is
+large, a \term{semiconductor optical amplifier} (SOA) restores the budget.
+
+\newthought{Where the gain sits.} A booster SOA placed right after the comb lifts
+every line before the split, so one device pays for the whole fan-out. A per-line
+SOA after the demultiplexer instead corrects line-to-line imbalance, at the cost of
+one amplifier per wavelength. The receiver-side SOA preamplifier
+(\Cref{tab:rxtech}) is a separate job: there the goal is sensitivity, here it is
+launch power.
+
+\newthought{The noise-figure cost.} An SOA adds amplified spontaneous emission
+(\term{ASE}), and its noise figure sets how much. The quantum floor is 3~dB;
+commercial O-band SOAs land near 6--7~dB with roughly 15~dB of gain and about
+1.5~dB polarization-dependent gain~\firstcite{soa}. Every dB of noise figure eats
+into the signal-to-noise ratio the receiver eventually sees, so an SOA that rescues
+launch power can cost link margin if it runs deep into saturation or amplifies an
+already-noisy comb. Quantum-dot SOAs grown on silicon are attractive for the same
+reason QD lasers are: low noise, wide O-band gain, and CMOS-compatible integration.
+
+\newthought{Holding the bank flat.} Gain is not uniform across the comb span, and
+SOAs compress near saturation, so the line that starts strongest is not the line
+that ends strongest. Per-line power flatness is a system spec (\Cref{sec:cwwdm}),
+held with some mix of source-side pre-emphasis, gain-tilt control, and per-line
+trimming. The alternative to any distribution-side gain is a higher-power source,
+which is why array-of-DFB designs that already meet the launch budget often skip
+the SOA entirely.
+
+\subsection{Polarization on the CW distribution path}
+\label{sec:polarization}
+
+IM/DD is forgiving about polarization where it counts most. The photodiode is a
+square-law detector, so the received state of polarization does not affect the
+recovered bits (\Cref{sec:coherent-boundary}). A standard single-mode drop to the
+receiver therefore needs no polarization control. The external-source and CW-WDM
+architectures move the sensitive part upstream, onto the path between the laser and
+the modulator.
+
+\newthought{Where it matters.} Three elements on the CW feed care about the launched
+state. A \term{TFLN} Mach--Zehnder drives the electro-optic effect through
+TE-polarized light on one crystal axis (\Cref{sec:tfln-mzm}); light on the wrong
+axis sees little modulation. Silicon grating couplers are polarization-selective by
+construction, so coupling loss swings with the input state, a
+\term{polarization-dependent loss} (PDL) that comes straight off the launch budget.
+And a booster or per-line SOA adds polarization-dependent gain
+(\Cref{sec:soa-distribution}), so a drifting state becomes a drifting per-line
+power. None of these sit after the photodiode, so none show up in a receiver-side
+budget: they act on light that has not yet been modulated.
+
+\newthought{How it is held.} Keep the CW feed on \term{polarization-maintaining}
+(PM) fiber and PM connectors from the external laser (\Cref{ch:lasers}) to the
+modulator input, launched on the coupler's preferred axis. On-chip the light is
+already single-polarization once it is in a TE waveguide, so the discipline is
+really about the fiber run and the mate at the package. A co-packaged design with
+the laser on the same substrate shortens that run to millimeters and sidesteps most
+of the problem; an external-laser design pays for a PM path and its alignment
+tolerance instead.
 
 \section{Lock validation playbook}
 \label{sec:lock-validation}

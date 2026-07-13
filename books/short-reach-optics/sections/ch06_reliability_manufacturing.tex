@@ -33,8 +33,8 @@ laser sources and redundancy are attractive.}
 \section{Qualification flows}
 
 Optoelectronics inherited a common qualification language from telecom:
-\term{Telcordia GR-468-CORE}. The core stress tests still show up on every laser
-and module program:
+\term{Telcordia GR-468-CORE}\firstcite{gr468}. The core stress tests still show up
+on every laser and module program:
 
 \begin{itemize}
 \item HTOL (high-temperature operating life) and burn-in.
@@ -62,11 +62,88 @@ die, the hermetic package, and the module assembly separately when failures spli
 across those boundaries
 (\Cref{sec:photonic-packaging,sec:laser-aging,sec:elsfp}).
 
+\paragraph{GR-1221: the passive-component companion.}
+GR-468 covers active optoelectronics. Its companion, \term{Telcordia GR-1221-CORE}
+(Generic Reliability Assurance Requirements for Passive Optical Components), covers
+the parts GR-468 does not: connectors, fiber couplers, WDM filters and MUX/DEMUX,
+splitters, and isolators~\firstcite{gr1221}. It uses the same style of stress
+sequence (damp heat, temperature cycling, mechanical, and aging tests) but scores
+pass/fail on insertion loss and return loss rather than on LIV. A short-reach link
+that leans on an on-package or blind-mate MUX and on external multi-wavelength
+sources carries a passive reliability budget that lives in GR-1221, not GR-468
+(\Cref{sec:connector-reliability,ch:wdm}). Split the qual the same way you split
+the FIT: active laser die under GR-468, silicon under JESD47, passive optics under
+GR-1221.
+
 \paragraph{ATP sketch: EML module or ELSFP.}
 A short acceptance sketch lives with the qual hooks in \Cref{sec:elsfp}; the full
 ATP-as-contract, SPC, and 8D workflow is in \Cref{sec:supplier-exec}. Failures that
 pass qual but fail field usually sit in derating policy or connector contamination
 (\Cref{sec:laser-aging,sec:fleet-triage}).
+
+\section{Electronics reliability: driver, TIA, and DSP silicon}
+\label{sec:ic-reliability}
+
+GR-468 covers the optoelectronic parts of the link: the laser die, the
+photodiode, and the hermetic or non-hermetic package around them. The modulator
+driver, TIA, retimer, and DSP (\Cref{sec:drivers,sec:pd-tia}) are ordinary CMOS or
+SiGe BiCMOS ICs, and they wear out and fail by a different, better-documented set
+of mechanisms. Treat them with the semiconductor industry's own qualification
+language, not with Arrhenius laser-aging math borrowed from \Cref{sec:laser-aging}.
+
+\paragraph{JESD47: the silicon-side GR-468.}
+\firstterm{JESD47} JEDEC JESD47 is the baseline stress-test-driven qualification
+flow for a new IC, a device family, or a process change: temperature cycling,
+HTOL, HTSL (high-temperature storage life), autoclave or HAST (highly accelerated
+stress test) for moisture, and mechanical shock and vibration~\firstcite{jesd47}.
+It plays the same role for driver and TIA silicon that GR-468 plays for the
+laser: a common list of stresses that a supplier runs once and a customer accepts
+instead of renegotiating a qual plan on every design win.
+
+\paragraph{ESD and latch-up: failure modes GR-468 does not test.}
+Two mechanisms are specific to ICs and absent from the laser-side wear-out map in
+\Cref{tab:wearout-map}:
+
+\begin{description}
+\item[ESD] a discharge event during handling or assembly damages a gate oxide or
+      junction. Component-level classification uses the human-body model (HBM) and
+      charged-device model (CDM) test standards, \term{ANSI/ESDA/JEDEC JS-001} and
+      \term{JS-002}~\firstcite{jsesd}. A driver or TIA datasheet HBM/CDM rating is
+      the number that protects the part on the factory floor, at fiber-attach and
+      wire-bond stations where a laser die is also exposed.
+\item[Latch-up] a parasitic thyristor structure in CMOS turns on under an
+      overvoltage or current-injection event and holds a low-impedance path until
+      power is cycled. \term{JESD78}\firstterm{JESD78} defines the overvoltage and
+      $\pm100$~mA current-injection test that classifies susceptibility by supply
+      and signal pin~\firstcite{jesd78}. A latched driver IC can look like a dead
+      laser on the bench (no light, no LIV signature) until you check the supply
+      current instead of the optical path.
+\end{description}
+
+Both mechanisms are 100\%-screen or design-margin items, not something you
+project with an activation energy. If a driver fails ESD or latch-up in the
+field, that is a manufacturability or design-margin bucket item
+(\Cref{sec:fleet-triage}), not a wear-out FIT argument.
+
+\paragraph{AEC-Q100: a borrowed grade, not a requirement.}
+\term{AEC-Q100}\firstterm{AECQ100} is the automotive industry's qualification
+standard for ICs, built on the same JEDEC JESD47/JESD22 stress methods with
+tighter ESD targets and named temperature grades from Grade~3
+($-40$ to $85$\textdegree C) up to Grade~0 ($-40$ to $150$\textdegree C)~\firstcite{aecq100}.
+Datacenter optics does not require Q100; the fleet lives in a controlled data hall,
+not an engine bay. It is still a useful signal: a driver, TIA, or retimer die that
+also ships in an automotive part number typically carries a published Q100 grade,
+and that grade is a fast proxy for the ESD/latch-up margin and temperature-cycle
+depth behind the datasheet, without re-running the qual plan yourself.
+
+\paragraph{Where this lands in the ATP.}
+Fold IC-level qual into the same acceptance and SPC structure used for the laser
+(\Cref{tab:atp-laser,sec:supplier-exec}): require the supplier's JESD47 qual
+report and HBM/CDM/latch-up ratings for driver and TIA die at DVT, add an ESD
+handling audit to the incoming-QC checklist alongside laser LIV/SMSR sampling,
+and treat a driver/TIA silicon revision the same way you treat a laser die
+revision or a CMIS firmware rev: an ECO that needs first-article requalification,
+not a silent BOM swap.
 
 \section{Wear-out modes to know}
 \label{sec:wearout-modes}
@@ -109,13 +186,16 @@ EAM aging (EML) & TDECQ/RLM creep at fixed bias & EAM bias sweep + DCA; bias cre
 RIN rise & BER floor up; feedback sensitive & RIN @ ORL; isolator / connector check & Perf if ORL; reliability if isolator \\
 TEC / thermal control & Unlock or $\lambda$ walk; LIV may look fine & TEC current, case $T$, lock status & Perf (lock) or reliability (TEC) \\
 Coupling / FAU / solder & Loss step, intermittent LOS, shock-related & ORL, mate cycles, DPA FAU/solder & Manufacturability / packaging \\
+Driver/TIA latch-up (ESD) & Sudden hard fail; no light, no LIV signature; supply current spikes & Supply current vs bias; JESD78 rating; date-code cluster? & Mfg (ESD) or design margin \\
+Connector wear / contamination & ORL creep after repeated mate cycles; RIN floor rise & Mate-cycle count vs IEC~61300-2-2 rating; endface grade (IEC~61300-3-35) & Manufacturability / packaging \\
 \bottomrule
 \end{tabular}
 \par\medskip
 {\raggedright\footnotesize\textbf{Table~\thetable.} Wear-out and packaging mechanisms
 versus observables. Arrhenius projection and derating for the laser rows:
-\Cref{sec:laser-aging}. Field classification workflow:
-\Cref{sec:fleet-triage}.\par}
+\Cref{sec:laser-aging}. Electronics stress qualification:
+\Cref{sec:ic-reliability}. Connector reliability: \Cref{sec:connector-reliability}.
+Field classification workflow: \Cref{sec:fleet-triage}.\par}
 \end{table*}
 
 \term{Catastrophic optical damage} (COD) is the sudden facet failure under optical
@@ -139,8 +219,42 @@ epoxy creep; CPO fiber-array units add assembly steps that wafer test cannot cat
 drivers) introduce solder voids, underfill cracks, and RF return-loss drift
 (\Cref{sec:tfln-mzm,sec:drivers}). Thermal paths matter too: uncooled datacom
 versus liquid-cooled XPO/CPO, and TEC failure that looks like wavelength drift off
-grid or off ring (\Cref{sec:siring,ch:wdm}). ELSFP cycling adds connector wear and
-contamination that raise ORL (\Cref{sec:optical-channel,sec:elsfp}).
+grid or off ring (\Cref{sec:siring,ch:wdm}).
+
+\paragraph{Connector reliability: MPO, mating cycles, and endface quality.}
+\label{sec:connector-reliability}
+
+Multi-fiber connectors are the highest-touch mechanical interface in the fleet:
+every ELSFP swap, every fiber-attach unit (FAU) rework, and every cable-plant
+install mates and unmates an MPO. The MPO/MT ferrule family (rectangular, 6.4~mm
+$\times$ 2.5~mm, guide-pin aligned, 8/12/16/24 fibers per row) is standardized in
+\term{IEC 61754-7}, split into one-fibre-row and two-fibre-row
+parts~\firstcite{iec617547}. That standard fixes geometry, not lifetime; lifetime
+comes from two companion test methods. \term{IEC 61300-2-2} specifies the
+mate/unmate cycling test connector datasheets are rated against, and \term{IEC
+61300-3-35} grades endface scratches, pits, and debris into pass/fail zones on the
+fiber core and cladding~\firstcite{iec61300}. TIA-568.3 sets 500 cycles as the
+structured-cabling
+mating-durability floor; MPO/MTP-class connectors in practice are commonly rated
+well above 1000 cycles, but that headroom erodes fast with the wrong cleaning
+discipline (\Cref{sec:optical-channel}).
+
+Three practical consequences follow for an ELSFP or CPO fiber-attach program.
+First, ORL creep is a mating-cycle and cleaning problem before it is a laser
+problem: a rising RIN floor after repeated ELS swaps (\Cref{tab:wearout-map}) is
+diagnosed with an IEC~61300-3-35-style endface inspection, not a laser FA request.
+Second, mate-cycle count belongs in the same telemetry you already read for CMIS
+and DDM (\Cref{sec:cmis}); track it per connector, not per module, since a
+connector can outlive several module swaps or vice versa. Third, write the
+mating-cycle and endface-grade limits into the ATP explicitly
+(\Cref{tab:atp-laser}) rather than inheriting a generic MPO datasheet number: an
+ELS bank that hot-swaps weekly reaches a 500-cycle floor in under ten years, and a
+CPO fiber array that is field-serviced more aggressively reaches it faster still.
+
+ELSFP cycling adds connector wear and contamination that raise ORL
+(\Cref{sec:optical-channel,sec:elsfp}); the mating-cycle and endface-grade limits
+above are exactly the numbers that turn ``the connector feels loose'' into an ATP
+line item instead of a guess.
 
 Destructive physical analysis (cross-section, EDX) and structured 8D/CAPA with
 suppliers close the loop from RMA to design rule
@@ -267,8 +381,9 @@ Wavelength / grid & OSA / wavemeter & channel ID; $d\lambda/dT$ & WDM lock (\Cre
 Optical power class & power meter & ELSFP / MSA class met & link budget \\
 EAM bias / chirp (EML) & bias sweep + DCA & ER, RLM, TDECQ at baud & Tx quality (\Cref{sec:tdecq}) \\
 CMIS / TWI bring-up & host or CMIS tool & registers, alarms, state machine & field telemetry \\
-Connector / ORL & mate cycles + ORL meter & cycles + ORL limit & packaging (\Cref{sec:elsfp}) \\
+Connector / ORL & mate cycles + ORL meter & cycles + endface grade vs IEC~61300 limits & packaging (\Cref{sec:connector-reliability,sec:elsfp}) \\
 Burn-in screen & HTOL sample or 100\% screen & infant mortality culled & GR-468 (\Cref{sec:gr468}) \\
+Driver/TIA ESD, latch-up & supplier JESD47/HBM/CDM report; sample audit & rating on file; no latch-up under current injection & IC reliability (\Cref{sec:ic-reliability}) \\
 Thermal class & chamber at case $T$ & LIV/RIN/CMIS still pass & derate policy \\
 \bottomrule
 \end{tabular}
@@ -319,8 +434,8 @@ Align the partner calendar to gates, not slideware:
 \item freeze requirements before DVT samples are built;
 \item freeze ATP limits before PVT yield is claimed;
 \item freeze FIT/$E_a$ assumptions before reliability marketing numbers ship;
-\item require ECO notice on laser die revision, TEC vendor, FAU epoxy, and CMIS
-      firmware.
+\item require ECO notice on laser die revision, TEC vendor, FAU epoxy, driver/TIA
+      silicon revision (\Cref{sec:ic-reliability}), and CMIS firmware.
 \end{itemize}
 
 Your job in those meetings is to name the measurement that would kill the gate.
@@ -328,7 +443,85 @@ If nobody can point to an ATP row or a corner, the milestone is not real.
 
 \keyidea{Reliability at scale is mechanism discipline plus supplier gates.
 Classify failures with the wear-out map (\Cref{tab:wearout-map}) before you argue
-FIT or open 8D. Supplier execution is a gated contract: requirements and ATP at
-DVT, multi-lot SPC and FAIR at PVT, then 8D with evidence when a lot or field
-Pareto says manufacturability. Do not run process CAPA on a wear-out failure or
-burn FIT on a dirty connector.}
+FIT or open 8D. Laser wear-out gets Arrhenius and GR-468; driver and TIA silicon
+gets JESD47, HBM/CDM ESD, and latch-up ratings (\Cref{sec:ic-reliability}); MPO
+connectors get mating-cycle and endface-grade limits
+(\Cref{sec:connector-reliability}). Supplier execution is a gated contract:
+requirements and ATP at DVT, multi-lot SPC and FAIR at PVT, then 8D with evidence
+when a lot or field Pareto says manufacturability. Do not run process CAPA on a
+wear-out failure, and do not burn FIT math on a dirty or worn connector.}
+
+\section{From component FIT to fabric availability}
+\label{sec:fabric-availability}
+
+The FIT arithmetic in \Cref{sec:fit-example} gives a rate: about $0.6$ laser
+failures per day for a fleet of $5\times10^5$ lasers at 50~FIT. That number sizes
+the RMA pipeline and the ELS spares bin (\Cref{sec:elsfp}), but it does not say
+what a failure costs or how a running job survives one. Two facts turn a
+per-component rate into a fabric problem.
+
+First, a training or large inference job is synchronous. A collective
+(\Cref{sec:collectives}) waits for its slowest member, so a single dead or slow
+link stalls the whole group, not just one endpoint (\Cref{sec:inference-bottlenecks}).
+A link that flaps for a second is a stall for every accelerator in that collective.
+The optical FIT the earlier chapters budget therefore matters out of proportion to
+its share of the parts count.
+
+Second, at cluster scale failures are continuous, not rare. Meta's published
+Llama~3 run is the clearest public data point: 16{,}384 H100 GPUs over 54 days
+logged 466 interruptions (419 unexpected), roughly one every three hours, while
+holding about 90\% effective training time~\firstcite{metallama3}. GPU and HBM3
+faults dominated at close to half; network switch and cable faults were 35 events,
+8.4\% of the total. The optical link is a minority of hard job stops, but 8.4\% of
+a failure every three hours is still tens of network events per run, and the ELS,
+module, and connector FIT this chapter budgets
+(\Cref{sec:fit-dppm,sec:connector-reliability}) lands in exactly that bucket.
+
+So the design question shifts. It is no longer ``how reliable is one link'' but
+``how does a fabric of $10^5$ links keep a job running through a failure every few
+hours.'' The answers are architectural, and the optical engineer feeds each one.
+
+\begin{description}
+\item[Redundancy and rails.] Rail-optimized topologies (\Cref{sec:topologies})
+      already give parallel planes; dual-plane and dual-ToR designs let a lost link
+      degrade bandwidth instead of dropping an endpoint. Redundancy multiplies the
+      link and laser count, which feeds straight back into the FIT budget: more
+      resilience is more parts that can fail.
+\item[Detection and reroute.] Transient faults stay below the job. KP4 FEC
+      (\Cref{sec:kp4}) absorbs the error bursts a marginal link throws; link-level
+      retry and sub-second link-flap detection plus adaptive routing steer traffic
+      off a degraded link before the scheduler notices. Vendor fabrics (NVIDIA
+      Spectrum-X and Quantum, Broadcom Tomahawk) advertise adaptive or ``cognitive''
+      routing and link-level retry for this. Treat the specifics as vendor
+      orientation, but the mechanism is why transient optical faults rarely reach
+      the hard-stop bucket above.
+\item[Topology reconfiguration.] When a link or rack dies for good, an optical
+      circuit switch re-wires the topology around it in milliseconds, so the
+      scheduler routes around the dead node instead of stalling the pod
+      (\Cref{sec:ocs})~\citep{tpuv4ocs}. Component FIT still applies; the fabric
+      survives each failure by re-wiring optically.
+\item[Sparing and field service.] Hot spare nodes and lanes cover the interval
+      between failure and repair. Field-replaceable external lasers (\Cref{sec:elsfp})
+      make a dead laser a faceplate swap rather than a fabric outage, which is the
+      architectural reason ELS decouples laser FIT from switch FIT. The connector
+      mating-cycle and endface budget (\Cref{sec:connector-reliability}) sets how
+      many of those swaps the plant survives.
+\end{description}
+
+The cost of a failure closes the loop. A hard interruption is lost compute plus
+the time to detect, reroute or reschedule, and restart from the last checkpoint.
+Fast detection and reroute shrink that lost time, which is the fabric-level reason
+the module work in this chapter pays off: derating (\Cref{sec:laser-aging}),
+burn-in and screens (\Cref{sec:gr468}), and a tight ATP (\Cref{sec:supplier-exec})
+lower the failure rate, and a resilient fabric lowers the cost of each failure that
+slips through. The two multiply.
+
+\keyidea{Component FIT sets the failure \emph{rate}; the fabric sets the failure
+\emph{cost}. A synchronous collective makes one bad link everyone's stall
+(\Cref{sec:collectives}), and at cluster scale failures are continuous: Meta's
+Llama~3 run saw a failure about every three hours, network faults 8.4\% of them, at
+roughly 90\% effective uptime~\citep{metallama3}. The fabric survives that with
+redundant rails, FEC and fast reroute, OCS topology reconfiguration
+(\Cref{sec:ocs}), and field-replaceable lasers (\Cref{sec:elsfp}). Lowering
+per-link FIT and lowering per-failure cost multiply, which is why link reliability
+sets how large a dependable fabric can grow.}

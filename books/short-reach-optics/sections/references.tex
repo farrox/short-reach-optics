@@ -65,6 +65,16 @@ reaches up to 500~m}; chartered 13 March 2026.
 \newblock PAR/CSD for scale-up copper and IM/DD optics; aligns with CEI-448G /
 3.2T module roadmap.
 
+\bibitem[IEEE 802.1(2018--20)]{ieee8021ae}
+IEEE.
+\newblock \href{https://standards.ieee.org/ieee/802.1AE/7154}{IEEE Std 802.1AE-2018, MAC Security (MACsec)}
+and \href{https://standards.ieee.org/ieee/802.1X/12247}{IEEE Std 802.1X-2020, Port-Based Network Access Control}.
+\newblock MACsec: connectionless user-data confidentiality, frame integrity, and
+data origin authenticity at the MAC layer, transparent to the MAC client. 802.1X:
+port-based access control and key agreement that establishes MACsec associations.
+Line-rate encryption for 800G/1.6T links lives in the switch ASIC or NIC, not the
+transceiver.
+
 \bibitem[OIF(2025)]{oif224}
 Optical Internetworking Forum.
 \newblock \emph{\href{https://www.oiforum.com/technical-work/hot-topics/common-electrical-i-o-cei-224g/}{CEI-224G and CEI-448G}} Common Electrical I/O projects
@@ -91,6 +101,15 @@ Ultra Ethernet Consortium.
 \newblock June 2025.
 \newblock Scale-out Ethernet stack for AI/HPC; Ultra Ethernet Transport (UET).
 
+\bibitem[IBTA(2023)]{ibta}
+InfiniBand Trade Association.
+\newblock \href{https://www.infinibandta.org/ibta-specification/}{InfiniBand Architecture Specification} (Volumes 1 and 2).
+\newblock XDR release October 2023 (Vol.~1 R1.7, Vol.~2 R1.5): 200~Gb/s/lane
+SerDes, 800~Gb/s per four-lane port, 1.6~Tb/s switch-to-switch; NDR at 400~Gb/s
+per port. Scale-out fabric alongside Ethernet; reuses QSFP/OSFP form factors and
+MPO fiber. Dominant vendor NVIDIA (Mellanox). Provisional: XDR rates are from the
+2023 spec announcement; confirm against the published specification.
+
 \bibitem[SNIA SFF(2025)]{snia448}
 SNIA SFF Technology Affiliate.
 \newblock \href{https://www.oiforum.com/wp-content/uploads/OIF_448G_AI_Workshop-SNIA-2025-03-31_v2_AConstantine.pdf}{SFF 448G project overview} (OIF 448G AI Workshop).
@@ -102,6 +121,63 @@ Open Compute Project.
 \newblock \href{https://www.opencompute.org/projects/optical-circuit-switching}{Optical Circuit Switching subproject}; Open Systems for AI.
 \newblock 2025.
 \newblock Open rack/cluster designs; OCS for AI fabric reconfiguration.
+
+\bibitem[Google Jupiter(2022)]{jupiterocs}
+Poutievski, L., \emph{et al.} (Google).
+\newblock \href{https://doi.org/10.1145/3544216.3544265}{Jupiter evolving: transforming Google's datacenter network via optical circuit switches and software-defined networking}.
+\newblock Proc.\ ACM SIGCOMM, 2022.
+\newblock MEMS OCS under SDN control; Palomar $136\times136$ OCS, $\sim$2~dB insertion
+loss, millisecond switching, circulators for bidirectional links; reported $\sim$30\%
+capex, $\sim$41\% power, and 3x reconfiguration gains on a direct-connect topology.
+
+\bibitem[Jouppi et al.(2023)]{tpuv4ocs}
+Jouppi, N.~P., \emph{et al.} (Google).
+\newblock \href{https://arxiv.org/abs/2304.01433}{TPU v4: An optically reconfigurable supercomputer for machine learning with hardware support for embeddings}.
+\newblock Proc.\ ISCA, 2023.
+\newblock 4096 accelerators wired through 48 OCS into a reconfigurable 3D torus;
+per-job topology and route-around-failure for availability and utilization.
+
+\bibitem[Cignal AI(2025)]{ocsmarket}
+Cignal AI.
+\newblock \href{https://cignal.ai/2025/12/the-optical-circuit-switching-market-4q25/}{The optical circuit switching market}.
+\newblock 2025.
+\newblock OCS technology survey (MEMS, liquid crystal, piezoelectric, robotic, silicon
+photonic) and transceiver impact: FR single-fiber over DR, circulators, higher-power
+optics. Analyst report; figures provisional.
+
+\bibitem[Meta Llama 3(2024)]{metallama3}
+Grattafiori, A., \emph{et al.} (Meta AI).
+\newblock \href{https://arxiv.org/abs/2407.21783}{The Llama 3 herd of models}.
+\newblock arXiv:2407.21783, 2024.
+\newblock Reliability snapshot (\S3.3.4): 16{,}384 H100 GPUs, 54-day pre-training run,
+466 interruptions (419 unexpected, $\sim$one every 3~hours), $\sim$90\% effective
+training time; $\sim$78\% hardware, GPU/HBM3 $\sim$47\%, network switch/cable 35
+events (8.4\%).
+
+\bibitem[UCIe(2022--25)]{ucie}
+UCIe Consortium.
+\newblock \href{https://www.uciexpress.org/}{Universal Chiplet Interconnect Express (UCIe) Specification}.
+\newblock Open die-to-die chiplet interconnect (physical layer, protocol stack,
+software model). 1.0 (March 2022); 2.0 (August 2024) adds 3D packaging and in-field
+manageability; 3.0 (2025) roughly doubles bandwidth. Parallel package/interposer
+counterpart to CEI XSR; relevant to co-packaged optical I/O and optical-UCIe work.
+
+\bibitem[PCI-SIG(2025)]{pcie7}
+PCI-SIG.
+\newblock \href{https://pcisig.com/}{PCI Express 7.0 Specification} and Optical Workgroup interconnect revision.
+\newblock Released 11~June~2025: 128~GT/s per lane, PAM4, flit encoding
+($\sim$512~GB/s bidirectional on a x16 link). The PCI-SIG Optical Workgroup (2023)
+targets a technology-agnostic optical PCIe interface for reach beyond copper.
+Provisional: 2025 release; rates and optical-interface scope pending cross-check
+against the final published specification.
+
+\bibitem[CXL(2025)]{cxl4}
+CXL Consortium.
+\newblock \href{https://computeexpresslink.org/}{Compute Express Link (CXL) 4.0 Specification}.
+\newblock Released 18~November~2025 on a PCIe 7.0 base (128~GT/s, PAM4); coherent
+CPU/accelerator/memory fabric with memory pooling and bundled ports. Relevant to
+in-rack memory disaggregation and optical CXL. Provisional: 2025 release; verify
+details against the final published specification.
 
 \bibitem[Synopsys 448G(2025)]{synopsys448}
 Synopsys.
@@ -367,6 +443,14 @@ Telcordia.
 \newblock \emph{GR-468-CORE: Generic Reliability Assurance Requirements for
 Optoelectronic Devices}.
 
+\bibitem[Telcordia(1999)]{gr1221}
+Telcordia.
+\newblock \emph{GR-1221-CORE: Generic Reliability Assurance Requirements for
+Passive Optical Components}, Issue~2 (January 1999).
+\newblock Passive-component companion to GR-468: connectors, couplers, WDM
+filters, splitters, and isolators. Same stress families (damp heat, temperature
+cycle, mechanical, aging) scored on insertion and return loss rather than LIV.
+
 \bibitem[Broadcom(2025)]{th6davisson}
 Broadcom Inc.
 \newblock \emph{Tomahawk 6 -- Davisson: 102.4~Tb/s co-packaged-optics Ethernet
@@ -396,6 +480,16 @@ Optical Internetworking Forum.
 \newblock Host-to-module management over two-wire bus; module and data-path state
 machines; DDM, VDM, CDB; link training; ELSFP and CPO extensions.
 
+\bibitem[Redfish/OpenConfig/SONiC(2015--25)]{netmgmt}
+DMTF, OpenConfig, and the SONiC community.
+\newblock \href{https://www.dmtf.org/standards/redfish}{DMTF Redfish (DSP0266)},
+\href{https://www.openconfig.net/}{OpenConfig models and gNMI}, and
+\href{https://sonicfoundation.dev/}{SONiC}.
+\newblock Box- and fleet-level management and telemetry above OIF CMIS. Redfish:
+RESTful server/switch management API (v1.0, August 2015). OpenConfig:
+vendor-neutral YANG models and streaming telemetry. SONiC: open network OS with
+dataplane telemetry. Where per-module optical monitors surface at cluster scale.
+
 \bibitem[IEC(2021)]{iec60825}
 IEC.
 \newblock \href{https://webstore.iec.ch/en/publication/74712}{IEC 60825-1:2014/AMD1:2021} and
@@ -408,5 +502,152 @@ ITU-T.
 \newblock \href{https://www.itu.int/rec/T-REC-G.664-201202-I/en}{Recommendation ITU-T G.664 (02/2012)}.
 \newblock Optical safety procedures; APR with automatic restart; reduce to Hazard
 Level 1M within 3~s of continuity loss.
+
+\bibitem[ITU-T(2003--20)]{ituG694}
+ITU-T.
+\newblock \href{https://www.itu.int/rec/T-REC-G.694.1/en}{Recommendation ITU-T G.694.1 (10/2020), Spectral grids for WDM applications: DWDM frequency grid}
+and \href{https://www.itu.int/rec/T-REC-G.694.2/en}{ITU-T G.694.2 (12/2003), CWDM wavelength grid}.
+\newblock G.694.1 anchors the DWDM grid at 193.1~THz with 12.5/25/50/100~GHz
+spacings and integer multiples; G.694.2 defines the 20~nm CWDM grid, 18 channels
+from 1271 to 1611~nm. Datacom DWDM locks to G.694.1; CWDM4 uses four O-band lines
+of G.694.2.
+
+\bibitem[ITU-T(2016--24)]{itufiber}
+ITU-T.
+\newblock \href{https://www.itu.int/rec/T-REC-G.652/en}{Recommendation ITU-T G.652 (11/2016), Characteristics of a single-mode optical fibre and cable}
+and \href{https://www.itu.int/rec/T-REC-G.657/en}{ITU-T G.657 (08/2024), Characteristics of a bending-loss insensitive single-mode optical fibre and cable}.
+\newblock G.652.D sets the standard single-mode fiber used in short-reach links:
+attenuation $\approx$0.2~dB/km at 1550~nm, $\approx$0.32~dB/km at 1310~nm, and
+zero-dispersion wavelength near 1310~nm. G.657 defines bend-insensitive fiber for
+tight-radius routing in patch panels and shelves; category A stays G.652-compatible,
+category B trades some standard-fiber interoperability for tighter bend radii.
+
+\bibitem[ISO/IEC and TIA(2017--24)]{fibercabling}
+ISO/IEC and TIA.
+\newblock \href{https://www.iso.org/standard/66763.html}{ISO/IEC 11801:2017, Information technology: Generic cabling for customer premises}
+and the \href{https://www.tiaonline.org/}{TIA-492 series, Detail Specifications for Optical Fibers}.
+\newblock ISO/IEC 11801 defines the cabled fiber performance classes used in
+datacenter patch plant: OM1--OM5 for multimode and OS1/OS2 for single-mode. TIA-492
+gives the matching detailed fiber specifications (for example TIA-492AAAD
+corresponds to OM4); TIA-568 adopts the same OM/OS class names for structured
+cabling.
+
+\bibitem[JEDEC(2025)]{jesd47}
+JEDEC Solid State Technology Association.
+\newblock \href{https://www.jedec.org/standards-documents/docs/jesd-47g}{JESD47M, Stress-Test-Driven Qualification of Integrated Circuits}.
+\newblock Published August 2025. Baseline acceptance-test flow (temperature cycle,
+HTOL/HTSL, autoclave/HAST, mechanical shock and vibration) for qualifying an IC as
+a new product, a product family, or after a process change. The silicon-side
+counterpart to Telcordia GR-468-CORE for optoelectronics.
+
+\bibitem[JEDEC/ESDA(2024--25)]{jsesd}
+JEDEC Solid State Technology Association and ESD Association.
+\newblock \href{https://www.jedec.org/standards-documents/docs/js-001-2023}{ANSI/ESDA/JEDEC JS-001-2024, Human Body Model (HBM) ESD Sensitivity Testing}
+and \href{https://www.jedec.org/standards-documents/docs/js002-2014}{JS-002-2025, Charged Device Model (CDM) ESD Sensitivity Testing}.
+\newblock Component-level ESD classification for driver, TIA, and DSP silicon.
+Supersede the older JEDEC-only JESD22-A114 (HBM) and JESD22-C101 (CDM) test methods.
+
+\bibitem[JEDEC(2023)]{jesd78}
+JEDEC Solid State Technology Association.
+\newblock \href{https://www.jedec.org/standards-documents/docs/jesd-78b}{JESD78F.02, IC Latch-Up Test}.
+\newblock Published November 2023. Overvoltage and $\pm100$~mA current-injection
+test method for parasitic-thyristor latch-up susceptibility in CMOS, bipolar, and
+BiCMOS ICs; the failure mode COD is to a laser facet.
+
+\bibitem[AEC(2023--25)]{aecq100}
+Automotive Electronics Council.
+\newblock \href{http://aecouncil.com/}{AEC-Q100 Rev-J, Failure Mechanism Based Stress Test Qualification for Integrated Circuits}.
+\newblock Automotive-grade IC qualification built on the JEDEC JESD47/JESD22
+methods with tightened ESD targets and temperature grades (Grade~3:
+$-40$ to $85$\textdegree C through Grade~0: $-40$ to $150$\textdegree C).
+Not required for datacenter optics, but a useful borrow when a driver or TIA die
+also ships in an automotive part number and the datasheet cites a Q100 grade.
+
+\bibitem[IEC(2014--17)]{iec617547}
+IEC.
+\newblock \href{https://webstore.ansi.org/standards/iec/iec61754eden2014}{IEC 61754-7-1:2014, Fibre optic connector interfaces -- Type MPO connector family: one fibre row}
+and \href{https://webstore.iec.ch/en/publication/30239}{IEC 61754-7-2:2017, Type MPO connector family: two fibre rows}.
+\newblock Mechanical interface standard for the MPO/MT connector family: 6.4~mm
+$\times$ 2.5~mm rectangular ferrule, guide-pin alignment, 8/12/16/24-fiber counts.
+Superseded the single-part IEC 61754-7:2008 to add active-device receptacles and
+up-angled plugs.
+
+\bibitem[IEC(2009--22)]{iec61300}
+IEC.
+\newblock \href{https://webstore.ansi.org/standards/iec/iec61300ed2009-1296572}{IEC 61300-2-2:2009, Basic test and measurement procedures -- Mating durability}
+and \href{https://webstore.iec.ch/en/publication/64254}{IEC 61300-3-35:2022, Visual inspection of fibre optic connectors and fibre-stub transceivers}.
+\newblock IEC 61300-2-2 defines the mate/unmate cycling test method that connector
+datasheets rate against; TIA-568.3 sets 500 cycles as the structured-cabling
+durability floor, and MPO/MTP-class connectors are commonly rated well above
+1000. IEC 61300-3-35 grades endface scratches, pits, and debris against zones on
+the fiber core and cladding for pass/fail inspection.
+
+\bibitem[RS-FEC latency(2024)]{feclatency}
+Concatenated RS-BCH coded modulation latency study (incl.\ KP4).
+\newblock \href{https://arxiv.org/abs/2402.09364}{Performance-complexity-latency trade-offs of concatenated codes}, arXiv:2402.09364, 2024; and vendor RS(544,514) implementation notes.
+\newblock KP4 RS(544,514) decode latency in practice $\approx$20--100~ns depending
+on implementation and clock; encode is comparable. Academic/vendor figures,
+provisional.
+
+\bibitem[AI switch latency(2025--26)]{switchlat}
+Vendor switch datasheets (Ethernet and InfiniBand).
+\newblock \href{https://cloudswit.ch/product/800gbe-switch-512tbps-enterprise-sonic/}{800GbE 51.2~Tb/s SONiC switch, $\sim$560~ns port-to-port}; NVIDIA Quantum-X800 InfiniBand advertises sub-100~ns port-to-port with in-network compute.
+\newblock Per-hop O-E-O switch latency: a few hundred ns for cut-through Ethernet,
+under $\sim$100~ns for InfiniBand. Vendor orientation, provisional.
+
+\bibitem[Chen et al.(2025)]{hcf2025}
+Y.~Chen, M.~N.~Petrovich, E.~Numkam~Fokoua, \emph{et al.} (Southampton/Microsoft).
+\newblock \href{https://doi.org/10.1038/s41566-025-01633-0}{Record-low-loss hollow-core fibre} (double nested antiresonant nodeless fibre, DNANF).
+\newblock \emph{Nature Photonics}, September 2025: 0.091~dB/km at 1550~nm (below the
+$\sim$0.14~dB/km silica floor), $\approx$0.2~dB/km over a 66~THz window; air guiding
+gives group index near 1.0, $\sim$45\% faster propagation (about a third lower
+latency) than silica. Microsoft reports Azure network deployment. Record result,
+provisional.
+
+\bibitem[QD comb(2022--2025)]{qdcomb}
+Quantum-dot mode-locked laser (QD-MLL) frequency combs for datacom.
+\newblock \href{https://www.mdpi.com/2076-3417/12/4/1836}{High-efficiency QD lasers as comb sources for DWDM}, \emph{Appl.\ Sci.} 12(4):1836 (2022): among DFB arrays, nonlinear microcombs, and semiconductor MLLs, QD-MLLs currently offer the best efficiency, simplicity, and size for a single-device comb.
+\newblock O-band IM/DD demos: a 1.3~\textmu m InAs/InGaAs QD-MLL comb carrying 14$\times$100~Gb/s PAM4 over 10~km SMF at $\sim$284~fJ/bit; and an isolator-free QD-MLL comb reported for interconnects beyond 3.2~Tb/s (\href{https://arxiv.org/abs/2506.02402}{arXiv:2506.02402}, 2025). Research demos, provisional.
+
+\bibitem[Kerr microcomb source(2025)]{microcomb}
+Integrated Kerr/soliton microcomb multi-wavelength sources.
+\newblock \href{https://doi.org/10.1038/s41467-025-61288-x}{Integrated multi-port multi-wavelength coherent optical source}, \emph{Nat.\ Commun.} 16 (2025): a Kerr microcomb with a monolithically integrated demultiplexer that autonomously locks to and tracks the comb lines, aimed at beyond-Tb/s links.
+\newblock A microcomb turns one pump into hundreds of evenly spaced lines on a chip, but per-line power is low (pump-conversion efficiency is modest), so a booster or per-line SOA is usually required (\Cref{sec:soa-distribution}). Research demos, provisional.
+
+\bibitem[O-band SOA(2019--2023)]{soa}
+Semiconductor optical amplifiers for datacom booster/distribution use.
+\newblock Commercial O-band SOA modules quote $\sim$15~dB gain, noise figure $\le$7~dB, and $\le$1.5~dB polarization-dependent gain (\href{https://www.anritsu.com/en-US/sensing-devices/products/soa}{Anritsu SOA datasheet}); the quantum NF floor is 3~dB. \href{https://pubs.acs.org/doi/10.1021/acsphotonics.9b00903}{O-band quantum-dot SOAs grown on a CMOS-compatible silicon substrate} (\emph{ACS Photonics}, 2019) give wide O-band gain with low noise for co-packaged integration.
+\newblock An SOA restores launch power after comb generation and fan-out, at the cost of added ASE. Vendor/academic figures.
+
+\bibitem[CPC/NPC(2025--2026)]{cpc}
+Co-packaged and near-package copper, copper's answer to the same reach wall that drives CPO.
+\newblock \href{https://www.molex.com/content/molex/molex-dot-com/language-masters/en/industries-applications/data-center-connector-solutions/near-asic/co-packaged-copper.html}{Molex co-packaged copper (CPC)}: on-substrate routing validated at 224~Gb/s PAM4 with a stated roadmap to 448G, aimed at short scale-up runs where power, latency, and cost favor copper over optics. The Impress compression substrate connector and mating cable support 224~Gb/s PAM4 and beyond.
+\newblock \href{https://www.marvell.com/blogs/224g-long-range-serdes-scale-up-scale-inside.html}{Marvell 224G long-reach SerDes} reports $\sim$4~pJ/bit and targets CPC cables, near-packaged optics, and CPO. Near-package copper (NPC) mates the connector near the ASIC rather than onto the package substrate; shared NPC/NPO sockets have been proposed. Vendor orientation, provisional.
+
+\bibitem[FiberMall(2026)]{switchthermal}
+FiberMall.
+\newblock \href{https://www.fibermall.com/blog/osfp-thermal-management-guide.htm}{OSFP thermal management: data center cooling guide}.
+\newblock 2026.
+\newblock A 32-port 800G switch dissipates $>$1~kW, with optical modules $\sim$50\% of the thermal load; observed power runs 15--25\% above rated. Vendor orientation, provisional.
+
+\bibitem[Cao et al.(2025)]{cpocooling}
+Cao, \emph{et al.}
+\newblock \href{https://doi.org/10.1007/s12200-025-00156-4}{Simulation and experimental investigation of liquid-cooling thermal management for high-bandwidth co-packaged optics}.
+\newblock Front.\ Optoelectron., 2025.
+\newblock Power density and on-package thermal crosstalk limit CPO reliability; liquid cooling investigated to hold optical-engine and laser temperature.
+
+\bibitem[Semtech(2025)]{lpocost}
+Semtech.
+\newblock \href{https://blog.semtech.com/webinar-recap-low-power-1.6t-datacom-transceivers-and-the-path-to-3.2t}{Low-power 1.6T datacom transceivers and the path to 3.2T}.
+\newblock Webinar recap, 2025.
+\newblock Linear modules cited at $\sim$50--60\% less power than fully retimed; a
+500{,}000-GPU cluster estimated to save $>$100~MW and $\sim$\$100~million/year in
+electricity. Vendor orientation, provisional.
+
+\bibitem[Epoch AI(2025)]{dctco}
+Epoch AI.
+\newblock \href{https://epoch.ai/data-insights/ai-datacenter-cost-breakdown}{Total cost of ownership of a one-gigawatt AI data center}.
+\newblock Data insight, 2025.
+\newblock A 1~GW AI site estimated near \$38~billion up-front capex and $\sim$\$0.9~billion/year opex. Analyst breakdown, provisional.
 
 \end{thebibliography}

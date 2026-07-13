@@ -143,16 +143,22 @@ power, and latency.
 \subsection{Why short reach stays IM/DD}
 
 Inside the compute fabric, from millimeters in-package out to a few hundred meters
-of single-mode fiber, loss and dispersion are modest. A PAM4 IM/DD link with
-equalization, FEC, and a reasonable laser closes without coherent mixing. The
+of single-mode fiber, loss and dispersion are modest: standard G.652.D fiber runs
+about 0.2~dB/km at 1550~nm with a zero-dispersion wavelength near 1310~nm, so a
+few hundred meters costs well under a decibel~\cite{itufiber}. A PAM4 IM/DD link
+with equalization, FEC, and a reasonable laser closes without coherent mixing. The
 energy argument from \Cref{ch:firstprinciples} applies directly: IM/DD keeps the
 expensive digital work at the electrical ends where process scaling helps, and the
-optical path is passive fiber. Retimed 800G pluggables run roughly 14--18~W; LPO
-trims to roughly 7--9~W by deleting module DSP~\cite{lpo}. A 400ZR-class coherent
-pluggable is built around a coherent DSP that alone draws roughly 5--8~W inside a
-15~W module budget~\cite{oif400zr}, landing near 45~pJ/bit at 400~Gb/s. Over a
-100~m rack link that extra DSP power does not buy enough margin to justify the BOM
-and service complexity (\Cref{sec:power}).
+optical path is passive fiber. Rack and row runs also lean on bend-insensitive
+G.657 fiber in patch panels and shelves, and the SR/DR reach classes below map onto
+the OM4/OM5 multimode and OS1/OS2 single-mode cabling classes that ISO/IEC 11801
+and TIA-492 define for the datacenter plant~\cite{fibercabling}. Retimed 800G
+pluggables run roughly 14--18~W; LPO trims to roughly 7--9~W by deleting module
+DSP~\cite{lpo}. A 400ZR-class coherent pluggable is built around a coherent DSP
+that alone draws roughly 5--8~W inside a 15~W module budget~\cite{oif400zr},
+landing near 45~pJ/bit at 400~Gb/s. Over a 100~m rack link that extra DSP power
+does not buy enough margin to justify the BOM and service complexity
+(\Cref{sec:power}).
 
 \subsection{What coherent buys, and its price}
 

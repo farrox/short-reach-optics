@@ -58,6 +58,10 @@
 \declarecitesnip{uec10}{Ultra Ethernet Consortium, UEC Specification 1.0 (June 2025).}
 \declarecitesnip{snia448}{SNIA SFF TA-1043 / OIF 448G workshop: backplane 448G scope (2025).}
 \declarecitesnip{ocpai}{OCP Open Systems for AI; OCS subproject for AI cluster fabrics (2025).}
+\declarecitesnip{jupiterocs}{Poutievski \emph{et al.}, ``Jupiter Evolving,'' ACM SIGCOMM 2022: MEMS OCS + SDN; Palomar $136\times136$, $\sim$2~dB, ms switching; $\sim$30\% capex, $\sim$41\% power, 3x reconfiguration.}
+\declarecitesnip{tpuv4ocs}{Jouppi \emph{et al.}, TPU~v4 optically reconfigurable supercomputer, ISCA 2023: 4096 chips, 48 OCS, reconfigurable 3D torus, route around failures.}
+\declarecitesnip{ocsmarket}{Cignal AI, optical circuit switching market (2025): OCS technologies and transceiver impact (FR over DR, circulators). Analyst report, provisional.}
+\declarecitesnip{ucie}{UCIe Consortium: open die-to-die chiplet interconnect; 2.0 (Aug 2024) adds 3D packaging + manageability; 3.0 (2025) doubles bandwidth.}
 \declarecitesnip{elsfp}{OIF ELSFP Implementation Agreement (OIF-ELSFP-02.0, 2023): 24-pin card edge, CMIS, blind-mate MT.}
 \declarecitesnip{cwwdm}{CW-WDM MSA Rev~1.0 (2021): O-band 8/16/32-$\lambda$ CW
   grids (9/18/36~nm spans); modular vs integrated ports; RIN/SMSR/linewidth methods.}
@@ -65,3 +69,27 @@
 \declarecitesnip{rinspec}{IEEE 802.3 / 100G Lambda MSA: $\mathrm{RIN}_{17.1}\mathrm{OMA}\le-136$~dB/Hz.}
 \declarecitesnip{koherondrv200}{Koheron DRV200: low-noise CW laser driver; $i_n$ at 1~kHz by current range.}
 \declarecitesnip{ayar}{Ayar Labs SuperNova CW-WDM source and TeraPHY optical I/O.}
+\declarecitesnip{jesd47}{JEDEC JESD47M: baseline IC stress-test qualification flow (Aug 2025).}
+\declarecitesnip{jsesd}{ANSI/ESDA/JEDEC JS-001 (HBM) and JS-002 (CDM) component ESD test standards.}
+\declarecitesnip{jesd78}{JEDEC JESD78F.02: IC latch-up test, overvoltage and $\pm100$~mA current injection.}
+\declarecitesnip{aecq100}{AEC-Q100 Rev-J: automotive IC qualification on JEDEC methods, tighter ESD and thermal grades.}
+\declarecitesnip{iec617547}{IEC 61754-7-1/-2: MPO/MT mechanical interface, one and two fibre rows.}
+\declarecitesnip{iec61300}{IEC 61300-2-2 mating durability and 61300-3-35 endface inspection grading.}
+\declarecitesnip{metallama3}{Meta, \emph{Llama 3 herd of models} (arXiv:2407.21783, 2024): 16{,}384 H100s, 54 days, 419 unexpected interruptions ($\sim$1 per 3~h, $\sim$90\% uptime); network switch/cable 8.4\%, GPU/HBM3 $\sim$47\%.}
+\declarecitesnip{gr1221}{Telcordia GR-1221-CORE: reliability assurance for passive optical components (connectors, couplers, WDM filters, isolators).}
+\declarecitesnip{ibta}{IBTA InfiniBand Architecture: NDR 400G, XDR 800G/port at 200G/lane; reuses QSFP/OSFP + MPO optics with Ethernet.}
+\declarecitesnip{ieee8021ae}{IEEE 802.1AE MACsec (line-rate L2 encryption) and 802.1X port access control.}
+\declarecitesnip{pcie7}{PCI-SIG PCIe 7.0 (2025): 128~GT/s PAM4, flit encoding; Optical Workgroup for optical PCIe.}
+\declarecitesnip{cxl4}{CXL 4.0 (Nov 2025) on PCIe 7.0: coherent memory-pooling fabric; relevant to optical CXL.}
+\declarecitesnip{netmgmt}{DMTF Redfish, OpenConfig (gNMI), and SONiC: box/fleet telemetry and config above OIF CMIS.}
+\declarecitesnip{feclatency}{KP4 RS(544,514) decode latency $\approx$20--100~ns in practice (arXiv:2402.09364; vendor notes). Provisional.}
+\declarecitesnip{switchlat}{Per-hop switch latency: $\sim$560~ns for an 800GbE SONiC switch; sub-100~ns for InfiniBand XDR. Vendor figures, provisional.}
+\declarecitesnip{hcf2025}{Chen \emph{et al.}, DNANF hollow-core fiber, Nature Photonics 2025: 0.091~dB/km at 1550~nm, $\sim$45\% faster than silica. Record, provisional.}
+\declarecitesnip{qdcomb}{QD mode-locked laser combs: best single-device efficiency/size for DWDM; O-band demos to 14$\times$100G PAM4 and beyond 3.2~Tb/s. Provisional.}
+\declarecitesnip{microcomb}{Integrated Kerr/soliton microcomb source: hundreds of chip-scale lines with autonomous locking, but low per-line power. Provisional.}
+\declarecitesnip{soa}{O-band SOA: $\sim$15~dB gain, NF $\le$7~dB (3~dB quantum floor), $\le$1.5~dB PDG; QD-SOA on Si suits CPO. Booster/distribution gain.}
+\declarecitesnip{cpc}{Co-packaged copper (Molex): on-substrate routing validated at 224G-PAM4, roadmap to 448G, for short scale-up runs. Marvell 224G LR SerDes $\sim$4~pJ/bit. Provisional.}
+\declarecitesnip{switchthermal}{FiberMall (2026): 32-port 800G switch $>$1~kW, optics $\sim$50\% of thermal load; power 15--25\% over rated. Vendor, provisional.}
+\declarecitesnip{cpocooling}{Cao \emph{et al.}, Front.\ Optoelectron. (2025): liquid-cooling thermal management for high-bandwidth CPO; power density and thermal crosstalk limit reliability.}
+\declarecitesnip{lpocost}{Semtech (2025): LPO $\sim$50--60\% less power than retimed; 500{,}000-GPU cluster $\sim$100~MW and $\sim$\$100M/year electricity saving. Vendor, provisional.}
+\declarecitesnip{dctco}{Epoch AI (2025): 1~GW AI site $\sim$\$38B up-front capex, $\sim$\$0.9B/year opex. Analyst breakdown, provisional.}
