@@ -24,6 +24,6 @@ if git diff --quiet README.md; then
 fi
 
 git add README.md
-git commit -m "Sync profile README from ehsan_resume source."
+git commit -m "Sync profile README from short-reach-optics source."
 git push origin main
 echo "Pushed profile README to github.com/farrox/farrox"

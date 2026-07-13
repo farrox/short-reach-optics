@@ -8,7 +8,7 @@ email: edshahos@pm.me
 phone: +1 (415) 942-3356
 linkedin: https://www.linkedin.com/in/ehsansh/
 scholar: https://scholar.google.com/citations?user=i6EaMioAAAAJ&hl=en
-source: ehsan_resume (LaTeX); sync from parts/*.tex
+source: short-reach-optics (LaTeX); sync from parts/*.tex
 ---
 
 # Ed (Ehsan) Shah Hosseini
