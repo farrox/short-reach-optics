@@ -2,3 +2,6 @@ theme: jekyll-theme-cayman
 title: "Short-Reach Optics for AI Compute"
 description: "From First Principles to the State of the Art: Energy, Lasers, IM/DD, WDM, and Validation"
 show_downloads: false
+markdown: kramdown
+kramdown:
+  math_engine: null

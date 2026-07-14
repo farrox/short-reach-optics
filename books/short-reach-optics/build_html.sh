@@ -10,35 +10,65 @@ DOCS_DIR="../../docs"
 echo "=== Building HTML study guide ==="
 
 # Step 1: Pre-process LaTeX into a pandoc-friendly combined file
-echo "[1/3] Pre-processing LaTeX..."
+echo "[1/4] Pre-processing LaTeX..."
 python3 build_html_preprocess.py
 
-# Step 2: Convert to GitHub-Flavored Markdown via pandoc (Jekyll + Cayman renders it)
-echo "[2/3] Running pandoc..."
+# Step 2: Split the combined .tex into per-chapter files and convert each
+echo "[2/4] Splitting into chapters and converting..."
+python3 -c "
+import re, subprocess, os
+
+DOCS = '${DOCS_DIR}'
+TEX = '.build/combined_for_html.tex'
+
+with open(TEX) as f:
+    content = f.read()
+
+# Extract preamble and body
+begin = content.find(r'\begin{document}')
+end = content.find(r'\end{document}')
+preamble = content[:begin]
+body = content[begin+len(r'\begin{document}'):end]
+
+# Split body by \chapter or \chapter*
+# Each chunk starts with \chapter... 
+chunks = re.split(r'(?=\\\\chapter(?:\*?)\\{)', body)
+
+# First chunk is anything before the first chapter (copyright, preface etc)
+# Chapters are the rest
+chapters = []
+front_matter = chunks[0] if chunks else ''
+
+for i, chunk in enumerate(chunks):
+    # Find the chapter title
+    m = re.match(r'\\\\chapter\*?\\{([^}]+)\\}', chunk)
+    if m:
+        title = m.group(1)
+        chapters.append((title, chunk))
+    elif i == 0 and chunk.strip():
+        # front matter before first chapter
+        chapters.insert(0, ('Preface', chunk))
+
+print(f'  Found {len(chapters)} chapters')
+"
+
+# Actually, let's use a simpler approach: pandoc with --split-level won't work for GFM.
+# Instead, split the Markdown output by H1 headings.
+
+echo "[2/4] Converting full document to Markdown..."
 pandoc .build/combined_for_html.tex \
   -f latex \
-  -t gfm \
+  -t markdown-raw_html \
   --toc \
-  --toc-depth=3 \
+  --toc-depth=2 \
   --number-sections \
   --wrap=none \
-  -o "${DOCS_DIR}/index.md"
+  --markdown-headings=atx \
+  -o .build/full_book.md 2>/dev/null || true
 
-# Add Jekyll front matter to the top of the file
-TMPFILE=$(mktemp)
-cat > "$TMPFILE" << 'EOF'
----
-layout: default
-title: "Short-Reach Optics for AI Compute"
----
+echo "[3/4] Splitting into per-chapter pages..."
+python3 build_html_split.py "${DOCS_DIR}"
 
-EOF
-cat "${DOCS_DIR}/index.md" >> "$TMPFILE"
-mv "$TMPFILE" "${DOCS_DIR}/index.md"
-
-# Step 3: Ensure config and nojekyll-free setup
-echo "[3/3] Finalizing..."
-# _config.yml should already exist; no .nojekyll needed (we want Jekyll)
-
-echo "=== Done. Output in ${DOCS_DIR}/ ==="
-echo "To deploy: commit docs/ and push to main. Enable GitHub Pages from Settings → Pages → main/docs."
+echo "[4/4] Done."
+echo "=== Output in ${DOCS_DIR}/ ==="
+echo "To deploy: commit and push. Enable GitHub Pages from Settings → Pages → main/docs."
