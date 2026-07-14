@@ -28,8 +28,13 @@ fonts/minion-pro/
 fonts/myriad-pro/
 
 # Local citation PDFs (gitignored; citeurls.tex falls back to public URLs)
-books/short-reach-optics/docs/*
+books/short-reach-optics/docs/*.pdf
+# HTML study guide lives at top-level docs/ for GitHub Pages
 !books/short-reach-optics/docs/README.md
 
 # Cursor hook runtime files
 .cursor/hooks/.tex-compile.stamp
+
+# Kiro scratch/tmp files
+.kiro/tmp/
+books/short-reach-optics/.kiro/tmp/

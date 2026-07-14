@@ -5,7 +5,7 @@
   \expandafter\ifx\csname termused@#1\endcsname\relax
     \expandafter\gdef\csname termused@#1\endcsname{}%
     \ifcsname termsnip@#1\endcsname
-      \sidenote{\csname termsnip@#1\endcsname}%
+      \marginnote{\csname termsnip@#1\endcsname}%
     \fi
   \fi
 }
@@ -47,6 +47,12 @@
 
 \declaretermsnip{SECQ}{Stressed eye closure quaternary: receiver-side stressed test,
   analog of TDECQ. Applies calibrated optical stress before BER test.}
+
+\declaretermsnip{MDI}{Medium dependent interface: the optical connector where a module
+  meets the fiber. TP2 (Tx launch) and TP3 (Rx input) sit here.}
+
+\declaretermsnip{EECQ}{Electrical eye closure quaternary: the electrical analog of
+  TDECQ, quoted at the host-referenced points TP1a and TP4a.}
 
 \declaretermsnip{EAM}{Electro-absorption modulator: voltage-controlled absorption on InP;
   low chirp vs DML; paired with DFB in EML.}
@@ -226,3 +232,223 @@
   JEDEC stress methods plus tighter ESD targets and named temperature grades
   (Grade~3 to Grade~0). Not required for datacenter optics; useful as a borrowed
   signal when a driver/TIA die also ships an automotive part number.}
+
+% --- Additional abbreviation margin snips ---
+
+\declaretermsnip{APR}{Automatic power reduction: holds laser output at safe level on
+  fiber break; probes for re-mate at Hazard Level 1M.}
+
+\declaretermsnip{ALS}{Automatic laser shutdown: cuts laser power on fiber break.
+  APR with restart preferred in modern systems (ITU-T G.664).}
+
+\declaretermsnip{ASE}{Amplified spontaneous emission: broadband noise from optical
+  amplifiers (SOA, EDFA). Adds to the receiver noise floor.}
+
+\declaretermsnip{CW}{Continuous wave: unmodulated laser output. External modulators
+  (MZM, ring, EAM) encode data onto a CW source.}
+
+\declaretermsnip{CMOS}{Complementary metal-oxide-semiconductor: mainstream IC process;
+  TIAs and SerDes at 16--3~nm nodes.}
+
+\declaretermsnip{COD}{Catastrophic optical damage: sudden, irreversible facet failure
+  in a laser under thermal or optical overstress.}
+
+\declaretermsnip{COBO}{Consortium for On-Board Optics: standardized mid-board optical
+  engines; largely leapfrogged by CPO in hyperscale.}
+
+\declaretermsnip{COUPE}{Compact Universal Photonic Engine: TSMC's SoIC-X hybrid-bonded
+  EIC-on-PIC packaging for CPO. Mass production 2026.}
+
+\declaretermsnip{CXL}{Compute Express Link: coherent memory interconnect built on
+  PCIe PHY (CXL 4.0 on PCIe 7.0). Potential optical reach.}
+
+\declaretermsnip{DBR}{Distributed Bragg reflector: laser grating outside the gain
+  region; enables tunable single-mode output.}
+
+\declaretermsnip{DR}{Datacenter reach: IEEE 802.3 single-mode class, typically 500~m
+  at 1310~nm. Default for AI scale-out optics.}
+
+\declaretermsnip{DWDM}{Dense wavelength division multiplexing: channel spacing
+  $\le$100~GHz; used in metro/long-haul and dense CPO WDM.}
+
+\declaretermsnip{ELS}{External laser source: CW laser module feeding a co-packaged
+  optical engine (superset of ELSFP/CW-WDM forms).}
+
+\declaretermsnip{EO}{Electro-optic: conversion from voltage to optical phase or
+  intensity. EO bandwidth sets modulator speed.}
+
+\declaretermsnip{ER}{Extinction ratio: $P_1/P_0$ in dB. Higher ER widens the OMA for
+  a given average power; trades against chirp and driver swing.}
+
+\declaretermsnip{FAU}{Fiber array unit: a precision V-groove assembly that mates
+  multiple fibers to a PIC edge or grating coupler array.}
+
+\declaretermsnip{FIT}{Failures in time: failures per $10^9$ device-hours. Fleet FIT
+  times link count sets expected failures per day.}
+
+\declaretermsnip{FR}{Far reach: IEEE 802.3 single-mode class, 2~km. Tighter chirp and
+  dispersion budget than DR.}
+
+\declaretermsnip{FSR}{Free spectral range: wavelength span between adjacent resonances
+  of a ring or etalon. Sets WDM channel packing density.}
+
+\declaretermsnip{HBM}{High-bandwidth memory: stacked DRAM on interposer beside the
+  accelerator die. Memory BW sets the decode roofline.}
+
+\declaretermsnip{HCF}{Hollow-core fiber: guides light in air ($n\approx1$); 33\%
+  lower latency than silica SMF. Loss record 0.091~dB/km (2025).}
+
+\declaretermsnip{HTOL}{High-temperature operating life: accelerated stress test
+  (GR-468). Arrhenius projects field wear-out from HTOL lots.}
+
+\declaretermsnip{IBTA}{InfiniBand Trade Association: owns the InfiniBand Architecture
+  spec (NDR 400G, XDR 800G/port); reuses QSFP/OSFP optics.}
+
+\declaretermsnip{IEEE}{Institute of Electrical and Electronics Engineers: 802.3 owns
+  Ethernet PHY/MAC, FEC (KP4), and optical PMD clauses.}
+
+\declaretermsnip{MACsec}{IEEE 802.1AE link-layer encryption: line-rate confidentiality
+  and integrity; transparent to PMD and LPO.}
+
+\declaretermsnip{MEMS}{Micro-electro-mechanical systems: tilting mirror arrays in OCS;
+  millisecond switching, $\sim$2~dB loss, 136$\times$136 radix.}
+
+\declaretermsnip{MMF}{Multimode fiber: 850--940~nm VCSEL links (OM3/OM4/OM5); reach
+  and modal BW limit to SR distances.}
+
+\declaretermsnip{MoE}{Mixture of experts: transformer architecture that routes tokens
+  to specialist sub-networks; all-to-all collective demand.}
+
+\declaretermsnip{MPO}{Multi-fiber push-on: standard multi-fiber connector for parallel
+  optics (8, 12, 16, 24, or 32 fibers per ferrule).}
+
+\declaretermsnip{MRM}{Microring modulator: resonant Si modulator; compact, WDM-native,
+  needs wavelength lock. CPO workhorse at 200G/ch.}
+
+\declaretermsnip{MSA}{Multi-source agreement: industry spec for interoperable modules
+  (e.g.\ LPO MSA, CW-WDM MSA, 100G Lambda MSA).}
+
+\declaretermsnip{MZM}{Mach--Zehnder modulator: push-pull interferometer; broadband, low
+  chirp. Si MZM, TFLN MZM, or hybrid platforms.}
+
+\declaretermsnip{NFF}{No fault found: RMA unit passes all tests on return. High NFF
+  rate points at triage or intermittent connector faults.}
+
+\declaretermsnip{NIC}{Network interface card: host adapter connecting an accelerator or
+  CPU to the scale-out fabric (Ethernet or IB).}
+
+\declaretermsnip{OBO}{On-board optics: mid-board engine on host PCB (COBO standard);
+  mostly bypassed for CPO in hyperscale deployments.}
+
+\declaretermsnip{ORL}{Optical return loss: reflected power back toward the laser.
+  Low ORL raises RIN and can seed burst errors.}
+
+\declaretermsnip{OSA}{Optical spectrum analyzer: measures wavelength, SMSR, and
+  side-mode structure of a laser source.}
+
+\declaretermsnip{OSFP}{Octal Small Form-factor Pluggable: high-power faceplate cage for
+  800G/1.6T/3.2T modules; larger thermal envelope than QSFP-DD.}
+
+\declaretermsnip{PD}{Photodiode: converts photons to photocurrent. Ge-on-Si PIN is
+  mainstream; APD adds gain; UTC for high saturation.}
+
+\declaretermsnip{PIC}{Photonic integrated circuit: waveguides, modulators, detectors,
+  and couplers on one chip (typically SOI at 220~nm Si).}
+
+\declaretermsnip{PRBS}{Pseudo-random binary sequence: deterministic test pattern that
+  exercises all bit transitions for BER and eye measurements.}
+
+\declaretermsnip{PUE}{Power usage effectiveness: total facility power / IT load power.
+  Typical hyperscale PUE 1.1--1.3; cooling overhead.}
+
+\declaretermsnip{QSFPDD}{Quad Small Form-factor Pluggable Double Density: faceplate
+  module cage for 400G/800G/1.6T with eight electrical lanes.}
+
+\declaretermsnip{RDMA}{Remote direct memory access: zero-copy network transfer between
+  accelerator memories; RoCE (Ethernet) or native IB.}
+
+\declaretermsnip{SiGe}{Silicon-germanium BiCMOS: high-$f_T$ process for TIAs and
+  modulator drivers at 100--200+~GHz bandwidth.}
+
+\declaretermsnip{SiPh}{Silicon photonics: waveguides and modulators on SOI; CMOS
+  fab-compatible. Mainstream for DR/FR and CPO.}
+
+\declaretermsnip{SMF}{Single-mode fiber: 9~$\mu$m core; O-band (1310~nm) or C-band
+  (1550~nm). G.652.D and G.657 for datacenter plant.}
+
+\declaretermsnip{SOA}{Semiconductor optical amplifier: inline optical gain (III-V);
+  adds ASE noise. Used as preamplifier for sensitivity.}
+
+\declaretermsnip{SOI}{Silicon on insulator: substrate for silicon photonics; 220~nm Si
+  layer on buried oxide confines the optical mode.}
+
+\declaretermsnip{SPC}{Statistical process control: lot-by-lot control charts
+  ($I_\mathrm{th}$, SMSR, power) to catch drift between qual stress tests.}
+
+\declaretermsnip{SR}{Short reach: multimode fiber class (typically 100~m over OM4);
+  VCSEL at 850~nm. Legacy rack optics.}
+
+\declaretermsnip{TCO}{Total cost of ownership: acquisition (BOM, yield) plus lifetime
+  energy plus service (FIT $\times$ replacement cost).}
+
+\declaretermsnip{TEC}{Thermoelectric cooler: Peltier device that holds laser junction
+  or ring at a controlled temperature.}
+
+\declaretermsnip{TFLN}{Thin-film lithium niobate: sub-$\mu$m LN on Si handle.
+  $>$110~GHz EO BW; leading path to native 224~GBd PAM4.}
+
+\declaretermsnip{TP}{Test point: reference plane where a measurement is taken (TP0
+  through TP5, plus TP1a and TP4a for host-referenced).}
+
+\declaretermsnip{TRO}{Transmit retimed optic: module with DSP only on Tx path;
+  Rx is linear. Symmetric opposite of LRO.}
+
+\declaretermsnip{TWE}{Traveling-wave electrode: RF transmission line on a modulator
+  that velocity-matches the optical mode for high BW.}
+
+\declaretermsnip{TWI}{Two-wire interface: I2C-like serial bus for CMIS module
+  management (SCL + SDA).}
+
+\declaretermsnip{UTC}{Uni-traveling-carrier photodiode: electron-only transport;
+  $>$200~GHz BW and high saturation current. Linear/LPO niche.}
+
+\declaretermsnip{VGA}{Variable gain amplifier: adjustable-gain stage in a redriver or
+  TIA AGC path.}
+
+\declaretermsnip{VOA}{Variable optical attenuator: calibrated loss element for
+  sensitivity sweeps and stressed-receiver testing.}
+
+\declaretermsnip{WDM}{Wavelength division multiplexing: multiple $\lambda$ on one
+  fiber. CWDM (20~nm spacing) or DWDM ($\le$100~GHz).}
+
+\declaretermsnip{XPO}{eXtra-dense Pluggable Optics: liquid-cooled 12.8~Tb/s pluggable
+  (Arista MSA, OFC 2026); front-panel serviceable at CPO density.}
+
+\declaretermsnip{DDM}{Digital diagnostic monitoring: per-lane telemetry in CMIS
+  (Tx/Rx power, bias, temperature, LOS/LOL flags).}
+
+\declaretermsnip{MAC}{Media access control: Ethernet data-link sublayer; builds frames,
+  addresses, CRC. MAC rate is payload throughput.}
+
+\declaretermsnip{BOM}{Bill of materials: component and assembly cost of a module or
+  system. DSP presence is a large BOM driver.}
+
+\declaretermsnip{BERT}{Bit-error-ratio tester: instrument or ASIC function that
+  generates PRBS and counts errors for pre-/post-FEC BER.}
+
+\declaretermsnip{BiCMOS}{Bipolar CMOS: process combining bipolar (high $f_T$) and
+  CMOS on one die; used for high-speed TIAs and drivers.}
+
+\declaretermsnip{CWWDM}{CW-WDM MSA: multi-source agreement for multi-wavelength CW
+  laser sources feeding WDM photonic engines (CPO).}
+
+\declaretermsnip{InP}{Indium phosphide: III-V semiconductor for lasers, EAMs, SOAs,
+  and high-speed photodiodes in the 1310/1550~nm bands.}
+
+\declaretermsnip{OCS}{Optical circuit switch: Layer-1 switch steering light with no
+  O-E-O conversion; transparent to rate/format/wavelength. MEMS OCS: ms switching,
+  $\sim$2~dB loss, topology reconfiguration.}
+
+\declaretermsnip{PIN}{PIN photodiode: p-intrinsic-n structure; no internal gain.
+  Ge-on-Si waveguide PIN is the mainstream short-reach detector.}
+

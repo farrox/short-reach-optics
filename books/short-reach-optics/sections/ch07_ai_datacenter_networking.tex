@@ -127,6 +127,7 @@ UEC & Scale-out & Ultra Ethernet Transport, congestion control; PHY group survey
 SNIA SFF & Host / backplane & Cables, connectors, PCIe/EDSFF form factors; SFF 448G COM for backplane (complements CEI front-panel work) \\
 OCP & Rack / system & Open rack designs, CPO/XPO placement, optical circuit switching (OCS) for AI clusters \\
 IEEE 802.3 & Scale-out (+ optics PMD) & Ethernet MAC rates (802.3dj, 400G/lane SG), KP4 FEC, IM/DD PMD clauses (DR/FR, TDECQ) \\
+100G Lambda MSA & Scale-out optics & Originated the 100G/$\lambda$ single-mode PMDs (100G-FR/LR, 400G-DR4/FR4/LR4) later folded into IEEE 802.3; RIN$_x$OMA transmitter method the DR/FR and LPO specs inherit \\
 IBTA & Scale-out & InfiniBand Architecture; NDR 400G, XDR 800G/port at 200G/lane, 1.6T switch links; reuses QSFP/OSFP + MPO optics with Ethernet \\
 IEEE 802.1 & All fabrics & Link-layer security: MACsec (802.1AE) line-rate encryption; 802.1X port access control \\
 PCI-SIG / CXL & Scale-up, in-node & PCIe 7.0 (128~GT/s PAM4) and CXL 4.0 memory fabric; PCI-SIG Optical Workgroup for optical PCIe \\
@@ -135,8 +136,8 @@ DMTF / OpenConfig / SONiC & Management & Box and fleet telemetry and config (Red
 \end{tabular}
 \par\medskip
 {\raggedright\footnotesize\textbf{Table~\thetable.} SDO and consortium roles at 448G/lane.
-The top six rows follow OIF CEI-448G \S2.3; IBTA, IEEE 802.1, PCI-SIG/CXL, and the
-management stack are added for coverage beyond OIF's own list.\par}
+The top six rows follow OIF CEI-448G \S2.3; the 100G Lambda MSA, IBTA, IEEE 802.1,
+PCI-SIG/CXL, and the management stack are added for coverage beyond OIF's own list.\par}
 \end{table*}
 
 \paragraph{OIF.} Common Electrical I/O (\term{CEI}) Implementation Agreements are
@@ -160,8 +161,8 @@ because scale-up eventually hits the same copper reach wall as CEI XSR
 \paragraph{Ultra Ethernet Consortium.} \term{UEC} builds a complete Ethernet-based
 stack for AI/HPC \emph{scale-out}: transport (UET), link layer, and PHY
 enhancements~\firstcite{uec10,cei448}. UEC 1.0 (June 2025) targets cluster-scale
-congestion control and RDMA-class performance over standard Ethernet hardware,
-including NICs, switches, optics, and cables. The PHY working group is surveying
+congestion control and RDMA\firstterm{RDMA}-class performance over standard Ethernet hardware,
+including NICs\firstterm{NIC}, switches, optics, and cables. The PHY working group is surveying
 400G/lane improvements. This is the protocol layer above the transceiver; IM/DD
 module specs still come from IEEE and MSAs.
 
@@ -187,7 +188,21 @@ that consume 224G and 448G-class optics. One naming trap: IEEE quotes
 (line rate with coding overhead). Same physics, different accounting
 (\Cref{ch:imdd,tab:rate-stack}).
 
-\paragraph{InfiniBand Trade Association.} The \term{IBTA} maintains the InfiniBand
+\paragraph{100G Lambda MSA.} The single-mode PMDs this book leans on did not start
+at IEEE. The \emph{100G Lambda MSA}, formed in 2017 by a broad group of suppliers
+and hyperscalers, wrote the first interoperable optical specifications built on one
+wavelength carrying 100~Gb/s PAM4 ($\approx$53~GBd): 100G-FR and 100G-LR for
+single-wavelength 100~GbE, and 400G-DR4/FR4/LR4 for four-lane 400~GbE over duplex
+single-mode fiber~\firstcite{lambdamsa}. IEEE 802.3 then adopted the same
+100~Gb/s-per-$\lambda$ approach into its DR/FR/LR PMD clauses, and the LPO MSA
+100G-DR-LPO profile (\Cref{sec:lpo-msa}) inherits both that modulation and the
+RIN$_x$OMA transmitter method the MSA defined (\Cref{sec:rin}). For a short-reach
+engineer this is the body behind the reach-class names on almost every single-mode
+datasheet: when a module is called ``DR4'' or ``FR4,'' the per-wavelength recipe
+traces to this MSA even where the compliance point is now quoted against an IEEE
+clause.
+
+\paragraph{InfiniBand Trade Association.} The \term{IBTA}\firstterm{IBTA} maintains the InfiniBand
 Architecture Specification, the other dominant scale-out fabric for AI and HPC
 alongside Ethernet~\firstcite{ibta}. Data rates follow the same per-lane SerDes
 ladder: NDR reaches 400~Gb/s per port over four 100~Gb/s lanes, and XDR reaches
@@ -213,7 +228,7 @@ but it belongs in the standards map because a fabric-security requirement can
 still gate a module program at qualification.
 
 \paragraph{PCI-SIG and CXL.} Inside the node, the load-store fabric is PCI Express
-and \term{CXL}. PCI-SIG released PCIe 7.0 in 2025 at 128~GT/s per lane using PAM4
+and \term{CXL}\firstterm{CXL}. PCI-SIG released PCIe 7.0 in 2025 at 128~GT/s per lane using PAM4
 and flit encoding, and the CXL Consortium built CXL 4.0 on that same PCIe 7.0
 electrical base for coherent memory pooling~\firstcite{pcie7,cxl4}. Both are 2025
 releases, so treat the exact rates and the optical-interface scope as provisional. Both are
@@ -347,7 +362,8 @@ from different vendors close on the same host.
 
 \paragraph{The test-point ladder.}
 LPO MSA normative compliance is organized around six electrical/optical test
-points (\Cref{tab:lpo-tp}). Think of them as the validation script: host TX at
+points (\Cref{tab:lpo-tp}), the concrete instance of the general TP0-to-TP5 planes
+in \Cref{sec:test-points}. Think of them as the validation script: host TX at
 TP1a, module optical TX at TP2, stressed optical RX at TP3, module electrical RX
 at TP4, and stressed host RX at TP4a. Section~10 of the MSA adds a host-to-host
 end-to-end BER test with FEC-encoded traffic, which is how you prove interop after
@@ -417,6 +433,48 @@ equalizer taps and SER targets, not new physics.
 metrics on the fiber. The LPO MSA is the product contract that binds them for
 DSP-less modules: normative test points, host FEC/EQ duties, and TDECQ/OMA masks
 you can test without a module retimer safety net.}
+
+\subsection{The LPO supplier base and the adoption question}
+\label{sec:lpo-market}
+
+The MSA defines what a linear module must pass; it does not settle whether the
+market buys one. By 2025--26 the supplier base had formed around the analog parts
+that replace the DSP: high-linearity TIAs and linear drivers. Macom, Semtech, and
+Maxlinear are the named component proponents, and once the DSP is gone the TIA and
+driver become the make-or-break blocks~\cite{lpo}.
+
+The demonstrations track a fast rate climb. Eoptolink showed a
+200G/$\lambda$ four-channel LPO link with no DSP or CDR at OFC~2024 and moved a
+second-generation 100G/lane 800G and 400G single-mode line into volume, claiming
+full TP2 compliance at the transmit interface~\cite{eoptolinklpo}. Macom exhibited its
+PURE~DRIVE 200~Gb/s LPO parts at OFC~2024 and extended them toward
+212~Gb/s/lane for a 1.6T module, with the TIA and driver as the headline~\cite{macomlpo}. Marvell,
+a DSP house, announced a 200G/lane TIA and laser-driver chipset for 800G and 1.6T
+LPO aimed at scale-up XPU fabrics~\cite{marvelllpo}. Macom and Eoptolink are founding
+members of the LPO MSA (\Cref{sec:lpo-msa}).
+
+\newthought{LPO reaches into PCIe scale-up.} Alphawave and Innolight demonstrated
+a 64~Gb/s/lane PCIe~6.0 subsystem (controller plus PHY) over Innolight's LPO OSFP
+optics at OFC~2024, then a 128~Gb/s/lane platform pairing a PCIe~7.0-ready SerDes
+PHY with the same optics~\cite{alphawavelpo}. The pull is the switch-fabric pull again:
+larger, faster AI nodes need more PCIe reach than copper gives, and the linear
+module skips the DSP latency and power a retimed module would add
+(\Cref{sec:scale-up-out,sec:latency-budget}).
+
+\newthought{Whether LPO wins is a separate question.} Host support exists:
+Juniper's Broadcom-based QFX switches take LPO optics without hardware changes, and
+Arista has shown Broadcom TH5 compatibility for over two years~\cite{lpo}. The
+market read is still cautious. Cignal AI argues LPO stays a small share, at least
+at 800G, because the installed fabric was already designed around DSP-based
+modules; 100G/lane (800GbE) LPO looks late and likely to hold only a small slice
+long term~\firstcite{cignal}. At 200G/lane and 1.6T the balance tips toward LRO:
+early 1.6T LPO parts draw more than 30~W, a thermal problem at faceplate density
+(\Cref{sec:thermal-envelope}), while a transmit-DSP LRO design promises under 20~W
+with easier integration and interop~\cite{lpo}. Cignal notes that every vendor
+showing 1.6T LPO at OFC also showed an LRO part~\firstcite{cignal}. That matches
+the book's technical read: LPO and LRO win where the host electrical channel and
+TDECQ close without the module DSP, and lose where they do not
+(\Cref{sec:224g-deploy,sec:conditioning}).
 
 \section{Emerging link styles}
 
@@ -699,7 +757,7 @@ each weight is used once and discarded:
 Prefill instead pushes $N$ prompt tokens through the \emph{same} weights at once, a
 matrix--matrix product (GEMM) that reuses each loaded weight $N$ times, so
 $\text{AI}_\text{prefill}\approx N$ FLOP/byte. On a roofline this is decisive: an
-H100 delivers $\sim$1000~TFLOP/s FP16 on $\sim$3.35~TB/s of HBM, so its balance
+H100 delivers $\sim$1000~TFLOP/s FP16 on $\sim$3.35~TB/s of HBM\firstterm{HBM}, so its balance
 point sits at
 \[
 \frac{1000\times10^{12}}{3.35\times10^{12}}\;\approx\;300\ \text{FLOP/byte}.
@@ -717,7 +775,7 @@ individual response wait (worse latency). Squeezing both at once is a central go
 of an inference platform.
 
 \newthought{Sharding puts the network on the critical path.} Because frontier
-models (especially mixture-of-experts) are sharded across many accelerators,
+models (especially mixture-of-experts\firstterm{MoE}) are sharded across many accelerators,
 each token triggers collectives: all-reduce for tensor parallelism, all-to-all
 for expert routing, point-to-point for pipeline stages. For MoE all-to-all in
 particular, interconnect bandwidth and tail latency can dominate. This is the
@@ -813,7 +871,7 @@ power, cost, and FIT that tier carried (\Cref{sec:topologies,ch:reliability}).
 
 \paragraph{The device and its parameters.}
 Most production OCS today is free-space: a fiber-collimator array launches beams onto a
-two-axis MEMS mirror array, and each mirror tilts to aim its beam at the chosen output
+two-axis MEMS\firstterm{MEMS} mirror array, and each mirror tilts to aim its beam at the chosen output
 collimator. \Cref{tab:ocs-tech} lists the main technologies. For an optics engineer the
 parameters that matter are the ones that land in the link budget and the fleet model.
 
@@ -962,7 +1020,7 @@ your own FIT and power model.
 
 \subsection{TSMC COUPE (the shared foundation)}
 
-\term{COUPE} (Compact Universal Photonic Engine) stacks an electronic IC on a
+\term{COUPE}\firstterm{COUPE} (Compact Universal Photonic Engine) stacks an electronic IC on a
 photonic IC via SoIC-X hybrid bonding (a 6\,nm EIC on a 65\,nm SOI PIC), giving a
 low-impedance die-to-die interface. The roadmap: pluggable qualification in 2025,
 CoWoS-based CPO integration and \emph{mass production in 2026}, with 800G/1.6T
@@ -1008,7 +1066,7 @@ tension (pluggable serviceability versus co-packaged density) defined much of
 \term{OFC 2026}, where a third path drew the most attention.
 
 Arista, with Coherent, Marvell, Lightmatter, and a broad partner list, launched the
-\term{XPO} (eXtra-dense Pluggable Optics) multi-source agreement. The bet is to keep
+\term{XPO}\firstterm{XPO} (eXtra-dense Pluggable Optics) multi-source agreement. The bet is to keep
 the front-panel pluggable form factor (slide a module out, snap a new one in) while
 closing most of the density and power gap to CPO:
 
@@ -1125,7 +1183,7 @@ scale-up domain where both matter most.
 \label{sec:hcf}
 
 The one distance term you can attack is the group index. Hollow-core fiber
-(\term{HCF}) guides light mostly through air rather than glass, so its group index
+(\term{HCF})\firstterm{HCF} guides light mostly through air rather than glass, so its group index
 sits near 1.0 and light travels close to vacuum speed. A double nested antiresonant
 nodeless fiber (\term{DNANF}) design reported 0.091~dB/km at 1550~nm, below the
 $\sim$0.14~dB/km floor that silica has held since the 1980s, and about 0.2~dB/km
@@ -1179,6 +1237,15 @@ is megawatts, directly setting how many accelerators fit under a fixed power
 envelope. Laser wall-plug efficiency feeds the same budget: fewer, more efficient
 lasers (NVIDIA claims 4$\times$ fewer) cut both power and failure count at once.
 
+\newthought{The macro trend behind the metric.} The pJ/bit fight has grid-scale
+stakes. US data centers drew about 176~TWh in 2023, roughly 4.4\% of national
+electricity, up from 58~TWh in 2014; the Lawrence Berkeley National Laboratory
+projects 325 to 580~TWh, or 6.7 to 12\% of US electricity, by
+2028~\firstcite{lbnl2024}. Interconnect is a growing share of that draw as lane
+rates climb~\cite{lpo}. Every pJ/bit an LPO or CPO link removes is multiplied
+across that base, so interconnect power reads as an infrastructure problem, not
+only a per-module one.
+
 \subsection{The thermal envelope}
 \label{sec:thermal-envelope}
 
@@ -1226,8 +1293,8 @@ model, not a price sheet: absolute module prices move too fast and vary too much
 volume to write down usefully, so the numbers here are assumptions you should
 replace with your own.
 
-\term{Total cost of ownership}\ (TCO) for an optical link splits into three buckets.
-The first is acquisition, the \term{bill of materials}\ (BOM) and the yield of
+\term{Total cost of ownership}\ (TCO)\firstterm{TCO} for an optical link splits into three buckets.
+The first is acquisition, the \term{bill of materials}\ (BOM)\firstterm{BOM} and the yield of
 optical assembly and test: laser count, whether a DSP die is present, and the
 packaging and coupling steps that dominate transceiver cost. The second is lifetime
 energy, the module's power drawn over years and multiplied by a cooling overhead.

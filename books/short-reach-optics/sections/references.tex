@@ -335,6 +335,15 @@ Receivers}}.
 100G Lambda MSA and IEEE 802.3.
 \newblock \href{https://www.ieee802.org/3/bs/public/}{\emph{400G-FR4 and 100GBASE-BR technical specifications}} ($\mathrm{RIN}_{17.1}\mathrm{OMA}\le-136$~dB/Hz; RIN method per IEEE Std 802.3 clause 52.9.6).
 
+\bibitem[100G Lambda MSA(2017--20)]{lambdamsa}
+100G Lambda MSA Group.
+\newblock \emph{\href{https://100glambda.com/}{100G Lambda MSA specifications}} (100G-FR/LR, 400G-DR4/FR4/LR4).
+\newblock Formed 2017 (22 promoter members). Specifications built on 100~Gb/s per
+wavelength PAM4 ($\approx$53~GBd) over duplex single-mode fiber, 2--40~km reaches;
+defined the single-$\lambda$ 100G approach IEEE 802.3 adopted into its DR/FR/LR PMD
+clauses and that the LPO MSA 100G-DR-LPO profile inherits, including the
+$\mathrm{RIN}_x\mathrm{OMA}$ transmitter method.
+
 \bibitem[Koheron DRV200]{koherondrv200}
 Koheron.
 \newblock \href{https://www.koheron.com/}{\emph{DRV200 low-noise laser diode driver datasheet}}
@@ -429,6 +438,48 @@ half-retimed module architectures.
 \newblock IEEE EPS overview (2026); OIF/MSA interop demos, OFC 2025. Typical 800G:
 DSP module $\sim$14--18~W, $\sim$8--10~ns/hop; LPO $\sim$7--9~W, $<$3~ns, $<$2~km;
 LRO $\sim$9~W. Redriver = CTLE$+$VGA (no CDR); retimer = EQ$+$CDR.
+Names component proponents (Macom, Semtech, Maxlinear) and OFC~2024--25 demos
+from Eoptolink, Macom, Marvell, Alphawave, and Innolight.
+
+\bibitem[LBNL(2024)]{lbnl2024}
+A.~Shehabi et al.
+\newblock \emph{\href{https://eta-publications.lbl.gov/sites/default/files/2024-12/lbnl-2024-united-states-data-center-energy-usage-report.pdf}{2024
+United States Data Center Energy Usage Report}}. Lawrence Berkeley National
+Laboratory, December 2024.
+\newblock US data centers: 58~TWh (2014) $\to$ 176~TWh (2023, $\sim$4.4\% of US
+electricity) $\to$ projected 325--580~TWh (6.7--12\%) by 2028.
+
+\bibitem[Cignal AI(2023)]{cignal}
+Cignal AI, \emph{\href{https://cignal.ai/2023/08/linear-drive-market-opportunity/}{The
+Linear Drive Market Opportunity}} (2023) and OFC~2025 show report.
+\newblock Market view: LPO stays a small share, especially at 800G, because the
+installed fabric is DSP-based; 100G/lane 800GbE LPO late to market; at 1.6T,
+LRO favored over LPO on power/thermal. Provisional (analyst reports).
+
+\bibitem[Eoptolink(2024)]{eoptolinklpo}
+Eoptolink, \emph{\href{https://www.eoptolink.com/news/13-new-products/348-eoptolink-demonstrates-industry-1st-200g-lane-lpos-with-100g-lane-800g-lpos-entering-mass-production}{Industry-first
+200G-per-lane LPO; 100G/lane 800G LPO entering mass production}}, March 2024.
+\newblock 200G/$\lambda$ four-channel LPO, no DSP/CDR; Gen2 100G/lane 800G and
+400G SMF (OSFP, QSFP-DD, QSFP112), full TP2 compliance claimed. Vendor,
+provisional.
+
+\bibitem[Macom(2024)]{macomlpo}
+Macom, \emph{\href{https://ir.macom.com/news-releases/news-release-details/macom-showcase-200g-lane-products-optical-fiber-communication}{Macom
+to showcase 200G-per-lane products at OFC}}, March 2024.
+\newblock PURE~DRIVE 200~Gb/s LPO, extensible to 212~Gb/s/lane for 1.6T; linear
+TIA and driver as the key blocks. Vendor, provisional.
+
+\bibitem[Marvell(2024)]{marvelllpo}
+Marvell, \emph{\href{https://www.marvell.com/company/newsroom/marvell-introduces-1-6-tbps-lpo-chipset.html}{Marvell
+introduces 1.6~Tbps LPO chipset}}, December 2024.
+\newblock 200G/lane TIA and laser-driver chipset for 800G and 1.6T LPO, targeting
+scale-up XPU compute fabrics. Vendor, provisional.
+
+\bibitem[Alphawave/InnoLight(2024)]{alphawavelpo}
+Alphawave Semi and InnoLight, \emph{\href{https://awavesemi.com/press-release/alphawave-semi-and-innolight-collaborate-to-demonstrate-low-latency-linear-pluggable-optics-with-pcie-6-0-subsystem-solution-for-high-performance-ai-infrastructure-at-ofc-2024/}{Low-latency
+LPO with a PCIe~6.0 subsystem for AI infrastructure}}, March 2024.
+\newblock 64~Gb/s/lane PCIe~6.0 controller+PHY over InnoLight LPO OSFP optics
+(OFC~2024); later a 128~Gb/s/lane PCIe~7.0-ready platform. Vendor, provisional.
 
 \bibitem[LPO MSA(2025)]{lpomsa}
 LPO MSA, \emph{\href{https://www.lpo-msa.org/files/live/sites/lpomsa/files/specs/LPO_MSA_Specification_v1p01.pdf}{100G-DR-LPO Specification}},

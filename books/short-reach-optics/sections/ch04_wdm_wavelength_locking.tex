@@ -18,7 +18,7 @@ budget, and CW-WDM architecture.
 
 At $100{,}000$+ accelerator scale, every extra fiber is another connector,
 another patch, and another failure mode. \term{Wavelength-division multiplexing}
-(WDM) puts many independent channels on a single fiber, each on its own
+(WDM)\firstterm{WDM} puts many independent channels on a single fiber, each on its own
 wavelength, so bandwidth per fiber rises without adding fiber. Each wavelength
 can still be an ordinary IM/DD channel. WDM and IM/DD are orthogonal; you simply
 run IM/DD \emph{per wavelength}.
@@ -68,7 +68,7 @@ modern CPO and dense optical-I/O control loop.
 
 \subsection{Tight DWDM grids}
 
-To pack channels at 50--200~GHz class spacing, each laser must sit on its grid
+To pack channels at 50--200~GHz class spacing\firstterm{DWDM}, each laser must sit on its grid
 slot or adjacent channels collide. Emphasizing ``locking'' therefore hints at
 spacing tighter than CWDM. You do not stress locking for coarse, uncooled CWDM4;
 you do as soon as the grid looks like LAN-WDM, datacom DWDM, or a CW-WDM comb.
@@ -86,7 +86,7 @@ thermal section of a datasheet.
 \section{WDM filters, grids, and on-chip multiplexing}
 \label{sec:wdm-hardware}
 
-WDM is not only lasers and locking (\Cref{sec:cwwdm}): the PIC needs wavelength
+WDM is not only lasers and locking (\Cref{sec:cwwdm}): the PIC\firstterm{PIC} needs wavelength
 selective routing. The MUX/demux stage is a first-class link-budget line item
 (\Cref{sec:link-budget}), not a packaging footnote.
 

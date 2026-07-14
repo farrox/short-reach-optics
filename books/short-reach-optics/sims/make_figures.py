@@ -1157,6 +1157,117 @@ def fig_link_chain():
     save(fig, "fig_link_chain.pdf")
 
 
+def fig_test_points():
+    """TP0-TP5 (plus host-referenced TP1a/TP4a) on a one-way IM/DD link."""
+    from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
+
+    fig, ax = plt.subplots(figsize=(7.0, 3.15))
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    ax.axis("off")
+
+    y_box, bw, bh = 0.50, 0.108, 0.185
+    xs = np.linspace(0.095, 0.905, 7)
+
+    boxes = [
+        ("Tx ASIC", "SerDes / PMA", LIGHT_BLUE),
+        ("Host PCB", "+ cage (AUI)", LIGHT_GREY),
+        ("Driver", "+ laser", LIGHT_ORANGE),
+        ("Fiber", "MDI\u2013MDI", LIGHT_PINK),
+        ("PD", "+ TIA", LIGHT_ORANGE),
+        ("Host PCB", "+ cage (AUI)", LIGHT_GREY),
+        ("Rx ASIC", "SerDes / PMA", LIGHT_BLUE),
+    ]
+
+    def box(cx, label, sub, fc):
+        ax.add_patch(FancyBboxPatch(
+            (cx - bw / 2, y_box - bh / 2), bw, bh,
+            boxstyle="round,pad=0.008,rounding_size=0.012",
+            linewidth=0.85, edgecolor=EDGE, facecolor=fc,
+            transform=ax.transAxes, clip_on=False, zorder=3,
+        ))
+        ax.text(cx, y_box + 0.030, label, ha="center", va="center",
+                fontsize=7.8, fontweight="bold", color=TEXT_DARK,
+                transform=ax.transAxes, zorder=4)
+        ax.text(cx, y_box - 0.036, sub, ha="center", va="center",
+                fontsize=6.2, color=TEXT_MID, transform=ax.transAxes, zorder=4)
+
+    for cx, (lab, sub, fc) in zip(xs, boxes):
+        box(cx, lab, sub, fc)
+    for i in range(6):
+        ax.add_patch(FancyArrowPatch(
+            (xs[i] + bw / 2, y_box), (xs[i + 1] - bw / 2, y_box),
+            arrowstyle="-|>", mutation_scale=8, linewidth=1.0,
+            color=EDGE, transform=ax.transAxes, clip_on=False, zorder=2,
+        ))
+
+    # Test-point markers. (x, label, colour, label-row) ; row 0 high, 1 low.
+    HOST, MODE, OPT = ACCENT_GREEN, ACCENT_BLUE, RED
+    g = lambda a, b: (xs[a] + xs[b]) / 2
+    tps = [
+        (xs[0] + bw / 2, "TP0", HOST, 0),
+        (g(0, 1),        "TP1a", HOST, 1),
+        (g(1, 2),        "TP1", MODE, 0),
+        (g(2, 3),        "TP2", OPT, 1),
+        (g(3, 4),        "TP3", OPT, 0),
+        (g(4, 5),        "TP4", MODE, 1),
+        (g(5, 6),        "TP4a", HOST, 0),
+        (xs[6] - bw / 2, "TP5", HOST, 1),
+    ]
+    y_top = y_box + bh / 2
+    for x, lab, col, row in tps:
+        y_lab = 0.90 if row == 0 else 0.79
+        ax.plot([x, x], [y_top + 0.010, y_lab - 0.028],
+                color=col, lw=0.8, ls=(0, (2, 1.5)),
+                transform=ax.transAxes, zorder=2)
+        ax.plot([x], [y_top + 0.010], marker="v", markersize=3.4,
+                color=col, transform=ax.transAxes, zorder=4)
+        ax.text(x, y_lab, lab, ha="center", va="center",
+                fontsize=7.4, fontweight="bold", color=col,
+                transform=ax.transAxes, zorder=4)
+
+    # Domain band under the chain.
+    x_eo, x_oe = g(2, 3), g(3, 4)  # optical launch / optical input
+    yb, hb = 0.145, 0.055
+    segs = [
+        (xs[0] - bw / 2, x_eo, LIGHT_BLUE, "Electrical (host + AUI)"),
+        (x_eo, x_oe, LIGHT_ORANGE, "Optical (fiber)"),
+        (x_oe, xs[6] + bw / 2, LIGHT_BLUE, "Electrical (AUI + host)"),
+    ]
+    for x0, x1, fc, txt in segs:
+        ax.add_patch(FancyBboxPatch(
+            (x0, yb), x1 - x0, hb,
+            boxstyle="round,pad=0.002,rounding_size=0.006",
+            linewidth=0.6, edgecolor=EDGE, facecolor=fc,
+            transform=ax.transAxes, clip_on=False, zorder=1,
+        ))
+        ax.text((x0 + x1) / 2, yb + hb / 2, txt, ha="center", va="center",
+                fontsize=6.6, color=TEXT_MID, transform=ax.transAxes, zorder=2)
+
+    # E/O and O/E crossing tags at the module optics.
+    ax.text(xs[2], y_box - bh / 2 - 0.028, "E$\\to$O", ha="center", va="top",
+            fontsize=7.0, fontweight="bold", color=RED, transform=ax.transAxes)
+    ax.text(xs[4], y_box - bh / 2 - 0.028, "O$\\to$E", ha="center", va="top",
+            fontsize=7.0, fontweight="bold", color=RED, transform=ax.transAxes)
+
+    # Colour key for the point classes.
+    key = [(HOST, "host / die (TP0, TP1a, TP4a, TP5)"),
+           (MODE, "module electrical (TP1, TP4)"),
+           (OPT, "optical MDI (TP2, TP3)")]
+    for i, (col, txt) in enumerate(key):
+        lx = 0.075 + i * 0.315
+        ax.plot([lx], [0.045], marker="v", markersize=3.4, color=col,
+                transform=ax.transAxes, clip_on=False)
+        ax.text(lx + 0.016, 0.045, txt, ha="left", va="center",
+                fontsize=6.3, color=TEXT_MID, transform=ax.transAxes)
+
+    ax.text(0.50, 0.985, "Where the link is measured: TP0 through TP5",
+            ha="center", va="top", fontsize=10.5, fontweight="bold",
+            color=TEXT_DARK, transform=ax.transAxes)
+
+    save(fig, "fig_test_points.pdf")
+
+
 if __name__ == "__main__":
     fig_ber_vs_q()
     fig_ber_vs_power_rin()
@@ -1171,5 +1282,6 @@ if __name__ == "__main__":
     fig_cei_rate_vs_year()
     fig_scale_up_node()
     fig_link_chain()
+    fig_test_points()
     fig_liv_sketch()
     print("done")

@@ -182,10 +182,10 @@ topology tells you which side of the optical connector owns it.
 \item[DCA] \firstterm{DCA} (digital communication analyzer): sampling scope for PAM4 eyes, TDECQ,
       OMA, RLM (\Cref{sec:tdecq}). Needs a reference receiver filter matched to the
       PHY under test.
-\item[BERT] bit-error ratio at pre- and post-FEC; FEC symbol histograms
+\item[BERT]\firstterm{BERT} bit-error ratio at pre- and post-FEC; FEC symbol histograms
       (\Cref{sec:kp4}).
-\item[OSA] wavelength, SMSR, side modes, RIN estimates (\Cref{ch:lasers,sec:rin-values}).
-\item[VOA / stressor assembly] calibrated attenuation and optional ISI for SECQ and
+\item[OSA]\firstterm{OSA} wavelength, SMSR, side modes, RIN estimates (\Cref{ch:lasers,sec:rin-values}).
+\item[VOA / stressor assembly]\firstterm{VOA} calibrated attenuation and optional ISI for SECQ and
       sensitivity sweeps.
 \item[Power meter] average power; pair with DCA for OMA.
 \item[Thermal chamber + TEC controller] corner validation; essential for rings
@@ -313,7 +313,7 @@ ignored will fail the first host that enforces the state machine
 \item \textbf{Electrical lock.} Bring host SerDes / module CDR. Confirm
       LOL\firstterm{LOL} clear, equalizer taps not pegged (\Cref{sec:equalization}).
       For LPO, this is the host eye and COM path (\Cref{sec:com,sec:drivers}).
-\item \textbf{Traffic.} PRBS or live FEC traffic. Pre-FEC BER vs.\ KP4 threshold
+\item \textbf{Traffic.} PRBS\firstterm{PRBS} or live FEC traffic. Pre-FEC BER vs.\ KP4 threshold
       (\Cref{sec:kp4}); glance at FEC symbol-error histogram shape.
 \item \textbf{Quality snapshot.} On a Tx-capable path: OMA/RLM/TDECQ or module
       diagnostics that proxy them (\Cref{sec:tdecq}). Record CMIS + BER + case $T$

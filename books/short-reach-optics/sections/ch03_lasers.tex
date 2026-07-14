@@ -23,11 +23,11 @@ qualify each one.
 
 \begin{description}
 \item[DFB (distributed feedback)] a grating along the active region gives
-      single-mode output; the workhorse continuous-wave (CW) or directly
+      single-mode output; the workhorse continuous-wave (CW)\firstterm{CW} or directly
       modulated source for CWDM and LAN-WDM (\Cref{sec:dfb-eml}).
-\item[DBR (distributed Bragg reflector)] the grating sits outside the gain
+\item[DBR (distributed Bragg reflector)]\firstterm{DBR} the grating sits outside the gain
       region; enables tunable variants.
-\item[DML (directly modulated laser)] modulate the bias current directly: cheap
+\item[DML (directly modulated laser)]\firstterm{DML} modulate the bias current directly: cheap
       and low-power, but chirp-limited over dispersive fiber (\Cref{sec:dml-vcsel}).
 \item[EML (externally modulated laser)] \term{EML}\firstterm{EML}: a DFB integrated with an
       \term{EAM}\firstterm{EAM}. Low chirp and high bandwidth make it
@@ -47,7 +47,7 @@ qualify each one.
 \item[CW-WDM / multi-wavelength sources] high-power, multi-wavelength CW lasers
       (per the CW-WDM MSA) that feed comb-like WDM architectures
       (\Cref{sec:cwwdm-laser,sec:cwwdm}).
-\item[VCSEL] 850--940~nm multimode sources for short-reach links over multimode
+\item[VCSEL]\firstterm{VCSEL} 850--940~nm multimode sources for short-reach links over multimode
       fiber; cheap but reach-limited and less relevant at 200G/lane.
 \item[External laser source (ELS/ELSFP)] a pluggable laser module supplying CW
       light to a co-packaged switch, so a failed laser is field-replaceable
@@ -96,7 +96,7 @@ fleet scale, you leave direct modulation behind.
 \label{sec:dfb-eml}
 
 Once single-mode DR/FR became the hyperscale default, most short-reach ports
-started with an InP laser chip. Two configurations still dominate production:
+started with an InP\firstterm{InP} laser chip. Two configurations still dominate production:
 the CW or directly modulated DFB, and the EML that adds an electro-absorption
 modulator on the same die.
 
@@ -106,7 +106,7 @@ threshold current, slope efficiency, SMSR (typically many tens of dB on a clean
 part), RIN, and wavelength vs.\ temperature/current. Used as a CW source for SiPh
 or TFLN modulators, or as a DML when chirp is acceptable (\Cref{sec:dml-vcsel}).
 Uncooled datacom DFBs ride case temperature with a known $d\lambda/dT$; cooled
-parts add a TEC and lock to a grid.
+parts add a TEC\firstterm{TEC} and lock to a grid.
 
 \paragraph{EML.} An electro-absorption modulated laser integrates a DFB with an
 \term{EAM} on one chip (\Cref{sec:eml-eam}). Reverse bias on the EAM sets absorption
@@ -419,14 +419,14 @@ Watch LIV and spectrum over HTOL or field life:
 \item SMSR collapse (mode competition);
 \item EAM bias creep on EMLs (absorption curve shift $\to$ TDECQ/RLM drift);
 \item RIN rise under feedback (ORL or isolator failure);
-\item COD (catastrophic optical damage) at the facet under overstress.
+\item COD\firstterm{COD} (catastrophic optical damage) at the facet under overstress.
 \end{itemize}
 Each signature should appear in the ATP and in field telemetry triage
 (\Cref{sec:fleet-triage,sec:gr468}).
 
 \paragraph{Arrhenius life projection.}
 \firstterm{Arrhenius} Telcordia GR-468-CORE qualifies optoelectronic parts with
-accelerated stress (HTOL, temperature cycle, damp heat) and projects field life
+accelerated stress (HTOL\firstterm{HTOL}, temperature cycle, damp heat) and projects field life
 with Arrhenius acceleration~\firstcite{gr468}:
 \[
 \mathrm{AF}

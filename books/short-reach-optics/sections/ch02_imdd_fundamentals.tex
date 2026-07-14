@@ -227,7 +227,7 @@ channel (\Cref{sec:448g}).
 
 Once PAM4 became the default, the electrical channel stopped looking like a wire
 and started looking like a filter. PCB traces, connectors, and cables low-pass
-the signal; the receiver must undo that inter-symbol interference (ISI) before
+the signal; the receiver must undo that inter-symbol interference (ISI)\firstterm{ISI} before
 slicing. Three equalizer classes appear in every short-reach link, plus clock
 recovery when the bit clock is rebuilt.
 
@@ -239,7 +239,7 @@ recovery when the bit clock is rebuilt.
 \item[FFE (feed-forward equalizer)] \firstterm{FFE} is a finite-impulse-response
       filter with pre- and post-cursor taps. Host SerDes and module DSPs use FFE
       (often with CTLE ahead of it) to open the eye.
-      Transmitter and dispersion eye closure quaternary (TDECQ) applies a
+      Transmitter and dispersion eye closure quaternary (TDECQ)\firstterm{TDECQ} applies a
       \emph{bounded} reference FFE when scoring transmitters (\Cref{sec:tdecq}).
 \item[DFE (decision-feedback equalizer)] \firstterm{DFE} cancels post-cursor ISI
       using past symbol decisions. CEI electrical eye budgets reference an 8-tap DFE
@@ -369,7 +369,7 @@ handoff.}
 The SerDes, the FEC, and the optics are not loose parts. IEEE 802.3 stacks them into
 named sublayers, and knowing the stack tells you exactly where the optical
 transceiver plugs in and which block owns each impairment. Ethernet lives at the
-bottom two OSI layers: the \term{MAC} (data link) builds frames and carries the
+bottom two OSI layers: the \term{MAC}\firstterm{MAC} (data link) builds frames and carries the
 addressing, and the \term{PHY}\firstterm{PHY} (physical) turns those frames into
 signals on the wire. Everything in this book sits inside the PHY.
 
@@ -429,7 +429,7 @@ carries that same 425~Gb/s. So ``400G Ethernet'' is a 400~Gb/s MAC rate riding a
 
 \subsection{What the PCS actually does}
 
-Inside the PCS, the MAC's 64-bit words are first wrapped in 64B/66B blocks: a 2-bit
+Inside the PCS\firstterm{PCS}, the MAC's 64-bit words are first wrapped in 64B/66B blocks: a 2-bit
 sync header (\texttt{01} for data, \texttt{10} for control) lets the receiver find
 block boundaries in the serial stream. Four 66-bit blocks are then transcoded into
 one 257-bit block, which compresses the four 2-bit sync headers to a single bit and,
@@ -452,6 +452,108 @@ digital stack feeds copper, multimode, or single-mode. The MAC-to-line-rate gap 
 transcode ($257/256$) times FEC ($544/514$), giving 425~Gb/s on a 400G port. The
 module-style debate is about which side of the AUI runs the PMA and PCS/FEC.}
 
+\section{Test points: where the link is measured}
+\label{sec:test-points}
+
+Every metric in this book is taken \emph{somewhere}. A datasheet line like
+``TDECQ~$\le$~3.4~dB'' or ``stressed sensitivity $-3.1$~dBm'' means nothing until you
+name the reference plane it was measured at. The standards name those planes TP0
+through TP5, plus the host-referenced pair TP1a and TP4a, and they run in order from
+the transmit silicon to the receive silicon. Learning them turns a scattered pile of
+numbers into a map: each spec belongs to exactly one plane, and each plane is owned
+by one document. \Cref{fig:test-points} walks the chain; \Cref{tab:test-points}
+is the lookup card.
+
+The mistake to avoid is treating TP2 and TP3 as electrical points just past a
+connector. They are \emph{optical} planes at the fiber. TP2 is the light launched
+into the fiber, measured after the module's electrical-to-optical conversion (driver
+plus laser or modulator). TP3 is the light arriving at the far module, before its
+optical-to-electrical conversion (photodiode plus TIA). The electrical planes are the
+ones on either side of those two crossings.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{figures/fig_test_points.pdf}
+\caption{Test points on a one-way IM/DD link. Green marks the host and die-pad
+electrical planes (TP0, TP1a, TP4a, TP5); blue the module's electrical connector
+(TP1, TP4); red the optical planes at the fiber \term{MDI} (TP2, TP3).
+The two domain crossings, E$\to$O in the module transmitter and O$\to$E in the module
+receiver, sit between the electrical and optical planes.\label{fig:test-points}}
+\end{figure}
+
+\newthought{Read the chain in order.} At the transmit end, \textbf{TP0} is the
+transmit SerDes output at the die pad, the silicon designer's reference. \textbf{TP1a}
+is the same host signal referenced at the module cage, the \term{AUI} the module must
+accept; its electrical eye quality is \term{EECQ}\firstterm{EECQ}, the electrical
+analog of TDECQ. \textbf{TP1} is the module's electrical input on the far side of the
+mated connector. The module then converts electrical to optical, and \textbf{TP2} is
+the optical launch at the transmitter \term{MDI}\firstterm{MDI}, where TDECQ, TECQ, OMA$_{\mathrm{outer}}$,
+ER, and RIN are specified (\Cref{ch:validation,sec:tdecq}). After the fiber,
+\textbf{TP3} is the optical input at the receiver MDI, where stressed receiver
+sensitivity (SECQ) is specified. The module converts back to electrical at
+\textbf{TP4} (its electrical output), \textbf{TP4a} is the host-referenced input near
+the receive SerDes under worst-case module output, and \textbf{TP5} is the receive
+die pad.
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:test-points}%
+\centering
+\setlength{\tabcolsep}{5pt}%
+\footnotesize
+\begin{tabular}{@{}p{0.05\linewidth}p{0.075\linewidth}p{0.29\linewidth}p{0.30\linewidth}p{0.15\linewidth}@{}}
+\toprule
+Point & Domain & Location & Principal measurement & Owning spec \\
+\midrule
+TP0 & Electrical & Tx ASIC/SerDes die pad (host) & Silicon Tx quality; design reference, hard to probe once packaged & OIF CEI C2M \\
+TP1a & Electrical & Host output at the cage, host-referenced (SerDes output via a host compliance board) & Host Tx eye, EECQ; the AUI the module must accept & OIF CEI C2M; LPO MSA \\
+TP1 & Electrical & Module electrical input (module side of the mated connector) & Module input stressor calibration & IEEE 802.3 AUI; OIF CEI \\
+TP2 & Optical & Transmitter MDI, fiber launch (after E$\to$O) & TDECQ, TECQ, OMA$_{\mathrm{outer}}$, ER, RIN$_x$OMA & IEEE 802.3 PMD; LPO MSA \\
+TP3 & Optical & Receiver MDI, fiber input (before O$\to$E) & Stressed receiver sensitivity, SECQ & IEEE 802.3 PMD; LPO MSA \\
+TP4 & Electrical & Module electrical output (module side of the connector) & Module Rx electrical output, EECQ & IEEE 802.3 AUI; OIF CEI \\
+TP4a & Electrical & Stressed host input, host-referenced (near the Rx SerDes) & Host Rx under worst-case module output & OIF CEI C2M; LPO MSA \\
+TP5 & Electrical & Rx ASIC/SerDes die pad (host) & Silicon Rx recovery; design reference, hard to probe & OIF CEI C2M \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Test-point reference planes on a
+short-reach IM/DD link, transmit to receive. The optical planes TP2 and TP3 carry the
+transmitter- and receiver-quality specs; the electrical planes carry the host and
+module eye specs. See \Cref{tab:lpo-tp} for the concrete LPO MSA assignments.\par}
+\end{table*}
+
+\newthought{Who owns which plane.} The split is not arbitrary. IEEE 802.3 optical PMD
+clauses define the transceiver planes: the optical TP2 and TP3, and the module's
+electrical PMD input and output at TP1 and TP4~\cite{ieee8023dj}. The OIF Common
+Electrical I/O chip-to-module work owns the electrical planes deeper into the host:
+the die pads TP0 and TP5, and the host-referenced compliance points TP1a and TP4a,
+which are measured through host and module compliance boards to de-embed the
+fixture~\cite{cei224}. The LPO MSA then binds both sides into a single product
+contract for a DSP-less module, with the six-point ladder (TP1a, TP1, TP2, TP3, TP4,
+TP4a) tabulated in \Cref{tab:lpo-tp}~\cite{lpomsa}.
+
+The numbering is a family of conventions, not one universal set. IEEE optical PMD
+clauses commonly define only TP1 through TP4, with the optical measurements at TP2
+and TP3; the die pads TP0/TP5 and the host-referenced TP1a/TP4a come from the
+chip-to-module electrical world. Fibre Channel historically used its own reference
+points. Match the labels to the document you are reading rather than assuming a shared
+TP0-to-TP5 spine.
+
+\newthought{Where compliance testing concentrates.} Optical transmitter compliance
+lives at TP2 (TDECQ, OMA, ER); optical receiver compliance lives at TP3 (stressed
+sensitivity). Electrical host and module compliance concentrate at TP1a and TP4a,
+which is why a module that passes optical TDECQ at TP2 can still fail interop if it
+misses EECQ at TP1a. TP0 and TP5 sit inside the package and are informative for
+silicon design but hard to probe in a finished system. A retimed module recovers the
+signal before TP4; a linear (LPO) module does not, so at 224G its host EQ and FEC
+carry the whole electrical channel (\Cref{sec:conditioning,sec:pmd-reach}).
+
+\keyidea{The plane makes the number. TP2 and TP3 are optical, at the fiber MDI, and
+carry transmitter and receiver quality (TDECQ, stressed sensitivity). TP1 and TP4 are
+the module's electrical connector; TP1a and TP4a are host-referenced near the SerDes;
+TP0 and TP5 are the die pads. IEEE 802.3 owns the optical planes, OIF CEI owns the
+die and host-referenced electrical planes, and the LPO MSA binds all of them into one
+DSP-less product contract (\Cref{tab:lpo-tp}).}
+
 \section{The link-budget vocabulary}
 
 These terms are the language of both datasheets and debug. Learn them as a
@@ -459,11 +561,11 @@ ledger, not as a glossary quiz: when a link fails, you are almost always arguing
 about one of them.
 
 \begin{description}
-\item[OMA (optical modulation amplitude)] $P_1 - P_0$: the real signal swing.
+\item[OMA (optical modulation amplitude)] \firstterm{OMA} $P_1 - P_0$: the real signal swing.
       For PAM4 the ``outer OMA'' spans the outermost levels.
-\item[Extinction ratio (ER)] $P_1/P_0$, in dB. Trades against insertion loss and
+\item[Extinction ratio (ER)] \firstterm{ER} $P_1/P_0$, in dB. Trades against insertion loss and
       against \term{TDECQ} (\Cref{ch:validation}).
-\item[RIN (relative intensity noise)] the laser's own amplitude noise; sets a
+\item[RIN (relative intensity noise)] \firstterm{RIN} the laser's own amplitude noise; sets a
       noise floor that matters more as OMA shrinks.
 \item[Chirp] the unwanted frequency modulation that accompanies intensity
       modulation. Large in directly modulated lasers; small and controllable in
@@ -491,7 +593,7 @@ different speeds).
 
 The penalty grows with chirp $\times$ dispersion $\times$ distance. At O-band
 ($\sim$1310~nm) dispersion is near zero ($|D|\lesssim 3$~ps/(nm$\cdot$km)), which is why
-silicon photonics and many datacenter SMF links use 1310~nm class wavelengths. At
+silicon photonics and many datacenter SMF\firstterm{SMF} links use 1310~nm class wavelengths. At
 C-band ($\sim$1550~nm) dispersion is larger; chirpy sources pay more per kilometer.
 
 Source choice sets chirp (\Cref{ch:lasers,tab:tx-modulator,sec:eml-eam}):
@@ -501,7 +603,7 @@ Source choice sets chirp (\Cref{ch:lasers,tab:tx-modulator,sec:eml-eam}):
       poor for FR-class SMF unless rate and reach stay short.
 \item \textbf{EML / external MZM / ring:} low chirp; default for DR/FR and CPO.
 \item \textbf{Reflections:} light reflected back into the laser raises effective
-      chirp and RIN; optical return loss (ORL) specs exist for this reason
+      chirp and RIN; optical return loss (ORL)\firstterm{ORL} specs exist for this reason
       (\Cref{sec:optical-channel}).
 \end{itemize}
 
@@ -577,11 +679,11 @@ IEEE 802.3 names the optical transceiver (\term{PMD}) separately from
 the MAC rate. Short-reach IM/DD classes that matter for AI fabrics:
 
 \begin{description}
-\item[SR (short reach)] multimode fiber, VCSEL at 850~nm or evolving MMF solutions;
+\item[SR (short reach)] \firstterm{SR} multimode fiber, VCSEL at 850~nm or evolving MMF\firstterm{MMF} solutions;
       rack and row distances; modal noise and bandwidth limit legacy SR.
-\item[DR (datacenter reach)] single-mode, typically 500~m class at 1310~nm; PAM4,
+\item[DR (datacenter reach)] \firstterm{DR} single-mode, typically 500~m class at 1310~nm; PAM4,
       KP4, TDECQ limits; the mainstream 400G/800G/1.6T module reach.
-\item[FR (far reach)] single-mode, 2~km class; same optics family as DR with tighter
+\item[FR (far reach)] \firstterm{FR} single-mode, 2~km class; same optics family as DR with tighter
       transmitter specs; chirp and dispersion matter more at the margin.
 \end{description}
 
@@ -704,7 +806,7 @@ You therefore run two go/no-go tests as one program:
 
 \begin{description}
 \item[Electrical COM] After the CEI reference TX, channel, and Rx (CTLE + 8-tap
-      DFE), COM $\ge3$~dB is the usual pass line at the slicer
+      DFE), COM\firstterm{COM} $\ge3$~dB is the usual pass line at the slicer
       (\Cref{sec:com,sec:eye-budget}). At 112~GBd the residual eye after that
       equalizer is only a few millivolts tall; KP4 then cleans pre-FEC BER near
       $2.4\times10^{-4}$ down to $10^{-15}$ class (\Cref{sec:kp4}).
@@ -776,7 +878,7 @@ The next step, \term{CEI-448G} (framework published in late 2025, targeting
 3.2~Tb/s systems from 2026 onward), is where the long PAM4 consensus finally comes
 under pressure~\firstcite{cei448}. A full CEI-448G glossary of terms is in
 \Cref{ch:abbrev}. The debate is not whether 448~Gb/s \emph{per lane} is
-useful (eight lanes make a 3.2~Tb/s OSFP-class port), but what \emph{symbol rate}
+useful (eight lanes make a 3.2~Tb/s OSFP\firstterm{OSFP}-class port), but what \emph{symbol rate}
 and \emph{modulation order} each part of the link must run at to get there.
 
 \paragraph{Line rate, symbol rate, and where each applies.}
@@ -996,10 +1098,10 @@ The snapshot below is the state of play; device sections later unpack each famil
 \paragraph{Silicon microring and microdisk modulators.}
 \label{sec:siring}
 
-A microring modulator (MRM) wraps a phase-shifter waveguide into a closed loop
+A microring modulator (MRM)\firstterm{MRM} wraps a phase-shifter waveguide into a closed loop
 coupled to a straight \emph{bus} waveguide. A \emph{microdisk} is the same idea in
 disk form: a pillar cavity evanescently coupled to the bus, often with a wider free
-spectral range (FSR) in a smaller footprint. Both are resonant filters as well as
+spectral range (FSR)\firstterm{FSR} in a smaller footprint. Both are resonant filters as well as
 modulators: when the input wavelength sits on resonance, drop-port power is high;
 off resonance it is rejected. Data modulation shifts the resonance (carrier
 depletion or injection in an embedded pn junction) or detunes the laser relative
@@ -1061,8 +1163,8 @@ ring thermal control at fleet scale looks harder than hybrid assembly
 \paragraph{Silicon Mach--Zehnder modulators.}
 \label{sec:simzm}
 
-Silicon photonics builds the Mach--Zehnder modulator (MZM) as a push-pull
-interferometer on a silicon-on-insulator (SOI) rib or strip waveguide. Phase
+Silicon photonics builds the Mach--Zehnder modulator (MZM)\firstterm{MZM} as a push-pull
+interferometer on a silicon-on-insulator (SOI)\firstterm{SOI} rib or strip waveguide. Phase
 shifters in each arm use \emph{carrier depletion} in an embedded pn junction:
 reverse bias pulls carriers out of the waveguide core, lowering refractive index
 and shifting optical phase. Intensity modulation comes from recombining the arms
@@ -1094,7 +1196,7 @@ or 2.5D packaged next to the PIC, the same assembly style as TFLN modules but
 without bonding a second optical material stack.
 
 State of the art in 2025--26: Si MZMs are the default modulator in 100G/lane and
-200G/lane DR/FR silicon-photonics transceivers. Pushing to 400G/lane IM/DD was open
+200G/lane DR/FR silicon-photonics\firstterm{SiPh} transceivers. Pushing to 400G/lane IM/DD was open
 until OFC 2026, when Coherent reported 400~Gb/s PAM4 per lane with a Si MZM and
 commercial SiGe driver (2.5~V swing)~\firstcite{simzm400}. The same conference
 cycle showed a 500~$\mu$m compact MZM on a 300-mm platform with 94.7~GHz median EO
@@ -1108,13 +1210,13 @@ keeping a flat passband that rings only match with tight wavelength control
 \paragraph{Thin-film lithium niobate Mach--Zehnder modulators.}
 \label{sec:tfln-mzm}
 
-\term{TFLN} refers to a sub-micrometer slice of lithium niobate bonded to a
+\term{TFLN}\firstterm{TFLN} refers to a sub-micrometer slice of lithium niobate bonded to a
 silicon or silica handle wafer. Compared with bulk LN, the tight optical mode
 confinement shrinks electrode gap and interaction length, which cuts the
 half-wave voltage--length product $V_\pi L$ while keeping a wide
-\term{electro-optic} (EO) bandwidth. The modulator is a Mach--Zehnder
+\term{electro-optic}\firstterm{EO} (EO) bandwidth. The modulator is a Mach--Zehnder
 interferometer (MZM): a \term{Pockels} phase shifter in each arm, driven in
-push-pull, converts RF voltage on a \term{traveling-wave electrode} (TWE) into
+push-pull, converts RF voltage on a \term{traveling-wave electrode}\firstterm{TWE} (TWE) into
 intensity at the output coupler.
 
 Three design constraints set whether a TFLN MZM can run at 224~GBd PAM4
@@ -1173,7 +1275,7 @@ EML wins on cost and integration through 200G/lane. Above that, external modulat
 
 Every external modulator (Si MZM, TFLN, ring, EAM) needs an RF path that delivers
 enough \emph{linear} swing at the target baud. That path is either a dedicated
-SiGe/BiCMOS \emph{modulator driver} die, or (for LPO) the host SerDes itself.
+SiGe\firstterm{SiGe}/BiCMOS\firstterm{BiCMOS} \emph{modulator driver} die, or (for LPO) the host SerDes itself.
 Laser \emph{bias} drivers are a different circuit and a different noise budget
 (\Cref{sec:laser-drivers}). Do not share the modulator driver's switching returns
 with the CW bias rail.

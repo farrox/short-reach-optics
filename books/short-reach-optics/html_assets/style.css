@@ -1,0 +1,163 @@
+/* Study-guide stylesheet — tufte-inspired, clean, readable. */
+
+:root {
+  --body-font: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  --heading-font: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  --code-font: 'SF Mono', 'Fira Code', 'Menlo', 'Consolas', monospace;
+  --text-color: #1a1a1a;
+  --link-color: #1f4e5f;
+  --bg-color: #fffff8;
+  --code-bg: #f6f2ea;
+  --border-color: #ddd;
+  --max-width: 55rem;
+  --sidebar-width: 15rem;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--body-font);
+  color: var(--text-color);
+  background: var(--bg-color);
+  line-height: 1.6;
+  margin: 0;
+  padding: 2rem;
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- Headings --- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--heading-font);
+  color: #2f4f4f;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+  line-height: 1.2;
+}
+h1 { font-size: 2rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.3em; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+
+/* --- Paragraphs --- */
+p {
+  margin: 0.8em 0;
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* --- Links --- */
+a { color: var(--link-color); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* --- Code --- */
+code, pre {
+  font-family: var(--code-font);
+  font-size: 0.9em;
+}
+code {
+  background: var(--code-bg);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+pre {
+  background: var(--code-bg);
+  padding: 1em;
+  border-radius: 5px;
+  overflow-x: auto;
+  line-height: 1.4;
+}
+pre code {
+  background: none;
+  padding: 0;
+}
+
+/* --- Tables --- */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5em 0;
+  font-size: 0.9em;
+}
+th, td {
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.5em 0.8em;
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  font-weight: 600;
+  border-bottom: 2px solid #999;
+}
+caption {
+  font-style: italic;
+  margin-bottom: 0.5em;
+  text-align: left;
+}
+
+/* --- Figures --- */
+figure {
+  margin: 1.5em 0;
+  text-align: center;
+}
+figure img {
+  max-width: 100%;
+  height: auto;
+}
+figcaption {
+  font-style: italic;
+  font-size: 0.9em;
+  margin-top: 0.5em;
+  color: #555;
+}
+
+/* --- Footnotes (used for sidenotes/marginnotes in the HTML version) --- */
+.footnotes {
+  margin-top: 3em;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1em;
+  font-size: 0.85em;
+}
+.footnotes ol { padding-left: 1.5em; }
+.footnote-ref { font-size: 0.75em; vertical-align: super; }
+
+/* --- Lists --- */
+ul, ol { padding-left: 1.5em; }
+li { margin-bottom: 0.3em; }
+dl dt { font-weight: 600; margin-top: 0.8em; }
+dl dd { margin-left: 1.5em; margin-bottom: 0.5em; }
+
+/* --- Key Idea boxes --- */
+p > strong:first-child {
+  /* Highlight "Key idea." paragraphs */
+}
+
+/* --- Table of Contents (nav#TOC) --- */
+nav#TOC {
+  background: #f9f9f5;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  padding: 1em 1.5em;
+  margin-bottom: 2em;
+}
+nav#TOC ul { list-style: none; padding-left: 1em; }
+nav#TOC > ul { padding-left: 0; }
+nav#TOC a { color: var(--link-color); }
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  body { padding: 1rem; }
+  h1 { font-size: 1.6rem; }
+  table { font-size: 0.8em; }
+}
+
+/* --- Print --- */
+@media print {
+  body { max-width: none; padding: 0; }
+  nav#TOC { display: none; }
+}
