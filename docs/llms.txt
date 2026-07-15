@@ -1,0 +1,20 @@
+# Short-Reach Optics for AI Compute
+# Author: Ed (Ehsan) Shah Hosseini
+# Study guide for short-reach optical interconnects in AI datacenters
+
+> This book covers IM/DD physics, lasers, WDM, validation, reliability, and AI datacenter networking for short-reach optics.
+
+## Raw chapter files (Markdown, directly readable)
+
+- Preface: https://raw.githubusercontent.com/farrox/short-reach-optics/main/docs/ch0-preface.md
+- Ch 1 - Why the interconnect matters: https://raw.githubusercontent.com/farrox/short-reach-optics/main/docs/ch1-why-the-interconnect-matters.md
+- Ch 2 - First principles: https://raw.githubusercontent.com/farrox/short-reach-optics/main/docs/ch2-first-principles-the-energy-of-moving-a-bit.md
+- Ch 3 - IM/DD fundamentals: https://raw.githubusercontent.com/farrox/short-reach-optics/main/docs/ch3-intensity-modulation-direct-detection.md
+- Ch 4 - Noise, RIN, and BER models: https://raw.githubusercontent.com/farrox/short-reach-optics/main/docs/ch4-quantitative-models-noise-rin-and-ber.md
+- Ch 5 - Lasers: https://raw.githubusercontent.com/farrox/short-reach-optics/main/docs/ch5-lasers-for-optical-interconnects.md
+- Ch 6 - WDM and wavelength locking: https://raw.githubusercontent.com/farrox/short-reach-optics/main/docs/ch6-wdm-and-wavelength-locked-lasers.md
+- Ch 7 - Optical validation: https://raw.githubusercontent.com/farrox/short-reach-optics/main/docs/ch7-optical-validation.md
+- Ch 8 - Reliability and manufacturing: https://raw.githubusercontent.com/farrox/short-reach-optics/main/docs/ch8-reliability-and-manufacturing-at-scale.md
+- Ch 9 - AI datacenter networking: https://raw.githubusercontent.com/farrox/short-reach-optics/main/docs/ch9-ai-datacenter-networking.md
+- Abbreviations: https://raw.githubusercontent.com/farrox/short-reach-optics/main/docs/ch10-abbreviations.md
+- References: https://raw.githubusercontent.com/farrox/short-reach-optics/main/docs/ch11-references.md
