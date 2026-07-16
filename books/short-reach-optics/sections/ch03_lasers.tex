@@ -146,6 +146,191 @@ ELS / ELSFP & co-packaged optics & connectorization, fleet serviceability \\
 {\raggedright\footnotesize\textbf{Table~\thetable.} When each source is used, and its top validation risks.\par}
 \end{table*}
 
+\section{Silicon photonics platforms}
+\label{sec:siph-platforms}
+
+The previous sections covered laser sources. This one treats the \emph{modulator
+platforms} built in silicon that those sources feed. Silicon photonics
+(\term{SiPh}) integrates waveguides, phase shifters, modulators, detectors, and
+couplers on a single silicon-on-insulator (\term{SOI}) die in a CMOS-compatible
+fab flow. Two modulator topologies dominate short-reach IM/DD: the Mach--Zehnder
+modulator (MZM) and the microring modulator (MRM). Both encode data by converting
+an electrical signal into optical intensity via a refractive-index change in a PN
+junction phase shifter. This section covers the device physics common to both,
+then the trade-offs that decide which one fits a given link.
+
+\subsection{PN junction phase shifters}
+\label{sec:pn-phase}
+
+Every silicon modulator starts with a phase shifter: a waveguide whose effective
+index $n_\mathrm{eff}$ changes with an applied voltage. In silicon, which has no
+useful Pockels effect, the dominant mechanism is the \term{plasma dispersion effect}:
+changing free-carrier concentration $\Delta N_e$, $\Delta N_h$ shifts
+$n_\mathrm{eff}$ and introduces absorption $\Delta\alpha$. Two drive modes
+exploit this effect:
+
+\begin{description}
+\item[Carrier depletion] a reverse-biased PN junction sweeps carriers out of the
+      waveguide core under voltage. Fast (RC-limited to tens of GHz with optimized
+      doping profiles), low loss, and the default for high-speed datacom.
+      Phase-shift efficiency is modest: typical $V_\pi L \approx 1.5$--$2.5$~V$\cdot$cm
+      on production platforms.
+\item[Carrier injection] a forward-biased PIN structure floods carriers into the
+      intrinsic region. Large $\Delta n$ (low $V_\pi L$, often $<0.5$~V$\cdot$cm)
+      but slow: carrier recombination limits bandwidth to a few GHz without
+      pre-emphasis. Used in low-speed tuning (ring heater replacement) and
+      variable optical attenuators, not for PAM4 data modulation at 100G+/lane.
+\end{description}
+
+The key figure of merit is \term{$V_\pi L$}: the product of the half-wave voltage
+$V_\pi$ (the voltage that produces a $\pi$ phase shift) and the phase-shifter
+length $L$. Lower $V_\pi L$ means either a shorter device (less loss, smaller
+footprint) or a lower drive voltage (easier on the driver). Carrier-depletion
+silicon sits at $V_\pi L \approx 1.5$--$2.5$~V$\cdot$cm; thin-film lithium
+niobate (\Cref{sec:tfln-mzm}) reaches $\approx 1$~V$\cdot$cm via the Pockels
+effect.
+
+\subsection{Electro-optic bandwidth}
+\label{sec:eo-bw}
+
+\term{EO bandwidth} is the frequency at which the modulator's optical response
+($S_{21}$, measured as the ratio of detected optical modulation to applied RF
+voltage) falls by 3~dB from its low-frequency value. It is the primary speed
+metric and depends on:
+
+\begin{itemize}
+\item \textbf{Junction RC.} Depletion capacitance $C_j$ and series resistance $R_s$
+      set an intrinsic roll-off $f_{3\mathrm{dB}} \approx 1/(2\pi R_s C_j)$. Thinner
+      junctions (lower $C_j$) raise BW but reduce overlap with the optical mode
+      (higher $V_\pi L$). Typical design targets: $C_j \approx 0.2$--$0.4$~pF/mm,
+      $R_s \approx 5$--$15$~$\Omega\cdot$mm.
+\item \textbf{Velocity mismatch (MZM).} In a traveling-wave electrode (TWE) design,
+      microwave and optical group indices must match or the modulation signal walks
+      off the optical pulse. Si MZMs typically use slow-wave or loaded-line
+      electrodes to equalize indices.
+\item \textbf{Photon lifetime (ring).} A high-$Q$ ring stores photons longer,
+      narrowing the optical passband and creating an EO bandwidth ceiling at
+      $f_{3\mathrm{dB}} \approx f_\mathrm{res}/(2Q)$ where $f_\mathrm{res}$ is the
+      resonance frequency. Inductive peaking (T-coils) extends EO BW beyond the
+      intrinsic cavity limit.
+\end{itemize}
+
+Production Si MZMs quote 70--100+~GHz; peaked ring modulators reach
+90--110+~GHz in conference demos (\Cref{sec:siring}).
+
+\subsection{Insertion loss}
+\label{sec:il-mod}
+
+\term{Insertion loss} (IL) is the optical power lost traversing the modulator in
+its on-state. It subtracts directly from the link budget
+(\Cref{sec:link-budget}). Sources:
+
+\begin{itemize}
+\item \textbf{Waveguide propagation loss:} $\sim$1--3~dB/cm in production 220~nm SOI
+      rib waveguides (doping-dependent; heavier doping for lower $V_\pi L$ raises
+      free-carrier absorption).
+\item \textbf{Coupling loss:} fiber-to-chip (grating coupler $\sim$2--4~dB; edge
+      coupler $\sim$1--2~dB) and splitter/combiner ($<$0.5~dB for a 3-dB MMI).
+\item \textbf{Phase-shifter excess loss:} doped silicon absorbs; carrier-depletion
+      adds $\sim$3--8~dB/cm depending on doping concentration. Shorter phase
+      shifters (lower $V_\pi L$) trade this against $V_\pi$.
+\end{itemize}
+
+Total on-chip IL for a Si MZM (including splitters) lands at $\sim$2--5~dB;
+a single ring modulator typically adds $\sim$1--3~dB at the through port on
+resonance. Every dB of IL is a dB off the transmitter OMA and must be recovered
+by higher launch power or tighter receiver sensitivity (\Cref{sec:sensitivity}).
+
+\subsection{Mach--Zehnder modulators in silicon}
+\label{sec:siph-mzm}
+
+A silicon MZM splits light into two arms, applies opposite phase shifts
+(push-pull), and recombines at a coupler. Intensity modulation arises from
+constructive/destructive interference. Advantages over resonant devices:
+
+\begin{itemize}
+\item \textbf{Broadband:} flat passband, no wavelength lock needed. Channel
+      assignment is set by the laser, not the modulator.
+\item \textbf{Linear transfer:} the sine-squared MZM transfer function is
+      well-characterized for PAM4 linearity budgets.
+\item \textbf{Temperature-insensitive:} no resonance to drift with thermal
+      transients (contrast with rings, \Cref{sec:siring}).
+\end{itemize}
+
+Trade-offs: mm-scale device length (large footprint), higher IL than a ring,
+and the need for a matched traveling-wave electrode (TWE) with velocity-matched
+microwave and optical group indices. At 224~GBd the 112~GHz Nyquist pushes
+against the velocity-match and RC limits of current production processes; peaking
+and advanced electrode co-design are active research areas
+(\Cref{sec:simzm}).
+
+\subsection{Ring modulators in silicon}
+\label{sec:siph-ring}
+
+A microring modulator couples a bus waveguide to a closed-loop resonator via
+evanescent fields. On resonance, light drops into the ring and is strongly
+attenuated at the through port; off resonance, light passes. Data modulation
+shifts the resonance wavelength via carrier depletion in the ring's PN junction.
+
+Advantages:
+
+\begin{itemize}
+\item \textbf{Compact:} ring radius 5--20~$\mu$m; hundreds fit on a die for dense
+      WDM (\Cref{ch:wdm}).
+\item \textbf{Low drive voltage:} resonance enhancement means small $\Delta n$
+      produces large extinction; effective $V_\pi L$ is much lower than an MZM.
+\item \textbf{WDM-native:} each ring modulates one $\lambda$; add rings to add
+      channels without extra MUX stages.
+\end{itemize}
+
+Trade-offs:
+
+\begin{itemize}
+\item \textbf{Wavelength lock:} resonance drifts $\sim$10~GHz/$^\circ$C in silicon.
+      Each ring needs active thermal tuning or laser-to-ring feedback
+      (\Cref{sec:locking-techniques}).
+\item \textbf{Photon-lifetime BW limit:} high $Q$ improves efficiency but caps EO
+      BW. Inductive peaking extends usable BW to 90--110+~GHz in demos
+      (\Cref{sec:siring}).
+\item \textbf{Thermal crosstalk:} adjacent-ring heaters shift neighbors in dense
+      arrays (\Cref{sec:thermal-xtalk}).
+\end{itemize}
+
+\subsection{Choosing MZM versus ring}
+
+\begin{table}[ht]
+\centering
+\caption{Si MZM vs.\ ring modulator trade-offs.\label{tab:mzm-vs-ring}}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Attribute & Si MZM & Si ring \\
+\midrule
+Footprint & mm-scale & $\mu$m-scale \\
+$V_\pi L$ (effective) & 1.5--2.5~V$\cdot$cm & $<$0.1~V$\cdot$cm (resonance-enhanced) \\
+EO BW (production) & 70--100+~GHz & 50--90~GHz (peaked: 110+~GHz) \\
+Wavelength lock & not needed & required \\
+WDM scaling & one per $\lambda$ + MUX & inherently WDM-native \\
+On-chip IL & 2--5~dB & 1--3~dB \\
+Temperature sensitivity & low & high ($\sim$10~GHz/$^\circ$C) \\
+Best fit & single-$\lambda$ DR/FR, broad-passband & CPO, dense WDM, scale-up optical I/O \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Use an MZM when the link is single-wavelength DR/FR and you want a flat passband
+that avoids control loops. Use a ring when many $\lambda$ must fit on one PIC and
+modulator area dominates, as in CPO WDM engines and scale-up optical I/O
+(\Cref{sec:siring,sec:cpo-status}). Use TFLN when native 224~GBd bandwidth is
+needed and silicon cannot close the 112~GHz Nyquist without heavy peaking
+(\Cref{sec:tfln-mzm}).
+
+\keyidea{Silicon photonics modulates light by changing free-carrier density in a PN
+junction (plasma dispersion). Carrier depletion is fast but weak ($V_\pi L \approx
+1.5$--$2.5$~V$\cdot$cm); carrier injection is strong but slow. MZMs are broadband
+and temperature-insensitive but large; rings are compact and WDM-native but need
+wavelength lock and have a photon-lifetime BW ceiling. Both share the same SOI
+fab flow, so the choice is architectural, not process-limited.}
+
 \section{Laser requirements: from roadmap to specs}
 \label{sec:laser-reqs}
 

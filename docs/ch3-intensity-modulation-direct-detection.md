@@ -466,7 +466,7 @@ When full LPO will not close on the target host, *LRO*/*TRO* (retimed TX, linear
 
 ##### CPO at the same SerDes generation.
 
-Co-packaged engines shipping in 2025--26 typically run *200 Gb/s per optical channel* on 100G/200G SerDes into microring banks with external lasers ([9.10](#sec:cpo-status)): same CEI-224G-class shoreline as faceplate 224G, but the lossy pluggable connector is gone and the laser service model moves to ELSFP ([5.8](#sec:elsfp)). Deployment corners shift from cage thermals to FAU mate, lock hold under neighbor heaters, and ELS hot-swap ([\[tab:prod-corners,ch:wdm\]](#tab:prod-corners,ch:wdm)). The electrical alphabet is still 224G PAM4; the hard part is packaging and wavelength control.
+Co-packaged engines shipping in 2025--26 typically run *200 Gb/s per optical channel* on 100G/200G SerDes into microring banks with external lasers ([9.10](#sec:cpo-status)): same CEI-224G-class shoreline as faceplate 224G, but the lossy pluggable connector is gone and the laser service model moves to ELSFP ([5.9](#sec:elsfp)). Deployment corners shift from cage thermals to FAU mate, lock hold under neighbor heaters, and ELS hot-swap ([\[tab:prod-corners,ch:wdm\]](#tab:prod-corners,ch:wdm)). The electrical alphabet is still 224G PAM4; the hard part is packaging and wavelength control.
 
 **Key idea.** 224G deployment is a margin problem, not a modulation problem. Close COM and TDECQ together under production-representative corners; use LRO when full LPO will not; treat CPO as the same SerDes generation with a shorter electrical path and a harder laser/lock service model.
 
@@ -623,7 +623,7 @@ EML wins on cost and integration through 200G/lane. Above that, external modulat
 
 ##### Modulator drivers: requirements, records, outlook.
 
-Every external modulator (Si MZM, TFLN, ring, EAM) needs an RF path that delivers enough *linear* swing at the target baud. That path is either a dedicated SiGe/BiCMOS *modulator driver* die, or (for LPO) the host SerDes itself. Laser *bias* drivers are a different circuit and a different noise budget ([5.6](#sec:laser-drivers)). Do not share the modulator driver's switching returns with the CW bias rail.
+Every external modulator (Si MZM, TFLN, ring, EAM) needs an RF path that delivers enough *linear* swing at the target baud. That path is either a dedicated SiGe/BiCMOS *modulator driver* die, or (for LPO) the host SerDes itself. Laser *bias* drivers are a different circuit and a different noise budget ([5.7](#sec:laser-drivers)). Do not share the modulator driver's switching returns with the CW bias rail.
 
 ##### What the driver must deliver.
 

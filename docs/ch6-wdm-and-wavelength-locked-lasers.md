@@ -113,7 +113,7 @@ Digital supervisory loop
 
 ##### What you trim.
 
-Three actuators show up repeatedly, and the bring-up order usually starts with the slowest, highest-authority knob. Laser TEC / temperature moves the whole comb or a single DFB on the frequency axis. Laser bias current is the fine wavelength trim (and also changes power), so watch RIN and SMSR when you use it as a locker ([5.6](#sec:laser-drivers)). Ring heaters park each microring onto its assigned $\lambda$ and are the per-channel control in dense banks ([6.5](#sec:thermal-xtalk)).
+Three actuators show up repeatedly, and the bring-up order usually starts with the slowest, highest-authority knob. Laser TEC / temperature moves the whole comb or a single DFB on the frequency axis. Laser bias current is the fine wavelength trim (and also changes power), so watch RIN and SMSR when you use it as a locker ([5.7](#sec:laser-drivers)). Ring heaters park each microring onto its assigned $\lambda$ and are the per-channel control in dense banks ([6.5](#sec:thermal-xtalk)).
 
 ##### Capture versus hold.
 
@@ -137,7 +137,7 @@ Budget heater range with headroom for crosstalk, not just for the coldest and ho
 
 ## External multi-wavelength sources (CW-WDM)
 
-Dense WDM with ring modulators needs a source of many clean, stable wavelengths. The industry answer is a *disaggregated* external laser: a single multi-wavelength continuous-wave (CW) module supplies a comb of wavelengths over fiber to the photonic engine, where microrings imprint data onto each one. The *CW-WDM MSA* standardizes those sources for AI, HPC, and high-density optics . Source-side measurement detail (per-channel power, SMSR, RIN, lock under neighbor heat) is in [5.10](#sec:cwwdm-laser); this section is the architecture contract.
+Dense WDM with ring modulators needs a source of many clean, stable wavelengths. The industry answer is a *disaggregated* external laser: a single multi-wavelength continuous-wave (CW) module supplies a comb of wavelengths over fiber to the photonic engine, where microrings imprint data onto each one. The *CW-WDM MSA* standardizes those sources for AI, HPC, and high-density optics . Source-side measurement detail (per-channel power, SMSR, RIN, lock under neighbor heat) is in [5.11](#sec:cwwdm-laser); this section is the architecture contract.
 
 ##### What the MSA specifies (and what it does not).
 
@@ -187,7 +187,7 @@ The SuperNova approach builds its comb from an array of discrete lasers, one dis
 
 **Gain-switched and quantum-dash combs** sit between the two: a directly driven laser produces a flatter, lower-line-count comb with simple electronics. They have reached multi-terabit aggregate rates in the lab but see less datacom traction than QD-MLLs.
 
-For any of them the contract from the MSA does not change: the source must hold per-line power flatness, SMSR, RIN, and grid placement across temperature with every port active ([5.10](#sec:cwwdm-laser)). A comb that delivers 32 lines but drops 6 dB across the band, or whose edge lines miss the grid, buys nothing over an array of DFBs the PIC already knows how to drive.
+For any of them the contract from the MSA does not change: the source must hold per-line power flatness, SMSR, RIN, and grid placement across temperature with every port active ([5.11](#sec:cwwdm-laser)). A comb that delivers 32 lines but drops 6 dB across the band, or whose edge lines miss the grid, buys nothing over an array of DFBs the PIC already knows how to drive.
 
 ### Gain and power distribution across the bank
 
@@ -213,7 +213,7 @@ Instruments and BER methods live in [7](#ch:validation). What is special to WDM 
 
 ##### Bring-up order.
 
-1.  **Grid ID:** confirm each CW line (or DFB) is on the assigned channel with an OSA / wavemeter ([5.10](#sec:cwwdm-laser)).
+1.  **Grid ID:** confirm each CW line (or DFB) is on the assigned channel with an OSA / wavemeter ([5.11](#sec:cwwdm-laser)).
 
 2.  **Coarse align:** park rings near resonance with open-loop heater sweeps; check through/drop monitors.
 

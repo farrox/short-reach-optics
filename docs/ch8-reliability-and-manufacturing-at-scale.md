@@ -43,11 +43,11 @@ GR-468 covers active optoelectronics. Its companion, *Telcordia GR-1221-CORE* (G
 
 ##### ATP sketch: EML module or ELSFP.
 
-A short acceptance sketch lives with the qual hooks in [5.8](#sec:elsfp); the full ATP-as-contract, SPC, and 8D workflow is in [8.7](#sec:supplier-exec). Failures that pass qual but fail field usually sit in derating policy or connector contamination ([\[sec:laser-aging,sec:fleet-triage\]](#sec:laser-aging,sec:fleet-triage)).
+A short acceptance sketch lives with the qual hooks in [5.9](#sec:elsfp); the full ATP-as-contract, SPC, and 8D workflow is in [8.7](#sec:supplier-exec). Failures that pass qual but fail field usually sit in derating policy or connector contamination ([\[sec:laser-aging,sec:fleet-triage\]](#sec:laser-aging,sec:fleet-triage)).
 
 ## Electronics reliability: driver, TIA, and DSP silicon
 
-GR-468 covers the optoelectronic parts of the link: the laser die, the photodiode, and the hermetic or non-hermetic package around them. The modulator driver, TIA, retimer, and DSP ([\[sec:drivers,sec:pd-tia\]](#sec:drivers,sec:pd-tia)) are ordinary CMOS or SiGe BiCMOS ICs, and they wear out and fail by a different, better-documented set of mechanisms. Treat them with the semiconductor industry's own qualification language, not with Arrhenius laser-aging math borrowed from [5.7](#sec:laser-aging).
+GR-468 covers the optoelectronic parts of the link: the laser die, the photodiode, and the hermetic or non-hermetic package around them. The modulator driver, TIA, retimer, and DSP ([\[sec:drivers,sec:pd-tia\]](#sec:drivers,sec:pd-tia)) are ordinary CMOS or SiGe BiCMOS ICs, and they wear out and fail by a different, better-documented set of mechanisms. Treat them with the semiconductor industry's own qualification language, not with Arrhenius laser-aging math borrowed from [5.8](#sec:laser-aging).
 
 ##### JESD47: the silicon-side GR-468.
 
@@ -77,11 +77,11 @@ Fold IC-level qual into the same acceptance and SPC structure used for the laser
 
 ## Wear-out modes to know
 
-Arrhenius math, derating, and the worked FIT example live in [5.7](#sec:laser-aging). This section is the mechanism catalog: how each failure shows up in ATP and telemetry, and which triage bucket owns it ([7.10](#sec:fleet-triage)). Do not run process CAPA on a wear-out part, and do not burn FIT math on a dirty connector.
+Arrhenius math, derating, and the worked FIT example live in [5.8](#sec:laser-aging). This section is the mechanism catalog: how each failure shows up in ATP and telemetry, and which triage bucket owns it ([7.10](#sec:fleet-triage)). Do not run process CAPA on a wear-out part, and do not burn FIT math on a dirty connector.
 
 ##### Infant mortality versus wear-out versus packaging.
 
-Field failures come in three clocks, and mixing them up wastes CAPA. Infant mortality is early fails from latent defects; burn-in and HTOL screens remove them before ship ([8.2.0.0.1](#sec:gr468)). Wear-out is gradual or sudden end-of-life in the laser or EAM under temperature, current, and optical power, projected with Arrhenius and derating ([5.7](#sec:laser-aging)). Packaging and assembly faults (FAU align, epoxy creep, solder voids, connector wear) often dominate field returns once lasers are screened ([8.5](#sec:photonic-packaging)). Destructive physical analysis (facet cross-section, EDX, FAU section) is required when the signature is ambiguous or when you need evidence for supplier 8D ([8.7](#sec:supplier-exec)).
+Field failures come in three clocks, and mixing them up wastes CAPA. Infant mortality is early fails from latent defects; burn-in and HTOL screens remove them before ship ([8.2.0.0.1](#sec:gr468)). Wear-out is gradual or sudden end-of-life in the laser or EAM under temperature, current, and optical power, projected with Arrhenius and derating ([5.8](#sec:laser-aging)). Packaging and assembly faults (FAU align, epoxy creep, solder voids, connector wear) often dominate field returns once lasers are screened ([8.5](#sec:photonic-packaging)). Destructive physical analysis (facet cross-section, EDX, FAU section) is required when the signature is ambiguous or when you need evidence for supplier 8D ([8.7](#sec:supplier-exec)).
 
 ##### Mechanism map.
 
@@ -111,7 +111,7 @@ Field failures come in three clocks, and mixing them up wastes CAPA. Infant mort
   Connector wear / contamination   ORL creep after repeated mate cycles; RIN floor rise                  Mate-cycle count vs IEC 61300-2-2 rating; endface grade (IEC 61300-3-35)   Manufacturability / packaging
   ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**Table .** Wear-out and packaging mechanisms versus observables. Arrhenius projection and derating for the laser rows: [5.7](#sec:laser-aging). Electronics stress qualification: [8.3](#sec:ic-reliability). Connector reliability: [8.5.0.0.1](#sec:connector-reliability). Field classification workflow: [7.10](#sec:fleet-triage).
+**Table .** Wear-out and packaging mechanisms versus observables. Arrhenius projection and derating for the laser rows: [5.8](#sec:laser-aging). Electronics stress qualification: [8.3](#sec:ic-reliability). Connector reliability: [8.5.0.0.1](#sec:connector-reliability). Field classification workflow: [7.10](#sec:fleet-triage).
 
 *Catastrophic optical damage* (COD) is the sudden facet failure under optical or electrical overstress. Gradual facet and active-region degradation move threshold and slope on a slower clock. EAM aging shifts the absorption curve and shows up as transmitter and dispersion eye closure quaternary (TDECQ) or RLM drift before the DFB LIV looks dead. TEC and lock failures mimic optical wear-out until you bisect heater versus laser ([6.7](#sec:lock-validation)). Coupling and FAU faults belong with packaging, not with Arrhenius $E_a$ arguments.
 
@@ -188,7 +188,7 @@ ATP and the requirements doc are the contract. Write both and keep them versione
   -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   ATP item                             Instrument / method                            Pass intent                                           Ties to
   ------------------------------------ ---------------------------------------------- ----------------------------------------------------- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  LIV ($I_\mathrm{th}$, slope, kink)   SMU + power meter                              kink-free bias window at rated $T$                    wear-out, derate ([5.5](#sec:laser-params))
+  LIV ($I_\mathrm{th}$, slope, kink)   SMU + power meter                              kink-free bias window at rated $T$                    wear-out, derate ([5.6](#sec:laser-params))
 
   SMSR                                 OSA                                            single-mode vs. spec floor                            modal noise, aging
 
@@ -255,7 +255,7 @@ Your job in those meetings is to name the measurement that would kill the gate. 
 
 ## From component FIT to fabric availability
 
-The FIT arithmetic in [5.7.0.0.4](#sec:fit-example) gives a rate: about $0.6$ laser failures per day for a fleet of $5\times10^5$ lasers at 50 FIT. That number sizes the RMA pipeline and the ELS spares bin ([5.8](#sec:elsfp)), but it does not say what a failure costs or how a running job survives one. Two facts turn a per-component rate into a fabric problem.
+The FIT arithmetic in [5.8.0.0.4](#sec:fit-example) gives a rate: about $0.6$ laser failures per day for a fleet of $5\times10^5$ lasers at 50 FIT. That number sizes the RMA pipeline and the ELS spares bin ([5.9](#sec:elsfp)), but it does not say what a failure costs or how a running job survives one. Two facts turn a per-component rate into a fabric problem.
 
 First, a training or large inference job is synchronous. A collective ([9.7](#sec:collectives)) waits for its slowest member, so a single dead or slow link stalls the whole group, not just one endpoint ([9.6](#sec:inference-bottlenecks)). A link that flaps for a second is a stall for every accelerator in that collective. The optical FIT the earlier chapters budget therefore matters out of proportion to its share of the parts count.
 
@@ -277,11 +277,11 @@ Topology reconfiguration.
 
 Sparing and field service.
 
-: Hot spare nodes and lanes cover the interval between failure and repair. Field-replaceable external lasers ([5.8](#sec:elsfp)) make a dead laser a faceplate swap rather than a fabric outage, which is the architectural reason ELS decouples laser FIT from switch FIT. The connector mating-cycle and endface budget ([8.5.0.0.1](#sec:connector-reliability)) sets how many of those swaps the plant survives.
+: Hot spare nodes and lanes cover the interval between failure and repair. Field-replaceable external lasers ([5.9](#sec:elsfp)) make a dead laser a faceplate swap rather than a fabric outage, which is the architectural reason ELS decouples laser FIT from switch FIT. The connector mating-cycle and endface budget ([8.5.0.0.1](#sec:connector-reliability)) sets how many of those swaps the plant survives.
 
-The cost of a failure closes the loop. A hard interruption is lost compute plus the time to detect, reroute or reschedule, and restart from the last checkpoint. Fast detection and reroute shrink that lost time, which is the fabric-level reason the module work in this chapter pays off: derating ([5.7](#sec:laser-aging)), burn-in and screens ([8.2.0.0.1](#sec:gr468)), and a tight ATP ([8.7](#sec:supplier-exec)) lower the failure rate, and a resilient fabric lowers the cost of each failure that slips through. The two multiply.
+The cost of a failure closes the loop. A hard interruption is lost compute plus the time to detect, reroute or reschedule, and restart from the last checkpoint. Fast detection and reroute shrink that lost time, which is the fabric-level reason the module work in this chapter pays off: derating ([5.8](#sec:laser-aging)), burn-in and screens ([8.2.0.0.1](#sec:gr468)), and a tight ATP ([8.7](#sec:supplier-exec)) lower the failure rate, and a resilient fabric lowers the cost of each failure that slips through. The two multiply.
 
-**Key idea.** Component FIT sets the failure *rate*; the fabric sets the failure *cost*. A synchronous collective makes one bad link everyone's stall ([9.7](#sec:collectives)), and at cluster scale failures are continuous: Meta's Llama 3 run saw a failure about every three hours, network faults 8.4% of them, at roughly 90% effective uptime . The fabric survives that with redundant rails, FEC and fast reroute, OCS topology reconfiguration ([9.9](#sec:ocs)), and field-replaceable lasers ([5.8](#sec:elsfp)). Lowering per-link FIT and lowering per-failure cost multiply, which is why link reliability sets how large a dependable fabric can grow.
+**Key idea.** Component FIT sets the failure *rate*; the fabric sets the failure *cost*. A synchronous collective makes one bad link everyone's stall ([9.7](#sec:collectives)), and at cluster scale failures are continuous: Meta's Llama 3 run saw a failure about every three hours, network faults 8.4% of them, at roughly 90% effective uptime . The fabric survives that with redundant rails, FEC and fast reroute, OCS topology reconfiguration ([9.9](#sec:ocs)), and field-replaceable lasers ([5.9](#sec:elsfp)). Lowering per-link FIT and lowering per-failure cost multiply, which is why link reliability sets how large a dependable fabric can grow.
 
 
 <div class="nav-links">
