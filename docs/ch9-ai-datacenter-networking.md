@@ -698,5 +698,5 @@ The book quantifies two of its three themes. Power has a ledger in pJ/bit ([9.13
 <div class="nav-links">
   <a href="ch8-reliability-and-manufacturing-at-scale">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch10-abbreviations">Next &rarr;</a>
+  <a href="ch10-design-reviews-and-failure-modes">Next &rarr;</a>
 </div>

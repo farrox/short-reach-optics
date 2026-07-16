@@ -23,8 +23,9 @@ title: "Table of Contents"
 - [**7.** Optical validation](ch7-optical-validation)
 - [**8.** Reliability and manufacturing at scale](ch8-reliability-and-manufacturing-at-scale)
 - [**9.** AI datacenter networking](ch9-ai-datacenter-networking)
-- [**10.** Abbreviations](ch10-abbreviations)
-- [**11.** References](ch11-references)
+- [**10.** Design reviews and failure modes](ch10-design-reviews-and-failure-modes)
+- [**11.** Abbreviations](ch11-abbreviations)
+- [**12.** References](ch12-references)
 
 ---
 
