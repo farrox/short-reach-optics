@@ -121,7 +121,7 @@ Three actuators show up repeatedly, and the bring-up order usually starts with t
 
 ##### Failure signatures.
 
-Fleet failures often look like slow wavelength walk: drop monitor power falls, TDECQ rises on one $\lambda$, or one lane in a WDM bank drops out while neighbors stay up. Bisect laser versus ring by toggling TEC setpoint and ring heater independently (§ `sec:instruments,sec:fleet-triage,sec:lock-validation`).
+When a loop loses lock, bisect laser versus ring by toggling the TEC setpoint and the ring heater independently (§ `sec:instruments,sec:fleet-triage,sec:lock-validation`). The one-lane and intermittent signatures this produces, and their causes, are catalogued in § `sec:wdm-how-fails`.
 
 ## Thermal crosstalk and heater budget
 

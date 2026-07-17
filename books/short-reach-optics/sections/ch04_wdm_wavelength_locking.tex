@@ -187,10 +187,10 @@ a 1~\textdegree C neighbor step is tens of GHz of resonance walk, which is a lar
 fraction of a 100--200~GHz grid slot (\Cref{sec:siring}).
 
 \paragraph{Failure signatures.}
-Fleet failures often look like slow wavelength walk: drop monitor power falls,
-TDECQ rises on one $\lambda$, or one lane in a WDM bank drops out while neighbors
-stay up. Bisect laser versus ring by toggling TEC setpoint and ring heater
-independently (\Cref{sec:instruments,sec:fleet-triage,sec:lock-validation}).
+When a loop loses lock, bisect laser versus ring by toggling the TEC setpoint and
+the ring heater independently (\Cref{sec:instruments,sec:fleet-triage,sec:lock-validation}).
+The one-lane and intermittent signatures this produces, and their causes, are
+catalogued in \Cref{sec:wdm-how-fails}.
 
 \section{Thermal crosstalk and heater budget}
 \label{sec:thermal-xtalk}

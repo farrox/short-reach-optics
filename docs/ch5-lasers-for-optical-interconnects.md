@@ -389,7 +389,7 @@ Aging (SMSR collapse, mode hopping)
 
 Thermal runaway
 
-: A positive feedback loop where rising junction temperature raises leakage current, which raises self-heating further, until the diode overheats and fails catastrophically. Triggered by a failed or saturated TEC, a blocked heat path, or operation above the rated thermal class. Distinct from ordinary wear-out because it is fast (minutes, not months) once it starts; the failure-analysis handbook has the full symptom-to-cause breakdown (§ `sec:fm-thermal-runaway`).
+: A positive feedback loop where higher junction temperature raises threshold current and cuts slope efficiency, so more drive power turns to heat for the same optical output, raising temperature further until the TEC saturates and the laser rolls over. Triggered by a failed or saturated TEC, a blocked heat path, or operation above the rated thermal class. Distinct from ordinary wear-out because it is fast (minutes, not months) once it starts; the failure-analysis handbook has the full symptom-to-cause breakdown (§ `sec:fm-thermal-runaway`).
 
 Monitor photodiode failure
 
@@ -603,11 +603,11 @@ A laser is an active device with wear-out physics, which makes it both the first
 
 ### How it is measured
 
-Qualify the laser as a set of curves, not a room-temperature data-sheet point. Measure light-current-voltage (LIV), threshold current, slope efficiency, and rollover with a source-measure unit and power meter. Use an optical spectrum analyzer (OSA) for wavelength and side-mode suppression ratio (SMSR), a calibrated photodiode and spectrum analyzer for RIN, and a DCA for EML extinction, RLM, and TDECQ. Repeat across case temperature, bias, optical return loss, and aging time. The measurement details and ATP mapping are in § `sec:laser-params,tab:laser-meas,tab:atp-laser`; qualification uses the mechanism-based stress plan in § `sec:laser-aging,sec:gr468` .
+Qualify the laser as a set of curves across temperature, bias, ORL, and age, not a room-temperature data-sheet point. The measurement playbook (LIV, SMSR, RIN, wavelength, and EAM checks with their instruments and pass/fail intent) is in § `sec:laser-params,tab:laser-meas`; the stress classes that project field life are in § `sec:how-lasers-qualified,sec:laser-aging,sec:gr468` .
 
 ### How it fails
 
-Separate sudden death from gradual drift. Sudden dark output can be catastrophic optical damage, an open interconnect, electrostatic damage, or a failed bias path. Gradual failures include threshold rise, slope loss, SMSR collapse, mode hopping, wavelength drift, and EAM bias creep. Monitor-photodiode and thermoelectric-cooler failures can make a healthy laser look unstable because the control loop is using bad feedback or has run out of thermal range. Manufacturing adds die, wafer, lot, and assembly spread in every one of these terms.
+The six field-return mechanisms are catalogued in § `sec:how-lasers-fail`: threshold rise, slope droop, wavelength drift, aging (SMSR collapse and mode hopping), thermal runaway, and monitor-photodiode failure. Manufacturing adds die, wafer, lot, and assembly spread to every one. The mechanism that most often misleads triage is a healthy laser behind a bad feedback sensor, so it gets the worked callout below.
 
 \> \*\*Failure mode: Monitor photodiode drift\*\* \> \> \*\*Symptoms.\*\* Reported power falls or the bias loop moves, but an external power meter does not show the same change. \> \> \*\*Likely causes.\*\* Monitor-PD responsivity drift, transimpedance gain error, contamination in the monitor path, or a bad calibration coefficient. \> \> \*\*Measurements.\*\* External power meter, monitor current, bias current, LIV, and loop error versus temperature. \> \> \*\*Mitigations.\*\* Repair the monitor path or calibration, add disagreement alarms, and do not raise laser bias to compensate for a false reading.
 
