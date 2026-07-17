@@ -19,6 +19,43 @@ OUTPUT_FILE = os.path.join(BUILD_DIR, "combined_for_html.tex")
 # --- URL map from citeurls.tex ---
 CITE_URLS: dict[str, str] = {}
 
+# --- Label→number map from .aux ---
+LABEL_MAP: dict[str, tuple[str, str]] = {}  # key → (type, number)
+
+
+def parse_aux_labels():
+    """Parse .build/main.aux for \\newlabel entries to build label→number map."""
+    aux_path = os.path.join(BUILD_DIR, "main.aux")
+    if not os.path.exists(aux_path):
+        print("  WARNING: main.aux not found; cross-references will not resolve.")
+        return
+    with open(aux_path, "r") as f:
+        content = f.read()
+    # Match \newlabel{key}{{number}{page}{title}{type.number}{}}
+    # Example: \newlabel{sec:bringup}{{7.9}{124}{Module and system bring-up}{section.7.9}{}}
+    for m in re.finditer(
+        r"\\newlabel\{([^}]+)\}\{\{([^}]*)\}\{[^}]*\}\{[^}]*\}\{([^}]*)\}\{[^}]*\}\}",
+        content,
+    ):
+        key = m.group(1)
+        number = m.group(2)
+        type_dot_num = m.group(3)  # e.g. "section.7.9", "chapter.7", "table.7.2"
+        if key.endswith("@cref"):
+            continue
+        # Determine type prefix for display
+        if type_dot_num.startswith("chapter"):
+            label_type = "Chapter"
+        elif type_dot_num.startswith("table"):
+            label_type = "Table"
+        elif type_dot_num.startswith("figure"):
+            label_type = "Figure"
+        elif type_dot_num.startswith("equation"):
+            label_type = "Eq."
+        else:
+            label_type = "§"
+        LABEL_MAP[key] = (label_type, number)
+    print(f"  Loaded {len(LABEL_MAP)} label→number mappings from main.aux")
+
 
 def parse_citeurls():
     """Extract key→url mappings from sections/citeurls.tex."""
@@ -431,9 +468,58 @@ def apply_transforms(content: str) -> str:
         flags=re.DOTALL,
     )
 
-    # \Cref{...} and \cref{...} → section/chapter references (pandoc may not resolve)
-    # Convert to plain "Section X" style text that pandoc can keep
-    content = re.sub(r"\\[Cc]ref\{([^}]*)\}", r"§\\,\\texttt{\1}", content)
+    # \Cref{...} and \cref{...} → resolved cross-references from .aux
+    def resolve_cref(m):
+        keys = m.group(1).split(",")
+        parts = []
+        seen = set()
+        for key in keys:
+            key = key.strip()
+            if key in LABEL_MAP:
+                ltype, num = LABEL_MAP[key]
+                if ltype == "§":
+                    text = f"§{num}"
+                else:
+                    text = f"{ltype}~{num}"
+            else:
+                # Fallback: strip prefix and humanize
+                text = key.replace("sec:", "").replace("ch:", "Ch. ").replace("tab:", "Table ").replace("fig:", "Fig. ")
+            if text not in seen:
+                seen.add(text)
+                parts.append(text)
+        return ", ".join(parts)
+
+    content = re.sub(r"\\[Cc]ref\{([^}]*)\}", resolve_cref, content)
+
+    # Fix table numbers: replace \thetable with the number from the nearest \label
+    def resolve_thetable(content: str) -> str:
+        """Replace \\thetable with the table number from the nearest preceding \\label{tab:...}."""
+        # Find all \label{tab:...} positions and their resolved numbers
+        label_positions = []
+        for m in re.finditer(r"\\label\{(tab:[^}]+)\}", content):
+            key = m.group(1)
+            if key in LABEL_MAP:
+                _, num = LABEL_MAP[key]
+                label_positions.append((m.start(), num))
+
+        # Replace each \thetable with the number of the closest preceding table label
+        result = []
+        last_end = 0
+        for m in re.finditer(r"\\thetable", content):
+            # Find the closest preceding label
+            pos = m.start()
+            num = "?"
+            for lpos, lnum in reversed(label_positions):
+                if lpos < pos:
+                    num = lnum
+                    break
+            result.append(content[last_end:m.start()])
+            result.append(num)
+            last_end = m.end()
+        result.append(content[last_end:])
+        return "".join(result)
+
+    content = resolve_thetable(content)
 
     # Remove \cite{...} → just strip (references are in PDF)
     content = re.sub(r"\\cite\{[^}]*\}", "", content)
@@ -449,6 +535,9 @@ def main():
     # Parse URL map
     parse_citeurls()
     print(f"  Loaded {len(CITE_URLS)} citation URLs")
+
+    # Parse label→number map from .aux (requires prior compilation)
+    parse_aux_labels()
 
     # Expand inputs
     main_tex = os.path.join(BOOK_DIR, "main.tex")

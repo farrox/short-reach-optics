@@ -27,7 +27,7 @@ That last point is the hook for this book. Purpose-built inference silicon does 
 
 ## Why inference makes the interconnect matter
 
-Inference is not training. Once a model is trained, serving it is dominated by two phases with very different bottlenecks (developed fully in § `ch:networking`):
+Inference is not training. Once a model is trained, serving it is dominated by two phases with very different bottlenecks (developed fully in Chapter 9):
 
 Prefill
 
@@ -55,11 +55,11 @@ Memory-limited
 
 Network-limited
 
-: Sharded frontier models (2020--present). Tensor, pipeline, and expert parallelism put collectives on the critical path; fabric bandwidth and tail latency now limit realized compute use (§ `sec:collectives,sec:inference-bottlenecks`).
+: Sharded frontier models (2020--present). Tensor, pipeline, and expert parallelism put collectives on the critical path; fabric bandwidth and tail latency now limit realized compute use (§9.7, §9.6).
 
 Power-limited
 
-: Gigawatt-class deployments (emerging). Site megawatts cap total capacity; every pJ/bit the interconnect saves is a watt returned to compute (§ `sec:power`).
+: Gigawatt-class deployments (emerging). Site megawatts cap total capacity; every pJ/bit the interconnect saves is a watt returned to compute (§9.13).
 
 The bottleneck did not replace the previous one; it stacked on top. A modern cluster is simultaneously memory-bandwidth-bound in decode, network-bound in collectives, and power-bound at the site. The interconnect sits at the intersection of the last two, which is why this book treats optics as infrastructure rather than as a module datasheet exercise.
 
@@ -69,7 +69,7 @@ An accelerator does useful work only while its operands arrive on time. Model pa
 
 All-reduce
 
-: combines partial results across a group and returns the result to every member. The slowest path can hold the whole group at the synchronization point (§ `sec:collectives`).
+: combines partial results across a group and returns the result to every member. The slowest path can hold the whole group at the synchronization point (§9.7).
 
 All-to-all
 
@@ -89,7 +89,7 @@ The interconnect carries partial results between accelerators, and collectives m
 
 ### How it is measured
 
-At the system level: step time, collective latency, accelerator idle fraction, and tail behavior. At the link level: pre-FEC BER, FEC error distribution, optical power, module temperature, and flap count. At the architecture level: delivered bandwidth per watt, link count, and FIT-weighted availability (§ `sec:fleet-triage,sec:fit-example`).
+At the system level: step time, collective latency, accelerator idle fraction, and tail behavior. At the link level: pre-FEC BER, FEC error distribution, optical power, module temperature, and flap count. At the architecture level: delivered bandwidth per watt, link count, and FIT-weighted availability (§7.12, §5.10).
 
 ### How it fails
 
@@ -109,19 +109,19 @@ Layer 1: System
 
 Layer 2: Signal quality
 
-: What changed in the signal? Eye opening, jitter, noise, equalization margin, FEC error distribution. These are what the host and module already report (§ `sec:cmis,sec:fleet-triage`).
+: What changed in the signal? Eye opening, jitter, noise, equalization margin, FEC error distribution. These are what the host and module already report (§7.8, §7.12).
 
 Layer 3: Link budget
 
-: Where did margin disappear? Optical power, receiver sensitivity, insertion loss, extinction ratio, ORL. Walk the ledger from transmitter to receiver (§ `sec:link-budget`).
+: Where did margin disappear? Optical power, receiver sensitivity, insertion loss, extinction ratio, ORL. Walk the ledger from transmitter to receiver (§7.7).
 
 Layer 4: Subsystem
 
-: Which block is responsible? Laser, modulator, driver, photodiode, TIA, DSP, connector, fiber, or host SerDes. Bisect with loopbacks and golden swaps (§ `sec:debug,sec:bringup`).
+: Which block is responsible? Laser, modulator, driver, photodiode, TIA, DSP, connector, fiber, or host SerDes. Bisect with loopbacks and golden swaps (§7.10, §7.9).
 
 Layer 5: Physical root cause
 
-: What mechanism explains the failure? Aging, contamination, thermal stress, process variation, assembly defect, calibration error, firmware bug. This is where you open FA or 8D (§ `sec:supplier-exec`).
+: What mechanism explains the failure? Aging, contamination, thermal stress, process variation, assembly defect, calibration error, firmware bug. This is where you open FA or 8D (§8.10).
 
 Do not skip layers. A direct jump to root cause without first confirming the system symptom and localizing the subsystem wastes weeks on the wrong part. The pyramid is a discipline, not a checklist: each layer produces a measurement that either confirms or falsifies the hypothesis before you descend.
 
@@ -147,7 +147,7 @@ Do not skip layers. A direct jump to root cause without first confirming the sys
 
 ##### Debug.
 
-- Training throughput dropped after scaling. Where in the debugging pyramid (§ `sec:debug-pyramid`) do you start?
+- Training throughput dropped after scaling. Where in the debugging pyramid (§1.7) do you start?
 
 - How do you distinguish a network bottleneck from a compute or memory bottleneck using only host-visible telemetry?
 
@@ -167,19 +167,19 @@ Do not skip layers. A direct jump to root cause without first confirming the sys
 
 The chapters build from physics to fleet scale:
 
-1.  § `ch:firstprinciples,ch:imdd`: energy, IM/DD vocabulary, modulators, FEC, equalization.
+1.  Chapter 2, Chapter 3: energy, IM/DD vocabulary, modulators, FEC, equalization.
 
-2.  § `ch:models`: quantitative noise, RIN, sensitivity (use with § `sec:link-budget`).
+2.  Chapter 4: quantitative noise, RIN, sensitivity (use with §7.7).
 
-3.  § `ch:lasers`: light sources (DFB/EML, LIV/SMSR/RIN, aging, ELSFP/CW-WDM).
+3.  Chapter 5: light sources (DFB/EML, LIV/SMSR/RIN, aging, ELSFP/CW-WDM).
 
-4.  § `ch:wdm`: wavelength locking, thermal crosstalk, CW-WDM, on-chip MUX.
+4.  Chapter 6: wavelength locking, thermal crosstalk, CW-WDM, on-chip MUX.
 
-5.  § `ch:validation,ch:reliability`: measurement ladder, link budgets, qual, packaging.
+5.  Chapter 7, Chapter 8: measurement ladder, link budgets, qual, packaging.
 
-6.  § `ch:networking`: scale-up/out, pluggables, CPO/XPO, inference collectives.
+6.  Chapter 9: scale-up/out, pluggables, CPO/XPO, inference collectives.
 
-To use the book as a design drill, pick one link style (retimed 800G DR, LPO, or CPO WDM) and trace it end to end through § `sec:txrx-chain,sec:pluggables,sec:cpo-status`.
+To use the book as a design drill, pick one link style (retimed 800G DR, LPO, or CPO WDM) and trace it end to end through §3.2, §9.3, §9.10.
 
 
 <div class="nav-links">

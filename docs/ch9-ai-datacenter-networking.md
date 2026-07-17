@@ -29,7 +29,7 @@ Schematic AI compute node (one tray in a larger cluster). *Accelerators* are the
 
 ### Three networks, two that set the optics budget
 
-The OIF CEI-448G framework names *three* distinct networks in a large AI cluster . § `fig:scale-node` shows two; the third is easy to overlook:
+The OIF CEI-448G framework names *three* distinct networks in a large AI cluster . §9.1 shows two; the third is easy to overlook:
 
 Scale-up
 
@@ -47,7 +47,7 @@ Scale-up carries the majority of *interconnect* bandwidth inside a training job;
 
 ### Scale-up versus scale-out at a glance
 
-§ `tab:oif-scale` condenses OIF Table 1 (CEI-448G framework, §2.2): order-of- magnitude targets for node count, physical extent, and media type . Numbers are industry snapshots, not hard limits, but they explain why "optics inside the rack" and "optics between racks" arrive on different timelines.
+Table 9.1 condenses OIF Table 1 (CEI-448G framework, §2.2): order-of- magnitude targets for node count, physical extent, and media type . Numbers are industry snapshots, not hard limits, but they explain why "optics inside the rack" and "optics between racks" arrive on different timelines.
 
 []
 
@@ -67,11 +67,11 @@ Scale-up carries the majority of *interconnect* bandwidth inside a training job;
 | Media between racks         | AEC (adjacent racks)       | Optical (within row)       | Optical (pluggable or CPO on switch/NIC)           |
 +-----------------------------+----------------------------+----------------------------+----------------------------------------------------+
 
-**Table .** Scale-up vs. scale-out snapshots (adapted from OIF CEI-448G framework Table 1, 2025). Scale-up stays on copper as long as rack densification keeps channels short; scale-out is already optical at datacenter scale.
+**Table 9.1.** Scale-up vs. scale-out snapshots (adapted from OIF CEI-448G framework Table 1, 2025). Scale-up stays on copper as long as rack densification keeps channels short; scale-out is already optical at datacenter scale.
 
 ### Standards bodies: who owns what
 
-448G/lane signaling is not owned by one standards body, and that is by design. Electrical reach, Ethernet naming, connectors, and rack packaging evolved in different rooms; AI fabrics forced them to meet at the same lane rate. OIF's CEI-448G framework (§2.3) lists the groups that must align . § `tab:sdo-map` maps each body to the layer an optical engineer actually touches. The short version: OIF sets the electrical baud and reach classes; IEEE names the Ethernet optical PMD; UALink and UEC own scale-up and scale-out protocol stacks; SNIA and OCP decide connectors and where the optics physically live. The *LPO MSA* is not a standards body, but it publishes the only open end-to-end spec that stitches CEI Linear electrical limits to IEEE optical PMD limits for DSP-less modules (§ `sec:lpo-msa`). Prose below expands each row, OIF and non-OIF.
+448G/lane signaling is not owned by one standards body, and that is by design. Electrical reach, Ethernet naming, connectors, and rack packaging evolved in different rooms; AI fabrics forced them to meet at the same lane rate. OIF's CEI-448G framework (§2.3) lists the groups that must align . Table 9.2 maps each body to the layer an optical engineer actually touches. The short version: OIF sets the electrical baud and reach classes; IEEE names the Ethernet optical PMD; UALink and UEC own scale-up and scale-out protocol stacks; SNIA and OCP decide connectors and where the optics physically live. The *LPO MSA* is not a standards body, but it publishes the only open end-to-end spec that stitches CEI Linear electrical limits to IEEE optical PMD limits for DSP-less modules (§9.3.1). Prose below expands each row, OIF and non-OIF.
 
 []
 
@@ -101,7 +101,7 @@ Scale-up carries the majority of *interconnect* bandwidth inside a training job;
   DMTF / OpenConfig / SONiC   Management                 Box and fleet telemetry and config (Redfish, OpenConfig, SONiC); complement OIF CMIS module management
   ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**Table .** SDO and consortium roles at 448G/lane. The top six rows follow OIF CEI-448G §2.3; the 100G Lambda MSA, IBTA, IEEE 802.1, PCI-SIG/CXL, and the management stack are added for coverage beyond OIF's own list.
+**Table 9.2.** SDO and consortium roles at 448G/lane. The top six rows follow OIF CEI-448G §2.3; the 100G Lambda MSA, IBTA, IEEE 802.1, PCI-SIG/CXL, and the management stack are added for coverage beyond OIF's own list.
 
 ##### OIF.
 
@@ -109,7 +109,7 @@ Common Electrical I/O (*CEI*) Implementation Agreements are the modular electric
 
 ##### UALink Consortium.
 
-*UALink* specifies an open *scale-up* stack (transaction, data link, and physical layers) optimized for direct accelerator memory access, not IP/Ethernet . UALink 1.0 targets 200G/lane and pods up to roughly 1 k accelerators; the physical-layer working group is gathering requirements for $\sim$`<!-- -->`{=html}400G/lane. Optical engineers care because higher lane rate reduces port count on the accelerator package, and because scale-up eventually hits the same copper reach wall as CEI XSR (§ `sec:trace-loss`).
+*UALink* specifies an open *scale-up* stack (transaction, data link, and physical layers) optimized for direct accelerator memory access, not IP/Ethernet . UALink 1.0 targets 200G/lane and pods up to roughly 1 k accelerators; the physical-layer working group is gathering requirements for $\sim$`<!-- -->`{=html}400G/lane. Optical engineers care because higher lane rate reduces port count on the accelerator package, and because scale-up eventually hits the same copper reach wall as CEI XSR (§9.5).
 
 ##### Ultra Ethernet Consortium.
 
@@ -125,11 +125,11 @@ OCP publishes open rack, server, and networking designs for hyperscale . Releva
 
 ##### IEEE 802.3.
 
-Ethernet standards define MAC rates, FEC (KP4 in Clause 91), and interoperable optical PMDs . 802.3dj (200G/lane) and the 400G/lane study group name the product generations that consume 224G and 448G-class optics. One naming trap: IEEE quotes **400 Gb/s per lane** (MAC/info rate); CEI quotes **$\sim$`<!-- -->`{=html}448 Gb/s** (line rate with coding overhead). Same physics, different accounting (§ `ch:imdd,tab:rate-stack`).
+Ethernet standards define MAC rates, FEC (KP4 in Clause 91), and interoperable optical PMDs . 802.3dj (200G/lane) and the 400G/lane study group name the product generations that consume 224G and 448G-class optics. One naming trap: IEEE quotes **400 Gb/s per lane** (MAC/info rate); CEI quotes **$\sim$`<!-- -->`{=html}448 Gb/s** (line rate with coding overhead). Same physics, different accounting (Chapter 3, §3.6).
 
 ##### 100G Lambda MSA.
 
-The single-mode PMDs this book leans on did not start at IEEE. The *100G Lambda MSA*, formed in 2017 by a broad group of suppliers and hyperscalers, wrote the first interoperable optical specifications built on one wavelength carrying 100 Gb/s PAM4 ($\approx$`<!-- -->`{=html}53 GBd): 100G-FR and 100G-LR for single-wavelength 100 GbE, and 400G-DR4/FR4/LR4 for four-lane 400 GbE over duplex single-mode fiber . IEEE 802.3 then adopted the same 100 Gb/s-per-$\lambda$ approach into its DR/FR/LR PMD clauses, and the LPO MSA 100G-DR-LPO profile (§ `sec:lpo-msa`) inherits both that modulation and the RIN$_x$OMA transmitter method the MSA defined (§ `sec:rin`). For a short-reach engineer this is the body behind the reach-class names on almost every single-mode datasheet: when a module is called "DR4" or "FR4," the per-wavelength recipe traces to this MSA even where the compliance point is now quoted against an IEEE clause.
+The single-mode PMDs this book leans on did not start at IEEE. The *100G Lambda MSA*, formed in 2017 by a broad group of suppliers and hyperscalers, wrote the first interoperable optical specifications built on one wavelength carrying 100 Gb/s PAM4 ($\approx$`<!-- -->`{=html}53 GBd): 100G-FR and 100G-LR for single-wavelength 100 GbE, and 400G-DR4/FR4/LR4 for four-lane 400 GbE over duplex single-mode fiber . IEEE 802.3 then adopted the same 100 Gb/s-per-$\lambda$ approach into its DR/FR/LR PMD clauses, and the LPO MSA 100G-DR-LPO profile (§9.3.1) inherits both that modulation and the RIN$_x$OMA transmitter method the MSA defined (§4.3). For a short-reach engineer this is the body behind the reach-class names on almost every single-mode datasheet: when a module is called "DR4" or "FR4," the per-wavelength recipe traces to this MSA even where the compliance point is now quoted against an IEEE clause.
 
 ##### InfiniBand Trade Association.
 
@@ -137,7 +137,7 @@ The *IBTA* maintains the InfiniBand Architecture Specification, the other domina
 
 ##### IEEE 802.1 (link-layer security).
 
-Encryption is a link-layer function, and at 800G and 1.6T it has to run at line rate. *MACsec* (IEEE 802.1AE) provides connectionless confidentiality, frame integrity, and data origin authenticity at the MAC layer, transparent to the MAC client; IEEE 802.1X handles port access control and the key agreement that establishes MACsec associations . This lands on optics indirectly: line-rate MACsec costs latency and gate count in the switch ASIC or NIC, not in the transceiver, and an LPO or DSP-less module carries the ciphertext transparently. Encryption is therefore orthogonal to the optical PMD choice (§ `sec:lpo-msa`), but it belongs in the standards map because a fabric-security requirement can still gate a module program at qualification.
+Encryption is a link-layer function, and at 800G and 1.6T it has to run at line rate. *MACsec* (IEEE 802.1AE) provides connectionless confidentiality, frame integrity, and data origin authenticity at the MAC layer, transparent to the MAC client; IEEE 802.1X handles port access control and the key agreement that establishes MACsec associations . This lands on optics indirectly: line-rate MACsec costs latency and gate count in the switch ASIC or NIC, not in the transceiver, and an LPO or DSP-less module carries the ciphertext transparently. Encryption is therefore orthogonal to the optical PMD choice (§9.3.1), but it belongs in the standards map because a fabric-security requirement can still gate a module program at qualification.
 
 ##### PCI-SIG and CXL.
 
@@ -145,7 +145,7 @@ Inside the node, the load-store fabric is PCI Express and *CXL*. PCI-SIG release
 
 ##### Management and telemetry.
 
-Module management is OIF CMIS (§ `sec:cmis`), but the box and fleet layers above it are not OIF. *DMTF Redfish* is the RESTful standard for server and switch management and telemetry; *OpenConfig* defines vendor-neutral data models and streaming telemetry (gNMI) for network devices; and *SONiC* is the open network operating system many hyperscalers run, with its own dataplane telemetry hooks . These are where per-module CMIS monitors surface as fleet signals: optical power, case temperature, FEC symbol-error counts, and pre-FEC BER aggregated across $10^5$ links (§ `ch:reliability,sec:fabric-availability`). A module program that ships without a telemetry contract into one of these systems is effectively invisible at fleet scale.
+Module management is OIF CMIS (§7.8), but the box and fleet layers above it are not OIF. *DMTF Redfish* is the RESTful standard for server and switch management and telemetry; *OpenConfig* defines vendor-neutral data models and streaming telemetry (gNMI) for network devices; and *SONiC* is the open network operating system many hyperscalers run, with its own dataplane telemetry hooks . These are where per-module CMIS monitors surface as fleet signals: optical power, case temperature, FEC symbol-error counts, and pre-FEC BER aggregated across $10^5$ links (Chapter 8, §8.11). A module program that ships without a telemetry contract into one of these systems is effectively invisible at fleet scale.
 
 The frontier is optics entering the scale-up domain (optical NVLink-class links, co-packaged switches), because copper reach at 200G/lane is only about a meter.
 
@@ -153,7 +153,7 @@ The frontier is optics entering the scale-up domain (optical NVLink-class links,
 
 Cluster topology is where optical count stops being "a few modules per server" and becomes a fleet problem. Large AI fabrics mostly use fat-tree / Clos, rail-optimized, or dragonfly layouts. In a classic $k$-ary fat-tree, link count scales as $O(k^3)$ while endpoints scale as $O(k^2)$: optics multiply faster than compute. Rail-optimized designs (one NIC rail per accelerator row, all-to-all within a rail) rose with collective-heavy training and inference because they cut oversubscription on all-reduce paths, at the price of more parallel optical planes. Dragonfly and other hierarchical topologies trade some global bisection bandwidth for fewer long links.
 
-The optical engineer cares because every topology choice sets link count, which sets laser count, module count, and FIT budget (§ `ch:reliability`); rail layouts drive fan-out from leaf to spine and push denser 800G/1.6T ports toward CPO/XPO (§ `sec:cpo-status,sec:xpo`); and scale-up inside the rack stays electrical longer while scale-out between racks is already optical (§ `tab:oif-scale`). That explosion in link count is the economic reason a hyperscaler builds an in-house optical engineering team.
+The optical engineer cares because every topology choice sets link count, which sets laser count, module count, and FIT budget (Chapter 8); rail layouts drive fan-out from leaf to spine and push denser 800G/1.6T ports toward CPO/XPO (§9.10, §9.11); and scale-up inside the rack stays electrical longer while scale-out between racks is already optical (Table 9.1). That explosion in link count is the economic reason a hyperscaler builds an in-house optical engineering team.
 
 ## Pluggable form factors and module styles
 
@@ -161,25 +161,25 @@ Faceplate modules differ in aggregate rate, lane count, electrical reach, and wh
 
 QSFP-DD / OSFP
 
-: the incumbent datacom pluggables. QSFP-DD carries 800G/1.6T class products (eight lanes at 100G or 200G per lane). OSFP targets higher power and density (1.6T today, 3.2T roadmaps) with a larger cage and better thermal path. Both impose a VSR-class electrical channel from host PCB through the connector (§ `sec:trace-loss,sec:conditioning`).
+: the incumbent datacom pluggables. QSFP-DD carries 800G/1.6T class products (eight lanes at 100G or 200G per lane). OSFP targets higher power and density (1.6T today, 3.2T roadmaps) with a larger cage and better thermal path. Both impose a VSR-class electrical channel from host PCB through the connector (§9.5, §9.5.1).
 
 Retimed module
 
-: DSP/CDR inside the module (§ `sec:equalization`). Default for interoperability; $\sim$`<!-- -->`{=html}15--20 W class at 800G/1.6T.
+: DSP/CDR inside the module (§3.6). Default for interoperability; $\sim$`<!-- -->`{=html}15--20 W class at 800G/1.6T.
 
 LPO / LRO
 
-: linear or lightly retimed: delete or slim module DSP (§ `sec:conditioning,sec:drivers,fig:oif-448g-package,fig:eq-chains`). Power drops to $\sim$`<!-- -->`{=html}7--9 W but host EQ and transmitter and dispersion eye closure quaternary (TDECQ) margin tighten.
+: linear or lightly retimed: delete or slim module DSP (§9.5.1, §3.14.3, §3.6, §3.2). Power drops to $\sim$`<!-- -->`{=html}7--9 W but host EQ and transmitter and dispersion eye closure quaternary (TDECQ) margin tighten.
 
 ELSFP / external laser
 
-: field-replaceable CW source for CPO (§ `sec:cpo-status,ch:lasers`): decouples laser FIT from switch FIT.
+: field-replaceable CW source for CPO (§9.10, Chapter 5): decouples laser FIT from switch FIT.
 
 XPO
 
-: liquid-cooled mega-pluggable (§ `sec:xpo`): 12.8 Tb/s per module, front-panel serviceability with CPO-class density.
+: liquid-cooled mega-pluggable (§9.11): 12.8 Tb/s per module, front-panel serviceability with CPO-class density.
 
-*CMIS* (§ `sec:cmis`) is the management layer for module identity, monitors, and (at 224G/448G) link-training and host-side signal-integrity tuning extensions. Optical engineers touch it when debugging lock, FEC, and equalizer settings across vendors.
+*CMIS* (§7.8) is the management layer for module identity, monitors, and (at 224G/448G) link-training and host-side signal-integrity tuning extensions. Optical engineers touch it when debugging lock, FEC, and equalizer settings across vendors.
 
 ##### Half-retimed and asymmetric modules.
 
@@ -187,7 +187,7 @@ Not every pluggable is fully retimed or fully linear. Common 2025--26 variants s
 
 LPO
 
-: linear drive and linear receive: no module DSP/CDR (§ `sec:equalization,sec:drivers`).
+: linear drive and linear receive: no module DSP/CDR (§3.6, §3.14.3).
 
 LRO / RTLR
 
@@ -201,21 +201,21 @@ Fully retimed
 
 : DSP both directions; default for interoperability at 800G/1.6T.
 
-Power scales with DSP content: retimed $\sim$`<!-- -->`{=html}15--20 W, LRO $\sim$`<!-- -->`{=html}9 W, LPO $\sim$`<!-- -->`{=html}7--9 W at 800G class (§ `sec:power`). The architecture choice is a trade between host margin (COM, TDECQ) and module watts.
+Power scales with DSP content: retimed $\sim$`<!-- -->`{=html}15--20 W, LRO $\sim$`<!-- -->`{=html}9 W, LPO $\sim$`<!-- -->`{=html}7--9 W at 800G class (§9.13). The architecture choice is a trade between host margin (COM, TDECQ) and module watts.
 
 ### The LPO MSA: stitching IEEE optics to CEI Linear
 
 OIF CEI tells you the electrical recipe at the module cage. IEEE 802.3 tells you how Ethernet names the optical PMD and its TDECQ/OMA limits. Neither document, by itself, is a complete product spec for a linear pluggable that deletes the module DSP. The *LPO MSA* (Linear Pluggable Optics Multi-Source Agreement) fills that gap: one open specification for both sides of the module, with normative test points and host responsibilities spelled out .
 
-The first published revision, *100G-DR-LPO* (v1.0, March 2025), targets 100 Gb/s per lane at 53.125 GBd PAM4 on single-mode fiber from 0.5 m to 500 m. It is explicitly a data-center profile: low power, low latency, high port density, RS(544,514) FEC on the host, and form-factor agnostic (QSFP, QSFP-DD, OSFP are examples, not the spec). The naming pattern generalizes to `n00G-DRn-LPO` for $n\in\{1,2,4,8\}$ lanes. Optical reach and modulation track IEEE DR-class PMDs; the electrical interface tracks OIF CEI-112G-LINEAR-PAM4. That split is the template 224G linear modules follow: CEI-224G-Linear on the AUI, 802.3dj optical PMD limits on the fiber (§ `sec:224g-deploy,sec:pmd-reach`).
+The first published revision, *100G-DR-LPO* (v1.0, March 2025), targets 100 Gb/s per lane at 53.125 GBd PAM4 on single-mode fiber from 0.5 m to 500 m. It is explicitly a data-center profile: low power, low latency, high port density, RS(544,514) FEC on the host, and form-factor agnostic (QSFP, QSFP-DD, OSFP are examples, not the spec). The naming pattern generalizes to `n00G-DRn-LPO` for $n\in\{1,2,4,8\}$ lanes. Optical reach and modulation track IEEE DR-class PMDs; the electrical interface tracks OIF CEI-112G-LINEAR-PAM4. That split is the template 224G linear modules follow: CEI-224G-Linear on the AUI, 802.3dj optical PMD limits on the fiber (§3.14.2, §3.13).
 
 ##### Who owns which block.
 
-In an LPO link the host is not a passive cable driver. It runs KP4 FEC (§ `sec:kp4`), full SerDes equalization (CTLE, FFE, DFE, CDR; § `sec:equalization,sec:serdes-dsp`), and optional nonlinear compensation (NLC) and startup protocol functions. The module is analog: linear driver, modulator or laser, photodiode, TIA, and at most a fixed CTLE. No retiming, no FEC, no heavy DSP. CMIS (§ `sec:cmis`) is the management contract. SFF hardware specs (QSFP-DD, OSFP cages) set the mechanical envelope. The MSA's job is to define what must pass at each interface between those blocks so modules from different vendors close on the same host.
+In an LPO link the host is not a passive cable driver. It runs KP4 FEC (§3.12), full SerDes equalization (CTLE, FFE, DFE, CDR; §3.6, §3.7), and optional nonlinear compensation (NLC) and startup protocol functions. The module is analog: linear driver, modulator or laser, photodiode, TIA, and at most a fixed CTLE. No retiming, no FEC, no heavy DSP. CMIS (§7.8) is the management contract. SFF hardware specs (QSFP-DD, OSFP cages) set the mechanical envelope. The MSA's job is to define what must pass at each interface between those blocks so modules from different vendors close on the same host.
 
 ##### The test-point ladder.
 
-LPO MSA normative compliance is organized around six electrical/optical test points (§ `tab:lpo-tp`), the concrete instance of the general TP0-to-TP5 planes in § `sec:test-points`. Think of them as the validation script: host TX at TP1a, module optical TX at TP2, stressed optical RX at TP3, module electrical RX at TP4, and stressed host RX at TP4a. Section 10 of the MSA adds a host-to-host end-to-end BER test with FEC-encoded traffic, which is how you prove interop after the point tests pass.
+LPO MSA normative compliance is organized around six electrical/optical test points (§9.3), the concrete instance of the general TP0-to-TP5 planes in §3.9. Think of them as the validation script: host TX at TP1a, module optical TX at TP2, stressed optical RX at TP3, module electrical RX at TP4, and stressed host RX at TP4a. Section 10 of the MSA adds a host-to-host end-to-end BER test with FEC-encoded traffic, which is how you prove interop after the point tests pass.
 
   ---------------------------------------------------------------------------------------------------------
   Point   Location                         Principal measurements
@@ -237,7 +237,7 @@ LPO MSA normative compliance is organized around six electrical/optical test poi
 
 ##### Optical limits that matter.
 
-The MSA optical tables (§ `sec:tdecq,ch:validation`) inherit IEEE 802.3 measurement methods with LPO-specific reference equalizers. The numbers you will quote in a datasheet review:
+The MSA optical tables (§7.4, Chapter 7) inherit IEEE 802.3 measurement methods with LPO-specific reference equalizers. The numbers you will quote in a datasheet review:
 
 - TDECQ and TECQ capped at 3.4 dB per lane, measured with a 9-tap T-spaced reference FFE and SER target $4.0\times10^{-4}$.
 
@@ -253,7 +253,7 @@ TECQ is TDECQ without the dispersion test fiber. The MSA uses both because outer
 
 ##### Electrical limits and host COM.
 
-On the electrical side the MSA points to CEI-112G-LINEAR-PAM4 for the host-to-module interface and defines EECQ (electrical eye closure quaternary) at TP1a and TP4a. That is the electrical analogue of TDECQ: a host that passes optical TDECQ at TP2 but fails EECQ at TP1a still will not interoperate. Host PCB insertion loss, connector, and module input return loss sit in the channel reference model (Section 7). For 224G deployment, swap CEI-112G-LINEAR for CEI-224G-Linear and run the same two-ledger program (§ `sec:224g-deploy,sec:com`).
+On the electrical side the MSA points to CEI-112G-LINEAR-PAM4 for the host-to-module interface and defines EECQ (electrical eye closure quaternary) at TP1a and TP4a. That is the electrical analogue of TDECQ: a host that passes optical TDECQ at TP2 but fails EECQ at TP1a still will not interoperate. Host PCB insertion loss, connector, and module input return loss sit in the channel reference model (Section 7). For 224G deployment, swap CEI-112G-LINEAR for CEI-224G-Linear and run the same two-ledger program (§3.14.2, §9.5.2).
 
 ##### What to read first.
 
@@ -265,21 +265,21 @@ For a bring-up engineer the reading order is: Section 5 (system overview and ho
 
 The MSA defines what a linear module must pass; it does not settle whether the market buys one. By 2025--26 the supplier base had formed around the analog parts that replace the DSP: high-linearity TIAs and linear drivers. Macom, Semtech, and Maxlinear are the named component proponents, and once the DSP is gone the TIA and driver become the make-or-break blocks .
 
-The demonstrations track a fast rate climb. Eoptolink showed a 200G/$\lambda$ four-channel LPO link with no DSP or CDR at OFC 2024 and moved a second-generation 100G/lane 800G and 400G single-mode line into volume, claiming full TP2 compliance at the transmit interface . Macom exhibited its PURE DRIVE 200 Gb/s LPO parts at OFC 2024 and extended them toward 212 Gb/s/lane for a 1.6T module, with the TIA and driver as the headline . Marvell, a DSP house, announced a 200G/lane TIA and laser-driver chipset for 800G and 1.6T LPO aimed at scale-up XPU fabrics . Macom and Eoptolink are founding members of the LPO MSA (§ `sec:lpo-msa`).
+The demonstrations track a fast rate climb. Eoptolink showed a 200G/$\lambda$ four-channel LPO link with no DSP or CDR at OFC 2024 and moved a second-generation 100G/lane 800G and 400G single-mode line into volume, claiming full TP2 compliance at the transmit interface . Macom exhibited its PURE DRIVE 200 Gb/s LPO parts at OFC 2024 and extended them toward 212 Gb/s/lane for a 1.6T module, with the TIA and driver as the headline . Marvell, a DSP house, announced a 200G/lane TIA and laser-driver chipset for 800G and 1.6T LPO aimed at scale-up XPU fabrics . Macom and Eoptolink are founding members of the LPO MSA (§9.3.1).
 
-**LPO reaches into PCIe scale-up.** Alphawave and Innolight demonstrated a 64 Gb/s/lane PCIe 6.0 subsystem (controller plus PHY) over Innolight's LPO OSFP optics at OFC 2024, then a 128 Gb/s/lane platform pairing a PCIe 7.0-ready SerDes PHY with the same optics . The pull is the switch-fabric pull again: larger, faster AI nodes need more PCIe reach than copper gives, and the linear module skips the DSP latency and power a retimed module would add (§ `sec:scale-up-out,sec:latency-budget`).
+**LPO reaches into PCIe scale-up.** Alphawave and Innolight demonstrated a 64 Gb/s/lane PCIe 6.0 subsystem (controller plus PHY) over Innolight's LPO OSFP optics at OFC 2024, then a 128 Gb/s/lane platform pairing a PCIe 7.0-ready SerDes PHY with the same optics . The pull is the switch-fabric pull again: larger, faster AI nodes need more PCIe reach than copper gives, and the linear module skips the DSP latency and power a retimed module would add (§9.1, §9.12).
 
-**Whether LPO wins is a separate question.** Host support exists: Juniper's Broadcom-based QFX switches take LPO optics without hardware changes, and Arista has shown Broadcom TH5 compatibility for over two years . The market read is still cautious. Cignal AI argues LPO stays a small share, at least at 800G, because the installed fabric was already designed around DSP-based modules; 100G/lane (800GbE) LPO looks late and likely to hold only a small slice long term . At 200G/lane and 1.6T the balance tips toward LRO: early 1.6T LPO parts draw more than 30 W, a thermal problem at faceplate density (§ `sec:thermal-envelope`), while a transmit-DSP LRO design promises under 20 W with easier integration and interop . Cignal notes that every vendor showing 1.6T LPO at OFC also showed an LRO part . That matches the book's technical read: LPO and LRO win where the host electrical channel and TDECQ close without the module DSP, and lose where they do not (§ `sec:224g-deploy,sec:conditioning`).
+**Whether LPO wins is a separate question.** Host support exists: Juniper's Broadcom-based QFX switches take LPO optics without hardware changes, and Arista has shown Broadcom TH5 compatibility for over two years . The market read is still cautious. Cignal AI argues LPO stays a small share, at least at 800G, because the installed fabric was already designed around DSP-based modules; 100G/lane (800GbE) LPO looks late and likely to hold only a small slice long term . At 200G/lane and 1.6T the balance tips toward LRO: early 1.6T LPO parts draw more than 30 W, a thermal problem at faceplate density (§9.13.1), while a transmit-DSP LRO design promises under 20 W with easier integration and interop . Cignal notes that every vendor showing 1.6T LPO at OFC also showed an LRO part . That matches the book's technical read: LPO and LRO win where the host electrical channel and TDECQ close without the module DSP, and lose where they do not (§3.14.2, §9.5.1).
 
 ## Emerging link styles
 
-The form-factor list above is the present. The industry argument for 2025--26 is where the DSP and the laser should live next. Retimed pluggables remain the interop default: a module DSP cleans the electrical channel, at the cost of watts. LPO and LRO delete or slim that DSP so the host SerDes carries more of the EQ burden, which is attractive for AI power budgets and painful for margin and interop. CPO moves the optical engine onto the switch or XPU substrate to cut electrical reach, and usually keeps the laser external and field-replaceable (ELSFP/CW-WDM). XPO appeared in 2026 as a middle path: a much larger, liquid-cooled pluggable that keeps front-panel serviceability while pushing density toward CPO territory (§ `sec:xpo`). The rest of this chapter treats electrical reach, eye budgets, and vendor CPO programs as consequences of that argument.
+The form-factor list above is the present. The industry argument for 2025--26 is where the DSP and the laser should live next. Retimed pluggables remain the interop default: a module DSP cleans the electrical channel, at the cost of watts. LPO and LRO delete or slim that DSP so the host SerDes carries more of the EQ burden, which is attractive for AI power budgets and painful for margin and interop. CPO moves the optical engine onto the switch or XPU substrate to cut electrical reach, and usually keeps the laser external and field-replaceable (ELSFP/CW-WDM). XPO appeared in 2026 as a middle path: a much larger, liquid-cooled pluggable that keeps front-panel serviceability while pushing density toward CPO territory (§9.11). The rest of this chapter treats electrical reach, eye budgets, and vendor CPO programs as consequences of that argument.
 
 ## The electrical link: reach, conditioning, and the eye budget
 
 Every form factor above is really an answer to one physical question: *how far can the electrical signal travel before it is cheaper (in power and dB) to convert to light?* As the per-lane rate climbs, that distance collapses, and it is what pushes the optics from the faceplate toward the die.
 
-**Trace loss scales with frequency.** A PCB stripline's insertion loss grows roughly with $\sqrt{f}$ (skin effect) plus a dielectric term linear in $f$, so it is quoted per inch *at the Nyquist frequency*. Going from 112G to 224G PAM4 moves Nyquist from 28 GHz to 56 GHz, and the loss per inch roughly doubles. Recent 224G board studies measure $\approx2.8$ dB/inch for regular stripline and $\approx1.9$ dB/inch with skip-layer routing at 56 GHz, against a next-generation *target* of 1 dB/inch that demands ultra-low-loss dielectric, HVLP copper, and short via stubs . § `fig:traceloss` shows the consequence: at a fixed PCB-trace budget, doubling the baud rate roughly halves the copper reach.
+**Trace loss scales with frequency.** A PCB stripline's insertion loss grows roughly with $\sqrt{f}$ (skin effect) plus a dielectric term linear in $f$, so it is quoted per inch *at the Nyquist frequency*. Going from 112G to 224G PAM4 moves Nyquist from 28 GHz to 56 GHz, and the loss per inch roughly doubles. Recent 224G board studies measure $\approx2.8$ dB/inch for regular stripline and $\approx1.9$ dB/inch with skip-layer routing at 56 GHz, against a next-generation *target* of 1 dB/inch that demands ultra-low-loss dielectric, HVLP copper, and short via stubs . §9.2 shows the consequence: at a fixed PCB-trace budget, doubling the baud rate roughly halves the copper reach.
 
 ::::
 ![](figures/fig_trace_loss.pdf){width="\\linewidth"}
@@ -289,7 +289,7 @@ PCB trace insertion loss versus length at each rate's Nyquist. The reach to a fi
 :::
 ::::
 
-**The CEI channel classes name the reaches.** OIF's Common Electrical I/O project defines the electrical link budgets the whole industry designs to. § `tab:cei224-reach` is the CEI-224G lookup card (XSR / VSR / MR / LR, plus Linear for DSP-less modules); the reach map is § `fig:cei-reach-map`. At 56 GHz Nyquist the same names mean much shorter copper than at 112G :
+**The CEI channel classes name the reaches.** OIF's Common Electrical I/O project defines the electrical link budgets the whole industry designs to. Table 3.8 is the CEI-224G lookup card (XSR / VSR / MR / LR, plus Linear for DSP-less modules); the reach map is §3.5. At 56 GHz Nyquist the same names mean much shorter copper than at 112G :
 
 XSR
 
@@ -309,21 +309,21 @@ LR
 
 Linear
 
-: *CEI-224G-Linear*: same faceplate-class ports without a module DSP/CDR; the electrical foundation for LPO (§ `sec:224g-deploy,sec:pluggables`).
+: *CEI-224G-Linear*: same faceplate-class ports without a module DSP/CDR; the electrical foundation for LPO (§3.14.2, §9.3).
 
 ##### Active copper: ACC, AEC, and DAC.
 
-Passive direct-attach copper (DAC) survives only where the reach is short: at 224G a passive DAC is good for roughly $0.5$--$1$ m (strong 224G PHYs have demonstrated 2 m). *ACC* adds redrivers (CTLE + VGA) in the cable; *AEC* adds retimers (EQ + CDR) and stretches twinax to $\sim$`<!-- -->`{=html}2.5 m at higher power (§ `sec:conditioning,sec:equalization`) . Beyond that, and increasingly *within* the rack for scale-up, the answer is optics (§ `tab:oif-scale`).
+Passive direct-attach copper (DAC) survives only where the reach is short: at 224G a passive DAC is good for roughly $0.5$--$1$ m (strong 224G PHYs have demonstrated 2 m). *ACC* adds redrivers (CTLE + VGA) in the cable; *AEC* adds retimers (EQ + CDR) and stretches twinax to $\sim$`<!-- -->`{=html}2.5 m at higher power (§9.5.1, §3.6) . Beyond that, and increasingly *within* the rack for scale-up, the answer is optics (Table 9.1).
 
 ##### Co-packaged and near-package copper: copper moves inward too.
 
-Optics is not the only thing the reach wall pushes toward the package. *CPC* (co-packaged copper) mates a copper cable or connector directly onto the ASIC package substrate, and *NPC* (near-package copper) places that connector just outside the package on the socket. Both leave the host at the package edge and skip the lossy PCB run to the faceplate, where most of the trace budget in § `fig:traceloss` is spent. The move mirrors CPO: shorten the electrical path until the channel closes, but keep the signal in copper instead of converting it to light.
+Optics is not the only thing the reach wall pushes toward the package. *CPC* (co-packaged copper) mates a copper cable or connector directly onto the ASIC package substrate, and *NPC* (near-package copper) places that connector just outside the package on the socket. Both leave the host at the package edge and skip the lossy PCB run to the faceplate, where most of the trace budget in §9.2 is spent. The move mirrors CPO: shorten the electrical path until the channel closes, but keep the signal in copper instead of converting it to light.
 
-On-substrate copper has been validated at 224G-PAM4 with a stated roadmap to 448G, and compression substrate connectors now target 224 Gb/s PAM4 and beyond . Inside its reach, copper keeps the properties that make it the default: a long-reach 224G SerDes into a CPC cable runs near 4 pJ/bit with no electro-optic conversion, adds less latency than a retimed optical hop, and costs less per lane. Passive co-packaged copper reaches about a meter at 448G-PAM4 under optimistic connector assumptions (§ `sec:448g`), enough to cover many scale-up links inside a rack or between adjacent racks.
+On-substrate copper has been validated at 224G-PAM4 with a stated roadmap to 448G, and compression substrate connectors now target 224 Gb/s PAM4 and beyond . Inside its reach, copper keeps the properties that make it the default: a long-reach 224G SerDes into a CPC cable runs near 4 pJ/bit with no electro-optic conversion, adds less latency than a retimed optical hop, and costs less per lane. Passive co-packaged copper reaches about a meter at 448G-PAM4 under optimistic connector assumptions (§3.14.3), enough to cover many scale-up links inside a rack or between adjacent racks.
 
-Past that wall the conversion to light pays for itself. When the reach exceeds what a clean substrate channel can carry, or the port count makes copper bulk and cabling weight unmanageable, optics takes the link (§ `tab:oif-scale`). CPC and NPC do not remove that crossover; they move it, buying copper one more rate generation before the optics win. Read the placement ladder in § `tab:placement` from the copper side and this is the same trade seen in reverse.
+Past that wall the conversion to light pays for itself. When the reach exceeds what a clean substrate channel can carry, or the port count makes copper bulk and cabling weight unmanageable, optics takes the link (Table 9.1). CPC and NPC do not remove that crossover; they move it, buying copper one more rate generation before the optics win. Read the placement ladder in Table 9.4 from the copper side and this is the same trade seen in reverse.
 
-**So the optics march inward.** Shortening the electrical path is exactly what trades power and reach for serviceability, the through-line of this chapter. § `tab:placement` lays out the ladder from faceplate to interposer.
+**So the optics march inward.** Shortening the electrical path is exactly what trades power and reach for serviceability, the through-line of this chapter. Table 9.4 lays out the ladder from faceplate to interposer.
 
 []
 
@@ -341,15 +341,15 @@ Past that wall the conversion to light pays for itself. When the reach exceeds w
   Optical I/O on interposer      on-die / interposer                                             $<$`<!-- -->`{=html}2 pJ/bit                                   not field-serviceable (emerging)
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**Table .** The optics-placement ladder. Moving the electro-optic conversion inward cuts trace loss and energy per bit but erodes field serviceability, the central tension behind pluggables, OBO/NPO, CPO (§ `sec:cpo-status`), and the XPO middle ground (§ `sec:xpo`). A mid-board fiber connector can shift breakage risk from the costly engine to a cheap jumper.
+**Table 9.4.** The optics-placement ladder. Moving the electro-optic conversion inward cuts trace loss and energy per bit but erodes field serviceability, the central tension behind pluggables, OBO/NPO, CPO (§9.10), and the XPO middle ground (§9.11). A mid-board fiber connector can shift breakage risk from the costly engine to a cheap jumper.
 
-**On-board optics: the step the industry mostly skipped.** OBO (standardized by the *Consortium for On-Board Optics*, COBO) moves the optical engine off the faceplate and onto the main PCB, cutting the copper run without abandoning silicon photonics . It works, but it gives up hot-plug serviceability while only partly closing the power gap, so with CPO maturing, most hyperscalers are leapfrog­ping OBO/NPO straight to co-packaging, keeping serviceability via field-replaceable lasers (§ `sec:cpo-status`) and the XPO pluggable hedge (§ `sec:xpo`).
+**On-board optics: the step the industry mostly skipped.** OBO (standardized by the *Consortium for On-Board Optics*, COBO) moves the optical engine off the faceplate and onto the main PCB, cutting the copper run without abandoning silicon photonics . It works, but it gives up hot-plug serviceability while only partly closing the power gap, so with CPO maturing, most hyperscalers are leapfrog­ping OBO/NPO straight to co-packaging, keeping serviceability via field-replaceable lasers (§9.10) and the XPO pluggable hedge (§9.11).
 
-**The die-to-die interface is a standard too.** At the innermost tier (§ `tab:placement`), the electrical hand-off between chiplets is increasingly set by *UCIe* (Universal Chiplet Interconnect Express), an open die-to-die interconnect whose 2.0 revision (August 2024) added 3D packaging and in-field manageability, with a 3.0 revision roughly doubling bandwidth in 2025 . UCIe is the parallel counterpart to CEI XSR: XSR is a serial die-to-OE link, while UCIe carries wide parallel lanes across a package or interposer. It reaches optics because co-packaged engines and optical-I/O chiplets attach to the compute die over a UCIe port, and optical-UCIe proposals aim to carry that traffic over fiber instead of a few millimeters of substrate. The chiplet-protocol and packaging detail sits outside this book's scope; the point for short reach is that the die-to-die interface, copper or optical, sets the shortest reach an optical engine must beat.
+**The die-to-die interface is a standard too.** At the innermost tier (Table 9.4), the electrical hand-off between chiplets is increasingly set by *UCIe* (Universal Chiplet Interconnect Express), an open die-to-die interconnect whose 2.0 revision (August 2024) added 3D packaging and in-field manageability, with a 3.0 revision roughly doubling bandwidth in 2025 . UCIe is the parallel counterpart to CEI XSR: XSR is a serial die-to-OE link, while UCIe carries wide parallel lanes across a package or interposer. It reaches optics because co-packaged engines and optical-I/O chiplets attach to the compute die over a UCIe port, and optical-UCIe proposals aim to carry that traffic over fiber instead of a few millimeters of substrate. The chiplet-protocol and packaging detail sits outside this book's scope; the point for short reach is that the die-to-die interface, copper or optical, sets the shortest reach an optical engine must beat.
 
 ### Reshaping, retiming, and where the DSP lives
 
-To survive that lossy channel the signal is conditioned at several points (§ `sec:equalization`), and it helps to keep two device classes distinct.[^19]
+To survive that lossy channel the signal is conditioned at several points (§3.6), and it helps to keep two device classes distinct.[^19]
 
 Redriver
 
@@ -373,34 +373,34 @@ LRO / TRO (retimed TX, linear RX)
 
 : DSP only on the electrical$\to$optical path, roughly half the power, sensitivity, and latency, with easier interop.
 
-So yes: reshapers/amplifiers (redrivers) and retimers are routinely placed on the host path, and the module's own DSP is the last line of cleanup. The entire LPO bet (§ `sec:power,sec:224g-deploy`) is to *delete* those active stages and let the host SerDes' CTLE/FFE carry the channel, trading electrical margin for power and latency.
+So yes: reshapers/amplifiers (redrivers) and retimers are routinely placed on the host path, and the module's own DSP is the last line of cleanup. The entire LPO bet (§9.13, §3.14.2) is to *delete* those active stages and let the host SerDes' CTLE/FFE carry the channel, trading electrical margin for power and latency.
 
 ### The electrical eye: acceptable voltage and noise
 
-What must the signal actually look like where it hands off to the module? The CEI-224G reference and draft numbers set the envelope . Differential swing sits roughly in the 0.36--1.05 V~ppd~ band (reference TX near 1 V peak-to-peak differential; lossier channels use the larger swing). Transmitter *SNDR* ($\mathrm{SNR_{TX}}$) is about 33 dB: the transmitter's own noise-plus-distortion ceiling. PAM4 level uniformity needs $\mathrm{RLM}\ge0.95$ (1.0 = perfectly even eyes). Jitter budgets are tight: random $\approx$`<!-- -->`{=html}0.01 *UI* rms and bounded/uncorrelated $\approx$`<!-- -->`{=html}0.02 UI pk. The go/no-go metric that folds those pieces together is *COM* (channel operating margin) $\ge3$ dB: a statistical SNR of the fully equalized link (§ `sec:com`).
+What must the signal actually look like where it hands off to the module? The CEI-224G reference and draft numbers set the envelope . Differential swing sits roughly in the 0.36--1.05 V~ppd~ band (reference TX near 1 V peak-to-peak differential; lossier channels use the larger swing). Transmitter *SNDR* ($\mathrm{SNR_{TX}}$) is about 33 dB: the transmitter's own noise-plus-distortion ceiling. PAM4 level uniformity needs $\mathrm{RLM}\ge0.95$ (1.0 = perfectly even eyes). Jitter budgets are tight: random $\approx$`<!-- -->`{=html}0.01 *UI* rms and bounded/uncorrelated $\approx$`<!-- -->`{=html}0.02 UI pk. The go/no-go metric that folds those pieces together is *COM* (channel operating margin) $\ge3$ dB: a statistical SNR of the fully equalized link (§9.5.2).
 
 ##### Jitter and level uniformity.
 
-At 112 GBd, 1 UI $\approx$`<!-- -->`{=html}8.9 ps; 0.01 UI rms jitter is $\sim$`<!-- -->`{=html}90 fs rms. Random jitter adds vertical eye closure; deterministic jitter (ISI, crosstalk) shows up in bathtub curves and COM. *RLM* $\ge0.95$ keeps the three PAM4 eyes even; poor RLM wastes vertical margin the same way excess TDECQ does on the optical side (§ `sec:tdecq`).
+At 112 GBd, 1 UI $\approx$`<!-- -->`{=html}8.9 ps; 0.01 UI rms jitter is $\sim$`<!-- -->`{=html}90 fs rms. Random jitter adds vertical eye closure; deterministic jitter (ISI, crosstalk) shows up in bathtub curves and COM. *RLM* $\ge0.95$ keeps the three PAM4 eyes even; poor RLM wastes vertical margin the same way excess TDECQ does on the optical side (§7.4).
 
-Retimers reset jitter per segment; redrivers do not. That is why long ACC chains accumulate timing budget stress while AEC segments stay independent (§ `sec:active-cables,sec:conditioning`).
+Retimers reset jitter per segment; redrivers do not. That is why long ACC chains accumulate timing budget stress while AEC segments stay independent (§9.5, §9.5.1).
 
 Here is the number that reframes "acceptable noise." After the reference receiver's equalizer (an 8-tap *DFE*), the eye at the slicer is only about $4$--$10$ mV tall and $\sim$`<!-- -->`{=html}0.06 UI wide, with $\sim$`<!-- -->`{=html}11--14 dB of vertical eye closure, at a *pre-FEC* error rate near $10^{-4}$. The channel is deliberately driven deep into ISI and closed nearly shut; *KP4* FEC (pre-FEC $2.4\times
-10^{-4}$ to post-FEC $10^{-15}$, § `ch:models`) is what turns that into a working link. "Acceptable," then, is not a clean open eye; it is whatever keeps COM $\ge3$ dB and the pre-FEC BER under the KP4 threshold. It is also why the optics must present a clean, highly linear interface, especially for LPO: with only a few mV of margin, any added noise or nonlinearity from the driver or TIA comes straight off COM.
+10^{-4}$ to post-FEC $10^{-15}$, Chapter 4) is what turns that into a working link. "Acceptable," then, is not a clean open eye; it is whatever keeps COM $\ge3$ dB and the pre-FEC BER under the KP4 threshold. It is also why the optics must present a clean, highly linear interface, especially for LPO: with only a few mV of margin, any added noise or nonlinearity from the driver or TIA comes straight off COM.
 
 ##### Channel operating margin (COM) in one page.
 
-*COM* is the electrical go/no-go statistic for CEI-class channels: after the reference transmitter, channel, and receiver (CTLE + 8-tap DFE) are applied, COM is the SNR margin at the slicer, in dB. COM $\ge3$ dB is the usual pass line (§ `sec:eye-budget,sec:equalization`).
+*COM* is the electrical go/no-go statistic for CEI-class channels: after the reference transmitter, channel, and receiver (CTLE + 8-tap DFE) are applied, COM is the SNR margin at the slicer, in dB. COM $\ge3$ dB is the usual pass line (§9.5.2, §3.6).
 
-COM connects directly to optics because the module is the last analog segment before FEC. A retimed module can absorb some host-channel sin; LPO cannot (§ `sec:pluggables,sec:drivers`). When COM is tight, debug in this order: host TX SNDR and RLM, connector return loss, equalizer tap saturation, then module input swing and TIA noise (§ `sec:pd-tia,ch:models`).
+COM connects directly to optics because the module is the last analog segment before FEC. A retimed module can absorb some host-channel sin; LPO cannot (§9.3, §3.14.3). When COM is tight, debug in this order: host TX SNDR and RLM, connector return loss, equalizer tap saturation, then module input swing and TIA noise (§4.5, Chapter 4).
 
-Optical-side analogs are not identical: TDECQ scores the transmitter with a reference equalizer; SECQ stresses the receiver (§ `sec:tdecq,sec:secq`). Think of COM as the *electrical* counterpart to those optical margin tests.
+Optical-side analogs are not identical: TDECQ scores the transmitter with a reference equalizer; SECQ stresses the receiver (§7.4, §7.5). Think of COM as the *electrical* counterpart to those optical margin tests.
 
 **Key idea.** Electrical reach is the hidden clock behind form factors. Trace loss per inch roughly doubles from 112G (28 GHz) to 224G (56 GHz), collapsing copper reach to a few inches on-board and $\sim$`<!-- -->`{=html}1 m in cable. Each step inward (pluggable, OBO, NPO, CPO, on-interposer optical I/O) buys power and reach and spends serviceability. The signal is held together by redrivers (reshape), retimers (reclock), and DSPs (both), which LPO deletes, inside a brutal budget: $\sim$`<!-- -->`{=html}1 V~ppd~ in, 33 dB TX SNDR, COM $\ge3$ dB, and a post-equalizer eye of only a few mV rescued by FEC.
 
 ## The two phases of inference, revisited
 
-§ `ch:role` introduced prefill and decode; here is why they matter for the network.
+Chapter 1 introduced prefill and decode; here is why they matter for the network.
 
 Prefill
 
@@ -437,21 +437,21 @@ All-reduce
 
 All-to-all
 
-: MoE expert routing sends tokens to remote experts; bandwidth dominates; tail latency spikes if any link in the pod is slow (§ `tab:inference`).
+: MoE expert routing sends tokens to remote experts; bandwidth dominates; tail latency spikes if any link in the pod is slow (§9.5).
 
 Point-to-point
 
 : pipeline parallelism moves activations between stages; steady streams rather than global sync.
 
-Optical engineering maps to these patterns indirectly. More rails and higher per-lane rate cut time spent in collectives; CPO/XPO raise faceplate bandwidth so fewer hops are needed (§ `sec:cpo-status,sec:xpo,sec:topologies`). Protocol choice (UEC vs IB) sets lossless delivery and congestion behavior (§ `sec:fabric-protocols`), but the PHY job remains the same: deliver pre-FEC BER below KP4 at the lowest pJ/bit (§ `sec:power,sec:kp4`). The next section names the fabric stacks that carry those collectives; the sections after that show where the optics physically sit.
+Optical engineering maps to these patterns indirectly. More rails and higher per-lane rate cut time spent in collectives; CPO/XPO raise faceplate bandwidth so fewer hops are needed (§9.10, §9.11, §9.2). Protocol choice (UEC vs IB) sets lossless delivery and congestion behavior (§9.8), but the PHY job remains the same: deliver pre-FEC BER below KP4 at the lowest pJ/bit (§9.13, §3.12). The next section names the fabric stacks that carry those collectives; the sections after that show where the optics physically sit.
 
 ## Fabric options
 
-InfiniBand, Ethernet, and the Ultra Ethernet Consortium's AI-tuned Ethernet are the scale-out contenders. Momentum in 2025--26 favors open Ethernet for AI; large vertical AI stacks commonly use Broadcom Tomahawk switch silicon (§ `ch:role,sec:cpo-status`).
+InfiniBand, Ethernet, and the Ultra Ethernet Consortium's AI-tuned Ethernet are the scale-out contenders. Momentum in 2025--26 favors open Ethernet for AI; large vertical AI stacks commonly use Broadcom Tomahawk switch silicon (Chapter 1, §9.10).
 
 InfiniBand / NVLink fabric
 
-: lossless, RDMA-native; NVIDIA Quantum switches; strong in closed NVIDIA stacks; CPO photonics on Quantum-X (§ `sec:cpo-status`).
+: lossless, RDMA-native; NVIDIA Quantum switches; strong in closed NVIDIA stacks; CPO photonics on Quantum-X (§9.10).
 
 RoCEv2 Ethernet
 
@@ -459,23 +459,23 @@ RoCEv2 Ethernet
 
 Ultra Ethernet (UEC)
 
-: UET transport, enhanced PHY, congestion control aimed at AI collectives (§ `tab:sdo-map`). PHY work tracks 400G/lane class electrical and optical I/O.
+: UET transport, enhanced PHY, congestion control aimed at AI collectives (Table 9.2). PHY work tracks 400G/lane class electrical and optical I/O.
 
-Collectives (all-reduce, all-to-all for MoE) sit on this fabric (§ `sec:inference-bottlenecks`). The optical job is raw bandwidth and predictable latency at $\sim$`<!-- -->`{=html}200--400G per lane, not long-haul reach.
+Collectives (all-reduce, all-to-all for MoE) sit on this fabric (§9.6). The optical job is raw bandwidth and predictable latency at $\sim$`<!-- -->`{=html}200--400G per lane, not long-haul reach.
 
 ## Optical circuit switching
 
-The fabric options above are all *packet* switches: every link terminates in a switch ASIC that turns light into electrons, reads the header, and turns it back into light for the next hop. That O-E-O conversion is where much of a fabric's power and latency goes (§ `sec:power`), and at $10^5$-plus endpoints it repeats at every tier. An *optical circuit switch* does a different job. It is a Layer-1 switch that steers light from an input fiber to an output fiber with no O-E-O conversion, so it is transparent to bit rate, modulation format, and wavelength. The same switch that passes 200 Gb/s PAM4 today passes 448G or a full WDM comb tomorrow with no change (§ `ch:wdm,sec:224g`).
+The fabric options above are all *packet* switches: every link terminates in a switch ASIC that turns light into electrons, reads the header, and turns it back into light for the next hop. That O-E-O conversion is where much of a fabric's power and latency goes (§9.13), and at $10^5$-plus endpoints it repeats at every tier. An *optical circuit switch* does a different job. It is a Layer-1 switch that steers light from an input fiber to an output fiber with no O-E-O conversion, so it is transparent to bit rate, modulation format, and wavelength. The same switch that passes 200 Gb/s PAM4 today passes 448G or a full WDM comb tomorrow with no change (Chapter 6, §3.14).
 
-Transparency is the point, and also the limit. Because an OCS never looks at a packet, it cannot buffer, arbitrate, or route per packet. It sets up a *circuit*: a fixed light path held open as long as the topology needs it. The mirrors or waveguides that steer the light reconfigure in milliseconds, far slower than a packet time, so an OCS reshapes the *topology* between jobs or around failures, not the traffic inside a job. In return it deletes a whole tier of packet switches and their pluggable optics, along with the power, cost, and FIT that tier carried (§ `sec:topologies,ch:reliability`).
+Transparency is the point, and also the limit. Because an OCS never looks at a packet, it cannot buffer, arbitrate, or route per packet. It sets up a *circuit*: a fixed light path held open as long as the topology needs it. The mirrors or waveguides that steer the light reconfigure in milliseconds, far slower than a packet time, so an OCS reshapes the *topology* between jobs or around failures, not the traffic inside a job. In return it deletes a whole tier of packet switches and their pluggable optics, along with the power, cost, and FIT that tier carried (§9.2, Chapter 8).
 
 ##### The device and its parameters.
 
-Most production OCS today is free-space: a fiber-collimator array launches beams onto a two-axis MEMS mirror array, and each mirror tilts to aim its beam at the chosen output collimator. § `tab:ocs-tech` lists the main technologies. For an optics engineer the parameters that matter are the ones that land in the link budget and the fleet model.
+Most production OCS today is free-space: a fiber-collimator array launches beams onto a two-axis MEMS mirror array, and each mirror tilts to aim its beam at the chosen output collimator. Table 9.6 lists the main technologies. For an optics engineer the parameters that matter are the ones that land in the link budget and the fleet model.
 
 Insertion loss
 
-: a hop through the switch costs roughly 2 dB, straight off the optical budget (§ `sec:link-budget`). Higher launch power or better receiver sensitivity has to cover it (§ `ch:lasers,sec:sensitivity`).
+: a hop through the switch costs roughly 2 dB, straight off the optical budget (§7.7). Higher launch power or better receiver sensitivity has to cover it (Chapter 5, §4.4).
 
 Radix
 
@@ -483,11 +483,11 @@ Radix
 
 Reconfiguration time
 
-: milliseconds for MEMS, which fixes OCS as a topology switch. Silicon-photonic and SOA switches reach nanoseconds, but at low radix and higher loss (§ `tab:ocs-tech`).
+: milliseconds for MEMS, which fixes OCS as a topology switch. Silicon-photonic and SOA switches reach nanoseconds, but at low radix and higher loss (Table 9.6).
 
 Crosstalk, return loss, polarization
 
-: a mirror that leaks light into the wrong port is crosstalk; a reflective interface raises ORL and feeds laser RIN (§ `sec:optical-channel,sec:rin`). Free-space paths are largely polarization-insensitive, which suits IM/DD.
+: a mirror that leaks light into the wrong port is crosstalk; a reflective interface raises ORL and feeds laser RIN (§7.2.2, §4.3). Free-space paths are largely polarization-insensitive, which suits IM/DD.
 
 []
 
@@ -505,25 +505,25 @@ Crosstalk, return loss, polarization
   Silicon photonic (MZI / SOA)     ns--$\mu$s         higher (integrated)              10s                              fast, low-radix; research and niche
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**Table .** OCS technologies. Free-space MEMS switches dominate AI deployments today; robotic-fiber switches trade speed for radix and very low loss; integrated photonic switches trade radix and loss for nanosecond speed.
+**Table 9.6.** OCS technologies. Free-space MEMS switches dominate AI deployments today; robotic-fiber switches trade speed for radix and very low loss; integrated photonic switches trade radix and loss for nanosecond speed.
 
 ##### What it buys at fleet scale.
 
-Google's Jupiter datacenter fabric replaced a patch-panel Clos interconnect with a layer of MEMS OCS under software-defined control, and reported roughly 30% lower capex, 41% lower power, and 3x faster fabric reconfiguration while a direct-connect topology carried the same production traffic . The switch, Palomar, is a $136\times136$ MEMS OCS with about 2 dB insertion loss and millisecond switching, and circulators realize bidirectional links through it to double the effective radix . The same building block reshapes AI pods: a TPU v4 pod wires 4096 accelerators through 48 OCS into a 3D torus that reconfigures per job and routes around failed racks, so a dead node becomes a topology the scheduler works around instead of a pod-wide outage . That reconfiguration is the fabric-reliability lever § `ch:reliability` points at: component FIT still applies, but the fabric survives each failure by re-wiring optically rather than stalling the job.
+Google's Jupiter datacenter fabric replaced a patch-panel Clos interconnect with a layer of MEMS OCS under software-defined control, and reported roughly 30% lower capex, 41% lower power, and 3x faster fabric reconfiguration while a direct-connect topology carried the same production traffic . The switch, Palomar, is a $136\times136$ MEMS OCS with about 2 dB insertion loss and millisecond switching, and circulators realize bidirectional links through it to double the effective radix . The same building block reshapes AI pods: a TPU v4 pod wires 4096 accelerators through 48 OCS into a 3D torus that reconfigures per job and routes around failed racks, so a dead node becomes a topology the scheduler works around instead of a pod-wide outage . That reconfiguration is the fabric-reliability lever Chapter 8 points at: component FIT still applies, but the fabric survives each failure by re-wiring optically rather than stalling the job.
 
 ##### What OCS asks of the transceivers.
 
-An OCS layer changes the module spec in ways this book cares about. Because the switch adds a fixed loss and is wavelength-transparent, single-fiber duplex reaches (FR, one fiber each way) fit an OCS better than parallel-fiber reaches (DR, many fibers), so an OCS deployment pulls the plant toward FR optics and toward circulators for bidirectional operation on one fiber . The insertion loss argues for higher launch power and tighter ORL budgets, since every mated interface and mirror is a reflection the laser sees (§ `sec:optical-channel,sec:rin-values`). Wavelength transparency means a WDM link passes through the switch unchanged, so CW-WDM and ring-based engines (§ `ch:wdm,sec:cwwdm`) compose with an OCS without a translation layer. None of this is exotic optics; it is the same DR/FR PMD and laser work from earlier chapters (§ `sec:pmd-reach,ch:lasers`), specified against a channel that now includes a switch.
+An OCS layer changes the module spec in ways this book cares about. Because the switch adds a fixed loss and is wavelength-transparent, single-fiber duplex reaches (FR, one fiber each way) fit an OCS better than parallel-fiber reaches (DR, many fibers), so an OCS deployment pulls the plant toward FR optics and toward circulators for bidirectional operation on one fiber . The insertion loss argues for higher launch power and tighter ORL budgets, since every mated interface and mirror is a reflection the laser sees (§7.2.2, §4.3.1). Wavelength transparency means a WDM link passes through the switch unchanged, so CW-WDM and ring-based engines (Chapter 6, §6.6) compose with an OCS without a translation layer. None of this is exotic optics; it is the same DR/FR PMD and laser work from earlier chapters (§3.13, Chapter 5), specified against a channel that now includes a switch.
 
 ##### Status and where it sits next to CPO.
 
-By 2025--26 OCS moved from a Google-specific technique to an industry theme, a headline topic at OFC 2026 with MEMS, piezoelectric, liquid-crystal, robotic-fiber, and silicon-photonic approaches competing on radix, loss, speed, and reliability . It complements co-packaged optics rather than competing with it: CPO shortens the electrical path at the switch package (§ `sec:cpo-status`), while OCS removes packet-switch hops between packages and racks. A fabric can use both, CPO optics feeding an OCS layer, and the reliability question for each is the one § `ch:validation,ch:reliability` keeps returning to.
+By 2025--26 OCS moved from a Google-specific technique to an industry theme, a headline topic at OFC 2026 with MEMS, piezoelectric, liquid-crystal, robotic-fiber, and silicon-photonic approaches competing on radix, loss, speed, and reliability . It complements co-packaged optics rather than competing with it: CPO shortens the electrical path at the switch package (§9.10), while OCS removes packet-switch hops between packages and racks. A fabric can use both, CPO optics feeding an OCS layer, and the reliability question for each is the one Chapter 7, Chapter 8 keeps returning to.
 
 **Key idea.** An optical circuit switch reroutes light at Layer 1 with no O-E-O conversion, so it is transparent to rate, format, and wavelength and adds only insertion loss to the link budget. Millisecond MEMS switching makes it a topology and failure-reroute switch, not a packet switch. It buys fabric power, cost, and resilience (Google Jupiter and the TPU pods are the production proof), and it pulls the transceiver plant toward FR optics, circulators, and higher launch power. OCS and CPO are complementary bets on the same power and reliability problem.
 
 ## Co-packaged optics: 2025--26 status
 
-By 2025--26, co-packaged optics crossed from demonstrations into shipping products, pushed by the power and reliability limits of pluggables in AI scale-out. The programs converge on a common recipe: a photonic engine co-packaged with the switch ASIC, 200 Gb/s per channel, microring modulators (§ `sec:siring`), *field-replaceable* lasers pulled out of the package, and TSMC COUPE packaging underneath.
+By 2025--26, co-packaged optics crossed from demonstrations into shipping products, pushed by the power and reliability limits of pluggables in AI scale-out. The programs converge on a common recipe: a photonic engine co-packaged with the switch ASIC, 200 Gb/s per channel, microring modulators (§3.14.3), *field-replaceable* lasers pulled out of the package, and TSMC COUPE packaging underneath.
 
 ### Broadcom Tomahawk and CPO
 
@@ -553,7 +553,7 @@ NVIDIA's CPO story is the scale-up and scale-out fabric vendor converging on the
 
 ### TSMC COUPE (the shared foundation)
 
-*COUPE* (Compact Universal Photonic Engine) stacks an electronic IC on a photonic IC via SoIC-X hybrid bonding (a 6 nm EIC on a 65 nm SOI PIC), giving a low-impedance die-to-die interface. The roadmap: pluggable qualification in 2025, CoWoS-based CPO integration and *mass production in 2026*, with 800G/1.6T engines now and 3.2T/6.4T (toward 12.8 Tb/s on-package) to follow. TSMC cites the energy-per-bit trajectory from $>$`<!-- -->`{=html}30 pJ/bit for copper toward $<$`<!-- -->`{=html}5 pJ/bit for CPO on substrate and $<$`<!-- -->`{=html}2 pJ/bit once optical I/O moves onto the interposer (§ `sec:power`). The hard problems it names (wafer-level test, fiber-array-unit integration, and high-speed optical packaging assembly) are exactly the validation and manufacturing challenges of § `ch:validation,ch:reliability`.
+*COUPE* (Compact Universal Photonic Engine) stacks an electronic IC on a photonic IC via SoIC-X hybrid bonding (a 6 nm EIC on a 65 nm SOI PIC), giving a low-impedance die-to-die interface. The roadmap: pluggable qualification in 2025, CoWoS-based CPO integration and *mass production in 2026*, with 800G/1.6T engines now and 3.2T/6.4T (toward 12.8 Tb/s on-package) to follow. TSMC cites the energy-per-bit trajectory from $>$`<!-- -->`{=html}30 pJ/bit for copper toward $<$`<!-- -->`{=html}5 pJ/bit for CPO on substrate and $<$`<!-- -->`{=html}2 pJ/bit once optical I/O moves onto the interposer (§9.13). The hard problems it names (wafer-level test, fiber-array-unit integration, and high-speed optical packaging assembly) are exactly the validation and manufacturing challenges of Chapter 7, Chapter 8.
 
 []
 
@@ -575,7 +575,7 @@ NVIDIA's CPO story is the scale-up and scale-out fabric vendor converging on the
   Ayar Labs                  TeraPHY optical I/O + SuperNova CW-WDM source                     merchant scale-up optical I/O
   --------------------------------------------------------------------------------------------------------------------------------
 
-**Table .** CPO programs, 2025--26.
+**Table 9.7.** CPO programs, 2025--26.
 
 **Key idea.** The 2025--26 CPO wave shares one architecture: 200G/lane microring engines on TSMC COUPE, with field-replaceable lasers because lasers fail first. Tomahawk-class CPO at 200G/lane makes IM/DD validation and ELSFP laser reliability direct gates on how many accelerators a pod can wire together dependably.
 
@@ -613,15 +613,15 @@ Arista, with Coherent, Marvell, Lightmatter, and a broad partner list, launched 
   Maturity         shipping                           MSA launched OFC 2026                                  shipping (Broadcom, NVIDIA)
   ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**Table .** Where XPO sits between pluggables and co-packaged optics.
+**Table 9.8.** Where XPO sits between pluggables and co-packaged optics.
 
 [^21]
 
-**The broader OFC 2026 picture.** XPO landed inside a clear consensus: 1.6T transceivers went mainstream and 3.2T (400G/lane) previews appeared, with initial demos expected around 2027; CPO moved from demo to imminent, with new MSAs (Open CPX, "socketed CPO") blurring the pluggable/co-packaged line; and hollow-core fiber (record loss now $\sim$`<!-- -->`{=html}0.091 dB/km) advanced toward low-latency intra-datacenter use (§ `sec:hcf`). The through-line is the one this book opened with: rising per-lane rate forcing optics closer to the silicon and squeezing every last pJ/bit.
+**The broader OFC 2026 picture.** XPO landed inside a clear consensus: 1.6T transceivers went mainstream and 3.2T (400G/lane) previews appeared, with initial demos expected around 2027; CPO moved from demo to imminent, with new MSAs (Open CPX, "socketed CPO") blurring the pluggable/co-packaged line; and hollow-core fiber (record loss now $\sim$`<!-- -->`{=html}0.091 dB/km) advanced toward low-latency intra-datacenter use (§9.12.1). The through-line is the one this book opened with: rising per-lane rate forcing optics closer to the silicon and squeezing every last pJ/bit.
 
 ## The latency budget
 
-The book has a link budget in dB (§ `sec:link-budget`) and, next, an energy budget in pJ/bit. It needs a third ledger. Inference puts the optical link on the critical path (§ `sec:inference-bottlenecks`), so you should be able to add up a link's latency the way you add up its loss and its power. The contributors fall into two groups: fixed digital costs that do not care about distance, and a propagation term that does.
+The book has a link budget in dB (§7.7) and, next, an energy budget in pJ/bit. It needs a third ledger. Inference puts the optical link on the critical path (§9.6), so you should be able to add up a link's latency the way you add up its loss and its power. The contributors fall into two groups: fixed digital costs that do not care about distance, and a propagation term that does.
 
   Contributor                      Typical latency
   -------------------------------- -------------------------------------------------
@@ -636,11 +636,11 @@ The book has a link budget in dB (§ `sec:link-budget`) and, next, an energy b
 
   : Approximate one-way latency contributors, 200G/lane class.
 
-**The fixed digital cost dominates a short link.** FEC is the largest single term. KP4 RS(544,514) (§ `sec:kp4`) costs roughly 20 to 100 ns to encode and again to decode, set by the codeword length and the implementation, not the fiber . The module DSP adds another 8 to 10 ns per hop when the link is fully retimed. The analog stages, driver, modulator, photodiode, and *TIA*, together contribute well under a nanosecond of group delay and are almost never the problem. On a 10 m in-rack link the fiber itself is about 50 ns, smaller than one pass through the FEC.
+**The fixed digital cost dominates a short link.** FEC is the largest single term. KP4 RS(544,514) (§3.12) costs roughly 20 to 100 ns to encode and again to decode, set by the codeword length and the implementation, not the fiber . The module DSP adds another 8 to 10 ns per hop when the link is fully retimed. The analog stages, driver, modulator, photodiode, and *TIA*, together contribute well under a nanosecond of group delay and are almost never the problem. On a 10 m in-rack link the fiber itself is about 50 ns, smaller than one pass through the FEC.
 
-**Propagation dominates only once the fabric is large.** Light in standard single-mode fiber travels at roughly $c/1.47$, about $4.9$ ns/m, because the glass has a group index near 1.47. A 100 m row-scale run is then about 490 ns, comparable to a switch hop and larger than the digital terms. Each switched tier adds an O-E-O conversion: a cut-through Ethernet switch forwards in a few hundred nanoseconds ($\sim$`<!-- -->`{=html}560 ns for an 800GbE class device), while InfiniBand reaches under 100 ns per hop . Across a multi-tier scale-out fabric, the switch hops and their conversions, not the fiber, set the tail latency that stalls a collective (§ `sec:inference-bottlenecks`). This is the latency argument for optical circuit switching (§ `sec:ocs`) and for co-packaging: both remove conversions and electrical runs from the path.
+**Propagation dominates only once the fabric is large.** Light in standard single-mode fiber travels at roughly $c/1.47$, about $4.9$ ns/m, because the glass has a group index near 1.47. A 100 m row-scale run is then about 490 ns, comparable to a switch hop and larger than the digital terms. Each switched tier adds an O-E-O conversion: a cut-through Ethernet switch forwards in a few hundred nanoseconds ($\sim$`<!-- -->`{=html}560 ns for an 800GbE class device), while InfiniBand reaches under 100 ns per hop . Across a multi-tier scale-out fabric, the switch hops and their conversions, not the fiber, set the tail latency that stalls a collective (§9.6). This is the latency argument for optical circuit switching (§9.9) and for co-packaging: both remove conversions and electrical runs from the path.
 
-**Latency is where the module architecture shows up again.** The retimed-to-linear choice you met in § `sec:power` for power repeats here. A fully retimed module spends $\sim$`<!-- -->`{=html}8--10 ns per hop; *LRO* roughly halves that; *LPO* deletes the module DSP and lands under 3 ns . On a link with a few hops, deleting the DSP saves more time than shortening the fiber does. Latency and energy point the same way, which is why LPO and CPO are attractive for the scale-up domain where both matter most.
+**Latency is where the module architecture shows up again.** The retimed-to-linear choice you met in §9.13 for power repeats here. A fully retimed module spends $\sim$`<!-- -->`{=html}8--10 ns per hop; *LRO* roughly halves that; *LPO* deletes the module DSP and lands under 3 ns . On a link with a few hops, deleting the DSP saves more time than shortening the fiber does. Latency and energy point the same way, which is why LPO and CPO are attractive for the scale-up domain where both matter most.
 
 ### Hollow-core fiber
 
@@ -662,7 +662,7 @@ The trajectory that CPO is chasing, per TSMC's COUPE disclosures:
 
   : Approximate interconnect energy per bit.
 
-This is the quantitative reason CPO exists: removing the power-hungry electrical run between a switch ASIC and a front-panel pluggable (and the module's retiming DSP) is roughly a $70\%$ cut in optical-interconnect power in Broadcom's Davisson (§ `sec:cpo-status`). *LPO/LRO* attacks the same target from the pluggable side by deleting the DSP; CPO attacks it by shortening the electrical path.
+This is the quantitative reason CPO exists: removing the power-hungry electrical run between a switch ASIC and a front-panel pluggable (and the module's retiming DSP) is roughly a $70\%$ cut in optical-interconnect power in Broadcom's Davisson (§9.10). *LPO/LRO* attacks the same target from the pluggable side by deleting the DSP; CPO attacks it by shortening the electrical path.
 
 **Why it compounds.** Multiply even a few pJ/bit by aggregate fabric bandwidth and link count and interconnect becomes a meaningful slice of cluster power. At a fabric moving petabits per second, a 5 pJ/bit versus 30 pJ/bit choice is megawatts, directly setting how many accelerators fit under a fixed power envelope. Laser wall-plug efficiency feeds the same budget: fewer, more efficient lasers (NVIDIA claims 4$\times$ fewer) cut both power and failure count at once.
 
@@ -670,25 +670,25 @@ This is the quantitative reason CPO exists: removing the power-hungry electrical
 
 ### The thermal envelope
 
-Every watt from the budget above turns into heat that has to leave the box, so interconnect power is also a cooling problem, and cooling sets a second ceiling beside the power wall. On a faceplate switch the optics are a large part of that heat: a 32-port 800G switch dissipates on the order of a kilowatt, and the pluggable modules account for roughly half of it . Air cooling loses headroom as per-module power climbs past the mid-teens of watts, which is why dense high-rate switches are moving to liquid and immersion cooling, and why the LPO power cut (from $\sim$`<!-- -->`{=html}14--18 W to $\sim$`<!-- -->`{=html}8 W, § `sec:power`) reads as a thermal cut as much as an electrical one .
+Every watt from the budget above turns into heat that has to leave the box, so interconnect power is also a cooling problem, and cooling sets a second ceiling beside the power wall. On a faceplate switch the optics are a large part of that heat: a 32-port 800G switch dissipates on the order of a kilowatt, and the pluggable modules account for roughly half of it . Air cooling loses headroom as per-module power climbs past the mid-teens of watts, which is why dense high-rate switches are moving to liquid and immersion cooling, and why the LPO power cut (from $\sim$`<!-- -->`{=html}14--18 W to $\sim$`<!-- -->`{=html}8 W, §9.13) reads as a thermal cut as much as an electrical one .
 
-**Co-packaging changes the shape of the problem.** Moving the optics onto the switch substrate (§ `sec:cpo-status`) puts heat-sensitive optical engines a few millimeters from a high-power ASIC. Absolute temperature still matters, but the steep on-package gradient becomes the performance-limiting term: rings drift off resonance and lock loops fight neighbor heaters (§ `sec:thermal-xtalk`), and the laser is the least tolerant part of all . This is the thermal half of the argument for external lasers (§ `sec:elsfp`): holding the laser off the hot interposer at a controlled temperature protects both its wavelength and its life.
+**Co-packaging changes the shape of the problem.** Moving the optics onto the switch substrate (§9.10) puts heat-sensitive optical engines a few millimeters from a high-power ASIC. Absolute temperature still matters, but the steep on-package gradient becomes the performance-limiting term: rings drift off resonance and lock loops fight neighbor heaters (§6.5), and the laser is the least tolerant part of all . This is the thermal half of the argument for external lasers (§5.11): holding the laser off the hot interposer at a controlled temperature protects both its wavelength and its life.
 
-**Cooling is a reliability lever, not only a power one.** Laser wear-out follows Arrhenius kinetics (§ `sec:laser-aging`): the acceleration factor is exponential in inverse junction temperature, so a few degrees of cooling buys a measurable drop in FIT and, across $10^5$-plus lasers, fewer failures per day (§ `sec:fit-example`). Power, cooling, and reliability are one constraint seen three ways. The link that fits under a fixed power and cooling envelope, and stays cool enough to last, is the one that scales.
+**Cooling is a reliability lever, not only a power one.** Laser wear-out follows Arrhenius kinetics (§5.10): the acceleration factor is exponential in inverse junction temperature, so a few degrees of cooling buys a measurable drop in FIT and, across $10^5$-plus lasers, fewer failures per day (§5.10). Power, cooling, and reliability are one constraint seen three ways. The link that fits under a fixed power and cooling envelope, and stays cool enough to last, is the one that scales.
 
-**Key idea.** Energy per bit is a first-order lever on cluster size under a fixed power budget. The industry path, retimed pluggable ($>$`<!-- -->`{=html}30 pJ/bit) to LPO to CPO ($<$`<!-- -->`{=html}5, then $<$`<!-- -->`{=html}2 pJ/bit), is why "balance compute, memory, and networking" (§ `ch:role`) is a power statement as much as a performance one.
+**Key idea.** Energy per bit is a first-order lever on cluster size under a fixed power budget. The industry path, retimed pluggable ($>$`<!-- -->`{=html}30 pJ/bit) to LPO to CPO ($<$`<!-- -->`{=html}5, then $<$`<!-- -->`{=html}2 pJ/bit), is why "balance compute, memory, and networking" (Chapter 1) is a power statement as much as a performance one.
 
 ## A first-order cost model
 
-The book quantifies two of its three themes. Power has a ledger in pJ/bit (§ `sec:power`); reliability has one in FIT (§ `sec:fit-example`). Cost is invoked everywhere but never counted. It deserves the same first-order treatment, kept deliberately relative and order-of-magnitude. What follows is an illustrative model, not a price sheet: absolute module prices move too fast and vary too much by volume to write down usefully, so the numbers here are assumptions you should replace with your own.
+The book quantifies two of its three themes. Power has a ledger in pJ/bit (§9.13); reliability has one in FIT (§5.10). Cost is invoked everywhere but never counted. It deserves the same first-order treatment, kept deliberately relative and order-of-magnitude. What follows is an illustrative model, not a price sheet: absolute module prices move too fast and vary too much by volume to write down usefully, so the numbers here are assumptions you should replace with your own.
 
-*Total cost of ownership* (TCO) for an optical link splits into three buckets. The first is acquisition, the *bill of materials* (BOM) and the yield of optical assembly and test: laser count, whether a DSP die is present, and the packaging and coupling steps that dominate transceiver cost. The second is lifetime energy, the module's power drawn over years and multiplied by a cooling overhead. The third is service: the failures per day implied by the fleet FIT (§ `sec:fit-example`), each one costing a replacement part and a hands-on visit. Acquisition is capital; the other two are recurring.
+*Total cost of ownership* (TCO) for an optical link splits into three buckets. The first is acquisition, the *bill of materials* (BOM) and the yield of optical assembly and test: laser count, whether a DSP die is present, and the packaging and coupling steps that dominate transceiver cost. The second is lifetime energy, the module's power drawn over years and multiplied by a cooling overhead. The third is service: the failures per day implied by the fleet FIT (§5.10), each one costing a replacement part and a hands-on visit. Acquisition is capital; the other two are recurring.
 
-**Energy is the bucket you can compute.** Take an 800G module drawing $\sim$`<!-- -->`{=html}15 W fully retimed against $\sim$`<!-- -->`{=html}8 W for LPO (§ `sec:power`) . Over a five-year life at \$0.10/kWh, with a *power usage effectiveness* (PUE) of $\sim$`<!-- -->`{=html}1.3 to cover cooling, the retimed module burns about 850 kWh, near \$85 of electricity; the LPO module about 460 kWh, near \$46. The $\sim$\$40 gap per module is a meaningful fraction of what the module itself costs, and it recurs every life cycle. Scaled up, the number stops being small: a vendor estimate puts the LPO saving on a 500,000-accelerator cluster on the order of 100 MW and roughly \$100 million a year in electricity . Treat that figure as vendor orientation, but the order of magnitude is the point.
+**Energy is the bucket you can compute.** Take an 800G module drawing $\sim$`<!-- -->`{=html}15 W fully retimed against $\sim$`<!-- -->`{=html}8 W for LPO (§9.13) . Over a five-year life at \$0.10/kWh, with a *power usage effectiveness* (PUE) of $\sim$`<!-- -->`{=html}1.3 to cover cooling, the retimed module burns about 850 kWh, near \$85 of electricity; the LPO module about 460 kWh, near \$46. The $\sim$\$40 gap per module is a meaningful fraction of what the module itself costs, and it recurs every life cycle. Scaled up, the number stops being small: a vendor estimate puts the LPO saving on a 500,000-accelerator cluster on the order of 100 MW and roughly \$100 million a year in electricity . Treat that figure as vendor orientation, but the order of magnitude is the point.
 
 **Recurring cost is a large share of the total.** A gigawatt-class AI site has been quoted near \$38 billion of up-front capital and roughly \$0.9 billion a year to run . Over a multi-year life the running cost is a real fraction of the capital, and interconnect power is a growing slice of it, so a pJ/bit cut reads directly as dollars saved. That estimate is an analyst breakdown, provisional, but it sets the scale: power and cost are the same argument seen through two units.
 
-**The architecture choice moves all three buckets at once.** Per delivered Gb/s, a fully retimed pluggable carries the highest BOM (a DSP die and its packaging) and the highest power. LPO and LRO delete or relax that DSP, cutting both the BOM and $\sim$`<!-- -->`{=html}40--50% of the power , and move the cost that remains into host validation risk rather than the module. CPO and XPO remove the faceplate connector and the long electrical run and push energy under 5 pJ/bit (§ `tab:pjbit`), but raise assembly and test cost and couple the optics to an expensive switch ASIC, which is why the lasers are field-replaceable: a laser failure must not scrap the package (§ `sec:cpo-status`). Co-packaged and near-package copper is cheaper still per Gb/s wherever it reaches, carrying only the connector and the host SerDes energy (§ `sec:cpc-npc`); the crossover to optics is set by the reach wall, not by cost. At the fabric level, optical circuit switching is itself a cost lever: replacing a tier of O-E-O packet switches with a MEMS OCS cut capex $\sim$`<!-- -->`{=html}30% and power $\sim$`<!-- -->`{=html}41% in Google's Jupiter (§ `sec:ocs`) .
+**The architecture choice moves all three buckets at once.** Per delivered Gb/s, a fully retimed pluggable carries the highest BOM (a DSP die and its packaging) and the highest power. LPO and LRO delete or relax that DSP, cutting both the BOM and $\sim$`<!-- -->`{=html}40--50% of the power , and move the cost that remains into host validation risk rather than the module. CPO and XPO remove the faceplate connector and the long electrical run and push energy under 5 pJ/bit (§9.10), but raise assembly and test cost and couple the optics to an expensive switch ASIC, which is why the lasers are field-replaceable: a laser failure must not scrap the package (§9.10). Co-packaged and near-package copper is cheaper still per Gb/s wherever it reaches, carrying only the connector and the host SerDes energy (§9.5); the crossover to optics is set by the reach wall, not by cost. At the fabric level, optical circuit switching is itself a cost lever: replacing a tier of O-E-O packet switches with a MEMS OCS cut capex $\sim$`<!-- -->`{=html}30% and power $\sim$`<!-- -->`{=html}41% in Google's Jupiter (§9.9) .
 
 **Key idea.** Cost tracks power and reliability, not against them. The cheapest link per Gb/s is the one you do not light (copper within reach), then the one with the fewest active stages (LPO, then CPO), weighed against the validation risk and the failure blast radius each one adds. A pJ/bit saved is dollars saved every year the fabric runs, which is why the energy budget and the cost model point the same way.
 
@@ -696,23 +696,23 @@ The book quantifies two of its three themes. Power has a ledger in pJ/bit (§ 
 
 This chapter sits at the end of the book because it joins the decisions from every earlier chapter into one system. The path below is not a waterfall; teams iterate. But each step produces evidence that either advances the design or sends it back.
 
-1.  **Workload and collective requirements.** What traffic pattern, latency target, and tail tolerance does the job demand? (§ `ch:role,sec:collectives,sec:inference-bottlenecks`)
+1.  **Workload and collective requirements.** What traffic pattern, latency target, and tail tolerance does the job demand? (Chapter 1, §9.7, §9.6)
 
-2.  **Reach and topology.** What physical extent, link count, and oversubscription does the cluster need? Does copper close, or does optics take the link? (§ `sec:topologies,sec:trace-loss,tab:oif-scale`)
+2.  **Reach and topology.** What physical extent, link count, and oversubscription does the cluster need? Does copper close, or does optics take the link? (§9.2, §9.5, Table 9.1)
 
-3.  **Electrical versus optical placement.** Pluggable, LPO, CPO, XPO, or co-packaged copper? The answer follows from reach, power envelope, and serviceability. (§ `tab:placement,sec:cpo-status,sec:xpo,sec:cpc-npc`)
+3.  **Electrical versus optical placement.** Pluggable, LPO, CPO, XPO, or co-packaged copper? The answer follows from reach, power envelope, and serviceability. (Table 9.4, §9.10, §9.11, §9.5)
 
-4.  **Laser, modulation, and WDM selection.** DFB, EML, CW+Si MZM, CW+ring, or CW+TFLN? Single-wavelength DR or dense WDM with locking? The choice sets the ATP, the supplier base, and the fleet FIT model. (§ `ch:lasers,ch:wdm,tab:tx-modulator,tab:laser-choice`)
+4.  **Laser, modulation, and WDM selection.** DFB, EML, CW+Si MZM, CW+ring, or CW+TFLN? Single-wavelength DR or dense WDM with locking? The choice sets the ATP, the supplier base, and the fleet FIT model. (Chapter 5, Chapter 6, Table 3.12, Table 5.1)
 
-5.  **Link, power, and thermal budgets.** Close the optical ledger (OMA to sensitivity with penalties), the electrical ledger (COM), the energy ledger (pJ/bit), and the thermal envelope together. (§ `sec:link-budget,sec:com,sec:power,sec:thermal-envelope`)
+5.  **Link, power, and thermal budgets.** Close the optical ledger (OMA to sensitivity with penalties), the electrical ledger (COM), the energy ledger (pJ/bit), and the thermal envelope together. (§7.7, §9.5.2, §9.13, §9.13.1)
 
-6.  **Noise, sensitivity, and receiver design.** Match photodiode, TIA, and equalization to the power the laser and channel deliver. Budget RIN, shot, and thermal noise against the pre-FEC BER target. (§ `ch:models,sec:sensitivity,sec:rin,sec:rxtech`)
+6.  **Noise, sensitivity, and receiver design.** Match photodiode, TIA, and equalization to the power the laser and channel deliver. Budget RIN, shot, and thermal noise against the pre-FEC BER target. (Chapter 4, §4.4, §4.3, §4.5)
 
-7.  **Validation evidence.** Walk the ladder: bring-up, characterization, margin corners, stress qualification, and production readiness. Name the instrument and reference plane for every number. (§ `ch:validation,sec:validation-workflow,sec:prod-corners`)
+7.  **Validation evidence.** Walk the ladder: bring-up, characterization, margin corners, stress qualification, and production readiness. Name the instrument and reference plane for every number. (Chapter 7, §7.1, §7.9)
 
-8.  **Yield and supplier readiness.** Multi-lot yield, SPC, ATP coverage, NPI gates, first-article, and 8D discipline. Prove the part can be built at volume before committing the fleet. (§ `ch:reliability,sec:yield-analysis,sec:supplier-exec`)
+8.  **Yield and supplier readiness.** Multi-lot yield, SPC, ATP coverage, NPI gates, first-article, and 8D discipline. Prove the part can be built at volume before committing the fleet. (Chapter 8, §8.6, §8.10)
 
-9.  **Fleet telemetry and corrective action.** CMIS monitors, FEC histograms, triage buckets, RMA codes, and the feedback loop from field to ATP. The system is not done until the fleet can detect, classify, and correct a failure without the design team. (§ `sec:fleet-triage,sec:fabric-availability`)
+9.  **Fleet telemetry and corrective action.** CMIS monitors, FEC histograms, triage buckets, RMA codes, and the feedback loop from field to ATP. The system is not done until the fleet can detect, classify, and correct a failure without the design team. (§7.12, §8.11)
 
 A design review should be able to point at evidence for every step. Where evidence is missing, the step is not done. Where two steps conflict (power budget versus serviceability, yield versus guardband), the trade must be stated and owned, not hidden behind a single-number spec.
 
@@ -724,7 +724,7 @@ An AI fabric is judged by delivered workload time, not port rate, and the optica
 
 ### How it is measured
 
-Measure the network at workload, fabric, link, and module layers. At workload level, record step time, collective latency, accelerator idle time, and tail behavior. At fabric level, record delivered bandwidth, queue occupancy, route balance, retries, and failed links. At link level, record pre-FEC BER, FEC error distributions, equalizer state, and flaps. At module level, record optical power, temperature, wavelength or lock state, and electrical power. A peak-rate test does not replace an all-reduce or all-to-all run on the intended topology (§ `sec:collectives,sec:fleet-triage`).
+Measure the network at workload, fabric, link, and module layers. At workload level, record step time, collective latency, accelerator idle time, and tail behavior. At fabric level, record delivered bandwidth, queue occupancy, route balance, retries, and failed links. At link level, record pre-FEC BER, FEC error distributions, equalizer state, and flaps. At module level, record optical power, temperature, wavelength or lock state, and electrical power. A peak-rate test does not replace an all-reduce or all-to-all run on the intended topology (§9.7, §7.12).
 
 ### How it fails
 

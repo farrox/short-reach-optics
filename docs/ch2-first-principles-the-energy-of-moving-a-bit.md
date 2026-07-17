@@ -21,7 +21,7 @@ An optical link spends its energy differently. The dominant costs are the *conve
 
 Put the two together and there is a cross-over length: below it, electrical wins; above it, optical wins. The decisive observation is what happens as data rates climb: the electrical cost at a given length rises (more charging events per second, worse loss at higher frequency, more equalization), so the *break-even distance shrinks*.
 
-That is the whole history of the field in one sentence. As rates went from gigabits to hundreds of gigabits per lane, the cross-over marched inward: campus, then rack, then board, then package, and now die-to-die. It is the first-principles reason co-packaged optics and in-package optical I/O exist (§ `sec:cpo-status,sec:cwwdm`), and the reason the scope of this book is the *shortest* links (§ `sec:reach`).
+That is the whole history of the field in one sentence. As rates went from gigabits to hundreds of gigabits per lane, the cross-over marched inward: campus, then rack, then board, then package, and now die-to-die. It is the first-principles reason co-packaged optics and in-package optical I/O exist (§9.10, §6.6), and the reason the scope of this book is the *shortest* links (§3.3).
 
 ## The receiver, capacitance, and attojoule targets
 
@@ -131,7 +131,7 @@ Compare measured link power against the design budget, split by block. If the to
 
 ## Why this framework anchors the book
 
-Everything that follows is an effort to approach these floors at the required data rate and reliability. Laser wall-plug efficiency (§ `ch:lasers`) sets how much optical power you can afford. Modulation and FEC (§ `ch:imdd,sec:kp4,sec:equalization`) trade SNR for reach and rate. WDM (§ `ch:wdm`) amortizes one laser source across many wavelengths. Receiver noise and sensitivity (§ `ch:models,sec:worked-budget,sec:link-budget`) decide whether that power is enough. Co-packaging and energy-per-bit trends (§ `sec:power`) show the same first principle playing out as copper reach collapses and optics move onto the interposer.
+Everything that follows is an effort to approach these floors at the required data rate and reliability. Laser wall-plug efficiency (Chapter 5) sets how much optical power you can afford. Modulation and FEC (Chapter 3, §3.12, §3.6) trade SNR for reach and rate. WDM (Chapter 6) amortizes one laser source across many wavelengths. Receiver noise and sensitivity (Chapter 4, §4.4.3, §7.7) decide whether that power is enough. Co-packaging and energy-per-bit trends (§9.13) show the same first principle playing out as copper reach collapses and optics move onto the interposer.
 
 **Key idea.** Short-reach optics is, at bottom, an energy-per-bit optimization. Optical energy is spent at the endpoints and is flat with distance; electrical energy grows with distance and rate; so rising data rates push optics ever closer to the chip. Miller's framework is the lens the rest of this book looks through.
 

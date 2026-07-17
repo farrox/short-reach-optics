@@ -665,14 +665,10 @@ instruments, and triage tree are that evidence chain from bench to fleet.
 \subsection{How it is measured}
 \label{sec:validation-how-measured}
 
-Use the least complex instrument that can falsify the current hypothesis. A power
-meter answers whether light reaches the plane. An OSA answers wavelength, SMSR,
-and spectral leakage. A DCA answers OMA, ER, RLM, and TDECQ. A BERT answers the
-end-to-end waterfall and burst pattern. A VNA answers bandwidth, return loss, and
-fixture questions. An environmental chamber exposes temperature and humidity
-corners, but the unit must also run in the target chassis with real airflow,
-rails, neighbors, and fiber. \Cref{sec:instruments,sec:bringup,sec:prod-corners}
-turn that instrument list into a sequence.
+Use the least complex instrument that can falsify the current hypothesis.
+\Cref{tab:measurement-mapping} maps every key metric to its instrument, rationale,
+and failure signature in one lookup; the bring-up sequence
+(\Cref{sec:bringup,sec:prod-corners}) orders those instruments into a workflow.
 
 \subsection{How it fails}
 \label{sec:validation-how-fails}
