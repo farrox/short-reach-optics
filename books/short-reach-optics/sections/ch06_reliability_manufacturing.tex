@@ -207,6 +207,108 @@ mimic optical wear-out until you bisect heater versus laser
 (\Cref{sec:lock-validation}). Coupling and FAU faults belong with packaging, not
 with Arrhenius $E_a$ arguments.
 
+\section{The reliability bathtub: three failure regimes}
+\label{sec:bathtub}
+
+Field failures follow three regimes with different clocks and different fixes.
+Mixing them wastes corrective action on the wrong mechanism.
+
+\begin{description}
+\item[Infant mortality (early life)] Latent defects from manufacturing: weak
+      solder joints, marginal laser die, contamination, firmware bugs that trip on
+      first thermal cycle. Burns down rapidly with time. Fixed by burn-in,
+      screening, tighter ATP, and first-article control (\Cref{sec:gr468}).
+\item[Useful life (constant rate)] Random failures at a roughly steady FIT:
+      cosmic-ray-induced single-event upsets, handling damage during unrelated
+      service actions, and isolated material defects that passed all screens. Fixed
+      by redundancy, field-replaceable modules, and design margin. Note: connector
+      wear and contamination accumulate with mate cycles and are usage-driven
+      degradation (\Cref{sec:connector-reliability}), not constant-rate random
+      failures; budget them separately from the flat-hazard FIT.
+\item[Wear-out (end of life)] Physics-driven degradation: laser facet, active
+      region, EAM absorption curve shift, TEC aging, epoxy creep. Onset depends
+      on temperature, current, optical power, and time. Fixed by derating,
+      Arrhenius-based life projection, and planned replacement intervals
+      (\Cref{sec:laser-aging}).
+\end{description}
+
+A rising failure rate after years of service is wear-out and calls for replacement
+planning, not supplier 8D. A cluster of early failures on a new lot is infant
+mortality and calls for tighter screens. A steady trickle with no date-code
+correlation is useful-life random and calls for redundancy and fast repair. The
+triage tree in \Cref{sec:fleet-triage} forces this classification before
+corrective action starts.
+
+\section{Yield analysis}
+\label{sec:yield-analysis}
+
+Yield is not one number. It splits by stage and by failure mode, and each split
+points at a different owner.
+
+\begin{description}
+\item[Wafer / die yield] Process-limited: waveguide loss, ring resonance spread,
+      heater shorts, photodiode dark current. Caught at wafer probe. Owner: foundry
+      SPC.
+\item[Assembly yield] Packaging-limited: fiber-array attach alignment, solder voids,
+      wirebond pull, epoxy placement. Caught at module ATP. Owner: assembly supplier.
+\item[Test yield (first-pass)] ATP-limited: units that fail one or more acceptance
+      criteria on first pass. May include measurement-system false rejects (gauge
+      R\&R). Owner: test engineering.
+\item[Escaped DPPM (post-screen field failures)] Units that passed all screens but
+      fail in the fleet. Each escape is either a preventable coverage gap (the
+      screen exists but missed the defect) or a residual latent failure that no
+      cost-effective screen separates from good units. Owner: quality and
+      reliability engineering.
+\end{description}
+
+Track yield by ATP row, lot, supplier site, tester, and date code. A yield drop
+that correlates with one tester is likely a measurement problem. A yield drop that
+correlates with one supplier lot is likely a process problem. A yield drop with no
+observed correlation requires further investigation: verify gauge repeatability,
+expand stratification (shift, fixture, material lot, firmware), and test guardband
+or specification mismatch as hypotheses before concluding. Do not open supplier
+corrective action until the measurement system is cleared (\Cref{sec:hvm-test}).
+
+\section{Escaped defect analysis}
+\label{sec:escaped-defects}
+
+An escaped defect is a unit that passed every production screen and failed in the
+field. Post-screen field failures split into two categories with different
+corrective actions:
+
+\paragraph{Preventable coverage escapes.}
+A defect that a cost-effective screen could have caught but did not, because the
+screen was absent, miscalibrated, or insufficiently stressed. Each one requires an
+ATP or process-control change. Common mechanisms in optical modules:
+
+\begin{itemize}
+\item \textbf{Contamination:} particles trapped during assembly that only move under
+      thermal cycling or vibration, shifting coupling or raising ORL intermittently.
+\item \textbf{Marginal alignment:} fiber-attach or FAU position within spec at room
+      temperature but outside at the thermal corner, creating a
+      temperature-dependent loss that the ATP chamber did not run.
+\item \textbf{Weak solder or wirebond:} passes pull test but fatigues under
+      repeated thermal cycling, creating intermittent opens or increased resistance.
+\item \textbf{Firmware corner:} a state-machine path or calibration table entry that
+      production never exercises but the fleet hits on a specific boot sequence,
+      temperature bin, or host interaction.
+\item \textbf{Packaging stress:} residual mechanical stress from underfill cure or
+      lid attach that relaxes over time, shifting alignment or birefringence.
+\end{itemize}
+
+For each preventable escape, trace the failure signature back to the earliest point
+in the production flow where it could have been caught, and add or tighten the
+screen there.
+
+\paragraph{Residual latent failures.}
+A defect that no cost-effective screen can separate from good units at the time of
+test. Examples include cosmic-ray-induced single-event upsets, rare material
+inclusions below detection limits, and process-marginal units that sit inside all
+guardbands but fail under a specific field combination of temperature, ORL, and
+neighbor load. These go into the residual FIT model, not into ATP. Document why no
+reasonable screen exists so the decision is auditable and revisitable as test
+technology improves.
+
 \section{Photonic packaging and module-level failures}
 \label{sec:photonic-packaging}
 
@@ -516,12 +618,107 @@ burn-in and screens (\Cref{sec:gr468}), and a tight ATP (\Cref{sec:supplier-exec
 lower the failure rate, and a resilient fabric lowers the cost of each failure that
 slips through. The two multiply.
 
-\keyidea{Component FIT sets the failure \emph{rate}; the fabric sets the failure
-\emph{cost}. A synchronous collective makes one bad link everyone's stall
-(\Cref{sec:collectives}), and at cluster scale failures are continuous: Meta's
-Llama~3 run saw a failure about every three hours, network faults 8.4\% of them, at
-roughly 90\% effective uptime~\citep{metallama3}. The fabric survives that with
-redundant rails, FEC and fast reroute, OCS topology reconfiguration
-(\Cref{sec:ocs}), and field-replaceable lasers (\Cref{sec:elsfp}). Lowering
-per-link FIT and lowering per-failure cost multiply, which is why link reliability
-sets how large a dependable fabric can grow.}
+\section{Engineering lens}
+\label{sec:reliability-engineering-lens}
+
+\subsection{How it works}
+
+At fleet scale, reliability and manufacturability are design constraints: a modest
+per-part FIT times millions of parts is a steady stream of failures. The chapter's
+qualification, yield, and supplier discipline all aim at keeping that stream small
+and classifiable.
+
+\subsection{How it is measured}
+\label{sec:reliability-how-measured}
+
+Reliability is measured as a distribution over stress and time. Qualification
+records failures by mechanism, stress, lot, and sample history. Production records
+yield, fallout by ATP row, measurement distributions, gauge repeatability, and
+escaped defects per million. Fleet data add install age, temperature, firmware,
+supplier lot, return code, and no-fault-found rate. Keep the chain from wafer or
+die measurement through module ATP to field return so a drift can be traced to its
+first observable point (\Cref{sec:hvm-test,sec:supplier-exec,sec:fleet-triage}).
+
+\subsection{How it fails}
+\label{sec:reliability-how-fails}
+
+Programs fail at scale through wear, variation, and escapes. Wear shifts a unit
+after ship. Variation produces a weak tail across wafer, lot, site, or assembly
+line. An escape is a defect the current screen cannot see or a control that was not
+run. Yield can drop because the product changed, the process moved, incoming
+material moved, calibration changed, or the tester moved. Do not open supplier
+corrective action until the measurement system is cleared.
+
+\failuremode{Yield drop}{First-pass yield falls from its stable baseline, often on
+one ATP row, tester, lot, or shift.}{Process drift, supplier-lot variation,
+assembly change, calibration or fixture drift, software revision, or a changed
+guardband.}{Pareto by test and lot, golden-unit history, gauge repeatability,
+station correlation, incoming data, and destructive analysis on selected
+failures.}{Contain suspect material, clear the tester, identify the first changed
+input, correct it, and verify with a controlled lot before release.}
+
+\subsection{How it is debugged}
+\label{sec:reliability-how-debugged}
+
+For a yield fall, freeze software, limits, and suspect material. Split by tester,
+shift, lot, supplier site, and ATP row. Run a golden unit across stations and a
+failing unit on a reference bench. If the failure follows the station, repair the
+measurement system. If it follows the unit, inspect upstream process data and
+choose failure analysis that can distinguish the top mechanisms. Contain first,
+find root cause second, change the process third, and verify the fix on fresh data.
+
+\debugstory{Module yield fell sharply after a supplier lot change.}{The failure
+Pareto pointed to one-lane TDECQ. Golden units passed all stations, and failed
+units kept the bad lane on the reference bench. Cross-sections showed a shifted
+fiber-array attach.}{The electrical path and testers were stable.}{An assembly
+fixture change moved one fiber row outside its coupling window.}{The lot was held,
+the fixture was restored, first-article coupling checks were tightened, and the
+supplier control plan was revised.}
+
+\section{Interview and design review questions}
+\label{sec:reliability-design-review}
+
+\paragraph{Concept.}
+\begin{itemize}
+\item What distinguishes infant mortality, useful-life random, and wear-out
+      failures?
+\item Why does qualification on a small sample not guarantee field reliability?
+\item What does FIT mean, and how does fleet size amplify it?
+\end{itemize}
+
+\paragraph{Design.}
+\begin{itemize}
+\item Which failure mechanisms are accelerated by each qualification stress, and
+      which mechanisms are not covered?
+\item What is tested on every unit, what is sampled, and why is that escape risk
+      acceptable?
+\item Can yield and field returns be sliced by wafer, lot, supplier site, assembly
+      line, tester, firmware, and date code?
+\item What spare, repair, and reroute plan limits the fleet cost of a failure that
+      still escapes?
+\end{itemize}
+
+\paragraph{Debug.}
+\begin{itemize}
+\item Yield dropped from 95\% to 70\% on one ATP row. What are your first three
+      actions?
+\item A field return looks alive on the bench. What does a high NFF rate tell you?
+\item What measurement-system check runs before a supplier or process excursion is
+      declared?
+\end{itemize}
+
+\paragraph{Manufacturing and operations.}
+\begin{itemize}
+\item Which corrective action changes a control so the same defect cannot escape
+      again?
+\item What data must a supplier provide at each NPI gate to pass?
+\item How do you set guardband limits that balance yield loss against DPPM escape?
+\item What is the cost of a wrong RMA classification (laser wear-out versus
+      connector contamination)?
+\end{itemize}
+
+\keyidea{Production readiness joins mechanism-based qualification, a stable
+measurement system, controlled supplier changes, and field data that preserve lot
+history. When yield or fleet health moves, contain the population, clear the test
+system, find the first changed input, and verify the corrective control with new
+data.}

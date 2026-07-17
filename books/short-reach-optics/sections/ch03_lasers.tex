@@ -860,8 +860,110 @@ field-replaceable external laser sources (ELSFP, CW-WDM),
 redundancy, burn-in screening to weed out infant mortality, and derating (running
 lasers below their maximum to extend life).
 
-\keyidea{Measure LIV, SMSR, and RIN on every laser path; write the requirements
-slice in \Cref{sec:laser-reqs} before DVT; budget bias-driver noise against the
-same RIN floor (\Cref{sec:laser-drivers}); project aging with Arrhenius and derate
-in the field; prefer ELSFP/CW-WDM when fleet FIT and hot-swap matter. At gigawatt
-scale the laser is still the part most likely to bring a link down.}
+\section{Engineering lens}
+\label{sec:lasers-engineering-lens}
+
+\subsection{How it works}
+
+A laser is an active device with wear-out physics, which makes it both the first
+line of the link budget and the fleet's reliability bottleneck. The chapter's
+device families and LIV/SMSR/RIN measurements all serve one question: will this
+source stay in spec for years at temperature?
+
+\subsection{How it is measured}
+\label{sec:lasers-how-measured}
+
+Qualify the laser as a set of curves, not a room-temperature data-sheet point.
+Measure light-current-voltage (LIV), threshold current, slope efficiency, and
+rollover with a source-measure unit and power meter. Use an optical spectrum
+analyzer (OSA) for wavelength and side-mode suppression ratio (SMSR), a calibrated
+photodiode and spectrum analyzer for RIN, and a DCA for EML extinction, RLM, and
+TDECQ. Repeat across case temperature, bias, optical return loss, and aging time.
+The measurement details and ATP mapping are in
+\Cref{sec:laser-params,tab:laser-meas,tab:atp-laser}; qualification uses the
+mechanism-based stress plan in \Cref{sec:laser-aging,sec:gr468}~\cite{gr468}.
+
+\subsection{How it fails}
+\label{sec:lasers-how-fails}
+
+Separate sudden death from gradual drift. Sudden dark output can be catastrophic
+optical damage, an open interconnect, electrostatic damage, or a failed bias path.
+Gradual failures include threshold rise, slope loss, SMSR collapse, mode hopping,
+wavelength drift, and EAM bias creep. Monitor-photodiode and thermoelectric-cooler
+failures can make a healthy laser look unstable because the control loop is using
+bad feedback or has run out of thermal range. Manufacturing adds die, wafer, lot,
+and assembly spread in every one of these terms.
+
+\failuremode{Monitor photodiode drift}{Reported power falls or the bias loop moves,
+but an external power meter does not show the same change.}{Monitor-PD responsivity
+drift, transimpedance gain error, contamination in the monitor path, or a bad
+calibration coefficient.}{External power meter, monitor current, bias current,
+LIV, and loop error versus temperature.}{Repair the monitor path or calibration,
+add disagreement alarms, and do not raise laser bias to compensate for a false
+reading.}
+
+\subsection{How it is debugged}
+\label{sec:lasers-how-debugged}
+
+For power degradation, compare external optical power, monitor current, bias, and
+case temperature before changing the setpoint. Rerun LIV at the failing
+temperature and compare it with ship data. If LIV moved, inspect SMSR, wavelength,
+and RIN to classify active-region, facet, or modal change. If LIV is stable, move
+to coupling, connector, monitor-PD, and control-loop checks. For a wavelength
+excursion, inspect OSA data and TEC current together. For a bias anomaly, replace
+the product driver with a quiet source before blaming the diode.
+
+\debugstory{BER worsened after thermal cycling while average optical power stayed
+in range.}{The DCA showed that extinction ratio had collapsed. LIV and SMSR were
+unchanged, and an EAM bias sweep restored the eye.}{The light source was healthy,
+but its modulator operating point was wrong.}{A calibration table used the wrong
+temperature segment after the cycle.}{The table and screening limits were fixed,
+and EAM bias sweep data became part of the thermal-cycle readout.}
+
+\section{Interview and design review questions}
+\label{sec:lasers-design-review}
+
+\paragraph{Concept.}
+\begin{itemize}
+\item Why is the laser typically the reliability-limiting component in an optical
+      link?
+\item What physical mechanism causes a DFB laser's threshold current to rise with
+      age?
+\item Why does an isolator-free design tighten the RIN requirement?
+\end{itemize}
+
+\paragraph{Design.}
+\begin{itemize}
+\item Which aging model and activation energy match the observed failure mechanism?
+\item What are the distributions of threshold, slope, wavelength, SMSR, and RIN
+      across wafer, lot, assembly site, and temperature?
+\item Which screens remove infant mortality, and what good units do those screens
+      consume?
+\item Does the architecture make the laser field-replaceable, and what failure
+      rate justifies that choice?
+\end{itemize}
+
+\paragraph{Debug.}
+\begin{itemize}
+\item Optical power fell but the monitor photodiode reports no change. What do
+      you check?
+\item BER worsened after thermal cycling while average power stayed in range.
+      What is the most likely root cause?
+\item Which telemetry distinguishes laser wear from monitor, TEC, connector, and
+      bias-driver faults in the fleet?
+\end{itemize}
+
+\paragraph{Manufacturing and operations.}
+\begin{itemize}
+\item What are the process control limits and the supplier's reaction plan when a
+      trend crosses them?
+\item How many HTOL hours at what temperature project 10 years of field life at
+      your operating conditions?
+\item What lot-level data must the supplier provide at each NPI gate?
+\item What is the expected laser replacement rate for this fleet size and FIT?
+\end{itemize}
+
+\keyidea{Measure LIV, SMSR, wavelength, and RIN as distributions across
+temperature, lot, and age. Tie each requirement to an ATP row, each life claim to
+a physical mechanism, and each field alarm to a measurement that separates the
+laser from its driver, monitor, cooler, and optical path.}

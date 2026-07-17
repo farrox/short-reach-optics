@@ -1343,7 +1343,161 @@ active stages (LPO, then CPO), weighed against the validation risk and the failu
 blast radius each one adds. A pJ/bit saved is dollars saved every year the fabric
 runs, which is why the energy budget and the cost model point the same way.}
 
-\keyidea{Inference is memory-bandwidth-bound in decode and interconnect-bound for
-sharded and MoE models, so the optical link is on the latency critical path, not
-just plumbing. Reliable, low-power IM/DD (and WDM) links set how large and
-dependable an inference fabric can grow.}
+\section{Synthesis: from workload to fleet}
+\label{sec:synthesis}
+
+This chapter sits at the end of the book because it joins the decisions from every
+earlier chapter into one system. The path below is not a waterfall; teams iterate.
+But each step produces evidence that either advances the design or sends it back.
+
+\begin{enumerate}
+\item \textbf{Workload and collective requirements.} What traffic pattern, latency
+      target, and tail tolerance does the job demand?
+      (\Cref{ch:role,sec:collectives,sec:inference-bottlenecks})
+\item \textbf{Reach and topology.} What physical extent, link count, and
+      oversubscription does the cluster need? Does copper close, or does optics
+      take the link? (\Cref{sec:topologies,sec:trace-loss,tab:oif-scale})
+\item \textbf{Electrical versus optical placement.} Pluggable, LPO, CPO, XPO, or
+      co-packaged copper? The answer follows from reach, power envelope, and
+      serviceability. (\Cref{tab:placement,sec:cpo-status,sec:xpo,sec:cpc-npc})
+\item \textbf{Laser, modulation, and WDM selection.} DFB, EML, CW+Si MZM, CW+ring,
+      or CW+TFLN? Single-wavelength DR or dense WDM with locking? The choice sets
+      the ATP, the supplier base, and the fleet FIT model.
+      (\Cref{ch:lasers,ch:wdm,tab:tx-modulator,tab:laser-choice})
+\item \textbf{Link, power, and thermal budgets.} Close the optical ledger (OMA to
+      sensitivity with penalties), the electrical ledger (COM), the energy ledger
+      (pJ/bit), and the thermal envelope together.
+      (\Cref{sec:link-budget,sec:com,sec:power,sec:thermal-envelope})
+\item \textbf{Noise, sensitivity, and receiver design.} Match photodiode, TIA, and
+      equalization to the power the laser and channel deliver. Budget RIN, shot,
+      and thermal noise against the pre-FEC BER target.
+      (\Cref{ch:models,sec:sensitivity,sec:rin,sec:rxtech})
+\item \textbf{Validation evidence.} Walk the ladder: bring-up, characterization,
+      margin corners, stress qualification, and production readiness. Name the
+      instrument and reference plane for every number.
+      (\Cref{ch:validation,sec:validation-workflow,sec:prod-corners})
+\item \textbf{Yield and supplier readiness.} Multi-lot yield, SPC, ATP coverage,
+      NPI gates, first-article, and 8D discipline. Prove the part can be built at
+      volume before committing the fleet.
+      (\Cref{ch:reliability,sec:yield-analysis,sec:supplier-exec})
+\item \textbf{Fleet telemetry and corrective action.} CMIS monitors, FEC
+      histograms, triage buckets, RMA codes, and the feedback loop from field to
+      ATP. The system is not done until the fleet can detect, classify, and correct
+      a failure without the design team.
+      (\Cref{sec:fleet-triage,sec:fabric-availability})
+\end{enumerate}
+
+A design review should be able to point at evidence for every step. Where evidence
+is missing, the step is not done. Where two steps conflict (power budget versus
+serviceability, yield versus guardband), the trade must be stated and owned, not
+hidden behind a single-number spec.
+
+\section{Engineering lens}
+\label{sec:networking-engineering-lens}
+
+\subsection{How it works}
+
+An AI fabric is judged by delivered workload time, not port rate, and the optical
+layer sits on that critical path. The chapter places every earlier device into
+scale-up and scale-out networks and shows where copper ends and optics wins the
+link.
+
+\subsection{How it is measured}
+\label{sec:networking-how-measured}
+
+Measure the network at workload, fabric, link, and module layers. At workload
+level, record step time, collective latency, accelerator idle time, and tail
+behavior. At fabric level, record delivered bandwidth, queue occupancy, route
+balance, retries, and failed links. At link level, record pre-FEC BER, FEC error
+distributions, equalizer state, and flaps. At module level, record optical power,
+temperature, wavelength or lock state, and electrical power. A peak-rate test does
+not replace an all-reduce or all-to-all run on the intended topology
+(\Cref{sec:collectives,sec:fleet-triage}).
+
+\subsection{How it fails}
+\label{sec:networking-how-fails}
+
+Scaling can fail through oversubscription, poor route balance, head-of-line
+blocking, a straggling link, excess retries, switch-radix limits, fiber-count and
+service errors, or a power and cooling ceiling. Architecture adds distinct escape
+paths: pluggables can run out of faceplate power, linear optics can expose host
+margin, and co-packaged optics can turn package thermals, lock control, or fiber
+service into the limiting risk. A working link can still be a bad system choice if
+it cannot be monitored, replaced, or operated at fleet scale.
+
+\failuremode{Collective slowdown}{Accelerator count rises, but job throughput
+flattens or falls and tail step time grows.}{Fabric oversubscription, uneven
+routing, one degraded rail, retransmits, switch congestion, or synchronization
+amplifying a straggler.}{Collective traces, route and queue telemetry, per-link FEC
+and retry counters, topology map, and a scale sweep.}{Repair weak links, rebalance
+routes, remove oversubscription, change the collective or topology, and gate the
+next scale point on delivered workload performance.}
+
+\subsection{How it is debugged}
+\label{sec:networking-how-debugged}
+
+Start with the workload symptom and identify the slow collective, rail, or time
+window. Compare topology and route data with link counters. A single lane with
+rising FEC points to the optical path; many clean links with full queues point to
+fabric capacity or scheduling. Remove one rail, reroute one group, or replace one
+suspect module to test causality. Keep optics, switch, and workload timestamps
+aligned. Otherwise a link flap and a collective stall cannot be ordered reliably.
+
+\debugstory{All-reduce tail latency rose after a rack expansion, while average
+link utilization looked normal.}{Per-rail traces showed one path with FEC bursts
+and retries. A module swap moved the symptom with the module.}{The fabric had
+capacity, but one marginal optical lane set the collective tail.}{A contaminated
+connector raised ORL and produced burst errors without a large average-power
+change.}{The connector was replaced, inspection was added to the expansion
+runbook, and collective-tail alarms were tied to link-level error bursts.}
+
+\section{Interview and design review questions}
+\label{sec:networking-design-review}
+
+\paragraph{Concept.}
+\begin{itemize}
+\item Why does inference (not only training) put the optical link on the critical
+      path?
+\item What is the difference between scale-up and scale-out, and why do they use
+      different optics?
+\item Why does an optical circuit switch complement rather than compete with
+      co-packaged optics?
+\end{itemize}
+
+\paragraph{Design.}
+\begin{itemize}
+\item Which workload and collective set the latency, bandwidth, and tail targets?
+\item Where is the scale-up to scale-out boundary, and what measured reach or power
+      limit places it there?
+\item How do pluggable, linear pluggable, and co-packaged choices trade host margin,
+      power, cooling, fiber count, repair time, and supplier concentration?
+\item What happens to a running job when one lane, module, external laser, or
+      switch fails?
+\end{itemize}
+
+\paragraph{Debug.}
+\begin{itemize}
+\item Collective tail latency rose after a rack expansion. Average link utilization
+      looks normal. Where do you look?
+\item A single lane has rising FEC errors but its Rx power is stable. Apply the
+      debugging fork: is this a power problem or a signal-quality problem?
+\item Which telemetry reaches fleet software, and can it identify a weak link
+      before the workload stalls?
+\item What data would show that the proposed optical architecture is not the
+      cluster bottleneck?
+\end{itemize}
+
+\paragraph{Manufacturing and operations.}
+\begin{itemize}
+\item How do laser choices, WDM architecture, and validation methodology from
+      earlier chapters influence cluster-scale outcomes?
+\item What is the service-time budget for replacing a failed module before the
+      scheduler must reroute?
+\item How does connector mating-cycle budget change with a weekly hot-swap
+      maintenance schedule?
+\end{itemize}
+
+\keyidea{An AI fabric is judged by delivered workload time, not aggregate port
+rate. Connect collective traces to queue, route, FEC, optical, thermal, and service
+data. Choose pluggables, linear optics, or co-packaging by the measured system
+constraint and by how the fleet detects, contains, and repairs each failure.}

@@ -9,27 +9,27 @@ A datasheet that closes on a quiet bench is not a product. *Validation* is the w
 
 ## The validation ladder
 
-Optical programs fail in the same places again and again: a part that looks good in characterization but cannot bring up on a production host, or a module that passes ATP and then unlocks under neighbor heat. The practical way to avoid those gaps is a ladder of increasing scale. Each rung answers a sharper question.
+Optical programs fail in the same places again and again: a part that looks good in characterization but cannot bring up on a production host, or a module that passes ATP and then unlocks under neighbor heat. The practical way to avoid those gaps is a ladder of five stages, each answering a sharper question than the last. Skipping one creates escapes that surface later at higher cost.
 
 []
 
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Stage                  Question                              Typical activity
-  ---------------------- ------------------------------------- --------------------------------------------------------------------------------------------------------------------------------------
-  Component              In spec?                              laser LIV, wavelength/RIN/SMSR; PD responsivity and bandwidth; modulator response
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      Stage                  Question                               Activity and instruments
+  --- ---------------------- -------------------------------------- -------------------------------------------------------------------------------------------------------------------------------------------------------
+  1   Bring-up               Does it link?                          Power-on, CMIS state machine, first light, CDR lock, pre-FEC BER on golden host (§ `sec:bringup`)
 
-  Module bring-up        Does it link?                         power-on, CMIS, CDR/BER ([7.8](#sec:bringup))
+  2   Characterization       How much margin, across corners?       Sweep $T$, $V$, ORL, aging; TDECQ, sensitivity, link budget; component LIV/RIN/SMSR (§ `sec:tdecq,sec:link-budget`)
 
-  Characterization       How much margin, across corners?      sweep temperature, voltage, aging; TDECQ, sensitivity, link budget
+  3   Margin and interop     Does margin survive the fleet?         Production-representative corners: chassis thermal, host rails, neighbor load, dirty fiber, ELS hot-swap, target host/NIC/ASIC (§ `sec:prod-corners`)
 
-  Interop / system       Works with the switch/NIC/ASIC?       chassis thermal, host SerDes, prod-rep corners ([7.8](#sec:bringup))
+  4   Stress qualification   Does it survive its projected life?    HTOL, temperature cycle, humidity, ESD, mating cycles per GR-468, GR-1221, JESD47 (§ `sec:gr468,sec:ic-reliability`)
 
-  Production readiness   Can the supplier build it at yield?   ATP, SPC, DVT/PVT gates ([8.7](#sec:supplier-exec))
+  5   Production readiness   Can the supplier build it at volume?   Multi-lot yield, SPC stability, ATP coverage, ATE correlation, first-article, DVT/PVT gates (§ `sec:hvm-test,sec:supplier-exec`)
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  Scaled deployment      Does the fleet stay up?               field telemetry, RMA, FIT tracking; triage tree ([7.10](#sec:fleet-triage))
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+**Table .** The validation ladder: five stages from bench to fleet. A sixth concern, scaled deployment and fleet triage, runs continuously once material ships (§ `sec:fleet-triage`). Field telemetry, RMA tracking, and FIT burn-down feed back into stages 3--5.
 
-**Table .** From bench to fleet.
+For every metric at every stage, name the instrument, the reference plane (§ `sec:test-points`), the pass criterion, and the failure signature. A number without a plane and a method is not a measurement.
 
 ## The core IM/DD measurements
 
@@ -37,21 +37,21 @@ Once the ladder is clear, the measurement list is organized around isolation: tr
 
 ### Transmitter
 
-Start with the light leaving the faceplate or the CPO fiber array. For PAM4, the headline metric is *TDECQ* (transmitter and dispersion eye closure quaternary): a reference equalizer is applied to the captured eye and the residual penalty is reported in dB ([7.3](#sec:tdecq)). Alongside it you read *OMA* (outer), extinction ratio, and *RLM* (level linearity), plus wavelength, spectral width, and RIN with a bias-driver versus feedback bisect ([\[sec:laser-params,sec:laser-drivers,sec:rin-values\]](#sec:laser-params,sec:laser-drivers,sec:rin-values)).
+Start with the light leaving the faceplate or the CPO fiber array. For PAM4, the headline metric is *TDECQ* (transmitter and dispersion eye closure quaternary): a reference equalizer is applied to the captured eye and the residual penalty is reported in dB (§ `sec:tdecq`). Alongside it you read *OMA* (outer), extinction ratio, and *RLM* (level linearity), plus wavelength, spectral width, and RIN with a bias-driver versus feedback bisect (§ `sec:laser-params,sec:laser-drivers,sec:rin-values`).
 
-What else you add depends on the transmitter style. Laser-bearing modules need LIV, threshold, slope, SMSR, and chirp checks for DMLs ([\[sec:laser-params,sec:dfb-eml\]](#sec:laser-params,sec:dfb-eml)). External MZMs (TFLN or silicon) need EO $S_{21}$, $V_\pi$, quadrature bias versus temperature, and driver-path eye symmetry at baud ([\[sec:simzm,sec:tfln-mzm,sec:tdecq\]](#sec:simzm,sec:tfln-mzm,sec:tdecq)). Microring banks need resonance alignment, thermal tuning, neighbor crosstalk, and peaking-network EO $S_{21}$ ([\[sec:siring,ch:wdm\]](#sec:siring,ch:wdm)). The point of the list is not completeness for its own sake: it is knowing which instrument answers which hypothesis when the eye closes.
+What else you add depends on the transmitter style. Laser-bearing modules need LIV, threshold, slope, SMSR, and chirp checks for DMLs (§ `sec:laser-params,sec:dfb-eml`). External MZMs (TFLN or silicon) need EO $S_{21}$, $V_\pi$, quadrature bias versus temperature, and driver-path eye symmetry at baud (§ `sec:simzm,sec:tfln-mzm,sec:tdecq`). Microring banks need resonance alignment, thermal tuning, neighbor crosstalk, and peaking-network EO $S_{21}$ (§ `sec:siring,ch:wdm`). The point of the list is not completeness for its own sake: it is knowing which instrument answers which hypothesis when the eye closes.
 
 ### Channel
 
-If the transmitter looks clean into a golden receiver and the link still fails, the channel is next. Insertion loss from fiber, connectors, MUX/de-MUX ([6.3](#sec:wdm-hardware)), and on-chip coupling ([\[sec:simzm,sec:siring\]](#sec:simzm,sec:siring)) is the first ledger line; plan about 1--3 dB per fiber interface. Chromatic dispersion ([3.11](#sec:chirp-dispersion)) matters more on FR-class SMF sweeps than on short DR links. Optical return loss (ORL) is the quiet killer: reflections back into the laser raise RIN and seed burst errors, which is why many DR/FR modules still carry isolators while some CPO engines rely on design margin and monitor photodiodes instead ([\[sec:rin-values,ch:lasers\]](#sec:rin-values,ch:lasers)). Fiber attach (MPO/MTP, FAU, grating couplers) shows up as both yield and reliability ([8.5](#sec:photonic-packaging)).
+If the transmitter looks clean into a golden receiver and the link still fails, the channel is next. Insertion loss from fiber, connectors, MUX/de-MUX (§ `sec:wdm-hardware`), and on-chip coupling (§ `sec:simzm,sec:siring`) is the first ledger line; plan about 1--3 dB per fiber interface. Chromatic dispersion (§ `sec:chirp-dispersion`) matters more on FR-class SMF sweeps than on short DR links. Optical return loss (ORL) is the quiet killer: reflections back into the laser raise RIN and seed burst errors, which is why many DR/FR modules still carry isolators while some CPO engines rely on design margin and monitor photodiodes instead (§ `sec:rin-values,ch:lasers`). Fiber attach (MPO/MTP, FAU, grating couplers) shows up as both yield and reliability (§ `sec:photonic-packaging`).
 
 ### Receiver
 
-Receiver work asks whether the front-end can still decide bits at the OMA that survives the channel. Measure sensitivity (minimum OMA for the target BER) and stressed-receiver sensitivity with a calibrated stressor for margin ([7.4](#sec:secq)), plus overload before the TIA saturates. Underneath those system numbers sit the photodiode/TIA pair: responsivity, bandwidth, and input-referred noise ([\[sec:pd-tia,ch:models\]](#sec:pd-tia,ch:models)).
+Receiver work asks whether the front-end can still decide bits at the OMA that survives the channel. Measure sensitivity (minimum OMA for the target BER) and stressed-receiver sensitivity with a calibrated stressor for margin (§ `sec:secq`), plus overload before the TIA saturates. Underneath those system numbers sit the photodiode/TIA pair: responsivity, bandwidth, and input-referred noise (§ `sec:pd-tia,ch:models`).
 
 ### Link level
 
-Only after Tx, channel, and Rx each look sane do you trust a full-link verdict: pre-FEC BER against the KP4 threshold ([3.12](#sec:kp4)), post-FEC BER, FEC symbol-error histograms, and a signed link-budget ledger from transmitter OMA to receiver sensitivity with penalties and remaining margin. That ledger is the document you argue from in DVT; the BER alone is not.
+Only after Tx, channel, and Rx each look sane do you trust a full-link verdict: pre-FEC BER against the KP4 threshold (§ `sec:kp4`), post-FEC BER, FEC symbol-error histograms, and a signed link-budget ledger from transmitter OMA to receiver sensitivity with penalties and remaining margin. That ledger is the document you argue from in DVT; the BER alone is not.
 
 ## Transmitter and dispersion eye closure quaternary (TDECQ)
 
@@ -74,19 +74,19 @@ A worse transmitter tolerates less added noise before failing, so $\sigma_{\text
 
 SECQ
 
-: the stressed-eye counterpart used on the receiver side, adding a calibrated stressor to test margin rather than transmitter quality alone. See [7.4](#sec:secq).
+: the stressed-eye counterpart used on the receiver side, adding a calibrated stressor to test margin rather than transmitter quality alone. See § `sec:secq`.
 
 RLM (relative level mismatch)
 
 : measures how evenly the four PAM4 levels are spaced; poor RLM (uneven levels) inflates TDECQ.
 
-Because TDECQ folds several impairments into one number, the way it fails is diagnostic: uneven levels point to modulator or driver linearity (RLM); residual eye closure the equalizer cannot fix points to excess ISI or limited bandwidth; a noise-limited result points to low OMA, RIN, or reflections. For external MZMs (TFLN or silicon), also check EO $S_{21}$ bandwidth, $V_\pi$ and bias quadrature drift with temperature, and RF return loss on the driver-to-modulator path ([\[sec:simzm,sec:tfln-mzm,sec:siring\]](#sec:simzm,sec:tfln-mzm,sec:siring)). This is why *LPO*, which removes the module's own DSP, raises the stakes on transmitter quality: there is less downstream equalization to hide behind, so TDECQ-class metrics become even more central.
+Because TDECQ folds several impairments into one number, the way it fails is diagnostic: uneven levels point to modulator or driver linearity (RLM); residual eye closure the equalizer cannot fix points to excess ISI or limited bandwidth; a noise-limited result points to low OMA, RIN, or reflections. For external MZMs (TFLN or silicon), also check EO $S_{21}$ bandwidth, $V_\pi$ and bias quadrature drift with temperature, and RF return loss on the driver-to-modulator path (§ `sec:simzm,sec:tfln-mzm,sec:siring`). This is why *LPO*, which removes the module's own DSP, raises the stakes on transmitter quality: there is less downstream equalization to hide behind, so TDECQ-class metrics become even more central.
 
 ## SECQ and stressed-receiver testing
 
 *SECQ* (stressed eye closure quaternary) mirrors TDECQ on the *receiver*: instead of scoring transmitter quality with a reference equalizer, the test applies a calibrated optical stressor (attenuation, ISI template, optional RIN) and asks how much margin remains before the receiver hits the target pre-FEC BER.
 
-Stressed-receiver sensitivity and overload tests ([4.4](#sec:sensitivity)) use the same philosophy: bracket the operating OMA range with impairments the link will see in the field. For LPO, where the module DSP is gone, SECQ-style margin on the host-side receiver ([\[sec:equalization,sec:conditioning\]](#sec:equalization,sec:conditioning)) is as important as TDECQ on the transmitter.
+Stressed-receiver sensitivity and overload tests (§ `sec:sensitivity`) use the same philosophy: bracket the operating OMA range with impairments the link will see in the field. For LPO, where the module DSP is gone, SECQ-style margin on the host-side receiver (§ `sec:equalization,sec:conditioning`) is as important as TDECQ on the transmitter.
 
 ## Instruments
 
@@ -94,15 +94,15 @@ A failing PAM4 link rarely announces which block is wrong. The bench is how you 
 
 DCA
 
-: (digital communication analyzer): sampling scope for PAM4 eyes, TDECQ, OMA, RLM ([7.3](#sec:tdecq)). Needs a reference receiver filter matched to the PHY under test.
+: (digital communication analyzer): sampling scope for PAM4 eyes, TDECQ, OMA, RLM (§ `sec:tdecq`). Needs a reference receiver filter matched to the PHY under test.
 
 BERT
 
-: bit-error ratio at pre- and post-FEC; FEC symbol histograms ([3.12](#sec:kp4)).
+: bit-error ratio at pre- and post-FEC; FEC symbol histograms (§ `sec:kp4`).
 
 OSA
 
-: wavelength, SMSR, side modes, RIN estimates ([\[ch:lasers,sec:rin-values\]](#ch:lasers,sec:rin-values)).
+: wavelength, SMSR, side modes, RIN estimates (§ `ch:lasers,sec:rin-values`).
 
 VOA / stressor assembly
 
@@ -114,17 +114,17 @@ Power meter
 
 Thermal chamber + TEC controller
 
-: corner validation; essential for rings ([\[sec:siring,ch:wdm\]](#sec:siring,ch:wdm)) and laser grids.
+: corner validation; essential for rings (§ `sec:siring,ch:wdm`) and laser grids.
 
-Use electrical loopback (host SerDes), optical loopback (Tx$\to$Rx on module), and golden-host/golden-module interop to bisect faults ([7.2.2](#sec:optical-channel)). If the fault follows the module under golden-host swap, stop blaming the SerDes; if it stays with the host, stop opening laser FA.
+Use electrical loopback (host SerDes), optical loopback (Tx$\to$Rx on module), and golden-host/golden-module interop to bisect faults (§ `sec:optical-channel`). If the fault follows the module under golden-host swap, stop blaming the SerDes; if it stays with the host, stop opening laser FA.
 
 ## Building a link budget
 
-A link budget is a signed dB (or power) ledger from transmitter to receiver. For IM/DD short reach, start from outer OMA at the Tx faceplate and subtract every loss and penalty until you compare against receiver sensitivity (with target BER and KP4 pre-FEC threshold, [\[sec:kp4,sec:sensitivity\]](#sec:kp4,sec:sensitivity)).
+A link budget is a signed dB (or power) ledger from transmitter to receiver. For IM/DD short reach, start from outer OMA at the Tx faceplate and subtract every loss and penalty until you compare against receiver sensitivity (with target BER and KP4 pre-FEC threshold, § `sec:kp4,sec:sensitivity`).
 
 ##### Typical ledger (single-mode DR class).
 
-Start from Tx OMA on the DCA (or from average power and ER). Subtract connector/coupling loss (1--3 dB per mated pair; fiber attach in CPO), fiber loss ($\sim$`<!-- -->`{=html}0.3--0.4 dB/km at 1310 nm; often negligible at 500 m), and MUX/de-MUX if WDM (2--5 dB per stage, [6.3](#sec:wdm-hardware)). Add penalties for TDECQ (already in the OMA spec for many PMDs), dispersion ([3.11](#sec:chirp-dispersion)), and ORL/RIN reflection ([\[sec:optical-channel,sec:rin-values\]](#sec:optical-channel,sec:rin-values)). Compare the remainder to stressed sensitivity at pre-FEC BER $2.4\times10^{-4}$, and keep 1--3 dB+ of production margin (more for fleet corners). Electrical budgets parallel this for the host-to-module path: COM and pre-FEC BER ([\[sec:com,sec:eye-budget,sec:equalization\]](#sec:com,sec:eye-budget,sec:equalization)). LPO requires *both* ledgers to close without module DSP help.
+Start from Tx OMA on the DCA (or from average power and ER). Subtract connector/coupling loss (1--3 dB per mated pair; fiber attach in CPO), fiber loss ($\sim$`<!-- -->`{=html}0.3--0.4 dB/km at 1310 nm; often negligible at 500 m), and MUX/de-MUX if WDM (2--5 dB per stage, § `sec:wdm-hardware`). Add penalties for TDECQ (already in the OMA spec for many PMDs), dispersion (§ `sec:chirp-dispersion`), and ORL/RIN reflection (§ `sec:optical-channel,sec:rin-values`). Compare the remainder to stressed sensitivity at pre-FEC BER $2.4\times10^{-4}$, and keep 1--3 dB+ of production margin (more for fleet corners). Electrical budgets parallel this for the host-to-module path: COM and pre-FEC BER (§ `sec:com,sec:eye-budget,sec:equalization`). LPO requires *both* ledgers to close without module DSP help.
 
 ## Module management: CMIS
 
@@ -132,23 +132,23 @@ Start from Tx OMA on the DCA (or from average power and ER). Subtract connector/
 
 *CMIS* (Common Management Interface Specification) is the vendor-neutral management layer between a host (switch ASIC, NIC, or test fixture) and a pluggable or on-board optical module. The host talks to the module over a two-wire bus (TWI, I2C-like) through a paged register map: identity, power mode, alarms, per-lane monitors, and (at 224G/448G) link-training and host signal- integrity tuning extensions . CMIS covers QSFP-DD, OSFP, COBO, ELSFP, and CPO engines that expose the same management contract.
 
-You touch CMIS on every bring-up and every field triage. It is how the host learns what module is seated, when lasers may turn on, what Tx/Rx power and temperature look like, and whether a link failed at the management layer or the optical layer. A module that passes BER on a bench with lasers forced on but cannot reach ModuleReady on a production host will fail in the fleet ([7.8](#sec:bringup)).
+You touch CMIS on every bring-up and every field triage. It is how the host learns what module is seated, when lasers may turn on, what Tx/Rx power and temperature look like, and whether a link failed at the management layer or the optical layer. A module that passes BER on a bench with lasers forced on but cannot reach ModuleReady on a production host will fail in the fleet (§ `sec:bringup`).
 
 ### The module state machine
 
-CMIS defines a module state machine the host drives. After presence detect and power application, the module stays in low power until the host releases `LPModeL` (or the CMIS 5.x `LowPwr` equivalent). The host reads identifier pages, clears sticky interrupts, and steps the module toward ModuleReady. Only then should Tx lanes or ELS lasers enable. ELSFP modules that emit before ModuleReady are a reject: the host did not authorize light ([5.9](#sec:elsfp)).
+CMIS defines a module state machine the host drives. After presence detect and power application, the module stays in low power until the host releases `LPModeL` (or the CMIS 5.x `LowPwr` equivalent). The host reads identifier pages, clears sticky interrupts, and steps the module toward ModuleReady. Only then should Tx lanes or ELS lasers enable. ELSFP modules that emit before ModuleReady are a reject: the host did not authorize light (§ `sec:elsfp`).
 
-Data paths have their own state machines in CMIS 5.x (data path states, and network path states for media-side links). For bring-up, map the sequence in [7.8](#sec:bringup) onto these transitions: presence and Vcc, CMIS init and ModuleReady, enable light, optical path check, electrical lock, traffic, snapshot. Skipping step 2 and jumping to BER is how interop failures hide until production.
+Data paths have their own state machines in CMIS 5.x (data path states, and network path states for media-side links). For bring-up, map the sequence in § `sec:bringup` onto these transitions: presence and Vcc, CMIS init and ModuleReady, enable light, optical path check, electrical lock, traffic, snapshot. Skipping step 2 and jumping to BER is how interop failures hide until production.
 
 ### The memory map: pages, monitors, control
 
 The lower memory map holds module identity, status, interrupt flags, and alarm thresholds. Upper pages hold application descriptors, lane controls, tunable-laser support, versatile diagnostics (VDM), and command-data-block (CDB) firmware messaging . Hosts select an application (lane count, host interface, media type) before bringing up traffic.
 
-*DDM* (digital diagnostic monitoring) is the telemetry layer you read at scale: per-lane Tx and Rx optical power, laser bias current when exposed, module temperature, supply voltage, LOS/LOL flags, and alarm/warning bits. On WDM parts you also get wavelength or channel ID. This is exactly what [7.10](#sec:fleet-triage) reads before anyone reaches for a DCA. On bring-up, dump the register map you will use in the field and treat that dump as the golden reference for later RMA comparisons.
+*DDM* (digital diagnostic monitoring) is the telemetry layer you read at scale: per-lane Tx and Rx optical power, laser bias current when exposed, module temperature, supply voltage, LOS/LOL flags, and alarm/warning bits. On WDM parts you also get wavelength or channel ID. This is exactly what § `sec:fleet-triage` reads before anyone reaches for a DCA. On bring-up, dump the register map you will use in the field and treat that dump as the golden reference for later RMA comparisons.
 
 ### CMIS as a validation deliverable
 
-CMIS correctness is part of production readiness, not a firmware afterthought. ATP should prove the state machine reaches ModuleReady across voltage and thermal corners; DDM monitors track bench truth (CMIS Tx power versus DCA, module temperature versus case $T$); alarms fire at the right thresholds; and firmware revision is ECO-controlled like laser die revision ([8.7](#sec:supplier-exec)). Multi-source interop failures are often CMIS, media-type, or firmware mismatches, not marginal TDECQ ([7.8](#sec:bringup)). At fleet scale the register map is the only eyes you have on a module in the rack. If CMIS is wrong, triage starts blind.
+CMIS correctness is part of production readiness, not a firmware afterthought. ATP should prove the state machine reaches ModuleReady across voltage and thermal corners; DDM monitors track bench truth (CMIS Tx power versus DCA, module temperature versus case $T$); alarms fire at the right thresholds; and firmware revision is ECO-controlled like laser die revision (§ `sec:supplier-exec`). Multi-source interop failures are often CMIS, media-type, or firmware mismatches, not marginal TDECQ (§ `sec:bringup`). At fleet scale the register map is the only eyes you have on a module in the rack. If CMIS is wrong, triage starts blind.
 
 ## Module and system bring-up
 
@@ -156,23 +156,23 @@ Characterization proves a sample can meet metrics on a quiet bench. Bring-up pro
 
 ##### Module bring-up sequence.
 
-Run this order on every new module (pluggable, ELSFP, or CPO engine with CMIS). Do not skip ahead to BER: a link that "works" with lasers forced on and CMIS ignored will fail the first host that enforces the state machine ([5.9](#sec:elsfp)).
+Run this order on every new module (pluggable, ELSFP, or CPO engine with CMIS). Do not skip ahead to BER: a link that "works" with lasers forced on and CMIS ignored will fail the first host that enforces the state machine (§ `sec:elsfp`).
 
 1.  **Presence and power.** Detect module (`ModPrsL` or equivalent). Apply rails in the host power sequence. Confirm Vcc and module temperature in CMIS. Stay in low power (`LPModeL` asserted or ModuleLowPwr) until management is sane.
 
 2.  **CMIS init.** Read identifier, vendor, firmware rev, supported media. Clear sticky interrupts. Confirm the state machine can reach ModuleReady (or the pluggable equivalent) under host command. Dump the register map you will use in the field; that dump is your bring-up golden reference.
 
-3.  **Enable light.** Exit low power; enable Tx lanes / ELS lasers only after ModuleReady. Confirm Tx optical power and laser bias (if exposed) against the power class. Lasers that come up before the host asks are a reject for ELSFP ([5.9](#sec:elsfp)).
+3.  **Enable light.** Exit low power; enable Tx lanes / ELS lasers only after ModuleReady. Confirm Tx optical power and laser bias (if exposed) against the power class. Lasers that come up before the host asks are a reject for ELSFP (§ `sec:elsfp`).
 
 4.  **Optical path.** Mate fiber (clean first). Check Rx power and LOS. Optical loopback first if the host path is unproven.
 
-5.  **Electrical lock.** Bring host SerDes / module CDR. Confirm LOL clear, equalizer taps not pegged ([3.6](#sec:equalization)). For LPO, this is the host eye and COM path ([\[sec:com,sec:drivers\]](#sec:com,sec:drivers)).
+5.  **Electrical lock.** Bring host SerDes / module CDR. Confirm LOL clear, equalizer taps not pegged (§ `sec:equalization`). For LPO, this is the host eye and COM path (§ `sec:com,sec:drivers`).
 
-6.  **Traffic.** PRBS or live FEC traffic. Pre-FEC BER vs. KP4 threshold ([3.12](#sec:kp4)); glance at FEC symbol-error histogram shape.
+6.  **Traffic.** PRBS or live FEC traffic. Pre-FEC BER vs. KP4 threshold (§ `sec:kp4`); glance at FEC symbol-error histogram shape.
 
-7.  **Quality snapshot.** On a Tx-capable path: OMA/RLM/TDECQ or module diagnostics that proxy them ([7.3](#sec:tdecq)). Record CMIS + BER + case $T$ together so later triage has a baseline ([7.10](#sec:fleet-triage)).
+7.  **Quality snapshot.** On a Tx-capable path: OMA/RLM/TDECQ or module diagnostics that proxy them (§ `sec:tdecq`). Record CMIS + BER + case $T$ together so later triage has a baseline (§ `sec:fleet-triage`).
 
-[7.2](#tab:bringup-checklist) is the short form you can put on a lab wall.
+§ `tab:bringup-checklist` is the short form you can put on a lab wall.
 
 []
 
@@ -198,29 +198,29 @@ Run this order on every new module (pluggable, ELSFP, or CPO engine with CMIS). 
 
 ##### Production-representative corners.
 
-Bench corners ($T$, $V$) are necessary and not sufficient. Before you call DVT or PVT done, run the corners that match how the fleet will abuse the link. [7.3](#tab:prod-corners) is the minimum set for IM/DD + laser programs.
+Bench corners ($T$, $V$) are necessary and not sufficient. Before you call DVT or PVT done, run the corners that match how the fleet will abuse the link. § `tab:prod-corners` is the minimum set for IM/DD + laser programs.
 
 []
 
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Corner              What to run                                                                                         Why it catches                                                                                                                                                                       Points to
-  ------------------- --------------------------------------------------------------------------------------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ -----------------------------------------------------------------------------------------------
-  Chassis thermal     Module in target rack/sled at airflow and power load; not only a quiet chamber on a bench fixture   Faceplate $T$ and TEC load differ from chamber setpoints                                                                                                                             derate, TEC, ring unlock
+  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  Corner              What to run                                                                                         Why it catches                                                           Points to
+  ------------------- --------------------------------------------------------------------------------------------------- ------------------------------------------------------------------------ -----------------------------------
+  Chassis thermal     Module in target rack/sled at airflow and power load; not only a quiet chamber on a bench fixture   Faceplate $T$ and TEC load differ from chamber setpoints                 derate, TEC, ring unlock
 
-  Host rails live     Bias / CMIS powered from host supplies with SerDes traffic on                                       Switching noise into laser bias looks like RIN ([5.7](#sec:laser-drivers))                                                 PSRR, ground, APC
+  Host rails live     Bias / CMIS powered from host supplies with SerDes traffic on                                       Switching noise into laser bias looks like RIN (§ `sec:laser-drivers`)   PSRR, ground, APC
 
-  Dirty fiber / ORL   Controlled contamination or ORL stress on MT/FAU; clean vs dirty BER                                Field installs are not lab-clean; ORL raises RIN and bursts                                                                                                                          connector, isolator, feedback
+  Dirty fiber / ORL   Controlled contamination or ORL stress on MT/FAU; clean vs dirty BER                                Field installs are not lab-clean; ORL raises RIN and bursts              connector, isolator, feedback
 
-  Cable plant         Production fiber length, MPO count, and bend radius                                                 Extra loss and reflections eat margin the ledger assumed                                                                                                                             link budget ([7.6](#sec:link-budget))
+  Cable plant         Production fiber length, MPO count, and bend radius                                                 Extra loss and reflections eat margin the ledger assumed                 link budget (§ `sec:link-budget`)
 
-  ELS hot-swap        Pull/replace ELSFP under traffic (or under controlled traffic stop per CMIS)                        Service action the architecture promised ([5.9](#sec:elsfp))                                                                       state machine, mate cycles
+  ELS hot-swap        Pull/replace ELSFP under traffic (or under controlled traffic stop per CMIS)                        Service action the architecture promised (§ `sec:elsfp`)                 state machine, mate cycles
 
-  Neighbor load       Adjacent modules/lanes at full traffic and max case $T$                                             Crosstalk, shared supply droop, thermal crosstalk on rings                                                                                                                           WDM lock, SI, PSU
+  Neighbor load       Adjacent modules/lanes at full traffic and max case $T$                                             Crosstalk, shared supply droop, thermal crosstalk on rings               WDM lock, SI, PSU
 
-  LPO / linear path   Host COM and pre-FEC BER without module DSP crutch                                                  LPO fails here first ([\[sec:224g-deploy,sec:com,sec:drivers\]](#sec:224g-deploy,sec:com,sec:drivers))   host FIR, module linearity
+  LPO / linear path   Host COM and pre-FEC BER without module DSP crutch                                                  LPO fails here first (§ `sec:224g-deploy,sec:com,sec:drivers`)           host FIR, module linearity
 
-  Voltage corners     Host Vcc min/max with traffic                                                                       Brown-out and CMIS glitches                                                                                                                                                          power design, ATP
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  Voltage corners     Host Vcc min/max with traffic                                                                       Brown-out and CMIS glitches                                              power design, ATP
+  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 **Table .** Production-representative corners. A quiet BERT at 25 $^\circ$C with pristine fiber is characterization, not production readiness.
 
@@ -228,19 +228,19 @@ Bench corners ($T$, $V$) are necessary and not sufficient. Before you call DVT o
 
 A module that passes on a golden host can still fail in a real chassis:
 
-- **Host path:** run the same sequence on the target NIC/switch ASIC SerDes, not only the lab BERT. LPO and half-retimed modules expose host FIR/CTLE mistakes that a retimed module hid ([\[sec:conditioning,sec:pluggables\]](#sec:conditioning,sec:pluggables)).
+- **Host path:** run the same sequence on the target NIC/switch ASIC SerDes, not only the lab BERT. LPO and half-retimed modules expose host FIR/CTLE mistakes that a retimed module hid (§ `sec:conditioning,sec:pluggables`).
 
 - **Multi-lane / multi-module:** bring all lanes on a port, then neighbors in the same cage or tray. Watch thermal rise, supply droop, and CMIS temp alarms when the tray is loaded.
 
-- **Golden swap:** known-good module in the suspect host slot, then suspect module in a known-good slot. That single swap splits host vs. module before you open FA ([7.10](#sec:fleet-triage)).
+- **Golden swap:** known-good module in the suspect host slot, then suspect module in a known-good slot. That single swap splits host vs. module before you open FA (§ `sec:fleet-triage`).
 
 - **Interop:** at least one other vendor host or module if the program claims multi-source. Interop failures are usually CMIS, media type, or electrical eye, not laser physics.
 
-- **ELS / CPO:** external laser modules add a second bring-up: ELSFP state machine and optical mate to the engine, then engine bring-up with light present ([\[sec:elsfp,sec:cpo-status\]](#sec:elsfp,sec:cpo-status)). A dark engine with a healthy ELS is an optical connector or FAU problem until proven otherwise.
+- **ELS / CPO:** external laser modules add a second bring-up: ELSFP state machine and optical mate to the engine, then engine bring-up with light present (§ `sec:elsfp,sec:cpo-status`). A dark engine with a healthy ELS is an optical connector or FAU problem until proven otherwise.
 
 ##### Exit criteria before "bring-up done."
 
-Call module bring-up done only when: CMIS state machine and enable sequence are correct; pre-FEC BER meets target on the *target* host with margin; a CMIS+BER+$T$ snapshot is filed; and at least the chassis-thermal, host-rails, and ORL corners in [7.3](#tab:prod-corners) have been run on a representative unit. Call system bring-up done when golden-swap has split host vs. module issues and multi-lane / neighbor load has not opened a new failure mode. Everything after that is characterization depth, supplier gates ([8.7](#sec:supplier-exec)), or fleet triage ([7.10](#sec:fleet-triage)).
+Call module bring-up done only when: CMIS state machine and enable sequence are correct; pre-FEC BER meets target on the *target* host with margin; a CMIS+BER+$T$ snapshot is filed; and at least the chassis-thermal, host-rails, and ORL corners in § `tab:prod-corners` have been run on a representative unit. Call system bring-up done when golden-swap has split host vs. module issues and multi-lane / neighbor load has not opened a new failure mode. Everything after that is characterization depth, supplier gates (§ `sec:supplier-exec`), or fleet triage (§ `sec:fleet-triage`).
 
 **Key idea.** Bring-up is a sequence (presence $\to$ CMIS $\to$ light $\to$ lock $\to$ BER $\to$ snapshot), then a system proof on the real host, then production-representative corners (chassis thermal, host-rail noise, ORL, ELS hot-swap, neighbor load). A quiet bench pass is not DVT.
 
@@ -252,11 +252,15 @@ Debug at this level is data-driven, not opinion-driven. The method is discipline
 
 2.  Sweep temperature and voltage to expose corner-dependent failures.
 
-3.  Correlate failures to DSP equalizer tap values ([3.6](#sec:equalization)) and FEC symbol-error statistics ([3.12](#sec:kp4)); these tell you *how* the link fails.
+3.  Correlate failures to DSP equalizer tap values (§ `sec:equalization`) and FEC symbol-error statistics (§ `sec:kp4`); these tell you *how* the link fails.
 
 The third step is where modern PAM4 links differ from older eye-mask work. Tap saturation and FEC histograms often reveal the failure mode before a single waveform screenshot does. Treat those as primary evidence, not as afterthoughts logged once BER already fails.
 
 [^17]
+
+## The debugging fork in validation
+
+Apply the debugging fork (§ `sec:debug-fork`) before sweeping parameters or changing firmware: check the power meter or CMIS Rx power monitor first. If power moved, the fault is in the optical path (laser, coupling, connector, fiber, MUX); if power held but BER or TDECQ worsened, it is signal quality (bandwidth, noise, jitter, bias, equalization, reflection). This one check prevents the most common validation mistake: retuning an equalizer or laser bias when the real cause is a dirty connector.
 
 ## Fleet and field triage
 
@@ -268,15 +272,15 @@ Classify every field issue before deep root-cause work:
 
 Performance
 
-: the design or operating point does not close the budget under the conditions seen in the fleet. Examples: TDECQ/RLM marginal at case temperature, host COM tight on LPO, ring unlock under thermal crosstalk, ORL-driven RIN that the architecture assumed away. Fix is usually retune, derate, firmware, or a design/spec change ([\[sec:tdecq,sec:com,sec:siring\]](#sec:tdecq,sec:com,sec:siring)).
+: the design or operating point does not close the budget under the conditions seen in the fleet. Examples: TDECQ/RLM marginal at case temperature, host COM tight on LPO, ring unlock under thermal crosstalk, ORL-driven RIN that the architecture assumed away. Fix is usually retune, derate, firmware, or a design/spec change (§ `sec:tdecq,sec:com,sec:siring`).
 
 Reliability
 
-: the unit met spec at ship and later degraded. Examples: LIV threshold rise, SMSR collapse, EAM bias creep, COD, TEC wear, epoxy creep on fiber attach. Fix is Arrhenius-backed life projection, burn-in/screen, derating, or field-replaceable lasers ([\[sec:wearout-modes,sec:laser-aging,sec:gr468,sec:elsfp\]](#sec:wearout-modes,sec:laser-aging,sec:gr468,sec:elsfp)).
+: the unit met spec at ship and later degraded. Examples: LIV threshold rise, SMSR collapse, EAM bias creep, COD, TEC wear, epoxy creep on fiber attach. Fix is Arrhenius-backed life projection, burn-in/screen, derating, or field-replaceable lasers (§ `sec:wearout-modes,sec:laser-aging,sec:gr468,sec:elsfp`).
 
 Manufacturability
 
-: a subpopulation fails early or never met the ATP; the issue tracks lot, date code, supplier site, or assembly step. Examples: FAU misalign yield cliff, solder void on a driver die attach, incoming DPPM spike, CMIS register map mismatch on one firmware rev. Fix is SPC, ATP tighten, first-article, DPA, and 8D/CAPA with the supplier ([\[sec:supplier-exec,sec:photonic-packaging\]](#sec:supplier-exec,sec:photonic-packaging)).
+: a subpopulation fails early or never met the ATP; the issue tracks lot, date code, supplier site, or assembly step. Examples: FAU misalign yield cliff, solder void on a driver die attach, incoming DPPM spike, CMIS register map mismatch on one firmware rev. Fix is SPC, ATP tighten, first-article, DPA, and 8D/CAPA with the supplier (§ `sec:supplier-exec,sec:photonic-packaging`).
 
 A single symptom can sit in more than one bucket until you bisect. The tree below forces the split with telemetry first, then a short bench confirm, then an RMA label.
 
@@ -284,39 +288,39 @@ A single symptom can sit in more than one bucket until you bisect. The tree belo
 
 At scale you rarely start with a DCA. Start with what the host and module already report:
 
-- *CMIS* monitors and alarms: module temperature, supply rails, Tx/Rx optical power, laser bias (when exposed), wavelength or channel ID on WDM parts, LOS/LOL flags, and interrupt history (`IntL` on ELSFP; [5.9](#sec:elsfp)).
+- *CMIS* monitors and alarms: module temperature, supply rails, Tx/Rx optical power, laser bias (when exposed), wavelength or channel ID on WDM parts, LOS/LOL flags, and interrupt history (`IntL` on ELSFP; § `sec:elsfp`).
 
-- Host link state: CDR lock, pre-FEC BER, FEC symbol-error histogram shape ([3.12](#sec:kp4)), equalizer tap saturation ([3.6](#sec:equalization)).
+- Host link state: CDR lock, pre-FEC BER, FEC symbol-error histogram shape (§ `sec:kp4`), equalizer tap saturation (§ `sec:equalization`).
 
 - Fleet context: rack position, case temperature, time since install, date code / lot, neighbor-link correlation (one bad fiber vs whole tray).
 
 ##### Decision tree (symptom $\to$ bucket).
 
-[7.4](#tab:fleet-triage) is the working map. Read left to right: observe, check telemetry, pick a provisional bucket, then run the named confirm measurement before you open an RMA or change a design rule.
+§ `tab:fleet-triage` is the working map. Read left to right: observe, check telemetry, pick a provisional bucket, then run the named confirm measurement before you open an RMA or change a design rule.
 
 []
 
-  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Symptom                               First telemetry check                                  Bucket                           Confirm on bench / FA                                                                                                                                                                                                                                              Typical fix owner
-  ------------------------------------- ------------------------------------------------------ -------------------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ ---------------------------------------------
-  Link never comes up (fresh install)   CMIS presence, Vcc, Tx power flatline, LOS             Mfg or install                   Visual fiber/connector; golden module swap; CMIS dump                                                                                                                                                                                                              Ops install; supplier ATP if lot-correlated
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  Symptom                               First telemetry check                                  Bucket                           Confirm on bench / FA                                                                                      Typical fix owner
+  ------------------------------------- ------------------------------------------------------ -------------------------------- ---------------------------------------------------------------------------------------------------------- ---------------------------------------------
+  Link never comes up (fresh install)   CMIS presence, Vcc, Tx power flatline, LOS             Mfg or install                   Visual fiber/connector; golden module swap; CMIS dump                                                      Ops install; supplier ATP if lot-correlated
 
-  Intermittent LOS / burst errors       Rx power dropouts; FEC bursts; ORL events              Perf (ORL) or mfg (contam.)      Clean/inspect MT; ORL meter; RIN vs ORL ([\[sec:laser-drivers,sec:rin-values\]](#sec:laser-drivers,sec:rin-values))                                                                       Ops cleaning; packaging if repeat RMA
+  Intermittent LOS / burst errors       Rx power dropouts; FEC bursts; ORL events              Perf (ORL) or mfg (contam.)      Clean/inspect MT; ORL meter; RIN vs ORL (§ `sec:laser-drivers,sec:rin-values`)                             Ops cleaning; packaging if repeat RMA
 
-  Pre-FEC BER high, power OK            Tap saturation; RLM/TDECQ if logged; case $T$          Perf                             DCA TDECQ/RLM; host COM; LPO vs retimed path ([\[sec:tdecq,sec:com\]](#sec:tdecq,sec:com))                                                                                                               Host SI / module Tx design
+  Pre-FEC BER high, power OK            Tap saturation; RLM/TDECQ if logged; case $T$          Perf                             DCA TDECQ/RLM; host COM; LPO vs retimed path (§ `sec:tdecq,sec:com`)                                       Host SI / module Tx design
 
-  BER rises only at high case $T$       Module temp alarm; Tx power drop; $\lambda$ walk       Perf or reliability              LIV at $T$; OSA grid; TEC current; EAM bias ([5.8](#sec:laser-aging))                                                                                                                                      Derate / TEC / laser supplier
+  BER rises only at high case $T$       Module temp alarm; Tx power drop; $\lambda$ walk       Perf or reliability              LIV at $T$; OSA grid; TEC current; EAM bias (§ `sec:laser-aging`)                                          Derate / TEC / laser supplier
 
-  Slow BER creep over weeks/months      Bias current up for same Tx power; SMSR if monitored   Reliability                      LIV/SMSR vs ship ATP; Arrhenius lot history                                                                                                                                                                                                                        Laser wear-out; ELS replace
+  Slow BER creep over weeks/months      Bias current up for same Tx power; SMSR if monitored   Reliability                      LIV/SMSR vs ship ATP; Arrhenius lot history                                                                Laser wear-out; ELS replace
 
-  Sudden hard fail, was healthy         Last good CMIS snapshot; neighbor links OK             Reliability (COD) or mfg (ESD)   Dark LIV; DPA on facet/solder; date-code cluster?                                                                                                                                                                                                                  FA + supplier 8D
+  Sudden hard fail, was healthy         Last good CMIS snapshot; neighbor links OK             Reliability (COD) or mfg (ESD)   Dark LIV; DPA on facet/solder; date-code cluster?                                                          FA + supplier 8D
 
-  One date code / site fails early      Lot Pareto; burn-in escape rate                        Mfg                              Incoming SPC vs ATP; FA on sample of lot                                                                                                                                                                                                                           Supplier CAPA; hold shipment
+  One date code / site fails early      Lot Pareto; burn-in escape rate                        Mfg                              Incoming SPC vs ATP; FA on sample of lot                                                                   Supplier CAPA; hold shipment
 
-  WDM / ring unlock, power OK           Channel ID; thermal of neighbors; lock-loop status     Perf                             Resonance tune; crosstalk; CW-WDM line power ([\[sec:lock-validation,sec:thermal-xtalk,sec:cwwdm-laser\]](#sec:lock-validation,sec:thermal-xtalk,sec:cwwdm-laser))   Lock firmware / thermal design
+  WDM / ring unlock, power OK           Channel ID; thermal of neighbors; lock-loop status     Perf                             Resonance tune; crosstalk; CW-WDM line power (§ `sec:lock-validation,sec:thermal-xtalk,sec:cwwdm-laser`)   Lock firmware / thermal design
 
-  ELSFP swap restores link              Old module CMIS vs new; connector cycles               Reliability or mfg (connector)   Inspect MT; mating-cycle count; laser LIV in returned module ([5.9](#sec:elsfp))                                                                                                                                 Laser vs connector split in FA
-  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  ELSFP swap restores link              Old module CMIS vs new; connector cycles               Reliability or mfg (connector)   Inspect MT; mating-cycle count; laser LIV in returned module (§ `sec:elsfp`)                               Laser vs connector split in FA
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 **Table .** Fleet triage map: symptom to provisional bucket to confirm measurement. Perf $=$ performance (design/operating point); reliability $=$ time-dependent wear; mfg $=$ lot/process/install excursion.
 
@@ -326,7 +330,7 @@ At scale you rarely start with a DCA. Start with what the host and module alread
 
 2.  **Localize.** One link vs tray vs rack. Tray-wide points at power, cooling, or a shared ELS. Single-link points at that module, fiber, or host lane.
 
-3.  **Classify** with [7.4](#tab:fleet-triage). Write the bucket on the ticket before FA starts.
+3.  **Classify** with § `tab:fleet-triage`. Write the bucket on the ticket before FA starts.
 
 4.  **Confirm** with the smallest measurement that can falsify the bucket (golden swap, clean/inspect, LIV, TDECQ, ORL). Do not skip to DPA.
 
@@ -334,19 +338,19 @@ At scale you rarely start with a DCA. Start with what the host and module alread
 
     - Performance: change operating policy (derate, FIR, lock loop) or open a design/spec defect.
 
-    - Reliability: replace (ELSFP hot-swap when available), update FIT burn-down, tighten burn-in or derate ([\[sec:laser-aging,sec:fit-example\]](#sec:laser-aging,sec:fit-example)).
+    - Reliability: replace (ELSFP hot-swap when available), update FIT burn-down, tighten burn-in or derate (§ `sec:laser-aging,sec:fit-example`).
 
-    - Manufacturability: quarantine lot, incoming hold, supplier 8D with DPA photos and ATP deltas ([8.7](#sec:supplier-exec)).
+    - Manufacturability: quarantine lot, incoming hold, supplier 8D with DPA photos and ATP deltas (§ `sec:supplier-exec`).
 
 6.  **Close the loop.** Feed the signature back into ATP and CMIS alarm thresholds so the next incident trips earlier.
 
 ##### Worked paths (three common tickets).
 
-*"High temp only."* CMIS shows module near thermal limit and Tx power sagging. Bucket starts as performance (thermal design / derate) until LIV at temperature shows threshold rise matching an aged lot, which flips it to reliability. Measure OSA wavelength before blaming the laser: a ring unlock is still performance ([\[sec:siring,ch:wdm\]](#sec:siring,ch:wdm)).
+*"High temp only."* CMIS shows module near thermal limit and Tx power sagging. Bucket starts as performance (thermal design / derate) until LIV at temperature shows threshold rise matching an aged lot, which flips it to reliability. Measure OSA wavelength before blaming the laser: a ring unlock is still performance (§ `sec:siring,ch:wdm`).
 
-*"Random burst errors, average power fine."* Check FEC histogram for clustered errors and CMIS for Rx power dropouts. Clean and measure ORL. If RIN rises with ORL, it is performance/architecture (feedback). If ORL is fine and bursts track a date code, it is mfg (intermittent fiber attach). If bursts grow over months at fixed ORL, suspect laser or driver aging ([\[sec:laser-drivers,sec:laser-aging\]](#sec:laser-drivers,sec:laser-aging)).
+*"Random burst errors, average power fine."* Check FEC histogram for clustered errors and CMIS for Rx power dropouts. Clean and measure ORL. If RIN rises with ORL, it is performance/architecture (feedback). If ORL is fine and bursts track a date code, it is mfg (intermittent fiber attach). If bursts grow over months at fixed ORL, suspect laser or driver aging (§ `sec:laser-drivers,sec:laser-aging`).
 
-*"ELSFP replace fixed it; returned module looks alive on the bench."* Alive LIV with high ORL sensitivity or dirty MT face means connector/ORL (mfg/ops), not laser death. Dead or kinked LIV means reliability. Split those RMA codes explicitly or your FIT math will blame the wrong wear-out mode ([\[sec:elsfp,sec:photonic-packaging\]](#sec:elsfp,sec:photonic-packaging)).
+*"ELSFP replace fixed it; returned module looks alive on the bench."* Alive LIV with high ORL sensitivity or dirty MT face means connector/ORL (mfg/ops), not laser death. Dead or kinked LIV means reliability. Split those RMA codes explicitly or your FIT math will blame the wrong wear-out mode (§ `sec:elsfp,sec:photonic-packaging`).
 
 ##### RMA labels that keep FIT honest.
 
@@ -368,7 +372,67 @@ RMA codes should be distinct, not a single "optics fail":
 
 NFF rate and lot Pareto are as important as FIT. A rising NFF with clean LIV points at install practice or intermittent connectors, not Arrhenius.
 
-**Key idea.** Fleet triage is bucket-first: performance (budget/design), reliability (time), or manufacturability (lot/process). Read CMIS and host FEC before you touch a DCA; confirm with one falsifying measurement; label RMAs so FIT, ATP, and supplier 8D point at the real owner ([7.4](#tab:fleet-triage)).
+## Engineering lens
+
+### How it works
+
+Validation is a chain of evidence, not a single pass: a number means nothing without its reference plane, its corner, and its method. The chapter's ladder, instruments, and triage tree are that evidence chain from bench to fleet.
+
+### How it is measured
+
+Use the least complex instrument that can falsify the current hypothesis. A power meter answers whether light reaches the plane. An OSA answers wavelength, SMSR, and spectral leakage. A DCA answers OMA, ER, RLM, and TDECQ. A BERT answers the end-to-end waterfall and burst pattern. A VNA answers bandwidth, return loss, and fixture questions. An environmental chamber exposes temperature and humidity corners, but the unit must also run in the target chassis with real airflow, rails, neighbors, and fiber. § `sec:instruments,sec:bringup,sec:prod-corners` turn that instrument list into a sequence.
+
+### How it fails
+
+Validation fails when the setup, sample, or acceptance rule does not match the product. Common misses are a stale calibration, the wrong reference plane, a golden host that hides interop risk, pristine fiber that hides ORL sensitivity, short BER dwell, one lane tested without neighbors, and chamber temperature used as a substitute for measured case temperature. These are test escapes even when the device physics is sound.
+
+\> \*\*Failure mode: Low optical power\*\* \> \> \*\*Symptoms.\*\* A lane is dark or below its launch-power limit. \> \> \*\*Likely causes.\*\* A laser or enable fault, coupling loss, connector contamination, fiber polarity, calibration error, or a power-meter setup mistake. \> \> \*\*Measurements.\*\* Known source and meter, inspection scope, CMIS state and bias, power at successive planes, and a golden fiber or module. \> \> \*\*Mitigations.\*\* Correct the setup first, then repair the failing source, attach, connector, or control path. Add the signature at the earliest production test that can catch it.
+
+### How it is debugged
+
+Preserve the failing state and record software, firmware, calibration, fixture, cables, temperature, and supply. Verify the meter with a known source. Walk from power to spectrum to waveform to BER, moving one reference plane at a time. Use a golden swap to split host, module, and fiber. Only then stress temperature, voltage, ORL, and neighbors. Every corrective action needs a repeated failing test, a repeated passing test, and a guard against recurrence in ATP or telemetry.
+
+\> \*\*Debug story\*\* \> \> \*\*Observed.\*\* A new module lot showed low optical power on one station. \> \> \*\*Investigation.\*\* The same units passed on a second station. A known source exposed an offset in the first power-meter path. \> \> \*\*Finding.\*\* The lot was good, and the station was reading low. \> \> \*\*Root cause.\*\* A reference jumper had been replaced without updating the path-loss calibration. \> \> \*\*Resolution.\*\* The station was recalibrated, jumper identity was placed under change control, and a start-of- shift source check was added.
+
+## Interview and design review questions
+
+##### Concept.
+
+- Why is a passing BER on a golden bench not sufficient for production readiness?
+
+- What is the difference between characterization and validation?
+
+- Why does LPO raise the stakes on transmitter TDECQ?
+
+##### Design.
+
+- What requirement does each test prove, at which plane, and with which uncertainty and guardband?
+
+- Which corner is represented only by a lab fixture rather than the target host or chassis?
+
+- What is the fastest measurement that can falsify each top risk?
+
+- Which setup error can make a bad unit pass or a good unit fail?
+
+##### Debug.
+
+- A new module passes on the bench but fails on the production host. What is your first measurement?
+
+- BER is high but optical power looks fine. Apply the debugging fork (§ `sec:validation-fork`): what do you check next?
+
+- A module works on host A but fails on host B. How do you determine ownership?
+
+- Are raw data, calibration state, firmware, and sample identity stored well enough to replay a failure months later?
+
+##### Manufacturing and operations.
+
+- What is the minimum set of corners that proves production readiness?
+
+- How do you detect tester drift before it becomes a yield cliff or a field escape?
+
+- What exit criteria distinguish DVT from PVT?
+
+**Key idea.** Validation is a chain of evidence. Start with calibrated power and management state, move through spectrum and waveform, then trust BER only after the blocks and reference planes are known. Run the target host, chassis, fiber, and neighbor corners before calling the product ready.
 
 
 <div class="nav-links">

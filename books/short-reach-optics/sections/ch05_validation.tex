@@ -10,31 +10,40 @@ system bring-up under production-like corners, and the data-driven debug mindset
 the work demands.
 
 \section{The validation ladder}
+\label{sec:validation-workflow}
 
 Optical programs fail in the same places again and again: a part that looks good
 in characterization but cannot bring up on a production host, or a module that
 passes ATP and then unlocks under neighbor heat. The practical way to avoid those
-gaps is a ladder of increasing scale. Each rung answers a sharper question.
+gaps is a ladder of five stages, each answering a sharper question than the last.
+Skipping one creates escapes that surface later at higher cost.
 
 \begin{table*}[ht]
 \refstepcounter{table}\label{tab:ladder}%
 \centering
-\setlength{\tabcolsep}{5pt}%
-\begin{tabular}{@{}p{0.14\linewidth}p{0.26\linewidth}p{0.56\linewidth}@{}}
+\setlength{\tabcolsep}{4pt}%
+\footnotesize
+\begin{tabular}{@{}p{0.04\linewidth}p{0.14\linewidth}p{0.26\linewidth}p{0.48\linewidth}@{}}
 \toprule
-Stage & Question & Typical activity \\
+ & Stage & Question & Activity and instruments \\
 \midrule
-Component & In spec? & laser LIV, wavelength/RIN/SMSR; PD responsivity and bandwidth; modulator response \\
-Module bring-up & Does it link? & power-on, CMIS, CDR/BER (\Cref{sec:bringup}) \\
-Characterization & How much margin, across corners? & sweep temperature, voltage, aging; TDECQ, sensitivity, link budget \\
-Interop / system & Works with the switch/NIC/ASIC? & chassis thermal, host SerDes, prod-rep corners (\Cref{sec:bringup}) \\
-Production readiness & Can the supplier build it at yield? & ATP, SPC, DVT/PVT gates (\Cref{sec:supplier-exec}) \\
-Scaled deployment & Does the fleet stay up? & field telemetry, RMA, FIT tracking; triage tree (\Cref{sec:fleet-triage}) \\
+1 & Bring-up & Does it link? & Power-on, CMIS state machine, first light, CDR lock, pre-FEC BER on golden host (\Cref{sec:bringup}) \\
+2 & Characterization & How much margin, across corners? & Sweep $T$, $V$, ORL, aging; TDECQ, sensitivity, link budget; component LIV/RIN/SMSR (\Cref{sec:tdecq,sec:link-budget}) \\
+3 & Margin and interop & Does margin survive the fleet? & Production-representative corners: chassis thermal, host rails, neighbor load, dirty fiber, ELS hot-swap, target host/NIC/ASIC (\Cref{sec:prod-corners}) \\
+4 & Stress qualification & Does it survive its projected life? & HTOL, temperature cycle, humidity, ESD, mating cycles per GR-468, GR-1221, JESD47 (\Cref{sec:gr468,sec:ic-reliability}) \\
+5 & Production readiness & Can the supplier build it at volume? & Multi-lot yield, SPC stability, ATP coverage, ATE correlation, first-article, DVT/PVT gates (\Cref{sec:hvm-test,sec:supplier-exec}) \\
 \bottomrule
 \end{tabular}
 \par\medskip
-{\raggedright\footnotesize\textbf{Table~\thetable.} From bench to fleet.\par}
+{\raggedright\footnotesize\textbf{Table~\thetable.} The validation ladder: five
+stages from bench to fleet. A sixth concern, scaled deployment and fleet triage,
+runs continuously once material ships (\Cref{sec:fleet-triage}).
+Field telemetry, RMA tracking, and FIT burn-down feed back into stages~3--5.\par}
 \end{table*}
+
+For every metric at every stage, name the instrument, the reference plane
+(\Cref{sec:test-points}), the pass criterion, and the failure signature. A number
+without a plane and a method is not a measurement.
 
 \section{The core IM/DD measurements}
 
@@ -440,6 +449,17 @@ saturation; EAM bias shift; elevated receiver thermal noise; LIV rollover
 measurements (spectrum for wavelength, LIV for the laser, receiver sensitivity
 at temperature) rather than guessing.}
 
+\section{The debugging fork in validation}
+\label{sec:validation-fork}
+
+Apply the debugging fork (\Cref{sec:debug-fork}) before sweeping parameters or
+changing firmware: check the power meter or CMIS Rx power monitor first. If power
+moved, the fault is in the optical path (laser, coupling, connector, fiber, MUX);
+if power held but BER or TDECQ worsened, it is signal quality (bandwidth, noise,
+jitter, bias, equalization, reflection). This one check prevents the most common
+validation mistake: retuning an equalizer or laser bias when the real cause is a
+dirty connector.
+
 \section{Fleet and field triage}
 \label{sec:fleet-triage}
 
@@ -583,7 +603,104 @@ RMA\firstterm{RMA} codes should be distinct, not a single ``optics fail'':
 NFF rate and lot Pareto are as important as FIT. A rising NFF with clean LIV
 points at install practice or intermittent connectors, not Arrhenius.
 
-\keyidea{Fleet triage is bucket-first: performance (budget/design), reliability
-(time), or manufacturability (lot/process). Read CMIS and host FEC before you
-touch a DCA; confirm with one falsifying measurement; label RMAs so FIT, ATP, and
-supplier 8D point at the real owner (\Cref{tab:fleet-triage}).}
+\section{Engineering lens}
+\label{sec:validation-engineering-lens}
+
+\subsection{How it works}
+
+Validation is a chain of evidence, not a single pass: a number means nothing
+without its reference plane, its corner, and its method. The chapter's ladder,
+instruments, and triage tree are that evidence chain from bench to fleet.
+
+\subsection{How it is measured}
+\label{sec:validation-how-measured}
+
+Use the least complex instrument that can falsify the current hypothesis. A power
+meter answers whether light reaches the plane. An OSA answers wavelength, SMSR,
+and spectral leakage. A DCA answers OMA, ER, RLM, and TDECQ. A BERT answers the
+end-to-end waterfall and burst pattern. A VNA answers bandwidth, return loss, and
+fixture questions. An environmental chamber exposes temperature and humidity
+corners, but the unit must also run in the target chassis with real airflow,
+rails, neighbors, and fiber. \Cref{sec:instruments,sec:bringup,sec:prod-corners}
+turn that instrument list into a sequence.
+
+\subsection{How it fails}
+\label{sec:validation-how-fails}
+
+Validation fails when the setup, sample, or acceptance rule does not match the
+product. Common misses are a stale calibration, the wrong reference plane, a
+golden host that hides interop risk, pristine fiber that hides ORL sensitivity,
+short BER dwell, one lane tested without neighbors, and chamber temperature used
+as a substitute for measured case temperature. These are test escapes even when
+the device physics is sound.
+
+\failuremode{Low optical power}{A lane is dark or below its launch-power limit.}{A
+laser or enable fault, coupling loss, connector contamination, fiber polarity,
+calibration error, or a power-meter setup mistake.}{Known source and meter,
+inspection scope, CMIS state and bias, power at successive planes, and a golden
+fiber or module.}{Correct the setup first, then repair the failing source, attach,
+connector, or control path. Add the signature at the earliest production test
+that can catch it.}
+
+\subsection{How it is debugged}
+\label{sec:validation-how-debugged}
+
+Preserve the failing state and record software, firmware, calibration, fixture,
+cables, temperature, and supply. Verify the meter with a known source. Walk from
+power to spectrum to waveform to BER, moving one reference plane at a time. Use a
+golden swap to split host, module, and fiber. Only then stress temperature, voltage,
+ORL, and neighbors. Every corrective action needs a repeated failing test, a
+repeated passing test, and a guard against recurrence in ATP or telemetry.
+
+\debugstory{A new module lot showed low optical power on one station.}{The same
+units passed on a second station. A known source exposed an offset in the first
+power-meter path.}{The lot was good, and the station was reading low.}{A reference
+jumper had been replaced without updating the path-loss calibration.}{The station
+was recalibrated, jumper identity was placed under change control, and a start-of-
+shift source check was added.}
+
+\section{Interview and design review questions}
+\label{sec:validation-design-review}
+
+\paragraph{Concept.}
+\begin{itemize}
+\item Why is a passing BER on a golden bench not sufficient for production
+      readiness?
+\item What is the difference between characterization and validation?
+\item Why does LPO raise the stakes on transmitter TDECQ?
+\end{itemize}
+
+\paragraph{Design.}
+\begin{itemize}
+\item What requirement does each test prove, at which plane, and with which
+      uncertainty and guardband?
+\item Which corner is represented only by a lab fixture rather than the target
+      host or chassis?
+\item What is the fastest measurement that can falsify each top risk?
+\item Which setup error can make a bad unit pass or a good unit fail?
+\end{itemize}
+
+\paragraph{Debug.}
+\begin{itemize}
+\item A new module passes on the bench but fails on the production host. What is
+      your first measurement?
+\item BER is high but optical power looks fine. Apply the debugging fork
+      (\Cref{sec:validation-fork}): what do you check next?
+\item A module works on host A but fails on host B. How do you determine
+      ownership?
+\item Are raw data, calibration state, firmware, and sample identity stored well
+      enough to replay a failure months later?
+\end{itemize}
+
+\paragraph{Manufacturing and operations.}
+\begin{itemize}
+\item What is the minimum set of corners that proves production readiness?
+\item How do you detect tester drift before it becomes a yield cliff or a field
+      escape?
+\item What exit criteria distinguish DVT from PVT?
+\end{itemize}
+
+\keyidea{Validation is a chain of evidence. Start with calibrated power and
+management state, move through spectrum and waveform, then trust BER only after
+the blocks and reference planes are known. Run the target host, chassis, fiber,
+and neighbor corners before calling the product ready.}

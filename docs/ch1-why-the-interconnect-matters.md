@@ -27,7 +27,7 @@ That last point is the hook for this book. Purpose-built inference silicon does 
 
 ## Why inference makes the interconnect matter
 
-Inference is not training. Once a model is trained, serving it is dominated by two phases with very different bottlenecks (developed fully in [9](#ch:networking)):
+Inference is not training. Once a model is trained, serving it is dominated by two phases with very different bottlenecks (developed fully in § `ch:networking`):
 
 Prefill
 
@@ -41,23 +41,145 @@ Frontier models do not fit on one chip. They are sharded across many accelerator
 
 **Key idea.** Reliable, low-power IM/DD links directly set how large and how dependable an inference fabric can be. That is why the optical layer has become central to AI system design.
 
+## The shifting bottleneck
+
+Each generation of AI infrastructure has been limited by a different resource. The progression explains why optics moved from a commodity NIC accessory to a first-order design axis:
+
+Compute-limited
+
+: Early deep learning (pre-2016). GPUs were scarce and slow; models fit on one card; the network barely mattered.
+
+Memory-limited
+
+: Larger models and larger batches (2016--2020). HBM bandwidth set training throughput; the network carried gradients but was rarely the gate.
+
+Network-limited
+
+: Sharded frontier models (2020--present). Tensor, pipeline, and expert parallelism put collectives on the critical path; fabric bandwidth and tail latency now limit realized compute use (§ `sec:collectives,sec:inference-bottlenecks`).
+
+Power-limited
+
+: Gigawatt-class deployments (emerging). Site megawatts cap total capacity; every pJ/bit the interconnect saves is a watt returned to compute (§ `sec:power`).
+
+The bottleneck did not replace the previous one; it stacked on top. A modern cluster is simultaneously memory-bandwidth-bound in decode, network-bound in collectives, and power-bound at the site. The interconnect sits at the intersection of the last two, which is why this book treats optics as infrastructure rather than as a module datasheet exercise.
+
+## AI clusters are communication machines
+
+An accelerator does useful work only while its operands arrive on time. Model parallelism spreads weights, activations, and expert routing across many devices, so the fabric repeatedly moves partial results between otherwise fast compute engines. Three traffic patterns set the pressure:
+
+All-reduce
+
+: combines partial results across a group and returns the result to every member. The slowest path can hold the whole group at the synchronization point (§ `sec:collectives`).
+
+All-to-all
+
+: moves different payloads between every pair, as in mixture-of-experts routing. It tests bisection bandwidth, queueing, and path balance rather than one peak link rate.
+
+Point-to-point
+
+: carries pipeline stages and storage or memory traffic. Tail latency and retries can matter more than average throughput.
+
+More compute increases the amount of traffic the system can inject. It does not increase fabric capacity. Once links or switches saturate, accelerators wait at collectives and realized compute use falls. Public large-model training data show why this is also an availability problem: network faults are only one failure bucket, but a synchronous job pays for every interruption across the whole allocation . Compute scales faster than communication unless the network, optics, and software are designed as one system.
+
+## Engineering lens
+
+### How it works
+
+The interconnect carries partial results between accelerators, and collectives make the slowest link set the pace for the whole job. At AI scale the optical layer is the dominant medium between racks, so its bandwidth, latency, and uptime become the cluster's bandwidth, latency, and uptime.
+
+### How it is measured
+
+At the system level: step time, collective latency, accelerator idle fraction, and tail behavior. At the link level: pre-FEC BER, FEC error distribution, optical power, module temperature, and flap count. At the architecture level: delivered bandwidth per watt, link count, and FIT-weighted availability (§ `sec:fleet-triage,sec:fit-example`).
+
+### How it fails
+
+Fabric capacity can fall behind injected traffic. A single marginal link can stall a synchronous collective. Connector contamination, laser aging, thermal excursions, and firmware mismatches all reduce margin invisibly until the workload crosses the cliff. Service errors during expansion (polarity, cleaning, fiber routing) are a common source of day-one failures.
+
+### How it is debugged
+
+Use the debugging pyramid: start at the system symptom, narrow to signal quality, walk the link budget, bisect the subsystem, then identify the physical root cause. Do not skip layers.
+
+## The debugging pyramid
+
+When a link fails, work from the top down. Each layer narrows the search before you open a connector or reseat a module. This framework reappears in every chapter.
+
+Layer 1: System
+
+: What is failing at the workload level? BER, throughput, latency, training instability, collective stall. Start here because the symptom often rules out entire subsystems.
+
+Layer 2: Signal quality
+
+: What changed in the signal? Eye opening, jitter, noise, equalization margin, FEC error distribution. These are what the host and module already report (§ `sec:cmis,sec:fleet-triage`).
+
+Layer 3: Link budget
+
+: Where did margin disappear? Optical power, receiver sensitivity, insertion loss, extinction ratio, ORL. Walk the ledger from transmitter to receiver (§ `sec:link-budget`).
+
+Layer 4: Subsystem
+
+: Which block is responsible? Laser, modulator, driver, photodiode, TIA, DSP, connector, fiber, or host SerDes. Bisect with loopbacks and golden swaps (§ `sec:debug,sec:bringup`).
+
+Layer 5: Physical root cause
+
+: What mechanism explains the failure? Aging, contamination, thermal stress, process variation, assembly defect, calibration error, firmware bug. This is where you open FA or 8D (§ `sec:supplier-exec`).
+
+Do not skip layers. A direct jump to root cause without first confirming the system symptom and localizing the subsystem wastes weeks on the wrong part. The pyramid is a discipline, not a checklist: each layer produces a measurement that either confirms or falsifies the hypothesis before you descend.
+
+## Interview and design review questions
+
+##### Concept.
+
+- Why does optics become favorable over copper at higher data rates?
+
+- What distinguishes a communication-limited system from a compute-limited one?
+
+- Why does a synchronous collective amplify single-link failures?
+
+##### Design.
+
+- What traffic pattern sets the requirement: all-reduce, all-to-all, or a latency-sensitive point-to-point path?
+
+- What is the measured bottleneck: SerDes reach, switch radix, fiber count, module power, cooling, or collective efficiency?
+
+- Why does passive copper, a direct-attach cable, or an active electrical cable not close the required reach and rate?
+
+- Does a pluggable, linear pluggable, or co-packaged engine move risk into a domain the team can test and service?
+
+##### Debug.
+
+- Training throughput dropped after scaling. Where in the debugging pyramid (§ `sec:debug-pyramid`) do you start?
+
+- How do you distinguish a network bottleneck from a compute or memory bottleneck using only host-visible telemetry?
+
+- What data would show that added optical bandwidth does not improve job time?
+
+##### Manufacturing and operations.
+
+- What failure rate per link is acceptable given the total link count and the target job uptime?
+
+- How does the service model (hot-swap vs board pull) change the architecture?
+
+- What is the fleet cost of a wrong triage classification?
+
+**Key idea.** If moving information were free, optics would barely matter.
+
 ## How to read this book
 
 The chapters build from physics to fleet scale:
 
-1.  [\[ch:firstprinciples,ch:imdd\]](#ch:firstprinciples,ch:imdd): energy, IM/DD vocabulary, modulators, FEC, equalization.
+1.  § `ch:firstprinciples,ch:imdd`: energy, IM/DD vocabulary, modulators, FEC, equalization.
 
-2.  [4](#ch:models): quantitative noise, RIN, sensitivity (use with [7.6](#sec:link-budget)).
+2.  § `ch:models`: quantitative noise, RIN, sensitivity (use with § `sec:link-budget`).
 
-3.  [5](#ch:lasers): light sources (DFB/EML, LIV/SMSR/RIN, aging, ELSFP/CW-WDM).
+3.  § `ch:lasers`: light sources (DFB/EML, LIV/SMSR/RIN, aging, ELSFP/CW-WDM).
 
-4.  [6](#ch:wdm): wavelength locking, thermal crosstalk, CW-WDM, on-chip MUX.
+4.  § `ch:wdm`: wavelength locking, thermal crosstalk, CW-WDM, on-chip MUX.
 
-5.  [\[ch:validation,ch:reliability\]](#ch:validation,ch:reliability): measurement ladder, link budgets, qual, packaging.
+5.  § `ch:validation,ch:reliability`: measurement ladder, link budgets, qual, packaging.
 
-6.  [9](#ch:networking): scale-up/out, pluggables, CPO/XPO, inference collectives.
+6.  § `ch:networking`: scale-up/out, pluggables, CPO/XPO, inference collectives.
 
-To use the book as a design drill, pick one link style (retimed 800G DR, LPO, or CPO WDM) and trace it end to end through [\[sec:txrx-chain,sec:pluggables,sec:cpo-status\]](#sec:txrx-chain,sec:pluggables,sec:cpo-status).
+To use the book as a design drill, pick one link style (retimed 800G DR, LPO, or CPO WDM) and trace it end to end through § `sec:txrx-chain,sec:pluggables,sec:cpo-status`.
 
 
 <div class="nav-links">

@@ -239,6 +239,57 @@ what erode the margin.}
 \section{Sensitivity and OMA}
 \label{sec:sensitivity}
 
+\subsection{Common misconception: sensitivity does not guarantee a working link}
+
+Received power exceeding the datasheet sensitivity number does not guarantee low
+BER. Sensitivity is measured under specific, controlled assumptions: a clean
+transmitter, known extinction ratio, specified ORL, and a particular equalization
+state. In the field, BER depends on all of these simultaneously:
+
+\begin{itemize}
+\item received optical power;
+\item extinction ratio and OMA (not just average power);
+\item RIN under the actual ORL;
+\item jitter (random and deterministic);
+\item ISI from bandwidth limits and dispersion;
+\item receiver thermal noise and any TIA compression;
+\item equalization state and FEC margin.
+\end{itemize}
+
+Sensitivity is therefore a shorthand for receiver noise performance under reference
+conditions, not a complete description of whether the link closes. A link that
+``has enough power'' can still fail if ER is poor, RIN is elevated, or the
+equalizer is saturated. Always close the full link budget
+(\Cref{sec:link-budget}), not just the power line.
+
+\subsection{OMA versus average power}
+
+Two links may have identical average optical power but different BER. The reason
+is OMA and extinction ratio. At fixed average power $P_\mathrm{avg}$, the OMA
+depends on ER through
+\[
+  \frac{\mathrm{OMA}}{P_\mathrm{avg}}
+  = \frac{2(\mathrm{ER}-1)}{\mathrm{ER}+1},
+\]
+where ER is the linear extinction ratio $P_1/P_0$. A link with 10~dB ER
+($\mathrm{ER}_\mathrm{lin}=10$) delivers
+$\mathrm{OMA}/P_\mathrm{avg} = 18/11 \approx 1.636$, while 6~dB ER
+($\mathrm{ER}_\mathrm{lin}\approx 4$) delivers $6/5 = 1.200$. The difference is
+about 1.36~dB of OMA at the same average power. Whether that 1.36~dB matters
+depends on where the receiver sits on its BER waterfall: near the sensitivity
+cliff a 1~dB OMA change moves BER by orders of magnitude
+(\Cref{sec:qber,fig:berpower}), while well above sensitivity the same change is
+invisible. The impact also depends on RIN, bandwidth, equalization state, and
+TDECQ; ER alone does not set BER.
+
+For PAM4, the relevant quantity is the outer OMA ($P_3 - P_0$), and level spacing
+(RLM) matters independently. A transmitter that launches adequate average power but
+has compressed inner eyes (poor RLM) will fail TDECQ even though a power meter
+reads in-spec. This is why TDECQ, OMA, and RLM are specified together, not average
+power alone (\Cref{sec:tdecq}).
+
+\subsection{The sensitivity formula}
+
 Turning the question around (\emph{what is the least power that meets a target
 BER?}) gives the sensitivity. Referring the receiver's input noise current
 $i_n$ back to the optical input through the responsivity $\mathcal{R}$:
@@ -487,8 +538,134 @@ level penalty but relaxes bandwidth; the crossover with the KP4 pre-FEC threshol
 sets the required operating power.\label{fig:pam4}}
 \end{figure}
 
+\section{Engineering lens}
+\label{sec:models-engineering-lens}
+
+\subsection{How it works}
+
+Receiver performance reduces to one number, the quality factor $Q$: signal
+separation divided by combined noise. Thermal noise yields to more power, but RIN
+does not, which is why a BER floor exists. The rest of this chapter computes,
+measures, and defends $Q$.
+
+\subsection{How it is measured}
+\label{sec:models-how-measured}
+
+A BER model earns trust only when every term has a bench measurement. Use a BERT
+and calibrated optical attenuator for BER versus received OMA. Measure receiver
+input-referred noise with the photodiode dark and illuminated. Use a DCA for OMA,
+ER, and eye quality, and a photodiode plus electrical spectrum analyzer for
+relative intensity noise (RIN). Repeat power sweeps at temperature and per lane.
+Acceptance is a curve, not one point: the required waterfall must cross the
+program's pre-FEC threshold with margin and without a floor
+(\Cref{sec:qber,sec:noise,sec:rin,sec:sensitivity}).
+
+\subsection{How it fails}
+\label{sec:models-how-fails}
+
+Thermal noise dominates at low optical power, shot noise grows with photocurrent,
+and RIN grows with signal power. Reflections, crosstalk, jitter, and compression
+break a simple Gaussian fit. The signatures differ: a horizontal BER floor points
+to signal-proportional noise or bursts; a uniform horizontal shift points to lost
+power or added receiver noise; one lane moving alone points to its optical or
+electrical path.
+
+\failuremode{BER floor}{BER improves with received power, then stops improving.}{RIN,
+reflection-driven multipath interference, laser-bias noise, crosstalk, or periodic
+jitter.}{BER versus OMA, RIN spectrum, ORL sweep, FEC error distribution, and a
+quiet laser-bias source.}{Remove the correlated noise source, improve ORL, isolate
+supplies, or reject the laser if its intrinsic RIN misses the ATP.}
+
+\subsection{How it is debugged}
+\label{sec:models-how-debugged}
+
+When BER moves from $10^{-12}$ class to $10^{-6}$ class, save the failing
+condition and work in this order: received OMA, transmitter OMA and ER, receiver
+noise, RIN and ORL, electrical jitter, and lane crosstalk. Sweep power before
+changing settings. If the curve recovers with power, quantify the sensitivity
+shift. If it floors, split intrinsic laser noise from board noise and reflection
+feedback. If only temperature moves it, repeat the same terms hot and cold instead
+of assigning the change to ``thermal margin.''
+
+\debugstory{One lane developed a BER floor after the product board replaced the
+bench supply.}{The optical power sweep flattened. Intrinsic RIN on the quiet
+source passed, but discrete tones appeared with the product rails active.}{The
+laser was not the noisy element.}{A switching regulator coupled into the laser
+bias path.}{The bias filter and return path were changed, and a powered-board RIN
+check was added to validation.}
+
+\section{The debugging fork: did received power change?}
+\label{sec:debug-fork}
+
+When BER degrades, ask one question first:
+
+\paragraph{Did received optical power change?}
+If yes, the failure is in the power path:
+\begin{itemize}
+\item laser degradation (threshold rise, slope loss, COD);
+\item connector contamination or damage;
+\item coupling loss (fiber attach, FAU drift);
+\item fiber break or bend loss;
+\item MUX/de-MUX imbalance or grid misalignment.
+\end{itemize}
+
+\paragraph{Or did the required power increase?}
+If received power is stable but BER worsened, the failure is in signal quality:
+\begin{itemize}
+\item jitter (random or deterministic);
+\item RIN (intrinsic, feedback-driven, or bias-driver);
+\item ISI (bandwidth degradation, equalizer saturation);
+\item extinction ratio degradation (bias drift, EAM aging);
+\item receiver sensitivity degradation (TIA noise, overload);
+\item timing recovery issues (CDR, clock path).
+\end{itemize}
+
+This fork often narrows an investigation in minutes. Power-path failures show up on
+a meter; signal-quality failures require a DCA, BERT, or spectrum analyzer. Apply
+it before opening the package, changing settings, or blaming a supplier
+(\Cref{sec:fleet-triage}).
+
+\section{Interview and design review questions}
+\label{sec:models-design-review}
+
+\paragraph{Concept.}
+\begin{itemize}
+\item Why does RIN impose a BER floor that no amount of optical power can overcome?
+\item What is the physical difference between thermal noise, shot noise, and RIN?
+\item Why is OMA a better receiver metric than average power?
+\end{itemize}
+
+\paragraph{Design.}
+\begin{itemize}
+\item Which measured curve supports each noise term in the model?
+\item Over what power range does the Gaussian assumption fit the data?
+\item What evidence separates thermal noise, shot noise, RIN, jitter, and
+      crosstalk?
+\item Which corner would create a floor that a room-temperature sensitivity point
+      misses?
+\end{itemize}
+
+\paragraph{Debug.}
+\begin{itemize}
+\item Optical power is unchanged but BER worsened from $10^{-12}$ to $10^{-6}$.
+      Where do you start? (\Cref{sec:debug-fork})
+\item The BER curve flattens at high power. What mechanisms produce a floor?
+\item A bench supply is replaced with the product board and RIN rises. What
+      changed?
+\item What result would disprove the current root-cause hypothesis?
+\end{itemize}
+
+\paragraph{Manufacturing and operations.}
+\begin{itemize}
+\item How do you screen a laser whose quiet RIN passes but stressed RIN fails?
+\item What ATP row catches a bias-driver noise contribution that only appears with
+      host rails active?
+\item At what received power does RIN begin to dominate over thermal noise for
+      this receiver?
+\end{itemize}
+
 \keyidea{Four relations carry most of short-reach link design: the Gaussian
 $\mathrm{BER}(Q)$, the quadrature noise budget (thermal + shot + RIN), the RIN
 floor $Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$, and the sensitivity
-$P_{\text{sens}}=Q\,i_n/\mathcal{R}$. With these (and a few dozen lines of
-Python) you can predict, budget, and debug a link before touching a bench.}
+$P_{\text{sens}}=Q\,i_n/\mathcal{R}$. Close each relation with a measured curve,
+then use the curve shape to debug the link.}

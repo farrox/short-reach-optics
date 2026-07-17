@@ -749,7 +749,7 @@ XPO
 
 
 <div class="nav-links">
-  <a href="ch10-design-reviews-and-failure-modes">&larr; Previous</a>
+  <a href="ch10-failure-analysis-handbook">&larr; Previous</a>
   <a href="./">Table of Contents</a>
   <a href="ch12-references">Next &rarr;</a>
 </div>

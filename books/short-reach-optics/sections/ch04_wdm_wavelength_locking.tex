@@ -467,8 +467,103 @@ The solid conclusion is that \textbf{WDM is present and wavelength control is
 central}; whether the implementation is ring-based silicon photonics with external
 multi-wavelength sources or discrete DFB/EML DWDM depends on the specific system.
 
-\keyidea{Wavelength locking almost always implies WDM, and most often dense WDM
-with wavelength-selective (ring) modulators fed by external multi-wavelength
-sources. The hard problems are lock-loop capture and hold under thermal
-crosstalk, MUX loss and isolation in the link budget, and CW-WDM source flatness
-and grid stability at fleet scale.}
+\section{Engineering lens}
+\label{sec:wdm-engineering-lens}
+
+\subsection{How it works}
+
+WDM buys fiber count back by stacking wavelengths, and the price is control: once
+the grid is tight or the modulator is resonant, laser and filter must stay locked.
+The chapter's lock loops, thermal budgets, and source specs all exist to hold that
+lock across temperature and neighbor load.
+
+\subsection{How it is measured}
+\label{sec:wdm-how-measured}
+
+Start with an OSA or wavemeter to identify every source line, then sweep each ring
+or filter while recording through-port, drop-port, heater current, monitor-PD
+signal, and lock error. Measure insertion loss and adjacent-channel leakage per
+lane. Close the loop and repeat BER, OMA, and TDECQ under case-temperature ramps,
+neighbor heater activity, source-power spread, and restart. Capture range and hold
+range are different acceptance tests; \Cref{sec:lock-validation} gives the order,
+and the source measurements follow the CW-WDM MSA methods~\cite{cwwdm}.
+
+\subsection{How it fails}
+\label{sec:wdm-how-fails}
+
+One degraded lane points toward its laser line, ring, filter channel, heater,
+monitor, or local fiber attach. All lanes moving together points toward the shared
+CW source, thermal controller, supply, polarization path, or common MUX. Capture
+failures occur during startup or a large temperature step. Hold failures occur
+after lock, often under neighbor heat, power droop, or control-loop interaction.
+Treat those as separate signatures.
+
+\failuremode{Wavelength drift}{BER rises with temperature, one WDM lane moves, and
+lock error or heater demand grows.}{Laser wavelength drift, ring resonance drift,
+thermal coupling, a saturated TEC or heater, or a weak monitor signal.}{OSA or
+wavemeter, heater and TEC current, lock error, neighbor activity, and per-lane
+BER.}{Restore thermal headroom, widen capture only after noise is checked, improve
+calibration, and reduce shared thermal or supply coupling.}
+
+\subsection{How it is debugged}
+\label{sec:wdm-how-debugged}
+
+First decide whether the fault affects one lane or all lanes. Freeze heater and
+laser actuators long enough to measure the open-loop spectrum. Move the source
+while holding the ring fixed, then move the ring while holding the source fixed.
+If neither follows the failing BER, inspect MUX loss, polarization, connector ORL,
+and the electrical lane. For intermittent unlock, align lock-error, heater,
+temperature, supply, and neighbor-traffic traces on one time axis. A control loop
+cannot be debugged from final register values alone.
+
+\debugstory{One lane failed only after adjacent lanes began traffic.}{The source
+line stayed on grid, while the suspect ring heater railed and lock error grew with
+neighbor temperature.}{The optical source and receiver passed; the resonance was
+being pushed out of hold range.}{Thermal coupling from the adjacent heater exceeded
+the control-loop budget.}{The heater map and feed-forward terms were corrected,
+and neighbor-load hold testing became an ATP corner.}
+
+\section{Interview and design review questions}
+\label{sec:wdm-design-review}
+
+\paragraph{Concept.}
+\begin{itemize}
+\item Why is WDM preferable to adding fibers at scale?
+\item Why does a microring modulator require wavelength locking while a
+      Mach--Zehnder does not?
+\item What happens if laser wavelength drifts by 2~nm in a 200~GHz-spaced WDM
+      system?
+\end{itemize}
+
+\paragraph{Design.}
+\begin{itemize}
+\item What are capture and hold ranges across process, voltage, temperature, and
+      source-power spread?
+\item Which resource is shared across lanes, and what does its failure signature
+      look like?
+\item How much heater and TEC headroom remains at the worst thermal corner?
+\item Can telemetry distinguish laser drift, ring drift, MUX loss, and monitor-PD
+      error without opening the package?
+\end{itemize}
+
+\paragraph{Debug.}
+\begin{itemize}
+\item One WDM lane fails while neighbors are healthy. How do you determine whether
+      the cause is the laser, ring, filter, heater, or connector?
+\item All lanes unlock after a temperature step. What shared resource do you check
+      first?
+\item Which calibration or startup error can escape production and fail only after
+      a field restart?
+\end{itemize}
+
+\paragraph{Manufacturing and operations.}
+\begin{itemize}
+\item What production test proves lock hold under worst-case neighbor heat?
+\item How do you qualify a new CW-WDM source lot against the ATP?
+\item What field telemetry distinguishes a source failure from a ring-bank failure?
+\end{itemize}
+
+\keyidea{Wavelength locking is a control-system problem wrapped around an optical
+link. Measure the grid, capture, hold, shared thermal paths, and per-lane margin.
+Then use one-lane versus all-lane behavior to split the source, ring bank, MUX,
+thermal controller, and common supplies.}

@@ -77,6 +77,163 @@ plumbing between training runs.
 dependable an inference fabric can be. That is why the optical layer has become
 central to AI system design.}
 
+\section{The shifting bottleneck}
+\label{sec:shifting-bottleneck}
+
+Each generation of AI infrastructure has been limited by a different resource.
+The progression explains why optics moved from a commodity NIC accessory to a
+first-order design axis:
+
+\begin{description}
+\item[Compute-limited] Early deep learning (pre-2016). GPUs were scarce and slow;
+      models fit on one card; the network barely mattered.
+\item[Memory-limited] Larger models and larger batches (2016--2020). HBM bandwidth
+      set training throughput; the network carried gradients but was rarely the
+      gate.
+\item[Network-limited] Sharded frontier models (2020--present). Tensor, pipeline,
+      and expert parallelism put collectives on the critical path; fabric bandwidth
+      and tail latency now limit realized compute use
+      (\Cref{sec:collectives,sec:inference-bottlenecks}).
+\item[Power-limited] Gigawatt-class deployments (emerging). Site megawatts cap
+      total capacity; every pJ/bit the interconnect saves is a watt returned to
+      compute (\Cref{sec:power}).
+\end{description}
+
+The bottleneck did not replace the previous one; it stacked on top. A modern
+cluster is simultaneously memory-bandwidth-bound in decode, network-bound in
+collectives, and power-bound at the site. The interconnect sits at the
+intersection of the last two, which is why this book treats optics as
+infrastructure rather than as a module datasheet exercise.
+
+\section{AI clusters are communication machines}
+\label{sec:communication-machines}
+
+An accelerator does useful work only while its operands arrive on time. Model
+parallelism spreads weights, activations, and expert routing across many devices,
+so the fabric repeatedly moves partial results between otherwise fast compute
+engines. Three traffic patterns set the pressure:
+
+\begin{description}
+\item[All-reduce] combines partial results across a group and returns the result to
+      every member. The slowest path can hold the whole group at the synchronization
+      point (\Cref{sec:collectives}).
+\item[All-to-all] moves different payloads between every pair, as in
+      mixture-of-experts routing. It tests bisection bandwidth, queueing, and path
+      balance rather than one peak link rate.
+\item[Point-to-point] carries pipeline stages and storage or memory traffic. Tail
+      latency and retries can matter more than average throughput.
+\end{description}
+
+More compute increases the amount of traffic the system can inject. It does not
+increase fabric capacity. Once links or switches saturate, accelerators wait at
+collectives and realized compute use falls. Public large-model training data show
+why this is also an availability problem: network faults are only one failure
+bucket, but a synchronous job pays for every interruption across the whole
+allocation~\cite{metallama3}. Compute scales faster than communication unless the
+network, optics, and software are designed as one system.
+
+\section{Engineering lens}
+\label{sec:role-engineering-lens}
+
+\subsection{How it works}
+
+The interconnect carries partial results between accelerators, and collectives make
+the slowest link set the pace for the whole job. At AI scale the optical layer is
+the dominant medium between racks, so its bandwidth, latency, and uptime become the
+cluster's bandwidth, latency, and uptime.
+
+\subsection{How it is measured}
+
+At the system level: step time, collective latency, accelerator idle fraction, and
+tail behavior. At the link level: pre-FEC BER, FEC error distribution, optical
+power, module temperature, and flap count. At the architecture level: delivered
+bandwidth per watt, link count, and FIT-weighted availability
+(\Cref{sec:fleet-triage,sec:fit-example}).
+
+\subsection{How it fails}
+
+Fabric capacity can fall behind injected traffic. A single marginal link can stall
+a synchronous collective. Connector contamination, laser aging, thermal excursions,
+and firmware mismatches all reduce margin invisibly until the workload crosses the
+cliff. Service errors during expansion (polarity, cleaning, fiber routing) are a
+common source of day-one failures.
+
+\subsection{How it is debugged}
+
+Use the debugging pyramid: start at the system symptom, narrow to signal quality,
+walk the link budget, bisect the subsystem, then identify the physical root cause.
+Do not skip layers.
+
+\section{The debugging pyramid}
+\label{sec:debug-pyramid}
+
+When a link fails, work from the top down. Each layer narrows the search before you
+open a connector or reseat a module. This framework reappears in every chapter.
+
+\begin{description}
+\item[Layer 1: System] What is failing at the workload level? BER, throughput,
+      latency, training instability, collective stall. Start here because the
+      symptom often rules out entire subsystems.
+\item[Layer 2: Signal quality] What changed in the signal? Eye opening, jitter,
+      noise, equalization margin, FEC error distribution. These are what the host
+      and module already report (\Cref{sec:cmis,sec:fleet-triage}).
+\item[Layer 3: Link budget] Where did margin disappear? Optical power, receiver
+      sensitivity, insertion loss, extinction ratio, ORL. Walk the ledger from
+      transmitter to receiver (\Cref{sec:link-budget}).
+\item[Layer 4: Subsystem] Which block is responsible? Laser, modulator, driver,
+      photodiode, TIA, DSP, connector, fiber, or host SerDes. Bisect with
+      loopbacks and golden swaps (\Cref{sec:debug,sec:bringup}).
+\item[Layer 5: Physical root cause] What mechanism explains the failure? Aging,
+      contamination, thermal stress, process variation, assembly defect,
+      calibration error, firmware bug. This is where you open FA or 8D
+      (\Cref{sec:supplier-exec}).
+\end{description}
+
+Do not skip layers. A direct jump to root cause without first confirming the system
+symptom and localizing the subsystem wastes weeks on the wrong part. The pyramid is
+a discipline, not a checklist: each layer produces a measurement that either
+confirms or falsifies the hypothesis before you descend.
+
+\section{Interview and design review questions}
+
+\paragraph{Concept.}
+\begin{itemize}
+\item Why does optics become favorable over copper at higher data rates?
+\item What distinguishes a communication-limited system from a compute-limited one?
+\item Why does a synchronous collective amplify single-link failures?
+\end{itemize}
+
+\paragraph{Design.}
+\begin{itemize}
+\item What traffic pattern sets the requirement: all-reduce, all-to-all, or a
+      latency-sensitive point-to-point path?
+\item What is the measured bottleneck: SerDes reach, switch radix, fiber count,
+      module power, cooling, or collective efficiency?
+\item Why does passive copper, a direct-attach cable, or an active electrical cable
+      not close the required reach and rate?
+\item Does a pluggable, linear pluggable, or co-packaged engine move risk into a
+      domain the team can test and service?
+\end{itemize}
+
+\paragraph{Debug.}
+\begin{itemize}
+\item Training throughput dropped after scaling. Where in the debugging pyramid
+      (\Cref{sec:debug-pyramid}) do you start?
+\item How do you distinguish a network bottleneck from a compute or memory
+      bottleneck using only host-visible telemetry?
+\item What data would show that added optical bandwidth does not improve job time?
+\end{itemize}
+
+\paragraph{Manufacturing and operations.}
+\begin{itemize}
+\item What failure rate per link is acceptable given the total link count and the
+      target job uptime?
+\item How does the service model (hot-swap vs board pull) change the architecture?
+\item What is the fleet cost of a wrong triage classification?
+\end{itemize}
+
+\keyidea{If moving information were free, optics would barely matter.}
+
 \section{How to read this book}
 
 The chapters build from physics to fleet scale:

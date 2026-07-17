@@ -125,6 +125,132 @@ what Miller's energy accounting recommends. What has changed is only the vertica
 axis: from theoretical attojoule targets toward demonstrated hundreds-of-fJ/bit
 links.}
 
+\section{The energy ladder}
+\label{sec:energy-ladder}
+
+A useful system model orders operations by how far information must move:
+\[
+\begin{array}{c}
+\text{arithmetic operation} \\
+\downarrow \\
+\text{local SRAM access} \\
+\downarrow \\
+\text{HBM access} \\
+\downarrow \\
+\text{package crossing} \\
+\downarrow \\
+\text{board crossing} \\
+\downarrow \\
+\text{rack crossing} \\
+\downarrow \\
+\text{datacenter crossing.}
+\end{array}
+\]
+The exact energy at each rung depends on process, signaling, utilization, and
+reach. The ordering is the point: capacitance, equalization, conversion, and
+cooling costs grow as the bit leaves the compute core. Miller's endpoint model
+explains why the optical crossover moves inward as electrical rate rises
+\cite{miller2009,miller2017}. A design review should therefore count bytes moved
+and distance crossed, not only arithmetic throughput.
+
+\section{Debug discussion: why more compute can make training slower}
+
+When a larger accelerator count produces worse step time, treat it as a scaling
+failure, not proof that the compute is slow.
+
+\begin{enumerate}
+\item \textbf{Observe.} Compare useful compute time, collective time, queueing,
+      retransmits, and idle time at each scale point.
+\item \textbf{Hypothesize.} Check for a saturated fabric tier, uneven routing,
+      stragglers, memory pressure, or a synchronization barrier that grows with
+      group size.
+\item \textbf{Measure.} Plot collective latency and delivered bandwidth against
+      accelerator count. Correlate link error and retry counters with the tail of
+      the step-time distribution.
+\item \textbf{Bisect.} Hold the model fixed and vary topology, group size, message
+      size, or route. A roofline-style split between compute and data movement
+      keeps the diagnosis tied to measured limits~\cite{roofline}.
+\item \textbf{Act.} Fix the limiting rung: reduce communication, rebalance the
+      collective, add fabric capacity, shorten the electrical reach, or move the
+      optical conversion closer to the package.
+\end{enumerate}
+
+\debugstory{Training throughput fell when the accelerator count doubled.}{Compute
+kernels held the same efficiency, while all-reduce tail latency and link retries
+rose on one fabric tier.}{The added workers spent more time waiting at the
+collective barrier than computing.}{The network tier was oversubscribed for the
+new group size, and one marginal link amplified the tail.}{The team rebalanced
+routes, removed the weak link, and set the next scale gate on measured collective
+latency rather than peak FLOPs.}
+
+\section{Engineering lens}
+\label{sec:firstprinciples-engineering-lens}
+
+\subsection{How it works}
+
+Electrical energy per bit grows with distance; optical energy is spent at the
+endpoints and is flat with distance. So as lane rates rise and the electrical cost
+climbs, the crossover where optics wins marches inward toward the chip. Tight
+electronic-photonic integration lowers receiver capacitance, cutting both energy
+and the optical power a link needs.
+
+\subsection{How it is measured}
+
+Energy per bit (pJ/bit) is the headline metric, measured end to end from host
+SerDes through the optical link. Break it into electrical (SerDes, driver, TIA),
+electro-optic (modulator, laser wall-plug), and thermal (cooling overhead, PUE).
+Compare against the roofline: bytes moved times energy per byte against the power
+envelope.
+
+\subsection{How it fails}
+
+A link that meets its energy target on a quiet bench can exceed it in the field
+when equalization depth increases, retransmits rise, or thermal control draws
+extra current. A poor co-packaging yield or high coupling loss forces higher laser
+power and erases the integration advantage. A firmware update that increases DSP
+activity raises module watts without changing the optics.
+
+\subsection{How it is debugged}
+
+Compare measured link power against the design budget, split by block. If the
+total exceeds the target, identify which block moved: SerDes, driver, laser bias,
+TEC, or DSP. Correlate power anomalies with BER, temperature, and equalizer state.
+A link that draws more power than expected is often also running at reduced margin.
+
+\section{Interview and design review questions}
+
+\paragraph{Concept.}
+\begin{itemize}
+\item Why does electrical energy per bit grow with distance while optical does not?
+\item What physical quantity sets the receiver's minimum detectable energy?
+\item Why does co-packaging reduce energy per bit even without changing the laser?
+\end{itemize}
+
+\paragraph{Design.}
+\begin{itemize}
+\item At what reach does the optical crossover occur for your target lane rate,
+      and what assumptions drive that number?
+\item How does doubling the lane rate change the crossover distance?
+\item Which rung of the energy ladder dominates total system power for this
+      workload?
+\end{itemize}
+
+\paragraph{Debug.}
+\begin{itemize}
+\item More accelerators were added but training throughput fell. Where on the
+      energy ladder is the bottleneck?
+\item A link's power consumption rose after a firmware update. What changed:
+      equalization depth, retransmits, or thermal control?
+\end{itemize}
+
+\paragraph{Manufacturing and operations.}
+\begin{itemize}
+\item What determines the power budget at the faceplate: module watts, cooling
+      capacity, or rack-level allocation?
+\item How do you verify that a deployed link actually achieves the energy per bit
+      the design predicted?
+\end{itemize}
+
 \section{Why this framework anchors the book}
 
 Everything that follows is an effort to approach these floors at the required data

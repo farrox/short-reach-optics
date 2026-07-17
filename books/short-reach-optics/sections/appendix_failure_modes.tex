@@ -1,15 +1,28 @@
-\chapter{Design reviews and failure modes}
+\chapter{Failure analysis handbook}
 \label{ch:failure-modes}
 
-This appendix collects worked failure-mode examples: the symptoms an engineer sees
-on the bench or in telemetry, the physics behind the failure, and the systematic
-debug steps that isolate root cause. Each case follows the same template: observe,
-hypothesize, measure, confirm. The discipline is bisection, not intuition: change
-one variable at a time and let the instrument decide.
+This appendix is a symptom-first field guide. Start with what the bench, production
+line, or fleet reports. List the plausible failure domains, choose the smallest
+measurement that can split them, and preserve the failing state until the evidence
+has been captured. Each case follows the same path: observe, hypothesize, measure,
+confirm, correct, and add a control that prevents recurrence.
 
-These are the seven signatures you will encounter most often in a first optical
-hardware role. Master them and you can triage almost any short-reach link failure
-in the field or in DVT.
+\begin{description}
+\item[BER increase] Check received OMA, eye quality, RIN, ORL, receiver noise,
+      jitter, and crosstalk (\Cref{sec:fm-ber-floor}).
+\item[One lane degraded] Split source, modulator or ring, filter or MUX, fiber
+      attach, driver, and receiver (\Cref{sec:fm-lane-imbalance}).
+\item[Yield drop] Clear the tester, then split lot, site, process step, assembly,
+      firmware, and calibration (\Cref{sec:fm-yield-drop}).
+\item[Temperature sensitivity] Track power, wavelength, lock error, TEC or heater
+      headroom, receiver margin, and package stress (\Cref{sec:fm-temperature}).
+\item[Intermittent bursts] Preserve counters before reseating. Check connector
+      contamination, ORL, supply noise, and fiber attach
+      (\Cref{sec:fm-contamination}).
+\end{description}
+
+The cases below provide the detailed measurements and corrective actions. Use the
+failure and debug callouts in Chapters 3--9 as shorter versions of the same method.
 
 \section{BER floor}
 \label{sec:fm-ber-floor}
@@ -305,9 +318,70 @@ replaced, not re-cleaned. Track contamination-related RMAs as a distinct failure
 code (not ``laser failure'') so FIT accounting stays honest
 (\Cref{sec:fleet-triage}).
 
-\keyidea{Optical link failures are not mysteries; they are physics. A BER floor is
-RIN or MPI. Low ER is a modulator bias problem. Lane imbalance is coupling or
-thermal gradient. Wavelength drift is a servo losing lock. Eye closure is bandwidth,
-linearity, or dispersion. Thermal runaway is watts exceeding the cooling budget.
-Connector contamination is dust. In every case: observe the symptom, form a
-hypothesis, measure one variable, confirm. Bisect, do not guess.}
+\section{Yield drop}
+\label{sec:fm-yield-drop}
+
+\paragraph{Symptom.}
+First-pass yield falls below its stable baseline. The loss may cluster on one ATP
+row, lane, tester, shift, supplier lot, assembly site, or firmware revision.
+
+\paragraph{Likely causes.}
+Process drift, incoming material variation, fiber-array alignment, die-attach or
+solder change, tester or fixture drift, stale calibration, a software limit change,
+or a guardband that no longer matches measurement spread.
+
+\paragraph{Debug steps.}
+\begin{enumerate}
+\item Contain suspect work in process and freeze tester software, limits, fixtures,
+      and calibration records.
+\item Build a Pareto by ATP row, lot, date code, site, tester, and shift. Do not
+      average away a one-lane or one-station signature.
+\item Run a golden unit across stations and the same failed unit on the reference
+      bench. This clears the measurement system before supplier action begins.
+\item Compare upstream wafer, die, assembly, and incoming data at the first point
+      where good and bad populations separate.
+\item Select failure analysis that distinguishes the remaining mechanisms, then
+      verify the correction on a controlled lot and watch the field code.
+\end{enumerate}
+
+\paragraph{Corrective action.}
+Restore the changed process or measurement input, add a statistical control at the
+first observable point, revise ATP only with correlation data, and require a new
+first-article check before releasing volume (\Cref{sec:supplier-exec}).
+
+\section{Temperature sensitivity}
+\label{sec:fm-temperature}
+
+\paragraph{Symptom.}
+BER, TDECQ, optical power, or lock stability degrades during a case-temperature
+ramp or under loaded-neighbor conditions. The unit may recover when cooled.
+
+\paragraph{Likely causes.}
+Laser threshold and slope drift, wavelength movement, ring-resonance drift, TEC or
+heater saturation, EAM or MZM bias error, receiver-noise rise, package stress, or a
+thermal gradient that affects one lane.
+
+\paragraph{Debug steps.}
+\begin{enumerate}
+\item Record case temperature, external optical power, wavelength, bias, TEC or
+      heater current, lock error, OMA, ER, TDECQ, and pre-FEC BER on one time axis.
+\item Repeat with neighbors off and on. A shared shift points toward thermal or
+      supply coupling; a lone lane points toward its local path.
+\item Hold the source fixed and move the wavelength-selective element, then reverse
+      the test. This splits laser drift from ring or filter drift.
+\item Rerun LIV and receiver sensitivity hot and cold. Separate lost launch power
+      from lost receiver margin.
+\item Inspect package and cooling interfaces if optical and electrical blocks pass
+      alone but fail in the assembled system.
+\end{enumerate}
+
+\paragraph{Corrective action.}
+Restore thermal headroom, correct calibration and control limits, reduce coupling,
+or derate the operating point. Add the loaded-neighbor temperature ramp to the ATP
+or design-validation plan that missed it.
+
+\keyidea{A useful failure analysis starts with a symptom and ends with a new
+control. Preserve the failing state, split shared from local behavior, clear the
+measurement system, and choose one measurement that can disprove the leading
+hypothesis. The corrective action is incomplete until production or fleet data
+show that the same signature no longer escapes.}

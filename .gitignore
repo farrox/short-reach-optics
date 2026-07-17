@@ -35,6 +35,9 @@ books/short-reach-optics/docs/*.pdf
 # Cursor hook runtime files
 .cursor/hooks/.tex-compile.stamp
 
+# Workspace scratch files
+tmp/
+
 # Kiro scratch/tmp files
 .kiro/tmp/
 books/short-reach-optics/.kiro/tmp/

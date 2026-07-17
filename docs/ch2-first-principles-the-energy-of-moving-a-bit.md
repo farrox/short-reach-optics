@@ -21,7 +21,7 @@ An optical link spends its energy differently. The dominant costs are the *conve
 
 Put the two together and there is a cross-over length: below it, electrical wins; above it, optical wins. The decisive observation is what happens as data rates climb: the electrical cost at a given length rises (more charging events per second, worse loss at higher frequency, more equalization), so the *break-even distance shrinks*.
 
-That is the whole history of the field in one sentence. As rates went from gigabits to hundreds of gigabits per lane, the cross-over marched inward: campus, then rack, then board, then package, and now die-to-die. It is the first-principles reason co-packaged optics and in-package optical I/O exist ([\[sec:cpo-status,sec:cwwdm\]](#sec:cpo-status,sec:cwwdm)), and the reason the scope of this book is the *shortest* links ([3.3](#sec:reach)).
+That is the whole history of the field in one sentence. As rates went from gigabits to hundreds of gigabits per lane, the cross-over marched inward: campus, then rack, then board, then package, and now die-to-die. It is the first-principles reason co-packaged optics and in-package optical I/O exist (§ `sec:cpo-status,sec:cwwdm`), and the reason the scope of this book is the *shortest* links (§ `sec:reach`).
 
 ## The receiver, capacitance, and attojoule targets
 
@@ -47,9 +47,91 @@ Third, **WDM receivers with near-zero-power wavelength control are approaching s
 
 **Key idea.** The 2009/2017 framework has not been superseded; it has been confirmed in hardware. The winning recipe in every recent result (low-capacitance co-/3D-integration plus many WDM channels at modest per-lane rate) is precisely what Miller's energy accounting recommends. What has changed is only the vertical axis: from theoretical attojoule targets toward demonstrated hundreds-of-fJ/bit links.
 
+## The energy ladder
+
+A useful system model orders operations by how far information must move: $$\begin{array}{c}
+\text{arithmetic operation} \\
+\downarrow \\
+\text{local SRAM access} \\
+\downarrow \\
+\text{HBM access} \\
+\downarrow \\
+\text{package crossing} \\
+\downarrow \\
+\text{board crossing} \\
+\downarrow \\
+\text{rack crossing} \\
+\downarrow \\
+\text{datacenter crossing.}
+\end{array}$$ The exact energy at each rung depends on process, signaling, utilization, and reach. The ordering is the point: capacitance, equalization, conversion, and cooling costs grow as the bit leaves the compute core. Miller's endpoint model explains why the optical crossover moves inward as electrical rate rises . A design review should therefore count bytes moved and distance crossed, not only arithmetic throughput.
+
+## Debug discussion: why more compute can make training slower
+
+When a larger accelerator count produces worse step time, treat it as a scaling failure, not proof that the compute is slow.
+
+1.  **Observe.** Compare useful compute time, collective time, queueing, retransmits, and idle time at each scale point.
+
+2.  **Hypothesize.** Check for a saturated fabric tier, uneven routing, stragglers, memory pressure, or a synchronization barrier that grows with group size.
+
+3.  **Measure.** Plot collective latency and delivered bandwidth against accelerator count. Correlate link error and retry counters with the tail of the step-time distribution.
+
+4.  **Bisect.** Hold the model fixed and vary topology, group size, message size, or route. A roofline-style split between compute and data movement keeps the diagnosis tied to measured limits .
+
+5.  **Act.** Fix the limiting rung: reduce communication, rebalance the collective, add fabric capacity, shorten the electrical reach, or move the optical conversion closer to the package.
+
+\> \*\*Debug story\*\* \> \> \*\*Observed.\*\* Training throughput fell when the accelerator count doubled. \> \> \*\*Investigation.\*\* Compute kernels held the same efficiency, while all-reduce tail latency and link retries rose on one fabric tier. \> \> \*\*Finding.\*\* The added workers spent more time waiting at the collective barrier than computing. \> \> \*\*Root cause.\*\* The network tier was oversubscribed for the new group size, and one marginal link amplified the tail. \> \> \*\*Resolution.\*\* The team rebalanced routes, removed the weak link, and set the next scale gate on measured collective latency rather than peak FLOPs.
+
+## Engineering lens
+
+### How it works
+
+Electrical energy per bit grows with distance; optical energy is spent at the endpoints and is flat with distance. So as lane rates rise and the electrical cost climbs, the crossover where optics wins marches inward toward the chip. Tight electronic-photonic integration lowers receiver capacitance, cutting both energy and the optical power a link needs.
+
+### How it is measured
+
+Energy per bit (pJ/bit) is the headline metric, measured end to end from host SerDes through the optical link. Break it into electrical (SerDes, driver, TIA), electro-optic (modulator, laser wall-plug), and thermal (cooling overhead, PUE). Compare against the roofline: bytes moved times energy per byte against the power envelope.
+
+### How it fails
+
+A link that meets its energy target on a quiet bench can exceed it in the field when equalization depth increases, retransmits rise, or thermal control draws extra current. A poor co-packaging yield or high coupling loss forces higher laser power and erases the integration advantage. A firmware update that increases DSP activity raises module watts without changing the optics.
+
+### How it is debugged
+
+Compare measured link power against the design budget, split by block. If the total exceeds the target, identify which block moved: SerDes, driver, laser bias, TEC, or DSP. Correlate power anomalies with BER, temperature, and equalizer state. A link that draws more power than expected is often also running at reduced margin.
+
+## Interview and design review questions
+
+##### Concept.
+
+- Why does electrical energy per bit grow with distance while optical does not?
+
+- What physical quantity sets the receiver's minimum detectable energy?
+
+- Why does co-packaging reduce energy per bit even without changing the laser?
+
+##### Design.
+
+- At what reach does the optical crossover occur for your target lane rate, and what assumptions drive that number?
+
+- How does doubling the lane rate change the crossover distance?
+
+- Which rung of the energy ladder dominates total system power for this workload?
+
+##### Debug.
+
+- More accelerators were added but training throughput fell. Where on the energy ladder is the bottleneck?
+
+- A link's power consumption rose after a firmware update. What changed: equalization depth, retransmits, or thermal control?
+
+##### Manufacturing and operations.
+
+- What determines the power budget at the faceplate: module watts, cooling capacity, or rack-level allocation?
+
+- How do you verify that a deployed link actually achieves the energy per bit the design predicted?
+
 ## Why this framework anchors the book
 
-Everything that follows is an effort to approach these floors at the required data rate and reliability. Laser wall-plug efficiency ([5](#ch:lasers)) sets how much optical power you can afford. Modulation and FEC ([\[ch:imdd,sec:kp4,sec:equalization\]](#ch:imdd,sec:kp4,sec:equalization)) trade SNR for reach and rate. WDM ([6](#ch:wdm)) amortizes one laser source across many wavelengths. Receiver noise and sensitivity ([\[ch:models,sec:worked-budget,sec:link-budget\]](#ch:models,sec:worked-budget,sec:link-budget)) decide whether that power is enough. Co-packaging and energy-per-bit trends ([9.13](#sec:power)) show the same first principle playing out as copper reach collapses and optics move onto the interposer.
+Everything that follows is an effort to approach these floors at the required data rate and reliability. Laser wall-plug efficiency (§ `ch:lasers`) sets how much optical power you can afford. Modulation and FEC (§ `ch:imdd,sec:kp4,sec:equalization`) trade SNR for reach and rate. WDM (§ `ch:wdm`) amortizes one laser source across many wavelengths. Receiver noise and sensitivity (§ `ch:models,sec:worked-budget,sec:link-budget`) decide whether that power is enough. Co-packaging and energy-per-bit trends (§ `sec:power`) show the same first principle playing out as copper reach collapses and optics move onto the interposer.
 
 **Key idea.** Short-reach optics is, at bottom, an energy-per-bit optimization. Optical energy is spent at the endpoints and is flat with distance; electrical energy grows with distance and rate; so rising data rates push optics ever closer to the chip. Miller's framework is the lens the rest of this book looks through.
 

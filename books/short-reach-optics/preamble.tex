@@ -276,6 +276,38 @@
     \textbf{Key idea.~}#1}}\par\medskip
 }
 
+\definecolor{failurebg}{HTML}{FCEDEA}
+\definecolor{failurerule}{HTML}{A5483D}
+\definecolor{debugbg}{HTML}{EAF3F6}
+\definecolor{debugrule}{HTML}{2E6877}
+
+\newcommand{\failuremode}[5]{%
+  \par\medskip\noindent
+  \fcolorbox{failurerule}{failurebg}{%
+    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+      \textbf{Failure mode: #1}\par\smallskip
+      \textbf{Symptoms.} #2\par
+      \textbf{Likely causes.} #3\par
+      \textbf{Measurements.} #4\par
+      \textbf{Mitigations.} #5
+    \end{minipage}%
+  }\par\medskip
+}
+
+\newcommand{\debugstory}[5]{%
+  \par\medskip\noindent
+  \fcolorbox{debugrule}{debugbg}{%
+    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+      \textbf{Debug story}\par\smallskip
+      \textbf{Observed.} #1\par
+      \textbf{Investigation.} #2\par
+      \textbf{Finding.} #3\par
+      \textbf{Root cause.} #4\par
+      \textbf{Resolution.} #5
+    \end{minipage}%
+  }\par\medskip
+}
+
 % Draft stub for sections still to be written (greppable via rg '\\fillme\\{').
 \definecolor{fillmebg}{HTML}{FFF6D9}
 \definecolor{fillmerule}{HTML}{B07F1A}

@@ -287,11 +287,70 @@ def replace_fillme(content: str) -> str:
     return "".join(result)
 
 
+def replace_failuremode(content: str) -> str:
+    r"""Replace \failuremode{name}{symptoms}{causes}{measurements}{mitigations}."""
+    result = []
+    i = 0
+    tag = "\\failuremode{"
+    while i < len(content):
+        idx = content.find("\\failuremode{", i)
+        if idx == -1:
+            result.append(content[i:])
+            break
+        result.append(content[i:idx])
+        pos = idx + len(tag) - 1
+        args = []
+        for _ in range(5):
+            arg, pos = extract_braced_arg(content, pos)
+            args.append(arg)
+        name, symptoms, causes, measurements, mitigations = args
+        result.append(
+            f"\n\n> **Failure mode: {name}**\n>\n"
+            f"> **Symptoms.** {symptoms}\n>\n"
+            f"> **Likely causes.** {causes}\n>\n"
+            f"> **Measurements.** {measurements}\n>\n"
+            f"> **Mitigations.** {mitigations}\n\n"
+        )
+        i = pos
+    return "".join(result)
+
+
+def replace_debugstory(content: str) -> str:
+    r"""Replace \debugstory{observed}{investigation}{finding}{rootcause}{resolution}."""
+    result = []
+    i = 0
+    tag = "\\debugstory{"
+    while i < len(content):
+        idx = content.find("\\debugstory{", i)
+        if idx == -1:
+            result.append(content[i:])
+            break
+        result.append(content[i:idx])
+        pos = idx + len(tag) - 1
+        args = []
+        for _ in range(5):
+            arg, pos = extract_braced_arg(content, pos)
+            args.append(arg)
+        observed, investigation, finding, rootcause, resolution = args
+        result.append(
+            f"\n\n> **Debug story**\n>\n"
+            f"> **Observed.** {observed}\n>\n"
+            f"> **Investigation.** {investigation}\n>\n"
+            f"> **Finding.** {finding}\n>\n"
+            f"> **Root cause.** {rootcause}\n>\n"
+            f"> **Resolution.** {resolution}\n\n"
+        )
+        i = pos
+    return "".join(result)
+
+
 def apply_transforms(content: str) -> str:
     """Apply all regex transformations."""
     # Handle nested-brace commands first
     content = replace_keyidea(content)
     content = replace_fillme(content)
+    content = replace_failuremode(content)
+    content = replace_debugstory(content)
 
     # Then handle citehref (needs the URL map)
     content = replace_citehref(content)
@@ -371,6 +430,10 @@ def apply_transforms(content: str) -> str:
         content,
         flags=re.DOTALL,
     )
+
+    # \Cref{...} and \cref{...} → section/chapter references (pandoc may not resolve)
+    # Convert to plain "Section X" style text that pandoc can keep
+    content = re.sub(r"\\[Cc]ref\{([^}]*)\}", r"§\\,\\texttt{\1}", content)
 
     # Remove \cite{...} → just strip (references are in PDF)
     content = re.sub(r"\\cite\{[^}]*\}", "", content)

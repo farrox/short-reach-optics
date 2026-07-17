@@ -1473,6 +1473,102 @@ generation that gearboxes 224G electrical lanes into 448G optical lanes
 (\Cref{fig:448g-paths}), then a consolidation generation with 400G/lane Ethernet
 PHYs where electrical and optical both run PAM4 at 224~GBd end to end.
 
+\section{Engineering lens}
+\label{sec:imdd-engineering-lens}
+
+\subsection{How it works}
+
+IM/DD is the whole game in one line: put data on optical power, read it with a
+square-law photodiode, and let FEC and equalization buy back the SNR that PAM4
+spends. Everything else in this chapter is where each block in that chain lives
+and how the standards name it.
+
+\subsection{How it is measured}
+\label{sec:imdd-how-measured}
+
+Name the reference plane before naming the metric. At TP2, use a calibrated power
+meter and digital communications analyzer (DCA) for average power, outer optical
+modulation amplitude (OMA), extinction ratio (ER), relative level mismatch (RLM),
+and transmitter and dispersion eye closure quaternary (TDECQ). At TP3, use a
+stressed source, attenuator, and bit-error-ratio tester (BERT) for receiver
+sensitivity. Use a vector network analyzer (VNA) for electrical and electro-optic
+$S$-parameters when bandwidth or reflections are suspect. Acceptance limits come
+from the optical physical-medium-dependent (PMD) specification and the program
+acceptance test plan (ATP), with the test planes in \Cref{sec:test-points} and
+methods in \Cref{ch:validation}~\cite{ieee8023dj,lpomsa}.
+
+\subsection{How it fails}
+\label{sec:imdd-how-fails}
+
+The common escapes are low ER from a bad bias point, low OMA from loss or limited
+drive, high TDECQ from bandwidth or nonlinearity, a receiver driven into
+saturation, and reflection-induced burst errors. Multi-lane links add power
+imbalance and electrical lane mismatch. A clean average-power reading does not
+clear the transmitter because ER, RLM, and noise can still close the eye.
+
+\failuremode{Low extinction ratio}{Average power passes, but OMA is low and
+receiver sensitivity degrades.}{Incorrect laser or modulator bias, a compressed
+driver, a detuned ring, or an aged electro-absorption modulator.}{DCA level
+histograms, ER and RLM, bias sweeps, wavelength, and pre-FEC BER versus received
+power.}{Restore the bias point, remove compression, retune the resonance, and add
+the failing corner to calibration and ATP.}
+
+\subsection{How it is debugged}
+\label{sec:imdd-how-debugged}
+
+For degraded receiver sensitivity, first verify the power meter and reference
+plane. Then measure OMA, ER, RLM, and TDECQ at TP2. If the transmitter passes,
+inspect insertion loss and optical return loss (ORL), then run stressed sensitivity
+at TP3. A power sweep separates a noise-limited waterfall from saturation or a BER
+floor. A golden transmitter and receiver split the last ambiguity. Change one
+block at a time and preserve the failing state before cleaning, reseating, or
+retuning it.
+
+\debugstory{Receiver sensitivity was several dB worse than the qualification
+baseline.}{Average power passed, but the DCA showed low ER. A bias sweep restored
+both ER and the BER waterfall.}{The receiver was healthy; the transmitted zero
+level was too high.}{A laser-bias calibration table selected the wrong temperature
+bin.}{The calibration was corrected, limits were added across temperature, and the
+escaped firmware revision was quarantined.}
+
+\section{Interview and design review questions}
+\label{sec:imdd-design-review}
+
+\paragraph{Concept.}
+\begin{itemize}
+\item Why is PAM4 preferred over NRZ at 200G/lane despite its SNR penalty?
+\item What does KP4 FEC buy, and what does it cost in overhead and latency?
+\item Why does IM/DD dominate short reach while coherent wins at longer distances?
+\end{itemize}
+
+\paragraph{Design.}
+\begin{itemize}
+\item Which plane owns each limit, and can production reach that plane without a
+      lab-only fixture?
+\item Which margin dominates: OMA, TDECQ, ORL, receiver sensitivity, or host
+      channel operating margin?
+\item What prevents saturation at maximum launch power and minimum channel loss?
+\item Which bias or equalizer settings are calibrated, and how are bad tables
+      detected before ship?
+\end{itemize}
+
+\paragraph{Debug.}
+\begin{itemize}
+\item Average power is in spec but BER fails. What do you measure next?
+\item The equalizer taps are saturated. What does that tell you about the channel?
+\item FEC errors are clustered rather than random. What failure mechanisms produce
+      bursts?
+\item What production escape leaves power in range while BER fails?
+\end{itemize}
+
+\paragraph{Manufacturing and operations.}
+\begin{itemize}
+\item What is the fastest production test that catches a bad bias calibration?
+\item How do you correlate ATE TDECQ to a reference DCA?
+\item What changes in the ATP when you move from retimed to LPO modules?
+\end{itemize}
+
 \keyidea{IM/DD is intensity in, power out, with FEC and DSP closing the gap that
-PAM4's SNR penalty opens. Master OMA, ER, chirp/dispersion, and pre-FEC BER and
-you can reason about any short-reach link.}
+PAM4's SNR penalty opens. Know OMA, ER, chirp and dispersion, pre-FEC BER, and the
+reference plane for every number. Then measure, bisect, and correct the failing
+block.}
