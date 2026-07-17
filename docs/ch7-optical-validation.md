@@ -53,6 +53,34 @@ Receiver work asks whether the front-end can still decide bits at the OMA that s
 
 Only after Tx, channel, and Rx each look sane do you trust a full-link verdict: pre-FEC BER against the KP4 threshold (§ `sec:kp4`), post-FEC BER, FEC symbol-error histograms, and a signed link-budget ledger from transmitter OMA to receiver sensitivity with penalties and remaining margin. That ledger is the document you argue from in DVT; the BER alone is not.
 
+## Measurement mapping
+
+The metrics above are scattered across Tx, channel, Rx, and link level because that is how you debug them. § `tab:measurement-mapping` collects the same metrics into one reference: what is measured, the instrument, why it matters, and the failure signature that points back to it. Use the chapter subsections for the debug logic; use this table to look up an instrument fast.
+
+[]
+
+  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  Metric                        Instrument                          Why it matters                                                                                Failure signature
+  ----------------------------- ----------------------------------- --------------------------------------------------------------------------------------------- --------------------------------------------------------------------------------
+  OMA / TDECQ                   DCA + reference equalizer           Scores transmitter quality against an ideal source; governs PAM4 acceptance (§ `sec:tdecq`)   TDECQ rises with no average-power change; points to bandwidth, RLM, or bias
+
+  Extinction ratio / RLM        DCA level histograms                Sets OMA at fixed average power (§ `sec:sensitivity`); poor RLM inflates TDECQ                Compressed inner eyes with passing average power
+
+  Wavelength / SMSR             OSA or wavemeter                    Confirms grid placement and single-mode purity (§ `sec:laser-params`)                         Side modes rise with $T$ or age; line walks off grid
+
+  RIN                           PD + electrical spectrum analyzer   Sets the BER floor $Q_\mathrm{max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$ (§ `sec:rin`)       BER improves with power then flattens (a floor)
+
+  Insertion loss / ORL          Power meter + ORL meter             First ledger line; reflections raise RIN and seed bursts (§ `sec:optical-channel`)            Burst errors with stable average power; RIN rises with ORL
+
+  Receiver sensitivity          BERT + calibrated attenuator        Minimum OMA at target BER, the budget's bottom line (§ `sec:sensitivity,sec:secq`)            Waterfall shifts uniformly right without flooring
+
+  Pre-FEC BER / FEC histogram   BERT + FEC counters                 The single number every other metric feeds; histogram shape reveals mechanism (§ `sec:kp4`)   Clustered errors point to bursts; sparse errors point to Gaussian noise margin
+
+  CMIS state / DDM              Host or CMIS tool                   Confirms management layer before blaming optics (§ `sec:cmis`)                                Module never reaches ModuleReady; DDM disagrees with bench truth
+  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+**Table .** Measurement mapping: metric, instrument, rationale, and failure signature in one reference. Cross-references point to the full treatment of each metric elsewhere in this chapter.
+
 ## Transmitter and dispersion eye closure quaternary (TDECQ)
 
 *TDECQ* (transmitter and dispersion eye closure quaternary) deserves a closer look because it is the metric that governs PAM4 transmitter acceptance. It answers a specific question: *how much worse is this transmitter than an ideal one, after a realistic receiver has done what it can to clean up the signal?*

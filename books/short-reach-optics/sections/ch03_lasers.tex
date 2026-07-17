@@ -591,11 +591,58 @@ tens to hundreds of pA$/\sqrt{\mathrm{Hz}}$ usually sit under a $-145$~dB/Hz
 intrinsic floor at 50~mA; digital supply pickup, near-threshold bias, and DML bias-tee
 leakage are what actually burn the budget.}
 
-\section{Aging curves, derating, and fleet FIT}
-\label{sec:laser-aging}
+\section{How lasers fail}
+\label{sec:how-lasers-fail}
 
-Lasers wear out. At fleet scale that is not a footnote; it sets architecture
-(ELSFP vs.\ integrated laser) and operating policy (derating, burn-in).
+Six mechanisms account for most laser field returns. Each has a distinct
+telemetry signature, so classify before you open FA.
+
+\begin{description}
+\item[Threshold current increase] $I_\mathrm{th}$ rises from its ship value at
+      fixed temperature, usually with slope efficiency dropping in step. Points to
+      active-region or facet degradation (\Cref{sec:laser-aging}).
+\item[Slope efficiency degradation] Output power per unit bias current falls even
+      when $I_\mathrm{th}$ is stable. A separate wear-out track from threshold rise;
+      both show up on the same LIV sweep.
+\item[Wavelength drift] The lasing line walks off its grid slot or ring resonance.
+      Distinguish laser drift from TEC or ring drift by holding one actuator fixed
+      and moving the other (\Cref{sec:locking-techniques,ch:wdm}).
+\item[Aging (SMSR collapse, mode hopping)] Side modes grow relative to the main
+      mode, or the laser hops between modes under temperature or current. An OSA
+      trend over time is the tell.
+\item[Thermal runaway] A positive feedback loop where rising junction temperature
+      raises leakage current, which raises self-heating further, until the diode
+      overheats and fails catastrophically. Triggered by a failed or saturated TEC,
+      a blocked heat path, or operation above the rated thermal class. Distinct
+      from ordinary wear-out because it is fast (minutes, not months) once it
+      starts; the failure-analysis handbook has the full symptom-to-cause
+      breakdown (\Cref{sec:fm-thermal-runaway}).
+\item[Monitor photodiode failure] The control loop's own sensor drifts or fails,
+      so the laser looks unstable when the real fault is in the feedback path, not
+      the gain medium (\Cref{sec:lasers-how-fails}).
+\end{description}
+
+\section{How lasers are qualified}
+\label{sec:how-lasers-qualified}
+
+Qualification projects these six mechanisms forward from a short bench test to
+years of field life. Three stress classes do the work:
+
+\begin{description}
+\item[HTOL (high-temperature operating life)] Run a sample lot at elevated
+      temperature and bias for a fixed duration (often 1000 hours) and track LIV,
+      SMSR, and wavelength drift. HTOL is the primary input to the Arrhenius life
+      projection below.
+\item[Burn-in] A shorter, sometimes 100\%-screen stress that removes
+      infant-mortality units before ship, rather than projecting life. Burn-in
+      trades test time for escape rate (\Cref{sec:hvm-test}).
+\item[Accelerated aging (temperature cycling, damp heat)] Telcordia GR-468-CORE
+      stresses beyond HTOL that catch packaging and mechanical failure modes
+      thermal soak alone misses (\Cref{sec:gr468}).
+\end{description}
+
+Together with the Arrhenius acceleration factor, these three stresses turn a
+qualification lot into a defensible FIT number.
 
 \paragraph{Observable aging signatures.}
 Watch LIV and spectrum over HTOL or field life:
@@ -608,6 +655,12 @@ Watch LIV and spectrum over HTOL or field life:
 \end{itemize}
 Each signature should appear in the ATP and in field telemetry triage
 (\Cref{sec:fleet-triage,sec:gr468}).
+
+\section{Aging curves, derating, and fleet FIT}
+\label{sec:laser-aging}
+
+Lasers wear out. At fleet scale that is not a footnote; it sets architecture
+(ELSFP vs.\ integrated laser) and operating policy (derating, burn-in).
 
 \paragraph{Arrhenius life projection.}
 \firstterm{Arrhenius} Telcordia GR-468-CORE qualifies optoelectronic parts with

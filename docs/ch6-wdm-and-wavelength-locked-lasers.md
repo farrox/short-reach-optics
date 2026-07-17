@@ -273,6 +273,28 @@ Start with an OSA or wavemeter to identify every source line, then sweep each ri
 
 One degraded lane points toward its laser line, ring, filter channel, heater, monitor, or local fiber attach. All lanes moving together points toward the shared CW source, thermal controller, supply, polarization path, or common MUX. Capture failures occur during startup or a large temperature step. Hold failures occur after lock, often under neighbor heat, power droop, or control-loop interaction. Treat those as separate signatures.
 
+##### One lane fails.
+
+Possible causes, roughly in order of how often each shows up in the field:
+
+- **Wavelength locker failure:** the etalon-based error signal drifts or the locker photodiodes degrade, so the loop steers the laser to the wrong setpoint even though the laser itself is healthy (§ `sec:locking-techniques`).
+
+- **Ring drift:** the microring's own resonance walks off the assigned $\lambda$ under local heating or process aging, independent of the laser (§ `sec:siring`).
+
+- **AWG issues:** an arrayed-waveguide grating channel shifts passband center or picks up excess adjacent-channel crosstalk, clipping one lane at the filter edge while neighboring channels stay clean (§ `sec:wdm-hardware,tab:mux-budget`). Distinguish from a laser or ring fault by sweeping the source across the passband and watching for a grid-alignment signature rather than a lock-error signature.
+
+- **Thermal crosstalk:** an adjacent heater's disturbance exceeds this lane's hold-range budget while its own actuators read nominal (§ `sec:thermal-xtalk`).
+
+##### Intermittent failure.
+
+Failures that appear and clear on their own point to control-loop dynamics rather than a broken part:
+
+- **Lock acquisition issues:** the loop fails to capture reliably from a cold or power-cycled state, so failures correlate with restarts or ELS hot-swaps rather than with steady-state operation (§ `sec:lock-validation`).
+
+- **Heater control instability:** the thermal feedback loop oscillates or overshoots, often triggered by a control-loop bandwidth that fights the data path or a gain that was tuned for a different neighbor-load condition. Shows up as a heater current that hunts rather than settles.
+
+- **Temperature excursions:** a transient case-temperature ramp (fan failure, load step, HVAC event) pushes the loop past its hold range momentarily; the lane recovers once the transient passes, which is the distinguishing signature versus a genuine hardware fault.
+
 \> \*\*Failure mode: Wavelength drift\*\* \> \> \*\*Symptoms.\*\* BER rises with temperature, one WDM lane moves, and lock error or heater demand grows. \> \> \*\*Likely causes.\*\* Laser wavelength drift, ring resonance drift, thermal coupling, a saturated TEC or heater, or a weak monitor signal. \> \> \*\*Measurements.\*\* OSA or wavemeter, heater and TEC current, lock error, neighbor activity, and per-lane BER. \> \> \*\*Mitigations.\*\* Restore thermal headroom, widen capture only after noise is checked, improve calibration, and reduce shared thermal or supply coupling.
 
 ### How it is debugged
