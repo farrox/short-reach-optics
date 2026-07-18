@@ -71,7 +71,7 @@ CW laser + Si ring
 
 CW-WDM / multi-wavelength sources
 
-: high-power, multi-wavelength CW lasers (per the CW-WDM MSA) that feed comb-like WDM architectures (§5.15, §6.6).
+: high-power, multi-wavelength CW lasers (per the CW-WDM MSA) that feed comb-like WDM architectures (§5.16, §6.6).
 
 VCSEL
 
@@ -79,7 +79,7 @@ VCSEL
 
 External laser source (ELS/ELSFP)
 
-: a pluggable laser module supplying CW light to a co-packaged switch, so a failed laser is field-replaceable (§5.13).
+: a pluggable laser module supplying CW light to a co-packaged switch, so a failed laser is field-replaceable (§5.14).
 
 []
 
@@ -125,11 +125,11 @@ A distributed-feedback laser has a grating along the active region that selects 
 
 ##### EML.
 
-An electro-absorption modulated laser integrates a DFB with an *EAM* on one chip (§3.14.3). Reverse bias on the EAM sets absorption and extinction; chirp stays far below a DML. That combination, not marketing, is why EMLs became the volume answer for 100G/lane and then 200G/lane DR/FR pluggables: one chip, low chirp, mature supply chain. Validation adds EAM bias sweeps, aging of the absorption curve, and driver-match checks on top of the DFB LIV/SMSR/RIN suite (§5.7, §5.12).
+An electro-absorption modulated laser integrates a DFB with an *EAM* on one chip (§3.14.3). Reverse bias on the EAM sets absorption and extinction; chirp stays far below a DML. That combination, not marketing, is why EMLs became the volume answer for 100G/lane and then 200G/lane DR/FR pluggables: one chip, low chirp, mature supply chain. Validation adds EAM bias sweeps, aging of the absorption curve, and driver-match checks on top of the DFB LIV/SMSR/RIN suite (§5.7, §5.13).
 
 ##### When to pick which.
 
-Through 200G/lane DR, EML usually wins on cost and integration. A CW DFB (or ELSFP/CW-WDM bank) plus Si MZM, ring, or TFLN wins when the modulator must sit on silicon or needs $\gtrsim$`<!-- -->`{=html}100 GHz EO bandwidth (Table 3.12, §3.14.3). At CPO scale the laser often leaves the optical engine entirely so it can be replaced without pulling the ASIC package (§5.13). Looking forward, 400G/lane pluggables are pushing harder toward external CW plus TFLN or high-BW silicon modulators, while EMLs remain the workhorse of the installed 100--200G base.
+Through 200G/lane DR, EML usually wins on cost and integration. A CW DFB (or ELSFP/CW-WDM bank) plus Si MZM, ring, or TFLN wins when the modulator must sit on silicon or needs $\gtrsim$`<!-- -->`{=html}100 GHz EO bandwidth (Table 3.12, §3.14.3). At CPO scale the laser often leaves the optical engine entirely so it can be replaced without pulling the ASIC package (§5.14). Looking forward, 400G/lane pluggables are pushing harder toward external CW plus TFLN or high-BW silicon modulators, while EMLs remain the workhorse of the installed 100--200G base.
 
 []
 
@@ -178,11 +178,11 @@ Each architecture decision forces a different requirements set (Table 5.3):
 
   Isolator vs isolator-free (CPO)     Feedback tolerance vs quiet RIN only        Stressed $\mathrm{RIN}_x\mathrm{OMA}$ at stated ORL; monitor PD / lock policy
 
-  Single-$\lambda$ vs CW-WDM / comb   One line vs $N$ lines into rings/filters    Per-line power flatness, SMSR, grid, crosstalk (§5.15)
+  Single-$\lambda$ vs CW-WDM / comb   One line vs $N$ lines into rings/filters    Per-line power flatness, SMSR, grid, crosstalk (§5.16)
 
   Retimed vs LPO                      Module DSP hides Tx vs host sees raw eye    Laser+modulator TDECQ/RLM floor vs host COM budget (§9.5.2, §3.14.3)
 
-  Derate policy                       Operating $I$, $T$, power below abs-max     Bias window, thermal class, FIT/$E_a$ assumptions (§5.12)
+  Derate policy                       Operating $I$, $T$, power below abs-max     Bias window, thermal class, FIT/$E_a$ assumptions (§5.13)
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 **Table 5.3.** Architecture forks and the laser specs each one forces. Freeze these before DVT samples are built (§8.10).
@@ -212,7 +212,7 @@ Table 5.4 is the PRD-sized list. Fill every row with a number (or an explicit "
 
   CMIS monitors            What fleet triage will read (§7.12)                        CMIS dump                  Missing alarms / bad state machine   Enable sequence (§7.9)
 
-  FIT / life               Fleet failures/day target (§5.12)                          GR-468 + $E_a$             Screen escape                        Burn-in depth; ELS replace
+  FIT / life               Fleet failures/day target (§5.13)                          GR-468 + $E_a$             Screen escape                        Burn-in depth; ELS replace
   -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 **Table 5.4.** Laser requirements one-pager. Every cell needs a program number; this table is the structure, not the limits.
@@ -225,9 +225,9 @@ Work backward from the link, not forward from a marketing slide. The four steps 
 
 2.  From receiver BW and the RIN ceiling $Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$ (§4.3), set a stressed RIN limit with margin under the plant ORL you will actually see (not only a quiet bench).
 
-3.  From case-temperature and derating policy, set the LIV bias window and thermal class so the laser never sits on a kink or at abs-max in the fleet (§5.12, §7.9).
+3.  From case-temperature and derating policy, set the LIV bias window and thermal class so the laser never sits on a kink or at abs-max in the fleet (§5.13, §7.9).
 
-4.  From service model, choose ELSFP mate-cycle / hot-swap requirements or accept on-package FIT and write COD/aging screens accordingly (§5.13).
+4.  From service model, choose ELSFP mate-cycle / hot-swap requirements or accept on-package FIT and write COD/aging screens accordingly (§5.14).
 
 Hand the filled slice to the supplier with the ATP checklist (Table 8.3). If a roadmap slide cannot point to a row in Table 5.4, the requirement is not real yet.
 
@@ -241,7 +241,7 @@ These three measurements decide whether a laser chip or module is usable. The in
 
 The LIV curve plots optical power and forward voltage versus bias current. Read off threshold $I_\mathrm{th}$, slope efficiency (mW/mA above threshold), kink-free operating range, and thermal rollover at high current or high case temperature. §5.1 is a labeled schematic (not measured data).
 
-High-temp LIV failures look like: $I_\mathrm{th}$ rise, slope collapse, early rollover, or a kink that moves into the bias window. Those map to aging, TEC saturation, or package thermal resistance (§5.12).
+High-temp LIV failures look like: $I_\mathrm{th}$ rise, slope collapse, early rollover, or a kink that moves into the bias window. Those map to aging, TEC saturation, or package thermal resistance (§5.13).
 
 ::::
 ![](figures/fig_liv_sketch.pdf){width="85%"}
@@ -313,7 +313,7 @@ Worked numbers at $I-I_\mathrm{th}=50$ mA (typical CW DFB window): $i_n=500$ p
 
 ##### CW / ELSFP / CW-WDM paths.
 
-For external CW sources feeding Si or TFLN modulators, design the bias path as a low-noise current source with high supply rejection, local decoupling at the diode, and a star ground that does not share return with SerDes switching currents. Automatic power control () loops that close through a monitor PD suppress slow drift; keep the loop bandwidth well below the RIN measurement band and quiet enough that the loop itself does not inject intensity noise. ELSFP and CW-WDM modules hide this circuitry inside the pluggable (§5.13, §5.15); acceptance still needs module-level RIN with the host bias and management rails connected, not only a quiet SMU on the bare die.
+For external CW sources feeding Si or TFLN modulators, design the bias path as a low-noise current source with high supply rejection, local decoupling at the diode, and a star ground that does not share return with SerDes switching currents. Automatic power control () loops that close through a monitor PD suppress slow drift; keep the loop bandwidth well below the RIN measurement band and quiet enough that the loop itself does not inject intensity noise. ELSFP and CW-WDM modules hide this circuitry inside the pluggable (§5.14, §5.16); acceptance still needs module-level RIN with the host bias and management rails connected, not only a quiet SMU on the bare die.
 
 ##### DML and EML.
 
@@ -339,7 +339,7 @@ Six mechanisms account for most laser field returns. Each has a distinct telemet
 
 Threshold current increase
 
-: $I_\mathrm{th}$ rises from its ship value at fixed temperature, usually with slope efficiency dropping in step. Points to active-region or facet degradation (§5.12).
+: $I_\mathrm{th}$ rises from its ship value at fixed temperature, usually with slope efficiency dropping in step. Points to active-region or facet degradation (§5.13).
 
 Slope efficiency degradation
 
@@ -359,7 +359,7 @@ Thermal runaway
 
 Monitor photodiode failure
 
-: The control loop's own sensor drifts or fails, so the laser looks unstable when the real fault is in the feedback path, not the gain medium (§5.19.3).
+: The control loop's own sensor drifts or fails, so the laser looks unstable when the real fault is in the feedback path, not the gain medium (§5.20.3).
 
 ## Separate thermal behavior from long-term aging
 
@@ -369,9 +369,33 @@ Long-term aging is cumulative. Threshold current rises, slope efficiency falls, 
 
 Do not merge the data sets. A high-temperature BER failure that clears at room temperature needs thermal-margin work. A room-temperature baseline that keeps moving after each stress interval needs an aging or damage hypothesis.
 
+## Calibration: what drifts and what triggers retuning
+
+Calibration exists because no transmitter runs at a datasheet point. Every unit has its own threshold, slope, absorption curve, quadrature point, and resonance, and each of those moves with temperature and age. The operating points a product actually stores are:
+
+Laser bias / APC target
+
+: the bias current or monitor-PD power setpoint that holds launch power. Drifts as threshold rises and slope falls with age (§5.13); a drifting monitor PD corrupts it silently (§5.20.3).
+
+EAM bias (EML)
+
+: the reverse-bias point that sets extinction and chirp. Moves with case temperature and with absorption-curve aging, so production parts store bias versus temperature, not one number.
+
+MZM quadrature
+
+: the phase bias that holds the modulator at its linear point. Drifts with temperature, stress, and age; a bias-control loop tracks it, and a railed loop is a telemetry alarm, not a retune request.
+
+Ring heater / lock point
+
+: the tuner power that aligns resonance to the laser line. Consumes headroom as ambient rises and neighbors heat; a railed DAC means the tuning range is exhausted (§6.4, §6.5).
+
+Tables are usually segmented by temperature. Segment boundaries are a real failure mode: the debug story in §5.20.4 is a healthy laser reading the wrong temperature segment after thermal cycling. Keep calibration tables under change control and record the table version with every test result, or failures cannot be replayed.
+
+Recalibration should be triggered by evidence, not habit: a control-loop error residual that no longer converges, an actuator (TEC, heater, bias DAC) that approaches its rail, telemetry that disagrees with an external reference, a temperature excursion beyond the table range, or a repair, rework, or firmware change that invalidates stored coefficients. ATP must verify calibration at the temperature corners the fleet will see, not only at the station ambient (§7.9).
+
 ## How lasers are qualified
 
-Qualification projects these six mechanisms forward from a short bench test to years of field life. Three stress classes do the work:
+Qualification projects the failure mechanisms of §5.9 forward from a short bench test to years of field life. Three stress classes do the work:
 
 HTOL (high-temperature operating life)
 
@@ -412,9 +436,13 @@ Lasers wear out. At fleet scale that is not a footnote; it sets architecture (EL
 Telcordia GR-468-CORE qualifies optoelectronic parts with accelerated stress (HTOL, temperature cycle, damp heat) and projects field life with Arrhenius acceleration : $$\mathrm{AF}
 = \exp\!\left[\frac{E_a}{k_B}\left(\frac{1}{T_\mathrm{use}}-\frac{1}{T_\mathrm{stress}}\right)\right],$$ where $E_a$ is the activation energy for the wear-out mechanism under test, $k_B$ is Boltzmann's constant, and temperatures are absolute. Document $E_a$, sample size, and confidence bounds when converting a 1000-hour HTOL lot into field-year FIT. Activation energies are mechanism-specific; use the value justified in the qual plan, not a generic number copied from another product.
 
+##### When the projection is valid.
+
+Acceleration assumes the stress speeds up the *same* physical mechanism the fleet will see. The projection fails in two ways: the stress activates a mechanism the field never sees (solder creep or moisture ingress at a stress temperature the product never reaches), or the field sees a mechanism the stress never exercises (connector wear, bias-rail transients, thermal cycling from traffic load). So a qual number is a hypothesis, not a fact: compare field-return Pareto and failure signatures against the qual projection, and treat divergence as evidence that $E_a$ or the mechanism model is wrong, not that the fleet is unlucky (§7.12).
+
 ##### Derating.
 
-Run below absolute-max current, case temperature, and optical power. Derating extends wear-out life and reduces COD risk. Uncooled datacom parts already sit near thermal limits at high case temperature; cooled or faceplate ELSFP modules (§5.13) buy headroom by moving heat off the ASIC package.
+Run below absolute-max current, case temperature, and optical power. Derating extends wear-out life and reduces COD risk. Uncooled datacom parts already sit near thermal limits at high case temperature; cooled or faceplate ELSFP modules (§5.14) buy headroom by moving heat off the ASIC package.
 
 ##### Worked FIT example (assumptions labeled).
 
@@ -491,7 +519,7 @@ Short-reach datacom modules are usually engineered so each fiber port stays Clas
 
 ### Hazard level = aggregate, not per-lane
 
-The safety case scales with *total* launched power at an accessible location, not with a single DFB data sheet. CW-WDM and ELS banks concentrate many lines on one MT or MPO ferrule (§5.13). A connector that breaks out eight or sixteen fibers can exceed a per-lane Class 1 budget even when each lane is modest. IEC 60825-2 assigns hazard levels (1 through 4) to each accessible port in the OFCS based on the radiant power that could escape during service . That is why ELS architecture and fiber count drive classification, not the laser chip alone.
+The safety case scales with *total* launched power at an accessible location, not with a single DFB data sheet. CW-WDM and ELS banks concentrate many lines on one MT or MPO ferrule (§5.14). A connector that breaks out eight or sixteen fibers can exceed a per-lane Class 1 budget even when each lane is modest. IEC 60825-2 assigns hazard levels (1 through 4) to each accessible port in the OFCS based on the radiant power that could escape during service . That is why ELS architecture and fiber count drive classification, not the laser chip alone.
 
 ### Open-fiber protection: APR and ALS
 
@@ -517,7 +545,7 @@ Multi-wavelength CW sources (CW-WDM MSA) feed dense ring or filter banks on a PI
 
 - RIN and ORL sensitivity for each line (§5.7, §4.3.1).
 
-Examples: Ayar Labs SuperNova (CW-WDM MSA-compliant, feeds TeraPHY)  ; Broadcom ELSFP banks on Tomahawk CPO (§9.10, §5.13); quantum-dot comb lasers (Ranovus, Quintessent) aimed at many $\lambda$ from one chip. Source tests live here; locking and on-chip MUX live in Chapter 6.
+Examples: Ayar Labs SuperNova (CW-WDM MSA-compliant, feeds TeraPHY)  ; Broadcom ELSFP banks on Tomahawk CPO (§9.10, §5.14); quantum-dot comb lasers (Ranovus, Quintessent) aimed at many $\lambda$ from one chip. Source tests live here; locking and on-chip MUX live in Chapter 6.
 
 ## Light-source supply strategy
 
@@ -529,11 +557,11 @@ Merchant DFB, EML, or CW die
 
 External CW-WDM or ELSFP module
 
-: moves source qualification and management into a replaceable unit. The system still owns connector, ORL, hot-swap, and host interoperability (§5.13, §5.15).
+: moves source qualification and management into a replaceable unit. The system still owns connector, ORL, hot-swap, and host interoperability (§5.14, §5.16).
 
 Multi-wavelength source
 
-: reduces source count and can simplify WDM fan-out, but couples channel yield, power flatness, control, and replacement into one unit (§5.15).
+: reduces source count and can simplify WDM fan-out, but couples channel yield, power flatness, control, and replacement into one unit (§5.16).
 
 Source integrated with the PIC
 
@@ -563,11 +591,11 @@ At the scale of a large optical fleet the laser is usually the reliability-limit
 
 - *Catastrophic optical damage* (COD) at the facet.
 
-- Gradual facet and active-region degradation (accelerated by temperature, following Arrhenius kinetics; §5.12).
+- Gradual facet and active-region degradation (accelerated by temperature, following Arrhenius kinetics; §5.13).
 
 - EAM aging in EMLs; coupling and solder drift in packaged assemblies.
 
-Because failures scale with the number of lasers, a fleet of $100{,}000$+ links turns a modest per-laser FIT rate into a steady stream of field failures (§5.12, §8.2). The mitigations shape architecture: field-replaceable external laser sources (ELSFP, CW-WDM), redundancy, burn-in screening to weed out infant mortality, and derating (running lasers below their maximum to extend life).
+Because failures scale with the number of lasers, a fleet of $100{,}000$+ links turns a modest per-laser FIT rate into a steady stream of field failures (§5.13, §8.2). The mitigations shape architecture: field-replaceable external laser sources (ELSFP, CW-WDM), redundancy, burn-in screening to weed out infant mortality, and derating (running lasers below their maximum to extend life).
 
 ## Margin erosion over temperature, lot, and life
 
@@ -601,7 +629,7 @@ A laser is an active device with wear-out physics, which makes it both the first
 
 ### How it is measured
 
-Qualify the laser as a set of curves across temperature, bias, ORL, and age, not a room-temperature data-sheet point. The measurement playbook (LIV, SMSR, RIN, wavelength, and EAM checks with their instruments and pass/fail intent) is in §5.7, Table 5.5; the stress classes that project field life are in §5.11, §5.12, §8.2 .
+Qualify the laser as a set of curves across temperature, bias, ORL, and age, not a room-temperature data-sheet point. The measurement playbook (LIV, SMSR, RIN, wavelength, and EAM checks with their instruments and pass/fail intent) is in §5.7, Table 5.5; the stress classes that project field life are in §5.12, §5.13, §8.2 .
 
 ### How it fails
 

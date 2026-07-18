@@ -41,7 +41,7 @@ See the PDF version for the full bibliography.
 
 [^16]: Source: [Ayar Labs, SuperNova light source, ayarlabs.com](https://ayarlabs.com/supernova/). Positioning: Ayar targets scale-up optical I/O between accelerators; Broadcom and NVIDIA CPO (§9.10) put the same building blocks on the *switch*.
 
-[^17]: Worked example. "The link fails only at high temperature." Candidate causes: laser wavelength drift off the grid or off a ring resonance; TEC saturation; EAM bias shift; elevated receiver thermal noise; LIV rollover (§5.12, §5.7). You bisect with measurements (spectrum for wavelength, LIV for the laser, receiver sensitivity at temperature) rather than guessing.
+[^17]: Worked example. "The link fails only at high temperature." Candidate causes: laser wavelength drift off the grid or off a ring resonance; TEC saturation; EAM bias shift; elevated receiver thermal noise; LIV rollover (§5.13, §5.7). You bisect with measurements (spectrum for wavelength, LIV for the laser, receiver sensitivity at temperature) rather than guessing.
 
 [^18]: An order-of-magnitude exercise: a $100{,}000$-GPU cluster with several optical links per GPU has on the order of $10^{5}$--$10^{6}$ lasers. Even a small per-laser FIT then implies a nontrivial number of link failures per day, which is exactly why field-replaceable external laser sources and redundancy are attractive.
 

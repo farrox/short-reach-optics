@@ -119,7 +119,7 @@ The interconnect carries partial results between accelerators, and collectives m
 
 ### How it is measured
 
-At the system level: step time, collective latency, accelerator idle fraction, and tail behavior. At the link level: pre-FEC BER, FEC error distribution, optical power, module temperature, and flap count. At the architecture level: delivered bandwidth per watt, link count, and FIT-weighted availability (§7.12, §5.12).
+At the system level: step time, collective latency, accelerator idle fraction, and tail behavior. At the link level: pre-FEC BER, FEC error distribution, optical power, module temperature, and flap count. At the architecture level: delivered bandwidth per watt, link count, and FIT-weighted availability (§7.12, §5.13).
 
 ### How it fails
 

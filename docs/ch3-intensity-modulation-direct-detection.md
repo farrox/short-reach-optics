@@ -466,7 +466,7 @@ When full LPO will not close on the target host, *LRO*/*TRO* (retimed TX, linear
 
 ##### CPO at the same SerDes generation.
 
-Co-packaged engines shipping in 2025--26 typically run *200 Gb/s per optical channel* on 100G/200G SerDes into microring banks with external lasers (§9.10): same CEI-224G-class shoreline as faceplate 224G, but the lossy pluggable connector is gone and the laser service model moves to ELSFP (§5.13). Deployment corners shift from cage thermals to FAU mate, lock hold under neighbor heaters, and ELS hot-swap (Table 7.4, Chapter 6). The electrical alphabet is still 224G PAM4; the hard part is packaging and wavelength control.
+Co-packaged engines shipping in 2025--26 typically run *200 Gb/s per optical channel* on 100G/200G SerDes into microring banks with external lasers (§9.10): same CEI-224G-class shoreline as faceplate 224G, but the lossy pluggable connector is gone and the laser service model moves to ELSFP (§5.14). Deployment corners shift from cage thermals to FAU mate, lock hold under neighbor heaters, and ELS hot-swap (Table 7.4, Chapter 6). The electrical alphabet is still 224G PAM4; the hard part is packaging and wavelength control.
 
 **Key idea.** 224G deployment is a margin problem, not a modulation problem. Close COM and TDECQ together under production-representative corners; use LRO when full LPO will not; treat CPO as the same SerDes generation with a shorter electrical path and a harder laser/lock service model.
 

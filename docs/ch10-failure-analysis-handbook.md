@@ -198,7 +198,7 @@ Laser wavelength moves with temperature and bias current. If the TEC or waveleng
 
 ##### Corrective action and recurrence control.
 
-TEC saturation: reduce case temperature (improve airflow or liquid cooling) or derate the laser operating current. Ring unlock: increase heater headroom in the design, reduce thermal crosstalk with layout changes, or shift the CW-WDM source grid to re-center the ring tuning range. Aging: schedule preventive replacement (ELSFP hot-swap, §5.13).
+TEC saturation: reduce case temperature (improve airflow or liquid cooling) or derate the laser operating current. Ring unlock: increase heater headroom in the design, reduce thermal crosstalk with layout changes, or shift the CW-WDM source grid to re-center the ring tuning range. Aging: schedule preventive replacement (ELSFP hot-swap, §5.14).
 
 ## Eye closure (high TDECQ)
 
@@ -242,7 +242,7 @@ In a faceplate pluggable, double-digit-watt module power must leave through the 
 
 2.  **Check TEC current.** A TEC at max drive current is saturated; it cannot pump more heat. The junction temperature is higher than the case $T$ suggests.
 
-3.  **Measure LIV at temperature.** If threshold rises and slope drops steeply with $T$, the laser is near thermal rollover (§5.12). The operating point may be marginal.
+3.  **Measure LIV at temperature.** If threshold rises and slope drops steeply with $T$, the laser is near thermal rollover (§5.13). The operating point may be marginal.
 
 4.  **Neighbor loading.** Bring all lanes and neighbor modules to full traffic simultaneously. If the problem only appears under full-cage load, the thermal design margin is insufficient.
 
@@ -340,7 +340,7 @@ Use time scale and recovery to route the incident. A reversible shift during a t
 
 3.  Repeat the temperature sweep with source, wavelength-selective element, receiver, and neighbors isolated in turn.
 
-4.  Update the power, noise, timing, and spectral ledgers (§5.18). Several small shifts can explain a BER failure even when each component remains inside its stand-alone limit.
+4.  Update the power, noise, timing, and spectral ledgers (§5.19). Several small shifts can explain a BER failure even when each component remains inside its stand-alone limit.
 
 5.  Route reversible thermal loss to cooling, control, calibration, or derating. Route cumulative change to HTOL and life-model review. Route lot-clustered permanent steps to manufacturing failure analysis.
 

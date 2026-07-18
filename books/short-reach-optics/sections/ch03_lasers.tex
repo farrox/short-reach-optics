@@ -523,11 +523,51 @@ Do not merge the data sets. A high-temperature BER failure that clears at room
 temperature needs thermal-margin work. A room-temperature baseline that keeps
 moving after each stress interval needs an aging or damage hypothesis.
 
+\section{Calibration: what drifts and what triggers retuning}
+\label{sec:laser-calibration}
+
+Calibration exists because no transmitter runs at a datasheet point. Every unit
+has its own threshold, slope, absorption curve, quadrature point, and resonance,
+and each of those moves with temperature and age. The operating points a product
+actually stores are:
+
+\begin{description}
+\item[Laser bias / APC target] the bias current or monitor-PD power setpoint
+      that holds launch power. Drifts as threshold rises and slope falls with
+      age (\Cref{sec:laser-aging}); a drifting monitor PD corrupts it silently
+      (\Cref{sec:lasers-how-fails}).
+\item[EAM bias (EML)] the reverse-bias point that sets extinction and chirp.
+      Moves with case temperature and with absorption-curve aging, so production
+      parts store bias versus temperature, not one number.
+\item[MZM quadrature] the phase bias that holds the modulator at its linear
+      point. Drifts with temperature, stress, and age; a bias-control loop tracks
+      it, and a railed loop is a telemetry alarm, not a retune request.
+\item[Ring heater / lock point] the tuner power that aligns resonance to the
+      laser line. Consumes headroom as ambient rises and neighbors heat; a railed
+      DAC means the tuning range is exhausted
+      (\Cref{sec:locking-techniques,sec:thermal-xtalk}).
+\end{description}
+
+Tables are usually segmented by temperature. Segment boundaries are a real
+failure mode: the debug story in \Cref{sec:lasers-how-debugged} is a healthy
+laser reading the wrong temperature segment after thermal cycling. Keep
+calibration tables under change control and record the table version with every
+test result, or failures cannot be replayed.
+
+Recalibration should be triggered by evidence, not habit: a control-loop error
+residual that no longer converges, an actuator (TEC, heater, bias DAC) that
+approaches its rail, telemetry that disagrees with an external reference, a
+temperature excursion beyond the table range, or a repair, rework, or firmware
+change that invalidates stored coefficients. ATP must verify calibration at the
+temperature corners the fleet will see, not only at the station ambient
+(\Cref{sec:prod-corners}).
+
 \section{How lasers are qualified}
 \label{sec:how-lasers-qualified}
 
-Qualification projects these six mechanisms forward from a short bench test to
-years of field life. Three stress classes do the work:
+Qualification projects the failure mechanisms of \Cref{sec:how-lasers-fail}
+forward from a short bench test to years of field life. Three stress classes do
+the work:
 
 \begin{description}
 \item[HTOL (high-temperature operating life)] Run a sample lot at elevated
@@ -577,6 +617,17 @@ is Boltzmann's constant, and temperatures are absolute. Document $E_a$, sample
 size, and confidence bounds when converting a 1000-hour HTOL lot into field-year
 FIT. Activation energies are mechanism-specific; use the value justified in the
 qual plan, not a generic number copied from another product.
+
+\paragraph{When the projection is valid.}
+Acceleration assumes the stress speeds up the \emph{same} physical mechanism the
+fleet will see. The projection fails in two ways: the stress activates a
+mechanism the field never sees (solder creep or moisture ingress at a stress
+temperature the product never reaches), or the field sees a mechanism the stress
+never exercises (connector wear, bias-rail transients, thermal cycling from
+traffic load). So a qual number is a hypothesis, not a fact: compare field-return
+Pareto and failure signatures against the qual projection, and treat divergence
+as evidence that $E_a$ or the mechanism model is wrong, not that the fleet is
+unlucky (\Cref{sec:fleet-triage}).
 
 \paragraph{Derating.}
 Run below absolute-max current, case temperature, and optical power. Derating
