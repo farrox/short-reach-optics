@@ -1,13 +1,13 @@
 \chapter{Optical validation}
 \label{ch:validation}
 
-A datasheet that closes on a quiet bench is not a product. \emph{Validation} is
-the work of proving a link meets spec and will keep meeting it across the
-temperatures, hosts, connectors, and aging the fleet will actually see. That
-discipline is the second theme of this book. This chapter walks the ladder from a
-single device to a deployed fleet, the metrics measured at each stage, module and
-system bring-up under production-like corners, and the data-driven debug mindset
-the work demands.
+A datasheet that closes on a quiet bench is not a product. \emph{Validation}
+reduces uncertainty about whether a link meets its requirements across the
+temperatures, hosts, connectors, production spread, and lifetime the fleet will
+actually see. Passing tests is an output, not the purpose. This chapter walks the
+ladder from a single device to a deployed fleet, the engineering question at
+each stage, module and system bring-up under production-like corners, and the
+hypothesis-driven debug method the work demands.
 
 \section{The validation ladder}
 \label{sec:validation-workflow}
@@ -44,6 +44,14 @@ Field telemetry, RMA tracking, and FIT burn-down feed back into stages~3--5.\par
 For every metric at every stage, name the instrument, the reference plane
 (\Cref{sec:test-points}), the pass criterion, and the failure signature. A number
 without a plane and a method is not a measurement.
+
+Each stage removes a different uncertainty. Bring-up removes basic integration
+unknowns. Characterization maps response and variation. Margin and interop tests
+find combinations that consume power, noise, timing, or spectral headroom
+(\Cref{sec:laser-margin-erosion}). Qualification separates life and
+environmental risks. Production readiness proves that the chosen screens can
+control variation and escapes at volume. Do not use one stage as evidence for
+another.
 
 \section{The core IM/DD measurements}
 
@@ -508,7 +516,8 @@ moved, the fault is in the optical path (laser, coupling, connector, fiber, MUX)
 if power held but BER or TDECQ worsened, it is signal quality (bandwidth, noise,
 jitter, bias, equalization, reflection). This one check prevents the most common
 validation mistake: retuning an equalizer or laser bias when the real cause is a
-dirty connector.
+dirty connector. Then check which margin ledger moved
+(\Cref{sec:laser-margin-erosion}) before descending to component physics.
 
 \section{Fleet and field triage}
 \label{sec:fleet-triage}
@@ -543,7 +552,8 @@ Classify every field issue before deep root-cause work:
 
 A single symptom can sit in more than one bucket until you bisect. The tree below
 forces the split with telemetry first, then a short bench confirm, then an RMA
-label.
+label. \Cref{ch:failure-modes} expands the same method into symptom-led bench and
+fleet procedures.
 
 \paragraph{Telemetry you actually read.}
 At scale you rarely start with a DCA. Start with what the host and module already

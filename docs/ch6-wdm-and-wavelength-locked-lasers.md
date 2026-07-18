@@ -81,7 +81,7 @@ Table 6.2 maps common MUX faults to the measurement that catches them.
   Grid misalignment            Filter edge clipping                TDECQ, unlock risk   OSA + lock status
   -------------------------------------------------------------------------------------------------------------
 
-**Table 6.2.** MUX/demux defects and where they appear in validation. Isolation and imbalance tests belong in ATP for any dense WDM engine (§6.7, §5.13).
+**Table 6.2.** MUX/demux defects and where they appear in validation. Isolation and imbalance tests belong in ATP for any dense WDM engine (§6.7, §5.15).
 
 Validation adds channel isolation sweeps, grid alignment across temperature, and MUX imbalance (uneven OMA per $\lambda$). Treat the weakest channel as the budget-limiting lane, not the average.
 
@@ -113,7 +113,7 @@ Digital supervisory loop
 
 ##### What you trim.
 
-Three actuators show up repeatedly, and the bring-up order usually starts with the slowest, highest-authority knob. Laser TEC / temperature moves the whole comb or a single DFB on the frequency axis. Laser bias current is the fine wavelength trim (and also changes power), so watch RIN and SMSR when you use it as a locker (§5.7). Ring heaters park each microring onto its assigned $\lambda$ and are the per-channel control in dense banks (§6.5).
+Three actuators show up repeatedly, and the bring-up order usually starts with the slowest, highest-authority knob. Laser TEC / temperature moves the whole comb or a single DFB on the frequency axis. Laser bias current is the fine wavelength trim (and also changes power), so watch RIN and SMSR when you use it as a locker (§5.8). Ring heaters park each microring onto its assigned $\lambda$ and are the per-channel control in dense banks (§6.5).
 
 ##### Capture versus hold.
 
@@ -137,7 +137,7 @@ Budget heater range with headroom for crosstalk, not just for the coldest and ho
 
 ## External multi-wavelength sources (CW-WDM)
 
-Dense WDM with ring modulators needs a source of many clean, stable wavelengths. The industry answer is a *disaggregated* external laser: a single multi-wavelength continuous-wave (CW) module supplies a comb of wavelengths over fiber to the photonic engine, where microrings imprint data onto each one. The *CW-WDM MSA* standardizes those sources for AI, HPC, and high-density optics . Source-side measurement detail (per-channel power, SMSR, RIN, lock under neighbor heat) is in §5.13; this section is the architecture contract.
+Dense WDM with ring modulators needs a source of many clean, stable wavelengths. The industry answer is a *disaggregated* external laser: a single multi-wavelength continuous-wave (CW) module supplies a comb of wavelengths over fiber to the photonic engine, where microrings imprint data onto each one. The *CW-WDM MSA* standardizes those sources for AI, HPC, and high-density optics . Source-side measurement detail (per-channel power, SMSR, RIN, lock under neighbor heat) is in §5.15; this section is the architecture contract.
 
 ##### What the MSA specifies (and what it does not).
 
@@ -153,7 +153,7 @@ Core normative content:
 
 - **Power classes and AS parameters:** output power classes span low to high launch; SMSR, RIN, and linewidth floors are defined with measurement methods, with many limits marked application-specific (AS) in the normative tables.
 
-Informative appendix examples (not universal product guarantees) often quote $\approx$`<!-- -->`{=html}30 dB SMSR, $\approx-135$ dB/Hz RIN, $\approx$`<!-- -->`{=html}20 MHz linewidth, $\pm$`<!-- -->`{=html}1 dB per-line power variation, and $-20$ dB ORL tolerance for 18 nm-span examples. Treat those as negotiation anchors; write the ATP to your link budget (§5.13, Table 5.4).
+Informative appendix examples (not universal product guarantees) often quote $\approx$`<!-- -->`{=html}30 dB SMSR, $\approx-135$ dB/Hz RIN, $\approx$`<!-- -->`{=html}20 MHz linewidth, $\pm$`<!-- -->`{=html}1 dB per-line power variation, and $-20$ dB ORL tolerance for 18 nm-span examples. Treat those as negotiation anchors; write the ATP to your link budget (§5.15, Table 5.4).
 
 ##### Why disaggregate the laser.
 
@@ -175,7 +175,7 @@ Vendor performance claims versus pluggables plus electrical SerDes (5--10$\times
 
 ##### System requirements the source must meet.
 
-For the PIC to close every lane, the comb must deliver, across temperature and with all ports active, a small set of properties at once: per-line power flatness (else MUX + modulator bank makes uneven OMA), grid placement and SMSR per line, RIN under the specified ORL, and absolute wavelength stable enough that ring heaters stay in range (§6.5, §5.13). Miss any one and a single $\lambda$ will look like a modulator or lock-loop failure when the source is the real cause.
+For the PIC to close every lane, the comb must deliver, across temperature and with all ports active, a small set of properties at once: per-line power flatness (else MUX + modulator bank makes uneven OMA), grid placement and SMSR per line, RIN under the specified ORL, and absolute wavelength stable enough that ring heaters stay in range (§6.5, §5.15). Miss any one and a single $\lambda$ will look like a modulator or lock-loop failure when the source is the real cause.
 
 ### Comb sources: one device, many lines
 
@@ -187,7 +187,7 @@ The SuperNova approach builds its comb from an array of discrete lasers, one dis
 
 **Gain-switched and quantum-dash combs** sit between the two: a directly driven laser produces a flatter, lower-line-count comb with simple electronics. They have reached multi-terabit aggregate rates in the lab but see less datacom traction than QD-MLLs.
 
-For any of them the contract from the MSA does not change: the source must hold per-line power flatness, SMSR, RIN, and grid placement across temperature with every port active (§5.13). A comb that delivers 32 lines but drops 6 dB across the band, or whose edge lines miss the grid, buys nothing over an array of DFBs the PIC already knows how to drive.
+For any of them the contract from the MSA does not change: the source must hold per-line power flatness, SMSR, RIN, and grid placement across temperature with every port active (§5.15). A comb that delivers 32 lines but drops 6 dB across the band, or whose edge lines miss the grid, buys nothing over an array of DFBs the PIC already knows how to drive.
 
 ### Gain and power distribution across the bank
 
@@ -213,7 +213,7 @@ Instruments and BER methods live in Chapter 7. What is special to WDM is the or
 
 ##### Bring-up order.
 
-1.  **Grid ID:** confirm each CW line (or DFB) is on the assigned channel with an OSA / wavemeter (§5.13).
+1.  **Grid ID:** confirm each CW line (or DFB) is on the assigned channel with an OSA / wavemeter (§5.15).
 
 2.  **Coarse align:** park rings near resonance with open-loop heater sweeps; check through/drop monitors.
 
@@ -343,7 +343,7 @@ First decide whether the fault affects one lane or all lanes. Freeze heater and 
 
 
 <div class="nav-links">
-  <a href="ch5-lasers-for-optical-interconnects">&larr; Previous</a>
+  <a href="ch5-choosing-light-sources-and-modulation">&larr; Previous</a>
   <a href="./">Table of Contents</a>
   <a href="ch7-optical-validation">Next &rarr;</a>
 </div>

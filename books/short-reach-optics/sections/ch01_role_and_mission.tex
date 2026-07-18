@@ -132,6 +132,54 @@ bucket, but a synchronous job pays for every interruption across the whole
 allocation~\cite{metallama3}. Compute scales faster than communication unless the
 network, optics, and software are designed as one system.
 
+\section{The systems engineering loop}
+\label{sec:systems-engineering-loop}
+
+Work from the system downward:
+\begin{center}
+\small
+\textsc{Requirements}\\[-0.2em]
+$\downarrow$\\[-0.2em]
+\textsc{Architecture}\\[-0.2em]
+$\downarrow$\\[-0.2em]
+\textsc{Subsystem}\\[-0.2em]
+$\downarrow$\\[-0.2em]
+\textsc{Component}\\[-0.2em]
+$\downarrow$\\[-0.2em]
+\textsc{Needed physics}
+\end{center}
+A component choice is never isolated. A VCSEL usually commits the link to an
+850~nm multimode path, direct modulation, and a short reach. A 1310~nm DFB points
+toward single-mode fiber and can feed a DML, EML, Mach--Zehnder modulator, or ring.
+Those paths then set detector material, fiber plant, thermal control, test
+coverage, and service policy. Start with reach, lane rate, power, cost, lifetime,
+and manufacturing volume. Choose the component only after those constraints rule
+out the other paths.
+
+\paragraph{Validation reduces uncertainty.}
+Characterization asks what the design does across its operating range. Margin
+testing asks how close it is to a limit. Environmental and life testing ask which
+mechanisms move with temperature, stress, and time. Production testing asks
+whether process variation and assembly escapes can be caught at useful test cost.
+A passing result is useful only when the test answers one of those questions
+(\Cref{ch:validation,ch:reliability}).
+
+\paragraph{Margin erodes before the link fails.}
+Power, noise, timing, and spectral margins usually move a little at a time. A
+connector adds loss, a laser loses slope efficiency, a bias point drifts, and a
+ring moves toward the edge of its lock range. No single change must be large.
+Their sum pushes normal unit and temperature variation across the BER threshold.
+Track margin as a ledger over temperature, lot, age, and workload rather than as
+one room-temperature pass/fail point.
+
+\paragraph{Debug by eliminating hypotheses.}
+First scope the failure: one unit, one lot, one vendor, one site, or the fleet.
+Then classify its pattern: sudden or gradual, constant or temperature-dependent,
+power-related or signal-quality-related. Choose the next measurement for its
+ability to separate competing causes. The debugging pyramid below gives the
+order; the failure-analysis handbook in \Cref{ch:failure-modes} gives the
+symptom-led procedures.
+
 \section{Engineering lens}
 \label{sec:role-engineering-lens}
 
@@ -195,6 +243,7 @@ a discipline, not a checklist: each layer produces a measurement that either
 confirms or falsifies the hypothesis before you descend.
 
 \section{Interview and design review questions}
+\label{sec:role-design-review}
 
 \paragraph{Concept.}
 \begin{itemize}
@@ -232,20 +281,25 @@ confirms or falsifies the hypothesis before you descend.
 \item What is the fleet cost of a wrong triage classification?
 \end{itemize}
 
-\keyidea{If moving information were free, optics would barely matter.}
-
 \section{How to read this book}
 
-The chapters build from physics to fleet scale:
+The chapters build from requirements to fleet operation:
 
 \begin{enumerate}
-\item \Cref{ch:firstprinciples,ch:imdd}: energy, IM/DD vocabulary, modulators, FEC, equalization.
+\item \Cref{ch:firstprinciples,ch:imdd}: energy, IM/DD vocabulary, architecture,
+      modulators, FEC, and equalization.
 \item \Cref{ch:models}: quantitative noise, RIN, sensitivity (use with \Cref{sec:link-budget}).
-\item \Cref{ch:lasers}: light sources (DFB/EML, LIV/SMSR/RIN, aging, ELSFP/CW-WDM).
+\item \Cref{ch:lasers}: requirements-led source and modulation decisions,
+      measurement, aging, and service architecture.
 \item \Cref{ch:wdm}: wavelength locking, thermal crosstalk, CW-WDM, on-chip MUX.
 \item \Cref{ch:validation,ch:reliability}: measurement ladder, link budgets, qual, packaging.
 \item \Cref{ch:networking}: scale-up/out, pluggables, CPO/XPO, inference collectives.
+\item \Cref{ch:failure-modes}: symptom-led root-cause isolation and corrective action.
 \end{enumerate}
 
 To use the book as a design drill, pick one link style (retimed 800G DR, LPO, or
 CPO WDM) and trace it end to end through \Cref{sec:txrx-chain,sec:pluggables,sec:cpo-status}.
+
+\keyidea{Start from the system requirement and work downward. Validate to reduce
+uncertainty, track how several small losses consume margin, and debug by choosing
+measurements that eliminate hypotheses.}

@@ -18,7 +18,7 @@ title: "Table of Contents"
 - [**2.** First principles: the energy of moving a bit](ch2-first-principles-the-energy-of-moving-a-bit)
 - [**3.** Intensity modulation, direct detection](ch3-intensity-modulation-direct-detection)
 - [**4.** Quantitative models: noise, RIN, and BER](ch4-quantitative-models-noise-rin-and-ber)
-- [**5.** Lasers for optical interconnects](ch5-lasers-for-optical-interconnects)
+- [**5.** Choosing light sources and modulation](ch5-choosing-light-sources-and-modulation)
 - [**6.** WDM and wavelength-locked lasers](ch6-wdm-and-wavelength-locked-lasers)
 - [**7.** Optical validation](ch7-optical-validation)
 - [**8.** Reliability and manufacturing at scale](ch8-reliability-and-manufacturing-at-scale)

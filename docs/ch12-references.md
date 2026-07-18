@@ -37,11 +37,11 @@ See the PDF version for the full bibliography.
 
 [^14]: For example [IEEE 802.3 / 100G Lambda MSA short-reach PAM4 links](https://www.ieee802.org/3/bs/public/) cap $\mathrm{RIN}_{17.1}\mathrm{OMA}$ at $-136$ dB/Hz with 17.1 dB ORL .
 
-[^15]: The fork is a reliability decision. *External* sources (Ayar, Broadcom ELSFP, POET) make the highest-failure component field-replaceable; *integrated* lasers (Intel, OpenLight, Scintil) win on density and cost but place that component permanently inside the package. The leading CPO programs have so far chosen external, for the GR-468 reasons of Chapter 8, §5.11.
+[^15]: The fork is a reliability and ownership decision. An external source makes the source replaceable but adds a managed optical interface. An integrated source removes that interface but places source yield and wear-out inside the package. Qualify the architecture you will service, not only the laser die.
 
 [^16]: Source: [Ayar Labs, SuperNova light source, ayarlabs.com](https://ayarlabs.com/supernova/). Positioning: Ayar targets scale-up optical I/O between accelerators; Broadcom and NVIDIA CPO (§9.10) put the same building blocks on the *switch*.
 
-[^17]: Worked example. "The link fails only at high temperature." Candidate causes: laser wavelength drift off the grid or off a ring resonance; TEC saturation; EAM bias shift; elevated receiver thermal noise; LIV rollover (§5.10, §5.6). You bisect with measurements (spectrum for wavelength, LIV for the laser, receiver sensitivity at temperature) rather than guessing.
+[^17]: Worked example. "The link fails only at high temperature." Candidate causes: laser wavelength drift off the grid or off a ring resonance; TEC saturation; EAM bias shift; elevated receiver thermal noise; LIV rollover (§5.12, §5.7). You bisect with measurements (spectrum for wavelength, LIV for the laser, receiver sensitivity at temperature) rather than guessing.
 
 [^18]: An order-of-magnitude exercise: a $100{,}000$-GPU cluster with several optical links per GPU has on the order of $10^{5}$--$10^{6}$ lasers. Even a small per-laser FIT then implies a nontrivial number of link failures per day, which is exactly why field-replaceable external laser sources and redundancy are attractive.
 

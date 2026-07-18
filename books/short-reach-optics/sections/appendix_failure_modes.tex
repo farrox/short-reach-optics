@@ -1,37 +1,121 @@
 \chapter{Failure analysis handbook}
 \label{ch:failure-modes}
 
-This appendix is a symptom-first field guide. Start with what the bench, production
-line, or fleet reports. List the plausible failure domains, choose the smallest
-measurement that can split them, and preserve the failing state until the evidence
-has been captured. Each case follows the same path: observe, hypothesize, measure,
-confirm, correct, and add a control that prevents recurrence.
+This chapter is a symptom-first field guide. Start with what the bench,
+production line, or fleet reports. Preserve the failing state until its evidence
+has been captured, then use the same workflow for every incident:
+\[
+\begin{split}
+\text{observe} &\longrightarrow \text{scope unit, lot, vendor, site, or fleet}\\
+&\longrightarrow \text{classify sudden or gradual}\\
+&\longrightarrow \text{identify the changing margin}\\
+&\longrightarrow \text{measure, isolate, correct, and prevent recurrence}.
+\end{split}
+\]
+Choose each measurement for its ability to separate competing hypotheses. The
+debugging pyramid in \Cref{sec:debug-pyramid}, the power-versus-signal fork in
+\Cref{sec:debug-fork}, and the fleet router in \Cref{tab:fleet-triage} provide
+the same method at different scales.
 
 \begin{description}
-\item[BER increase] Check received OMA, eye quality, RIN, ORL, receiver noise,
-      jitter, and crosstalk (\Cref{sec:fm-ber-floor}).
-\item[One lane degraded] Split source, modulator or ring, filter or MUX, fiber
+\item[Power loss] Split launch-power loss from coupling, connector, MUX, fiber,
+      monitor, and receiver-plane errors (\Cref{sec:fm-power-loss}).
+\item[BER increase] Separate a shifted waterfall from a BER floor, then check
+      power, eye quality, noise, timing, and spectrum
+      (\Cref{sec:fm-ber-increase,sec:fm-ber-floor}).
+\item[Eye closure or low ER] Split bandwidth, drive, bias, reflection,
+      dispersion, and resonance alignment
+      (\Cref{sec:fm-eye-closure,sec:fm-low-er}).
+\item[Lane imbalance] Split source, modulator or ring, filter or MUX, fiber
       attach, driver, and receiver (\Cref{sec:fm-lane-imbalance}).
-\item[Yield drop] Clear the tester, then split lot, site, process step, assembly,
-      firmware, and calibration (\Cref{sec:fm-yield-drop}).
 \item[Temperature sensitivity] Track power, wavelength, lock error, TEC or heater
       headroom, receiver margin, and package stress (\Cref{sec:fm-temperature}).
+\item[Wavelength drift] Split source movement from filter, ring, TEC, and
+      control-loop movement (\Cref{sec:fm-wavelength-drift}).
 \item[Intermittent bursts] Preserve counters before reseating. Check connector
-      contamination, ORL, supply noise, and fiber attach
-      (\Cref{sec:fm-contamination}).
+      contamination, ORL, supply noise, lock state, and weak attach
+      (\Cref{sec:fm-intermittent}).
+\item[Yield drop] Clear the tester, then split lot, site, process step, assembly,
+      firmware, and calibration (\Cref{sec:fm-yield-drop}).
 \end{description}
 
 The cases below provide the detailed measurements and corrective actions. Use the
-failure and debug callouts in Chapters 3--9 as shorter versions of the same method.
+failure and debug callouts in Chapters 3--9 as shorter versions of the same
+method. Earlier chapters own the mechanism physics. This chapter owns the order
+of operations.
+
+\section{Power loss}
+\label{sec:fm-power-loss}
+
+\paragraph{Observed behavior.}
+Received power or OMA falls at one or more lanes. BER may remain stable at first,
+then rise as receiver margin is consumed. The module monitor and an external
+power meter may disagree.
+
+\paragraph{Likely hypotheses.}
+Launch power can fall because the laser is disabled, thermally rolled over, or
+aged. Power can disappear after the source through modulator loss, coupling
+shift, MUX loss, fiber bend, connector contamination, or a wrong reference-plane
+calibration. A drifting monitor photodiode can report loss that does not exist.
+
+\paragraph{Measurements and root-cause isolation.}
+\begin{enumerate}
+\item Compare CMIS Tx and Rx power, external power at the faceplate, bias current,
+      and case temperature. Disagreement identifies the first suspect plane.
+\item Walk optical power plane by plane with a known source and calibrated meter.
+      Do not change bias or equalization while locating the loss.
+\item Rerun LIV at the failing temperature. Moved LIV points toward the source;
+      stable LIV points toward the optical path or monitor.
+\item Inspect and clean connectors, then measure insertion loss and ORL. Use a
+      golden fiber and module swap to separate field plant from module.
+\item For a weak lane, compare sibling lanes and per-lane coupling. Lot or lane
+      clustering points toward assembly or MUX variation.
+\end{enumerate}
+
+\paragraph{Corrective action and recurrence control.}
+Repair the first plane where power diverges. Correct calibration or monitor
+coefficients before changing source bias. Add a power check at the earliest
+production plane that can catch the signature and retain golden-path baselines
+for fleet comparison.
+
+\section{BER increase: waterfall shift or floor}
+\label{sec:fm-ber-increase}
+
+\paragraph{Observed behavior.}
+Pre-FEC BER rises, but the first task is to determine whether the whole BER
+waterfall moved to higher received power or whether it stopped improving at a
+horizontal floor.
+
+\paragraph{Likely hypotheses.}
+A shifted waterfall points toward lost power, receiver sensitivity, eye closure,
+timing, or dispersion. A floor points toward signal-proportional noise,
+reflection, crosstalk, or burst errors. The distinction prevents a power fix from
+being applied to a noise-limited link.
+
+\paragraph{Measurements and root-cause isolation.}
+\begin{enumerate}
+\item Sweep received power and plot BER rather than recording one operating point.
+\item If the waterfall shifted, compare received OMA, TDECQ, receiver sensitivity,
+      equalizer taps, wavelength, and temperature with the golden baseline.
+\item If the curve floors, follow \Cref{sec:fm-ber-floor} and split intrinsic RIN,
+      electrical noise, ORL, MPI, and crosstalk.
+\item Use FEC error timing and lane correlation to separate random noise from
+      bursts and shared disturbances.
+\end{enumerate}
+
+\paragraph{Corrective action and recurrence control.}
+Restore the margin ledger that moved, then repeat the full BER sweep at loaded
+corners. Store waterfall shape, not only pass/fail BER, so later fleet changes can
+be classified without guessing.
 
 \section{BER floor}
 \label{sec:fm-ber-floor}
 
-\paragraph{Symptom.}
+\paragraph{Observed behavior.}
 Pre-FEC BER improves as you increase transmit power, then stops improving and
 flattens at a constant floor regardless of how much more power you add.
 
-\paragraph{Physics.}
+\paragraph{Likely hypotheses.}
 A BER floor means a noise source that grows with signal power dominates the link.
 The classic cause is \emph{relative intensity noise} (RIN): because
 $\sigma_\mathrm{RIN} \propto I$, once RIN dominates the noise budget, signal and
@@ -41,7 +125,7 @@ $Q_\mathrm{max} = 1/\sqrt{\mathrm{RIN}_\mathrm{lin} \cdot \mathrm{BW}}$
 connectors or high back-reflection, or broadband noise on the laser bias rail
 that converts to equivalent RIN (\Cref{sec:laser-drivers}).
 
-\paragraph{Debug steps.}
+\paragraph{Measurements and root-cause isolation.}
 \begin{enumerate}
 \item Confirm the floor exists: sweep received power (or Tx OMA) and plot BER vs.\
       power. A healthy link has a steep waterfall; a floor appears as a horizontal
@@ -59,10 +143,10 @@ that converts to equivalent RIN (\Cref{sec:laser-drivers}).
       symbol errors rather than random ones.
 \item \textbf{Confirm RIN spec.} Compare measured $\mathrm{RIN}_x\mathrm{OMA}$ at
       the stated ORL against the PMD or ATP limit (e.g.\ $-136$~dB/Hz at 17.1~dB
-      ORL for DR-class links). If the part exceeds spec, reject.
+      ORL for DR-class links~\cite{rinspec}). If the part exceeds spec, reject.
 \end{enumerate}
 
-\paragraph{Resolution.}
+\paragraph{Corrective action and recurrence control.}
 If intrinsic RIN is the limiter, the laser is marginal or aged; replace or derate.
 If electrical RIN, fix the bias supply (better PSRR, star ground, local
 decoupling). If ORL-driven, clean or replace connectors and verify isolator
@@ -72,11 +156,11 @@ or improve their ORL.
 \section{Low extinction ratio}
 \label{sec:fm-low-er}
 
-\paragraph{Symptom.}
+\paragraph{Observed behavior.}
 Transmitter OMA looks low on the DCA even though average power is in range. TDECQ
 may or may not fail depending on how the reference equalizer compensates.
 
-\paragraph{Physics.}
+\paragraph{Likely hypotheses.}
 Extinction ratio $\mathrm{ER} = P_1/P_0$ sets how far apart the one and zero
 optical levels are for a given average power. Low ER means the zero level is too
 high (the modulator does not fully extinguish) or the one level is too low. In an
@@ -86,7 +170,7 @@ threshold. The OMA penalty for finite ER is
 $\mathrm{PP} = (\mathrm{ER}+1)/(\mathrm{ER}-1)$: at 10~dB ER the penalty is
 $\sim$0.87~dB; at 6~dB ER it rises to $\sim$2.2~dB (\Cref{sec:sensitivity}).
 
-\paragraph{Debug steps.}
+\paragraph{Measurements and root-cause isolation.}
 \begin{enumerate}
 \item Measure ER on the DCA (outer OMA / average power, or directly from the
       histogram levels). Compare against the PMD limit.
@@ -104,7 +188,7 @@ $\sim$0.87~dB; at 6~dB ER it rises to $\sim$2.2~dB (\Cref{sec:sensitivity}).
       wavelength-lock error.
 \end{enumerate}
 
-\paragraph{Resolution.}
+\paragraph{Corrective action and recurrence control.}
 Recalibrate the modulator operating point. For EML aging, update the EAM bias
 setpoint in firmware or flag the module for replacement if the absorption curve has
 shifted beyond the correctable range. For MZM drift, verify the bias controller and
@@ -114,12 +198,12 @@ its monitor PD. For rings, retune or check for neighbor thermal crosstalk
 \section{Lane imbalance}
 \label{sec:fm-lane-imbalance}
 
-\paragraph{Symptom.}
+\paragraph{Observed behavior.}
 In a multi-lane module (DR4, FR4, DR8), one or more lanes show significantly
 different OMA, TDECQ, or pre-FEC BER compared with siblings in the same module.
 The weak lane may be marginal or failing while others are healthy.
 
-\paragraph{Physics.}
+\paragraph{Likely hypotheses.}
 Multi-lane modules share a substrate, laser array (or CW-WDM source), and thermal
 environment. Lane-to-lane variation comes from: (1)~die-level non-uniformity in the
 laser or modulator array (threshold, slope, $V_\pi$, coupling), (2)~packaging
@@ -127,7 +211,7 @@ variation in fiber-array alignment (one channel of the FAU slightly misaligned),
 (3)~driver or TIA channel mismatch on the electronic IC, or (4)~thermal gradient
 across the die (edge lanes hotter or cooler than center lanes).
 
-\paragraph{Debug steps.}
+\paragraph{Measurements and root-cause isolation.}
 \begin{enumerate}
 \item Measure all lanes: OMA, ER, TDECQ, RIN, wavelength. Identify the outlier.
 \item \textbf{Is it optical or electrical?} Swap the electrical lane assignment
@@ -146,7 +230,7 @@ across the die (edge lanes hotter or cooler than center lanes).
       Compare LIV curves at $t_0$ and now.
 \end{enumerate}
 
-\paragraph{Resolution.}
+\paragraph{Corrective action and recurrence control.}
 FAU misalignment is a manufacturing escape; tighten incoming inspection or
 first-article coupling specs. Thermal gradient: redesign TEC zoning or derate the
 hot lane. Laser aging: flag the lot and check burn-in screening effectiveness.
@@ -155,21 +239,20 @@ Driver mismatch: work with the IC supplier on channel-to-channel gain flatness.
 \section{Wavelength drift}
 \label{sec:fm-wavelength-drift}
 
-\paragraph{Symptom.}
+\paragraph{Observed behavior.}
 In a WDM system, one or more channels walk off the ITU grid or the ring/filter
 passband. BER degrades as the channel moves off the receiver filter or MUX/DEMUX
 passband. In ring-modulator CPO, this manifests as sudden unlock of the wavelength
 control loop.
 
-\paragraph{Physics.}
-Laser wavelength drifts with temperature ($d\lambda/dT \approx 0.1$~nm/$^\circ$C
-for InP DFB) and bias current ($d\lambda/dI \approx 0.01$~nm/mA). If the TEC or
+\paragraph{Likely hypotheses.}
+Laser wavelength moves with temperature and bias current. If the TEC or
 wavelength-locker servo cannot track, the channel walks off its assigned slot.
-In microring systems, the ring resonance drifts at $\sim$80~pm/$^\circ$C
-($\sim$10~GHz/$^\circ$C in Si), and neighbor heaters create thermal crosstalk that
-pushes adjacent channels (\Cref{sec:thermal-xtalk}).
+In microring systems, resonance also moves strongly with temperature, and
+neighbor heaters create thermal crosstalk that pushes adjacent channels
+(\Cref{sec:locking-techniques,sec:thermal-xtalk}).
 
-\paragraph{Debug steps.}
+\paragraph{Measurements and root-cause isolation.}
 \begin{enumerate}
 \item Measure wavelength on an OSA or wavemeter. Compare to the target grid.
 \item \textbf{Laser-side:} Check TEC current. If saturated (at max or min drive),
@@ -184,7 +267,7 @@ pushes adjacent channels (\Cref{sec:thermal-xtalk}).
       hop or gradual TEC degradation (reduced $\Delta T$ capacity).
 \end{enumerate}
 
-\paragraph{Resolution.}
+\paragraph{Corrective action and recurrence control.}
 TEC saturation: reduce case temperature (improve airflow or liquid cooling) or
 derate the laser operating current. Ring unlock: increase heater headroom in the
 design, reduce thermal crosstalk with layout changes, or shift the CW-WDM source
@@ -194,11 +277,11 @@ grid to re-center the ring tuning range. Aging: schedule preventive replacement
 \section{Eye closure (high TDECQ)}
 \label{sec:fm-eye-closure}
 
-\paragraph{Symptom.}
+\paragraph{Observed behavior.}
 TDECQ exceeds the PMD limit even though average power and ER look acceptable. The
 DCA eye appears compressed or distorted after the reference equalizer is applied.
 
-\paragraph{Physics.}
+\paragraph{Likely hypotheses.}
 TDECQ measures how much noise the transmitter can tolerate before BER exceeds the
 FEC threshold, relative to an ideal transmitter (\Cref{sec:tdecq}). High TDECQ
 means the equalized eye is poor. Common causes: (1)~insufficient EO bandwidth
@@ -207,7 +290,7 @@ driver or modulator compression), (3)~pattern-dependent effects (ISI from
 bandwidth limit, reflections, or impedance mismatch), (4)~chromatic dispersion on
 FR-class fiber eating into the margin.
 
-\paragraph{Debug steps.}
+\paragraph{Measurements and root-cause isolation.}
 \begin{enumerate}
 \item Inspect the raw (unequalized) eye on the DCA. Is it bandwidth-limited
       (rounded transitions), compressed (uneven levels), or noisy (RIN/jitter)?
@@ -226,7 +309,7 @@ FR-class fiber eating into the margin.
       dispersion coefficient.
 \end{enumerate}
 
-\paragraph{Resolution.}
+\paragraph{Corrective action and recurrence control.}
 Bandwidth: upgrade driver or modulator (higher-BW die or peaking network). RLM:
 tune driver pre-emphasis (DAC levels for each PAM4 symbol). Reflections: fix
 wirebond, impedance discontinuity, or connector. Dispersion: tighten wavelength
@@ -235,20 +318,21 @@ tolerance or shorten the fiber (re-route).
 \section{Thermal runaway}
 \label{sec:fm-thermal-runaway}
 
-\paragraph{Symptom.}
+\paragraph{Observed behavior.}
 Module temperature rises continuously until shutdown (CMIS over-temperature alarm)
 or until the laser degrades catastrophically. May start subtly: BER creeps up as
 case $T$ rises during traffic ramp or with neighbor-lane loading.
 
-\paragraph{Physics.}
-In a faceplate pluggable, the module dissipates $\sim$8--20~W into the cage
-heatsink. If airflow is blocked, the cage is overloaded (too many high-power
-modules), or the TEC inside the module is fighting a losing battle against
+\paragraph{Likely hypotheses.}
+In a faceplate pluggable, double-digit-watt module power must leave through the
+cage and heatsink~\cite{switchthermal}. If airflow is blocked, the cage is
+overloaded, or the TEC inside the module is fighting a losing battle against
 junction temperature, the thermal loop runs away. In CPO, the optical engine sits
-on the switch substrate next to a high-power ASIC ($>$500~W); even small failures
-in the cooling path concentrate heat on the laser or ring heaters.
+on the switch substrate beside the ASIC; cooling-path faults concentrate heat on
+the source and ring controls~\cite{cpocooling}. Both sources are vendor or
+research orientation, so the product thermal model remains authoritative.
 
-\paragraph{Debug steps.}
+\paragraph{Measurements and root-cause isolation.}
 \begin{enumerate}
 \item Read CMIS module temperature and compare to the module's rated case $T$
       range. If case $T$ exceeds the max, the system cooling is inadequate.
@@ -266,7 +350,7 @@ in the cooling path concentrate heat on the laser or ring heaters.
       systems (CPO, XPO), check coolant flow rate and inlet temperature.
 \end{enumerate}
 
-\paragraph{Resolution.}
+\paragraph{Corrective action and recurrence control.}
 System-level: improve airflow, lower ambient, or reduce module count per cage.
 Module-level: derate the laser (lower bias current reduces self-heating) or switch
 to a lower-power module style (LPO instead of retimed, \Cref{sec:conditioning}).
@@ -274,30 +358,64 @@ CPO: ensure the cold-plate thermal interface material (TIM) is intact and the
 liquid loop meets flow-rate spec. Long-term: specify a tighter thermal class in the
 laser requirements (\Cref{sec:laser-reqs}).
 
+\section{Intermittent failures}
+\label{sec:fm-intermittent}
+
+\paragraph{Observed behavior.}
+Links flap, lose lock, or show bursts of FEC errors while average power and a
+short bench BER test look normal. The symptom may clear after reseating, cooling,
+or restarting firmware.
+
+\paragraph{Likely hypotheses.}
+Intermittent faults come from contacts, reflections, weak optical or electrical
+attach, supply noise, wavelength-lock loss, firmware state, or environmental
+stress. Reseating can remove the evidence by cleaning a contact, changing fiber
+stress, or resetting a state machine.
+
+\paragraph{Measurements and root-cause isolation.}
+\begin{enumerate}
+\item Freeze CMIS state, FEC error timing, LOS or LOL history, temperatures,
+      rails, lock error, and neighbor activity before touching hardware.
+\item Scope the pattern across lane, module, tray, rack, lot, and firmware
+      revision. Shared timing points toward power, cooling, firmware, or a shared
+      source.
+\item Correlate bursts with Rx power, ORL, supply and clock spurs, lock-loop
+      state, vibration, and temperature. Use trigger capture rather than averages.
+\item Run controlled disturbance tests one at a time: connector motion, thermal
+      ramp, neighbor load, rail load, and firmware state transition.
+\item Repeat on a golden unit and fixture. If the fault follows the unit, inspect
+      fiber attach, solder, contacts, and control logs before destructive analysis.
+\end{enumerate}
+
+\paragraph{Corrective action and recurrence control.}
+Fix the confirmed contact, attach, supply, lock, or firmware cause. Add
+event-triggered telemetry and a production stress that reproduces the fault.
+Keep intermittent and no-fault-found RMA codes separate from laser wear-out.
+
 \section{Connector contamination}
 \label{sec:fm-contamination}
 
-\paragraph{Symptom.}
+\paragraph{Observed behavior.}
 Intermittent link failures, burst errors, or elevated BER that clears after
 reseating or cleaning a connector. Rx power may fluctuate or show sudden drops.
 Often affects one direction of a duplex link.
 
-\paragraph{Physics.}
+\paragraph{Likely hypotheses.}
 A particle of dust on an MT, LC, or MPO ferrule endface scatters and absorbs
-light, raising insertion loss and back-reflection (lowering ORL). Particles as
-small as 1~$\mu$m on a single-mode core (9~$\mu$m diameter) can cause $>$1~dB
-loss. Elevated ORL feeds back into the laser and raises RIN, causing burst errors
+light, raising insertion loss and back-reflection (lowering ORL). Debris in the
+core zone can cause large loss even when most of the ferrule looks clean.
+Elevated ORL feeds back into the laser and raises RIN, causing burst errors
 even when average power looks acceptable. In high-power CW-WDM and ELSFP systems,
 trapped particles can burn onto the fiber endface and cause permanent damage.
 
-\paragraph{Debug steps.}
+\paragraph{Measurements and root-cause isolation.}
 \begin{enumerate}
 \item \textbf{Inspect first.} Use a fiber-endface inspection scope (200--400$\times$)
       on every mated connector before any other debug. Look for particles in the
       core zone, scratches, pits, and residue.
 \item \textbf{Clean and re-inspect.} Use a dry-click cleaner or lint-free wipe with
       IPA. Re-inspect. If the endface still fails IEC 61300-3-35 zone criteria,
-      replace the jumper.
+      replace the jumper~\cite{iec61300}.
 \item \textbf{Measure IL and ORL.} After cleaning, measure insertion loss and ORL
       across the mated pair. Compare to the link-budget allocation
       (\Cref{sec:link-budget}).
@@ -309,7 +427,7 @@ trapped particles can burn onto the fiber endface and cause permanent damage.
       improper cap/cover discipline during service events.
 \end{enumerate}
 
-\paragraph{Resolution.}
+\paragraph{Corrective action and recurrence control.}
 Immediate: clean and verify. Preventive: install dust caps on every unused port,
 enforce ``inspect before connect'' policy in the service runbook, use sealed
 cassettes or connectorized trunk cables that minimize open-ferrule exposure. For
@@ -321,16 +439,16 @@ code (not ``laser failure'') so FIT accounting stays honest
 \section{Yield drop}
 \label{sec:fm-yield-drop}
 
-\paragraph{Symptom.}
+\paragraph{Observed behavior.}
 First-pass yield falls below its stable baseline. The loss may cluster on one ATP
 row, lane, tester, shift, supplier lot, assembly site, or firmware revision.
 
-\paragraph{Likely causes.}
+\paragraph{Likely hypotheses.}
 Process drift, incoming material variation, fiber-array alignment, die-attach or
 solder change, tester or fixture drift, stale calibration, a software limit change,
 or a guardband that no longer matches measurement spread.
 
-\paragraph{Debug steps.}
+\paragraph{Measurements and root-cause isolation.}
 \begin{enumerate}
 \item Contain suspect work in process and freeze tester software, limits, fixtures,
       and calibration records.
@@ -344,24 +462,52 @@ or a guardband that no longer matches measurement spread.
       verify the correction on a controlled lot and watch the field code.
 \end{enumerate}
 
-\paragraph{Corrective action.}
+\paragraph{Corrective action and recurrence control.}
 Restore the changed process or measurement input, add a statistical control at the
 first observable point, revise ATP only with correlation data, and require a new
 first-article check before releasing volume (\Cref{sec:supplier-exec}).
 
+\section{Aging, thermal response, and margin erosion}
+\label{sec:fm-aging-thermal-router}
+
+Use time scale and recovery to route the incident. A reversible shift during a
+temperature or neighbor-load sweep is a thermal operating-point problem. A
+baseline that moves over stress hours or field months is aging. A sudden
+permanent step after a cycle points toward damage or an assembly defect, not
+ordinary thermal response.
+
+\begin{enumerate}
+\item Return the unit to its starting temperature and operating point. Record
+      whether power, wavelength, bias, TDECQ, and BER recover.
+\item Compare with ship and pre-stress data. Permanent LIV, spectrum, or bias-curve
+      movement supports aging or damage.
+\item Repeat the temperature sweep with source, wavelength-selective element,
+      receiver, and neighbors isolated in turn.
+\item Update the power, noise, timing, and spectral ledgers
+      (\Cref{sec:laser-margin-erosion}). Several small shifts can explain a BER
+      failure even when each component remains inside its stand-alone limit.
+\item Route reversible thermal loss to cooling, control, calibration, or derating.
+      Route cumulative change to HTOL and life-model review. Route lot-clustered
+      permanent steps to manufacturing failure analysis.
+\end{enumerate}
+
+The corrective action must restore margin at combined corners. A room-temperature
+retest does not close a high-temperature incident, and one clean HTOL readout does
+not explain a reversible lock failure.
+
 \section{Temperature sensitivity}
 \label{sec:fm-temperature}
 
-\paragraph{Symptom.}
+\paragraph{Observed behavior.}
 BER, TDECQ, optical power, or lock stability degrades during a case-temperature
 ramp or under loaded-neighbor conditions. The unit may recover when cooled.
 
-\paragraph{Likely causes.}
+\paragraph{Likely hypotheses.}
 Laser threshold and slope drift, wavelength movement, ring-resonance drift, TEC or
 heater saturation, EAM or MZM bias error, receiver-noise rise, package stress, or a
 thermal gradient that affects one lane.
 
-\paragraph{Debug steps.}
+\paragraph{Measurements and root-cause isolation.}
 \begin{enumerate}
 \item Record case temperature, external optical power, wavelength, bias, TEC or
       heater current, lock error, OMA, ER, TDECQ, and pre-FEC BER on one time axis.
@@ -375,10 +521,68 @@ thermal gradient that affects one lane.
       alone but fail in the assembled system.
 \end{enumerate}
 
-\paragraph{Corrective action.}
+\paragraph{Corrective action and recurrence control.}
 Restore thermal headroom, correct calibration and control limits, reduce coupling,
 or derate the operating point. Add the loaded-neighbor temperature ramp to the ATP
 or design-validation plan that missed it.
+
+\section{Failure-analysis checklist}
+\label{sec:failure-analysis-checklist}
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:failure-analysis-checklist}%
+\centering
+\setlength{\tabcolsep}{4pt}%
+\footnotesize
+\begin{tabular}{@{}p{0.18\linewidth}p{0.34\linewidth}p{0.42\linewidth}@{}}
+\toprule
+Step & Question & Required record \\
+\midrule
+Preserve & What evidence will a reseat, reboot, clean, or retest destroy? & CMIS, BER and FEC history, rails, temperature, firmware, fixture, and time \\
+Scope & One unit, lane, lot, vendor, site, or fleet? & Population and correlation plot \\
+Classify & Sudden or gradual, constant or intermittent, thermal or cumulative? & Timeline and recovery test \\
+Locate margin & Did power, noise, timing, or spectrum move first? & Golden comparison and margin ledger \\
+Falsify & Which measurement best separates the leading hypotheses? & Expected result for each hypothesis before the test \\
+Confirm & Does the fault follow the suspected block under a controlled swap or stress? & Repeated failure and passing control \\
+Correct & Does the fix restore the original failing condition with margin? & Before and after data at loaded corners \\
+Prevent & Where can production or fleet monitoring catch recurrence earliest? & ATP change, control limit, alarm, owner, and due date \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Failure-analysis checklist.
+The incident is not closed until the cause is reproduced, corrected, and covered
+by a recurrence control.\par}
+\end{table*}
+
+\section{Interview and design review questions}
+\label{sec:failure-analysis-design-review}
+
+\paragraph{Scoping and evidence.}
+\begin{itemize}
+\item BER rose on one rack after a software rollout. What data do you preserve
+      before reseating modules?
+\item How would you decide whether a symptom belongs to one unit, one lot, one
+      vendor, one site, or the fleet?
+\end{itemize}
+
+\paragraph{Root-cause isolation.}
+\begin{itemize}
+\item Received power is unchanged but BER worsened. Which measurement do you make
+      next, and which hypotheses does it separate?
+\item How do you distinguish a BER waterfall shift from a BER floor?
+\item BER degrades after thermal cycling. How do you separate reversible thermal
+      response, calibration error, assembly damage, and long-term aging?
+\end{itemize}
+
+\paragraph{Production and fleet action.}
+\begin{itemize}
+\item A golden unit fails only on one production station. What must be cleared
+      before opening supplier failure analysis?
+\item Which recurrence control belongs in ATP, and which belongs in fleet
+      telemetry?
+\item When is a no-fault-found return evidence of weak triage rather than a good
+      unit?
+\end{itemize}
 
 \keyidea{A useful failure analysis starts with a symptom and ends with a new
 control. Preserve the failing state, split shared from local behavior, clear the

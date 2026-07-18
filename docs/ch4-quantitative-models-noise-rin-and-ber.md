@@ -125,7 +125,7 @@ Noise current densities versus received power. Thermal is flat, shot $\propto\!\
 :::
 ::::
 
-Put these against the ceiling. At 200G-PAM4 bandwidths ($\mathrm{BW}\approx75$ GHz), even the worst spec-compliant number ($-136$ dB/Hz) gives $Q_{\max}\approx23$ (far above the $Q=7$ needed for $10^{-12}$), so for well-behaved sources RIN is *not* the limiter; thermal noise is. RIN becomes the story only when feedback, aging, or a marginal source pushes the effective figure toward $-125$ dB/Hz, where $Q_{\max}$ falls through the uncoded target. That is why the practical spec is written against a stressed ORL, and why feedback-tolerant sources matter for dense, isolator-free integration. A third path to excess intensity noise is electrical: laser bias-driver current noise converts to equivalent RIN (§5.7) and must be budgeted separately from intrinsic laser RIN.
+Put these against the ceiling. At 200G-PAM4 bandwidths ($\mathrm{BW}\approx75$ GHz), even the worst spec-compliant number ($-136$ dB/Hz) gives $Q_{\max}\approx23$ (far above the $Q=7$ needed for $10^{-12}$), so for well-behaved sources RIN is *not* the limiter; thermal noise is. RIN becomes the story only when feedback, aging, or a marginal source pushes the effective figure toward $-125$ dB/Hz, where $Q_{\max}$ falls through the uncoded target. That is why the practical spec is written against a stressed ORL, and why feedback-tolerant sources matter for dense, isolator-free integration. A third path to excess intensity noise is electrical: laser bias-driver current noise converts to equivalent RIN (§5.8) and must be budgeted separately from intrinsic laser RIN.
 
 **Key idea.** Thermal noise is beaten by power; RIN is not. Because $\sigma_{\text{RIN}}\propto I$, intensity noise imposes a floor $Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$ that no link budget can climb past, and it worsens as lane rates (and thus bandwidths) rise. Good 2026 sources ($-145$ to $-165$ dB/Hz) sit comfortably below that floor; feedback and aging are what erode the margin.
 
@@ -391,5 +391,5 @@ This fork often narrows an investigation in minutes. Power-path failures show up
 <div class="nav-links">
   <a href="ch3-intensity-modulation-direct-detection">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch5-lasers-for-optical-interconnects">Next &rarr;</a>
+  <a href="ch5-choosing-light-sources-and-modulation">Next &rarr;</a>
 </div>

@@ -81,6 +81,36 @@ Point-to-point
 
 More compute increases the amount of traffic the system can inject. It does not increase fabric capacity. Once links or switches saturate, accelerators wait at collectives and realized compute use falls. Public large-model training data show why this is also an availability problem: network faults are only one failure bucket, but a synchronous job pays for every interruption across the whole allocation . Compute scales faster than communication unless the network, optics, and software are designed as one system.
 
+## The systems engineering loop
+
+Work from the system downward:
+
+::: center
+[Requirements]{.smallcaps}\
+$\downarrow$\
+[Architecture]{.smallcaps}\
+$\downarrow$\
+[Subsystem]{.smallcaps}\
+$\downarrow$\
+[Component]{.smallcaps}\
+$\downarrow$\
+[Needed physics]{.smallcaps}
+:::
+
+A component choice is never isolated. A VCSEL usually commits the link to an 850 nm multimode path, direct modulation, and a short reach. A 1310 nm DFB points toward single-mode fiber and can feed a DML, EML, Mach--Zehnder modulator, or ring. Those paths then set detector material, fiber plant, thermal control, test coverage, and service policy. Start with reach, lane rate, power, cost, lifetime, and manufacturing volume. Choose the component only after those constraints rule out the other paths.
+
+##### Validation reduces uncertainty.
+
+Characterization asks what the design does across its operating range. Margin testing asks how close it is to a limit. Environmental and life testing ask which mechanisms move with temperature, stress, and time. Production testing asks whether process variation and assembly escapes can be caught at useful test cost. A passing result is useful only when the test answers one of those questions (Chapter 7, Chapter 8).
+
+##### Margin erodes before the link fails.
+
+Power, noise, timing, and spectral margins usually move a little at a time. A connector adds loss, a laser loses slope efficiency, a bias point drifts, and a ring moves toward the edge of its lock range. No single change must be large. Their sum pushes normal unit and temperature variation across the BER threshold. Track margin as a ledger over temperature, lot, age, and workload rather than as one room-temperature pass/fail point.
+
+##### Debug by eliminating hypotheses.
+
+First scope the failure: one unit, one lot, one vendor, one site, or the fleet. Then classify its pattern: sudden or gradual, constant or temperature-dependent, power-related or signal-quality-related. Choose the next measurement for its ability to separate competing causes. The debugging pyramid below gives the order; the failure-analysis handbook in Chapter 10 gives the symptom-led procedures.
+
 ## Engineering lens
 
 ### How it works
@@ -89,7 +119,7 @@ The interconnect carries partial results between accelerators, and collectives m
 
 ### How it is measured
 
-At the system level: step time, collective latency, accelerator idle fraction, and tail behavior. At the link level: pre-FEC BER, FEC error distribution, optical power, module temperature, and flap count. At the architecture level: delivered bandwidth per watt, link count, and FIT-weighted availability (§7.12, §5.10).
+At the system level: step time, collective latency, accelerator idle fraction, and tail behavior. At the link level: pre-FEC BER, FEC error distribution, optical power, module temperature, and flap count. At the architecture level: delivered bandwidth per watt, link count, and FIT-weighted availability (§7.12, §5.12).
 
 ### How it fails
 
@@ -147,7 +177,7 @@ Do not skip layers. A direct jump to root cause without first confirming the sys
 
 ##### Debug.
 
-- Training throughput dropped after scaling. Where in the debugging pyramid (§1.7) do you start?
+- Training throughput dropped after scaling. Where in the debugging pyramid (§1.8) do you start?
 
 - How do you distinguish a network bottleneck from a compute or memory bottleneck using only host-visible telemetry?
 
@@ -161,17 +191,15 @@ Do not skip layers. A direct jump to root cause without first confirming the sys
 
 - What is the fleet cost of a wrong triage classification?
 
-**Key idea.** If moving information were free, optics would barely matter.
-
 ## How to read this book
 
-The chapters build from physics to fleet scale:
+The chapters build from requirements to fleet operation:
 
-1.  Chapter 2, Chapter 3: energy, IM/DD vocabulary, modulators, FEC, equalization.
+1.  Chapter 2, Chapter 3: energy, IM/DD vocabulary, architecture, modulators, FEC, and equalization.
 
 2.  Chapter 4: quantitative noise, RIN, sensitivity (use with §7.7).
 
-3.  Chapter 5: light sources (DFB/EML, LIV/SMSR/RIN, aging, ELSFP/CW-WDM).
+3.  Chapter 5: requirements-led source and modulation decisions, measurement, aging, and service architecture.
 
 4.  Chapter 6: wavelength locking, thermal crosstalk, CW-WDM, on-chip MUX.
 
@@ -179,7 +207,11 @@ The chapters build from physics to fleet scale:
 
 6.  Chapter 9: scale-up/out, pluggables, CPO/XPO, inference collectives.
 
+7.  Chapter 10: symptom-led root-cause isolation and corrective action.
+
 To use the book as a design drill, pick one link style (retimed 800G DR, LPO, or CPO WDM) and trace it end to end through §3.2, §9.3, §9.10.
+
+**Key idea.** Start from the system requirement and work downward. Validate to reduce uncertainty, track how several small losses consume margin, and debug by choosing measurements that eliminate hypotheses.
 
 
 <div class="nav-links">

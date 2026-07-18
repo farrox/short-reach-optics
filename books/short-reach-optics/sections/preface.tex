@@ -18,6 +18,24 @@ inference-scale computing puts the interconnect on the critical path
 (\Cref{ch:role}), and how AI datacenter networks are built where optics dominate
 cost and power (\Cref{ch:networking}).
 
+\newthought{How to use this handbook.} Start from the requirement, not the
+component. Move downward from system requirements to architecture, subsystem,
+component, and only then to the physics needed to make or test the decision. A
+choice at one layer constrains the next. A VCSEL points toward 850~nm, multimode
+fiber, and direct modulation. A DFB at 1310~nm points toward single-mode fiber
+and leaves a choice among direct modulation, an EML, or an external modulator.
+Neither path is best in isolation. Each closes a different reach, power, cost,
+manufacturing, and service model.
+
+Every major chapter asks four questions: How does it work? How is it measured,
+and what uncertainty does the measurement remove? How does it fail? How is it
+debugged?
+The aim is operational judgment. Validation builds confidence by reducing
+uncertainty across characterization, margin, environment, qualification, and
+production. Debugging narrows hypotheses with measurements rather than matching
+a symptom to a memorized list. Throughout the book, watch how power, noise,
+timing, and spectral margins erode together before a link crosses its BER limit.
+
 \newthought{On sources.} The industry moves quickly. Where the text cites specific
 products or figures (co-packaged-optics programs, per-lane roadmaps, energy-per-bit
 trends) it draws on public disclosures current as of early 2026, cited in the

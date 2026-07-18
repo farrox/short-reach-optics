@@ -1,32 +1,54 @@
-\chapter{Lasers for optical interconnects}
+\chapter{Choosing light sources and modulation}
 \label{ch:lasers}
 
-Every optical link begins with a light source, and at fleet scale that source is
-usually the reliability bottleneck as well as the first item on the link budget.
-Datacenter interconnects have spent two decades climbing from coarse multimode
-optics toward dense single-mode WDM and co-packaged engines; each step changed
-which laser family won and which measurements decided pass/fail. This chapter
-follows that arc: the device families in use today, how a roadmap choice becomes
-a measurable requirements slice, the LIV/SMSR/RIN suite, how bias drivers enter
-the intensity-noise budget, aging and derating, and the external laser modules
-(ELSFP, CW-WDM) that make co-packaged optics serviceable.
+Do not choose a laser by comparing data sheets in isolation. Start with reach,
+lane rate, fiber plant, power, cost, lifetime, manufacturing volume, and service
+policy. Those requirements select an architecture. The architecture then limits
+the useful source, modulation, detector, packaging, and validation choices.
 
-\section{Device families}
+\section{System requirements and architecture paths}
+\label{sec:laser-system-requirements}
 
-The short-reach market does not use one laser. It uses a small set of families,
-each tuned to a reach, a fiber type, and a packaging style. Broadly, the industry
-moved from multimode VCSEL arrays inside the rack, to single-mode DFB/EML
-pluggables for DR/FR, to external CW sources feeding silicon or TFLN modulators
-for CPO and 400G/lane. The list below is the vocabulary you will meet on
-datasheets and in supplier meetings; later sections explain how to measure and
-qualify each one.
+Freeze the system problem before asking a supplier for samples:
+\begin{description}
+\item[Reach and fiber] decide whether multimode loss and modal bandwidth are
+      acceptable or whether the link needs single-mode fiber.
+\item[Lane rate and bandwidth] decide whether direct modulation closes the eye or
+      whether the link needs an EML, MZM, or ring.
+\item[Power and cooling] include laser wall-plug power, modulator loss, driver
+      power, TEC power, and control overhead.
+\item[Cost and volume] include fiber plant, assembly alignment, burn-in, test time,
+      yield, and field replacement, not only die price.
+\item[Reliability and service] decide whether the source can stay inside the
+      package or must be a replaceable ELSFP.
+\end{description}
+
+The choices are coupled. A cost-driven, short multimode link points toward an
+850~nm VCSEL, multimode fiber, silicon photodiodes, and direct modulation. A
+longer single-mode path points toward a 1310~nm DFB or EML and germanium or
+III-V detection. Dense WDM and co-packaged optics often move the CW source away
+from the modulator, which adds wavelength control, fiber attach, and service
+requirements. \Cref{sec:laser-reqs,tab:laser-req-fork} turns these paths into
+supplier specifications.
+
+\section{Light-source and modulation choices}
+
+The short-reach market uses a small set of source families. Each fits a different
+constraint set:
 
 \begin{description}
 \item[DFB (distributed feedback)] a grating along the active region gives
       single-mode output; the workhorse continuous-wave (CW)\firstterm{CW} or directly
       modulated source for CWDM and LAN-WDM (\Cref{sec:dfb-eml}).
-\item[DBR (distributed Bragg reflector)]\firstterm{DBR} the grating sits outside the gain
-      region; enables tunable variants.
+\item[DBR (distributed Bragg reflector)]\firstterm{DBR} the grating sits outside
+      the gain region. Choose it when tunability or separate control of gain and
+      wavelength is worth added control and qualification work.
+\item[External-cavity laser] a gain element and an external wavelength-selective
+      cavity provide narrow linewidth and tunability. Choose it when spectral
+      purity or lock range matters more than package size, cost, and control-loop
+      simplicity. Most short-reach IM/DD links do not need it
+      \cite{eclplanex}; the cited product is vendor orientation, not a datacenter
+      source recommendation.
 \item[DML (directly modulated laser)]\firstterm{DML} modulate the bias current directly: cheap
       and low-power, but chirp-limited over dispersive fiber (\Cref{sec:dml-vcsel}).
 \item[EML (externally modulated laser)] \term{EML}\firstterm{EML}: a DFB integrated with an
@@ -53,6 +75,31 @@ qualify each one.
       light to a co-packaged switch, so a failed laser is field-replaceable
       (\Cref{sec:elsfp}).
 \end{description}
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:source-mod-matrix}%
+\centering
+\setlength{\tabcolsep}{2.5pt}%
+\scriptsize
+\begin{tabular}{@{}p{0.12\linewidth}p{0.13\linewidth}p{0.13\linewidth}p{0.13\linewidth}p{0.13\linewidth}p{0.13\linewidth}p{0.13\linewidth}@{}}
+\toprule
+Attribute & VCSEL direct & DFB direct & DFB + EAM & CW DFB/DBR + MZM & CW DFB/DBR + ring & External cavity + modulator \\
+\midrule
+Wavelength / fiber & 850--940~nm / MMF & 1310~nm / SMF & 1310~nm / SMF & 1310 or 1550~nm / SMF & WDM grid / SMF & Tunable grid / SMF \\
+Modulation fit & Direct only & Direct & Integrated EML & Si or TFLN MZM & Resonant Si ring & External MZM or ring \\
+Bandwidth / reach & Short, modal limit & Chirp-limited & High BW, low chirp & High BW, broad passband & High BW, lock-limited & High BW, architecture-specific \\
+RIN / linewidth & RIN and modal noise & RIN and chirp & RIN plus EAM bias & RIN; linewidth usually secondary & RIN plus spectral alignment & Low linewidth; verify feedback response \\
+Power / efficiency & Low Tx complexity & Low Tx complexity & Driver and EAM loss & Laser, driver, and MZM loss & Laser, heater, and lock power & Laser plus control overhead \\
+Reliability & Junction and temperature wear & Facet and active-region wear & Laser plus EAM aging & Source, attach, and bias drift & Source, heater, and lock faults & Cavity, package, and lock faults \\
+Manufacturing & Array-friendly, MMF plant & Simple Tx, SMF attach & Mature integrated Tx & Multi-die attach and RF match & Dense PIC, tight thermal control & Tight optical assembly and control \\
+Validation burden & Modal, temperature, aging & Chirp, LIV, RIN & LIV, RIN, EAM sweep, TDECQ & Source plus bias and RF path & Source plus resonance and crosstalk & Spectrum, lock, feedback, environment \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Decision matrix for common
+source and modulation paths. Entries show the dominant engineering concern, not
+fixed rankings. Program limits come from \Cref{tab:laser-prd}.\par}
+\end{table*}
 
 \section{Directly modulated lasers and VCSELs}
 \label{sec:dml-vcsel}
@@ -146,190 +193,22 @@ ELS / ELSFP & co-packaged optics & connectorization, fleet serviceability \\
 {\raggedright\footnotesize\textbf{Table~\thetable.} When each source is used, and its top validation risks.\par}
 \end{table*}
 
-\section{Silicon photonics platforms}
+\section{Choosing the modulation path}
 \label{sec:siph-platforms}
 
-The previous sections covered laser sources. This one treats the \emph{modulator
-platforms} built in silicon that those sources feed. Silicon photonics
-(\term{SiPh}) integrates waveguides, phase shifters, modulators, detectors, and
-couplers on a single silicon-on-insulator (\term{SOI}) die in a CMOS-compatible
-fab flow. Two modulator topologies dominate short-reach IM/DD: the Mach--Zehnder
-modulator (MZM) and the microring modulator (MRM). Both encode data by converting
-an electrical signal into optical intensity via a refractive-index change in a PN
-junction phase shifter. This section covers the device physics common to both,
-then the trade-offs that decide which one fits a given link.
+The source decision and modulation decision must close together. Direct
+modulation minimizes parts and power but carries laser chirp into the link. An
+EML adds an EAM on the laser die and is a mature low-chirp path for
+100--200G/lane. A silicon MZM uses more area and drive but gives a broad optical
+passband. A ring is compact and fits dense WDM, but adds resonance control and
+thermal-crosstalk tests. TFLN offers high bandwidth and low chirp with a separate
+material platform and assembly flow.
 
-\subsection{PN junction phase shifters}
-\label{sec:pn-phase}
-
-Every silicon modulator starts with a phase shifter: a waveguide whose effective
-index $n_\mathrm{eff}$ changes with an applied voltage. In silicon, which has no
-useful Pockels effect, the dominant mechanism is the \term{plasma dispersion effect}:
-changing free-carrier concentration $\Delta N_e$, $\Delta N_h$ shifts
-$n_\mathrm{eff}$ and introduces absorption $\Delta\alpha$. Two drive modes
-exploit this effect:
-
-\begin{description}
-\item[Carrier depletion] a reverse-biased PN junction sweeps carriers out of the
-      waveguide core under voltage. Fast (RC-limited to tens of GHz with optimized
-      doping profiles), low loss, and the default for high-speed datacom.
-      Phase-shift efficiency is modest: typical $V_\pi L \approx 1.5$--$2.5$~V$\cdot$cm
-      on production platforms.
-\item[Carrier injection] a forward-biased PIN structure floods carriers into the
-      intrinsic region. Large $\Delta n$ (low $V_\pi L$, often $<0.5$~V$\cdot$cm)
-      but slow: carrier recombination limits bandwidth to a few GHz without
-      pre-emphasis. Used in low-speed tuning (ring heater replacement) and
-      variable optical attenuators, not for PAM4 data modulation at 100G+/lane.
-\end{description}
-
-The key figure of merit is \term{$V_\pi L$}: the product of the half-wave voltage
-$V_\pi$ (the voltage that produces a $\pi$ phase shift) and the phase-shifter
-length $L$. Lower $V_\pi L$ means either a shorter device (less loss, smaller
-footprint) or a lower drive voltage (easier on the driver). Carrier-depletion
-silicon sits at $V_\pi L \approx 1.5$--$2.5$~V$\cdot$cm; thin-film lithium
-niobate (\Cref{sec:tfln-mzm}) reaches $\approx 1$~V$\cdot$cm via the Pockels
-effect.
-
-\subsection{Electro-optic bandwidth}
-\label{sec:eo-bw}
-
-\term{EO bandwidth} is the frequency at which the modulator's optical response
-($S_{21}$, measured as the ratio of detected optical modulation to applied RF
-voltage) falls by 3~dB from its low-frequency value. It is the primary speed
-metric and depends on:
-
-\begin{itemize}
-\item \textbf{Junction RC.} Depletion capacitance $C_j$ and series resistance $R_s$
-      set an intrinsic roll-off $f_{3\mathrm{dB}} \approx 1/(2\pi R_s C_j)$. Thinner
-      junctions (lower $C_j$) raise BW but reduce overlap with the optical mode
-      (higher $V_\pi L$). Typical design targets: $C_j \approx 0.2$--$0.4$~pF/mm,
-      $R_s \approx 5$--$15$~$\Omega\cdot$mm.
-\item \textbf{Velocity mismatch (MZM).} In a traveling-wave electrode (TWE) design,
-      microwave and optical group indices must match or the modulation signal walks
-      off the optical pulse. Si MZMs typically use slow-wave or loaded-line
-      electrodes to equalize indices.
-\item \textbf{Photon lifetime (ring).} A high-$Q$ ring stores photons longer,
-      narrowing the optical passband and creating an EO bandwidth ceiling at
-      $f_{3\mathrm{dB}} \approx f_\mathrm{res}/(2Q)$ where $f_\mathrm{res}$ is the
-      resonance frequency. Inductive peaking (T-coils) extends EO BW beyond the
-      intrinsic cavity limit.
-\end{itemize}
-
-Production Si MZMs quote 70--100+~GHz; peaked ring modulators reach
-90--110+~GHz in conference demos (\Cref{sec:siring}).
-
-\subsection{Insertion loss}
-\label{sec:il-mod}
-
-\term{Insertion loss} (IL) is the optical power lost traversing the modulator in
-its on-state. It subtracts directly from the link budget
-(\Cref{sec:link-budget}). Sources:
-
-\begin{itemize}
-\item \textbf{Waveguide propagation loss:} $\sim$1--3~dB/cm in production 220~nm SOI
-      rib waveguides (doping-dependent; heavier doping for lower $V_\pi L$ raises
-      free-carrier absorption).
-\item \textbf{Coupling loss:} fiber-to-chip (grating coupler $\sim$2--4~dB; edge
-      coupler $\sim$1--2~dB) and splitter/combiner ($<$0.5~dB for a 3-dB MMI).
-\item \textbf{Phase-shifter excess loss:} doped silicon absorbs; carrier-depletion
-      adds $\sim$3--8~dB/cm depending on doping concentration. Shorter phase
-      shifters (lower $V_\pi L$) trade this against $V_\pi$.
-\end{itemize}
-
-Total on-chip IL for a Si MZM (including splitters) lands at $\sim$2--5~dB;
-a single ring modulator typically adds $\sim$1--3~dB at the through port on
-resonance. Every dB of IL is a dB off the transmitter OMA and must be recovered
-by higher launch power or tighter receiver sensitivity (\Cref{sec:sensitivity}).
-
-\subsection{Mach--Zehnder modulators in silicon}
-\label{sec:siph-mzm}
-
-A silicon MZM splits light into two arms, applies opposite phase shifts
-(push-pull), and recombines at a coupler. Intensity modulation arises from
-constructive/destructive interference. Advantages over resonant devices:
-
-\begin{itemize}
-\item \textbf{Broadband:} flat passband, no wavelength lock needed. Channel
-      assignment is set by the laser, not the modulator.
-\item \textbf{Linear transfer:} the sine-squared MZM transfer function is
-      well-characterized for PAM4 linearity budgets.
-\item \textbf{Temperature-insensitive:} no resonance to drift with thermal
-      transients (contrast with rings, \Cref{sec:siring}).
-\end{itemize}
-
-Trade-offs: mm-scale device length (large footprint), higher IL than a ring,
-and the need for a matched traveling-wave electrode (TWE) with velocity-matched
-microwave and optical group indices. At 224~GBd the 112~GHz Nyquist pushes
-against the velocity-match and RC limits of current production processes; peaking
-and advanced electrode co-design are active research areas
-(\Cref{sec:simzm}).
-
-\subsection{Ring modulators in silicon}
-\label{sec:siph-ring}
-
-A microring modulator couples a bus waveguide to a closed-loop resonator via
-evanescent fields. On resonance, light drops into the ring and is strongly
-attenuated at the through port; off resonance, light passes. Data modulation
-shifts the resonance wavelength via carrier depletion in the ring's PN junction.
-
-Advantages:
-
-\begin{itemize}
-\item \textbf{Compact:} ring radius 5--20~$\mu$m; hundreds fit on a die for dense
-      WDM (\Cref{ch:wdm}).
-\item \textbf{Low drive voltage:} resonance enhancement means small $\Delta n$
-      produces large extinction; effective $V_\pi L$ is much lower than an MZM.
-\item \textbf{WDM-native:} each ring modulates one $\lambda$; add rings to add
-      channels without extra MUX stages.
-\end{itemize}
-
-Trade-offs:
-
-\begin{itemize}
-\item \textbf{Wavelength lock:} resonance drifts $\sim$10~GHz/$^\circ$C in silicon.
-      Each ring needs active thermal tuning or laser-to-ring feedback
-      (\Cref{sec:locking-techniques}).
-\item \textbf{Photon-lifetime BW limit:} high $Q$ improves efficiency but caps EO
-      BW. Inductive peaking extends usable BW to 90--110+~GHz in demos
-      (\Cref{sec:siring}).
-\item \textbf{Thermal crosstalk:} adjacent-ring heaters shift neighbors in dense
-      arrays (\Cref{sec:thermal-xtalk}).
-\end{itemize}
-
-\subsection{Choosing MZM versus ring}
-
-\begin{table}[ht]
-\centering
-\caption{Si MZM vs.\ ring modulator trade-offs.\label{tab:mzm-vs-ring}}
-\begin{tabular}{@{}lll@{}}
-\toprule
-Attribute & Si MZM & Si ring \\
-\midrule
-Footprint & mm-scale & $\mu$m-scale \\
-$V_\pi L$ (effective) & 1.5--2.5~V$\cdot$cm & $<$0.1~V$\cdot$cm (resonance-enhanced) \\
-EO BW (production) & 70--100+~GHz & 50--90~GHz (peaked: 110+~GHz) \\
-Wavelength lock & not needed & required \\
-WDM scaling & one per $\lambda$ + MUX & inherently WDM-native \\
-On-chip IL & 2--5~dB & 1--3~dB \\
-Temperature sensitivity & low & high ($\sim$10~GHz/$^\circ$C) \\
-Best fit & single-$\lambda$ DR/FR, broad-passband & CPO, dense WDM, scale-up optical I/O \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Use an MZM when the link is single-wavelength DR/FR and you want a flat passband
-that avoids control loops. Use a ring when many $\lambda$ must fit on one PIC and
-modulator area dominates, as in CPO WDM engines and scale-up optical I/O
-(\Cref{sec:siring,sec:cpo-status}). Use TFLN when native 224~GBd bandwidth is
-needed and silicon cannot close the 112~GHz Nyquist without heavy peaking
-(\Cref{sec:tfln-mzm}).
-
-\keyidea{Silicon photonics modulates light by changing free-carrier density in a PN
-junction (plasma dispersion). Carrier depletion is fast but weak ($V_\pi L \approx
-1.5$--$2.5$~V$\cdot$cm); carrier injection is strong but slow. MZMs are broadband
-and temperature-insensitive but large; rings are compact and WDM-native but need
-wavelength lock and have a photon-lifetime BW ceiling. Both share the same SOI
-fab flow, so the choice is architectural, not process-limited.}
+\Cref{tab:source-mod-matrix} compares the system consequences. The device
+operation, bandwidth, insertion loss, and driver interfaces live in
+\Cref{sec:eml-eam,sec:simzm,sec:siring,sec:tfln-mzm,tab:tx-modulator}. Keep that
+physics in one place. Here the decision is whether the link can carry the added
+power, control, assembly, and validation burden.
 
 \section{Laser requirements: from roadmap to specs}
 \label{sec:laser-reqs}
@@ -623,6 +502,27 @@ telemetry signature, so classify before you open FA.
       the gain medium (\Cref{sec:lasers-how-fails}).
 \end{description}
 
+\section{Separate thermal behavior from long-term aging}
+\label{sec:laser-thermal-vs-aging}
+
+Thermal response is reversible on the time scale of a temperature sweep or
+cycle. It changes threshold current, slope efficiency, wavelength, EAM bias,
+TEC current, and ring alignment. Measure it with controlled case-temperature
+sweeps, loaded thermal corners, heater sweeps, and thermal cycling. Repeat the
+measurement after returning to the starting temperature. Recovery points toward
+an operating-point or control problem.
+
+Long-term aging is cumulative. Threshold current rises, slope efficiency falls,
+contacts degrade, defects grow, and an absorption or spectral curve can move
+permanently. Measure those changes with HTOL, accelerated life testing, and
+periodic LIV, spectrum, and modulation readouts. A temperature cycle can expose a
+weak attach or calibration error, but it does not by itself establish a lifetime
+acceleration model.
+
+Do not merge the data sets. A high-temperature BER failure that clears at room
+temperature needs thermal-margin work. A room-temperature baseline that keeps
+moving after each stress interval needs an aging or damage hypothesis.
+
 \section{How lasers are qualified}
 \label{sec:how-lasers-qualified}
 
@@ -637,9 +537,10 @@ years of field life. Three stress classes do the work:
 \item[Burn-in] A shorter, sometimes 100\%-screen stress that removes
       infant-mortality units before ship, rather than projecting life. Burn-in
       trades test time for escape rate (\Cref{sec:hvm-test}).
-\item[Accelerated aging (temperature cycling, damp heat)] Telcordia GR-468-CORE
-      stresses beyond HTOL that catch packaging and mechanical failure modes
-      thermal soak alone misses (\Cref{sec:gr468}).
+\item[Environmental stress] Temperature cycling, damp heat, vibration, and shock
+      catch packaging, attach, and mechanical failure modes that HTOL does not.
+      They qualify different risks and should not be treated as substitutes for
+      long-term aging data (\Cref{sec:gr468}).
 \end{description}
 
 Together with the Arrhenius acceleration factor, these three stresses turn a
@@ -845,29 +746,28 @@ Examples: Ayar Labs SuperNova (CW-WDM MSA-compliant, feeds TeraPHY)
 aimed at many $\lambda$ from one chip. Source tests live here; locking and on-chip
 MUX live in \Cref{ch:wdm}.
 
-\section{The light-source supplier landscape}
+\section{Light-source supply strategy}
 \label{sec:laser-suppliers}
 
-Who actually builds these lasers matters, because the light source is often the
-hardest and highest-value part of an optical link. The suppliers split along a
-strategic fork: put the laser \emph{outside} the package as a serviceable module,
-or integrate it \emph{into} the photonic chip.
+The sourcing decision follows the same architecture fork as the optical design:
+buy a merchant source, buy a serviceable external module, or bind the source to
+the photonic package. Evaluate each path by qualification ownership, second-source
+portability, lot traceability, test access, field replacement, and change-control
+rights. A vendor list ages quickly and does not answer those questions.
 
 \begin{description}
-\item[Merchant laser chips (DFB / EML / high-power CW)] the III-V chips inside
-      most modules and sources: Lumentum (notably supplying lasers for NVIDIA
-      Spectrum-X photonics), Coherent (collaborating with NVIDIA on silicon
-      photonics), and the Japanese EML/CW specialists Sumitomo Electric,
-      Mitsubishi Electric, Furukawa, and Fujitsu; also MACOM and Source Photonics.
-\item[External light-source modules (CW-WDM / ELSFP)] the SuperNova peers: Ayar
-      Labs (SuperNova, \Cref{sec:cwwdm}), Broadcom's in-house ELSFP for its CPO
-      switches, and POET Technologies' interposer-based light source.
-\item[Quantum-dot comb lasers] a single chip emitting many wavelengths at once:
-      Ranovus (Odin) and Quintessent, both aimed squarely at CW-WDM.
-\item[Lasers integrated on silicon] III-V gain bonded into the PIC: Intel
-      (hybrid silicon lasers, and an 8-wavelength integrated source for its
-      optical compute interconnect), OpenLight with Tower Semiconductor, and
-      startups such as Scintil, Nexus Photonics, and Aeluma.
+\item[Merchant DFB, EML, or CW die] preserve module-level design freedom and can
+      support a second source, but the integrator owns attach, driver match,
+      screening, and package reliability.
+\item[External CW-WDM or ELSFP module] moves source qualification and management
+      into a replaceable unit. The system still owns connector, ORL, hot-swap,
+      and host interoperability (\Cref{sec:elsfp,sec:cwwdm-laser}).
+\item[Multi-wavelength source] reduces source count and can simplify WDM fan-out,
+      but couples channel yield, power flatness, control, and replacement into one
+      unit (\Cref{sec:cwwdm-laser}).
+\item[Source integrated with the PIC] reduces optical interfaces and can improve
+      density, but makes laser yield and wear-out part of package yield and
+      service life.
 \end{description}
 
 \begin{table*}[ht]
@@ -876,23 +776,23 @@ or integrate it \emph{into} the photonic chip.
 \setlength{\tabcolsep}{5pt}%
 \begin{tabular}{@{}p{0.28\linewidth}p{0.68\linewidth}@{}}
 \toprule
-Approach & Representative suppliers \\
+Approach & Qualification ownership and risk \\
 \midrule
-Merchant DFB/EML/CW chips & Lumentum, Coherent, Sumitomo, Mitsubishi, MACOM \\
-External CW-WDM / ELSFP modules & Ayar Labs, Broadcom, POET \\
-Quantum-dot comb lasers & Ranovus, Quintessent \\
-Lasers integrated on silicon & Intel, OpenLight/Tower, Scintil, Nexus, Aeluma \\
+Merchant DFB/EML/CW die & Integrator owns attach, driver match, screen, and module qual \\
+External CW-WDM / ELSFP module & Supplier owns source module; system owns interface and service qual \\
+Multi-wavelength source & Shared yield, power-flatness, and replacement risk across channels \\
+Source integrated with PIC & Highest density; laser yield and life become package risks \\
 \bottomrule
 \end{tabular}
 \par\medskip
-{\raggedright\footnotesize\textbf{Table~\thetable.} Light-source approaches and representative suppliers.\par}
+{\raggedright\footnotesize\textbf{Table~\thetable.} Light-source sourcing paths
+and the qualification ownership each one creates.\par}
 \end{table*}
 
-\aside{The fork is a reliability decision. \emph{External} sources (Ayar,
-Broadcom ELSFP, POET) make the highest-failure component field-replaceable;
-\emph{integrated} lasers (Intel, OpenLight, Scintil) win on density and cost but
-place that component permanently inside the package. The leading CPO programs have
-so far chosen external, for the GR-468 reasons of \Cref{ch:reliability,sec:elsfp}.}
+\aside{The fork is a reliability and ownership decision. An external source makes
+the source replaceable but adds a managed optical interface. An integrated source
+removes that interface but places source yield and wear-out inside the package.
+Qualify the architecture you will service, not only the laser die.}
 
 \section{Why lasers are the reliability bottleneck}
 
@@ -913,6 +813,32 @@ turns a modest per-laser FIT rate into a steady stream of field failures
 field-replaceable external laser sources (ELSFP, CW-WDM),
 redundancy, burn-in screening to weed out infant mortality, and derating (running
 lasers below their maximum to extend life).
+
+\section{Margin erosion over temperature, lot, and life}
+\label{sec:laser-margin-erosion}
+
+A link rarely loses all margin in one event. The source can lose launch power as
+slope efficiency falls. Connector loss and ORL can rise after service. EAM or
+MZM bias can move. A ring can consume spectral headroom as its heater approaches
+range. Driver noise can raise the BER floor while none of these changes violates
+its stand-alone limit.
+
+Track four ledgers:
+\begin{description}
+\item[Power margin] launch power, coupling, connector and MUX loss, receiver
+      sensitivity, and aging reserve.
+\item[Noise margin] intrinsic and feedback-driven RIN, bias-rail noise, receiver
+      noise, and crosstalk.
+\item[Timing margin] source and modulator bandwidth, dispersion, driver and host
+      jitter, and equalization reserve.
+\item[Spectral margin] laser wavelength, SMSR, filter or ring passband, thermal
+      drift, and lock range.
+\end{description}
+
+Recompute the link at combined production corners. A nominal part at nominal
+temperature says little about whether a slow loss in two ledgers will push a
+tail unit across the pre-FEC BER limit. \Cref{sec:prod-corners,tab:fleet-triage}
+carry the same ledgers into validation and fleet triage.
 
 \section{Engineering lens}
 \label{sec:lasers-engineering-lens}
@@ -969,6 +895,35 @@ but its modulator operating point was wrong.}{A calibration table used the wrong
 temperature segment after the cycle.}{The table and screening limits were fixed,
 and EAM bias sweep data became part of the thermal-cycle readout.}
 
+\section{Engineering checklist}
+\label{sec:lasers-checklist}
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:laser-engineering-checklist}%
+\centering
+\setlength{\tabcolsep}{4pt}%
+\footnotesize
+\begin{tabular}{@{}p{0.20\linewidth}p{0.34\linewidth}p{0.40\linewidth}@{}}
+\toprule
+Decision or test & Question it answers & Evidence to retain \\
+\midrule
+Architecture & Does the source and modulation path close reach, rate, power, cost, and service? & Requirement allocation and rejected alternatives \\
+LIV & Is the operating window clear of threshold, kinks, and rollover? & Curves by unit, lot, temperature, and age \\
+Spectrum & Does wavelength and SMSR stay inside the assigned grid and filter passband? & OSA or wavemeter data across corners \\
+RIN and ORL & Does noise margin survive the reflection environment? & Quiet and stressed RIN with stated ORL and bandwidth \\
+Modulation & Does bias, drive, chirp, and bandwidth close the eye? & Bias sweeps, TDECQ or equivalent, and driver conditions \\
+Thermal behavior & Are reversible shifts within control and actuator range? & Temperature and heater sweeps, TEC current, recovery data \\
+Long-term aging & Which parameters drift permanently, and at what rate? & HTOL intervals, LIV, spectrum, and modulation trends \\
+Manufacturing & Can the ATP catch bad units and lot drift at useful test cost? & Limits, guard bands, GR\&R, yield, and reaction plan \\
+Fleet operation & Which monitors distinguish source, modulator, cooler, and optical path? & Telemetry map, alarm thresholds, and golden baselines \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Source and modulation
+engineering checklist. Each row ties a decision to evidence, not only a test
+name.\par}
+\end{table*}
+
 \section{Interview and design review questions}
 \label{sec:lasers-design-review}
 
@@ -983,6 +938,8 @@ and EAM bias sweep data became part of the thermal-cycle readout.}
 
 \paragraph{Design.}
 \begin{itemize}
+\item Why would you choose an EML over direct modulation for this reach and lane rate?
+\item When does a ring's density justify its heater and wavelength-control burden?
 \item Which aging model and activation energy match the observed failure mechanism?
 \item What are the distributions of threshold, slope, wavelength, SMSR, and RIN
       across wafer, lot, assembly site, and temperature?
@@ -997,13 +954,16 @@ and EAM bias sweep data became part of the thermal-cycle readout.}
 \item Optical power fell but the monitor photodiode reports no change. What do
       you check?
 \item BER worsened after thermal cycling while average power stayed in range.
-      What is the most likely root cause?
+      Which measurement would separate source aging, EAM bias, wavelength, and
+      connector hypotheses?
 \item Which telemetry distinguishes laser wear from monitor, TEC, connector, and
       bias-driver faults in the fleet?
 \end{itemize}
 
 \paragraph{Manufacturing and operations.}
 \begin{itemize}
+\item How would you qualify a second laser supplier without assuming the first
+      supplier's failure distribution?
 \item What are the process control limits and the supplier's reaction plan when a
       trend crosses them?
 \item How many HTOL hours at what temperature project 10 years of field life at

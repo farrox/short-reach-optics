@@ -7,6 +7,7 @@ that pandoc can convert to HTML cleanly.
 2. Strips/replaces custom commands pandoc cannot parse.
 3. Writes .build/combined_for_html.tex ready for pandoc.
 """
+from __future__ import annotations
 
 import os
 import re

@@ -3,6 +3,8 @@
 Split the full pandoc Markdown output into per-chapter pages
 with Jekyll front matter and navigation links.
 """
+from __future__ import annotations
+
 import os
 import re
 import sys
