@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Ch 12: References"
+title: "Ch 13: References"
 ---
 
 # References
@@ -53,7 +53,7 @@ See the PDF version for the full bibliography.
 
 
 <div class="nav-links">
-  <a href="ch11-abbreviations">&larr; Previous</a>
+  <a href="ch12-abbreviations">&larr; Previous</a>
   <a href="./">Table of Contents</a>
   <span></span>
 </div>

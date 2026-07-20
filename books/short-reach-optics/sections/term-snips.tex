@@ -1,15 +1,44 @@
 % Margin glosses for acronyms and jargon (\firstterm{key} on first use).
+% Every gloss is emitted with the abbreviation in bold up front; keys whose
+% display form differs from the key name get a \declaretermlabel override.
 \makeatletter
 \newcommand{\declaretermsnip}[2]{\expandafter\gdef\csname termsnip@#1\endcsname{#2}}
+\newcommand{\declaretermlabel}[2]{\expandafter\gdef\csname termlabel@#1\endcsname{#2}}
+\newcommand{\termsnip@note}[1]{%
+  \marginnote{\textbf{\ifcsname termlabel@#1\endcsname
+      \csname termlabel@#1\endcsname\else#1\fi}%
+    \ \csname termsnip@#1\endcsname}%
+}
 \newcommand{\firstterm}[1]{%
   \expandafter\ifx\csname termused@#1\endcsname\relax
     \expandafter\gdef\csname termused@#1\endcsname{}%
     \ifcsname termsnip@#1\endcsname
-      \marginnote{\csname termsnip@#1\endcsname}%
+      \termsnip@note{#1}%
     \fi
   \fi
 }
+% Unconditional variant: always emits the gloss, even if the term appeared
+% earlier in the book. Used in standalone material like the interview appendix.
+\newcommand{\termnote}[1]{%
+  \ifcsname termsnip@#1\endcsname
+    \termsnip@note{#1}%
+  \fi
+}
 \makeatother
+
+% Display-label overrides for keys whose name is not the printed abbreviation.
+\declaretermlabel{preFEC}{pre-FEC}
+\declaretermlabel{postFEC}{post-FEC}
+\declaretermlabel{RS544514}{RS(544,514)}
+\declaretermlabel{eightD}{8D}
+\declaretermlabel{QSFPDD}{QSFP-DD}
+\declaretermlabel{CWWDM}{CW-WDM}
+\declaretermlabel{FR8DR8}{FR8/DR8}
+\declaretermlabel{AECQ100}{AEC-Q100}
+\declaretermlabel{dspserdes}{DSP SerDes}
+\declaretermlabel{gearbox}{Gearbox}
+\declaretermlabel{wavelengthLocker}{Wavelength locker}
+\declaretermlabel{thermalCrosstalk}{Thermal crosstalk}
 
 \declaretermsnip{FEC}{Forward error correction: parity symbols let the receiver fix
   bit errors without retransmit. Datacom links specify a \emph{pre-FEC} BER the code
@@ -21,10 +50,10 @@
 \declaretermsnip{RS544514}{Reed--Solomon block code: 544 symbols out, 514 payload, 30
   parity. Corrects up to 15 symbol errors per codeword.}
 
-\declaretermsnip{preFEC}{Pre-FEC BER: measured before the FEC decoder. Standards and
+\declaretermsnip{preFEC}{BER measured before the FEC decoder. Standards and
   validation sweeps use this number, not post-FEC.}
 
-\declaretermsnip{postFEC}{Post-FEC BER: after FEC correction. Target is effectively
+\declaretermsnip{postFEC}{BER after FEC correction. Target is effectively
   error-free ($<10^{-12}$ class).}
 
 \declaretermsnip{MLC}{Multi-level coding: coded modulation paired with PAM6/PAM8. OIF
@@ -37,12 +66,12 @@
 \declaretermsnip{OH}{Coding overhead: fraction of line rate spent on parity symbols
   (KP4 $\approx$5.5\%).}
 
-\declaretermsnip{TDECQ}{Transmitter and dispersion eye closure quaternary (TDECQ):
+\declaretermsnip{TDECQ}{Transmitter and dispersion eye closure quaternary:
   headline PAM4 transmitter-quality metric after a reference receiver and bounded
   FFE, including a test fiber. Lower is better; LPO MSA 100G-DR caps near 3.4~dB.
   Replaced simple eye-mask tests. Stressed counterpart: SECQ.}
 
-\declaretermsnip{TECQ}{Transmitter eye closure quaternary (TECQ): same measurement as
+\declaretermsnip{TECQ}{Transmitter eye closure quaternary: same measurement as
   TDECQ without the test fiber. Used with TDECQ in LPO MSA OMA tables.}
 
 \declaretermsnip{SECQ}{Stressed eye closure quaternary: receiver-side stressed test,
@@ -97,6 +126,9 @@
 
 \declaretermsnip{DML}{Directly modulated laser: modulate bias current; high chirp, low cost.}
 
+\declaretermsnip{DFB}{Distributed-feedback laser: grating in the active region for
+  single-mode output. Dominant 1310~nm source for DR/FR and EML gain sections.}
+
 \declaretermsnip{VCSEL}{Vertical-cavity surface-emitting laser: 850~nm class, MMF SR links.}
 
 \declaretermsnip{LIV}{Light--current--voltage curve: threshold, slope efficiency, kink-free
@@ -117,10 +149,10 @@
 \declaretermsnip{Arrhenius}{Life-acceleration model: temperature stress multiplies wear-out
   by $\exp[(E_a/k)(1/T_\mathrm{use}-1/T_\mathrm{stress})]$.}
 
-\declaretermsnip{wavelengthLocker}{Wavelength locker: etalon + dual-PD error signal that
+\declaretermsnip{wavelengthLocker}{Etalon + dual-PD error signal that
   trims laser TEC or current onto a grid slot (common on discrete DFB/EML).}
 
-\declaretermsnip{thermalCrosstalk}{Thermal crosstalk: heater or self-heating on one ring
+\declaretermsnip{thermalCrosstalk}{Heater or self-heating on one ring
   shifts neighbors' resonances; worst case is full-bank traffic at max case $T$.}
 
 \declaretermsnip{ACC}{Active copper cable: redriver (CTLE+VGA) inside cable; extends DAC reach.}
@@ -138,6 +170,13 @@
 
 \declaretermsnip{ISI}{Inter-symbol interference: energy from neighboring symbols
   overlapping the current unit interval.}
+
+\declaretermsnip{BER}{Bit error ratio: errored bits divided by bits received.
+  Pre-FEC BER is the validation metric; post-FEC is the service metric.}
+
+\declaretermsnip{VNA}{Vector network analyzer: measures S-parameters versus
+  frequency. Used for electrical and electro-optic bandwidth, return loss,
+  and impedance match.}
 
 \declaretermsnip{DFE}{Decision-feedback equalizer: cancels post-cursor ISI using past
   symbol decisions.}
@@ -451,4 +490,15 @@
 
 \declaretermsnip{PIN}{PIN photodiode: p-intrinsic-n structure; no internal gain.
   Ge-on-Si waveguide PIN is the mainstream short-reach detector.}
+
+\declaretermsnip{PSRR}{Power-supply rejection ratio: how well a bias board or driver
+  rejects rail noise. Weak PSRR converts electrical noise into optical intensity
+  noise through the laser.}
+
+\declaretermsnip{MPI}{Multipath interference: coherent beating from two or more
+  reflective paths. Produces a BER floor and clustered FEC errors that more
+  launch power does not fix.}
+
+\declaretermsnip{PAM4}{Four-level pulse-amplitude modulation: two bits per symbol.
+  Short-reach 100--200G/lane links use PAM4 with KP4 FEC.}
 

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Ch 11: Abbreviations"
+title: "Ch 12: Abbreviations"
 ---
 
 # Abbreviations
@@ -749,7 +749,7 @@ XPO
 
 
 <div class="nav-links">
-  <a href="ch10-failure-analysis-handbook">&larr; Previous</a>
+  <a href="ch11-one-night-optical-systems-interview-review">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch12-references">Next &rarr;</a>
+  <a href="ch13-references">Next &rarr;</a>
 </div>

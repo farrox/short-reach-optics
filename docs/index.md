@@ -24,8 +24,9 @@ title: "Table of Contents"
 - [**8.** Reliability and manufacturing at scale](ch8-reliability-and-manufacturing-at-scale)
 - [**9.** AI datacenter networking](ch9-ai-datacenter-networking)
 - [**10.** Failure analysis handbook](ch10-failure-analysis-handbook)
-- [**11.** Abbreviations](ch11-abbreviations)
-- [**12.** References](ch12-references)
+- [**11.** One-night optical systems interview review](ch11-one-night-optical-systems-interview-review)
+- [**12.** Abbreviations](ch12-abbreviations)
+- [**13.** References](ch13-references)
 
 ---
 

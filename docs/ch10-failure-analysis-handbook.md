@@ -76,31 +76,31 @@ Repair the first plane where power diverges. Correct calibration or monitor coef
 
 ##### Observed behavior.
 
-Pre-FEC BER rises, but the first task is to determine whether the whole BER waterfall moved to higher received power or whether it stopped improving at a horizontal floor.
+Pre-FEC BER rises, but the first task is to determine whether the whole BER waterfall moved to higher received power or whether it stopped improving at a horizontal floor. A waterfall is BER versus received power from a VOA sweep at a named reference plane. One operating-point BER is not enough to classify the failure.
 
 ##### Likely hypotheses.
 
-A shifted waterfall points toward lost power, receiver sensitivity, eye closure, timing, or dispersion. A floor points toward signal-proportional noise, reflection, crosstalk, or burst errors. The distinction prevents a power fix from being applied to a noise-limited link.
+A shifted waterfall points toward lost power, receiver sensitivity, eye closure, timing, or dispersion: the link still responds to more photons, but the power needed for a given BER has moved. A floor points toward signal-proportional noise, reflection, crosstalk, or bursty impairments: past a point, more power does not help because noise grows with the signal. The distinction prevents a power fix from being applied to a noise-limited link. FEC error timing further splits the floor and shift cases: randomly sprinkled errors fit Gaussian or steady RIN; clustered bursts fit MPI, connector intermittents, or shared supply and clock events.
 
 ##### Measurements and root-cause isolation.
 
-1.  Sweep received power and plot BER rather than recording one operating point.
+1.  Sweep received power and plot BER rather than recording one operating point. Confirm whether the curve shifted, floored, or both (a soft floor on top of a shift is common).
 
-2.  If the waterfall shifted, compare received OMA, TDECQ, receiver sensitivity, equalizer taps, wavelength, and temperature with the golden baseline.
+2.  If the waterfall shifted, compare received OMA, TDECQ, receiver sensitivity, equalizer taps, wavelength, and temperature with the golden baseline. Golden-swap Tx and Rx to assign ownership.
 
 3.  If the curve floors, follow §10.3 and split intrinsic RIN, electrical noise, ORL, MPI, and crosstalk.
 
-4.  Use FEC error timing and lane correlation to separate random noise from bursts and shared disturbances.
+4.  Use FEC error timing and lane correlation to separate random noise from bursts and shared disturbances. Preserve counters before reseating if the pattern is intermittent.
 
 ##### Corrective action and recurrence control.
 
-Restore the margin ledger that moved, then repeat the full BER sweep at loaded corners. Store waterfall shape, not only pass/fail BER, so later fleet changes can be classified without guessing.
+Restore the margin ledger that moved, then repeat the full BER sweep at loaded corners. Store waterfall shape, not only pass/fail BER, so later fleet changes can be classified without guessing. The interview study treatment of these shapes is in §A.2.7.
 
 ## BER floor
 
 ##### Observed behavior.
 
-Pre-FEC BER improves as you increase transmit power, then stops improving and flattens at a constant floor regardless of how much more power you add.
+Pre-FEC BER improves as you increase transmit or received power, then stops improving and flattens at a constant floor regardless of how much more power you add. The FEC histogram may still look random (steady RIN) or bursty (MPI, intermittents); the floor shape alone does not decide that split.
 
 ##### Likely hypotheses.
 
@@ -428,5 +428,5 @@ Restore thermal headroom, correct calibration and control limits, reduce couplin
 <div class="nav-links">
   <a href="ch9-ai-datacenter-networking">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch11-abbreviations">Next &rarr;</a>
+  <a href="ch11-one-night-optical-systems-interview-review">Next &rarr;</a>
 </div>

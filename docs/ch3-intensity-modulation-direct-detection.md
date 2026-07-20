@@ -472,7 +472,7 @@ Co-packaged engines shipping in 2025--26 typically run *200 Gb/s per optical ch
 
 ### 448G is where the modulation debate lives
 
-The next step, *CEI-448G* (framework published in late 2025, targeting 3.2 Tb/s systems from 2026 onward), is where the long PAM4 consensus finally comes under pressure . A full CEI-448G glossary of terms is in Chapter 10.15. The debate is not whether 448 Gb/s *per lane* is useful (eight lanes make a 3.2 Tb/s OSFP-class port), but what *symbol rate* and *modulation order* each part of the link must run at to get there.
+The next step, *CEI-448G* (framework published in late 2025, targeting 3.2 Tb/s systems from 2026 onward), is where the long PAM4 consensus finally comes under pressure . A full CEI-448G glossary of terms is in §A.6. The debate is not whether 448 Gb/s *per lane* is useful (eight lanes make a 3.2 Tb/s OSFP-class port), but what *symbol rate* and *modulation order* each part of the link must run at to get there.
 
 ##### Line rate, symbol rate, and where each applies.
 

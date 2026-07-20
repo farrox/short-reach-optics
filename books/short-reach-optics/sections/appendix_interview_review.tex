@@ -1,0 +1,1191 @@
+\chapter{One-night optical systems interview review}
+\label{app:interview-review}
+
+Use this appendix as a standalone review sheet. Its purpose is not to cover the
+most optics. Its purpose is to make your engineering process visible under
+time pressure.
+
+\section{The answer spine}
+
+Move every answer through the same sequence. The diagram is a memory aid, not
+the answer. In the interview you should be able to speak one clear paragraph
+for each arrow, naming what you know, what is still uncertain, and what
+measurement you would take next. Do not jump from a symptom to a component.
+The systems loop in \Cref{sec:systems-engineering-loop}, the debugging pyramid
+in \Cref{sec:debug-pyramid}, and the failure-analysis method in
+\Cref{ch:failure-modes} are the full versions of this spine.
+\[
+\begin{split}
+\text{requirements} &\longrightarrow \text{architecture}
+\longrightarrow \text{measurements}\\
+&\longrightarrow \text{observations}
+\longrightarrow \text{hypotheses}\\
+&\longrightarrow \text{isolation}
+\longrightarrow \text{root cause}\\
+&\longrightarrow \text{corrective action}
+\longrightarrow \text{recurrence control}.
+\end{split}
+\]
+
+\paragraph{Requirements.}
+Start by stating what the system must do before you name a part. Reach, lane
+rate, aggregate capacity, power envelope, lifetime, cost, and manufacturing
+volume are the constraints that decide everything downstream. A 500~m DR
+link\termnote{DR} at 100~G/lane with a tight power budget is a different
+problem from a 2~km FR\termnote{FR} link or a dense WDM\termnote{WDM}
+co-packaged engine. Say the requirement out loud even when the interviewer
+hands you a failed module, because the requirement tells you which margins
+matter and which architectures were even eligible. If you cannot name the
+requirement, you cannot tell whether a measurement is relevant.
+
+\paragraph{Architecture.}
+Translate the requirement into an architecture path: fiber plant, wavelength,
+source, modulator, receiver, and digital stack. A VCSEL\termnote{VCSEL} path
+commits you to 850~nm multimode fiber and direct modulation. A
+DFB\termnote{DFB} or EML\termnote{EML} path at 1310~nm commits you to
+single-mode fiber and leaves a choice among direct modulation, electro-
+absorption, a silicon MZM\termnote{MZM}, or a ring\termnote{MRM}. Each path
+then sets detector material, thermal control, test coverage, and service
+policy. Architecture is where you show that component choices are not
+preferences; they are consequences of the requirement
+(\Cref{tab:source-mod-matrix}).
+
+\paragraph{Measurements.}
+Name the instruments you would use and the uncertainty each one removes.
+Always state the reference plane, pattern, temperature, and pass criterion
+with the instrument. A number without a plane is not a measurement.
+
+A power meter answers whether the optical power ledger moved, and at which
+reference plane. An LIV\termnote{LIV} setup answers whether the laser itself
+changed threshold or slope. An OSA\termnote{OSA} answers wavelength and
+SMSR\termnote{SMSR}.
+
+A DCA\termnote{DCA} answers OMA\termnote{OMA}, ER\termnote{ER},
+RLM\termnote{RLM}, TDECQ\termnote{TDECQ}, and eye shape. A
+BERT\termnote{BERT} and FEC\termnote{FEC} counters answer the
+BER\termnote{BER} waterfall, floor, and burst pattern.
+
+A VNA\termnote{VNA} answers electrical or electro-optic bandwidth. An
+ORL\termnote{ORL} meter and inspection scope answer whether the plant is
+reflecting or dirty.
+
+\paragraph{Observations.}
+Report what the instruments actually showed, not what you hoped they would
+show. Separate facts from interpretation. ``Received power held at
+$-4$~dBm while pre-FEC BER rose from $10^{-8}$ to $10^{-5}$ at $70^\circ$C''
+is an observation. ``The laser is dying'' is not. Scope the observation:
+one lane or all lanes, one unit or a lot, sudden or gradual, recoverable on
+cool-down or permanent. Preserve telemetry, screenshots, and the failing
+state before you reseat, clean, reboot, or rewrite a calibration table.
+Observations that disappear under debugging are observations you never had.
+
+\paragraph{Hypotheses.}
+Turn the observations into a short list of competing causes, ranked by how
+well they explain the full pattern. Use the power-versus-signal-quality fork
+as the first split. If average power moved, hypothesize source output,
+coupling, connector loss, multiplexer loss, or monitor calibration. If power
+held but BER worsened, hypothesize eye closure from ER, OMA, RLM, or
+TDECQ\termnote{TDECQ} degradation; RIN\termnote{RIN} under reflection; ISI
+or jitter; wavelength walking off a filter; receiver sensitivity loss; or a
+wrong calibration table. Keep the list short enough that the next measurement
+can kill more than one item. A hypothesis you cannot falsify with a bench
+step does not belong on the list yet.
+
+\paragraph{Isolation.}
+Choose the next measurement for its ability to separate the remaining
+hypotheses, not because it is the instrument you like. A golden swap of
+transmitter versus receiver splits Tx from Rx. An optical-versus-electrical
+lane swap in a multi-lane module splits the optical path from the driver or
+TIA\termnote{TIA}. A bias sweep at the failing temperature asks whether the
+optimum moved away from the stored table. An LIV\termnote{LIV} compared with
+ship data asks whether the device aged or only the setpoint drifted. A
+BER-versus-power waterfall asks whether the curve shifted or floored.
+Isolation is the discipline of picking the cut that removes the most
+uncertainty per hour of bench time.
+
+\paragraph{Root cause.}
+State the mechanism that survived isolation, with the evidence that killed
+the alternatives. ``EAM\termnote{EAM} bias table segment wrong above
+$60^\circ$C'' is a root cause. ``Bad eye at high temperature'' is still a
+symptom. Name the physical or process mechanism when you can: facet wear,
+monitor-PD corruption, FAU\termnote{FAU} misalignment, MPI\termnote{MPI}
+from a dirty connector pair, TEC\termnote{TEC} railed under load, supplier
+lot with high threshold. If the evidence only reaches ``calibration drift''
+and not a deeper mechanism, say so. Overclaiming the root cause is worse than
+stopping one layer early with honesty.
+
+\paragraph{Corrective action.}
+Fix the mechanism you named, under the condition that failed. Retune the
+table, replace the lot, change the thermal design, clean and inspect the
+plant, filter the supply, or rewrite the ATP\termnote{ATP} limit. Verify the
+fix by reproducing the original failing condition: same temperature, same
+host, same fiber, same pattern. A fix that only works on a quiet room-
+temperature bench is not a fix. Containment comes first when the fleet is
+already exposed: stop ship, quarantine lots, or derate while the permanent
+fix is built.
+
+\paragraph{Recurrence control.}
+Close with the control that stops the same escape next month. That control
+is usually a new or tightened test, an SPC\termnote{SPC} chart, a telemetry
+alarm, a process-control limit, a supplier screen, or a firmware guard that
+refuses to boot with a railed actuator. Name the owner and the measurable
+closure criterion. Root cause without recurrence control is a story, not an
+engineering result. In the interview, ending on recurrence control is what
+separates a debug narrative from a product-engineering answer.
+
+\section{Ten concepts to know cold}
+
+\subsection{Start at the system}
+
+For a new link, walk downward from capacity to the service model. Capacity
+sets lane rate. Lane rate and reach together set the fiber plant and the
+source class. Power and cost then decide whether you can afford a
+TEC\termnote{TEC}, a retimer, or a dense WDM\termnote{WDM} engine. Only after
+those constraints are named do you choose the modulator and the receiver,
+then the DSP\termnote{dspserdes} and FEC\termnote{FEC} stack, then the
+validation and field-service model.
+\[
+\begin{split}
+\text{capacity} &\longrightarrow \text{lane rate}
+\longrightarrow \text{reach}
+\longrightarrow \text{power}\\
+&\longrightarrow \text{fiber plant}
+\longrightarrow \text{source}
+\longrightarrow \text{modulator}\\
+&\longrightarrow \text{receiver}
+\longrightarrow \text{digital signal processing and FEC}\\
+&\longrightarrow \text{validation and service model}.
+\end{split}
+\]
+
+A good answer explains why each choice constrains the next one. A
+VCSEL\termnote{VCSEL} path points toward 850~nm, multimode
+fiber\termnote{MMF}, silicon detection, and direct modulation with a short
+reach. A DFB\termnote{DFB} path at 1310~nm points toward single-mode
+fiber\termnote{SMF}, germanium detection, and a choice among a directly
+modulated laser\termnote{DML}, an EML\termnote{EML}, or an external
+silicon-photonic modulator. Neither path is ``better.'' Each closes a
+different reach, power, cost, and manufacturing problem. The decision matrix
+is in \Cref{tab:source-mod-matrix}.
+
+\subsection{Scope before root cause}
+
+Before you open a instrument, ask how wide the failure is. One lane, one
+module, one lot, one vendor, one rack, or the fleet? A new failure or a
+long-running trend? Sudden, gradual, intermittent, or temperature-dependent?
+Did firmware, supplier, process, fixture, workload, or environment change
+just before the symptom appeared? Scope often removes more hypotheses than
+the first bench measurement, because a fleet-wide gradual drift cannot be a
+single dirty connector, and a single-lane sudden failure after a rework
+cannot be a population aging problem.
+
+Preserve the failing state and its telemetry before you reseat, clean,
+reboot, or change calibration. Capture CMIS\termnote{CMIS} monitors, pre-
+FEC\termnote{FEC} BER\termnote{BER}, bias currents, temperatures,
+LOS\termnote{LOS} and LOL\termnote{LOL} flags, and firmware versions. An
+intermittent that disappears under debugging is still a real failure; you
+just destroyed the evidence
+(\Cref{sec:fleet-triage,tab:failure-analysis-checklist}).
+
+\subsection{Use the power-versus-signal-quality fork}
+
+First ask whether received optical power changed. That one question splits
+the debug tree.
+
+If power changed, the power ledger moved. Inspect source output and enable
+state, coupling and FAU\termnote{FAU} alignment, connector cleanliness,
+ORL\termnote{ORL}, fiber and multiplexer loss, and monitor-photodiode
+calibration. An APC\termnote{APC} loop that trusts a drifting monitor will
+hold a wrong launch power while reporting that everything is fine. Confirm
+with an external power meter at a named reference plane.
+
+If power held but BER worsened, the loss is in signal quality or in the
+receiver. Inspect OMA, ER, RLM, and TDECQ\termnote{TDECQ} on a DCA;
+RIN\termnote{RIN} under controlled ORL; jitter and ISI; wavelength alignment
+to filters or rings; receiver sensitivity and equalization; and calibration
+tables that set modulator bias. Also ask the receiver-side equivalent: did
+the required optical power increase even though the power meter reading did
+not? A sensitivity shift can look exactly like transmitter degradation until
+you do a golden swap (\Cref{sec:debug-fork,sec:validation-fork}).
+
+\subsection{Track four margin ledgers}
+
+Links rarely fail from one dramatic excursion. They fail when several small
+shifts spend different ledgers at once.
+
+\begin{description}
+\item[Power] Launch power, insertion loss, coupling, connector loss,
+      multiplexer loss, and receiver sensitivity. Track average power and
+      OMA\termnote{OMA} separately: average power can look healthy while OMA
+      collapses.
+\item[Noise] RIN\termnote{RIN}, receiver thermal noise, shot noise,
+      crosstalk, supply noise through weak PSRR, and MPI from reflective
+      interfaces. Noise that scales with the signal makes a BER floor that
+      more launch power cannot fix.
+\item[Timing] Bandwidth, dispersion, jitter, ISI, and equalization reserve.
+      A SerDes\termnote{SerDes} that is already using most of its FFE and DFE
+      taps has little timing margin left even if the eye still opens on a DCA.
+\item[Spectral] Wavelength, SMSR\termnote{SMSR}, filter or ring passband,
+      thermal drift, and lock range. A ring whose heater is near its DAC rail
+      is spending spectral margin even while BER still passes.
+\end{description}
+
+Keep the four ledgers as a mental checklist when you narrate a failure. Name
+which ledger moved, by how much, and what spent it. The complete treatment is
+in \Cref{sec:laser-margin-erosion}.
+
+\subsection{Use the validation ladder}
+
+Validation is staged uncertainty reduction. For every stage, name the
+question the stage answers and the uncertainty it removes. A test that
+answers no question is cost, not confidence.
+
+\begin{description}
+\item[Bring-up] Does the hardware power, initialize, emit, lock, and pass
+      data on a known-good host? Removes integration unknowns only.
+\item[Characterization] How does performance vary with temperature,
+      voltage, lane, wavelength, pattern, and unit? Maps the population, not
+      a hero sample. Record LIV, spectrum, RIN, OMA, ER, RLM, and
+      TDECQ\termnote{TDECQ} as distributions.
+\item[Margin testing] How far is the design from each failure boundary?
+      Push power, temperature, ORL\termnote{ORL}, and supplies to the cliff
+      and measure the distance in dB, degrees, and volts.
+\item[Interoperability] Does it work with target hosts, production fiber,
+      real modules, and real firmware? Removes combination failures that
+      golden benches miss.
+\item[Environmental testing] What changes under temperature cycling,
+      humidity, vibration, shock, and connector mating?
+\item[Reliability qualification] Which parameters drift with stress and
+      time? HTOL\termnote{HTOL}, with a named mechanism and justified
+      activation energy, projects wear-out as a FIT\termnote{FIT} number.
+\item[Production readiness] Can the ATP\termnote{ATP} catch bad units and
+      process drift at useful cost and cycle time, with station correlation
+      and guard bands sized to repeatability?
+\item[Fleet monitoring] Which telemetry catches margin erosion before
+      service failure, and does the RMA\termnote{RMA} Pareto match the life
+      model?
+\end{description}
+
+\Cref{tab:ladder} maps these stages to activities and instruments. The
+worked interview answer in \Cref{sec:interview-worked-validation} walks the
+same ladder as spoken prose.
+
+\subsection{Know what each instrument answers}
+
+Do not recite instrument names. Say what uncertainty each one removes.
+
+\begin{description}
+\item[Power meter] Did optical power change, and at which reference plane?
+      External meters catch monitor-PD lies.
+\item[LIV setup] Did laser\termnote{LIV} threshold, slope efficiency,
+      voltage, kink behavior, or thermal rollover change relative to ship
+      data?
+\item[Optical spectrum analyzer or wavemeter] Did wavelength,
+      SMSR\termnote{SMSR}, mode structure, or spectral width change on an
+      OSA? Essential for filter and ring alignment.
+\item[RIN setup] Is transmitter intensity noise\termnote{RIN} limiting BER,
+      and does it depend on ORL or on the product bias board rather than the
+      laser itself?
+\item[Digital communication analyzer] Are OMA, ER, RLM,
+      TDECQ\termnote{TDECQ}, jitter, and eye shape acceptable on a DCA? This
+      is the transmitter quality ledger in one instrument.
+\item[Bit-error-ratio tester and FEC counters] What is the BER waterfall,
+      floor, burst pattern, lane correlation, and dwell-time behavior from a
+      BERT\termnote{BERT}? FEC histograms separate Gaussian noise from
+      clustered MPI or intermittents. The next subsection walks each shape
+      in study detail.
+\item[Vector network analyzer] Is electrical or electro-optic bandwidth,
+      impedance, or reflection causing eye closure? Use a
+      VNA\termnote{VNA}.
+\item[ORL meter and inspection scope] Is the optical plant adding loss or
+      reflection\termnote{ORL} that the laser will convert into RIN or MPI?
+\item[Thermal chamber] Is behavior reversible with temperature, and which
+      actuator (TEC\termnote{TEC}, heater, bias DAC) loses headroom at the
+      failing corner?
+\item[Bias sweep] Where is the optimum operating point for the
+      EAM\termnote{EAM}, MZM, or ring, and did its curve move away from the
+      stored calibration table?
+\end{description}
+
+Always name the reference plane, setup calibration, test pattern, bandwidth,
+temperature, sample identity, and pass criterion with the result
+(\Cref{tab:measurement-mapping,tab:laser-meas}).
+
+\subsection{Read a BER waterfall: shift, floor, and burst pattern}
+\label{sec:interview-waterfall}
+
+These three words show up in almost every debug answer. Know what each one
+looks like on the bench, what it rules in, and what it rules out. The
+operational procedures are in \Cref{sec:fm-ber-increase,sec:fm-ber-floor}.
+
+\paragraph{What a BER waterfall is.}
+A BER waterfall is a plot of bit error ratio versus received optical power.
+You build it by sweeping a calibrated VOA\termnote{VOA} in the path, holding
+pattern, temperature, and host fixed, and counting errors long enough at each
+power that the BER\termnote{BER} is statistically meaningful. Plot received
+power on the horizontal axis (name the reference plane: usually TP3 at the
+receiver connector) and pre-FEC BER on a log vertical axis. A healthy link
+falls steeply as power rises: more photons, better signal-to-noise ratio,
+fewer errors. That falling curve is the waterfall. A single BER point at the
+operating power is not a waterfall. Without the sweep you cannot tell whether
+you are short on power or limited by noise that scales with the signal.
+
+\paragraph{What a shifted waterfall means.}
+A parallel shift means the whole curve moved left or right while keeping a
+similar slope. The link still improves when you add power; it just needs a
+different power to hit the same BER. A rightward shift (worse sensitivity)
+means you now need more received power for the same pre-FEC BER. Common causes
+are lost launch or coupling (power ledger), a quieter or noisier receiver
+(TIA\termnote{TIA} noise, responsivity), eye closure that lowers effective
+OMA\termnote{OMA} at constant average power (ER\termnote{ER}, RLM\termnote{RLM},
+TDECQ\termnote{TDECQ}), wavelength walking onto a filter edge, or equalizer
+misadaptation. A leftward shift means the link got healthier. The diagnostic
+move after you see a shift is a golden swap: known-good transmitter, then
+known-good receiver, to decide which side owns the sensitivity change. Raising
+launch power can still help a shifted link, because the waterfall has not
+stopped responding to power.
+
+\paragraph{What a BER floor means.}
+A floor is a horizontal asymptote: as you raise received power, BER improves
+for a while and then stops. More power no longer helps. That happens when the
+dominant noise scales with the signal itself. Relative intensity
+noise\termnote{RIN} is the textbook case: intensity fluctuations grow in
+proportion to optical power, so the signal-to-noise ratio saturates and
+\[
+Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}.
+\]
+Multipath interference\termnote{MPI}, bias-rail noise through weak
+PSRR\termnote{PSRR}, and aggressor crosstalk that tracks the aggressor power
+make the same shape. The interview trap is to keep raising launch power or
+cleaning for loss when the curve has already floored. The fix is to remove the
+multiplicative noise source (ORL\termnote{ORL} and isolator hygiene, supply
+filtering, connector reflections, crosstalk isolation), not to buy more
+photons. Confirm the floor with a full sweep before you name the mechanism;
+then bisect with a quiet laser source versus the product bias board, an ORL
+reflector sweep, and the FEC error timing below.
+
+\paragraph{What a burst pattern means.}
+Average BER alone hides how errors arrive in time. A burst pattern means
+errors cluster: many errored symbols in a short window, then quiet intervals,
+rather than a steady sprinkle of random bit flips. FEC\termnote{FEC}
+histograms and pre-FEC error counters with timestamps make this visible.
+Gaussian thermal noise and well-behaved RIN tend to spread errors. MPI from a
+pair of reflective interfaces, connector intermittents, ESD events, supply
+glitches, and unlocked CDR\termnote{CDR} intervals tend to cluster them. Lane-
+correlated bursts across a module point at a shared supply, clock, or thermal
+event. A single-lane burst pattern points at that lane's optical path or
+connector. In the fleet, bursty pre-FEC counters with stable average power are
+often intermittents: preserve the counters and CMIS\termnote{CMIS} event log
+before you reseat anything, or the evidence disappears
+(\Cref{sec:fm-intermittent}).
+
+\paragraph{How to say the three together.}
+``I sweep BER versus received power. A parallel shift is a sensitivity or
+power-ledger problem; more power can still help. A floor is multiplicative
+noise; more power cannot help. A bursty FEC histogram means clustered
+impairments such as MPI or intermittents, not plain Gaussian noise.'' Offer
+to draw the shifted curve next to the floored curve on the whiteboard.
+
+\subsection{Separate thermal response from aging}
+
+Thermal effects are usually reversible when you return to the starting
+temperature: wavelength shift, ring detuning, EAM\termnote{EAM} or
+MZM\termnote{MZM} bias movement, TEC\termnote{TEC} loading, and
+receiver-noise increase. Aging is cumulative and does not reverse on
+cool-down: threshold rise, slope loss, contact degradation, defect growth,
+and permanent absorption or spectral change.
+
+The practical test is simple. Return to the starting temperature and compare
+with pre-stress data at the same junction temperature. Full recovery supports
+a thermal or control hypothesis, often a calibration-table segment or an
+actuator that ran out of range. A permanently moved LIV\termnote{LIV}
+baseline supports aging, damage, or assembly change. Mixing the two owners
+wastes weeks: a reliability team cannot fix a wrong table, and a firmware
+team cannot fix a worn facet (\Cref{sec:laser-thermal-vs-aging}).
+
+\subsection{Accelerated life tests need a mechanism}
+
+HTOL\termnote{HTOL} predicts field life only if elevated temperature and
+bias accelerate the same physical mechanism the fleet will see. The stress
+must not introduce a different mechanism, such as solder creep at a
+temperature the product never reaches, and it must not omit a dominant field
+stress, such as thermal cycling or connector wear.
+
+In the interview, state the assumed mechanism, the activation energy and why
+it applies to this process, the sample size and confidence bound, the stress
+and use temperatures, the measured drift parameter (threshold, slope,
+wavelength), and the field-data check. Treat the projected FIT\termnote{FIT}
+result as a hypothesis that field returns must confirm or falsify. A FIT
+number without those pieces is a spreadsheet, not a prediction. The life
+acceleration model is Arrhenius\termnote{Arrhenius}
+(\Cref{sec:laser-aging}).
+
+\subsection{Calibration is part of the product}
+
+The operating points a product actually stores are as much the product as the
+die. Know them by name: laser bias or APC\termnote{APC} target;
+EAM\termnote{EAM} bias versus temperature; MZM\termnote{MZM} quadrature;
+ring heater or wavelength-lock point; monitor-photodiode\termnote{PD}
+calibration; and receiver and power-monitor offsets. Tables are usually
+segmented by temperature, and segment boundaries are a real failure mode.
+
+Recalibrate when evidence demands it, not by habit: loop residual stops
+converging, an actuator approaches its rail, telemetry disagrees with an
+external reference, temperature leaves the table range, or repair, rework,
+or firmware changes invalidate coefficients. ATP\termnote{ATP} must verify
+calibration at the temperature corners the fleet will see, not only at
+station ambient (\Cref{sec:laser-calibration}).
+
+\subsection{Corrective action must prevent recurrence}
+
+Root cause is not the end of the answer. Close with immediate containment;
+the design, process, calibration, firmware, or supplier correction;
+verification under the original failing condition; an acceptance test,
+process control, alarm, or telemetry control that catches recurrence; and an
+owner with a measurable closure criterion. An interview answer that stops at
+``we replaced the laser'' sounds like repair. An answer that ends on the new
+ATP\termnote{ATP} corner or the new telemetry alarm sounds like product
+engineering.
+
+\section{Two stories to prepare}
+
+Each story is a spoken version of the answer spine. Prepare one component or
+bench story and one system, production, or fleet story. Use only work you
+personally performed, and separate your contribution from the team's. Walk
+the same eight beats every time:
+
+\begin{enumerate}
+\item Requirement and system context: what the link or product had to do.
+\item Observed symptom and scope: what failed, how wide, sudden or gradual.
+\item Competing hypotheses: the short list after the power fork.
+\item Measurements chosen and why: which instrument, which uncertainty.
+\item Evidence that eliminated each hypothesis.
+\item Root cause: the mechanism that survived, with evidence.
+\item Corrective action: the fix, verified under the failing condition.
+\item Recurrence control and measured result: the test, alarm, or process
+      change, and the metric that proved it worked.
+\end{enumerate}
+
+\section{Questions to rehearse aloud, with model answers}
+
+Rehearse these until the structure is automatic. Each answer starts with scope
+or requirements, names measurements and the hypotheses they separate, and ends
+with a control. Do not recite; adapt the skeleton to the follow-up questions.
+
+\subsection{How would you validate a new optical transmitter from bring-up
+through production?}
+\label{sec:interview-worked-validation}
+
+This is the question most likely to open the interview, so it gets the full
+treatment. The frame to state before any detail: validation is staged
+uncertainty reduction. Each stage answers a question the previous stage could
+not, and a test that answers no question is cost, not confidence. Walk the
+stages in order, and at every one name the reference plane where the
+measurement is taken and the criterion that decides pass
+(\Cref{tab:ladder}).
+
+\paragraph{Stage 1: bring-up.}
+For bring-up, get one unit alive on a known-good bench and remove the
+integration unknowns. Power the device through its specified sequence and
+confirm rails, inrush, and power state transitions. Initialize the firmware and
+read identity and status over the management
+interface\termnote{CMIS}, because a part that cannot report its own state
+cannot be debugged later. Enable the laser and confirm first light on a
+calibrated power meter at the specified output reference plane, not at
+whatever connector is convenient. Then close a real loop: lock the receiver,
+run a PRBS\termnote{PRBS} pattern from a BERT\termnote{BERT} or host SerDes,
+and count errors. The uncertainty removed is basic: the design functions, the
+chips talk to each other, and the test setup itself is sane. The trap is that
+everything here is golden: pristine connectors, one temperature, one host, one
+unit. Passing bring-up says nothing about the population, the corners, or the
+lifetime. Its only job is to make the next stage's failures meaningful.
+
+\paragraph{Stage 2: characterization.}
+For characterization, map what the design actually does across its operating
+range, on enough units to see variation. Sweep temperature, supply voltage,
+bias, and test pattern, and at each point record the transmitter's vital
+signs: the LIV curve\termnote{LIV} for threshold, slope efficiency, and
+thermal rollover; the optical spectrum on an OSA\termnote{OSA} for center
+wavelength and SMSR\termnote{SMSR}; RIN\termnote{RIN} measured at the stated
+ORL\termnote{ORL}, because a quiet-bench RIN number is flattery; and the eye
+on a DCA\termnote{DCA} for ER\termnote{ER}, OMA\termnote{OMA}, and
+TDECQ\termnote{TDECQ}. The key discipline is to record distributions, not a
+golden sample: ten units across two lots tell you what the process gives you,
+one hero unit tells you what marketing wants. The uncertainty removed is where
+the population sits relative to the spec at every corner. The output is not a
+pass stamp; it is the dataset that will later set production test limits and
+telemetry alarm thresholds.
+
+\paragraph{Stage 3: margin testing.}
+For margin, stop asking whether the part passes and ask how far it sits from
+the cliff. Push each parameter to its failure boundary: sweep received power
+down with a calibrated VOA\termnote{VOA} until the pre-FEC BER\termnote{preFEC}
+waterfall crosses the FEC threshold; take case temperature to the limit and
+past it; pull supply rails to their corners; degrade ORL with a controlled
+reflector and watch the error floor. Measure the distance to failure in dB,
+degrees, and volts, then compare it against the variation found in
+characterization. The uncertainty removed is the one that kills fleets: a
+design can pass every nominal test while sitting half a decibel from its
+limit, and normal lot spread plus aging will spend that half decibel in the
+first year. Margin testing also reveals which of the four margins, power,
+noise, timing, or spectral, runs out first, which tells you what telemetry
+must watch (\Cref{sec:laser-margin-erosion}).
+
+\paragraph{Stage 4: interoperability.}
+For interoperability, take away everything golden. Replace the BERT with the
+target hosts, plural, because SerDes equalizers from different vendors adapt
+differently to the same transmitter. Replace the lab jumper with production
+fiber plant: real connector losses, real MPO\termnote{MPO} polarity, realistic
+ORL from the connectors the datacenter will actually use. Run real link
+bring-up sequences, firmware interactions, and traffic patterns rather than
+one endless PRBS. The uncertainty removed lives in combinations rather than
+components: a transmitter and a receiver that each meet spec can still fail
+together, because the standard's transmitter eye and stressed-receiver
+tests\termnote{SECQ} only guarantee interoperability if both sides were tested
+against the specified reference, and reference receivers are idealizations.
+Interop failures found here cost a lab week; found in production they cost a
+fleet rollback.
+
+\paragraph{Stage 5: environmental stress and reliability qualification.}
+For qualification, ask which mechanisms move with stress and time. Each stress
+is chosen for the failure mechanism it accelerates, not run as a ritual:
+temperature cycling exercises solder joints, die attach, and fiber attach;
+damp heat exercises corrosion and delamination; vibration and shock exercise
+the mechanical path; HTOL\termnote{HTOL} accelerates the wear-out of the
+active region so that weeks of stress project years of field life through an
+Arrhenius model\termnote{Arrhenius}. State the projection's fine print
+without being asked: the activation energy must be justified for this
+mechanism on this process, the sample size sets the confidence interval, and
+the projection holds only if the stress accelerates the same mechanism the
+field will see. The uncertainty removed is the shape of lifetime: infant
+mortality rate for the burn-in decision, and wear-out rate as a
+FIT\termnote{FIT} number the fleet math can consume.
+
+\paragraph{Stage 6: production readiness.}
+For production, the question changes from is the design good to can the
+factory tell a good unit from a bad one, at rate, at acceptable cost. Write
+the ATP\termnote{ATP} so that every limit traces to the link budget or to the
+characterization data; a limit nobody can trace will be waived under ship
+pressure. Correlate stations by running the same golden units on every
+station and site, so a limit means the same thing everywhere. Size guard
+bands from measurement repeatability, because a test that cannot repeat
+tighter than its limit ships escapes and scraps good units in equal measure.
+Verify calibration at the temperature corners the fleet will see, not only at
+station ambient. Archive raw data, instrument identity, and
+calibration-table versions so any shipped result can be replayed. Then keep
+SPC\termnote{SPC} charts on threshold current, power, and wavelength, because
+process drift between qualification lots is caught here or not at all.
+
+\paragraph{Stage 7: fleet telemetry and the feedback loop.}
+Deployment is the last validation stage, not the end of validation. Fleet
+telemetry watches the margins that stage 3 identified: per-lane transmit
+power, bias current, pre-FEC BER, temperature, and actuator drive such as
+TEC\termnote{TEC} current, with alarms on trends and disagreements rather
+than only on hard thresholds. Field returns close the loop: the
+RMA\termnote{RMA} Pareto is compared against the qualification projection,
+and divergence means the life model was wrong, not that the fleet is unlucky.
+A high NFF\termnote{NFF} rate is itself a finding, usually pointing at
+intermittents or triage gaps. The uncertainty removed is the honest one: what
+every earlier stage missed.
+
+\paragraph{How to say it aloud.}
+In the interview, give the frame in one sentence, then walk the seven stages
+in order, one sentence each, naming for each stage one instrument and the
+uncertainty it removes. Then offer to go deep on whichever stage the
+interviewer cares about. That structure shows judgment before detail, and it
+turns a memorized list into a conversation.
+
+\subsection{BER worsens at high temperature but average power is stable. What do
+you do?}
+\label{sec:interview-worked-hot-ber}
+
+This is a classic fork question. The frame to state first: average power held
+means the power ledger is intact, so the loss lives in signal quality or in a
+receiver that got noisier. Scope before instruments, measure at the failing
+temperature, and end with the control that stops recurrence
+(\Cref{sec:fm-temperature}).
+
+\paragraph{Step 1: scope the failure.}
+Ask how wide the problem is before touching a knob. One unit or many? One lane
+or all lanes? One host or every host? One lot or the population? Then ask
+whether the BER recovers when the unit is cooled. Recovery makes it a thermal
+operating-point problem, not aging. Aging does not reverse on a cool-down. A
+single-unit, single-lane, recoverable failure points at a local bias table,
+heater, or alignment. A multi-unit, multi-lane, recoverable failure points at a
+system thermal design or a shared calibration method. Scope cuts the candidate
+list before the first instrument is opened.
+
+\paragraph{Step 2: apply the power-versus-signal-quality fork.}
+Average power held by the monitor or an external meter means the APC
+loop\termnote{APC} is still hitting its setpoint. The candidates that remain
+are the ones that close the eye without moving average power: extinction
+ratio\termnote{ER} collapse, modulator bias parked on the wrong part of its
+curve, wavelength walking off a filter or ring passband, a TEC\termnote{TEC}
+or heater running out of range, and receiver noise rising with temperature.
+Do not chase laser threshold or fiber loss first. Those would have moved the
+power meter.
+
+\paragraph{Step 3: measure at the failing temperature.}
+Take the unit to the temperature where it fails and stay there. On a
+DCA\termnote{DCA}, read the eye for ER, OMA\termnote{OMA}, and
+TDECQ\termnote{TDECQ}. Sweep the EAM\termnote{EAM} or MZM\termnote{MZM} bias
+and ask whether the optimum moved away from the stored table value. Read
+wavelength on an OSA\termnote{OSA} and compare it with the filter or ring
+passband. Read TEC current and heater DAC codes for actuator headroom: an
+actuator near its rail is consumed margin even when performance still
+passes. If a bias sweep restores a clean eye, the laser is healthy and the
+calibration table is wrong. If the eye stays closed across the full bias
+range, look at wavelength lock, thermal crosstalk, or the receiver.
+
+\paragraph{Step 4: fix the root cause and close the escape.}
+A collapsed eye that a bias sweep restores is usually a temperature-segment
+boundary in the calibration table, or a table that was taken at station
+ambient and never verified at the loaded high-temperature corner. Fix the
+table or the thermal design, then add that loaded corner to the ATP that
+missed it. If the actuator is railed, the fix is thermal design or a wider
+tuning range, not a tighter BER limit. Recurrence control is the new test
+condition, not a hope that the next lot will behave.
+
+\paragraph{How to say it aloud.}
+Scope, fork, measure at the failing temperature, name the hypothesis the
+measurement eliminates, then name the control. Offer to walk the bias-sweep
+or the calibration-table story if the interviewer wants depth.
+
+\subsection{How do you distinguish laser aging from calibration drift?}
+\label{sec:interview-worked-aging-vs-cal}
+
+This question tests whether you separate device physics from control-loop
+bookkeeping. Aging changes the device. Calibration drift changes the
+operating point applied to a healthy device. The frame is an external
+reference plus a recovery test
+(\Cref{sec:laser-calibration,sec:laser-thermal-vs-aging}).
+
+\paragraph{Step 1: state the two hypotheses cleanly.}
+Laser aging raises threshold and lowers slope efficiency at a fixed junction
+temperature. The APC\termnote{APC} loop then raises bias to hold power, and
+eventually the eye or the RIN\termnote{RIN} budget fails even though average
+power still looks fine. Calibration drift leaves the LIV\termnote{LIV} curve
+unchanged but parks the product at the wrong bias, wrong EAM\termnote{EAM}
+voltage, wrong MZM\termnote{MZM} quadrature, or wrong ring heater code. The
+symptoms can look identical in telemetry. The separation requires an external
+reference the product does not control.
+
+\paragraph{Step 2: remeasure the device against ship data.}
+Bring the unit to a controlled temperature and rerun LIV. Compare threshold
+and slope with the shipping record at the same junction temperature. A
+threshold rise or slope drop is device aging. If LIV matches ship data, the
+device is still healthy and the problem is in the operating point or the
+monitor path. Next compare the monitor photodiode\termnote{PD} current
+against an external power meter at the same launch. A monitor that disagrees
+with the external meter will drive the APC loop to the wrong place silently.
+Then sweep modulator bias and ask whether the optimum moved away from the
+stored table. A healthy LIV with a moved optimum is calibration drift.
+
+\paragraph{Step 3: use time behavior as a second separator.}
+Aging accumulates monotonically across stress intervals. Plot threshold or
+bias against cumulative stress hours and look for a steady climb. Calibration
+error appears as a step after a thermal excursion, a repair, a rework, a
+firmware flash, or a table rewrite, and it is fully corrected by
+recalibration. A unit that returns to ship performance after a table reload
+was never aged. A unit whose LIV still fails after a fresh calibration is
+aged, and recalibration only masks the wear until the next corner.
+
+\paragraph{Step 4: choose the corrective action by the mechanism.}
+Aging routes to life modeling, derating, burn-in, or field replacement.
+Calibration drift routes to table version control, temperature-segment
+verification, monitor-PD integrity checks, and an ATP\termnote{ATP} corner
+that exercises the table under load. Mixing the two owners wastes weeks: a
+reliability team cannot fix a wrong table, and a firmware team cannot fix a
+worn facet.
+
+\paragraph{How to say it aloud.}
+``Aging changes the device; calibration drift changes the setpoint. I
+separate them with an external LIV and a recovery test, then use time
+behavior to confirm.'' Offer the monitor-PD corruption story as the silent
+failure mode.
+
+\subsection{How would you qualify a second laser or photonic-integrated-circuit
+supplier?}
+\label{sec:interview-worked-second-source}
+
+This question tests supplier judgment, not vendor names. The frame: the first
+supplier's failure distribution does not transfer. Qualify against the
+requirements slice, not against the incumbent's datasheet
+(\Cref{tab:laser-prd,sec:supplier-exec}).
+
+\paragraph{Step 1: freeze the requirements, not the part number.}
+Write what the new part must close: link budget, RIN\termnote{RIN} at the
+stated ORL\termnote{ORL}, bias window, wavelength class, thermal class, and
+lifetime FIT\termnote{FIT} target. Those are the acceptance criteria. The
+incumbent's datasheet is evidence that one process can meet them, not a
+template the second source must copy. A second source that matches the
+datasheet but fails the link-budget corners is not qualified.
+
+\paragraph{Step 2: characterize distributions, not samples.}
+Measure threshold, slope, wavelength, SMSR\termnote{SMSR}, and RIN across
+wafers, lots, and temperature. Compare spreads against the incumbent, not
+only means. A hero sample from a new supplier proves nothing about the
+process. Ask for wafer maps and lot genealogy so edge-of-wafer outliers are
+visible before they enter your module line. Record the same reference planes
+and fixtures you use on the incumbent, or the comparison is fiction.
+
+\paragraph{Step 3: run the full qualification on this process.}
+HTOL\termnote{HTOL} with the supplier's own activation-energy justification
+for the named mechanism, temperature cycling, damp heat, and burn-in. Wear-
+out mechanisms and infant-mortality rates are process-specific: epi, facet
+coat, attach, and hermeticity all differ. Borrowing the incumbent's $E_a$ is
+the most common quiet mistake. State the projection's fine print: sample
+size, confidence bounds, and evidence that the stress accelerates the field
+mechanism without inventing a new one.
+
+\paragraph{Step 4: correlate ATPs and plan the ramp.}
+Run the same units on the supplier's line and yours so an ATP\termnote{ATP}
+limit means the same thing at both sites. Size guard bands from the combined
+repeatability. Ramp with lot traceability, a FAIR\termnote{FAIR}, and an
+agreed reaction plan for excursions. Keep fleet RMA\termnote{RMA} codes
+split by supplier so field data can falsify the qualification. A second
+source that cannot be traced in the fleet is not a second source; it is a
+blind risk.
+
+\paragraph{How to say it aloud.}
+``Requirements first, distributions second, process-specific qual third, ATP
+correlation and split field codes fourth.'' Offer to go deep on HTOL validity
+or on what you would put in the reaction plan.
+
+\subsection{A single lane is weak in a multi-lane module. How do you isolate
+optical, electrical, thermal, and assembly causes?}
+\label{sec:interview-worked-lane}
+
+Multi-lane modules give you a free control group: the sibling lanes. The
+frame is pattern recognition across lanes before any single-lane deep dive
+(\Cref{sec:fm-lane-imbalance}).
+
+\paragraph{Step 1: confirm one outlier, not a gradient.}
+Measure every lane for OMA\termnote{OMA}, ER\termnote{ER},
+TDECQ\termnote{TDECQ}, and wavelength at the same temperature and pattern. A
+single-lane cliff is a local defect. A smooth edge-to-center gradient is
+thermal or FAU\termnote{FAU} alignment. A checkerboard pattern often points
+at electrical routing or a shared supply. Write the pattern down before
+changing anything. The siblings tell you what ``normal'' is for this unit.
+
+\paragraph{Step 2: bisect optical versus electrical.}
+Swap the electrical lane assignment, or drive the suspect optical path with
+a known-good driver channel. If the weakness follows the optical path, the
+candidates are the laser or EML\termnote{EML} element, the modulator, the
+attach, or the fiber. If it follows the electrical channel, the candidates
+are the driver, the TIA\termnote{TIA}, the package routing, or the host
+SerDes\termnote{SerDes} lane. This one swap often cuts the tree in half.
+
+\paragraph{Step 3: separate assembly from device and thermal.}
+Per-lane coupled power with a normal LIV\termnote{LIV} on the weak lane
+points at fiber-array alignment or a contaminated ferrule: the device is
+fine, the light is not leaving. A thermal map or per-lane temperature
+monitors separate an edge-lane thermal gradient from a device defect. If the
+imbalance grows over HTOL\termnote{HTOL} or burn-in time, one array element
+is aging faster, which is a lot or screening question, not a design question.
+
+\paragraph{Step 4: pick the corrective action from the pattern.}
+Across lanes, units, and lots, the pattern chooses the fix: a rework
+instruction for alignment, a coupling-spec change for the FAU, a thermal-
+design change for edge lanes, a driver or TIA lot screen, or a supplier
+corrective action on one array element. Do not rewrite the whole module
+spec for a single-lane assembly escape.
+
+\paragraph{How to say it aloud.}
+``Siblings first, then optical-versus-electrical swap, then assembly versus
+device versus thermal, then the pattern picks the control.'' Offer the
+FAU-alignment story as the most common production escape.
+
+\subsection{Received power is unchanged but required receiver power increased.
+What hypotheses remain?}
+\label{sec:interview-worked-sensitivity}
+
+This is the other face of the power-versus-signal-quality fork. Average
+received power held means the loss is not in the link-budget power ledger.
+The frame: eye quality or the receiver itself
+(\Cref{sec:fm-ber-increase}).
+
+\paragraph{Step 1: restate what the observation rules out.}
+Unchanged received power rules out average launch drop, connector loss, and
+fiber attenuation as the primary cause. What remains is signal-quality
+erosion on the transmitter or channel, or a receiver whose sensitivity got
+worse. Say that out loud so the interviewer hears the fork.
+
+\paragraph{Step 2: list the remaining hypotheses by location.}
+Transmitter: eye closure at constant average power from modulator bias
+drift, falling ER, rising RIN under reflection, or increased jitter and
+chirp. Channel: a new reflection raising MPI\termnote{MPI}, or wavelength
+moving relative to a filter edge, both of which degrade quality without
+moving the power meter. Receiver: TIA noise, photodiode responsivity, or
+equalizer misadaptation. Keep the list short and location-tagged.
+
+\paragraph{Step 3: isolate with golden swaps and a waterfall.}
+Swap a known-good transmitter into the link, then a known-good receiver.
+Whichever side restores the old sensitivity owns the fault. Sweep BER versus
+received power with a VOA\termnote{VOA}. A parallel shift of the waterfall
+means the sensitivity moved. A floor that will not go down with more power
+points at multiplicative noise: RIN, MPI, or crosstalk. Finish with a
+stressed-eye check\termnote{SECQ} of the receiver against a known
+transmitter if the golden swap indicts the receive path.
+
+\paragraph{Step 4: close with the mechanism, not the symptom.}
+A shifted waterfall with a clean golden transmitter is a receiver problem:
+noise, responsivity, or adaptation. A floor is a noise problem; chase ORL,
+supply PSRR\termnote{PSRR}, and aggressor lanes before replacing a laser. The
+recurrence control depends on the mechanism: a calibration table, a
+connector hygiene rule, a supply filter, or a receiver lot screen.
+
+\paragraph{How to say it aloud.}
+``Power ledger intact, so quality or receiver. Golden swap, then waterfall
+shape, then mechanism.'' Offer to draw the shifted-versus-floored waterfall
+on the whiteboard.
+
+\subsection{Why can a link show a BER floor that more launch power does not
+fix?}
+\label{sec:interview-worked-ber-floor}
+
+This question has a short physics answer and a longer debug answer. Give both
+(\Cref{sec:fm-ber-floor,sec:rin}).
+
+\paragraph{Step 1: state the physics in one sentence.}
+A BER floor means the dominant noise scales with the signal. Raising launch
+power raises that noise in proportion, so the signal-to-noise ratio
+saturates. For relative intensity noise the ceiling is
+$Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$. More power cannot buy you
+past that ceiling. Additive noise (thermal, dark current) does not make a
+floor; multiplicative noise does.
+
+\paragraph{Step 2: name the usual multiplicative sources.}
+Laser RIN, often feedback-driven through poor ORL\termnote{ORL}. Multipath
+interference from a pair of reflective interfaces. Bias-rail noise converting
+to intensity noise through the laser when PSRR is weak. Crosstalk that
+scales with the aggressor. Each of these raises the error rate in a way that
+looks like ``the link just will not clean up,'' and each is fixed by
+removing the noise source, not by raising OMA.
+
+\paragraph{Step 3: diagnose by waterfall shape and bisect.}
+Sweep received power and plot the BER waterfall. Confirm it floors rather
+than shifts. Then bisect: measure RIN with a quiet lab source versus the
+product bias board to separate intrinsic laser RIN from board-induced
+noise. Sweep ORL with a controlled reflector and watch the floor rise and
+fall. Read the FEC\termnote{FEC} error histogram: MPI and burst noise cluster
+errors in time, while Gaussian noise spreads them. That histogram often
+picks the mechanism before a scope does.
+
+\paragraph{Step 4: fix the mechanism, then prevent recurrence.}
+Isolator or connector hygiene for feedback. Supply filtering and PSRR
+improvement for electrical noise. Aggressor silencing or better isolation for
+crosstalk. Replace the laser only if intrinsic RIN is truly out of spec after
+the board and ORL have been cleared. Add the ORL or supply stress to the
+qualification and to the ATP if that path was never tested.
+
+\paragraph{How to say it aloud.}
+``Floor means multiplicative noise; more power cannot help. I confirm with a
+waterfall, then bisect RIN, ORL, and the FEC histogram.'' Offer the $Q_{\max}$
+line if they want the equation.
+
+\subsection{What makes an HTOL projection credible?}
+\label{sec:interview-worked-htol}
+
+A FIT\termnote{FIT} number without a mechanism is a spreadsheet. The frame
+is four conditions, said in order (\Cref{sec:laser-aging}).
+HTOL\termnote{HTOL} is only as credible as those four.
+
+\paragraph{Condition 1: a named failure mechanism.}
+The projection applies to a specific drift parameter: threshold current,
+slope efficiency, wavelength, or a defined hard failure such as
+COD\termnote{COD}. ``The laser'' is not a mechanism. Name the parameter, the
+end-of-life criterion, and the distribution you are projecting.
+
+\paragraph{Condition 2: a justified activation energy.}
+$E_a$ must be measured or justified for that mechanism on that process, with
+sample size and confidence bounds. Copying an $E_a$ from another product,
+another vendor, or a textbook table is the most common way a projection lies.
+State the Arrhenius\termnote{Arrhenius} form and the temperatures used, and
+be ready to say what happens if $E_a$ is wrong by 0.1~eV.
+
+\paragraph{Condition 3: the stress matches the field mechanism.}
+The stress must accelerate the mechanism the fleet will see, without adding a
+new one. A stress temperature that triggers solder creep the field never sees
+produces a pessimistic fiction. A bench HTOL that omits thermal cycling,
+connector wear, or bias-rail transients produces an optimistic fiction. Say
+which field mechanisms the HTOL does and does not cover.
+
+\paragraph{Condition 4: a field feedback loop.}
+Compare the RMA\termnote{RMA} Pareto against the projection. Divergence is
+evidence the model is wrong, not that the fleet is unlucky. Update $E_a$, the
+mechanism list, or the use condition when the field disagrees. A projection
+that never meets field data is theater.
+
+\paragraph{How to say it aloud.}
+``Named mechanism, justified $E_a$, stress matches field, field feedback.
+Without those four, FIT is a spreadsheet.'' Offer one example of a stress that
+invents a false mechanism.
+
+\subsection{Which data must an automated test save so a failure can be
+replayed?}
+\label{sec:interview-worked-test-data}
+
+This question is about whether you have ever had to defend a ship decision
+months later. The frame: enough data that a unit failing today can be re-
+analyzed without the station or the person.
+
+\paragraph{What identity and setup must be saved.}
+Sample identity down to serial, lot, and date code. Instrument identity and
+calibration state, including the path-loss table version. Fixture, cable, and
+reference-plane description, because a power number without a plane is not a
+measurement. Software, firmware, and calibration-table versions on the device
+under test. Test conditions: temperature, supplies, pattern, dwell, and
+timestamps that let results correlate with environmental logs.
+
+\paragraph{What measurement content must be saved.}
+Raw measured data, not only pass/fail. Eyes, LIV\termnote{LIV} points,
+spectra, and BER\termnote{BER} sweeps that can be re-plotted.
+Station-to-station golden-unit correlation results, so measurement drift can
+be separated from product drift. Without the raw data, a later engineer can
+only argue about the limit, not about the unit.
+
+\paragraph{The replay test of sufficiency.}
+Given a field return, can you reproduce the exact shipping measurement and
+decide whether the unit changed or the measurement did? If the answer is no,
+the archive is incomplete. That question is the acceptance criterion for the
+data system, not a nice-to-have.
+
+\paragraph{How to say it aloud.}
+``Identity, instrument state, reference plane, raw data, and versions. The
+test is whether I can replay ship data on a return.'' Offer one war story
+about a missing path-loss table if you have one.
+
+\subsection{When would you choose an EML, silicon MZM, or ring modulator?}
+\label{sec:interview-worked-modulator}
+
+Choose by constraint, not preference. State the requirement slice first,
+then name what each path buys and costs
+(\Cref{tab:source-mod-matrix,tab:tx-modulator}).
+
+\paragraph{When an EML wins.}
+An EML\termnote{EML} wins for single-wavelength DR\termnote{DR} or
+FR\termnote{FR} at 100--200G/lane when cost, maturity, and one-chip
+integration dominate. You get low chirp relative to a DML\termnote{DML}, a
+mature supply chain, and a bias-versus-temperature calibration that the
+industry already knows how to qualify. You pay for an InP\termnote{InP}
+process, EAM\termnote{EAM} aging as a second wear mechanism, and a
+calibration table that must be verified at temperature corners.
+
+\paragraph{When a silicon MZM wins.}
+A silicon MZM\termnote{MZM} wins when the modulator must sit on the
+PIC\termnote{PIC} beside other functions and the link wants a broad, flat
+passband with no wavelength lock. You get CMOS\termnote{CMOS}-compatible
+integration and a wide optical bandwidth. You pay for die area, drive swing,
+RF co-design of the traveling-wave electrode, and a bias-control loop that
+holds quadrature. Validation must cover driver matching and bias-rail
+behavior across temperature.
+
+\paragraph{When a ring wins.}
+A ring\termnote{MRM} wins when many wavelengths must fit on one die, in
+dense WDM\termnote{WDM} and co-packaged engines. It is small and WDM-native.
+You pay for a wavelength-lock loop, heater power, thermal-crosstalk
+validation\termnote{thermalCrosstalk}, and a resonance-alignment failure mode
+the others do not have. The validation burden is the decision: if you cannot
+afford lock-range and crosstalk testing, you cannot afford the ring.
+
+\paragraph{How to say it aloud.}
+``Constraint first. EML for mature single-$\lambda$ DR/FR. Silicon MZM for
+broadband PIC integration. Ring for dense WDM with the lock and heater cost
+accepted.'' Offer the validation-burden line as the closer.
+
+\subsection{How do you decide whether a field issue is performance,
+reliability, or manufacturability?}
+\label{sec:interview-worked-triage-class}
+
+Wrong bucket, wrong owner, wasted weeks. Classify on the ticket before
+failure analysis starts (\Cref{sec:fleet-triage}).
+
+\paragraph{Bucket 1: performance.}
+Ask: did the unit ever meet spec under the field condition? If the design or
+operating point never closed the budget at that corner, it is performance.
+The fix is retune, derate, a thermal redesign, or a honest spec change.
+Shipping more of the same design will not help.
+
+\paragraph{Bucket 2: reliability.}
+Ask: did it meet spec at ship and then degrade with time or stress? That is
+reliability. The fix is a life model, a screen, derating, burn-in, or field
+replacement. Telemetry trends (bias rising at constant power, actuator
+heading toward rail) usually show this before the hard failure.
+
+\paragraph{Bucket 3: manufacturability.}
+Ask: does the failure cluster by lot, date code, site, or process step
+rather than by time? That is manufacturability. The fix is containment,
+supplier corrective action (8D\termnote{eightD}), and an ATP\termnote{ATP}
+or SPC\termnote{SPC} change. A lot-correlated escape is not a physics
+mystery; it is a process-control gap.
+
+\paragraph{How telemetry answers all three before a pull.}
+Install age, lot correlation, and trend shape (sudden, gradual, or corner-
+dependent) usually pick the bucket before a unit is removed. Classify first,
+then pull hardware with a plan that matches the bucket. Performance issues
+need a design owner. Reliability issues need a life-model owner.
+Manufacturability issues need a supplier and process owner.
+
+\paragraph{How to say it aloud.}
+``Ever meet spec? Then degrade with time? Or cluster by lot? Those three
+questions pick the owner.'' Offer a one-line example of each bucket from
+your experience if you have one.
+
+\subsection{What would you put in fleet telemetry, and why?}
+\label{sec:interview-worked-telemetry}
+
+Telemetry exists to catch margin erosion early and to triage without pulling
+hardware. Log what discriminates hypotheses, not every register on the chip
+(\Cref{sec:cmis,sec:fleet-triage}).
+
+\paragraph{Per-lane observables.}
+Transmit and receive optical power, laser bias current, and pre-FEC
+BER\termnote{BER} with FEC\termnote{FEC} error histograms. Bias rising at
+constant power is aging. Power dropping at constant bias is the optical path.
+Clustered errors mean bursts (MPI\termnote{MPI}, connector, ESD event)
+rather than Gaussian noise. Per-lane data is what makes the sibling-lane
+method possible in the field.
+
+\paragraph{Module observables.}
+Temperature, supply rails, TEC\termnote{TEC} or heater drive, and lock-loop
+error. Actuators near their rails are consumed margin even while performance
+still passes. A railed TEC today is a BER fail next summer. Alarm on actuator
+headroom, not only on hard optical thresholds. Read state over
+CMIS\termnote{CMIS}.
+
+\paragraph{Events and context.}
+LOS\termnote{LOS} and LOL\termnote{LOL} history with timestamps, resets, and
+firmware versions, preserved through reboots so intermittents leave evidence.
+Lot and date code, install age, and rack position, so one query separates
+unit, lot, and environment. Without context, every incident looks unique.
+
+\paragraph{Alarm philosophy.}
+Alarm on trends and disagreements, such as monitor versus expected power or
+bias versus a peer lane, not only on hard thresholds. Hard thresholds catch
+dead units. Trends catch dying ones. The point of fleet telemetry is the
+dying ones.
+
+\paragraph{How to say it aloud.}
+``Per-lane power, bias, and pre-FEC BER; module temperature and actuator
+drive; events with context; alarms on trends.'' Justify each item with the
+hypothesis it separates, then stop.
+\section{Must-know abbreviations}
+
+A fuller glossary follows this appendix. For one-night preparation, know these
+without notes. Entries are alphabetical by the leading abbreviation.
+
+\begin{description}
+\item[8D / CAPA] Eight-discipline problem solving and corrective and preventive
+      action. Structured containment, root cause, correction, and recurrence
+      control for supplier or production failures.
+\item[APC] Automatic power control. Feedback from a monitor photodiode that
+      holds average launch power; a drifting monitor corrupts it silently.
+\item[ATP] Acceptance test plan. Production test limits, methods, reference
+      planes, and reaction rules.
+\item[BER] Bit error ratio. Pre-FEC BER is the validation metric; post-FEC is
+      the service metric. Always say which.
+\item[BERT] Bit-error-ratio tester. Generates PRBS and counts errors for
+      waterfalls, floors, and dwell tests.
+\item[CDR] Clock-data recovery. Extracts bit clock from the data stream; LOL
+      means unlock even if light is present.
+\item[CMIS] Common Management Interface Specification. Module state, controls,
+      alarms, and telemetry.
+\item[COD] Catastrophic optical damage. Sudden, irreversible laser-facet failure.
+\item[COM] Channel operating margin. Statistical electrical-link margin after
+      loss, noise, crosstalk, and equalization.
+\item[DCA] Digital communication analyzer. Sampling oscilloscope for eyes,
+      OMA, ER, RLM, and TDECQ.
+\item[DFB] Distributed-feedback laser. Single-mode 1310~nm class source; also
+      the gain section in an EML.
+\item[DML] Directly modulated laser. Simple and efficient, but chirp limits reach.
+\item[DPPM] Defective parts per million. Incoming or outgoing quality rate.
+\item[DR / FR] Datacenter reach ($\sim$500~m) and far reach (2~km). IEEE
+      single-mode classes at 1310~nm.
+\item[DVT / PVT] Design validation test and production validation test.
+\item[EAM] Electro-absorption modulator. Voltage-controlled absorption; pairs
+      with a DFB in an EML.
+\item[ELSFP] External Laser Small Form-Factor Pluggable. Replaceable continuous-
+      wave source for co-packaged optics.
+\item[EML] Electro-absorption modulated laser. DFB plus EAM on one InP chip;
+      dominant 100--200G/lane pluggable transmitter.
+\item[ER] Extinction ratio. $P_1/P_0$ in dB. Higher ER widens OMA at fixed
+      average power; trades against chirp and swing.
+\item[FAIR] First-article inspection report. Re-qualify after tooling, site,
+      epi, or firmware change before open volume.
+\item[FAU] Fiber array unit. Precision multi-fiber attachment to a photonic
+      integrated circuit.
+\item[FEC / KP4] Forward error correction; KP4 is Reed--Solomon RS(544,514).
+      Pre-FEC BER and error histograms show margin before FEC failure.
+\item[FIT] Failures in time. Failures per $10^9$ device-hours.
+\item[GR-468] Telcordia optoelectronic qualification framework (HTOL,
+      environmental, mechanical).
+\item[HTOL] High-temperature operating life. Accelerated stress used with an
+      Arrhenius model to project field wear-out; credible only with a named
+      mechanism.
+\item[LIV] Light--current--voltage curve. Threshold, slope efficiency, kink-free
+      range, and thermal rollover versus bias.
+\item[LOS / LOL] Loss of signal and loss of lock. LOS points first toward power;
+      LOL can occur with adequate power but poor timing or signal quality.
+\item[MPI] Multipath interference. Coherent beating from reflective paths;
+      often floors BER and clusters FEC errors.
+\item[MPO] Multi-fiber push-on connector. Parallel-optics plant (8--32 fibers).
+\item[MRM] Microring modulator. Compact, WDM-native silicon modulator; needs
+      wavelength lock and heater budget.
+\item[MSA] Multi-source agreement. An industry specification for interoperable
+      products.
+\item[MZM] Mach--Zehnder modulator. Broadband interferometric modulator (Si or
+      TFLN); needs quadrature bias control.
+\item[NFF / RMA] No fault found and return merchandise authorization. High NFF
+      rates often indicate weak triage or intermittent faults.
+\item[OMA] Optical modulation amplitude. Outer level swing $P_1-P_0$.
+\item[ORL] Optical return loss. Reflected power toward the laser; low ORL raises
+      RIN and can seed burst errors.
+\item[OSA] Optical spectrum analyzer. Wavelength, SMSR, and side-mode structure.
+\item[OSFP / QSFP-DD] High-density pluggable module form factors with different
+      mechanical and thermal limits.
+\item[PIC / SOI] Photonic integrated circuit on silicon-on-insulator. The common
+      silicon-photonics chip and substrate.
+\item[PRBS] Pseudo-random binary sequence. Repeatable pattern for eye and BER
+      measurements.
+\item[PSRR] Power-supply rejection ratio. Weak PSRR can turn electrical rail
+      noise into optical intensity noise.
+\item[RIN] Relative intensity noise. Laser amplitude noise (dB/Hz); often
+      measured under a stated ORL.
+\item[RLM] Relative level mismatch. PAM4 level-spacing quality.
+\item[SECQ] Stressed eye closure quaternary. Receiver-side margin measured with a
+      calibrated stressed optical signal.
+\item[SerDes] Serializer/deserializer. Host high-speed I/O; equalization reserve
+      is a timing-margin ledger.
+\item[SMSR] Side-mode suppression ratio. Power difference between the lasing mode
+      and the strongest side mode.
+\item[SPC] Statistical process control. Tracks process distributions and trends.
+\item[TDECQ] Transmitter and dispersion eye closure quaternary. Headline PAM4
+      transmitter-quality metric after a reference receiver and bounded FFE.
+\item[TEC] Thermoelectric cooler. A TEC near its current limit has little thermal
+      control margin left.
+\item[TIA] Transimpedance amplifier. Converts photodiode current to voltage.
+\item[VCSEL] Vertical-cavity surface-emitting laser. 850~nm class for multimode
+      short-reach links.
+\item[VNA] Vector network analyzer. Electrical or electro-optic $S$-parameters
+      versus frequency.
+\item[VOA] Variable optical attenuator. Calibrated loss for sensitivity and
+      BER-waterfall sweeps.
+\item[WDM] Wavelength division multiplexing. Multiple wavelengths on one fiber.
+\end{description}
+
+\section{One-night study order}
+
+\begin{enumerate}
+\item Memorize the answer spine, scope questions, power fork, and four margins.
+\item Build and rehearse two real stories.
+\item Review the instruments and say what uncertainty each measurement removes.
+\item Review calibration, aging versus thermal response, and HTOL validity.
+\item Review the abbreviations above.
+\item Rehearse the questions without notes.
+\item Stop adding new optics. Sleep.
+\end{enumerate}
+
+\keyidea{Show how you reduce uncertainty. Start with requirements and scope,
+measure at a named reference plane, eliminate hypotheses, verify the root cause
+under the failing condition, and add a control that prevents recurrence.}
