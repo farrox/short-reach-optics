@@ -125,9 +125,9 @@ Power the module or engine. Confirm management presence and state progression
 through the Common Management Interface Specification
 (\term{CMIS}\firstterm{CMIS}) state machine to a ready state. Enable transmit
 only when commanded. Verify first light and received power. Confirm clock and
-data recovery (\term{CDR}\firstterm{CDR}) lock. Measure pre-forward-error-
-correction bit error ratio (\term{pre-FEC BER}\firstterm{pre-FEC BER}) on a
-golden host. Details and fail branches live in \Cref{sec:bringup,tab:bringup-checklist}.
+data recovery (\term{CDR}\firstterm{CDR}) lock. Measure pre-FEC bit error
+ratio (\term{pre-FEC BER}\firstterm{pre-FEC BER}) on a golden host. Details
+and fail branches live in \Cref{sec:bringup,tab:bringup-checklist}.
 
 \paragraph{Measurements and evidence.}
 CMIS presence and ready state confirm the management path before you blame
@@ -175,10 +175,13 @@ ratio (\term{SMSR}\firstterm{SMSR}). Close a signed link-budget ledger
 \paragraph{Measurements and evidence.}
 TDECQ scores transmitter quality after a reference equalizer; a rise with
 stable average power points at bandwidth, linearity, or bias, not simple loss.
-LIV separates device aging from setpoint drift. RIN under controlled ORL
-reveals feedback-sensitive floors. SMSR checks single-mode purity as
-temperature or age changes. Sensitivity and BER-versus-power waterfalls show
-whether the receiver path shifts or floors (\Cref{sec:interview-waterfall}).
+Changes in the LIV baseline can support a physical-aging hypothesis, while a
+substantially healthy LIV combined with recovery after recalibration supports
+setpoint or control drift. LIV alone does not always perform a definitive
+separation. RIN under controlled ORL reveals feedback-sensitive floors. SMSR
+checks single-mode purity as temperature or age changes. Sensitivity and
+BER-versus-power waterfalls show whether the receiver path shifts or floors
+(\Cref{sec:interview-waterfall}).
 
 \paragraph{Exit criteria.}
 \textbf{Exit when} you have mapped population behavior versus the required
@@ -284,8 +287,8 @@ survive lot-to-lot variation (\Cref{sec:hvm-test,sec:supplier-exec}).
 Review multi-lot yield and statistical process control
 (\term{SPC}\firstterm{SPC}). Correlate automated test equipment
 (\term{ATE}\firstterm{ATE}) to bench truth. Freeze ATP limits that catch the
-known escape paths. Complete first-article / FAIR gates and design or process
-verification / production verification (\term{DVT}\firstterm{DVT} /
+known escape paths. Complete first-article / FAIR gates and Design Validation
+Test / Production Validation Test (\term{DVT}\firstterm{DVT} /
 \term{PVT}\firstterm{PVT}) exits that match the requirements slice.
 
 \paragraph{Measurements and evidence.}

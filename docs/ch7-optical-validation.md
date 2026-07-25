@@ -76,7 +76,7 @@ Before bring-up you do not know whether a failure is integration (seat, cable, f
 
 ##### Activities.
 
-Power the module or engine. Confirm management presence and state progression through the Common Management Interface Specification (*CMIS*) state machine to a ready state. Enable transmit only when commanded. Verify first light and received power. Confirm clock and data recovery (*CDR*) lock. Measure pre-forward-error- correction bit error ratio (*pre-FEC BER*) on a golden host. Details and fail branches live in §7.9, Table 7.4.
+Power the module or engine. Confirm management presence and state progression through the Common Management Interface Specification (*CMIS*) state machine to a ready state. Enable transmit only when commanded. Verify first light and received power. Confirm clock and data recovery (*CDR*) lock. Measure pre-FEC bit error ratio (*pre-FEC BER*) on a golden host. Details and fail branches live in §7.9, Table 7.4.
 
 ##### Measurements and evidence.
 
@@ -110,7 +110,7 @@ Sweep case or junction temperature and supply. Stress ORL where reflections matt
 
 ##### Measurements and evidence.
 
-TDECQ scores transmitter quality after a reference equalizer; a rise with stable average power points at bandwidth, linearity, or bias, not simple loss. LIV separates device aging from setpoint drift. RIN under controlled ORL reveals feedback-sensitive floors. SMSR checks single-mode purity as temperature or age changes. Sensitivity and BER-versus-power waterfalls show whether the receiver path shifts or floors (Appendix A.6.9).
+TDECQ scores transmitter quality after a reference equalizer; a rise with stable average power points at bandwidth, linearity, or bias, not simple loss. Changes in the LIV baseline can support a physical-aging hypothesis, while a substantially healthy LIV combined with recovery after recalibration supports setpoint or control drift. LIV alone does not always perform a definitive separation. RIN under controlled ORL reveals feedback-sensitive floors. SMSR checks single-mode purity as temperature or age changes. Sensitivity and BER-versus-power waterfalls show whether the receiver path shifts or floors (Appendix A.6.9).
 
 ##### Exit criteria.
 
@@ -196,7 +196,7 @@ Qualification on engineering lots does not prove manufacturing control. Producti
 
 ##### Activities.
 
-Review multi-lot yield and statistical process control (*SPC*). Correlate automated test equipment (*ATE*) to bench truth. Freeze ATP limits that catch the known escape paths. Complete first-article / FAIR gates and design or process verification / production verification (*DVT* / *PVT*) exits that match the requirements slice.
+Review multi-lot yield and statistical process control (*SPC*). Correlate automated test equipment (*ATE*) to bench truth. Freeze ATP limits that catch the known escape paths. Complete first-article / FAIR gates and Design Validation Test / Production Validation Test (*DVT* / *PVT*) exits that match the requirements slice.
 
 ##### Measurements and evidence.
 
