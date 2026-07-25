@@ -94,7 +94,7 @@ A shifted waterfall points toward lost power, receiver sensitivity, eye closure,
 
 ##### Corrective action and recurrence control.
 
-Restore the margin ledger that moved, then repeat the full BER sweep at loaded corners. Store waterfall shape, not only pass/fail BER, so later fleet changes can be classified without guessing. The interview study treatment of these shapes is in §A.4.7.
+Restore the margin ledger that moved, then repeat the full BER sweep at loaded corners. Store waterfall shape, not only pass/fail BER, so later fleet changes can be classified without guessing. The interview study treatment of these shapes is in §A.5.7.
 
 ## BER floor
 

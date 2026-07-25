@@ -7,13 +7,17 @@ title: "Ch 11: One-week optical systems interview review"
 
 Use this appendix as a standalone review sheet for about a week of focused prep. Its purpose is not to cover the most optics. Its purpose is to make your engineering process automatic under time pressure.
 
+**Key idea.** Every answer should end with the engineering decision. Interviewers remember decisions more than measurements. Close with "Therefore I would continue validation," "stop shipment," "contain Supplier B," or "update the ATP."
+
 ## Three principles
 
 **Principle 1: Engineering reduces uncertainty.**
 
 **Key idea.** The purpose of engineering is not to find certainty. It is to reduce uncertainty enough to make the next decision.
 
-Validation, measurement, debugging, qualification, supplier choices, and production are the same work under different names. The goal of an optical systems engineer is not to know every component. It is to make good engineering decisions under uncertainty using measurements, physics, and evidence. Ask the scale of the problem (device, module, rack, fleet) before you chase a root cause: scale picks the owner.
+**Key idea.** The job is not finding the truth. The job is making the best decision with today's evidence.
+
+Validation, measurement, debugging, qualification, supplier choices, and production are the same work under different names. Ask the scale of the problem (device, module, rack, fleet) before you chase a root cause: scale picks the owner.
 
 **Principle 2: Measurements exist to unlock decisions.**\
 Instruments do not exist to produce plots. They exist to unlock an action. A power meter asks whether you should chase the optical path or signal integrity. An OSA asks whether spectral alignment is still plausible. An LIV asks whether the device itself changed. A DCA or TDECQ asks whether the eye is still inside budget. A BER waterfall asks whether you have a sensitivity shift or a noise floor. On every answer, name the decision unlocked (ship, derate, second-source, ATP change, partner action) as well as the instrument (Table A.1).
@@ -23,17 +27,39 @@ Treat engineering as hypothesis testing: $$\begin{split}
 \text{observation} &\longrightarrow \text{hypotheses}
 \longrightarrow \text{measurement}\\
 &\longrightarrow \text{belief updated / hypothesis eliminated}.
-\end{split}$$ This is essentially Bayesian reasoning: every measurement updates the probability of competing hypotheses. Speak the update out loud. "At this point I am about 70% on calibration drift, 20% on wavelength walk, and 10% on receiver noise; before I change firmware I would verify the eye with a bias sweep." A test that leaves the weights unchanged was the wrong test, or the wrong reference plane.
+\end{split}$$
+
+**Key idea.** Debugging is simply Bayesian inference performed in a laboratory.
+
+Every measurement updates the probability of competing hypotheses. Speak the update out loud. "At this point I am about 70% on calibration drift, 20% on wavelength walk, and 10% on receiver noise; before I change firmware I would verify the eye with a bias sweep." A test that leaves the weights unchanged was the wrong test, or the wrong reference plane.
 
 **Key idea.** Engineering is decision making. Decision making is uncertainty reduction. Measurements reduce uncertainty. Therefore measurements exist to improve decisions.
 
-This role owns laser direction inside an IM/DD interconnect effort. Lab measurement is how you decide, not the whole job. Hands-on fluency still matters: LIV, RIN, ORL, TDECQ, and a BER waterfall. Senior people lose the level if they stop at plots and never close on a control.
+This role owns laser direction inside an IM/DD interconnect effort. Lab measurement is how you decide, not the whole job. Hands-on fluency still matters: LIV, RIN, ORL, TDECQ, and a BER waterfall. Senior people lose the level if they stop at plots and never close on a decision and a control.
 
 Work the day plan at the end of this appendix. Memorize the one-page cheat sheet before Day 7. Use each LLM practice box the day it is scheduled. Do not add new topics after Day 6.
 
 ## The answer spine
 
-Move every answer through the same sequence. The diagram is a memory aid, not the answer. In the interview you should be able to speak one clear paragraph for each arrow, naming what you know, what is still uncertain, and what measurement you would take next. Do not jump from a symptom to a component. The systems loop in §1.6, the debugging pyramid in §1.8, and the failure-analysis method in Chapter 10 are the full versions of this spine. $$\begin{split}
+Move every answer through the same sequence. Memorize four phases, not nine nodes:
+
+Understand
+
+: Requirements, architecture.
+
+Investigate
+
+: Measurements, observations, hypotheses, isolation.
+
+Resolve
+
+: Root cause, corrective action.
+
+Prevent
+
+: Recurrence control, and the product decision that closes the answer.
+
+The diagram is a memory aid, not the answer. Speak one clear paragraph per phase under time pressure, and expand a node only when asked. Do not jump from a symptom to a component. End every debug answer with the decision (Table A.1). The systems loop in §1.6, the debugging pyramid in §1.8, and the failure-analysis method in Chapter 10 are the full versions of this spine. $$\begin{split}
 \text{requirements} &\longrightarrow \text{architecture}
 \longrightarrow \text{measurements}\\
 &\longrightarrow \text{observations}
@@ -41,7 +67,8 @@ Move every answer through the same sequence. The diagram is a memory aid, not th
 &\longrightarrow \text{isolation}
 \longrightarrow \text{root cause}\\
 &\longrightarrow \text{corrective action}
-\longrightarrow \text{recurrence control}.
+\longrightarrow \text{recurrence control}\\
+&\longrightarrow \text{decision}.
 \end{split}$$
 
 ##### Requirements.
@@ -72,7 +99,9 @@ Turn the observations into a short list of competing causes, ranked by how well 
 
 ##### Isolation.
 
-Good engineers perform measurements. Great engineers perform the minimum measurement that eliminates the largest number of hypotheses. Do not perform two experiments when one can separate the hypotheses. Optimize uncertainty removed per hour of lab time, not uncertainty removed in the abstract. A fast sequence often beats a complete one: $$\begin{split}
+**Key idea.** Great engineers perform the minimum measurement that eliminates the largest number of hypotheses.
+
+Good engineers perform measurements. Do not perform two experiments when one can separate the hypotheses. Optimize uncertainty removed per hour of lab time, not uncertainty removed in the abstract. A fast sequence often beats a complete one: $$\begin{split}
 \text{golden swap} &\longrightarrow \text{power meter}
 \longrightarrow \text{bias sweep}\\
 &\longrightarrow \text{then DCA / OSA / RIN as needed}.
@@ -80,17 +109,19 @@ Good engineers perform measurements. Great engineers perform the minimum measure
 
 ##### Root cause.
 
-State the mechanism that survived isolation, with the evidence that killed the alternatives. "EAM bias table segment wrong above $60^\circ$C" is a root cause. "Bad eye at high temperature" is still a symptom. Name the physical or process mechanism when you can: facet wear, monitor-PD corruption, FAU misalignment, MPI from a dirty connector pair, TEC railed under load, supplier lot with high threshold. If the evidence only reaches "calibration drift" and not a deeper mechanism, say so. Overclaiming the root cause is worse than stopping one layer early with honesty. Sometimes the product decision is due before the mechanism is known; that case is §A.3.
+State the mechanism that survived isolation, with the evidence that killed the alternatives. "EAM bias table segment wrong above $60^\circ$C" is a root cause. "Bad eye at high temperature" is still a symptom. Name the physical or process mechanism when you can: facet wear, monitor-PD corruption, FAU misalignment, MPI from a dirty connector pair, control ledger exhausted (TEC or heater at rail), supplier lot with high threshold. If the evidence only reaches "calibration drift" and not a deeper mechanism, say so. Overclaiming the root cause is worse than stopping one layer early with honesty. Sometimes the product decision is due before the mechanism is known; that case is §A.3.
 
 ##### Corrective action.
 
 Fix the mechanism you named, under the condition that failed. Retune the table, replace the lot, change the thermal design, clean and inspect the plant, filter the supply, or rewrite the ATP limit. Containment comes first when the fleet is already exposed: stop ship, quarantine lots, or derate while the permanent fix is built. Then walk the verification ladder: reproduce the failure, verify the fix, regression-test neighbors, requalify if the change touches life or safety, release to production, and watch fleet telemetry. Candidates often stop at "I fixed it." Staff engineers do not.
 
-##### Recurrence control.
+##### Recurrence control and the decision.
 
-Close with the control that stops the same escape next month. That control is usually a new or tightened test, an SPC chart, a telemetry alarm, a process-control limit, a supplier screen, or a firmware guard that refuses to boot with a railed actuator. Name the owner and the measurable closure criterion. Root cause without recurrence control is a story, not an engineering result. In the interview, ending on recurrence control is what separates a debug narrative from a product-engineering answer.
+Close with the control that stops the same escape next month, then state the product decision in one sentence. The control is usually a new or tightened test, an SPC chart, a telemetry alarm, a process-control limit, a supplier screen, or a firmware guard that refuses to boot with a railed actuator. Name the owner and the measurable closure criterion. Then say the action: continue validation, stop shipment, contain the lot, update ATP, escalate the supplier, or monitor only. Root cause without recurrence control is a story. Recurrence control without a decision is incomplete. In the interview, ending on the decision is what separates a debug narrative from a product-engineering answer.
 
-Quiz me on the three principles and the answer spine. Ask for each principle in one sentence, then one paragraph per spine step. Give me a failed module at high temperature with stable average power and make me walk the full spine. Stop me if I skip scope, the power fork, the control ledger, or recurrence control.
+**Key idea.** I first want to understand the scope of the problem, then determine which margin ledger is being spent, choose the measurement that eliminates the largest number of hypotheses, make the product decision, and finally add the control that prevents the next escape.
+
+Quiz me on the three principles and the four spine phases. Give me a failed module at high temperature with stable average power. Stop me if I skip scope, the power fork, the control ledger, the product decision, or recurrence control.
 
 ## Staff judgment under uncertainty
 
@@ -187,6 +218,32 @@ Ownership is the difference between a debug narrative and a Staff answer.
 
 Give me three incomplete-evidence scenarios. For each I must state evidence, confidence weights, the action I take today, residual risk, and the FA path. Fail me if I wait for a perfect root cause before containing a growing lot.
 
+## Common interview traps
+
+Interviewers listen for these mistakes. Avoid them on purpose.
+
+Trap 1: Naming a component first.
+
+: Start with scope, not a part number.
+
+Trap 2: Calling symptoms root causes.
+
+: "Bad eye" is a symptom. "EAM bias table wrong above $60^\circ$C" is a root cause.
+
+Trap 3: Stopping after the fix.
+
+: Always end with recurrence control and the product decision.
+
+Trap 4: Listing instruments.
+
+: Name the decision each measurement unlocks, not a gear catalog.
+
+Trap 5: One unit as the fleet.
+
+: Scope to lot, vendor, rack, and trend before you generalize.
+
+**Key idea.** Before any debugging answer, ask: Scope? Which ledger moved? Power or quality? Fastest measurement? Decision? Control?
+
 ## Ten concepts to know cold
 
 ### Start at the system
@@ -228,7 +285,7 @@ If power held but BER worsened, the loss is in signal quality or in the receiver
 
 ### Track five margin ledgers
 
-Links rarely fail from one dramatic excursion. They fail when several small shifts spend different ledgers at once. Keep this checklist whenever you narrate a failure. Name which ledger moved, by how much, and what spent it. $$\text{Power}\;\cdot\;
+Links rarely fail from one dramatic excursion. They fail when several small shifts spend different ledgers at once. Almost every failure can be described as spending one or more ledgers. Use that language in every debug answer. Name which ledger moved, by how much, and what spent it. $$\text{Power}\;\cdot\;
 \text{Noise}\;\cdot\;
 \text{Timing}\;\cdot\;
 \text{Spectral}\;\cdot\;
@@ -252,7 +309,7 @@ Spectral
 
 Control
 
-: Headroom in the loops that keep the optics healthy: APC, TEC, heaters, ring lock, bias DACs, and calibration tables. A railed actuator or a corrupted table can fail the link while the laser diode itself is still healthy. Control margin is what separates "optics broke" from "the product can no longer hold the operating point."
+: Headroom in the loops that keep the optics healthy: APC, TEC, heaters, ring lock, bias DACs, and calibration tables. Prefer product language over bench language: say "the control ledger is exhausted" or "we have no remaining control authority," not only "TEC current hit maximum" or "heater DAC went full scale." A railed actuator or a corrupted table can fail the link while the laser diode itself is still healthy. Control margin is what separates "optics broke" from "the product can no longer hold the operating point."
 
 The device and link treatment is in §5.19. Always ask the control ledger when actuators and tables are in the product.
 
@@ -294,7 +351,7 @@ Fleet monitoring
 
 : Which telemetry catches margin erosion before service failure, and does the RMA Pareto match the life model?
 
-Table 7.1 maps these stages to activities and instruments. The worked interview answer in §A.6.2 walks the same ladder as spoken prose.
+Table 7.1 maps these stages to activities and instruments. The worked interview answer in §A.7.2 walks the same ladder as spoken prose.
 
 ### Know what each instrument answers
 
@@ -414,19 +471,23 @@ I will tell you my two story titles only. Interview me on each for five minutes.
 
 ## Questions to rehearse aloud, with model answers
 
-Rehearse these until the structure is automatic. Each answer starts with scope or requirements, names measurements and the hypotheses they separate, and ends with a control. Do not recite; adapt the skeleton to the follow-up questions. For a Staff-level conversation, end one beat past the fix: the decision and the owner of the recurrence control.
+Rehearse these until the structure is automatic. Each answer starts with scope or requirements, names measurements and the hypotheses they separate, and ends with a decision and a control. Do not recite; adapt the skeleton to the follow-up questions.
+
+##### Memorize the 30-second versions.
+
+Nobody remembers six pages in an interview. Memorize the executive close for each question. Deliver that first. Expand only where the interviewer asks: $$\text{30-second answer}
+\longrightarrow \text{interviewer asks}
+\longrightarrow \text{expand only there}.$$ The 3-minute and 10-minute versions are references, not scripts.
 
 ##### Three lengths for every long answer.
 
-You will not deliver six pages in an interview. Practice each worked answer at three depths and stop when the interviewer redirects:
-
 Executive (30 seconds)
 
-: Frame, decision, and one control.
+: Frame, decision, and one control. Memorize this.
 
 Engineering (3 minutes)
 
-: Scope, fork or ladder, key measurements, root cause class, recurrence control.
+: Scope, fork or ladder, key measurements, ledger, root-cause class, recurrence control.
 
 Deep dive (10 minutes)
 
@@ -490,7 +551,7 @@ For characterization, map what the design actually does across its operating ran
 
 ##### Stage 3: margin testing.
 
-For margin, stop asking whether the part passes and ask how far it sits from the cliff. Push each parameter to its failure boundary: sweep received power down with a calibrated VOA until the pre-FEC BER waterfall crosses the FEC threshold; take case temperature to the limit and past it; pull supply rails to their corners; degrade ORL with a controlled reflector and watch the error floor. Measure the distance to failure in dB, degrees, and volts, then compare it against the variation found in characterization. The uncertainty removed is the one that kills fleets: a design can pass every nominal test while sitting half a decibel from its limit, and normal lot spread plus aging will spend that half decibel in the first year. Margin testing also reveals which of the five margins, power, noise, timing, spectral, or control, runs out first, which tells you what telemetry must watch (§A.4.4, §5.19).
+For margin, stop asking whether the part passes and ask how far it sits from the cliff. Push each parameter to its failure boundary: sweep received power down with a calibrated VOA until the pre-FEC BER waterfall crosses the FEC threshold; take case temperature to the limit and past it; pull supply rails to their corners; degrade ORL with a controlled reflector and watch the error floor. Measure the distance to failure in dB, degrees, and volts, then compare it against the variation found in characterization. The uncertainty removed is the one that kills fleets: a design can pass every nominal test while sitting half a decibel from its limit, and normal lot spread plus aging will spend that half decibel in the first year. Margin testing also reveals which of the five margins, power, noise, timing, spectral, or control, runs out first, which tells you what telemetry must watch (§A.5.4, §5.19).
 
 ##### Stage 4: interoperability.
 
@@ -1060,13 +1121,13 @@ Drill abbreviations. Give me ten random terms mixing optical debug and reliabili
 
 Assume seven days, with the interview near the end of Day 7. Protect sleep. Each day has one primary drill and one LLM practice box. If a day slips, cut new reading first, not story rehearsal or the mock interview.
 
-##### Day 1: three principles, answer spine, and Staff judgment.
+##### Day 1: principles, four-phase spine, traps, and Staff judgment.
 
-Read the three principles, the answer spine, and §A.3. Memorize: engineering reduces uncertainty; measurements unlock actions; every measurement updates belief. Also memorize the decision table, scope ladder, five ledgers, and nine spine steps. Speak one paragraph per spine step. Use the answer-spine LLM practice box. Write ownership language: stop ship, notify supplier, request FA, update ATP, monitor RMA.
+Read the three principles, the answer spine, the traps, and §A.3. Memorize: every answer ends with a decision; the job is the best decision with today's evidence; debugging is Bayesian inference in the lab. Memorize the four phases (Understand / Investigate / Resolve / Prevent), the six-question checklist, the decision table, and the five ledgers. Speak one paragraph per phase. Use the answer-spine LLM practice box. Write ownership language: stop ship, notify supplier, request FA, update ATP, monitor RMA.
 
 ##### Day 2: requirements and validation ladder.
 
-Rehearse §A.6.1 and §A.6.2 aloud until the structure is automatic. Name a reference plane in every measurement sentence. Skim Table 7.1, Table 5.4, Table 5.1 for numbers you already believe; do not hunt new optics.
+Rehearse §A.7.1 and §A.7.2 aloud until the structure is automatic. Name a reference plane in every measurement sentence. Skim Table 7.1, Table 5.4, Table 5.1 for numbers you already believe; do not hunt new optics.
 
 ##### Day 3: two real stories.
 
@@ -1074,7 +1135,7 @@ Draft and rehearse one bench or component story and one system, production, or f
 
 ##### Day 4: instruments, waterfall, and debug forks.
 
-Review what each instrument removes as uncertainty. Drill waterfall shift versus floor versus burst pattern (§A.4.7, §10.2, §10.3). Rehearse hot BER with stable power, aging versus calibration, and weak-lane isolation. Use the ten-concepts LLM practice box.
+Review what each instrument removes as uncertainty. Drill waterfall shift versus floor versus burst pattern (§A.5.7, §10.2, §10.3). Rehearse hot BER with stable power, aging versus calibration, and weak-lane isolation. Use the ten-concepts LLM practice box.
 
 ##### Day 5: reliability, manufacturing, and suppliers.
 
@@ -1086,7 +1147,7 @@ Run the abbreviations LLM practice box until expansions are fast. Rehearse fleet
 
 ##### Day 7: cheat sheet, mock interview, and stop.
 
-Read §A.9 once aloud. Use the 45-minute mock-interview LLM practice box. No new chapters. Light review of your two stories and the laser-requirements opener only. Stop two to three hours before the call. Sleep.
+Read §A.10 once aloud. Use the 45-minute mock-interview LLM practice box. No new chapters. Light review of your two stories and the laser-requirements opener only. Stop two to three hours before the call. Sleep.
 
 ##### If you have less than seven days.
 
@@ -1096,35 +1157,41 @@ Compress in this order: Day 1 spine, Day 3 stories, Day 2 requirements and va
 
 Internalize this one page. The rest of the appendix is supporting detail.
 
-*Philosophy.* Engineering reduces uncertainty enough to decide. Measurements unlock actions. Every measurement updates belief.
+*Close.* Every answer ends with the engineering decision.
 
-*Through-line.* Engineering $=$ decision making $=$ uncertainty reduction; measurements improve decisions.
+*Philosophy.* Engineering reduces uncertainty. Measurements unlock decisions. Every measurement updates belief. The job is the best decision with today's evidence, not finding the truth.
 
-*Answer spine.* Requirements $\rightarrow$ architecture $\rightarrow$ measurements $\rightarrow$ observations $\rightarrow$ hypotheses $\rightarrow$ isolation $\rightarrow$ root cause $\rightarrow$ corrective action $\rightarrow$ recurrence control.
+*Debug.* Bayesian inference in the lab. Minimum measurement that kills the most hypotheses.
 
-*Five ledgers.* Power $\cdot$ Noise $\cdot$ Timing $\cdot$ Spectral $\cdot$ Control.
+*Spine (4 phases).* Understand (requirements, architecture) $\rightarrow$ Investigate (measure, observe, hypothesize, isolate) $\rightarrow$ Resolve (root cause, corrective action) $\rightarrow$ Prevent (recurrence control, decision).
 
-*Power fork.* Did average power move? Yes: optical path / launch. No: signal quality or receiver.
+*Checklist.* Scope? Ledger? Power or quality? Fastest measurement? Decision? Control?
+
+*Five ledgers.* Power $\cdot$ Noise $\cdot$ Timing $\cdot$ Spectral $\cdot$ Control. Prefer "control ledger exhausted" over "TEC maxed."
+
+*Power fork.* Power moved: optical path. Power held: signal quality or receiver.
 
 *Validation ladder.* Bring-up $\rightarrow$ characterization $\rightarrow$ margin $\rightarrow$ interop $\rightarrow$ environment $\rightarrow$ reliability $\rightarrow$ production $\rightarrow$ fleet.
 
-*Decision vocabulary.* Ship / don't ship, continue validation, escalate supplier, derate, second source, contain lot, modify ATP, open RMA, request FA, perform DPA, change firmware, retune calibration, monitor only (Table A.1).
+*Decisions.* Ship / don't ship, continue validation, escalate supplier, derate, second source, contain lot, modify ATP, open RMA, FA/DPA, firmware, retune calibration, monitor only (Table A.1).
 
-*Scope ladder.* Unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ rack $\rightarrow$ datacenter $\rightarrow$ fleet.
+*Scope.* Unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ rack $\rightarrow$ datacenter $\rightarrow$ fleet.
 
-*Waterfall shapes.* Shift (sensitivity) versus floor (noise/MPI) versus burst (intermittent / reflection).
+*Waterfall.* Shift vs floor vs burst.
 
-*Thermal vs aging.* Recovers on cool-down: operating point. Monotonic and permanent: aging.
+*Thermal vs aging.* Recovers on cool-down vs monotonic permanent.
 
-*Lab time.* Golden swap $\rightarrow$ power meter $\rightarrow$ bias sweep $\rightarrow$ then DCA / OSA / RIN. Optimize uncertainty removed per hour.
+*Lab time.* Golden swap $\rightarrow$ power $\rightarrow$ bias sweep $\rightarrow$ then DCA/OSA/RIN.
 
-*Measurement hierarchy.* Telemetry $\rightarrow$ simple bench $\rightarrow$ swap $\rightarrow$ characterization $\rightarrow$ FA / DPA.
+*Measure hierarchy.* Telemetry $\rightarrow$ bench $\rightarrow$ swap $\rightarrow$ characterization $\rightarrow$ FA/DPA.
 
-*Eight-beat story.* Context, symptom and scope, hypotheses, measurements, eliminations, root cause, corrective action, recurrence control with a metric.
+*Traps.* No component-first. No symptom-as-root-cause. No stop after fix. No instrument list without decisions. No one-unit-as-fleet.
 
-*Ownership close.* As owner: contain, notify, FA path, ATP or telemetry control, monitor RMA, requalify before open volume.
+*Ownership.* Contain, notify, FA path, ATP/telemetry control, monitor RMA, requalify.
 
-**Key idea.** The goal of an optical systems engineer is not to know every component. It is to make good engineering decisions under uncertainty using measurements, physics, and evidence. Show that process under time pressure. Lab fluency proves you can decide; the control proves you can ship. A week is for making the cheat sheet and the spine automatic, not for learning a new device family.
+*Delivery.* Memorize 30-second closes. Expand only where asked.
+
+**Key idea.** I first want to understand the scope of the problem, then determine which margin ledger is being spent, choose the measurement that eliminates the largest number of hypotheses, make the product decision, and finally add the control that prevents the next escape.
 
 
 <div class="nav-links">

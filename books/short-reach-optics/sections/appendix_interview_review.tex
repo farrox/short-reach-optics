@@ -5,18 +5,23 @@ Use this appendix as a standalone review sheet for about a week of focused
 prep. Its purpose is not to cover the most optics. Its purpose is to make your
 engineering process automatic under time pressure.
 
+\keyidea{Every answer should end with the engineering decision. Interviewers
+remember decisions more than measurements. Close with ``Therefore I would
+continue validation,'' ``stop shipment,'' ``contain Supplier~B,'' or ``update
+the ATP.''}
+
 \section{Three principles}
 \label{sec:interview-philosophy}
 
 \noindent\textbf{Principle 1: Engineering reduces uncertainty.}
 \keyidea{The purpose of engineering is not to find certainty. It is to reduce
 uncertainty enough to make the next decision.}
+\keyidea{The job is not finding the truth. The job is making the best decision
+with today's evidence.}
 Validation, measurement, debugging, qualification, supplier choices, and
-production are the same work under different names. The goal of an optical
-systems engineer is not to know every component. It is to make good
-engineering decisions under uncertainty using measurements, physics, and
-evidence. Ask the scale of the problem (device, module, rack, fleet) before
-you chase a root cause: scale picks the owner.
+production are the same work under different names. Ask the scale of the
+problem (device, module, rack, fleet) before you chase a root cause: scale
+picks the owner.
 
 \noindent\textbf{Principle 2: Measurements exist to unlock decisions.}\\
 Instruments do not exist to produce plots. They exist to unlock an action.
@@ -38,12 +43,12 @@ Treat engineering as hypothesis testing:
 &\longrightarrow \text{belief updated / hypothesis eliminated}.
 \end{split}
 \]
-This is essentially Bayesian reasoning: every measurement updates the
-probability of competing hypotheses. Speak the update out loud. ``At this
-point I am about 70\% on calibration drift, 20\% on wavelength walk, and
-10\% on receiver noise; before I change firmware I would verify the eye with
-a bias sweep.'' A test that leaves the weights unchanged was the wrong test,
-or the wrong reference plane.
+\keyidea{Debugging is simply Bayesian inference performed in a laboratory.}
+Every measurement updates the probability of competing hypotheses. Speak the
+update out loud. ``At this point I am about 70\% on calibration drift, 20\% on
+wavelength walk, and 10\% on receiver noise; before I change firmware I would
+verify the eye with a bias sweep.'' A test that leaves the weights unchanged
+was the wrong test, or the wrong reference plane.
 
 \keyidea{Engineering is decision making. Decision making is uncertainty
 reduction. Measurements reduce uncertainty. Therefore measurements exist to
@@ -52,7 +57,7 @@ improve decisions.}
 This role owns laser direction inside an IM/DD interconnect effort. Lab
 measurement is how you decide, not the whole job. Hands-on fluency still
 matters: LIV, RIN, ORL, TDECQ, and a BER waterfall. Senior people lose the
-level if they stop at plots and never close on a control.
+level if they stop at plots and never close on a decision and a control.
 
 Work the day plan at the end of this appendix. Memorize the one-page cheat
 sheet before Day~7. Use each LLM practice box the day it is scheduled. Do not
@@ -60,12 +65,21 @@ add new topics after Day~6.
 
 \section{The answer spine}
 
-Move every answer through the same sequence. The diagram is a memory aid, not
-the answer. In the interview you should be able to speak one clear paragraph
-for each arrow, naming what you know, what is still uncertain, and what
-measurement you would take next. Do not jump from a symptom to a component.
-The systems loop in \Cref{sec:systems-engineering-loop}, the debugging pyramid
-in \Cref{sec:debug-pyramid}, and the failure-analysis method in
+Move every answer through the same sequence. Memorize four phases, not nine
+nodes:
+\begin{description}
+\item[Understand] Requirements, architecture.
+\item[Investigate] Measurements, observations, hypotheses, isolation.
+\item[Resolve] Root cause, corrective action.
+\item[Prevent] Recurrence control, and the product decision that closes the
+      answer.
+\end{description}
+The diagram is a memory aid, not the answer. Speak one clear paragraph per
+phase under time pressure, and expand a node only when asked. Do not jump from
+a symptom to a component. End every debug answer with the decision
+(\Cref{tab:interview-decisions}). The systems loop in
+\Cref{sec:systems-engineering-loop}, the debugging pyramid in
+\Cref{sec:debug-pyramid}, and the failure-analysis method in
 \Cref{ch:failure-modes} are the full versions of this spine.
 \[
 \begin{split}
@@ -76,7 +90,8 @@ in \Cref{sec:debug-pyramid}, and the failure-analysis method in
 &\longrightarrow \text{isolation}
 \longrightarrow \text{root cause}\\
 &\longrightarrow \text{corrective action}
-\longrightarrow \text{recurrence control}.
+\longrightarrow \text{recurrence control}\\
+&\longrightarrow \text{decision}.
 \end{split}
 \]
 
@@ -148,11 +163,12 @@ can kill more than one item. A hypothesis you cannot falsify with a bench
 step does not belong on the list yet.
 
 \paragraph{Isolation.}
-Good engineers perform measurements. Great engineers perform the minimum
-measurement that eliminates the largest number of hypotheses. Do not perform
-two experiments when one can separate the hypotheses. Optimize uncertainty
-removed per hour of lab time, not uncertainty removed in the abstract. A
-fast sequence often beats a complete one:
+\keyidea{Great engineers perform the minimum measurement that eliminates the
+largest number of hypotheses.}
+Good engineers perform measurements. Do not perform two experiments when one
+can separate the hypotheses. Optimize uncertainty removed per hour of lab
+time, not uncertainty removed in the abstract. A fast sequence often beats a
+complete one:
 \[
 \begin{split}
 \text{golden swap} &\longrightarrow \text{power meter}
@@ -174,11 +190,12 @@ the alternatives. ``EAM\termnote{EAM} bias table segment wrong above
 $60^\circ$C'' is a root cause. ``Bad eye at high temperature'' is still a
 symptom. Name the physical or process mechanism when you can: facet wear,
 monitor-PD corruption, FAU\termnote{FAU} misalignment, MPI\termnote{MPI}
-from a dirty connector pair, TEC\termnote{TEC} railed under load, supplier
-lot with high threshold. If the evidence only reaches ``calibration drift''
-and not a deeper mechanism, say so. Overclaiming the root cause is worse than
-stopping one layer early with honesty. Sometimes the product decision is due
-before the mechanism is known; that case is \Cref{sec:interview-under-uncertainty}.
+from a dirty connector pair, control ledger exhausted (TEC\termnote{TEC} or
+heater at rail), supplier lot with high threshold. If the evidence only
+reaches ``calibration drift'' and not a deeper mechanism, say so.
+Overclaiming the root cause is worse than stopping one layer early with
+honesty. Sometimes the product decision is due before the mechanism is known;
+that case is \Cref{sec:interview-under-uncertainty}.
 
 \paragraph{Corrective action.}
 Fix the mechanism you named, under the condition that failed. Retune the
@@ -190,25 +207,30 @@ reproduce the failure, verify the fix, regression-test neighbors, requalify if
 the change touches life or safety, release to production, and watch fleet
 telemetry. Candidates often stop at ``I fixed it.'' Staff engineers do not.
 
-\paragraph{Recurrence control.}
-Close with the control that stops the same escape next month. That control
-is usually a new or tightened test, an SPC\termnote{SPC} chart, a telemetry
-alarm, a process-control limit, a supplier screen, or a firmware guard that
-refuses to boot with a railed actuator. Name the owner and the measurable
-closure criterion. Root cause without recurrence control is a story, not an
-engineering result. In the interview, ending on recurrence control is what
-separates a debug narrative from a product-engineering answer.
+\paragraph{Recurrence control and the decision.}
+Close with the control that stops the same escape next month, then state the
+product decision in one sentence. The control is usually a new or tightened
+test, an SPC\termnote{SPC} chart, a telemetry alarm, a process-control limit,
+a supplier screen, or a firmware guard that refuses to boot with a railed
+actuator. Name the owner and the measurable closure criterion. Then say the
+action: continue validation, stop shipment, contain the lot, update ATP,
+escalate the supplier, or monitor only. Root cause without recurrence control
+is a story. Recurrence control without a decision is incomplete. In the
+interview, ending on the decision is what separates a debug narrative from a
+product-engineering answer.
 
-\llmpractice{Three principles: engineering reduces uncertainty; measurements
-unlock decisions; every measurement updates your beliefs. Then walk
-requirements to architecture to measurements to observations to hypotheses to
-isolation to root cause to corrective action to recurrence control. Name the
-reference plane, the decision unlocked, and the ledger that moved. Do not jump
-from a symptom to a part number.}
-{Quiz me on the three principles and the answer spine. Ask for each principle
-in one sentence, then one paragraph per spine step. Give me a failed module at
-high temperature with stable average power and make me walk the full spine.
-Stop me if I skip scope, the power fork, the control ledger, or recurrence
+\keyidea{I first want to understand the scope of the problem, then determine
+which margin ledger is being spent, choose the measurement that eliminates the
+largest number of hypotheses, make the product decision, and finally add the
+control that prevents the next escape.}
+
+\llmpractice{Three principles plus: the job is the best decision with today's
+evidence. Debugging is Bayesian inference in the lab. Chunk the spine as
+Understand / Investigate / Resolve / Prevent. Every answer ends with a
+decision. Name the ledger that moved.}
+{Quiz me on the three principles and the four spine phases. Give me a failed
+module at high temperature with stable average power. Stop me if I skip scope,
+the power fork, the control ledger, the product decision, or recurrence
 control.}
 
 \section{Staff judgment under uncertainty}
@@ -321,6 +343,26 @@ speak as the owner.}
 confidence weights, the action I take today, residual risk, and the FA path.
 Fail me if I wait for a perfect root cause before containing a growing lot.}
 
+\section{Common interview traps}
+\label{sec:interview-traps}
+
+Interviewers listen for these mistakes. Avoid them on purpose.
+
+\begin{description}
+\item[Trap 1: Naming a component first.] Start with scope, not a part number.
+\item[Trap 2: Calling symptoms root causes.] ``Bad eye'' is a symptom.
+      ``EAM bias table wrong above $60^\circ$C'' is a root cause.
+\item[Trap 3: Stopping after the fix.] Always end with recurrence control and
+      the product decision.
+\item[Trap 4: Listing instruments.] Name the decision each measurement unlocks,
+      not a gear catalog.
+\item[Trap 5: One unit as the fleet.] Scope to lot, vendor, rack, and trend
+      before you generalize.
+\end{description}
+
+\keyidea{Before any debugging answer, ask: Scope? Which ledger moved? Power or
+quality? Fastest measurement? Decision? Control?}
+
 \section{Ten concepts to know cold}
 
 \subsection{Start at the system}
@@ -411,8 +453,9 @@ you do a golden swap (\Cref{sec:debug-fork,sec:validation-fork}).
 \label{sec:interview-margin-ledgers}
 
 Links rarely fail from one dramatic excursion. They fail when several small
-shifts spend different ledgers at once. Keep this checklist whenever you
-narrate a failure. Name which ledger moved, by how much, and what spent it.
+shifts spend different ledgers at once. Almost every failure can be described
+as spending one or more ledgers. Use that language in every debug answer.
+Name which ledger moved, by how much, and what spent it.
 \[
 \text{Power}\;\cdot\;
 \text{Noise}\;\cdot\;
@@ -438,9 +481,12 @@ narrate a failure. Name which ledger moved, by how much, and what spent it.
       is spending spectral margin even while BER still passes.
 \item[Control] Headroom in the loops that keep the optics healthy:
       APC\termnote{APC}, TEC\termnote{TEC}, heaters, ring lock, bias DACs, and
-      calibration tables. A railed actuator or a corrupted table can fail the
-      link while the laser diode itself is still healthy. Control margin is
-      what separates ``optics broke'' from ``the product can no longer hold the
+      calibration tables. Prefer product language over bench language: say
+      ``the control ledger is exhausted'' or ``we have no remaining control
+      authority,'' not only ``TEC current hit maximum'' or ``heater DAC went
+      full scale.'' A railed actuator or a corrupted table can fail the link
+      while the laser diode itself is still healthy. Control margin is what
+      separates ``optics broke'' from ``the product can no longer hold the
       operating point.''
 \end{description}
 
@@ -706,17 +752,24 @@ scope, or end without a control that would catch the next escape.}
 
 Rehearse these until the structure is automatic. Each answer starts with scope
 or requirements, names measurements and the hypotheses they separate, and ends
-with a control. Do not recite; adapt the skeleton to the follow-up questions.
-For a Staff-level conversation, end one beat past the fix: the decision and the
-owner of the recurrence control.
+with a decision and a control. Do not recite; adapt the skeleton to the
+follow-up questions.
+
+\paragraph{Memorize the 30-second versions.}
+Nobody remembers six pages in an interview. Memorize the executive close for
+each question. Deliver that first. Expand only where the interviewer asks:
+\[
+\text{30-second answer}
+\longrightarrow \text{interviewer asks}
+\longrightarrow \text{expand only there}.
+\]
+The 3-minute and 10-minute versions are references, not scripts.
 
 \paragraph{Three lengths for every long answer.}
-You will not deliver six pages in an interview. Practice each worked answer at
-three depths and stop when the interviewer redirects:
 \begin{description}
-\item[Executive (30 seconds)] Frame, decision, and one control.
-\item[Engineering (3 minutes)] Scope, fork or ladder, key measurements, root
-      cause class, recurrence control.
+\item[Executive (30 seconds)] Frame, decision, and one control. Memorize this.
+\item[Engineering (3 minutes)] Scope, fork or ladder, key measurements, ledger,
+      root-cause class, recurrence control.
 \item[Deep dive (10 minutes)] Full spine with numbers, reference planes, and
       tradeoffs. Offer this; do not dump it unprompted.
 \end{description}
@@ -1582,14 +1635,15 @@ Assume seven days, with the interview near the end of Day~7. Protect sleep.
 Each day has one primary drill and one LLM practice box. If a day slips, cut
 new reading first, not story rehearsal or the mock interview.
 
-\paragraph{Day 1: three principles, answer spine, and Staff judgment.}
-Read the three principles, the answer spine, and
-\Cref{sec:interview-under-uncertainty}. Memorize: engineering reduces
-uncertainty; measurements unlock actions; every measurement updates belief.
-Also memorize the decision table, scope ladder, five ledgers, and nine spine
-steps. Speak one paragraph per spine step. Use the answer-spine LLM practice
-box. Write ownership language: stop ship, notify supplier, request FA, update
-ATP, monitor RMA.
+\paragraph{Day 1: principles, four-phase spine, traps, and Staff judgment.}
+Read the three principles, the answer spine, the traps, and
+\Cref{sec:interview-under-uncertainty}. Memorize: every answer ends with a
+decision; the job is the best decision with today's evidence; debugging is
+Bayesian inference in the lab. Memorize the four phases (Understand /
+Investigate / Resolve / Prevent), the six-question checklist, the decision
+table, and the five ledgers. Speak one paragraph per phase. Use the
+answer-spine LLM practice box. Write ownership language: stop ship, notify
+supplier, request FA, update ATP, monitor RMA.
 
 \paragraph{Day 2: requirements and validation ladder.}
 Rehearse \Cref{sec:interview-worked-laser-reqs} and
@@ -1641,47 +1695,46 @@ abbreviation drill. Always keep the cheat sheet below.
 
 Internalize this one page. The rest of the appendix is supporting detail.
 
-{\small\setlength{\parskip}{0.35em}%
-\noindent\textit{Philosophy.} Engineering reduces uncertainty enough to decide.
-Measurements unlock actions. Every measurement updates belief.\par
-\noindent\textit{Through-line.} Engineering $=$ decision making $=$ uncertainty
-reduction; measurements improve decisions.\par
-\noindent\textit{Answer spine.} Requirements $\rightarrow$ architecture
-$\rightarrow$ measurements $\rightarrow$ observations $\rightarrow$ hypotheses
-$\rightarrow$ isolation $\rightarrow$ root cause $\rightarrow$ corrective action
-$\rightarrow$ recurrence control.\par
+{\small\setlength{\parskip}{0.3em}%
+\noindent\textit{Close.} Every answer ends with the engineering decision.\par
+\noindent\textit{Philosophy.} Engineering reduces uncertainty. Measurements
+unlock decisions. Every measurement updates belief. The job is the best
+decision with today's evidence, not finding the truth.\par
+\noindent\textit{Debug.} Bayesian inference in the lab. Minimum measurement
+that kills the most hypotheses.\par
+\noindent\textit{Spine (4 phases).} Understand (requirements, architecture)
+$\rightarrow$ Investigate (measure, observe, hypothesize, isolate)
+$\rightarrow$ Resolve (root cause, corrective action) $\rightarrow$ Prevent
+(recurrence control, decision).\par
+\noindent\textit{Checklist.} Scope? Ledger? Power or quality? Fastest
+measurement? Decision? Control?\par
 \noindent\textit{Five ledgers.} Power $\cdot$ Noise $\cdot$ Timing $\cdot$
-Spectral $\cdot$ Control.\par
-\noindent\textit{Power fork.} Did average power move? Yes: optical path /
-launch. No: signal quality or receiver.\par
+Spectral $\cdot$ Control. Prefer ``control ledger exhausted'' over ``TEC maxed.''\par
+\noindent\textit{Power fork.} Power moved: optical path. Power held: signal
+quality or receiver.\par
 \noindent\textit{Validation ladder.} Bring-up $\rightarrow$ characterization
 $\rightarrow$ margin $\rightarrow$ interop $\rightarrow$ environment
 $\rightarrow$ reliability $\rightarrow$ production $\rightarrow$ fleet.\par
-\noindent\textit{Decision vocabulary.} Ship / don't ship, continue validation,
-escalate supplier, derate, second source, contain lot, modify ATP, open RMA,
-request FA, perform DPA, change firmware, retune calibration, monitor only
-(\Cref{tab:interview-decisions}).\par
-\noindent\textit{Scope ladder.} Unit $\rightarrow$ lot $\rightarrow$ vendor
+\noindent\textit{Decisions.} Ship / don't ship, continue validation, escalate
+supplier, derate, second source, contain lot, modify ATP, open RMA, FA/DPA,
+firmware, retune calibration, monitor only (\Cref{tab:interview-decisions}).\par
+\noindent\textit{Scope.} Unit $\rightarrow$ lot $\rightarrow$ vendor
 $\rightarrow$ rack $\rightarrow$ datacenter $\rightarrow$ fleet.\par
-\noindent\textit{Waterfall shapes.} Shift (sensitivity) versus floor
-(noise/MPI) versus burst (intermittent / reflection).\par
-\noindent\textit{Thermal vs aging.} Recovers on cool-down: operating point.
-Monotonic and permanent: aging.\par
-\noindent\textit{Lab time.} Golden swap $\rightarrow$ power meter $\rightarrow$
-bias sweep $\rightarrow$ then DCA / OSA / RIN. Optimize uncertainty removed per
-hour.\par
-\noindent\textit{Measurement hierarchy.} Telemetry $\rightarrow$ simple bench
-$\rightarrow$ swap $\rightarrow$ characterization $\rightarrow$ FA / DPA.\par
-\noindent\textit{Eight-beat story.} Context, symptom and scope, hypotheses,
-measurements, eliminations, root cause, corrective action, recurrence control
-with a metric.\par
-\noindent\textit{Ownership close.} As owner: contain, notify, FA path, ATP or
-telemetry control, monitor RMA, requalify before open volume.\par
+\noindent\textit{Waterfall.} Shift vs floor vs burst.\par
+\noindent\textit{Thermal vs aging.} Recovers on cool-down vs monotonic
+permanent.\par
+\noindent\textit{Lab time.} Golden swap $\rightarrow$ power $\rightarrow$ bias
+sweep $\rightarrow$ then DCA/OSA/RIN.\par
+\noindent\textit{Measure hierarchy.} Telemetry $\rightarrow$ bench
+$\rightarrow$ swap $\rightarrow$ characterization $\rightarrow$ FA/DPA.\par
+\noindent\textit{Traps.} No component-first. No symptom-as-root-cause. No stop
+after fix. No instrument list without decisions. No one-unit-as-fleet.\par
+\noindent\textit{Ownership.} Contain, notify, FA path, ATP/telemetry control,
+monitor RMA, requalify.\par
+\noindent\textit{Delivery.} Memorize 30-second closes. Expand only where asked.\par
 }
 
-\keyidea{The goal of an optical systems engineer is not to know every
-component. It is to make good engineering decisions under uncertainty using
-measurements, physics, and evidence. Show that process under time pressure.
-Lab fluency proves you can decide; the control proves you can ship. A week is
-for making the cheat sheet and the spine automatic, not for learning a new
-device family.}
+\keyidea{I first want to understand the scope of the problem, then determine
+which margin ledger is being spent, choose the measurement that eliminates the
+largest number of hypotheses, make the product decision, and finally add the
+control that prevents the next escape.}
