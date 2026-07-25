@@ -497,7 +497,7 @@ ordinary thermal response.
       movement supports aging or damage.
 \item Repeat the temperature sweep with source, wavelength-selective element,
       receiver, and neighbors isolated in turn.
-\item Update the power, noise, timing, and spectral ledgers
+\item Update the power, noise, timing, spectral, and control ledgers
       (\Cref{sec:laser-margin-erosion}). Several small shifts can explain a BER
       failure even when each component remains inside its stand-alone limit.
 \item Route reversible thermal loss to cooling, control, calibration, or derating.
@@ -555,7 +555,7 @@ Step & Question & Required record \\
 Preserve & What evidence will a reseat, reboot, clean, or retest destroy? & CMIS, BER and FEC history, rails, temperature, firmware, fixture, and time \\
 Scope & One unit, lane, lot, vendor, site, or fleet? & Population and correlation plot \\
 Classify & Sudden or gradual, constant or intermittent, thermal or cumulative? & Timeline and recovery test \\
-Locate margin & Did power, noise, timing, or spectrum move first? & Golden comparison and margin ledger \\
+Locate margin & Did power, noise, timing, spectrum, or control move first? & Golden comparison and margin ledger \\
 Falsify & Which measurement best separates the leading hypotheses? & Expected result for each hypothesis before the test \\
 Confirm & Does the fault follow the suspected block under a controlled swap or stress? & Repeated failure and passing control \\
 Correct & Does the fix restore the original failing condition with margin? & Before and after data at loaded corners \\

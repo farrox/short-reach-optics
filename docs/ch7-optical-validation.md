@@ -31,7 +31,7 @@ Optical programs fail in the same places again and again: a part that looks good
 
 For every metric at every stage, name the instrument, the reference plane (§3.9), the pass criterion, and the failure signature. A number without a plane and a method is not a measurement.
 
-Each stage removes a different uncertainty. Bring-up removes basic integration unknowns. Characterization maps response and variation. Margin and interop tests find combinations that consume power, noise, timing, or spectral headroom (§5.19). Qualification separates life and environmental risks. Production readiness proves that the chosen screens can control variation and escapes at volume. Do not use one stage as evidence for another.
+Each stage removes a different uncertainty. Bring-up removes basic integration unknowns. Characterization maps response and variation. Margin and interop tests find combinations that consume power, noise, timing, spectral, or control headroom (§5.19). Qualification separates life and environmental risks. Production readiness proves that the chosen screens can control variation and escapes at volume. Do not use one stage as evidence for another.
 
 ## The core IM/DD measurements
 

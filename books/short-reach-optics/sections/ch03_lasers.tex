@@ -874,7 +874,7 @@ MZM bias can move. A ring can consume spectral headroom as its heater approaches
 range. Driver noise can raise the BER floor while none of these changes violates
 its stand-alone limit.
 
-Track four ledgers:
+Track five ledgers:
 \begin{description}
 \item[Power margin] launch power, coupling, connector and MUX loss, receiver
       sensitivity, and aging reserve.
@@ -884,12 +884,16 @@ Track four ledgers:
       jitter, and equalization reserve.
 \item[Spectral margin] laser wavelength, SMSR, filter or ring passband, thermal
       drift, and lock range.
+\item[Control margin] headroom in APC, TEC, heaters, ring lock, bias DACs, and
+      calibration tables. A railed loop can fail the link while the diode is
+      still healthy.
 \end{description}
 
 Recompute the link at combined production corners. A nominal part at nominal
 temperature says little about whether a slow loss in two ledgers will push a
 tail unit across the pre-FEC BER limit. \Cref{sec:prod-corners,tab:fleet-triage}
-carry the same ledgers into validation and fleet triage.
+carry the same ledgers into validation and fleet triage. The interview review
+compresses this checklist in \Cref{sec:interview-margin-ledgers}.
 
 \section{Engineering lens}
 \label{sec:lasers-engineering-lens}

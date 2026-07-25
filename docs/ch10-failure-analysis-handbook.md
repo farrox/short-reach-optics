@@ -94,7 +94,7 @@ A shifted waterfall points toward lost power, receiver sensitivity, eye closure,
 
 ##### Corrective action and recurrence control.
 
-Restore the margin ledger that moved, then repeat the full BER sweep at loaded corners. Store waterfall shape, not only pass/fail BER, so later fleet changes can be classified without guessing. The interview study treatment of these shapes is in §A.2.7.
+Restore the margin ledger that moved, then repeat the full BER sweep at loaded corners. Store waterfall shape, not only pass/fail BER, so later fleet changes can be classified without guessing. The interview study treatment of these shapes is in §A.3.7.
 
 ## BER floor
 
@@ -340,7 +340,7 @@ Use time scale and recovery to route the incident. A reversible shift during a t
 
 3.  Repeat the temperature sweep with source, wavelength-selective element, receiver, and neighbors isolated in turn.
 
-4.  Update the power, noise, timing, and spectral ledgers (§5.19). Several small shifts can explain a BER failure even when each component remains inside its stand-alone limit.
+4.  Update the power, noise, timing, spectral, and control ledgers (§5.19). Several small shifts can explain a BER failure even when each component remains inside its stand-alone limit.
 
 5.  Route reversible thermal loss to cooling, control, calibration, or derating. Route cumulative change to HTOL and life-model review. Route lot-clustered permanent steps to manufacturing failure analysis.
 
@@ -385,7 +385,7 @@ Restore thermal headroom, correct calibration and control limits, reduce couplin
 
   Classify        Sudden or gradual, constant or intermittent, thermal or cumulative?            Timeline and recovery test
 
-  Locate margin   Did power, noise, timing, or spectrum move first?                              Golden comparison and margin ledger
+  Locate margin   Did power, noise, timing, spectrum, or control move first?                     Golden comparison and margin ledger
 
   Falsify         Which measurement best separates the leading hypotheses?                       Expected result for each hypothesis before the test
 

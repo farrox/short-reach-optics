@@ -5,9 +5,65 @@ title: "Ch 11: One-week optical systems interview review"
 
 # One-week optical systems interview review
 
-Use this appendix as a standalone review sheet for about a week of focused prep. Its purpose is not to cover the most optics. Its purpose is to make your engineering process automatic under time pressure: requirements, measurement, hypothesis elimination, and a decision with recurrence control.
+Use this appendix as a standalone review sheet for about a week of focused prep. Its purpose is not to cover the most optics. Its purpose is to make your engineering process automatic under time pressure.
 
-This role owns laser direction inside an IM/DD interconnect effort: requirements, validation strategy, partner quality, and fleet risk. Lab measurement is how you decide, not the whole job. On every answer, name the decision the work unlocks (ship, derate, second-source, ATP change, partner action) as well as the instrument. Hands-on fluency still matters. Senior people lose credibility if they cannot run or interpret LIV, RIN, ORL, TDECQ, and a BER waterfall. They also lose the level if they stop at plots and never close on a control.
+## The philosophy: reduce uncertainty to decide
+
+**Key idea.** The purpose of engineering is not to find certainty. It is to reduce uncertainty enough to make the next decision.
+
+Validation, measurement, debugging, qualification, supplier choices, and production are the same activity under different names: uncertainty reduction. $$\begin{split}
+\text{validation} &\longrightarrow \text{measurements}
+\longrightarrow \text{debugging}\\
+&\longrightarrow \text{qualification}
+\longrightarrow \text{supplier decisions}\\
+&\longrightarrow \text{production}.
+\end{split}$$
+
+**Key idea.** The goal of an optical systems engineer is not to know every component. It is to make good engineering decisions under uncertainty using measurements, physics, and evidence.
+
+This role owns laser direction inside an IM/DD interconnect effort: requirements, validation strategy, partner quality, and fleet risk. Lab measurement is how you decide, not the whole job. Hands-on fluency still matters. Senior people lose credibility if they cannot run or interpret LIV, RIN, ORL, TDECQ, and a BER waterfall. They also lose the level if they stop at plots and never close on a control.
+
+##### Bayesian engineering, named.
+
+You already use this pattern. Name it so the interviewer hears the method: $$\begin{split}
+\text{observation} &\longrightarrow \text{hypotheses}
+\longrightarrow \text{measurement}\\
+&\longrightarrow \text{belief updated / hypothesis eliminated}.
+\end{split}$$ Every measurement should change what you believe. A test that leaves the hypothesis list unchanged was the wrong test, or the wrong reference plane.
+
+##### Ask the scale before the root cause.
+
+Root cause is not enough. Ask at what scale the problem exists: $$\begin{split}
+\text{device} &\longrightarrow \text{subsystem}
+\longrightarrow \text{module}\\
+&\longrightarrow \text{rack}
+\longrightarrow \text{datacenter}
+\longrightarrow \text{fleet}.
+\end{split}$$ Scale picks the owner: design, process, supplier, manufacturing, or operations.
+
+##### What decision does this measurement unlock?
+
+Make this a mantra. Instruments do not exist to produce plots. They exist to unlock a decision.
+
+Power meter
+
+: Should I chase the optical path or signal integrity?
+
+OSA
+
+: Is spectral alignment still plausible?
+
+LIV
+
+: Has the device itself changed?
+
+DCA / TDECQ
+
+: Is the eye still inside the budget at this corner?
+
+BER waterfall
+
+: Is this a sensitivity shift or a noise floor?
 
 Work the day plan at the end of this appendix. Use each LLM practice box the day it is scheduled. Do not add new topics after Day 6.
 
@@ -34,11 +90,11 @@ Translate the requirement into an architecture path: fiber plant, wavelength, so
 
 ##### Measurements.
 
-Name the instruments you would use and the uncertainty each one removes. Always state the reference plane, pattern, temperature, and pass criterion with the instrument. A number without a plane is not a measurement.
+Name the instruments you would use and the uncertainty each one removes. Always state the reference plane, pattern, temperature, and pass criterion with the instrument. A number without a plane is not a measurement. Ask out loud: what decision does this measurement unlock?
 
-A power meter answers whether the optical power ledger moved, and at which reference plane. An LIV setup answers whether the laser itself changed threshold or slope. An OSA answers wavelength and SMSR.
+A power meter does not "measure power" as an end in itself. It answers whether the optical path still owns the failure, or whether you should move to signal integrity. An LIV setup answers whether the laser itself changed threshold or slope. An OSA answers whether spectral alignment is still plausible (wavelength and SMSR).
 
-A DCA answers OMA, ER, RLM, TDECQ, and eye shape. A BERT and FEC counters answer the BER waterfall, floor, and burst pattern.
+A DCA answers whether the eye is still inside budget: OMA, ER, RLM, TDECQ, and eye shape. A BERT and FEC counters answer whether you have a sensitivity shift, a floor, or a burst pattern.
 
 A VNA answers electrical or electro-optic bandwidth. An ORL meter and inspection scope answer whether the plant is reflecting or dirty.
 
@@ -52,7 +108,7 @@ Turn the observations into a short list of competing causes, ranked by how well 
 
 ##### Isolation.
 
-Choose the next measurement for its ability to separate the remaining hypotheses, not because it is the instrument you like. A golden swap of transmitter versus receiver splits Tx from Rx. An optical-versus-electrical lane swap in a multi-lane module splits the optical path from the driver or TIA. A bias sweep at the failing temperature asks whether the optimum moved away from the stored table. An LIV compared with ship data asks whether the device aged or only the setpoint drifted. A BER-versus-power waterfall asks whether the curve shifted or floored. Isolation is the discipline of picking the cut that removes the most uncertainty per hour of bench time.
+Good engineers perform measurements. Great engineers perform the minimum measurement that eliminates the largest number of hypotheses. Choose the next cut for uncertainty removed per hour of bench time, not for the instrument you like. A golden swap of transmitter versus receiver splits Tx from Rx. An optical-versus-electrical lane swap in a multi-lane module splits the optical path from the driver or TIA. A bias sweep at the failing temperature asks whether the optimum moved away from the stored table. An LIV compared with ship data asks whether the device aged or only the setpoint drifted. A BER-versus-power waterfall asks whether the curve shifted or floored.
 
 ##### Root cause.
 
@@ -66,7 +122,7 @@ Fix the mechanism you named, under the condition that failed. Retune the table, 
 
 Close with the control that stops the same escape next month. That control is usually a new or tightened test, an SPC chart, a telemetry alarm, a process-control limit, a supplier screen, or a firmware guard that refuses to boot with a railed actuator. Name the owner and the measurable closure criterion. Root cause without recurrence control is a story, not an engineering result. In the interview, ending on recurrence control is what separates a debug narrative from a product-engineering answer.
 
-Quiz me on the answer spine. Ask me to speak one paragraph for each step. Then give me a failed module at high temperature with stable average power and make me walk the full spine out loud. Stop me if I skip scope, the power fork, or recurrence control.
+Quiz me on the philosophy and the answer spine. Ask for the uncertainty- reduction line, then one paragraph per spine step. Give me a failed module at high temperature with stable average power and make me walk the full spine. Stop me if I skip scope, the power fork, the control ledger, or recurrence control.
 
 ## Ten concepts to know cold
 
@@ -88,7 +144,14 @@ A good answer explains why each choice constrains the next one. A VCSEL path poi
 
 ### Scope before root cause
 
-Before you open a instrument, ask how wide the failure is. One lane, one module, one lot, one vendor, one rack, or the fleet? A new failure or a long-running trend? Sudden, gradual, intermittent, or temperature-dependent? Did firmware, supplier, process, fixture, workload, or environment change just before the symptom appeared? Scope often removes more hypotheses than the first bench measurement, because a fleet-wide gradual drift cannot be a single dirty connector, and a single-lane sudden failure after a rework cannot be a population aging problem.
+Before you open an instrument, walk the failure up the scope ladder. Each rung changes the owner and the next action: $$\begin{split}
+\text{failure observed} &\longrightarrow \text{single unit?}
+\longrightarrow \text{lot?}\\
+&\longrightarrow \text{vendor?}
+\longrightarrow \text{rack?}\\
+&\longrightarrow \text{datacenter?}
+\longrightarrow \text{fleet?}
+\end{split}$$ Also ask time and change: new failure or long-running trend; sudden, gradual, intermittent, or temperature-dependent; firmware, supplier, process, fixture, workload, or environment change just before the symptom. Scope often removes more hypotheses than the first bench measurement. A fleet-wide gradual drift cannot be a single dirty connector. A single-lane sudden failure after a rework cannot be a population aging problem. A vendor-lot signature points to supplier containment before you redesign the module.
 
 Preserve the failing state and its telemetry before you reseat, clean, reboot, or change calibration. Capture CMIS monitors, pre- FEC BER, bias currents, temperatures, LOS and LOL flags, and firmware versions. An intermittent that disappears under debugging is still a real failure; you just destroyed the evidence (§7.12, Table 10.1).
 
@@ -100,9 +163,13 @@ If power changed, the power ledger moved. Inspect source output and enable state
 
 If power held but BER worsened, the loss is in signal quality or in the receiver. Inspect OMA, ER, RLM, and TDECQ on a DCA; RIN under controlled ORL; jitter and ISI; wavelength alignment to filters or rings; receiver sensitivity and equalization; and calibration tables that set modulator bias. Also ask the receiver-side equivalent: did the required optical power increase even though the power meter reading did not? A sensitivity shift can look exactly like transmitter degradation until you do a golden swap (§4.8, §7.11).
 
-### Track four margin ledgers
+### Track five margin ledgers
 
-Links rarely fail from one dramatic excursion. They fail when several small shifts spend different ledgers at once.
+Links rarely fail from one dramatic excursion. They fail when several small shifts spend different ledgers at once. Keep this checklist whenever you narrate a failure. Name which ledger moved, by how much, and what spent it. $$\text{Power}\;\cdot\;
+\text{Noise}\;\cdot\;
+\text{Timing}\;\cdot\;
+\text{Spectral}\;\cdot\;
+\text{Control}$$
 
 Power
 
@@ -120,11 +187,17 @@ Spectral
 
 : Wavelength, SMSR, filter or ring passband, thermal drift, and lock range. A ring whose heater is near its DAC rail is spending spectral margin even while BER still passes.
 
-Keep the four ledgers as a mental checklist when you narrate a failure. Name which ledger moved, by how much, and what spent it. The complete treatment is in §5.19.
+Control
+
+: Headroom in the loops that keep the optics healthy: APC, TEC, heaters, ring lock, bias DACs, and calibration tables. A railed actuator or a corrupted table can fail the link while the laser diode itself is still healthy. Control margin is what separates "optics broke" from "the product can no longer hold the operating point."
+
+The device and link treatment is in §5.19. Always ask the control ledger when actuators and tables are in the product.
 
 ### Use the validation ladder
 
-Validation is staged uncertainty reduction. For every stage, name the question the stage answers and the uncertainty it removes. A test that answers no question is cost, not confidence.
+**Key idea.** Validation is staged uncertainty reduction.
+
+For every stage, name the question the stage answers and the uncertainty it removes. A test that answers no question is cost, not confidence.
 
 Bring-up
 
@@ -158,51 +231,51 @@ Fleet monitoring
 
 : Which telemetry catches margin erosion before service failure, and does the RMA Pareto match the life model?
 
-Table 7.1 maps these stages to activities and instruments. The worked interview answer in §A.4.2 walks the same ladder as spoken prose.
+Table 7.1 maps these stages to activities and instruments. The worked interview answer in §A.5.2 walks the same ladder as spoken prose.
 
 ### Know what each instrument answers
 
-Do not recite instrument names. Say what uncertainty each one removes.
+Do not recite instrument names. Say what uncertainty each one removes, and what decision that unlocks.
 
 Power meter
 
-: Did optical power change, and at which reference plane? External meters catch monitor-PD lies.
+: Did optical power change at a named reference plane? Decision: chase the optical path, or move to signal integrity. External meters catch monitor-PD lies.
 
 LIV setup
 
-: Did laser threshold, slope efficiency, voltage, kink behavior, or thermal rollover change relative to ship data?
+: Did laser threshold, slope efficiency, voltage, kink behavior, or thermal rollover change relative to ship data? Decision: has the device itself changed?
 
 Optical spectrum analyzer or wavemeter
 
-: Did wavelength, SMSR, mode structure, or spectral width change on an OSA? Essential for filter and ring alignment.
+: Did wavelength, SMSR, mode structure, or spectral width change on an OSA? Decision: is spectral alignment still plausible for filters and rings?
 
 RIN setup
 
-: Is transmitter intensity noise limiting BER, and does it depend on ORL or on the product bias board rather than the laser itself?
+: Is transmitter intensity noise limiting BER, and does it depend on ORL or on the product bias board rather than the laser itself? Decision: is the floor optical noise or something else?
 
 Digital communication analyzer
 
-: Are OMA, ER, RLM, TDECQ, jitter, and eye shape acceptable on a DCA? This is the transmitter quality ledger in one instrument.
+: Are OMA, ER, RLM, TDECQ, jitter, and eye shape acceptable on a DCA? Decision: is the eye still inside the transmitter budget at this corner?
 
 Bit-error-ratio tester and FEC counters
 
-: What is the BER waterfall, floor, burst pattern, lane correlation, and dwell-time behavior from a BERT? FEC histograms separate Gaussian noise from clustered MPI or intermittents. The next subsection walks each shape in study detail.
+: What is the BER waterfall, floor, burst pattern, lane correlation, and dwell-time behavior from a BERT? Decision: sensitivity shift, noise floor, or intermittent? FEC histograms separate Gaussian noise from clustered MPI.
 
 Vector network analyzer
 
-: Is electrical or electro-optic bandwidth, impedance, or reflection causing eye closure? Use a VNA.
+: Is electrical or electro-optic bandwidth, impedance, or reflection causing eye closure on a VNA? Decision: is the plant electrical rather than optical?
 
 ORL meter and inspection scope
 
-: Is the optical plant adding loss or reflection that the laser will convert into RIN or MPI?
+: Is the optical plant adding loss or reflection? Decision: clean and inspect before blaming the laser.
 
 Thermal chamber
 
-: Is behavior reversible with temperature, and which actuator (TEC, heater, bias DAC) loses headroom at the failing corner?
+: Is behavior reversible with temperature, and which actuator (TEC, heater, bias DAC) loses headroom? Decision: thermal operating point versus aging.
 
 Bias sweep
 
-: Where is the optimum operating point for the EAM, MZM, or ring, and did its curve move away from the stored calibration table?
+: Where is the optimum for the EAM, MZM, or ring, and did it move away from the stored table? Decision: retune the control ledger, or replace the device?
 
 Always name the reference plane, setup calibration, test pattern, bandwidth, temperature, sample identity, and pass criterion with the result (Table 7.2, Table 5.5).
 
@@ -280,6 +353,22 @@ I will tell you my two story titles only. Interview me on each for five minutes.
 
 Rehearse these until the structure is automatic. Each answer starts with scope or requirements, names measurements and the hypotheses they separate, and ends with a control. Do not recite; adapt the skeleton to the follow-up questions. For a Staff-level conversation, end one beat past the fix: the decision and the owner of the recurrence control.
 
+##### Three lengths for every long answer.
+
+You will not deliver six pages in an interview. Practice each worked answer at three depths and stop when the interviewer redirects:
+
+Executive (30 seconds)
+
+: Frame, decision, and one control.
+
+Engineering (3 minutes)
+
+: Scope, fork or ladder, key measurements, root cause class, recurrence control.
+
+Deep dive (10 minutes)
+
+: Full spine with numbers, reference planes, and tradeoffs. Offer this; do not dump it unprompted.
+
 ### How would you set laser requirements for a new IM/DD link?
 
 This is the ownership question. Start from the system, not from a laser datasheet. The output is a requirements slice a supplier and an ATP can both test against (Table 5.4, Table 5.1).
@@ -312,6 +401,18 @@ The decision you are making is not "which laser looks best on a bench." It is "w
 
 "System constraints first, then OMA and RIN at a named plane and ORL, then thermal and life with a named HTOL mechanism, then ATP and supplier reaction plan." Offer to walk one number, usually RIN at ORL or hot-corner APC headroom, if they want depth.
 
+##### Executive answer (30 seconds).
+
+Freeze reach, lane rate, fiber, power, lifetime, and volume. Those choose the source path. Then write OMA and RIN at a named plane and ORL, thermal and control headroom, a named HTOL mechanism, and an ATP with supplier reaction plan. The decision is which requirements let us ship and second-source, not which laser looks best on a bench.
+
+##### Engineering answer (3 minutes).
+
+Walk the four steps above: system constraints, optical budget with reference planes, thermal/life/control requirements, then production proof. Name one hard number you would fight for (RIN under ORL, or APC headroom at hot) and what fails if it is missing.
+
+##### Deep dive (10 minutes).
+
+Expand one constraint into the full budget table and show how it lands in ATP limits and partner FAIR triggers.
+
 ### How would you validate a new optical transmitter from bring-up through production?
 
 This is the question most likely to open the interview, so it gets the full treatment. The frame to state before any detail: validation is staged uncertainty reduction. Each stage answers a question the previous stage could not, and a test that answers no question is cost, not confidence. Walk the stages in order, and at every one name the reference plane where the measurement is taken and the criterion that decides pass (Table 7.1).
@@ -326,7 +427,7 @@ For characterization, map what the design actually does across its operating ran
 
 ##### Stage 3: margin testing.
 
-For margin, stop asking whether the part passes and ask how far it sits from the cliff. Push each parameter to its failure boundary: sweep received power down with a calibrated VOA until the pre-FEC BER waterfall crosses the FEC threshold; take case temperature to the limit and past it; pull supply rails to their corners; degrade ORL with a controlled reflector and watch the error floor. Measure the distance to failure in dB, degrees, and volts, then compare it against the variation found in characterization. The uncertainty removed is the one that kills fleets: a design can pass every nominal test while sitting half a decibel from its limit, and normal lot spread plus aging will spend that half decibel in the first year. Margin testing also reveals which of the four margins, power, noise, timing, or spectral, runs out first, which tells you what telemetry must watch (§5.19).
+For margin, stop asking whether the part passes and ask how far it sits from the cliff. Push each parameter to its failure boundary: sweep received power down with a calibrated VOA until the pre-FEC BER waterfall crosses the FEC threshold; take case temperature to the limit and past it; pull supply rails to their corners; degrade ORL with a controlled reflector and watch the error floor. Measure the distance to failure in dB, degrees, and volts, then compare it against the variation found in characterization. The uncertainty removed is the one that kills fleets: a design can pass every nominal test while sitting half a decibel from its limit, and normal lot spread plus aging will spend that half decibel in the first year. Margin testing also reveals which of the five margins, power, noise, timing, spectral, or control, runs out first, which tells you what telemetry must watch (§A.3.4, §5.19).
 
 ##### Stage 4: interoperability.
 
@@ -347,6 +448,18 @@ Deployment is the last validation stage, not the end of validation. Fleet teleme
 ##### How to say it aloud.
 
 In the interview, give the frame in one sentence, then walk the seven stages in order, one sentence each, naming for each stage one instrument and the uncertainty it removes. Then offer to go deep on whichever stage the interviewer cares about. That structure shows judgment before detail, and it turns a memorized list into a conversation.
+
+##### Executive answer (30 seconds).
+
+Validation is staged uncertainty reduction. Bring-up proves the setup is sane. Characterization maps the population. Margin finds the cliff. Interop removes combination risk. Qual projects life with a named mechanism. Production proves the ATP catches escapes. Fleet telemetry closes the loop. Every stage answers a question the previous stage could not.
+
+##### Engineering answer (3 minutes).
+
+Walk the seven stages in order. For each, name one instrument, the uncertainty removed, and the decision unlocked (continue, redesign, tighten ATP, stop ship). End on which ledger (power, noise, timing, spectral, control) the telemetry must watch.
+
+##### Deep dive (10 minutes).
+
+Expand the stage the interviewer picks. Bring numbers, reference planes, sample sizes, and the failure mode that stage exists to catch.
 
 ### BER worsens at high temperature but average power is stable. What do you do?
 
@@ -372,6 +485,14 @@ A collapsed eye that a bias sweep restores is usually a temperature-segment boun
 
 Scope, fork, measure at the failing temperature, name the hypothesis the measurement eliminates, then name the control. Offer to walk the bias-sweep or the calibration-table story if the interviewer wants depth.
 
+##### Executive answer (30 seconds).
+
+Power held, so leave the power ledger. Scope unit/lane/lot and whether cool- down recovers. At the failing temperature, read eye, bias sweep, wavelength, and actuator headroom. Fix the table or thermal design; put that corner in ATP.
+
+##### Engineering answer (3 minutes).
+
+Walk the four steps: scope ladder, power fork, hot-corner measurements that kill hypotheses, then recurrence control. Name control margin (TEC/heater DAC rails) as a first-class ledger.
+
 ### How do you distinguish laser aging from calibration drift?
 
 This question tests whether you separate device physics from control-loop bookkeeping. Aging changes the device. Calibration drift changes the operating point applied to a healthy device. The frame is an external reference plus a recovery test (§5.11, §5.10).
@@ -395,6 +516,10 @@ Aging routes to life modeling, derating, burn-in, or field replacement. Calibrat
 ##### How to say it aloud.
 
 "Aging changes the device; calibration drift changes the setpoint. I separate them with an external LIV and a recovery test, then use time behavior to confirm." Offer the monitor-PD corruption story as the silent failure mode.
+
+##### Executive answer (30 seconds).
+
+Aging changes the LIV. Drift changes the setpoint on a healthy LIV. External LIV plus recovery after recalibration separates them. Time behavior confirms: monotonic climb versus a step after a table or firmware change. Owner follows the mechanism.
 
 ### How would you qualify a second laser or photonic-integrated-circuit supplier?
 
@@ -872,13 +997,13 @@ Drill abbreviations. Give me ten random terms mixing optical debug and reliabili
 
 Assume seven days, with the interview near the end of Day 7. Protect sleep. Each day has one primary drill and one LLM practice box. If a day slips, cut new reading first, not story rehearsal or the mock interview.
 
-##### Day 1: answer spine and ownership frame.
+##### Day 1: philosophy, answer spine, and ownership frame.
 
-Read the chapter opener and the answer-spine section. Memorize the nine steps and the power-versus-signal-quality fork. Speak one paragraph per spine step. Use the answer-spine LLM practice box. Write down the decision language you will reuse: ship, derate, second-source, ATP change, partner action.
+Read the philosophy section and the answer spine. Memorize the uncertainty- reduction line, the Bayesian update rule (every measurement changes belief), the scope ladder, the five ledgers, and the nine spine steps. Speak one paragraph per spine step. Use the answer-spine LLM practice box. Write down the decision language you will reuse: ship, derate, second-source, ATP change, partner action.
 
 ##### Day 2: requirements and validation ladder.
 
-Rehearse §A.4.1 and §A.4.2 aloud until the structure is automatic. Name a reference plane in every measurement sentence. Skim Table 7.1, Table 5.4, Table 5.1 for numbers you already believe; do not hunt new optics.
+Rehearse §A.5.1 and §A.5.2 aloud until the structure is automatic. Name a reference plane in every measurement sentence. Skim Table 7.1, Table 5.4, Table 5.1 for numbers you already believe; do not hunt new optics.
 
 ##### Day 3: two real stories.
 
@@ -886,7 +1011,7 @@ Draft and rehearse one bench or component story and one system, production, or f
 
 ##### Day 4: instruments, waterfall, and debug forks.
 
-Review what each instrument removes as uncertainty. Drill waterfall shift versus floor versus burst pattern (§A.2.7, §10.2, §10.3). Rehearse hot BER with stable power, aging versus calibration, and weak-lane isolation. Use the ten-concepts LLM practice box.
+Review what each instrument removes as uncertainty. Drill waterfall shift versus floor versus burst pattern (§A.3.7, §10.2, §10.3). Rehearse hot BER with stable power, aging versus calibration, and weak-lane isolation. Use the ten-concepts LLM practice box.
 
 ##### Day 5: reliability, manufacturing, and suppliers.
 
@@ -904,7 +1029,7 @@ Use the 45-minute mock-interview LLM practice box. No new chapters. Light review
 
 Compress in this order: Day 1 spine, Day 3 stories, Day 2 requirements and validation, Day 5 HTOL and triage, Day 7 mock. Cut Day 6 reading; keep only the abbreviation drill.
 
-**Key idea.** Show how you reduce uncertainty and own the decision. Start with requirements and scope, measure at a named reference plane, eliminate hypotheses, verify the root cause under the failing condition, and add a control that prevents recurrence. Lab fluency proves you can decide; the control proves you can ship. A week is for making that spine automatic, not for learning a new device family.
+**Key idea.** The goal of an optical systems engineer is not to know every component. It is to make good engineering decisions under uncertainty using measurements, physics, and evidence. Show that process under time pressure: requirements and scope, a measurement that changes belief at a named reference plane, hypothesis elimination, root cause verified under the failing condition, and a control that prevents recurrence. Lab fluency proves you can decide; the control proves you can ship. A week is for making that spine automatic, not for learning a new device family.
 
 
 <div class="nav-links">
