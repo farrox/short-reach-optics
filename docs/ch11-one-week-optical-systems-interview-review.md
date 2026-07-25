@@ -52,17 +52,7 @@ Work the day plan at the end of this appendix. Memorize the one-page cheat sheet
 
 Interview questions are usually solved by walking a sequence of uncertainty-reduction decisions. The exact branches differ. The philosophy never changes. Debugging asks what broke and which margin ledger is spent. Qualification asks what uncertainty remains before shipment. The playbooks in §B are specialized trees under these two universal ones. The same trees, plus supplier, escape, unknown-failure, and margin-budget variants, live as a wall chart in §C.
 
-##### Universal Tree 1: Debugging.
-
-::: dectree
-Problem \| Scope (unit -\> lot -\> vendor -\> fleet) \| Population / time behavior \| Power changed? \|-- YES --\> Power ledger --\> optical path \|-- NO --\> Quality / receiver \| Isolation \| Root cause \| Decision \| Recurrence control
-:::
-
-##### Universal Tree 2: Qualification.
-
-::: dectree
-New product \| Works? (bring-up) \| Margins? \| Environmental? \| Interoperability? \| Reliability? \| Manufacturing / ATP? \| Pilot deployment? \| Production \| Fleet monitoring
-:::
+Memorize the two shapes, not the ASCII: Debugging = scope $\rightarrow$ power/quality $\rightarrow$ isolation $\rightarrow$ decision $\rightarrow$ control. Qualification = bring-up $\rightarrow$ margin $\rightarrow$ environment $\rightarrow$ interop $\rightarrow$ reliability $\rightarrow$ ATP $\rightarrow$ pilot $\rightarrow$ fleet. Full wall charts, including power fork, scope versus correlation, black-box access, and measurement selection, are in §C. Night-before drill opens the matching playbook in §B.
 
 ## The answer spine
 
@@ -363,53 +353,11 @@ Every environmental or use stress consumes part of the system margin: temperatur
 
 ### Customer view versus vendor view
 
-The vendor designs internals. The customer characterizes externally observable behavior. As a customer you often do not need laser threshold, driver architecture, or TIA topology. You measure BER, sensitivity, FEC statistics, launch and receive power, telemetry, and environmental response; eye metrics when engineering access exists. If the product is a black box, qualification focuses on that external surface. If engineering samples are available, request transmitter-only, receiver-only, breakout, or diagnostic hardware to isolate Tx and Rx margins independently. Keep the view explicit in second-source and qualification answers (§A.8.5).
+The vendor designs internals. The customer characterizes externally observable behavior. As a customer you often do not need laser threshold, driver architecture, or TIA topology. You measure BER, sensitivity, FEC statistics, launch and receive power, telemetry, and environmental response; eye metrics when engineering access exists. If the product is a black box, qualification focuses on that external surface. If engineering samples are available, request transmitter-only, receiver-only, breakout, or diagnostic hardware to isolate Tx and Rx margins independently. Keep the view explicit in second-source and qualification answers (§C.10, §A.8.5).
 
 ### Know what each instrument answers
 
-Do not recite instrument names. Say what uncertainty each one removes, and what decision that unlocks.
-
-Power meter
-
-: Did optical power change at a named reference plane? Decision: chase the optical path, or move to signal integrity. External meters catch monitor-PD lies.
-
-LIV setup
-
-: Did laser threshold, slope efficiency, voltage, kink behavior, or thermal rollover change relative to ship data? Decision: has the device itself changed?
-
-Optical spectrum analyzer or wavemeter
-
-: Did wavelength, SMSR, mode structure, or spectral width change on an OSA? Decision: is spectral alignment still plausible for filters and rings?
-
-RIN setup
-
-: Is transmitter intensity noise limiting BER, and does it depend on ORL or on the product bias board rather than the laser itself? Decision: is the floor optical noise or something else?
-
-Digital communication analyzer
-
-: Are OMA, ER, RLM, TDECQ, jitter, and eye shape acceptable on a DCA? Decision: is the eye still inside the transmitter budget at this corner?
-
-Bit-error-ratio tester and FEC counters
-
-: What is the BER waterfall, floor, burst pattern, lane correlation, and dwell-time behavior from a BERT? Decision: sensitivity shift, noise floor, or intermittent? FEC histograms separate Gaussian noise from clustered MPI.
-
-Vector network analyzer
-
-: Is electrical or electro-optic bandwidth, impedance, or reflection causing eye closure on a VNA? Decision: is the plant electrical rather than optical?
-
-ORL meter and inspection scope
-
-: Is the optical plant adding loss or reflection? Decision: clean and inspect before blaming the laser.
-
-Thermal chamber
-
-: Is behavior reversible with temperature, and which actuator (TEC, heater, bias DAC) loses headroom? Decision: thermal operating point versus aging.
-
-Bias sweep
-
-: Where is the optimum for the EAM, MZM, or ring, and did it move away from the stored table? Decision: retune the control ledger, or replace the device?
-
-Always name the reference plane, setup calibration, test pattern, bandwidth, temperature, sample identity, and pass criterion with the result (Table 7.2, Table 5.5).
+Do not recite instrument names. Use Measurement $\rightarrow$ uncertainty removed $\rightarrow$ decision unlocked (§C.13). Fast map: power meter (power ledger), LIV (device vs setpoint), OSA (spectral), RIN/ORL (floor), DCA (eye), BERT/FEC (waterfall shape), VNA (electrical plant), thermal chamber (reversible vs aging), bias sweep (control ledger). Details and reference planes live in §7.6, Table 7.3.
 
 ### Read a BER waterfall: shift, floor, and burst pattern
 
@@ -503,7 +451,7 @@ Walk four steps: (1) system constraints choose the architecture path before any
 
 ##### 10-minute reference (read only).
 
-Expand one constraint into the full budget table and show how it lands in ATP limits and partner FAIR triggers. Details: a short multimode path points toward a VCSEL; a 500 m or 2 km single-mode path toward a DFB or EML at 1310 nm. Say the reference plane with every number. If the laser cannot hold lock or APC headroom at the hot corner, the link does not close even if room-temperature OMA looks fine.
+Open §B.7 only if the interviewer expands into the ladder; otherwise expand one constraint into the budget table and ATP/FAIR landing. Architecture forks: §5.1, Table 5.1.
 
 ### How would you validate a new optical transmitter from bring-up through production?
 
@@ -517,35 +465,7 @@ Walk the ladder in order. For each stage, name one instrument, the uncertainty r
 
 ##### 10-minute reference (read only).
 
-Expand the stage the interviewer picks. The stage-by-stage notes below are reference detail; do not memorize them.
-
-##### Stage 1: bring-up.
-
-For bring-up, get one unit alive on a known-good bench and remove the integration unknowns. Power the device through its specified sequence and confirm rails, inrush, and power state transitions. Initialize the firmware and read identity and status over the management interface, because a part that cannot report its own state cannot be debugged later. Enable the laser and confirm first light on a calibrated power meter at the specified output reference plane, not at whatever connector is convenient. Then close a real loop: lock the receiver, run a PRBS pattern from a BERT or host SerDes, and count errors. The uncertainty removed is basic: the design functions, the chips talk to each other, and the test setup itself is sane. The trap is that everything here is golden: pristine connectors, one temperature, one host, one unit. Passing bring-up says nothing about the population, the corners, or the lifetime. Its only job is to make the next stage's failures meaningful.
-
-##### Stage 2: characterization.
-
-For characterization, map what the design actually does across its operating range, on enough units to see variation. Sweep temperature, supply voltage, bias, and test pattern, and at each point record the transmitter's vital signs: the LIV curve for threshold, slope efficiency, and thermal rollover; the optical spectrum on an OSA for center wavelength and SMSR; RIN measured at the stated ORL, because a quiet-bench RIN number is flattery; and the eye on a DCA for ER, OMA, and TDECQ. The key discipline is to record distributions, not a golden sample: ten units across two lots tell you what the process gives you, one hero unit tells you what marketing wants. The uncertainty removed is where the population sits relative to the spec at every corner. The output is not a pass stamp; it is the dataset that will later set production test limits and telemetry alarm thresholds.
-
-##### Stage 3: margin testing.
-
-For margin, stop asking whether the part passes and ask how far it sits from the cliff. Push each parameter to its failure boundary: sweep received power down with a calibrated VOA until the pre-FEC BER waterfall crosses the FEC threshold; take case temperature to the limit and past it; pull supply rails to their corners; degrade ORL with a controlled reflector and watch the error floor. Measure the distance to failure in dB, degrees, and volts, then compare it against the variation found in characterization. The uncertainty removed is the one that kills fleets: a design can pass every nominal test while sitting half a decibel from its limit, and normal lot spread plus aging will spend that half decibel in the first year. Margin testing also reveals which of the five margins, power, noise, timing, spectral, or control, runs out first, which tells you what telemetry must watch (§A.6.4, §5.19).
-
-##### Stage 4: interoperability.
-
-For interoperability, take away everything golden. Replace the BERT with the target hosts, plural, because SerDes equalizers from different vendors adapt differently to the same transmitter. Replace the lab jumper with production fiber plant: real connector losses, real MPO polarity, realistic ORL from the connectors the datacenter will actually use. Run real link bring-up sequences, firmware interactions, and traffic patterns rather than one endless PRBS. The uncertainty removed lives in combinations rather than components: a transmitter and a receiver that each meet spec can still fail together, because the standard's transmitter eye and stressed-receiver tests only guarantee interoperability if both sides were tested against the specified reference, and reference receivers are idealizations. Interop failures found here cost a lab week; found in production they cost a fleet rollback.
-
-##### Stage 5: environmental stress and reliability qualification.
-
-For qualification, ask which mechanisms move with stress and time. Each stress is chosen for the failure mechanism it accelerates, not run as a ritual: temperature cycling exercises solder joints, die attach, and fiber attach; damp heat exercises corrosion and delamination; vibration and shock exercise the mechanical path; HTOL accelerates the wear-out of the active region so that weeks of stress project years of field life through an Arrhenius model. State the projection's fine print without being asked: the activation energy must be justified for this mechanism on this process, the sample size sets the confidence interval, and the projection holds only if the stress accelerates the same mechanism the field will see. The uncertainty removed is the shape of lifetime: infant mortality rate for the burn-in decision, and wear-out rate as a FIT number the fleet math can consume.
-
-##### Stage 6: production readiness.
-
-For production, the question changes from is the design good to can the factory tell a good unit from a bad one, at rate, at acceptable cost. Write the ATP so that every limit traces to the link budget or to the characterization data; a limit nobody can trace will be waived under ship pressure. Correlate stations by running the same golden units on every station and site, so a limit means the same thing everywhere. Size guard bands from measurement repeatability, because a test that cannot repeat tighter than its limit ships escapes and scraps good units in equal measure. Verify calibration at the temperature corners the fleet will see, not only at station ambient. Archive raw data, instrument identity, and calibration-table versions so any shipped result can be replayed. Then keep SPC charts on threshold current, power, and wavelength, because process drift between qualification lots is caught here or not at all.
-
-##### Stage 7: fleet telemetry and the feedback loop.
-
-Deployment is the last validation stage, not the end of validation. Fleet telemetry watches the margins that stage 3 identified: per-lane transmit power, bias current, pre-FEC BER, temperature, and actuator drive such as TEC current, with alarms on trends and disagreements rather than only on hard thresholds. Field returns close the loop: the RMA Pareto is compared against the qualification projection, and divergence means the life model was wrong, not that the fleet is unlucky. A high NFF rate is itself a finding, usually pointing at intermittents or triage gaps. The uncertainty removed is the honest one: what every earlier stage missed.
+Open §B.7 for the thirty-second playbook. Expand only the stage the interviewer picks using Table 7.1, Table 7.2: entry condition, key uncertainty, exit criteria, decision unlocked. Body detail is in Chapter 7, Chapter 8. Prefer customer-visible measurements unless engineering access is available (§C.10).
 
 ### BER worsens at high temperature but average power is stable. What do you do?
 
@@ -559,7 +479,7 @@ First scope the failure. Apply the power-versus-quality fork: APC is hitting set
 
 ##### 10-minute reference (read only).
 
-Offer the calibration-table segment-boundary story or the railed-heater story if asked. Aging does not reverse on cool-down; recoverable failures are operating-point problems.
+Playbook: §B.4. Offer the calibration-table segment-boundary story or the railed-heater story if asked. Aging does not reverse on cool-down; recoverable failures are operating-point problems.
 
 ### How do you distinguish laser aging from calibration drift?
 
@@ -573,11 +493,11 @@ Remeasure LIV against ship data at fixed junction temperature. Compare monitor-P
 
 ##### 10-minute reference (read only).
 
-Monitor-PD corruption is the silent drift mode: APC holds the wrong launch while telemetry looks fine. A unit that returns to ship performance after a table reload was never aged.
+Playbook: §B.5. Monitor-PD corruption is the silent drift mode: APC holds the wrong launch while telemetry looks fine. A unit that returns to ship performance after a table reload was never aged.
 
 ### How would you qualify a second laser or photonic-integrated-circuit supplier?
 
-This question tests supplier judgment, not vendor names. The frame: the first supplier's failure distribution does not transfer. Qualify against the requirements slice, not against the incumbent's datasheet (Table 5.4, §8.10).
+This question tests supplier judgment, not vendor names. Night-before playbook: §B.6. The frame: the first supplier's failure distribution does not transfer. Qualify against the requirements slice, not against the incumbent's datasheet (Table 5.4, §8.10). Prefer customer-visible remaining margin; request engineering access only when black-box evidence is insufficient (§C.10).
 
 ##### Step 1: freeze the requirements, not the part number.
 

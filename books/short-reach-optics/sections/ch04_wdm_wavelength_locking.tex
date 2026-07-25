@@ -559,7 +559,9 @@ calibration, and reduce shared thermal or supply coupling.}
 \subsection{How it is debugged}
 \label{sec:wdm-how-debugged}
 
-First decide whether the fault affects one lane or all lanes. Freeze heater and
+First decide whether the fault affects one lane or all lanes. Apply the
+power-versus-quality fork, then ask which ledger moved: often spectral or
+control (\Cref{sec:debug-fork,sec:laser-margin-erosion}). Freeze heater and
 laser actuators long enough to measure the open-loop spectrum. Move the source
 while holding the ring fixed, then move the ring while holding the source fixed.
 If neither follows the failing BER, inspect MUX loss, polarization, connector ORL,

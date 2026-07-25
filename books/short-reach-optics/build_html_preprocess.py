@@ -347,6 +347,39 @@ def replace_execanswer(content: str) -> str:
     return "".join(result)
 
 
+def replace_fw_macro(content: str, cmd: str, heading: str) -> str:
+    """Replace \\cmd{...} with a bold heading plus body (pandoc-friendly)."""
+    result = []
+    i = 0
+    tag = f"\\{cmd}{{"
+    while i < len(content):
+        idx = content.find(tag, i)
+        if idx == -1:
+            result.append(content[i:])
+            break
+        result.append(content[i:idx])
+        arg, end = extract_braced_arg(content, idx + len(tag) - 1)
+        result.append(f"\n\n\\textbf{{{heading}}} {arg}\n\n")
+        i = end
+    return "".join(result)
+
+
+def replace_framework(content: str) -> str:
+    result = []
+    i = 0
+    tag = "\\framework{"
+    while i < len(content):
+        idx = content.find(tag, i)
+        if idx == -1:
+            result.append(content[i:])
+            break
+        result.append(content[i:idx])
+        arg, end = extract_braced_arg(content, idx + len(tag) - 1)
+        result.append(f"\n\n\\section{{{arg}}}\n\n")
+        i = end
+    return "".join(result)
+
+
 def replace_fillme(content: str) -> str:
     """Remove \\fillme{...}{...}{...}{...}{...} handling nested braces."""
     result = []
@@ -429,6 +462,15 @@ def apply_transforms(content: str) -> str:
     content = replace_keyidea(content)
     content = replace_engcheck(content)
     content = replace_execanswer(content)
+    content = replace_framework(content)
+    content = replace_fw_macro(content, "fwquestion", "Interview question.")
+    content = replace_fw_macro(content, "fwtesting", "What the interviewer is testing.")
+    content = replace_fw_macro(content, "fwwhy", "Engineering reasoning.")
+    content = replace_fw_macro(content, "fwmeas", "Measurements.")
+    content = replace_fw_macro(content, "fwfollow", "Typical follow-ups.")
+    content = replace_fw_macro(content, "fwmistakes", "Common mistakes.")
+    content = replace_fw_macro(content, "fwclose", "Thirty-second close.")
+    content = replace_fw_macro(content, "fwdeep", "Deep dive.")
     content = replace_fillme(content)
     content = replace_failuremode(content)
     content = replace_debugstory(content)

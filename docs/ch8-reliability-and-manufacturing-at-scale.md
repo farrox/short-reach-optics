@@ -39,6 +39,12 @@ Requirement \| Budget (life / FIT / DPPM / power) \| Allocation (die / package /
 > Customer: BER, sensitivity, FEC, telemetry, environmental sweeps, interop.\
 > Engineering samples (Tx-only, Rx-only, breakout, PRBS) open isolation; otherwise stay on the external surface.
 
+::: dectree
+Bookended product \| End-to-end qualification \|-- BER / FEC / telemetry / sensitivity \|-- environment / interoperability \| Enough confidence to decide? \|-- YES --\> deployment decision \|-- NO --\> request engineering access Tx-only / Rx-only / breakout / diagnostics \| Isolate margin
+:::
+
+The vendor designs the internals. The customer characterizes the behavior and owns the deployment decision. An optical eye is measured externally with suitable access; do not assume the module reports a conventional eye (§C.10, §A.6.7).
+
 Optoelectronics inherited a common qualification language from telecom: *Telcordia GR-468-CORE*. The core stress tests still show up on every laser and module program:
 
 - HTOL (high-temperature operating life) and burn-in.
@@ -174,8 +180,14 @@ Track yield by ATP row, lot, supplier site, tester, and date code. A yield drop 
 ## Escaped defect analysis
 
 ::: dectree
-Escape \| Contain \| Scope \| Evidence \| Root cause class \| Supplier / FA \| ATP update \| SPC \| Fleet monitoring
+Escape \| Contain risk now \| Investigate mechanism \| Prevent recurrence (ATP / SPC / process)
 :::
+
+::: dectree
+Production escape \| Contain scoped population \| Scope + evidence \| Supplier / FA \| ATP or screen update \| Verify next lot \| Fleet monitoring
+:::
+
+Containment, root-cause investigation, and recurrence control are three different actions. The system owner keeps responsibility for evidence quality and verifying corrective action (§C.8, §C.11). Organize the spent margin with the five ledgers before naming a component (§5.19, §4.8).
 
 An escaped defect is a unit that passed every production screen and failed in the field. Post-screen field failures split into two categories with different corrective actions:
 
@@ -217,7 +229,7 @@ Destructive physical analysis (cross-section, EDX) and structured 8D/CAPA with s
 
 > **Before production**
 >
-> ATP $\cdot$ SPC $\cdot$ telemetry $\cdot$ supplier gates $\cdot$ monitoring owners $\cdot$ RMA-to-ATP feedback (§C.7).
+> ATP $\cdot$ SPC $\cdot$ telemetry $\cdot$ supplier gates $\cdot$ monitoring owners $\cdot$ RMA-to-ATP feedback (§C.15).
 
 ### Test time is a cost, coverage is a risk
 
@@ -238,6 +250,12 @@ Burn-in and HTOL screens trade infant-mortality escape rate against test time an
 ## Supplier execution playbook
 
 The supplier path is milestones, performance targets, quality, and manufacturability triage. That is not a soft skill. It is a concrete contract: requirements, gates, acceptance tests, process control, and corrective action when a lot goes wrong.
+
+::: dectree
+Design requirements \| Qualification \| ATP \| Production data \| Fleet data \| Failure analysis \| Updated limits or screens \| Next production cycle
+:::
+
+Production validation is replayable and decision-oriented (§C.12).
 
 ##### NPI gates and exit criteria.
 

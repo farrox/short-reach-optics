@@ -31,6 +31,26 @@ Optical programs fail in the same places again and again: a part that looks good
 
 **Table 7.1.** The validation ladder: five stages from bench to fleet. A sixth concern, scaled deployment and fleet triage, runs continuously once material ships (§7.12). Field telemetry, RMA tracking, and FIT burn-down feed back into stages 3--5.
 
+[]
+
+  -----------------------------------------------------------------------------------------------------------------------------------
+  Stage              Entry / key uncertainty      Exit criteria                                        Decision unlocked
+  ------------------ ---------------------------- ---------------------------------------------------- ------------------------------
+  Bring-up           Part present; host unknown   ModuleReady, light, lock, BER floor on golden host   Continue / debug integration
+
+  Characterization   Links at one corner          Mapped response vs $T$, $V$, ORL, age                Derate / redesign / proceed
+
+  Margin / interop   Nominal map known            Loaded corners and target hosts close                Fleet corner OK / restrict
+
+  Reliability        Mechanisms named             HTOL / env with $E_a$ and sample plan                Life risk accepted / hold
+
+  Production ready   Qual evidence in hand        Multi-lot yield, ATP, SPC, FAIR                      Open volume / hold
+
+  Pilot / fleet      Volume candidate             Exit criteria + telemetry owners                     Ship / restrict / reject
+  -----------------------------------------------------------------------------------------------------------------------------------
+
+**Table 7.2.** Ladder gates: each stage removes a different uncertainty. Do not treat an earlier exit as evidence for a later gate (§C.2).
+
 For every metric at every stage, name the instrument, the reference plane (§3.9), the pass criterion, and the failure signature. A number without a plane and a method is not a measurement.
 
 Each stage removes a different uncertainty. Bring-up removes basic integration unknowns. Characterization maps response and variation. Margin and interop tests find combinations that consume power, noise, timing, spectral, or control headroom (§5.19). Qualification separates life and environmental risks. Production readiness proves that the chosen screens can control variation and escapes at volume. Do not use one stage as evidence for another.
@@ -41,7 +61,7 @@ Requirement \| Budget (power / noise / timing / spectrum / control) \| Allocatio
 
 > **Before qualification**
 >
-> Functional $\cdot$ margin $\cdot$ environment $\cdot$ interoperability $\cdot$ reliability $\cdot$ manufacturing $\cdot$ fleet feedback (§C.7).
+> Functional $\cdot$ margin $\cdot$ environment $\cdot$ interoperability $\cdot$ reliability $\cdot$ manufacturing $\cdot$ fleet feedback (§C.15).
 
 ## The core IM/DD measurements
 
@@ -67,7 +87,7 @@ Only after Tx, channel, and Rx each look sane do you trust a full-link verdict: 
 
 ## Measurement mapping
 
-The metrics above are scattered across Tx, channel, Rx, and link level because that is how you debug them. Table 7.2 collects the same metrics into one reference: what is measured, the instrument, why it matters, and the failure signature that points back to it. Use the chapter subsections for the debug logic; use this table to look up an instrument fast.
+The metrics above are scattered across Tx, channel, Rx, and link level because that is how you debug them. Table 7.3 collects the same metrics into one reference: what is measured, the instrument, why it matters, and the failure signature that points back to it. Use the chapter subsections for the debug logic; use this table to look up an instrument fast.
 
 []
 
@@ -91,7 +111,7 @@ The metrics above are scattered across Tx, channel, Rx, and link level because t
   CMIS state / DDM              Host or CMIS tool                   Confirms management layer before blaming optics (§7.8)                                  Module never reaches ModuleReady; DDM disagrees with bench truth
   ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**Table 7.2.** Measurement mapping: metric, instrument, rationale, and failure signature in one reference. Cross-references point to the full treatment of each metric elsewhere in this chapter.
+**Table 7.3.** Measurement mapping: metric, instrument, rationale, and failure signature in one reference. Cross-references point to the full treatment of each metric elsewhere in this chapter.
 
 ## Transmitter and dispersion eye closure quaternary (TDECQ)
 
@@ -162,9 +182,23 @@ Use electrical loopback (host SerDes), optical loopback (Tx$\to$Rx on module), a
 
 A link budget is a signed dB (or power) ledger from transmitter to receiver. For IM/DD short reach, start from outer OMA at the Tx faceplate and subtract every loss and penalty until you compare against receiver sensitivity (with target BER and KP4 pre-FEC threshold, §3.12, §4.4).
 
+::: dectree
+Transmitter output (OMA) \| Coupling loss \| Connector loss \| Fiber / waveguide loss \| Additional penalties (TDECQ / dispersion / ORL) \| Receiver input \| Sensitivity requirement \| Remaining margin
+:::
+
+Keep power budget, signal-quality penalties, timing, thermal, and control authority as separate ledgers when the impairment is not a pure optical-power number (§5.19, §C.9).
+
+##### Design allocation versus validation measurement.
+
+Distinguish margin allocation in design from margin verification in test. During design, engineers allocate transmitter output, receiver sensitivity, insertion loss, temperature degradation, aging, jitter, and manufacturing variation. During customer or system qualification, the integrator often validates the net behavior across the operating envelope.
+
+::: dectree
+Design: allocate line items \| Build / integrate \| Test: measure net at named plane \| Room-T sensitivity margin \| Temperature / stress sweep \| Observed margin loss \| Remaining headroom \| Deployment decision
+:::
+
 ##### Typical ledger (single-mode DR class).
 
-Start from Tx OMA on the DCA (or from average power and ER). Subtract connector/coupling loss (1--3 dB per mated pair; fiber attach in CPO), fiber loss ($\sim$`<!-- -->`{=html}0.3--0.4 dB/km at 1310 nm; often negligible at 500 m), and MUX/de-MUX if WDM (2--5 dB per stage, §6.3). Add penalties for TDECQ (already in the OMA spec for many PMDs), dispersion (§3.11), and ORL/RIN reflection (§7.2.2, §4.3.1). Compare the remainder to stressed sensitivity at pre-FEC BER $2.4\times10^{-4}$, and keep 1--3 dB+ of production margin (more for fleet corners). Electrical budgets parallel this for the host-to-module path: COM and pre-FEC BER (§9.5.2, §3.6). LPO requires *both* ledgers to close without module DSP help.
+Start from Tx OMA on the DCA (or from average power and ER). Subtract connector/coupling loss (1--3 dB per mated pair; fiber attach in CPO), fiber loss ($\sim$`<!-- -->`{=html}0.3--0.4 dB/km at 1310 nm; often negligible at 500 m), and MUX/de-MUX if WDM (2--5 dB per stage, §6.3). Add penalties for TDECQ (already in the OMA spec for many PMDs), dispersion (§3.11), and ORL/RIN reflection (§7.2.2, §4.3.1). Compare the remainder to stressed sensitivity at pre-FEC BER $2.4\times10^{-4}$, and keep 1--3 dB+ of production margin (more for fleet corners). Numbers here are examples for a DR-class sketch, not universal limits. Electrical budgets parallel this for the host-to-module path: COM and pre-FEC BER (§9.5.2, §3.6). LPO requires *both* ledgers to close without module DSP help.
 
 ## Module management: CMIS
 
@@ -212,7 +246,7 @@ Run this order on every new module (pluggable, ELSFP, or CPO engine with CMIS). 
 
 7.  **Quality snapshot.** On a Tx-capable path: OMA/RLM/TDECQ or module diagnostics that proxy them (§7.4). Record CMIS + BER + case $T$ together so later triage has a baseline (§7.12).
 
-Table 7.3 is the short form you can put on a lab wall.
+Table 7.4 is the short form you can put on a lab wall.
 
 []
 
@@ -234,11 +268,11 @@ Table 7.3 is the short form you can put on a lab wall.
   7      Snapshot                CMIS dump + BER + $T$ logged                       (needed for RMA later)
   -------------------------------------------------------------------------------------------------------------------
 
-**Table 7.3.** Module bring-up checklist. LOS = loss of signal; LOL = loss of lock. Limits come from the ATP and PMD, not from this table.
+**Table 7.4.** Module bring-up checklist. LOS = loss of signal; LOL = loss of lock. Limits come from the ATP and PMD, not from this table.
 
 ##### Production-representative corners.
 
-Bench corners ($T$, $V$) are necessary and not sufficient. Before you call DVT or PVT done, run the corners that match how the fleet will abuse the link. Table 7.4 is the minimum set for IM/DD + laser programs.
+Bench corners ($T$, $V$) are necessary and not sufficient. Before you call DVT or PVT done, run the corners that match how the fleet will abuse the link. Table 7.5 is the minimum set for IM/DD + laser programs.
 
 []
 
@@ -262,7 +296,7 @@ Bench corners ($T$, $V$) are necessary and not sufficient. Before you call DVT o
   Voltage corners     Host Vcc min/max with traffic                                                                       Brown-out and CMIS glitches                                   power design, ATP
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**Table 7.4.** Production-representative corners. A quiet BERT at 25 $^\circ$C with pristine fiber is characterization, not production readiness.
+**Table 7.5.** Production-representative corners. A quiet BERT at 25 $^\circ$C with pristine fiber is characterization, not production readiness.
 
 ##### System bring-up.
 
@@ -280,7 +314,7 @@ A module that passes on a golden host can still fail in a real chassis:
 
 ##### Exit criteria before "bring-up done."
 
-Call module bring-up done only when: CMIS state machine and enable sequence are correct; pre-FEC BER meets target on the *target* host with margin; a CMIS+BER+$T$ snapshot is filed; and at least the chassis-thermal, host-rails, and ORL corners in Table 7.4 have been run on a representative unit. Call system bring-up done when golden-swap has split host vs. module issues and multi-lane / neighbor load has not opened a new failure mode. Everything after that is characterization depth, supplier gates (§8.10), or fleet triage (§7.12).
+Call module bring-up done only when: CMIS state machine and enable sequence are correct; pre-FEC BER meets target on the *target* host with margin; a CMIS+BER+$T$ snapshot is filed; and at least the chassis-thermal, host-rails, and ORL corners in Table 7.5 have been run on a representative unit. Call system bring-up done when golden-swap has split host vs. module issues and multi-lane / neighbor load has not opened a new failure mode. Everything after that is characterization depth, supplier gates (§8.10), or fleet triage (§7.12).
 
 **Key idea.** Bring-up is a sequence (presence $\to$ CMIS $\to$ light $\to$ lock $\to$ BER $\to$ snapshot), then a system proof on the real host, then production-representative corners (chassis thermal, host-rail noise, ORL, ELS hot-swap, neighbor load). A quiet bench pass is not DVT.
 
@@ -308,7 +342,7 @@ Observation \| Possible ledgers (power / noise / timing / spectrum / control) \|
 
 > **Before debugging**
 >
-> Scope $\cdot$ time behavior $\cdot$ population $\cdot$ power or quality $\cdot$ highest-value measurement $\cdot$ decision $\cdot$ recurrence control (§C.7).
+> Scope $\cdot$ time behavior $\cdot$ population $\cdot$ power or quality $\cdot$ highest-value measurement $\cdot$ decision $\cdot$ recurrence control (§C.15).
 
 ## Fleet and field triage
 
@@ -344,11 +378,13 @@ At scale you rarely start with a DCA. Start with what the host and module alread
 
 ##### Decision tree (symptom $\to$ bucket).
 
-Table 7.5 is the working map. Read left to right: observe, check telemetry, pick a provisional bucket, then run the named confirm measurement before you open an RMA or change a design rule.
+Table 7.6 is the working map. Read left to right: observe, check telemetry, pick a provisional bucket, then run the named confirm measurement before you open an RMA or change a design rule.
 
 ::: dectree
-Fleet symptom \| Contain if growing \| Bucket: performance / reliability / manufacturability \| Confirm measurement \| FA / CAPA / ATP / telemetry update \| Fleet monitoring
+Fleet symptom \| Scope analysis (how large?) \| Technical isolation \| Correlation analysis (which cohort?) \| Bucket: performance / reliability / manufacturability \| Contain / FA / ATP / telemetry \| Fleet monitoring
 :::
+
+Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (§C.4).
 
 []
 
@@ -374,7 +410,7 @@ Fleet symptom \| Contain if growing \| Bucket: performance / reliability / manuf
   ELSFP swap restores link              Old module CMIS vs new; connector cycles               Reliability or mfg (connector)   Inspect MT; mating-cycle count; laser LIV in returned module (§5.14)   Laser vs connector split in FA
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**Table 7.5.** Fleet triage map: symptom to provisional bucket to confirm measurement. Perf $=$ performance (design/operating point); reliability $=$ time-dependent wear; mfg $=$ lot/process/install excursion.
+**Table 7.6.** Fleet triage map: symptom to provisional bucket to confirm measurement. Perf $=$ performance (design/operating point); reliability $=$ time-dependent wear; mfg $=$ lot/process/install excursion.
 
 ##### How to walk an incident (order of operations).
 
@@ -382,7 +418,7 @@ Fleet symptom \| Contain if growing \| Bucket: performance / reliability / manuf
 
 2.  **Localize.** One link vs tray vs rack. Tray-wide points at power, cooling, or a shared ELS. Single-link points at that module, fiber, or host lane.
 
-3.  **Classify** with Table 7.5. Write the bucket on the ticket before FA starts.
+3.  **Classify** with Table 7.6. Write the bucket on the ticket before FA starts.
 
 4.  **Confirm** with the smallest measurement that can falsify the bucket (golden swap, clean/inspect, LIV, TDECQ, ORL). Do not skip to DPA.
 
@@ -432,7 +468,7 @@ Validation is a chain of evidence, not a single pass: a number means nothing wit
 
 ### How it is measured
 
-Use the least complex instrument that can falsify the current hypothesis. Table 7.2 maps every key metric to its instrument, rationale, and failure signature in one lookup; the bring-up sequence (§7.9) orders those instruments into a workflow.
+Use the least complex instrument that can falsify the current hypothesis. Table 7.3 maps every key metric to its instrument, rationale, and failure signature in one lookup; the bring-up sequence (§7.9) orders those instruments into a workflow.
 
 ### How it fails
 

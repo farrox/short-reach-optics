@@ -35,6 +35,18 @@ CAPA + ATP / SPC / telemetry update
 Fleet monitor until burn-down
 \end{dectree}
 
+\begin{dectree}
+Failure onset
+  |
+Sudden?
+  |-- config / handling / firmware / mechanical / power event
+  |
+Gradual?
+  |-- aging / drift / margin erosion / contamination / cal movement
+  |
+Prioritize measurements (priors, not conclusions)
+\end{dectree}
+
 Choose each measurement for its ability to separate competing hypotheses. The
 debugging pyramid in \Cref{sec:debug-pyramid}, the power-versus-signal fork in
 \Cref{sec:debug-fork}, the fleet router in \Cref{tab:fleet-triage}, and the

@@ -15,7 +15,11 @@ Observe \| Scope (unit / lot / vendor / site / fleet) \| Time behavior (sudden /
 Escalation \| Contain if population can grow \| Bench confirm at named plane \| FA / DPA when mechanism unknown \| CAPA + ATP / SPC / telemetry update \| Fleet monitor until burn-down
 :::
 
-Choose each measurement for its ability to separate competing hypotheses. The debugging pyramid in §1.8, the power-versus-signal fork in §4.8, the fleet router in Table 7.5, and the wall-chart trees in §C provide the same method at different scales.
+::: dectree
+Failure onset \| Sudden? \|-- config / handling / firmware / mechanical / power event \| Gradual? \|-- aging / drift / margin erosion / contamination / cal movement \| Prioritize measurements (priors, not conclusions)
+:::
+
+Choose each measurement for its ability to separate competing hypotheses. The debugging pyramid in §1.8, the power-versus-signal fork in §4.8, the fleet router in Table 7.6, and the wall-chart trees in §C provide the same method at different scales.
 
 Power loss
 

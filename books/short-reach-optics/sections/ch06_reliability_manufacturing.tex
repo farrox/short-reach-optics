@@ -61,6 +61,26 @@ Customer: BER, sensitivity, FEC, telemetry, environmental sweeps, interop.\\
 Engineering samples (Tx-only, Rx-only, breakout, PRBS) open isolation;
 otherwise stay on the external surface.}
 
+\begin{dectree}
+Bookended product
+  |
+End-to-end qualification
+  |-- BER / FEC / telemetry / sensitivity
+  |-- environment / interoperability
+  |
+Enough confidence to decide?
+  |-- YES --> deployment decision
+  |-- NO  --> request engineering access
+              Tx-only / Rx-only / breakout / diagnostics
+              |
+              Isolate margin
+\end{dectree}
+
+The vendor designs the internals. The customer characterizes the behavior and
+owns the deployment decision. An optical eye is measured externally with
+suitable access; do not assume the module reports a conventional eye
+(\Cref{sec:tree-blackbox-access,sec:interview-customer-vendor}).
+
 Optoelectronics inherited a common qualification language from telecom:
 \term{Telcordia GR-468-CORE}\firstcite{gr468}. The core stress tests still show up
 on every laser and module program:
@@ -304,23 +324,34 @@ corrective action until the measurement system is cleared (\Cref{sec:hvm-test}).
 \begin{dectree}
 Escape
   |
-Contain
+Contain risk now
   |
-Scope
+Investigate mechanism
   |
-Evidence
+Prevent recurrence (ATP / SPC / process)
+\end{dectree}
+
+\begin{dectree}
+Production escape
   |
-Root cause class
+Contain scoped population
+  |
+Scope + evidence
   |
 Supplier / FA
   |
-ATP update
+ATP or screen update
   |
-SPC
+Verify next lot
   |
 Fleet monitoring
 \end{dectree}
 
+Containment, root-cause investigation, and recurrence control are three
+different actions. The system owner keeps responsibility for evidence quality
+and verifying corrective action (\Cref{sec:tree-escape,sec:tree-recurrence}).
+Organize the spent margin with the five ledgers before naming a component
+(\Cref{sec:laser-margin-erosion,sec:debug-fork}).
 
 An escaped defect is a unit that passed every production screen and failed in the
 field. Post-screen field failures split into two categories with different
@@ -480,6 +511,27 @@ The supplier path is milestones, performance targets, quality, and
 manufacturability triage. That is not a soft skill. It is a concrete contract:
 requirements, gates, acceptance tests, process control, and corrective action when
 a lot goes wrong.
+
+\begin{dectree}
+Design requirements
+  |
+Qualification
+  |
+ATP
+  |
+Production data
+  |
+Fleet data
+  |
+Failure analysis
+  |
+Updated limits or screens
+  |
+Next production cycle
+\end{dectree}
+
+Production validation is replayable and decision-oriented
+(\Cref{sec:tree-production-loop}).
 
 \paragraph{NPI gates and exit criteria.}
 \Cref{tab:npi} is the usual stage map. For lasers and IM/DD modules, write exit

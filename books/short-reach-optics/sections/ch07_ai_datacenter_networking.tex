@@ -1457,9 +1457,12 @@ next scale point on delivered workload performance.}
 Start with the workload symptom and identify the slow collective, rail, or time
 window. Compare topology and route data with link counters. A single lane with
 rising FEC points to the optical path; many clean links with full queues point to
-fabric capacity or scheduling. Remove one rail, reroute one group, or replace one
-suspect module to test causality. Keep optics, switch, and workload timestamps
-aligned. Otherwise a link flap and a collective stall cannot be ordered reliably.
+fabric capacity or scheduling. On the optical path, apply the power-versus-quality
+fork and the five ledgers
+(\Cref{sec:debug-fork,sec:laser-margin-erosion,app:decision-trees}). Remove one
+rail, reroute one group, or replace one suspect module to test causality. Keep
+optics, switch, and workload timestamps aligned. Otherwise a link flap and a
+collective stall cannot be ordered reliably.
 
 \debugstory{All-reduce tail latency rose after a rack expansion, while average
 link utilization looked normal.}{Per-rail traces showed one path with FEC bursts

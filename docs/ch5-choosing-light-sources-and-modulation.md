@@ -627,7 +627,13 @@ Control margin
 
 : headroom in APC, TEC, heaters, ring lock, bias DACs, and calibration tables. A railed loop can fail the link while the diode is still healthy.
 
-Recompute the link at combined production corners. A nominal part at nominal temperature says little about whether a slow loss in two ledgers will push a tail unit across the pre-FEC BER limit. §7.9, Table 7.5 carry the same ledgers into validation and fleet triage. The interview review compresses this checklist in §A.6.4.
+Recompute the link at combined production corners. A nominal part at nominal temperature says little about whether a slow loss in two ledgers will push a tail unit across the pre-FEC BER limit. §7.9, Table 7.6 carry the same ledgers into validation and fleet triage. The interview review compresses this checklist in §A.6.4. The wall-chart form is §C.9.
+
+::: dectree
+Nominal system margin \| Temperature debit \| Voltage / power-quality debit \| Channel / connector debit \| Manufacturing variation \| Aging / wear \| Interoperability variation \| Remaining margin \| Above deployment requirement? \|-- YES --\> proceed \|-- NO --\> redesign / restrict / recalibrate / reject
+:::
+
+Not every debit is naturally in decibels. Depending on the subsystem, remaining margin may be optical power, sensitivity, BER or FEC headroom, eye or TDECQ, jitter, control range, lifetime, or yield. Validation often measures the net externally visible result; do not double-count internal penalties the test cannot separate (§7.7).
 
 ## Engineering lens
 

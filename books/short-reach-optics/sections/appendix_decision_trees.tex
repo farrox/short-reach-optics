@@ -12,7 +12,7 @@ Debugging asks which margin was exhausted. Qualification asks how much margin
 remains after the expected stresses. Both end on an engineering decision and a
 recurrence control.
 
-\section{Debugging}
+\section{Universal debugging tree}
 \label{sec:tree-debugging}
 
 \begin{dectree}
@@ -38,34 +38,112 @@ Recurrence control (ATP / SPC / telemetry / FA)
 Use when BER rises, a link flaps, a lane is weak, or a corner fails. Name the
 ledger before naming a component (\Cref{sec:debug-fork,sec:validation-fork}).
 
-\section{Qualification}
+\section{Universal qualification tree}
 \label{sec:tree-qualification}
 
 \begin{dectree}
 New product
   |
-Works? (bring-up)
+Works nominally? (bring-up)
   |
-Margins? (characterization)
+How much margin?
   |
-Environment / loaded corners?
+Environmental envelope?
   |
 Interoperability?
   |
 Reliability? (mechanism + Ea)
   |
-Manufacturing / ATP?
+Manufacturing consistency?
   |
-Pilot
+Production test ready?
   |
-Production
+Controlled pilot?
   |
-Fleet monitoring
+Fleet ready?
+  |
+Ship / restrict / reject
 \end{dectree}
 
 Each gate removes a different uncertainty. Do not treat a bring-up pass as
 margin evidence, or an HTOL pass as production readiness
 (\Cref{sec:validation-workflow,sec:gr468}).
+
+\section{Power-versus-quality fork}
+\label{sec:tree-power-fork}
+
+\begin{dectree}
+BER or link degrade
+  |
+Received power changed?
+  |-- YES --> Power ledger
+  |           laser / coupling / connector / fiber / MUX / monitor
+  |-- NO  --> Signal quality
+              eye / noise / jitter / bias / EQ / RIN / Rx
+  |
+Highest-value measurement
+  |
+Decision + recurrence control
+\end{dectree}
+
+One check before retuning equalizers or bias tables
+(\Cref{sec:debug-fork,sec:validation-fork}).
+
+\section{Scope and population}
+\label{sec:tree-scope-population}
+
+\begin{dectree}
+Initial symptom
+  |
+Scope analysis (how large?)
+  |-- unit / lane / rack / site / PN / vendor / lot / fleet
+  |
+Technical isolation
+  |
+Correlation analysis (which cohort?)
+  |-- lot / date code / FW / cal / platform / location
+  |
+Containment and corrective action
+\end{dectree}
+
+Scope sets severity and priors. Correlation after isolation unlocks contain,
+pause, replace, or supplier escalate (\Cref{sec:fleet-triage,sec:yield-analysis}).
+
+\section{Sudden versus gradual}
+\label{sec:tree-time-behavior}
+
+\begin{dectree}
+Failure onset
+  |
+Sudden?
+  |-- config / handling / firmware / mechanical / power event
+  |
+Gradual?
+  |-- aging / drift / margin erosion / contamination / cal movement
+  |
+Prioritize measurements (priors, not conclusions)
+\end{dectree}
+
+Sudden and gradual are priors that reorder the bench, not root-cause claims
+(\Cref{ch:failure-modes}).
+
+\section{Transmitter, channel, or receiver}
+\label{sec:tree-tx-channel-rx}
+
+\begin{dectree}
+Power or quality path chosen
+  |
+Golden swap / loopback
+  |-- Tx --> eye / LIV / bias / wavelength / RIN
+  |-- Channel --> connector / fiber / MUX / ORL
+  |-- Rx --> sensitivity / TIA / EQ / host
+  |
+Evidence
+  |
+Owner + decision
+\end{dectree}
+
+Bisect domains before opening packages (\Cref{sec:debug,sec:fm-ber-increase}).
 
 \section{Supplier qualification}
 \label{sec:tree-supplier}
@@ -84,12 +162,10 @@ Production readiness (FAIR, ATP, SPC)
 Fleet monitoring (RMA, telemetry)
 \end{dectree}
 
-Customer view measures external behavior. Vendor view owns internals. Keep the
-view explicit so second-source answers stay on BER, sensitivity, FEC, telemetry,
-and corners unless engineering samples open the box
+Customer view measures external behavior. Vendor view owns internals
 (\Cref{sec:interview-customer-vendor,sec:supplier-exec}).
 
-\section{Production escape}
+\section{Supplier escape and containment}
 \label{sec:tree-escape}
 
 \begin{dectree}
@@ -112,9 +188,127 @@ SPC / reaction plan
 Fleet monitoring
 \end{dectree}
 
-Contain first when the population can grow. Mechanism can follow. Ownership
-language: stop ship, notify supplier, request FA, update ATP, monitor RMA
+Contain first when the population can grow. The system owner keeps
+responsibility for evidence quality and verifying corrective action
 (\Cref{sec:escaped-defects,sec:fleet-triage}).
+
+\section{Margin-budget flow}
+\label{sec:tree-margin-budget}
+
+\begin{dectree}
+Nominal system margin
+  |
+Temperature debit
+  |
+Voltage / power-quality debit
+  |
+Channel / connector debit
+  |
+Manufacturing variation
+  |
+Aging / wear
+  |
+Interoperability variation
+  |
+Remaining margin
+  |
+Above deployment requirement?
+  |-- YES --> proceed
+  |-- NO  --> redesign / restrict / recalibrate / reject
+\end{dectree}
+
+Design allocates budgets. Validation often measures the net externally visible
+result. Do not double-count internal penalties the test cannot separate
+(\Cref{sec:laser-margin-erosion,sec:link-budget}).
+
+\section{Black-box versus engineering access}
+\label{sec:tree-blackbox-access}
+
+\begin{dectree}
+Bookended product
+  |
+End-to-end qualification
+  |-- BER / FEC / telemetry / sensitivity
+  |-- environment / interoperability
+  |
+Enough confidence to decide?
+  |-- YES --> deployment decision
+  |-- NO  --> request engineering access
+              Tx-only / Rx-only / breakout / diagnostics
+              |
+              Isolate margin
+\end{dectree}
+
+An optical eye is measured externally with suitable access. Do not assume the
+module reports a conventional eye unless that capability exists
+(\Cref{sec:interview-customer-vendor}).
+
+\section{Recurrence-control loop}
+\label{sec:tree-recurrence}
+
+\begin{dectree}
+Production escape
+  |
+Contain risk now
+  |
+Investigate mechanism
+  |
+Correct process
+  |
+Update screening or ATP
+  |
+Verify next lot
+  |
+Monitor fleet
+\end{dectree}
+
+Containment, root cause, and prevention are three different actions
+(\Cref{sec:escaped-defects}).
+
+\section{Production feedback loop}
+\label{sec:tree-production-loop}
+
+\begin{dectree}
+Design requirements
+  |
+Qualification
+  |
+ATP
+  |
+Production data
+  |
+Fleet data
+  |
+Failure analysis
+  |
+Updated limits or screens
+  |
+Next production cycle
+\end{dectree}
+
+Production validation is replayable and decision-oriented
+(\Cref{sec:supplier-exec,sec:hvm-test}).
+
+\section{Measurement-selection loop}
+\label{sec:tree-measurement-loop}
+
+\begin{dectree}
+Current evidence
+  |
+Rank hypotheses
+  |
+Choose measurement that removes
+the largest number of hypotheses
+  |
+Update beliefs
+  |
+Enough evidence to decide?
+  |-- NO  --> next measurement
+  |-- YES --> take action
+\end{dectree}
+
+\keyidea{Great engineers perform the minimum measurement that eliminates the
+largest number of hypotheses.}
 
 \section{Unknown failure}
 \label{sec:tree-unknown}
@@ -135,60 +329,45 @@ Continue measuring?
   |-- NO  --> control + owner + residual risk
 \end{dectree}
 
-Unknown mechanism is not a freeze. Decide with weighted evidence, keep a healthy
-path shipping when possible, and name the control that would catch the next
-escape (\Cref{sec:interview-under-uncertainty}).
-
-\section{Margin budgeting}
-\label{sec:tree-margin-budget}
-
-\begin{dectree}
-Allocated margin
-  |
-Stresses spend ledgers
-  |-- temperature / voltage / ripple
-  |-- contamination / IL / connector wear
-  |-- vibration / aging / process variation
-  |
-Remaining margin after stress
-  |
-Still acceptable?
-  |-- YES --> ship / continue
-  |-- NO  --> redesign / derate / tighten ATP
-\end{dectree}
-
-Qualification exists to verify remaining margin, not merely functionality.
-Debugging is what you do when remaining margin hits zero
-(\Cref{sec:interview-margin-budget,sec:laser-margin-erosion}).
+Unknown mechanism is not a freeze. Decide with weighted evidence
+(\Cref{sec:interview-under-uncertainty,sec:tree-measurement-loop}).
 
 \section{Before you start: three checklists}
 \label{sec:tree-checklists}
 
 \engcheck{Before debugging}{%
 Scope $\cdot$
-time behavior $\cdot$
-population $\cdot$
-power or quality $\cdot$
+unit/rack/lot/vendor/fleet $\cdot$
+sudden or gradual $\cdot$
+power changed? $\cdot$
+signal-quality uncertainty $\cdot$
 highest-value measurement $\cdot$
-decision $\cdot$
+decision unlocked $\cdot$
+containment now $\cdot$
 recurrence control.}
 
 \engcheck{Before qualification}{%
-Functional $\cdot$
-margin $\cdot$
-environment $\cdot$
+Nominal function $\cdot$
+operating margin $\cdot$
+environmental stresses $\cdot$
 interoperability $\cdot$
-reliability $\cdot$
-manufacturing $\cdot$
-fleet feedback.}
+aging/reliability $\cdot$
+manufacturing variation $\cdot$
+ATP escape detection $\cdot$
+controlled pilot $\cdot$
+fleet telemetry.}
 
 \engcheck{Before production}{%
-ATP $\cdot$
-SPC $\cdot$
-telemetry $\cdot$
-supplier gates $\cdot$
-monitoring owners $\cdot$
-RMA-to-ATP feedback.}
+Requirements met $\cdot$
+margin demonstrated $\cdot$
+environment covered $\cdot$
+interop verified $\cdot$
+reliability risk addressed $\cdot$
+lot variation characterized $\cdot$
+ATP defined $\cdot$
+supplier controls reviewed $\cdot$
+pilot exit criteria $\cdot$
+fleet monitoring ready.}
 
 \keyidea{These trees are the book's reusable method. Chapters supply the
 physics and the numbers. This appendix supplies the order of thought.}

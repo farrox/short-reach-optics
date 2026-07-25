@@ -45,6 +45,29 @@ runs continuously once material ships (\Cref{sec:fleet-triage}).
 Field telemetry, RMA tracking, and FIT burn-down feed back into stages~3--5.\par}
 \end{table*}
 
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:ladder-gates}%
+\centering
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
+\begin{tabular}{@{}p{0.16\linewidth}p{0.22\linewidth}p{0.28\linewidth}p{0.26\linewidth}@{}}
+\toprule
+Stage & Entry / key uncertainty & Exit criteria & Decision unlocked \\
+\midrule
+Bring-up & Part present; host unknown & ModuleReady, light, lock, BER floor on golden host & Continue / debug integration \\
+Characterization & Links at one corner & Mapped response vs $T$, $V$, ORL, age & Derate / redesign / proceed \\
+Margin / interop & Nominal map known & Loaded corners and target hosts close & Fleet corner OK / restrict \\
+Reliability & Mechanisms named & HTOL / env with $E_a$ and sample plan & Life risk accepted / hold \\
+Production ready & Qual evidence in hand & Multi-lot yield, ATP, SPC, FAIR & Open volume / hold \\
+Pilot / fleet & Volume candidate & Exit criteria + telemetry owners & Ship / restrict / reject \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Ladder gates: each stage
+removes a different uncertainty. Do not treat an earlier exit as evidence for a
+later gate (\Cref{sec:tree-qualification}).\par}
+\end{table*}
+
 For every metric at every stage, name the instrument, the reference plane
 (\Cref{sec:test-points}), the pass criterion, and the failure signature. A number
 without a plane and a method is not a measurement.
@@ -300,6 +323,53 @@ For IM/DD short reach, start from outer OMA at the Tx faceplate and subtract eve
 loss and penalty until you compare against receiver sensitivity (with target BER
 and KP4 pre-FEC threshold, \Cref{sec:kp4,sec:sensitivity}).
 
+\begin{dectree}
+Transmitter output (OMA)
+  |
+Coupling loss
+  |
+Connector loss
+  |
+Fiber / waveguide loss
+  |
+Additional penalties (TDECQ / dispersion / ORL)
+  |
+Receiver input
+  |
+Sensitivity requirement
+  |
+Remaining margin
+\end{dectree}
+
+Keep power budget, signal-quality penalties, timing, thermal, and control
+authority as separate ledgers when the impairment is not a pure optical-power
+number (\Cref{sec:laser-margin-erosion,sec:tree-margin-budget}).
+
+\paragraph{Design allocation versus validation measurement.}
+Distinguish margin allocation in design from margin verification in test.
+During design, engineers allocate transmitter output, receiver sensitivity,
+insertion loss, temperature degradation, aging, jitter, and manufacturing
+variation. During customer or system qualification, the integrator often
+validates the net behavior across the operating envelope.
+
+\begin{dectree}
+Design: allocate line items
+  |
+Build / integrate
+  |
+Test: measure net at named plane
+  |
+Room-T sensitivity margin
+  |
+Temperature / stress sweep
+  |
+Observed margin loss
+  |
+Remaining headroom
+  |
+Deployment decision
+\end{dectree}
+
 \paragraph{Typical ledger (single-mode DR class).}
 Start from Tx OMA on the DCA (or from average power and ER). Subtract
 connector/coupling loss (1--3~dB per mated pair; fiber attach in CPO), fiber loss
@@ -308,7 +378,8 @@ WDM (2--5~dB per stage, \Cref{sec:wdm-hardware}). Add penalties for TDECQ (alrea
 in the OMA spec for many PMDs), dispersion (\Cref{sec:chirp-dispersion}), and
 ORL/RIN reflection (\Cref{sec:optical-channel,sec:rin-values}). Compare the
 remainder to stressed sensitivity at pre-FEC BER $2.4\times10^{-4}$, and keep
-1--3~dB+ of production margin (more for fleet corners).
+1--3~dB+ of production margin (more for fleet corners). Numbers here are
+examples for a DR-class sketch, not universal limits.
 Electrical budgets parallel this for the host-to-module path: COM and pre-FEC BER
 (\Cref{sec:com,sec:eye-budget,sec:equalization}). LPO requires \emph{both} ledgers
 to close without module DSP help.
@@ -630,16 +701,21 @@ before you open an RMA or change a design rule.
 \begin{dectree}
 Fleet symptom
   |
-Contain if growing
+Scope analysis (how large?)
+  |
+Technical isolation
+  |
+Correlation analysis (which cohort?)
   |
 Bucket: performance / reliability / manufacturability
   |
-Confirm measurement
-  |
-FA / CAPA / ATP / telemetry update
+Contain / FA / ATP / telemetry
   |
 Fleet monitoring
 \end{dectree}
+
+Scope sets severity and priors. Correlation after isolation unlocks contain,
+pause, replace, or supplier escalate (\Cref{sec:tree-scope-population}).
 
 \begin{table*}[ht]
 \refstepcounter{table}\label{tab:fleet-triage}%
