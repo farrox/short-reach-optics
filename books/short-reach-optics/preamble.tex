@@ -270,22 +270,32 @@
 % linked margin note on first use (see cite-snips.tex); \mcite{key}{text} for one-offs.
 \newcommand{\mcite}[2]{\sidenote{\citehref{#1}{#2}}}
 
+% Callout boxes must use \textwidth (not \linewidth) and start in vertical
+% mode. After a titlesec run-in \paragraph, \linewidth can still be the
+% remainder of the line, so a \linewidth colorbox continues beside the
+% title and spills into the sidenote column.
+\definecolor{keyidearule}{HTML}{8A7A5A}
 \newcommand{\keyidea}[1]{%
-  \par\medskip\noindent
-  \colorbox{codebg}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
-    \textbf{Key idea.~}#1}}\par\medskip
+  \endgraf\medskip\noindent
+  \fcolorbox{keyidearule}{codebg}{%
+    \begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}
+      \textbf{Key idea.~}#1
+    \end{minipage}%
+  }%
+  \endgraf\medskip
 }
 
 % Interview appendix: visually dominant 30-second close (memorize).
 \definecolor{execbg}{HTML}{E8F0E9}
 \definecolor{execrule}{HTML}{3D6B4F}
 \newcommand{\execanswer}[1]{%
-  \par\medskip\noindent
+  \endgraf\medskip\noindent
   \fcolorbox{execrule}{execbg}{%
-    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+    \begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}
       \textbf{30-second answer (memorize).} #1
     \end{minipage}%
-  }\par\medskip
+  }%
+  \endgraf\medskip
 }
 
 % ASCII decision trees (interview appendices). Keep trees narrow for the
@@ -346,22 +356,23 @@
 \definecolor{debugrule}{HTML}{2E6877}
 
 \newcommand{\failuremode}[5]{%
-  \par\medskip\noindent
+  \endgraf\medskip\noindent
   \fcolorbox{failurerule}{failurebg}{%
-    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+    \begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}
       \textbf{Failure mode: #1}\par\smallskip
       \textbf{Symptoms.} #2\par
       \textbf{Likely causes.} #3\par
       \textbf{Measurements.} #4\par
       \textbf{Mitigations.} #5
     \end{minipage}%
-  }\par\medskip
+  }%
+  \endgraf\medskip
 }
 
 \newcommand{\debugstory}[5]{%
-  \par\medskip\noindent
+  \endgraf\medskip\noindent
   \fcolorbox{debugrule}{debugbg}{%
-    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+    \begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}
       \textbf{Debug story}\par\smallskip
       \textbf{Observed.} #1\par
       \textbf{Investigation.} #2\par
@@ -369,30 +380,32 @@
       \textbf{Root cause.} #4\par
       \textbf{Resolution.} #5
     \end{minipage}%
-  }\par\medskip
+  }%
+  \endgraf\medskip
 }
 
 % Study prompt for LLM oral practice (interview appendix).
 \definecolor{practicebg}{HTML}{F3F0E8}
 \definecolor{practicerule}{HTML}{6B5E4A}
 \newcommand{\llmpractice}[2]{%
-  \par\medskip\noindent
+  \endgraf\medskip\noindent
   \fcolorbox{practicerule}{practicebg}{%
-    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+    \begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}
       \textbf{LLM practice}\par\smallskip
       \textbf{Summary.} #1\par\smallskip
       \textbf{Paste to an LLM and answer aloud.} #2
     \end{minipage}%
-  }\par\medskip
+  }%
+  \endgraf\medskip
 }
 
 % Draft stub for sections still to be written (greppable via rg '\\fillme\\{').
 \definecolor{fillmebg}{HTML}{FFF6D9}
 \definecolor{fillmerule}{HTML}{B07F1A}
 \newcommand{\fillme}[5]{%
-  \par\smallskip\noindent
+  \endgraf\smallskip\noindent
   \fcolorbox{fillmerule}{fillmebg}{%
-    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+    \begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}
       \footnotesize
       \textbf{\textsc{To fill}} \quad \texttt{#1} \quad --- \quad \textbf{#2}\par
       \smallskip
@@ -400,7 +413,8 @@
       \textit{Sources.} #4\par
       \textit{Target.} #5
     \end{minipage}%
-  }\par\smallskip
+  }%
+  \endgraf\smallskip
 }
 
 % --- Running-head letterspacing fix ---

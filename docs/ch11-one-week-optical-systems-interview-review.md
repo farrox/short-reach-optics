@@ -100,9 +100,11 @@ Turn observations into a short ranked list. Start from engineering priors (commo
 
 ##### Isolation.
 
+Good engineers perform measurements. Do not perform two experiments when one can separate the hypotheses.
+
 **Key idea.** Great engineers perform the minimum measurement that eliminates the largest number of hypotheses.
 
-Good engineers perform measurements. Do not perform two experiments when one can separate the hypotheses. Optimize uncertainty removed per hour of lab time, not uncertainty removed in the abstract. A fast sequence often beats a complete one: $$\begin{split}
+Optimize uncertainty removed per hour of lab time, not uncertainty removed in the abstract. A fast sequence often beats a complete one: $$\begin{split}
 \text{golden swap} &\longrightarrow \text{power meter}
 \longrightarrow \text{bias sweep}\\
 &\longrightarrow \text{then DCA / OSA / RIN as needed}.
