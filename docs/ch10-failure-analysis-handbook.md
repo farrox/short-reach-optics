@@ -428,5 +428,5 @@ Restore thermal headroom, correct calibration and control limits, reduce couplin
 <div class="nav-links">
   <a href="ch9-ai-datacenter-networking">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch11-one-night-optical-systems-interview-review">Next &rarr;</a>
+  <a href="ch11-one-week-optical-systems-interview-review">Next &rarr;</a>
 </div>

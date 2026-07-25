@@ -308,6 +308,20 @@
   }\par\medskip
 }
 
+% Study prompt for LLM oral practice (interview appendix).
+\definecolor{practicebg}{HTML}{F3F0E8}
+\definecolor{practicerule}{HTML}{6B5E4A}
+\newcommand{\llmpractice}[2]{%
+  \par\medskip\noindent
+  \fcolorbox{practicerule}{practicebg}{%
+    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+      \textbf{LLM practice}\par\smallskip
+      \textbf{Summary.} #1\par\smallskip
+      \textbf{Paste to an LLM and answer aloud.} #2
+    \end{minipage}%
+  }\par\medskip
+}
+
 % Draft stub for sections still to be written (greppable via rg '\\fillme\\{').
 \definecolor{fillmebg}{HTML}{FFF6D9}
 \definecolor{fillmerule}{HTML}{B07F1A}

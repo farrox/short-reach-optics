@@ -39,6 +39,8 @@
 \declaretermlabel{gearbox}{Gearbox}
 \declaretermlabel{wavelengthLocker}{Wavelength locker}
 \declaretermlabel{thermalCrosstalk}{Thermal crosstalk}
+\declaretermlabel{bathtub}{Bathtub curve}
+\declaretermlabel{Arrhenius}{Arrhenius / $E_a$}
 
 \declaretermsnip{FEC}{Forward error correction: parity symbols let the receiver fix
   bit errors without retransmit. Datacom links specify a \emph{pre-FEC} BER the code
@@ -266,6 +268,28 @@
 \declaretermsnip{JESD78}{JEDEC IC latch-up test: overvoltage and $\pm100$~mA
   current-injection stress that classifies a CMOS/BiCMOS die's susceptibility to a
   parasitic-thyristor low-impedance latch.}
+
+\declaretermsnip{ESD}{Electrostatic discharge: handling or assembly event that
+  damages IC gates or laser drivers. Tested under human-body and charged-device
+  models (HBM/CDM). Sudden hard fails, not Arrhenius wear-out.}
+
+\declaretermsnip{HAST}{Highly accelerated stress test: humidity plus temperature
+  and bias (often with autoclave-class stress). Exercises corrosion and
+  delamination; part of GR-468 / JESD47 environmental suites.}
+
+\declaretermsnip{HTSL}{High-temperature storage life: unbiased bake at elevated
+  temperature. Separates storage-driven mechanisms from biased HTOL wear-out.}
+
+\declaretermsnip{MTBF}{Mean time between failures. For a constant failure rate,
+  $\mathrm{MTBF}=10^9/\mathrm{FIT}$ hours. Fleet planning uses FIT$\times$count
+  more directly than MTBF alone.}
+
+\declaretermsnip{EOL}{End of life: the defined wear-out criterion (e.g.\ threshold
+  rise, slope drop, or hard fail) used in HTOL projection and derating.}
+
+\declaretermsnip{bathtub}{Reliability bathtub curve: infant mortality (falling
+  rate), useful life (roughly constant FIT), then wear-out (rising rate). Burn-in
+  targets the left side; Arrhenius life targets the right.}
 
 \declaretermsnip{AECQ100}{Automotive Electronics Council IC qualification standard:
   JEDEC stress methods plus tighter ESD targets and named temperature grades

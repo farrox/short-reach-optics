@@ -1,11 +1,15 @@
 ---
 layout: default
-title: "Ch 11: One-night optical systems interview review"
+title: "Ch 11: One-week optical systems interview review"
 ---
 
-# One-night optical systems interview review
+# One-week optical systems interview review
 
-Use this appendix as a standalone review sheet. Its purpose is not to cover the most optics. Its purpose is to make your engineering process visible under time pressure.
+Use this appendix as a standalone review sheet for about a week of focused prep. Its purpose is not to cover the most optics. Its purpose is to make your engineering process automatic under time pressure: requirements, measurement, hypothesis elimination, and a decision with recurrence control.
+
+This role owns laser direction inside an IM/DD interconnect effort: requirements, validation strategy, partner quality, and fleet risk. Lab measurement is how you decide, not the whole job. On every answer, name the decision the work unlocks (ship, derate, second-source, ATP change, partner action) as well as the instrument. Hands-on fluency still matters. Senior people lose credibility if they cannot run or interpret LIV, RIN, ORL, TDECQ, and a BER waterfall. They also lose the level if they stop at plots and never close on a control.
+
+Work the day plan at the end of this appendix. Use each LLM practice box the day it is scheduled. Do not add new topics after Day 6.
 
 ## The answer spine
 
@@ -61,6 +65,8 @@ Fix the mechanism you named, under the condition that failed. Retune the table, 
 ##### Recurrence control.
 
 Close with the control that stops the same escape next month. That control is usually a new or tightened test, an SPC chart, a telemetry alarm, a process-control limit, a supplier screen, or a firmware guard that refuses to boot with a railed actuator. Name the owner and the measurable closure criterion. Root cause without recurrence control is a story, not an engineering result. In the interview, ending on recurrence control is what separates a debug narrative from a product-engineering answer.
+
+Quiz me on the answer spine. Ask me to speak one paragraph for each step. Then give me a failed module at high temperature with stable average power and make me walk the full spine out loud. Stop me if I skip scope, the power fork, or recurrence control.
 
 ## Ten concepts to know cold
 
@@ -152,7 +158,7 @@ Fleet monitoring
 
 : Which telemetry catches margin erosion before service failure, and does the RMA Pareto match the life model?
 
-Table 7.1 maps these stages to activities and instruments. The worked interview answer in §A.4.1 walks the same ladder as spoken prose.
+Table 7.1 maps these stages to activities and instruments. The worked interview answer in §A.4.2 walks the same ladder as spoken prose.
 
 ### Know what each instrument answers
 
@@ -246,6 +252,8 @@ Recalibrate when evidence demands it, not by habit: loop residual stops convergi
 
 Root cause is not the end of the answer. Close with immediate containment; the design, process, calibration, firmware, or supplier correction; verification under the original failing condition; an acceptance test, process control, alarm, or telemetry control that catches recurrence; and an owner with a measurable closure criterion. An interview answer that stops at "we replaced the laser" sounds like repair. An answer that ends on the new ATP corner or the new telemetry alarm sounds like product engineering.
 
+Act as my interviewer for optical systems. Ask me one question from each cold concept, in random order. Push for a named reference plane, a next measurement that kills hypotheses, and a recurrence control. Grade me on process, not on jargon volume.
+
 ## Two stories to prepare
 
 Each story is a spoken version of the answer spine. Prepare one component or bench story and one system, production, or fleet story. Use only work you personally performed, and separate your contribution from the team's. Walk the same eight beats every time:
@@ -266,9 +274,43 @@ Each story is a spoken version of the answer spine. Prepare one component or ben
 
 8.  Recurrence control and measured result: the test, alarm, or process change, and the metric that proved it worked.
 
+I will tell you my two story titles only. Interview me on each for five minutes. Force the eight beats in order. Cut me off if I invent metrics, skip scope, or end without a control that would catch the next escape.
+
 ## Questions to rehearse aloud, with model answers
 
-Rehearse these until the structure is automatic. Each answer starts with scope or requirements, names measurements and the hypotheses they separate, and ends with a control. Do not recite; adapt the skeleton to the follow-up questions.
+Rehearse these until the structure is automatic. Each answer starts with scope or requirements, names measurements and the hypotheses they separate, and ends with a control. Do not recite; adapt the skeleton to the follow-up questions. For a Staff-level conversation, end one beat past the fix: the decision and the owner of the recurrence control.
+
+### How would you set laser requirements for a new IM/DD link?
+
+This is the ownership question. Start from the system, not from a laser datasheet. The output is a requirements slice a supplier and an ATP can both test against (Table 5.4, Table 5.1).
+
+##### Step 1: freeze the system constraints.
+
+Name reach, lane rate, fiber plant (MMF or SMF), wavelength class, power envelope, lifetime FIT target, operating temperature, and manufacturing volume. Those constraints choose the architecture path before any part number appears.
+
+A short multimode path points toward a VCSEL. A 500 m or 2 km single-mode path points toward a DFB or EML at 1310 nm. The modulator choice among direct modulation, EAM, silicon MZM, or ring comes after that path is fixed.
+
+##### Step 2: write the optical budget the laser must close.
+
+Translate the link into numbers the source must support: minimum OMA at the launch reference plane, maximum RIN at a stated ORL, SMSR if filters or WDM sit downstream, chirp or dispersion allowance for the reach, and the bias and extinction window the modulator path needs.
+
+Say the reference plane with every number. A launch spec without TP2 or the module connector is not a requirement.
+
+##### Step 3: write the thermal, life, and control requirements.
+
+Case temperature range, whether a TEC is allowed, wavelength drift over temperature and life, threshold and slope aging limits, and the calibration tables the product will store (APC target, EAM bias versus temperature, or ring lock range).
+
+HTOL and burn-in belong here as named mechanisms with justified activation energy, not as a ritual checklist. If the laser cannot hold lock or APC headroom at the hot corner, the link does not close even if room-temperature OMA looks fine.
+
+##### Step 4: write what production and partners must prove.
+
+Every requirement needs a measurement method, a limit, and a reaction plan. Map OMA, RIN, SMSR, LIV, and eye metrics into the ATP. State lot traceability, FAIR triggers, and how RMA codes stay split by supplier so field data can falsify the qual.
+
+The decision you are making is not "which laser looks best on a bench." It is "which requirements let us ship, second-source, and operate the fleet without guessing."
+
+##### How to say it aloud.
+
+"System constraints first, then OMA and RIN at a named plane and ORL, then thermal and life with a named HTOL mechanism, then ATP and supplier reaction plan." Offer to walk one number, usually RIN at ORL or hot-corner APC headroom, if they want depth.
 
 ### How would you validate a new optical transmitter from bring-up through production?
 
@@ -562,9 +604,11 @@ Alarm on trends and disagreements, such as monitor versus expected power or bias
 
 "Per-lane power, bias, and pre-FEC BER; module temperature and actuator drive; events with context; alarms on trends." Justify each item with the hypothesis it separates, then stop.
 
+Run a 45-minute mock interview. Pick six of the rehearsal questions at random. After each answer, ask one follow-up that forces a measurement choice or a supplier/fleet decision. Score me as Staff-level only if I name the decision unlocked, not only the instrument used.
+
 ## Must-know abbreviations
 
-A fuller glossary follows this appendix. For one-night preparation, know these without notes. Entries are alphabetical by the leading abbreviation.
+A fuller glossary follows this appendix. By the end of the week, know these without notes. Entries are alphabetical by the leading abbreviation.
 
 8D / CAPA
 
@@ -574,9 +618,17 @@ APC
 
 : Automatic power control. Feedback from a monitor photodiode that holds average launch power; a drifting monitor corrupts it silently.
 
+Arrhenius / $E_a$
+
+: Life-acceleration model. Temperature stress multiplies wear-out by $\exp[(E_a/k)(1/T_\mathrm{use}-1/T_\mathrm{stress})]$. $E_a$ must be justified for the named mechanism on that process.
+
 ATP
 
 : Acceptance test plan. Production test limits, methods, reference planes, and reaction rules.
+
+Bathtub curve
+
+: Infant mortality (falling rate), useful life (roughly constant FIT), then wear-out (rising rate). Burn-in targets the left; Arrhenius life targets the right.
 
 BER
 
@@ -585,6 +637,10 @@ BER
 BERT
 
 : Bit-error-ratio tester. Generates PRBS and counts errors for waterfalls, floors, and dwell tests.
+
+Burn-in
+
+: Production or sample screen that removes infant-mortality parts before ship. Distinct from HTOL life projection.
 
 CDR
 
@@ -614,6 +670,10 @@ DML
 
 : Directly modulated laser. Simple and efficient, but chirp limits reach.
 
+DPA
+
+: Destructive physical analysis. Cross-section or EDX on failed units to confirm facet, solder, FAU, or die failure modes.
+
 DPPM
 
 : Defective parts per million. Incoming or outgoing quality rate.
@@ -625,6 +685,14 @@ DR / FR
 DVT / PVT
 
 : Design validation test and production validation test.
+
+EOL
+
+: End of life. The defined wear-out criterion (threshold rise, slope drop, or hard fail) used in HTOL projection and derating.
+
+ESD
+
+: Electrostatic discharge. Handling or assembly damage to drivers or TIAs; sudden hard fail, not Arrhenius wear-out. Qual uses HBM/CDM models.
 
 EAM
 
@@ -658,13 +726,29 @@ FIT
 
 : Failures in time. Failures per $10^9$ device-hours.
 
+Golden unit / host
+
+: Known-good reference used to bisect station, fixture, host, module, and fiber. Essential in debug and ATP correlation.
+
 GR-468
 
 : Telcordia optoelectronic qualification framework (HTOL, environmental, mechanical).
 
+HAST
+
+: Highly accelerated stress test. Humidity plus temperature and bias; exercises corrosion and delamination.
+
 HTOL
 
 : High-temperature operating life. Accelerated stress used with an Arrhenius model to project field wear-out; credible only with a named mechanism.
+
+HTSL
+
+: High-temperature storage life. Unbiased bake; separates storage mechanisms from biased HTOL wear-out.
+
+JESD47
+
+: JEDEC IC qualification stress suite. Silicon-side counterpart to GR-468 for drivers and TIAs.
 
 LIV
 
@@ -689,6 +773,10 @@ MRM
 MSA
 
 : Multi-source agreement. An industry specification for interoperable products.
+
+MTBF
+
+: Mean time between failures. For constant failure rate, $\mathrm{MTBF}=10^9/\mathrm{FIT}$ hours. Fleet math usually uses FIT times population.
 
 MZM
 
@@ -778,23 +866,45 @@ WDM
 
 : Wavelength division multiplexing. Multiple wavelengths on one fiber.
 
-## One-night study order
+Drill abbreviations. Give me ten random terms mixing optical debug and reliability/manufacturing. For each, I must expand it in one sentence and give one measurement, stress, or failure mode it connects to. Fail me if I only expand the letters or confuse burn-in with HTOL.
 
-1.  Memorize the answer spine, scope questions, power fork, and four margins.
+## One-week study plan
 
-2.  Build and rehearse two real stories.
+Assume seven days, with the interview near the end of Day 7. Protect sleep. Each day has one primary drill and one LLM practice box. If a day slips, cut new reading first, not story rehearsal or the mock interview.
 
-3.  Review the instruments and say what uncertainty each measurement removes.
+##### Day 1: answer spine and ownership frame.
 
-4.  Review calibration, aging versus thermal response, and HTOL validity.
+Read the chapter opener and the answer-spine section. Memorize the nine steps and the power-versus-signal-quality fork. Speak one paragraph per spine step. Use the answer-spine LLM practice box. Write down the decision language you will reuse: ship, derate, second-source, ATP change, partner action.
 
-5.  Review the abbreviations above.
+##### Day 2: requirements and validation ladder.
 
-6.  Rehearse the questions without notes.
+Rehearse §A.4.1 and §A.4.2 aloud until the structure is automatic. Name a reference plane in every measurement sentence. Skim Table 7.1, Table 5.4, Table 5.1 for numbers you already believe; do not hunt new optics.
 
-7.  Stop adding new optics. Sleep.
+##### Day 3: two real stories.
 
-**Key idea.** Show how you reduce uncertainty. Start with requirements and scope, measure at a named reference plane, eliminate hypotheses, verify the root cause under the failing condition, and add a control that prevents recurrence.
+Draft and rehearse one bench or component story and one system, production, or fleet story. Use only work you did. Hit all eight beats and end on a measured recurrence control. Use the stories LLM practice box. Record yourself once and cut invented metrics.
+
+##### Day 4: instruments, waterfall, and debug forks.
+
+Review what each instrument removes as uncertainty. Drill waterfall shift versus floor versus burst pattern (§A.2.7, §10.2, §10.3). Rehearse hot BER with stable power, aging versus calibration, and weak-lane isolation. Use the ten-concepts LLM practice box.
+
+##### Day 5: reliability, manufacturing, and suppliers.
+
+Drill HTOL credibility, Arrhenius/$E_a$, bathtub (burn-in versus wear-out), second-source qualification, FAIR, DPA, ESD versus wear-out, and field triage buckets (performance / reliability / manufacturability). Rehearse the HTOL, second-source, and triage worked answers. Skim Chapter 8 only where a story needs a fact.
+
+##### Day 6: abbreviations, telemetry, and modulator choice.
+
+Run the abbreviations LLM practice box until expansions are fast. Rehearse fleet telemetry, modulator choice (EML / Si MZM / ring), replayable test data, and BER-floor physics. Do one short mixed quiz: three debug questions and three reliability questions.
+
+##### Day 7: mock interview and stop.
+
+Use the 45-minute mock-interview LLM practice box. No new chapters. Light review of your two stories and the laser-requirements opener only. Stop two to three hours before the call. Sleep.
+
+##### If you have less than seven days.
+
+Compress in this order: Day 1 spine, Day 3 stories, Day 2 requirements and validation, Day 5 HTOL and triage, Day 7 mock. Cut Day 6 reading; keep only the abbreviation drill.
+
+**Key idea.** Show how you reduce uncertainty and own the decision. Start with requirements and scope, measure at a named reference plane, eliminate hypotheses, verify the root cause under the failing condition, and add a control that prevents recurrence. Lab fluency proves you can decide; the control proves you can ship. A week is for making that spine automatic, not for learning a new device family.
 
 
 <div class="nav-links">

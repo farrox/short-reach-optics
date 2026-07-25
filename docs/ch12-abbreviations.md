@@ -749,7 +749,7 @@ XPO
 
 
 <div class="nav-links">
-  <a href="ch11-one-night-optical-systems-interview-review">&larr; Previous</a>
+  <a href="ch11-one-week-optical-systems-interview-review">&larr; Previous</a>
   <a href="./">Table of Contents</a>
   <a href="ch13-references">Next &rarr;</a>
 </div>
