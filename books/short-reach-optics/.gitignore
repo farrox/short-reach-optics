@@ -14,8 +14,8 @@
 *.bcf
 *.run.xml
 
-# Optional: ignore PDF output (remove this line if you track main.pdf)
-main.pdf
+# Track the compiled book PDF so GitHub has a readable artifact.
+# Build products still go to .build/ during compile.
 
 # Python simulation environment and caches
 .venv/
