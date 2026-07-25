@@ -183,8 +183,26 @@ def write_chapter(
     return filename
 
 
+def _dectree_aria_label(tree: str) -> str:
+    """Build a descriptive aria-label from the first meaningful tree line."""
+    for line in tree.splitlines():
+        label = line.strip()
+        if not label or label in {"|", ">", "->", "-->"}:
+            continue
+        # Drop leading ASCII tree connectors.
+        label = re.sub(r"^[\|\-\s>]+", "", label).strip()
+        if not label:
+            continue
+        # Keep labels short for assistive tech.
+        if len(label) > 80:
+            label = label[:77] + "..."
+        return label
+    return "Decision tree"
+
+
 def promote_dectrees(content: str) -> str:
     """Turn marked verbatim trees into copyable <pre><code> blocks."""
+    # Pandoc sometimes indents markers or leaves them inside fenced code.
     pattern = re.compile(
         r"(?:^[ \t]*<<<DECTREE>>>\s*\n)(.*?)(?:^[ \t]*<<<ENDDECTREE>>>\s*\n?)",
         re.MULTILINE | re.DOTALL,
@@ -202,17 +220,27 @@ def promote_dectrees(content: str) -> str:
         while cleaned and not cleaned[-1].strip():
             cleaned.pop()
         tree = "\n".join(cleaned)
+        aria = (
+            _dectree_aria_label(tree)
+            .replace("&", "&amp;")
+            .replace('"', "&quot;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+        )
         tree = (
             tree.replace("&", "&amp;")
             .replace("<", "&lt;")
             .replace(">", "&gt;")
         )
         return (
-            '<pre class="dectree" aria-label="Decision tree">'
+            f'<pre class="dectree" aria-label="{aria}">'
             f"<code>{tree}</code></pre>\n"
         )
 
-    return pattern.sub(repl, content)
+    content = pattern.sub(repl, content)
+    # Absolute last resort: strip any marker residue that escaped promotion.
+    content = re.sub(r"(?m)^[ \t]*<<<(?:END)?DECTREE>>>[ \t]*\n?", "", content)
+    return content
 
 
 def clean_pandoc_artifacts(content: str) -> str:
@@ -221,6 +249,9 @@ def clean_pandoc_artifacts(content: str) -> str:
     # Drop leftover pandoc fenced-div open/close lines (::: center, :::).
     # Use [ \t] not \s so newlines are not swallowed into the match.
     content = re.sub(r"(?m)^:::[ \t]*.*$", "", content)
+    # Pandoc raw-HTML attribute residue used as empty comments.
+    content = re.sub(r"`?<!--.*?-->`?\{=html\}", "", content)
+    content = re.sub(r"\{=html\}", "", content)
     # Remove {reference-type="..." reference="..."} attributes
     content = re.sub(r'\{reference-type="[^"]*"\s+reference="[^"]*"\}', '', content)
     # Empty spans from labels: []{#id}, []{#id label="..."}, []{#id .class}

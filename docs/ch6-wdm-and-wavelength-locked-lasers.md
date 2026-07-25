@@ -11,14 +11,14 @@ Early datacenter optics mostly ran one wavelength per fiber. That worked while p
 
 At $100{,}000$+ accelerator scale, every extra fiber is another connector, another patch, and another failure mode. *Wavelength-division multiplexing* (WDM) puts many independent channels on a single fiber, each on its own wavelength, so bandwidth per fiber rises without adding fiber. Each wavelength can still be an ordinary IM/DD channel. WDM and IM/DD are orthogonal; you simply run IM/DD *per wavelength*.
 
-Historically the industry climbed a ladder of spacing. Coarse CWDM4 used $\approx$`<!-- -->`{=html}20 nm slots and uncooled lasers. LAN-WDM tightened that for 2 km-class FR4. Dense grids and then CW-WDM O-band combs for CPO pushed spacing into the 100--800 GHz class and made active locking mandatory. Those spacings are standardized grids, not vendor choices: the 20 nm CWDM slots follow the ITU-T G.694.2 wavelength grid (18 channels, 1271--1611 nm), and the 50/100/200 GHz datacom DWDM spacings follow the ITU-T G.694.1 frequency grid anchored at 193.1 THz . CWDM4 uses the four O-band lines of that CWDM grid; the CW-WDM combs in §6.6 define their own O-band grids for dense integration. Table 6.1 is that ladder as you will meet it in short-reach AI optics today.
+Historically the industry climbed a ladder of spacing. Coarse CWDM4 used $\approx$20 nm slots and uncooled lasers. LAN-WDM tightened that for 2 km-class FR4. Dense grids and then CW-WDM O-band combs for CPO pushed spacing into the 100--800 GHz class and made active locking mandatory. Those spacings are standardized grids, not vendor choices: the 20 nm CWDM slots follow the ITU-T G.694.2 wavelength grid (18 channels, 1271--1611 nm), and the 50/100/200 GHz datacom DWDM spacings follow the ITU-T G.694.1 frequency grid anchored at 193.1 THz . CWDM4 uses the four O-band lines of that CWDM grid; the CW-WDM combs in §6.6 define their own O-band grids for dense integration. Table 6.1 is that ladder as you will meet it in short-reach AI optics today.
 
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Grid family           Spacing (class)                                                                   Channels / fiber   Cooling / lock              Typical short-reach use
   --------------------- --------------------------------------------------------------------------------- ------------------ --------------------------- -------------------------------------
-  CWDM4                 $\approx$`<!-- -->`{=html}20 nm                                                   4                  Uncooled; loose control     FR-class pluggables; faceplate WDM
+  CWDM4                 $\approx$20 nm                                                   4                  Uncooled; loose control     FR-class pluggables; faceplate WDM
 
-  LAN-WDM               $\approx$`<!-- -->`{=html}800 GHz ($\approx$`<!-- -->`{=html}4--5 nm @ 1310 nm)   4                  Cooled or tight open-loop   2 km-class FR4 (edge of book scope)
+  LAN-WDM               $\approx$800 GHz ($\approx$4--5 nm @ 1310 nm)   4                  Cooled or tight open-loop   2 km-class FR4 (edge of book scope)
 
   Datacom DWDM          200/100/50 GHz                                                                    many               Locked to grid              Discrete DFB/EML DWDM modules
 
@@ -119,7 +119,7 @@ Three actuators show up repeatedly, and the bring-up order usually starts with t
 
 ##### Capture versus hold.
 
-*Capture* is acquiring lock from a cold or unlocked state: coarse scan of heater or TEC until the monitor error signal crosses zero, then close the loop. *Hold* is rejecting thermal drift and neighbor crosstalk once locked. Loop bandwidth must be fast enough to track case-temperature ramps and adjacent-heater steps, but slow enough not to fight the data path or inject RIN through bias modulation. Silicon rings at $\sim$`<!-- -->`{=html}10 GHz/°C set the disturbance scale: a 1 °C neighbor step is tens of GHz of resonance walk, which is a large fraction of a 100--200 GHz grid slot (§3.14.3).
+*Capture* is acquiring lock from a cold or unlocked state: coarse scan of heater or TEC until the monitor error signal crosses zero, then close the loop. *Hold* is rejecting thermal drift and neighbor crosstalk once locked. Loop bandwidth must be fast enough to track case-temperature ramps and adjacent-heater steps, but slow enough not to fight the data path or inject RIN through bias modulation. Silicon rings at $\sim$10 GHz/°C set the disturbance scale: a 1 °C neighbor step is tens of GHz of resonance walk, which is a large fraction of a 100--200 GHz grid slot (§3.14.3).
 
 ##### Failure signatures.
 
@@ -155,7 +155,7 @@ Core normative content:
 
 - **Power classes and AS parameters:** output power classes span low to high launch; SMSR, RIN, and linewidth floors are defined with measurement methods, with many limits marked application-specific (AS) in the normative tables.
 
-Informative appendix examples (not universal product guarantees) often quote $\approx$`<!-- -->`{=html}30 dB SMSR, $\approx-135$ dB/Hz RIN, $\approx$`<!-- -->`{=html}20 MHz linewidth, $\pm$`<!-- -->`{=html}1 dB per-line power variation, and $-20$ dB ORL tolerance for 18 nm-span examples. Treat those as negotiation anchors; write the ATP to your link budget (§5.16, Table 5.4).
+Informative appendix examples (not universal product guarantees) often quote $\approx$30 dB SMSR, $\approx-135$ dB/Hz RIN, $\approx$20 MHz linewidth, $\pm$1 dB per-line power variation, and $-20$ dB ORL tolerance for 18 nm-span examples. Treat those as negotiation anchors; write the ATP to your link budget (§5.16, Table 5.4).
 
 ##### Why disaggregate the laser.
 
@@ -183,7 +183,7 @@ For the PIC to close every lane, the comb must deliver, across temperature and w
 
 The SuperNova approach builds its comb from an array of discrete lasers, one distributed-feedback (DFB) die per wavelength, combined onto the output fiber. That is the shipping answer, and it scales cleanly to the 8 and 16 lines the MSA grids call for. Past a few dozen lines the die count, the combining loss, and the per-die wavelength trimming start to hurt, which is why a single device that emits a whole comb is attractive. Three device classes compete.
 
-**Quantum-dot mode-locked lasers** (*QD-MLL*s) are the front-runner for a monolithic O-band comb. Mode locking in a single cavity produces evenly spaced lines at the cavity round-trip rate; quantum-dot gain adds low RIN, a near-zero linewidth-enhancement factor, and strong optical-feedback tolerance, the same properties that make quantum-dot lasers attractive for isolator-free co-packaging . Reported O-band demos carry 14$\times$`<!-- -->`{=html}100 Gb/s PAM4 over 10 km at $\sim$`<!-- -->`{=html}284 fJ/bit, and isolator-free variants target interconnect capacity beyond 3.2 Tb/s. These are research results, not qualified products, so treat the line counts and efficiencies as provisional.
+**Quantum-dot mode-locked lasers** (*QD-MLL*s) are the front-runner for a monolithic O-band comb. Mode locking in a single cavity produces evenly spaced lines at the cavity round-trip rate; quantum-dot gain adds low RIN, a near-zero linewidth-enhancement factor, and strong optical-feedback tolerance, the same properties that make quantum-dot lasers attractive for isolator-free co-packaging . Reported O-band demos carry 14$\times$100 Gb/s PAM4 over 10 km at $\sim$284 fJ/bit, and isolator-free variants target interconnect capacity beyond 3.2 Tb/s. These are research results, not qualified products, so treat the line counts and efficiencies as provisional.
 
 **Kerr microcombs** take the opposite route: pump one high-$Q$ microresonator and let four-wave mixing fill in many evenly spaced lines on a chip . The line count and the spacing uniformity are excellent, and a 2025 demonstration added a monolithic demultiplexer that autonomously locks to and tracks the comb lines. The catch is power. Pump-to-comb conversion efficiency is modest, so each line leaves the chip weak and usually needs a booster or per-line amplifier before it reaches the modulator bank (§6.6.2). Microcombs also need a clean pump laser and careful thermal control to hold the soliton state.
 
@@ -247,7 +247,7 @@ Slow BER creep with rising bias on one line is often laser wear-out (§8.4). Sud
 
 Because locking is only worth its complexity under specific conditions, its presence narrows the design space considerably.
 
-<pre class="dectree" aria-label="Decision tree"><code>Locking present
+<pre class="dectree" aria-label="Locking present"><code>Locking present
   |
 WDM (usually dense)
   |

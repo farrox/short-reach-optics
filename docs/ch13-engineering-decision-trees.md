@@ -11,7 +11,7 @@ Debugging and qualification are the same philosophy at different times. Debuggin
 
 ## Universal debugging tree
 
-<pre class="dectree" aria-label="Decision tree"><code>Problem
+<pre class="dectree" aria-label="Problem"><code>Problem
   |
 Scope (unit -&gt; lot -&gt; vendor -&gt; fleet)
   |
@@ -32,7 +32,7 @@ Use when BER rises, a link flaps, a lane is weak, or a corner fails. Name the le
 
 ## Universal qualification tree
 
-<pre class="dectree" aria-label="Decision tree"><code>Requirements
+<pre class="dectree" aria-label="Requirements"><code>Requirements
   |
 Bring-up
   |
@@ -55,7 +55,7 @@ Each gate removes a different uncertainty. Do not treat a bring-up pass as margi
 
 ## Power-versus-quality fork
 
-<pre class="dectree" aria-label="Decision tree"><code>BER or link degrade
+<pre class="dectree" aria-label="BER or link degrade"><code>BER or link degrade
   |
 Received power changed?
   |-- YES --&gt; Power ledger
@@ -70,7 +70,7 @@ One check before retuning equalizers or bias tables (§4.8, §7.11).
 
 ## Scope and population
 
-<pre class="dectree" aria-label="Decision tree"><code>Initial symptom
+<pre class="dectree" aria-label="Initial symptom"><code>Initial symptom
   |
 Scope analysis (how large?)
   |-- unit / lane / rack / site / PN / vendor / lot / fleet
@@ -85,7 +85,7 @@ Scope sets severity and priors. Correlation after isolation unlocks contain, pau
 
 ## Sudden versus gradual
 
-<pre class="dectree" aria-label="Decision tree"><code>Failure onset
+<pre class="dectree" aria-label="Failure onset"><code>Failure onset
   |
 Sudden?
   |-- config / handling / firmware / mechanical / power event
@@ -98,7 +98,7 @@ Sudden and gradual are priors that reorder the bench, not root-cause claims (Cha
 
 ## Transmitter, channel, or receiver
 
-<pre class="dectree" aria-label="Decision tree"><code>Power or quality path chosen
+<pre class="dectree" aria-label="Power or quality path chosen"><code>Power or quality path chosen
   |
 Golden swap / loopback
   |-- Tx --&gt; eye / LIV / bias / wavelength / RIN
@@ -112,7 +112,7 @@ Bisect domains before opening packages (§7.10, §10.2).
 
 ## Supplier qualification
 
-<pre class="dectree" aria-label="Decision tree"><code>Requirements (customer-visible)
+<pre class="dectree" aria-label="Requirements (customer-visible)"><code>Requirements (customer-visible)
   |
 Characterization (distributions, not samples)
   |
@@ -127,7 +127,7 @@ Customer view measures external behavior. Vendor view owns internals (Appendix A
 
 ## Supplier escape and containment
 
-<pre class="dectree" aria-label="Decision tree"><code>Escape detected
+<pre class="dectree" aria-label="Escape detected"><code>Escape detected
   |
 Contain scoped population
   |
@@ -148,7 +148,7 @@ Contain first when the population can grow. The system owner keeps responsibilit
 
 ## Margin-budget flow
 
-<pre class="dectree" aria-label="Decision tree"><code>Nominal system margin
+<pre class="dectree" aria-label="Nominal system margin"><code>Nominal system margin
   |
 Temperature debit
   |
@@ -171,7 +171,7 @@ Design allocates budgets. Validation often measures the net externally visible r
 
 ## Black-box versus engineering access
 
-<pre class="dectree" aria-label="Decision tree"><code>Bookended product
+<pre class="dectree" aria-label="Bookended product"><code>Bookended product
   |
 End-to-end qualification
   |-- BER / FEC / telemetry / sensitivity
@@ -187,7 +187,7 @@ An optical eye is measured externally with suitable access. Do not assume the mo
 
 ## Recurrence-control loop
 
-<pre class="dectree" aria-label="Decision tree"><code>Production escape
+<pre class="dectree" aria-label="Production escape"><code>Production escape
   |
 Contain risk now
   |
@@ -204,7 +204,7 @@ Containment, root cause, and prevention are three different actions (§8.7).
 
 ## Production feedback loop
 
-<pre class="dectree" aria-label="Decision tree"><code>Design requirements
+<pre class="dectree" aria-label="Design requirements"><code>Design requirements
   |
 Qualification
   |
@@ -223,7 +223,7 @@ Production validation is replayable and decision-oriented (§8.10, §8.9).
 
 ## Measurement-selection loop
 
-<pre class="dectree" aria-label="Decision tree"><code>Current evidence
+<pre class="dectree" aria-label="Current evidence"><code>Current evidence
   |
 Rank hypotheses
   |
@@ -239,7 +239,7 @@ Enough evidence to decide?
 
 ## Unknown failure
 
-<pre class="dectree" aria-label="Decision tree"><code>Observation (facts, not hopes)
+<pre class="dectree" aria-label="Observation (facts, not hopes)"><code>Observation (facts, not hopes)
   |
 Hypotheses (short ranked list)
   |

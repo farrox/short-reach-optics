@@ -29,13 +29,17 @@ measured in units of their combined noise:
   \qquad
   \mathrm{BER} = \tfrac{1}{2}\,\mathrm{erfc}\!\left(\frac{Q}{\sqrt{2}}\right).
 \]
-This is the workhorse relation of link design. Its power is that it needs no
-assumption about pulse shape or spectrum, only that the sampled noise is
-Gaussian.\sidenote{$Q$ here is the electrical decision quality, not to be confused
-with a laser-cavity or resonator $Q$.} Two reference points anchor everything
-that follows: the classic uncoded target $\mathrm{BER}=10^{-12}$ needs
-$Q=7.03$, while the \term{KP4}\firstterm{KP4} Reed--Solomon FEC (\Cref{ch:imdd}) corrects a
-pre-FEC $\mathrm{BER}\approx2.4\times10^{-4}$, needing only $Q\approx3.5$.
+This binary $Q$-to-BER equation is an \emph{equivalent-quality} approximation used
+throughout link budgeting. A full PAM4 treatment evaluates three decision
+boundaries, unequal level noise, nonlinearity, equalization, and Gray mapping; do
+not treat the binary formula as a complete PAM4 model.\sidenote{$Q$ here is the
+electrical decision quality, not a laser-cavity or resonator $Q$.} Two reference
+points anchor the binary curve: the classic uncoded target $\mathrm{BER}=10^{-12}$
+needs $Q=7.03$. For a named KP4-class optical PMD under its random-error
+assumption, a pre-FEC objective near $2.4\times10^{-4}$ corresponds to
+$Q\approx3.5$ on this binary map (\Cref{ch:imdd}). That number is not a universal
+Reed--Solomon threshold; state the FEC architecture, error model, target PMD, and
+post-FEC metric.
 
 \begin{lstlisting}
 from scipy.special import erfc, erfcinv
@@ -176,32 +180,31 @@ receiver designer actually compares against.
 \begin{table*}[ht]
 \refstepcounter{table}\label{tab:rin-values}%
 \centering
-\setlength{\tabcolsep}{5pt}%
+\setlength{\tabcolsep}{4pt}%
 \renewcommand{\arraystretch}{1.25}%
-\begin{tabular}{@{}p{0.29\linewidth}p{0.13\linewidth}p{0.21\linewidth}p{0.21\linewidth}@{}}
+\begin{tabular}{@{}p{0.26\linewidth}p{0.12\linewidth}p{0.18\linewidth}p{0.12\linewidth}p{0.18\linewidth}@{}}
 \toprule
-Source & RIN (dB/Hz) & $i_{\text{RIN}}$ @ 0 dBm (pA/$\sqrt{\text{Hz}}$) & Note \\
+Source & RIN (dB/Hz) & $i_{\text{RIN}}$ @ 0 dBm & Metric & Note \\
 \midrule
-Standards spec limit (400G-FR4, 100GBASE-BR) & $\le -136$ & $\ge 127$ & stressed, w/ ORL \\
+400G-FR4 / 100G Lambda class limit & $\le -136$ & $\ge 127$ & stressed $\mathrm{RIN}_x\mathrm{OMA}$ & named ORL (e.g.\ 17.1~dB) \\
 \addlinespace[1.5em]
-Datacom VCSEL, 850~nm (MMF) & $-135$ to $-145$ & $45$ to $142$ & quiet parts $\le\!-145$ \\
+Datacom VCSEL, 850~nm (MMF) & $-135$ to $-145$ & $45$ to $142$ & intrinsic & quiet parts $\le\!-145$ \\
 \addlinespace[1.5em]
-Good datacom DFB / EML & $-145$ to $-155$ & $14$ to $45$ & CPO ELS targets $\le\!-145$ \\
+Good datacom DFB / EML & $-145$ to $-155$ & $14$ to $45$ & intrinsic & CPO ELS often target $\le\!-145$ \\
 \addlinespace[1.5em]
-Quantum-dot laser on Si & $-140$ to $-150$ & $25$ to $80$ & temp-stable, isolator-free \\
+Quantum-dot laser on Si & $-140$ to $-150$ & $25$ to $80$ & intrinsic & feedback-tolerant class \\
 \addlinespace[1.5em]
-Heterogeneous / self-injection-locked Si laser & $-155$ to $-165$ & $4.5$ to $14$ & high-$Q$ feedback \\
+Heterogeneous / injection-locked Si & $-155$ to $-165$ & $4.5$ to $14$ & intrinsic & high-$Q$ feedback \\
 \addlinespace[1.5em]
-Lab record (QD, quiet pump + injection lock) & down to $\sim\!-168$ & $\sim 3.2$ & research \\
+Lab record (QD + injection lock) & $\sim\!-168$ & $\sim 3.2$ & intrinsic & research \\
 \bottomrule
 \end{tabular}
 \par\medskip
 {\raggedright\footnotesize\textbf{Table~\thetable.} Representative RIN by source
-type (c.~2026) and the intensity-noise \emph{current} it produces at a reference
-operating point: $\mathcal{R}=0.8$~A/W, $P_{\text{rx}}=0$~dBm, so $I=0.8$~mA. The
-density is $i_{\text{RIN}}=\sqrt{\mathrm{RIN}_{\text{lin}}}\,I$; the PSD in
-A$^2$/Hz is its square. Spec limits are stressed $\mathrm{RIN}_x\mathrm{OMA}$
-values; the rest are typical intrinsic RIN.\par}
+(c.~2026) at $\mathcal{R}=0.8$~A/W, $P_{\text{rx}}=0$~dBm ($I=0.8$~mA). Intrinsic
+RIN and stressed $\mathrm{RIN}_x\mathrm{OMA}$ are different metrics; do not convert
+them through one equation unless the definitions align. Density
+$i_{\text{RIN}}=\sqrt{\mathrm{RIN}_{\text{lin}}}\,I$.\par}
 \end{table*}
 
 For scale, at that same $0.8$~mA the \emph{shot}-noise density is
@@ -223,24 +226,26 @@ only above a break-in power, which is why RIN only ``makes sense'' once the opti
 power (hence $I=\mathcal{R}P$) is stated.\label{fig:noisedensity}}
 \end{figure}
 
-Put these against the ceiling. At 200G-PAM4 bandwidths ($\mathrm{BW}\approx75$~GHz),
-even the worst spec-compliant number ($-136$~dB/Hz) gives $Q_{\max}\approx23$ (far
-above the $Q=7$ needed for $10^{-12}$), so for well-behaved sources RIN is
-\emph{not} the limiter; thermal noise is. RIN becomes the story only when feedback,
-aging, or a marginal source pushes the effective figure toward
-$-125$~dB/Hz, where $Q_{\max}$ falls through the uncoded target. That is why the
-practical spec is written against a stressed ORL, and why feedback-tolerant
-sources matter for dense, isolator-free integration. A third path to excess
-intensity noise is electrical: laser bias-driver current noise converts to
-equivalent RIN (\Cref{sec:laser-drivers}) and must be budgeted separately from
-intrinsic laser RIN.
+Put these against the simplified dominant-RIN ceiling
+$Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$. Assumptions: RIN dominates,
+noise bandwidth is defined, level structure is idealized, no stronger
+deterministic impairment is present, and the receiver is not compressed. At
+200G-PAM4 bandwidths ($\mathrm{BW}\approx75$~GHz), plugging the stressed
+$-136$~dB/Hz $\mathrm{RIN}_x\mathrm{OMA}$ number into that intrinsic-style formula
+is illustrative only; the definitions do not automatically align. Even under that
+optimistic plug-in, $Q_{\max}\approx23$ is far above $Q=7$ for $10^{-12}$, so for
+well-behaved sources RIN is often not the limiter; thermal noise is. RIN becomes
+the story when feedback, aging, or a marginal source pushes the \emph{effective}
+intensity noise toward $-125$~dB/Hz class. A third path is electrical: laser
+bias-driver current noise converts to equivalent RIN
+(\Cref{sec:laser-drivers}) and must be budgeted separately from intrinsic laser
+RIN.
 
-\keyidea{Thermal noise is beaten by power; RIN is not. Because
-$\sigma_{\text{RIN}}\propto I$, intensity noise imposes a floor
-$Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$ that no link budget can climb
-past, and it worsens as lane rates (and thus bandwidths) rise. Good 2026 sources
-($-145$ to $-165$~dB/Hz) sit comfortably below that floor; feedback and aging are
-what erode the margin.}
+\keyidea{Thermal noise is beaten by power; dominant RIN is not. Under a
+simplified model, $\sigma_{\text{RIN}}\propto I$ imposes
+$Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$. Keep intrinsic RIN and stressed
+$\mathrm{RIN}_x\mathrm{OMA}$ separate. Feedback, aging, and bias-board noise erode
+the margin that quiet intrinsic sources appear to have.}
 
 \section{Sensitivity and OMA}
 \label{sec:sensitivity}
@@ -304,35 +309,60 @@ $i_n$ back to the optical input through the responsivity $\mathcal{R}$:
   \qquad\text{(average power)},\qquad
   P_{\text{sens}}^{\text{OMA}} = \frac{2\,Q\,i_n}{\mathcal{R}}.
 \]
-Modern short-reach standards specify the \term{OMA} (optical modulation amplitude,
-$P_1-P_0$) rather than average power, because it decouples the sensitivity spec
-from the transmitter's extinction ratio. As a check, the textbook example
-($i_n = 1~\mu$A, $\mathcal{R}=0.8$~A/W, $\mathrm{BER}=10^{-12}$) gives
+Modern short-reach standards specify \term{OMA} rather than average power. For
+binary NRZ, $\mathrm{OMA}=P_1-P_0$; for PAM4, outer OMA is $P_3-P_0$. OMA
+decouples the sensitivity spec from extinction ratio. As a check, the textbook
+example ($i_n = 1~\mu$A, $\mathcal{R}=0.8$~A/W, $\mathrm{BER}=10^{-12}$) gives
 $P_{\text{sens}}=7.03\times1~\mu\text{A}/0.8 = 8.8~\mu$W, or $-20.6$~dBm, which
-the code reproduces. A finite extinction ratio costs a further
-$\mathrm{PP}=(\mathrm{ER}+1)/(\mathrm{ER}-1)$: $0.87$~dB at 10~dB ER,
-$2.2$~dB at 6~dB ER. These penalties feed directly into the link budgets of
-\Cref{ch:imdd} and the transmitter and dispersion eye closure quaternary (TDECQ)
-discussion of \Cref{ch:validation}.
+the code reproduces. A finite extinction ratio costs an idealized further
+$\mathrm{PP}_\mathrm{dB}=10\log_{10}[(\mathrm{ER}_\mathrm{lin}+1)/(\mathrm{ER}_\mathrm{lin}-1)]$:
+$0.87$~dB at 10~dB ER, $2.2$~dB at 6~dB ER. These penalties feed link budgets
+(\Cref{ch:imdd}) and TDECQ discussion (\Cref{ch:validation}); do not double-count
+TDECQ as an independent penalty if the compliance method already includes it.
 
 \paragraph{Worked example: DR4-class budget check.}
 \label{sec:worked-budget}
 
-Take a 200G/lane DR link with Ge-on-Si PIN ($\mathcal{R}=0.9$~A/W), TIA
-$i_n=13$~pA/$\sqrt{\text{Hz}}$, bandwidth $\approx60$~GHz, target pre-FEC BER
-$2.4\times10^{-4}$ ($Q\approx3.5$, \Cref{sec:qber,sec:kp4}).
+Take a 200G/lane DR-class estimate with Ge-on-Si PIN ($\mathcal{R}=0.9$~A/W), TIA
+$i_n=13$~pA/$\sqrt{\text{Hz}}$, noise bandwidth $\approx60$~GHz, and a KP4-class
+pre-FEC objective $2.4\times10^{-4}$ mapped to binary $Q\approx3.5$
+(\Cref{sec:qber,sec:kp4}). Reference plane: receiver optical input. Assume
+Gaussian noise, equalized eye, no compression, and RIN not yet dominant.
 
-Integrated noise: $i_n \sqrt{\mathrm{BW}} \approx 13\times10^{-12}\times\sqrt{60\times10^9}
-\approx 3.2~\mu$A rms. Required OMA:
+Integrated thermal-class noise: $i_n \sqrt{\mathrm{BW}} \approx
+13\times10^{-12}\times\sqrt{60\times10^9} \approx 3.2~\mu$A rms. Required OMA
+under the binary sensitivity formula:
 \[
 P_{\text{OMA,sens}} = \frac{2 Q i_n \sqrt{\mathrm{BW}}}{\mathcal{R}}
 \approx \frac{2\times3.5\times3.2~\mu\text{A}}{0.9} \approx 25~\mu\text{W}
 \approx -16~\text{dBm}.
 \]
-Add $\sim$3~dB TDECQ penalty, $\sim$2~dB connector/fiber, $\sim$2~dB system margin:
-need Tx OMA $\approx -16 + 7 \approx -9$~dBm class at the receiver input, i.e.\
-roughly $-6$ to $-4$~dBm launched depending on reach. If measured sensitivity is
-worse, bisect RIN, reflections, and ER (\Cref{sec:link-budget,sec:optical-channel}).
+Illustrative allocations (not a normative budget): $\sim$3~dB TDECQ-class Tx
+impairment \emph{or} remaining margin after a TDECQ-based OMA method (not both),
+$\sim$2~dB connector/fiber at stated planes, $\sim$2~dB system margin. That lands
+near $-9$~dBm class OMA at the receiver input, or roughly $-6$ to $-4$~dBm
+launched depending on reach. Parameter sensitivity: $\pm$1~dB in $i_n$ or
+$\mathcal{R}$ moves the estimate about 1~dB; a RIN floor or MPI can invalidate
+the waterfall entirely.
+
+Where the model stops: unequal PAM4 levels, level-dependent noise, strong ISI,
+compressed TIA, correlated RIN, or a different FEC/error model. If measured
+sensitivity is worse, bisect RIN, reflections, and ER
+(\Cref{sec:link-budget,sec:optical-channel}).
+
+\paragraph{Model-validity checklist.}
+Before applying $Q$, $Q_{\max}$, or $P_{\mathrm{sens}}$, ask:
+\begin{itemize}
+\item Is the noise approximately Gaussian at the decision point?
+\item Is the noise bandwidth defined for this measurement?
+\item Are PAM4 levels equally spaced (or is RLM budgeted)?
+\item Is noise level-dependent (shot/RIN) accounted for?
+\item Is the receiver compressed or overloaded?
+\item Is residual ISI deterministic rather than noise-like?
+\item Is RIN intrinsic, stressed $\mathrm{RIN}_x\mathrm{OMA}$, or bias-board noise?
+\item Is the FEC threshold appropriate for this PMD and error model?
+\item Is the input metric average power or OMA, and at which reference plane?
+\end{itemize}
 
 \section{Receiver technologies and their noise (2026)}
 \label{sec:rxtech}
@@ -353,11 +383,13 @@ The photodiode converts photons to photocurrent; the \term{TIA}\firstterm{TIA}
 For PAM4 at 100--224G/lane:
 
 \begin{itemize}
-\item \textbf{PIN (Ge-on-Si):}\firstterm{PIN} no internal gain; lowest excess noise; mainstream
-      (\Cref{tab:rxtech}). Capacitance at the TIA input dominates $i_n$.
-\item \textbf{APD}\firstterm{APD}: internal multiplication gives 5--9~dB sensitivity
-      gain at the cost of excess noise factor and bias voltage; Ge/Si APDs now reach
-      $>\!100$~GHz class~\cite{apd}.
+\item \textbf{PIN (Ge-on-Si):}\firstterm{PIN} no internal gain; lowest excess noise; common
+      short-reach choice (\Cref{tab:rxtech}). Capacitance at the TIA input dominates
+      $i_n$.
+\item \textbf{APD}\firstterm{APD}: internal multiplication. Any sensitivity benefit versus
+      PIN depends on gain, excess-noise factor, bandwidth, receiver design, and BER
+      target; published Ge/Si APD results often cite roughly 5--9~dB under specific
+      conditions, not as a universal gain~\cite{apd}.
 \item \textbf{UTC/MUTC:}\firstterm{UTC} electron-only transport for $>\!200$~GHz BW and high
       saturation; used when linearity and speed beat raw sensitivity~\cite{utc}.
 \end{itemize}
@@ -436,16 +468,18 @@ $\approx3.2~\mu$A rms, giving an NRZ average sensitivity near $-15$~dBm; the PAM
 level penalty lands OMA sensitivities in the $-8$ to $-10$~dBm range these
 front-ends report.
 
-\paragraph{Record and commercial snapshot (2025--26).}
-\Cref{tab:rx-records} pairs detectors and TIAs. Commercial linear-optics TIAs
-(Semtech GN1834L/DL, GN1838DL) target LPO/LRO/CPO at 224G/lane with on-chip EQ;
-Semtech has also shown 448G-class PMD ICs (TN14740 TIA) at OFC~2026 demos
-(vendor demonstration; not a volume datasheet claim)~\firstcite{semtech224,semtech448demo}.
-On the detector side, recessed Ge/Si PINs at 106~GHz / 0.93~A/W~\cite{gesipd},
-Ge/Si UMC-APDs at 105~GHz with $\sim$9~dB sensitivity gain over PIN at 224/260G
-PAM4~\firstcite{apd}, waveguide Ge/Si APDs toward 100~GHz at 2~A/W~\firstcite{gesiapd100},
-and OFC~2026 Ge-on-Si APDs at 180~GBd PAM4~\firstcite{ofc360apd} mark the research
-edge. UTC/MUTC PDs remain the high-saturation / $>\!200$~GHz niche~\cite{utc}.
+\paragraph{Industry snapshot --- mid-2026 (receivers).}
+\Cref{tab:rx-records} pairs detectors and TIAs with maturity labels. Commercial
+linear-optics TIAs (Semtech GN1834L/DL, GN1838DL) target LPO/LRO/CPO at 224G/lane
+with on-chip EQ (production / sampling class). Semtech has also shown 448G-class
+PMD ICs (TN14740 TIA) at OFC~2026 demos (vendor demonstration; not a volume
+datasheet claim)~\firstcite{semtech224,semtech448demo}. On the detector side,
+recessed Ge/Si PINs at 106~GHz / 0.93~A/W~\cite{gesipd}, Ge/Si UMC-APDs at
+105~GHz with a published $\sim$9~dB sensitivity gain over PIN at 224/260G PAM4
+under that paper's conditions~\firstcite{apd}, waveguide Ge/Si APDs toward
+100~GHz at 2~A/W~\firstcite{gesiapd100}, and OFC~2026 Ge-on-Si APDs at 180~GBd
+PAM4~\firstcite{ofc360apd} mark the research edge. UTC/MUTC PDs remain the
+high-saturation / $>\!200$~GHz niche~\cite{utc}.
 
 \begin{table*}[ht]
 \refstepcounter{table}\label{tab:rx-records}%
@@ -485,10 +519,11 @@ SiPh with research demos. Sensitivities are as published (FEC threshold varies).
 \paragraph{Reasonable alternatives to Ge PIN + quiet TIA.}
 \Cref{tab:rxtech} lays the detector menu out. III-V InGaAs PINs (flip-chipped)
 trade monolithic integration for higher power handling and remain common in
-discrete modules. Avalanche photodiodes add internal gain for $\sim\!5$--$9$~dB of
-sensitivity (attractive for power-starved or high-split links) at the cost of
-excess noise, bias complexity, and, historically, bandwidth; that bandwidth
-excuse is fading fast above 100~GHz~\cite{apd,gesiapd100,ofc360apd}.
+discrete modules. Avalanche photodiodes add internal gain that can improve sensitivity when gain,
+excess noise, bandwidth, and BER target cooperate (published short-reach results
+often land near 5--9~dB under specific conditions) at the cost of bias complexity
+and excess noise; device bandwidth above 100~GHz is no longer rare in
+research~\cite{apd,gesiapd100,ofc360apd}.
 Uni-traveling-carrier (UTC/MUTC) PDs use electron-only transport for very high
 saturation current, linearity, and bandwidth ($>\!200$~GHz) but modest
 responsivity, a fit for linear/LPO and $>\!200$~GBd analog optics more than for
@@ -510,7 +545,7 @@ Ge-on-Si waveguide PIN & $0.8$--$1.0$ & $60$--$>\!100$~GHz & monolithic on SiPh 
 \addlinespace[1.5em]
 III-V InGaAs PIN (flip-chip) & $0.6$--$0.9$ & $60$--$>\!100$~GHz & hybrid / flip-chip & discrete modules, high power \\
 \addlinespace[1.5em]
-APD (Ge/Si, InP, UMC) & effective $\uparrow$ (gain) & up to $\sim\!100$~GHz+ & hybrid / emerging & power-starved links; $+5$--$9$~dB sens. \\
+APD (Ge/Si, InP, UMC) & effective $\uparrow$ (gain) & up to $\sim\!100$~GHz+ & hybrid / emerging & power-starved links; gain benefit condition-dependent \\
 \addlinespace[1.5em]
 UTC / MUTC-PD & $0.1$--$0.8$ & $>\!110$--$200$~GHz & III-V & linear/LPO, $>\!200$~GBd, high saturation \\
 \addlinespace[1.5em]
@@ -567,10 +602,11 @@ sets the required operating power.\label{fig:pam4}}
 
 \subsection{How it works}
 
-Receiver performance reduces to one number, the quality factor $Q$: signal
-separation divided by combined noise. Thermal noise yields to more power, but RIN
-does not, which is why a BER floor exists. The rest of this chapter computes,
-measures, and defends $Q$.
+Binary link models often collapse receiver performance to a quality factor $Q$:
+signal separation divided by combined noise. That is a useful equivalent-quality
+map, not a complete PAM4 theory. Thermal noise yields to more power; dominant RIN
+does not, which is why a BER floor can exist. The rest of this chapter computes,
+measures, and defends $Q$ under stated assumptions.
 
 \subsection{How it is measured}
 \label{sec:models-how-measured}
@@ -626,19 +662,24 @@ When BER degrades, ask one question first:
 \begin{dectree}
 BER degraded
   |
-Received power changed?
-  |-- YES --> Power ledger
+Stable average received power?
+  |-- NO  --> Power ledger / optical-path investigation
   |           laser / coupling / connector / fiber / MUX / monitor
-  |-- NO  --> Quality / receiver
-              eye / noise / jitter / bias / EQ / RIN / Rx
+  |-- YES --> Signal-quality path
+              Tx / channel / Rx / DSP
+              noise / timing / spectral / control
   |
 Highest-value measurement
   |
 Decision + recurrence control
 \end{dectree}
 
-\paragraph{Did received optical power change?}
-If yes, the failure is in the power path:
+Stable average received power deprioritizes gross optical loss but does not
+eliminate fast power fluctuations, clipping, monitor averaging, or
+reflection-dependent effects.
+
+\paragraph{Did average received optical power change?}
+If yes, investigate the power path:
 \begin{itemize}
 \item laser degradation (threshold rise, slope loss, COD);
 \item connector contamination or damage;
@@ -647,21 +688,20 @@ If yes, the failure is in the power path:
 \item MUX/de-MUX imbalance or grid misalignment.
 \end{itemize}
 
-\paragraph{Or did the required power increase?}
-If received power is stable but BER worsened, the failure is in signal quality:
+\paragraph{Or did signal quality degrade at stable average power?}
+If average received power is stable but BER worsened, isolate transmitter,
+channel, receiver, and DSP quality:
 \begin{itemize}
-\item jitter (random or deterministic);
-\item RIN (intrinsic, feedback-driven, or bias-driver);
-\item ISI (bandwidth degradation, equalizer saturation);
-\item extinction ratio degradation (bias drift, EAM aging);
-\item receiver sensitivity degradation (TIA noise, overload);
-\item timing recovery issues (CDR, clock path).
+\item noise: RIN (intrinsic, feedback-driven, or bias-driver), Rx noise, crosstalk, MPI;
+\item timing: jitter, CDR, skew, adaptation timing;
+\item spectral: wavelength, filtering, alignment;
+\item control: bias, APC, TEC/heaters, calibration, EQ authority.
 \end{itemize}
 
 This fork often narrows an investigation in minutes. Power-path failures show up on
-a meter; signal-quality failures require a DCA, BERT, or spectrum analyzer. Apply
-it before opening the package, changing settings, or blaming a supplier
-(\Cref{sec:fleet-triage}).
+a meter; signal-quality failures need FEC timing, DCA, BERT, or spectrum analysis,
+depending on access. Apply it before opening the package, changing settings, or
+blaming a supplier (\Cref{sec:fleet-triage}).
 
 \section{Interview and design review questions}
 \label{sec:models-design-review}

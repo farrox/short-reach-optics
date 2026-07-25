@@ -223,25 +223,28 @@ blocks.
 
 \begin{table}[ht]
 \centering
-\caption{Per-lane rates and symbol rates (PAM4).\label{tab:pam4-rates}}
+\caption{Per-lane rates and symbol rates (PAM4). Ethernet lane rates and OIF CEI
+electrical classes are related but not interchangeable; see
+\Cref{sec:kp4,sec:224g}.\label{tab:pam4-rates}}
 \renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}lll@{}}
 \toprule
 Per-lane rate & Symbol rate & Context \\
 \midrule
-100G/lane & $\approx$53.1~GBd & 400G/800G today \\
+100G/lane Ethernet & $\approx$53.125~GBd & IEEE 802.3df-class PMD/AUI \\
 \addlinespace[1.5em]
-200G/lane & $\approx$106--112~GBd & 800G/1.6T ramp \\
+200G/lane Ethernet & $\approx$106.25~GBd & IEEE 802.3dj-class PMD/AUI \\
 \addlinespace[1.5em]
-224G/lane & $\approx$112~GBd (CEI-224G) & next SerDes generation \\
+CEI-224G electrical & $\approx$112~GBd & OIF CEI host/module SerDes class \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-PAM4 halves the required bandwidth versus NRZ for a given bit rate, but it costs
-about 9.5~dB of SNR (three eyes instead of one, spaced one-third as far apart).
-That SNR hit is why modern links assume equalization, DSP, and forward error
-correction as part of the architecture rather than as optional polish
+PAM4 halves the required bandwidth versus NRZ for a given bit rate. At equal
+outer swing and equal additive noise, adjacent PAM4 levels are separated by
+one-third of the binary separation, an ideal spacing penalty of
+$20\log_{10}(3)\approx9.54$~dB. That is not every implementation's total
+sensitivity penalty; equalization, DSP, and FEC are part of the architecture
 (\Cref{sec:equalization}). Looking ahead, the 448G debate is partly about whether
 to stay on PAM4 at still higher baud or move to PAM6/PAM8 to ease the electrical
 channel (\Cref{sec:448g}).
@@ -267,8 +270,10 @@ recovery when the bit clock is rebuilt.
       \emph{bounded} reference FFE when scoring transmitters (\Cref{sec:tdecq}).
 \item[DFE (decision-feedback equalizer)] \firstterm{DFE} cancels post-cursor ISI
       using past symbol decisions. CEI electrical eye budgets reference an 8-tap DFE
-      at the slicer (\Cref{sec:eye-budget}). DFE adds latency and error propagation
-      but recovers more ISI than FFE alone at high loss.
+      at the slicer (\Cref{sec:eye-budget}). DFE creates feedback-loop timing
+      complexity and error propagation; system latency depends on implementation and
+      any additional block processing or retiming. It recovers more ISI than FFE
+      alone at high loss.
 \item[CDR (clock-data recovery)] \firstterm{CDR} extracts bit timing from the
       data stream and re-samples the eye. A \emph{retimer} includes CDR plus
       equalization and regenerates a clean output; a \emph{redriver} has CTLE/VGA but
@@ -419,9 +424,9 @@ Sublayer & Function & Domain \\
 \midrule
 MAC & Frame, address, CRC & Digital, host \\
 \addlinespace[1.5em]
-RS & Reconciliation: adapt MAC to the PHY across the xMII & Digital, host \\
+RS sublayer & Reconciliation Sublayer: adapt MAC to the PHY across the xMII & Digital, host \\
 \addlinespace[1.5em]
-PCS & 64B/66B, 256B/257B transcode, scramble, RS-FEC & Digital \\
+PCS & 64B/66B, 256B/257B transcode, scramble, RS-FEC encoding & Digital \\
 \addlinespace[1.5em]
 PMA & Serialize, lane mux, clock recovery (SerDes) & Mixed-signal \\
 \addlinespace[1.5em]
@@ -430,13 +435,18 @@ PMD & Modulate/detect light: laser, driver, PD, TIA & Optical \\
 \end{tabular}
 \end{table}
 
+Do not confuse the RS \emph{sublayer} (Reconciliation) with \term{RS-FEC}
+(Reed--Solomon forward error correction) inside the PCS. Same letters, different
+jobs.
+
 Two interface names sit between these blocks and cause most of the confusion. The
 \term{xMII}\firstterm{xMII} (for example 400GMII) is a wide parallel bus inside the
 chip between MAC and PCS. The \term{AUI}\firstterm{AUI} (for example 400GAUI-4) is the
 electrical serial lane set that leaves the host and crosses the faceplate connector
 to the module. The AUI is the CEI electrical channel your SerDes has to survive
-(\Cref{sec:serdes-dsp,ch:networking}); the \term{PMD}\firstterm{PMD} is the optical
-transceiver on the far side of it.
+(\Cref{sec:serdes-dsp,ch:networking}). The optical modulation and detection function
+belongs to the \term{PMD}\firstterm{PMD}. A physical module may also contain PMA, PCS,
+FEC, gearbox, retiming, and management functions on either side of the AUI.
 
 \subsection{Where the optics attaches}
 
@@ -451,15 +461,40 @@ and PCS/FEC physically sit} relative to the AUI, not about changing the optics
 
 \subsection{Line-rate accounting}
 
-The layering is where the MAC-rate-versus-line-rate gap (\Cref{tab:rate-stack})
-actually comes from. Take one 400G port. The MAC delivers 400~Gb/s of payload. The
+Rate names stack in five domains. Keep them separate when reading a datasheet or
+interview question:
+
+\begin{center}
+\begin{minipage}{0.92\linewidth}
+\begin{verbatim}
+MAC payload rate
+        |
+PCS coded (line) rate
+        |
+AUI electrical lane rate
+        |
+PMD optical lane rate
+        |
+Symbol rate (baud)
+\end{verbatim}
+\end{minipage}
+\end{center}
+
+The MAC-to-line gap (\Cref{tab:rate-stack}) is the arithmetic you will reuse.
+Take one finalized 400G Ethernet port. The MAC delivers 400~Gb/s of payload. The
 PCS transcodes it (256B/257B adds about 0.4\%) and then RS(544,514) FEC adds 30
 parity symbols per 514 data symbols, a $544/514$ expansion of roughly 5.8\% relative
 to payload (equivalently 5.5\% of the coded line, \Cref{sec:kp4}). The two multiply
-out to $257/256 \times 544/514 = 1.0625$, so the line carries $400 \times 1.0625 =
-425$~Gb/s, split as four AUI lanes at 106.25~Gb/s (53.125~GBd PAM4). The optical PMD
-carries that same 425~Gb/s. So ``400G Ethernet'' is a 400~Gb/s MAC rate riding a
-425~Gb/s line, and the extra 25~Gb/s is transcode plus FEC, not wasted bandwidth.
+out to $257/256 \times 544/514 = 1.0625$, so the PCS coded line carries
+$400 \times 1.0625 = 425$~Gb/s, split as four AUI lanes at 106.25~Gb/s
+(53.125~GBd PAM4). The optical PMD carries that same 425~Gb/s aggregate. So
+``400G Ethernet'' is a 400~Gb/s MAC rate riding a 425~Gb/s coded line; the extra
+25~Gb/s is transcode plus FEC, not wasted bandwidth.
+
+OIF \term{CEI-224G} is an electrical-interface class near 112~GBd PAM4. IEEE
+200~Gb/s-per-lane Ethernet (802.3dj) uses related but not identical rate
+accounting (typically 106.25~GBd PAM4 on the AUI/PMD for a 200G Ethernet lane).
+Do not treat the CEI class name and the Ethernet lane name as interchangeable.
 
 \subsection{What the PCS actually does}
 
@@ -480,9 +515,9 @@ the module DSP and forces the host to own PCS/FEC and all of the PMA equalizatio
 (\Cref{sec:serdes-dsp,sec:conditioning}). The layer names stay the same regardless of
 which chip runs them.
 
-\keyidea{Ethernet is MAC (frames) plus PHY, and the PHY is RS, PCS, PMA, PMD.
-Optics is only the PMD; everything above is medium-independent, which is why one
-digital stack feeds copper, multimode, or single-mode. The MAC-to-line-rate gap is
+\keyidea{Ethernet is MAC (frames) plus PHY. The PHY is RS sublayer, PCS (including
+RS-FEC), PMA, and PMD. Optical modulation and detection belong to the PMD; a
+physical module may host more than the PMD. The MAC-to-line-rate gap is
 transcode ($257/256$) times FEC ($544/514$), giving 425~Gb/s on a 400G port. The
 module-style debate is about which side of the AUI runs the PMA and PCS/FEC.}
 
@@ -662,11 +697,14 @@ Modern PAM4 links do not meet raw bit-error-ratio targets on their own; they lea
 on \term{FEC}\firstterm{FEC}. The datacenter workhorse is \term{KP4}\firstterm{KP4}, a Reed--Solomon code
 RS(544,514)\firstterm{RS544514} operating on 10-bit symbols. The name comes from
 \texttt{100GBASE-KP4} in IEEE 802.3bj: K for backplane, P for PAM4, 4 for four
-lanes~\cite{ieee8023bj}. Today ``KP4'' means that FEC code on any
-PAM4 Ethernet link (optical DR, 224G SerDes, and backplane), not only the original
-backplane PHY. The link is specified to a
-\emph{pre-FEC}\firstterm{pre-FEC} BER threshold, on the order of $2.4\times10^{-4}$, which FEC then
-drives down to an effectively error-free \emph{post-FEC}\firstterm{post-FEC} BER.
+lanes~\cite{ieee8023bj}. Today ``KP4'' means that FEC code on many
+PAM4 Ethernet PHYs (optical DR, related SerDes generations, and backplane), not
+only the original backplane PHY. For a named KP4-class optical PMD, the PHY is
+specified to a \emph{pre-FEC}\firstterm{pre-FEC} BER objective on the order of
+$2.4\times10^{-4}$ under the clause's random-error model. \emph{Post-FEC}
+\firstterm{post-FEC} quality is stated as residual BER, uncorrectable codeword
+rate, or frame-loss ratio with a confidence interval, not as ``effectively
+error-free.''
 
 Two consequences matter in practice:
 
@@ -683,33 +721,39 @@ Two consequences matter in practice:
 
 \term{KP4} maps to Reed--Solomon RS(544,514) on 10-bit symbols: 514 payload symbols,
 30 parity, up to 15 correctable symbol errors per codeword. Coding overhead is
-$30/544\approx5.5\%$, so the \emph{line rate} on the wire exceeds the MAC/info rate
-(for example, 802.3dj delivers $\approx$211~Gb/s payload on a 224~Gb/s PAM4 lane).
-\Cref{tab:rate-stack} is the decoder for the three rate names you will see in
-802.3dj and CEI-224G docs (example: one 200G Ethernet lane).
+$30/544\approx5.5\%$, so the \emph{coded line rate} exceeds the MAC/info rate.
+\Cref{tab:rate-stack} uses a finalized 400G Ethernet port as the arithmetic
+example. For 200G/lane Ethernet and CEI-224G electrical classes, keep the two
+documents separate: IEEE states MAC and PMD/PCS rates; OIF CEI states electrical
+interface classes near 112~GBd PAM4.
 
 \begin{table}[ht]
 \centering
-\caption{Three rate names on one 802.3dj lane (200G Ethernet).\label{tab:rate-stack}}
+\caption{Rate names on one finalized 400G Ethernet port (four lanes).
+\label{tab:rate-stack}}
 \renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.18\linewidth}p{0.42\linewidth}p{0.32\linewidth}@{}}
 \toprule
 Term & Meaning & Example \\
 \midrule
-MAC rate & User Ethernet throughput at MAC & 200~Gb/s per lane \\
+MAC rate & User Ethernet throughput at MAC & 400~Gb/s aggregate \\
 \addlinespace[1.5em]
-Line rate & Bits on wire incl.\ FEC overhead & $\sim$211--224~Gb/s (context-dependent) \\
+PCS coded rate & Bits after transcode and RS-FEC & 425~Gb/s aggregate \\
 \addlinespace[1.5em]
-Symbol rate & Baud on the electrical/optical lane & $\sim$112~GBd PAM4 \\
+AUI / PMD lane & Per-lane electrical or optical rate & 106.25~Gb/s \\
+\addlinespace[1.5em]
+Symbol rate & Baud on each PAM4 lane & 53.125~GBd \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The optical PHY is qualified to a \emph{pre-FEC} BER threshold, typically
-$2.4\times10^{-4}$ for KP4-class links. That corresponds to $Q\approx3.5$ on the
-Gaussian model of \Cref{sec:qber}. Post-FEC the target is effectively error-free
-($10^{-12}$ to $10^{-15}$ class). Validation always reports pre-FEC BER during
-bring-up; post-FEC confirms the decoder is working.
+A named KP4-class optical PHY is qualified to a \emph{pre-FEC} BER objective,
+typically $2.4\times10^{-4}$ under that clause's assumptions. That corresponds to
+$Q\approx3.5$ on the binary Gaussian model of \Cref{sec:qber} (an equivalent-quality
+approximation, not a full PAM4 treatment). Post-FEC targets are residual BER or
+uncorrectable-codeword / frame-loss metrics in the $10^{-12}$ to $10^{-15}$ class,
+with stated confidence. Validation reports pre-FEC BER during bring-up; post-FEC
+confirms the decoder meets the named metric.
 
 FEC symbol-error \emph{histograms} are a debug tool: clustered errors point to
 burst impairments (reflections, power droop); sparse errors point to Gaussian noise
@@ -747,17 +791,19 @@ tracks it closely.
 
 \begin{table}[ht]
 \centering
-\caption{The CEI per-lane roadmap.\label{tab:cei-roadmap}}
+\caption{OIF CEI electrical per-lane roadmap (not an Ethernet PMD table).
+Related IEEE Ethernet lane rates are listed only as the generation usually
+paired in products.\label{tab:cei-roadmap}}
 \renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}llll@{}}
 \toprule
-Generation & Per lane & Modulation & Ethernet rates \\
+CEI class & Electrical lane & Modulation & Often paired Ethernet \\
 \midrule
-CEI-112G & 112~Gb/s & PAM4 & 100/200/400G \\
+CEI-112G & 112~Gb/s & PAM4 ($\approx$56~GBd) & 100G/lane class \\
 \addlinespace[1.5em]
-CEI-224G & 224~Gb/s & PAM4 ($\approx$112~GBd) & 200/400/800/1600G \\
+CEI-224G & 224~Gb/s & PAM4 ($\approx$112~GBd) & 200G/lane class \\
 \addlinespace[1.5em]
-CEI-448G & 448~Gb/s & TBD (PAM4/6/8) & 400/800/1600/3200G \\
+CEI-448G & 448~Gb/s & TBD (PAM4/6/8) & 400G/lane class (study) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -986,20 +1032,19 @@ LPO/LRO, or AEC/DAC. Same host IC, different SerDes reach and EQ burden.
 \label{fig:oif-448g-package}}
 \end{figure}
 
-\paragraph{What ships today on that map (224G / 200G Ethernet).}
-Before the 448G fork, every branch of \Cref{fig:oif-448g-package} already has a
-shipping answer at the CEI-224G / IEEE 802.3dj lane rate. Faceplate ports run eight
-224~Gb/s PAM4 lanes into 1.6~Tb/s OSFP-class modules (retimed DSP modules still
-dominant; LPO and LRO gaining share where host COM and TDECQ close,
-\Cref{sec:224g-deploy}). Copper inside the rack uses DAC, ACC, and AEC at the
-same SerDes generation. CPO engines shipping with Tomahawk~6 and Quantum-X class
-switches are typically \emph{200~Gb/s per optical channel} on 100G/200G SerDes
-into microring banks with external lasers (\Cref{sec:cpo-status}): same packaging
-map, one generation behind the 448G electrical debate. KP4 FEC, CEI-224G-Linear
-for LPO, and KP4 pre-FEC BER near $2.4\times10^{-4}$ are the settled
-electrical/optical contract (\Cref{sec:224g,sec:eye-budget,sec:kp4}). The rest of
-this section is about what breaks when you try to double that lane rate on the
-same shoreline.
+\paragraph{Industry snapshot --- mid-2026 (224G electrical / 200G Ethernet).}
+Before the 448G fork, faceplate and copper products already pair CEI-224G-class
+electrical lanes with IEEE 200G/lane Ethernet PMDs. Faceplate ports commonly run
+eight $\approx$112~GBd PAM4 electrical lanes into 1.6~Tb/s OSFP-class modules
+(retimed DSP modules remain common; LPO and LRO appear where host COM and TDECQ
+close, \Cref{sec:224g-deploy}). Copper inside the rack uses DAC, ACC, and AEC at
+the same SerDes generation. Public CPO engines with Tomahawk~6 and Quantum-X class
+switches are often \emph{200~Gb/s per optical channel} on 100G/200G SerDes into
+microring banks with external lasers (\Cref{sec:cpo-status}): same packaging map,
+one generation behind the 448G electrical debate. KP4 FEC, CEI-224G-Linear for
+LPO, and KP4-class pre-FEC BER near $2.4\times10^{-4}$ are the usual contract
+(\Cref{sec:224g,sec:eye-budget,sec:kp4}). The rest of this section is about what
+breaks when you try to double that electrical lane rate on the same shoreline.
 
 So the ``448G debate'' is really two linked questions: can the \emph{electrical}
 shoreline run PAM4 at 224~GBd, and can the \emph{optical} \term{PMD} modulate and detect
@@ -1034,13 +1079,14 @@ PAM8 & 149~GBd   & 75~GHz  & 6.7~ps & $\approx$4--5~dB \\
 
 \paragraph{FEC overhead and the SNR budget.}
 
-At 224G, IEEE and CEI both lean on \term{KP4} FEC: Reed--Solomon RS(544,514) from
-802.3 Clause~91, with coding overhead $30/544\approx5.5\%$ and a pre-FEC BER
-target near $2.4\times10^{-4}$ for optical PHYs~\firstcite{ieee8023dj,cei448}. Post-FEC
-the corrected BER target is $10^{-15}$ class. The line rate on the wire is higher
-than the MAC/info rate: a 200~Gb/s Ethernet lane (802.3dj) runs PAM4 at 112~GBd
-($224$~Gb/s raw) and delivers $\approx$211~Gb/s of payload after KP4, rounded to
-200~Gb/s at the MAC.
+At the 200G/lane Ethernet generation, IEEE optical PHYs lean on \term{KP4} FEC:
+Reed--Solomon RS(544,514) from 802.3 Clause~91, with coding overhead
+$30/544\approx5.5\%$ and a pre-FEC BER objective near $2.4\times10^{-4}$ for named
+optical PHYs~\firstcite{ieee8023dj,cei448}. Post-FEC residual BER targets are
+$10^{-15}$ class under the clause assumptions. A 200~Gb/s Ethernet lane typically
+runs PAM4 near 106.25~GBd on the AUI/PMD; the CEI-224G electrical class sits near
+112~GBd. Do not treat those baud numbers as the same document. The coded line
+rate exceeds the MAC rate; after KP4 the payload is rounded to 200~Gb/s at the MAC.
 
 448G pushes FEC harder. CEI-448G lists pre-FEC BER $10^{-4}$ as the working target
 (same as prior CEI generations) but notes that $10^{-4}$ at $\ge$40~dB channel loss
@@ -1462,10 +1508,10 @@ Nyquist without heavy peaking.
 \begin{table*}[ht]
 \refstepcounter{table}\label{tab:tx-modulator}%
 \centering
-\setlength{\tabcolsep}{4pt}%
+\setlength{\tabcolsep}{3pt}%
 \footnotesize
 \renewcommand{\arraystretch}{1.25}%
-\begin{tabular}{@{}p{0.11\linewidth}p{0.10\linewidth}p{0.14\linewidth}p{0.08\linewidth}p{0.18\linewidth}p{0.33\linewidth}@{}}
+\begin{tabular}{@{}p{0.11\linewidth}p{0.11\linewidth}p{0.15\linewidth}p{0.09\linewidth}p{0.16\linewidth}p{0.30\linewidth}@{}}
 \toprule
 Platform & EO BW & Per-$\lambda$ demo & Chirp & Integration & Typical use \\
 \midrule
@@ -1473,7 +1519,7 @@ Si microring & 90--110~GHz & 224--416~Gb/s PAM4 & low & monolithic SiPh & CPO, W
 \addlinespace[1.5em]
 Si MZM & 70--100+~GHz & 400~Gb/s PAM4 & low & monolithic SiPh & DR/FR, CPO \\
 \addlinespace[1.5em]
-TFLN MZM & 108--110+~GHz & 224--390~Gb/s PAM4/8 & very low & hybrid + driver die & 400G/lane pluggable, FR \\
+TFLN MZM & 108--110+~GHz & 224--390~Gb/s PAM4/8 & very low & hybrid + driver & 400G/lane pluggable, FR \\
 \addlinespace[1.5em]
 EML & 70--100~GHz & 200~Gb/s PAM4 & low & single InP chip & DR/FR to 200G/lane \\
 \bottomrule
@@ -1513,27 +1559,30 @@ Ethernet standards trail CEI slightly but follow the same lane-doubling cadence.
 \begin{table}[ht]
 \centering
 \caption{IEEE 802.3 lane-rate generations.\label{tab:ieee-lane}}
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
 \renewcommand{\arraystretch}{1.25}%
-\begin{tabular}{@{}llll@{}}
+\begin{tabular}{@{}p{0.22\linewidth}p{0.18\linewidth}p{0.16\linewidth}p{0.36\linewidth}@{}}
 \toprule
 Project & Status & Eth.\ lane & PHY line \\
 \midrule
-802.3df & Feb 2024 & 100~Gb/s & $\approx$112G PAM4 \\
+802.3df & Feb 2024 & 100~Gb/s & $\approx$106.25~Gb/s PAM4 (53.125~GBd) \\
 \addlinespace[1.5em]
-802.3dj & SA ballot 2026 & 200~Gb/s & $\approx$224G PAM4 \\
+802.3dj & SA ballot 2026 & 200~Gb/s & $\approx$212.5~Gb/s PAM4 (106.25~GBd) \\
 \addlinespace[1.5em]
-802.3 400G/lane SG & Mar 2026 & 400~Gb/s & $\approx$448G \\
+802.3 400G/lane SG & Mar 2026 & 400~Gb/s & $\approx$448G class (study) \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \textbf{802.3df} (approved February 2024) defined 200/400/800~Gb/s Ethernet using
-\textbf{100~Gb/s lanes} (112~GBd PAM4 class). \textbf{802.3dj} is the active
-200~Gb/s-lane amendment: 200/400/800/1600~Gb/s Ethernet with PAM4 at 112~GBd,
-KP4 FEC, and a large PHY portfolio (copper and IM/DD optics). The draft cleared
-802.3 working-group recirculation ballot in February 2026 and entered IEEE
-Standards Association ballot; approval is expected around late
-2026~\firstcite{ieee8023dj,e4ai448}.
+\textbf{100~Gb/s lanes} ($\approx$53.125~GBd PAM4 on the AUI/PMD).
+\textbf{802.3dj} is the active 200~Gb/s-lane amendment: 200/400/800/1600~Gb/s
+Ethernet with PAM4 near 106.25~GBd, KP4 FEC, and a large PHY portfolio (copper and
+IM/DD optics). The related OIF electrical class is CEI-224G near 112~GBd; keep
+the IEEE and CEI documents separate. The draft cleared 802.3 working-group
+recirculation ballot in February 2026 and entered IEEE Standards Association
+ballot; approval is expected around late 2026~\firstcite{ieee8023dj,e4ai448}.
 
 \textbf{400~Gb/s per lane} is the next Ethernet milestone. The \term{Ethernet for
 AI} (E4AI) ad hoc incubated demand for 3.2~Tb/s ports and 400G/lane

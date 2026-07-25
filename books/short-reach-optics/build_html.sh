@@ -66,9 +66,12 @@ pandoc .build/combined_for_html.tex \
     --markdown-headings=atx \
     -o .build/full_book.md
 
-echo "[3/4] Splitting into per-chapter pages..."
+echo "[3/5] Splitting into per-chapter pages..."
 python3 build_html_split.py "${DOCS_DIR}"
 
-echo "[4/4] Done."
+echo "[4/5] Publishing full web bibliography from references.tex..."
+python3 build_html_bib.py "${DOCS_DIR}"
+
+echo "[5/5] Done."
 echo "=== Output in ${DOCS_DIR}/ ==="
 echo "To deploy: commit and push. Enable GitHub Pages from Settings → Pages → main/docs."

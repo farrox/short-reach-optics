@@ -85,7 +85,7 @@ More compute increases the amount of traffic the system can inject. It does not 
 
 Work from the system downward, then close the loop in the fleet:
 
-<pre class="dectree" aria-label="Decision tree"><code>Requirements
+<pre class="dectree" aria-label="Requirements"><code>Requirements
   |
 Architecture
   |
@@ -98,7 +98,7 @@ Fleet (telemetry / RMA / FIT)
 Feedback into requirements</code></pre>
 Inside architecture, descend only as far as the requirement forces:
 
-<pre class="dectree" aria-label="Decision tree"><code>Requirements
+<pre class="dectree" aria-label="Requirements"><code>Requirements
   |
 Architecture
   |
@@ -145,7 +145,7 @@ Use the debugging pyramid: start at the system symptom, narrow to signal quality
 
 When a link fails, work from the top down. Each layer narrows the search before you open a connector or reseat a module. This framework reappears in every chapter. Apply the power-versus-quality fork early (§4.8, Appendix C.3) and organize lost margin with the five ledgers (§5.19).
 
-<pre class="dectree" aria-label="Decision tree"><code>System symptom
+<pre class="dectree" aria-label="System symptom"><code>System symptom
   |
 Signal quality (BER / FEC / eye)
   |

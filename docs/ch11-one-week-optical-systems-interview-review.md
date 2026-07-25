@@ -58,7 +58,7 @@ Memorize the two shapes, not the ASCII: Debugging = scope $\rightarrow$ power/
 
 Move every answer through the same sequence. Memorize four phases, not nine nodes:
 
-<pre class="dectree" aria-label="Decision tree"><code>Understand:   requirements -&gt; architecture
+<pre class="dectree" aria-label="Understand:   requirements -&gt; architecture"><code>Understand:   requirements -&gt; architecture
 Investigate:  measure -&gt; observe -&gt; hypothesize -&gt; isolate
 Resolve:      ownership + action (mechanism may still be open)
 Prevent:      recurrence control -&gt; decision</code></pre>
@@ -246,18 +246,18 @@ Every measurement costs hours. Optimize uncertainty removed per hour of lab time
 
 Not every failure deserves destructive analysis. Climb only as far as the decision requires:
 
-<pre class="dectree" aria-label="Decision tree"><code>telemetry -&gt; simple bench -&gt; swap -&gt; characterization -&gt; FA / DPA</code></pre>
+<pre class="dectree" aria-label="telemetry -&gt; simple bench -&gt; swap -&gt; characterization -&gt; FA / DPA"><code>telemetry -&gt; simple bench -&gt; swap -&gt; characterization -&gt; FA / DPA</code></pre>
 ### Fleet economics
 
 Product engineering is economics as well as physics. A tiny, flat, no-impact fail rate can stay on a monitor-only plan. A growing, supplier-specific rate demands containment the same day.
 
 Monitor only
 
-: Failure rate $\sim$`<!-- -->`{=html}0.003%, no customer impact, no trend, no growth. Keep telemetry alarms and review weekly.
+: Failure rate $\sim$0.003%, no customer impact, no trend, no growth. Keep telemetry alarms and review weekly.
 
 Contain immediately
 
-: Failure rate $\sim$`<!-- -->`{=html}2%, growing, supplier-specific. Stop ship, quarantine lots, notify the partner, open FA, tighten ATP.
+: Failure rate $\sim$2%, growing, supplier-specific. Stop ship, quarantine lots, notify the partner, open FA, tighten ATP.
 
 Intentionally not fixing a root cause is sometimes correct. Leaving a growing escape unowned is never correct.
 
@@ -333,7 +333,7 @@ If power held but BER worsened, leave the power ledger. Signal quality, receiver
 
 Links rarely fail from one dramatic excursion. They fail when several small shifts spend different ledgers at once. The five-ledger map is a teaching and debug framework: name which ledger moved, what spent it, and which decision that update unlocks. Full device treatment is in §5.19.
 
-<pre class="dectree" aria-label="Decision tree"><code>Power · Noise · Timing · Spectral · Control</code></pre>
+<pre class="dectree" aria-label="Power · Noise · Timing · Spectral · Control"><code>Power · Noise · Timing · Spectral · Control</code></pre>
 ##### Power.
 
 **Question:** Is there enough light at the decision point? Launch, insertion loss, coupling, connectors, multiplexers, and receiver sensitivity live here. Track average power and OMA separately: average power can look healthy while OMA collapses. **Evidence:** external meter at a named plane, monitor-versus-meter agreement, sensitivity. **Decision:** clean/replace plant, retune APC, derate reach, or leave the power ledger. **Risk if ignored:** quality-path debug on a loss problem.
@@ -820,7 +820,7 @@ DPPM
 
 DR / FR
 
-: Datacenter reach ($\sim$`<!-- -->`{=html}500 m) and far reach (2 km). IEEE single-mode classes at 1310 nm.
+: Datacenter reach ($\sim$500 m) and far reach (2 km). IEEE single-mode classes at 1310 nm.
 
 DVT
 

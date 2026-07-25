@@ -53,7 +53,7 @@ Requirements sit above the first gate: reach, lane rate, hosts, BER/FEC target, 
 
 These tables are a grouped view of one canonical lifecycle, not a competing sequence. Stage 2 is nominal characterization. Stage 3 groups margin characterization with interoperability. Stage 4 is environmental and reliability qualification (stress / life). Stage 5 is manufacturing and ATP readiness. Stage 6 groups controlled pilot with fleet monitoring. The expanded stage names in Appendix A.6.5 map onto these six grouped stages in the same order.
 
-<pre class="dectree" aria-label="Decision tree"><code>Requirement
+<pre class="dectree" aria-label="Requirement"><code>Requirement
   |
 Budget (power / noise / timing / spectrum / control)
   |
@@ -439,7 +439,7 @@ Use electrical loopback (host SerDes), optical loopback (Tx$\to$Rx on module), a
 
 A link budget is a signed dB (or power) ledger from transmitter to receiver. For IM/DD short reach, start from outer OMA at the Tx faceplate and subtract every loss and penalty until you compare against receiver sensitivity (with target BER and KP4 pre-FEC threshold, §3.12, §4.4).
 
-<pre class="dectree" aria-label="Decision tree"><code>Transmitter output (OMA)
+<pre class="dectree" aria-label="Transmitter output (OMA)"><code>Transmitter output (OMA)
   |
 Coupling loss
   |
@@ -460,7 +460,7 @@ Keep power budget, signal-quality penalties, timing, thermal, and control author
 
 Distinguish margin allocation in design from margin verification in test. During design, engineers allocate transmitter output, receiver sensitivity, insertion loss, temperature degradation, aging, jitter, and manufacturing variation. During customer or system qualification, the integrator often validates the net behavior across the operating envelope.
 
-<pre class="dectree" aria-label="Decision tree"><code>Design: allocate line items
+<pre class="dectree" aria-label="Design: allocate line items"><code>Design: allocate line items
   |
 Build / integrate
   |
@@ -477,7 +477,7 @@ Remaining headroom
 Deployment decision</code></pre>
 ##### Typical ledger (single-mode DR class).
 
-Start from Tx OMA on the DCA (or from average power and ER). Subtract connector/coupling loss (1--3 dB per mated pair; fiber attach in CPO), fiber loss ($\sim$`<!-- -->`{=html}0.3--0.4 dB/km at 1310 nm; often negligible at 500 m), and MUX/de-MUX if WDM (2--5 dB per stage, §6.3). Add penalties for TDECQ (already in the OMA spec for many PMDs), dispersion (§3.11), and ORL/RIN reflection (§7.2.2, §4.3.1). Compare the remainder to stressed sensitivity at pre-FEC BER $2.4\times10^{-4}$, and keep 1--3 dB+ of production margin (more for fleet corners). Numbers here are examples for a DR-class sketch, not universal limits. Electrical budgets parallel this for the host-to-module path: COM and pre-FEC BER (§9.5.2, §3.6). LPO requires *both* ledgers to close without module DSP help.
+Start from Tx OMA on the DCA (or from average power and ER). Subtract connector/coupling loss (1--3 dB per mated pair; fiber attach in CPO), fiber loss ($\sim$0.3--0.4 dB/km at 1310 nm; often negligible at 500 m), and MUX/de-MUX if WDM (2--5 dB per stage, §6.3). Add penalties for TDECQ (already in the OMA spec for many PMDs), dispersion (§3.11), and ORL/RIN reflection (§7.2.2, §4.3.1). Compare the remainder to stressed sensitivity at pre-FEC BER $2.4\times10^{-4}$, and keep 1--3 dB+ of production margin (more for fleet corners). Numbers here are examples for a DR-class sketch, not universal limits. Electrical budgets parallel this for the host-to-module path: COM and pre-FEC BER (§9.5.2, §3.6). LPO requires *both* ledgers to close without module DSP help.
 
 ## Module management: CMIS
 
@@ -667,7 +667,7 @@ The third step is where modern PAM4 links differ from older eye-mask work. Tap s
 
 Apply the debugging fork (§4.8) before sweeping parameters or changing firmware: check the power meter or CMIS Rx power monitor first. If power moved, the fault is in the optical path (laser, coupling, connector, fiber, MUX); if power held but BER or TDECQ worsened, it is signal quality (bandwidth, noise, jitter, bias, equalization, reflection). This one check prevents the most common validation mistake: retuning an equalizer or laser bias when the real cause is a dirty connector. Then check which margin ledger moved (§5.19) before descending to component physics.
 
-<pre class="dectree" aria-label="Decision tree"><code>Observation
+<pre class="dectree" aria-label="Observation"><code>Observation
   |
 Possible ledgers (power / noise / timing / spectrum / control)
   |
@@ -718,7 +718,7 @@ At scale you rarely start with a DCA. Start with what the host and module alread
 
 Table 7.6 is the working map. Read left to right: observe, check telemetry, pick a provisional bucket, then run the named confirm measurement before you open an RMA or change a design rule.
 
-<pre class="dectree" aria-label="Decision tree"><code>Fleet symptom
+<pre class="dectree" aria-label="Fleet symptom"><code>Fleet symptom
   |
 Scope analysis (how large?)
   |

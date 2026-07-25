@@ -25,7 +25,7 @@ DPPM (defective parts per million)
 
 Qualification measures remaining margin after stress. Debugging is what you do when that remaining margin hits zero. Use the same canonical validation lifecycle as Appendix A.6.5, Appendix C.2 (requirements through controlled pilot and fleet monitoring); this chapter owns the environmental, reliability, manufacturing, and ATP gates. Keep the customer view and the vendor view distinct: the vendor designs internals; the customer characterizes externally visible behavior and decides deployment (Appendix A.6.6, Appendix A.6.7, Appendix C).
 
-<pre class="dectree" aria-label="Decision tree"><code>Requirement
+<pre class="dectree" aria-label="Requirement"><code>Requirement
   |
 Budget (life / FIT / DPPM / power)
   |
@@ -366,7 +366,7 @@ Track yield by ATP row, lot, supplier site, tester, and date code. A yield drop 
 
 ## Escaped defect analysis
 
-<pre class="dectree" aria-label="Decision tree"><code>Escape
+<pre class="dectree" aria-label="Escape"><code>Escape
   |
 Contain scoped population
   |
@@ -449,7 +449,7 @@ Burn-in and HTOL screens trade infant-mortality escape rate against test time an
 
 The supplier path is milestones, performance targets, quality, and manufacturability triage. That is not a soft skill. It is a concrete contract: requirements, gates, acceptance tests, process control, and corrective action when a lot goes wrong.
 
-<pre class="dectree" aria-label="Decision tree"><code>Design requirements
+<pre class="dectree" aria-label="Design requirements"><code>Design requirements
   |
 Qualification
   |

@@ -3,7 +3,10 @@
 
 This chapter is a symptom-first field guide. Start with what the bench,
 production line, or fleet reports. Preserve the failing state until its evidence
-has been captured, then use the same workflow for every incident:
+has been captured, then use the same workflow for every incident. Distinguish
+observation, correlation, hypothesis, leading mechanism, and confirmed root
+cause. Do not call the last surviving hypothesis the root cause without
+controlled reproduction, swap testing, stress dependence, or physical evidence.
 
 \begin{dectree}
 Observe
@@ -116,8 +119,9 @@ calibration. A drifting monitor photodiode can report loss that does not exist.
       Do not change bias or equalization while locating the loss.
 \item Rerun LIV at the failing temperature. Moved LIV points toward the source;
       stable LIV points toward the optical path or monitor.
-\item Inspect and clean connectors, then measure insertion loss and ORL. Use a
-      golden fiber and module swap to separate field plant from module.
+\item Preserve telemetry, then inspect connectors before cleaning
+      (\Cref{sec:fm-contamination}). Measure insertion loss and ORL. Use a golden
+      fiber and module swap to separate field plant from module.
 \item For a weak lane, compare sibling lanes and per-lane coupling. Lot or lane
       clustering points toward assembly or MUX variation.
 \end{enumerate}
@@ -193,42 +197,56 @@ you add. The FEC histogram may still look random (steady RIN) or bursty
 
 \paragraph{Likely hypotheses.}
 A BER floor means additional received power no longer removes the dominant
-impairment. That is a diagnostic pattern, not one mechanism. A common cause is
-\emph{relative intensity noise} (RIN): because $\sigma_\mathrm{RIN} \propto I$,
-once RIN dominates, signal and noise grow together and $Q$ saturates at
-$Q_\mathrm{max} = 1/\sqrt{\mathrm{RIN}_\mathrm{lin} \cdot \mathrm{BW}}$
-(\Cref{sec:rin}). Other causes include multipath interference (MPI) from dirty
-connectors or high back-reflection, bias-rail noise that converts to equivalent
-RIN (\Cref{sec:laser-drivers}), pattern-dependent distortion or residual ISI,
-crosstalk, timing or CDR limits, and DSP or equalization limits.
+impairment. That is a diagnostic pattern, not one mechanism. RIN can create a
+floor when signal-proportional intensity noise dominates the receiver budget:
+$\sigma_\mathrm{RIN} \propto I$, so $Q$ can saturate at
+$Q_\mathrm{max} = 1/\sqrt{\mathrm{RIN}_\mathrm{lin} \cdot \mathrm{BW}}$ under a
+dominant-RIN model (\Cref{sec:rin}). Do not define every floor as RIN-limited.
+Other leading mechanisms include multipath interference (MPI), bias-rail noise
+that converts to equivalent intensity noise (\Cref{sec:laser-drivers}),
+pattern-dependent distortion or residual ISI, crosstalk, timing or CDR limits,
+and DSP or equalization limits.
 
-\paragraph{Measurements and root-cause isolation.}
+MPI may produce deterministic interference, power-independent floors, pattern
+sensitivity, environmental sensitivity, or time-correlated errors depending on
+coherence, path delay, motion, and modulation. Useful evidence includes ORL
+dependence, delay-related structure on an ESA, aggressor dependence, pattern
+dependence, thermal or mechanical sensitivity, and FEC error timing. Do not treat
+``bursty FEC histogram'' alone as proof of MPI.
+
+\paragraph{Required access.}
+\begin{itemize}
+\item \textbf{Black-box / bookended:} attenuation sweep, pre-FEC BER and FEC
+      timing, Tx/Rx power telemetry, temperature, host/module swap, lane remap.
+\item \textbf{Engineering access:} intrinsic RIN, product-board RIN,
+      $\mathrm{RIN}_x\mathrm{OMA}$ at a named ORL, optical eye, controlled
+      reflector, ESA, optical breakout.
+\end{itemize}
+
+\paragraph{Measurements and isolation.}
 \begin{enumerate}
-\item Confirm the floor exists: sweep received power (or Tx OMA) and plot BER vs.\
-      power. A healthy link has a steep waterfall; a floor appears as a horizontal
+\item Confirm the floor exists: sweep received power (or Tx OMA) at a named
+      reference plane and plot BER vs.\ power. A floor appears as a horizontal
       asymptote.
-\item \textbf{Bisect optical vs.\ electrical RIN.} Measure RIN with a quiet SMU
-      powering the laser (intrinsic RIN). Then repeat with the product bias board
-      connected. If the floor moves, the electrical path is injecting noise
-      (\Cref{sec:laser-drivers}).
-\item \textbf{Sweep ORL.} Add a controlled reflector. If BER floor worsens with
-      lower ORL, the laser is feedback-sensitive. Check isolator, connector, and
-      fiber-attach cleanliness.
-\item \textbf{Check for MPI.} Look at the ESA (electrical spectrum analyzer) for
-      discrete spurs at frequencies corresponding to round-trip delays of reflective
-      interfaces. MPI creates bursty errors; the FEC histogram shows clustered
-      symbol errors rather than random ones.
-\item \textbf{Confirm RIN spec.} Compare measured $\mathrm{RIN}_x\mathrm{OMA}$ at
-      the stated ORL against the PMD or ATP limit (e.g.\ $-136$~dB/Hz at 17.1~dB
-      ORL for DR-class links~\cite{rinspec}). If the part exceeds spec, reject.
+\item Where engineering access exists, bisect optical vs.\ electrical RIN: quiet
+      SMU (intrinsic) versus product bias board. If the floor moves, the electrical
+      path is injecting noise (\Cref{sec:laser-drivers}).
+\item Sweep ORL with a controlled reflector. If the floor worsens with lower ORL,
+      the path is feedback-sensitive. Check isolator, connector, and fiber-attach
+      cleanliness.
+\item Gather MPI evidence (ORL, delay structure, pattern, thermal/mechanical, FEC
+      timing). Treat MPI as a leading mechanism until confirmed.
+\item Compare measured $\mathrm{RIN}_x\mathrm{OMA}$ at the stated ORL against the
+      named PMD revision and ATP limit (for example $-136$~dB/Hz at 17.1~dB ORL for
+      a cited DR-class clause~\cite{rinspec}). State the plane and condition.
 \end{enumerate}
 
 \paragraph{Corrective action and recurrence control.}
-If intrinsic RIN is the limiter, the laser is marginal or aged; replace or derate.
-If electrical RIN, fix the bias supply (better PSRR, star ground, local
-decoupling). If ORL-driven, clean or replace connectors and verify isolator
-function. If MPI from multiple reflections, reduce the number of mated interfaces
-or improve their ORL.
+If intrinsic RIN is confirmed as the limiter, replace or derate. If electrical
+RIN, fix the bias supply. If ORL-driven, clean or replace connectors and verify
+isolator function. If MPI is confirmed from multiple reflections, reduce mated
+interfaces or improve their ORL. Update the earliest economical control (ATP,
+sampled audit, SPC, or telemetry), not every deep FA measurement.
 
 \section{Low extinction ratio}
 \label{sec:fm-low-er}
@@ -238,14 +256,22 @@ Transmitter OMA looks low on the DCA even though average power is in range. TDEC
 may or may not fail depending on how the reference equalizer compensates.
 
 \paragraph{Likely hypotheses.}
-Extinction ratio $\mathrm{ER} = P_1/P_0$ sets how far apart the one and zero
-optical levels are for a given average power. Low ER means the zero level is too
-high (the modulator does not fully extinguish) or the one level is too low. In an
-EML, ER is set by the EAM reverse bias: insufficient bias leaves residual
-transmission in the off-state. In a DML, ER depends on modulation depth relative to
-threshold. The OMA penalty for finite ER is
-$\mathrm{PP} = (\mathrm{ER}+1)/(\mathrm{ER}-1)$: at 10~dB ER the penalty is
-$\sim$0.87~dB; at 6~dB ER it rises to $\sim$2.2~dB (\Cref{sec:sensitivity}).
+Linear extinction ratio is $\mathrm{ER}_\mathrm{lin}=P_1/P_0$ (for PAM4 outer
+levels use $P_3/P_0$). In decibels,
+$\mathrm{ER}_\mathrm{dB}=10\log_{10}(\mathrm{ER}_\mathrm{lin})$ and
+$\mathrm{ER}_\mathrm{lin}=10^{\mathrm{ER}_\mathrm{dB}/10}$. Low ER means the
+off level is too high or the on level is too low. In an EML, ER is set by EAM
+reverse bias; in a DML, by modulation depth relative to threshold.
+
+An idealized receiver OMA penalty for finite ER is
+\[
+\mathrm{PP}_\mathrm{dB}
+=
+10\log_{10}\!\left(\frac{\mathrm{ER}_\mathrm{lin}+1}{\mathrm{ER}_\mathrm{lin}-1}\right).
+\]
+At 10~dB ER the penalty is $\sim$0.87~dB; at 6~dB ER it rises to $\sim$2.2~dB
+(\Cref{sec:sensitivity}). This is an idealized receiver-penalty model, not a
+measured compliance quantity such as TDECQ.
 
 \paragraph{Measurements and root-cause isolation.}
 \begin{enumerate}
@@ -302,16 +328,24 @@ across the die (edge lanes hotter or cooler than center lanes).
 \item \textbf{Thermal map.} Use an IR camera or CMIS per-lane monitors (if
       available) to check for hot spots. Edge lanes near the package wall or near a
       TEC boundary may run hotter.
-\item \textbf{Laser array aging.} If the imbalance grows over time (HTOL or field
-      life), one laser in the array is aging faster (threshold rise, slope drop).
-      Compare LIV curves at $t_0$ and now.
+\item \textbf{Time-growing imbalance.} A lane that worsens over time raises the
+      probability of lane-specific source, modulator, receiver, coupling,
+      packaging, or control degradation. Do not immediately call it laser aging.
+      Where engineering access exists, compare LIV, bias, lock error, and coupling
+      at $t_0$ and now before naming the mechanism.
 \end{enumerate}
+
+\paragraph{Required access.}
+Black-box path: per-lane power/BER/FEC, host lane remap, sibling comparison,
+temperature. Engineering-access path: LIV, optical eye, TDECQ, per-lane coupling,
+bias sweeps, FAU inspection.
 
 \paragraph{Corrective action and recurrence control.}
 FAU misalignment is a manufacturing escape; tighten incoming inspection or
 first-article coupling specs. Thermal gradient: redesign TEC zoning or derate the
-hot lane. Laser aging: flag the lot and check burn-in screening effectiveness.
-Driver mismatch: work with the IC supplier on channel-to-channel gain flatness.
+hot lane. Confirmed source wear-out: flag the lot and check burn-in screening
+effectiveness. Driver mismatch: work with the IC supplier on channel-to-channel
+gain flatness.
 
 \section{Wavelength drift}
 \label{sec:fm-wavelength-drift}
@@ -500,33 +534,44 @@ Elevated ORL feeds back into the laser and raises RIN, causing burst errors
 even when average power looks acceptable. In high-power CW-WDM and ELSFP systems,
 trapped particles can burn onto the fiber endface and cause permanent damage.
 
-\paragraph{Measurements and root-cause isolation.}
+\paragraph{Measurements and isolation.}
+Preserve evidence before you disturb the mating:
+\begin{dectree}
+Preserve telemetry and failure history
+  |
+Photograph and inspect before disturbance
+  |
+Record contamination and damage
+  |
+Clean and re-inspect
+  |
+Measure insertion loss and ORL
+  |
+Retest BER and sensitivity
+\end{dectree}
 \begin{enumerate}
-\item \textbf{Inspect first.} Use a fiber-endface inspection scope (200--400$\times$)
-      on every mated connector before any other debug. Look for particles in the
-      core zone, scratches, pits, and residue.
-\item \textbf{Clean and re-inspect.} Use a dry-click cleaner or lint-free wipe with
-      IPA. Re-inspect. If the endface still fails IEC 61300-3-35 zone criteria,
-      replace the jumper~\cite{iec61300}.
-\item \textbf{Measure IL and ORL.} After cleaning, measure insertion loss and ORL
-      across the mated pair. Compare to the link-budget allocation
-      (\Cref{sec:link-budget}).
-\item \textbf{Correlate with BER.} If BER clears after cleaning, that supports
-      contamination as the leading cause; confirm with IL/ORL and watch for
-      recurrence. Log the connector location and date code for trend analysis.
-\item \textbf{Repeat offenders.} If the same location re-contaminates quickly, check
-      for airborne particulates (raised-floor debris, construction dust) or
-      improper cap/cover discipline during service events.
+\item Capture CMIS/host counters, timestamps, Tx/Rx power, alarms, and which
+      port failed before reseating or cleaning.
+\item Photograph and inspect with a fiber-endface scope (200--400$\times$) before
+      disturbance. Record particles in the core zone, scratches, pits, residue, and
+      burn marks.
+\item Clean and re-inspect (dry-click cleaner or lint-free wipe with IPA). If the
+      endface still fails IEC 61300-3-35 zone criteria, replace the
+      jumper~\cite{iec61300}.
+\item Measure insertion loss and ORL across the mated pair at the named plane.
+      Compare to the link-budget allocation (\Cref{sec:link-budget}).
+\item Retest BER and sensitivity. Clearing after cleaning supports contamination as
+      the leading mechanism; confirm with IL/ORL and watch for recurrence. Log
+      connector location and date code.
 \end{enumerate}
 
 \paragraph{Corrective action and recurrence control.}
-Immediate: clean and verify. Preventive: install dust caps on every unused port,
-enforce ``inspect before connect'' policy in the service runbook, use sealed
-cassettes or connectorized trunk cables that minimize open-ferrule exposure. For
-high-power paths (ELSFP, CW-WDM), any connector that shows burn damage must be
-replaced, not re-cleaned. Track contamination-related RMAs as a distinct failure
-code (not ``laser failure'') so FIT accounting stays honest
-(\Cref{sec:fleet-triage}).
+After evidence is preserved: clean, re-inspect, and verify IL/ORL and BER.
+Preventive: dust caps on unused ports, ``inspect before connect'' in the service
+runbook, sealed cassettes or trunk cables that minimize open-ferrule exposure. For
+high-power paths (ELSFP, CW-WDM), burn damage requires replacement, not
+re-cleaning. Track contamination RMAs as a distinct failure code (not ``laser
+failure'') so FIT accounting stays honest (\Cref{sec:fleet-triage}).
 
 \section{Yield drop}
 \label{sec:fm-yield-drop}

@@ -593,10 +593,14 @@ def apply_transforms(content: str) -> str:
     content = re.sub(r"\\par\\(med|small|big)skip", "\n\n", content)
     content = re.sub(r"\\(med|small|big)skip", "\n", content)
 
-    # Remove the thebibliography environment (pandoc can't parse \bibitem well)
+    # Pandoc cannot parse \bibitem well. Leave a placeholder; build_html_bib.py
+    # overwrites the References HTML page with the full structured bibliography.
     content = re.sub(
         r"\\begin\{thebibliography\}.*?\\end\{thebibliography\}",
-        r"\n\n\\section*{References}\n\nSee the PDF version for the full bibliography.\n\n",
+        r"\n\n\\section*{References}\n\n"
+        r"The full bibliography is generated for HTML from "
+        r"\\texttt{sections/references.tex} "
+        r"(same source as the PDF).\n\n",
         content,
         flags=re.DOTALL,
     )

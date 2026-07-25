@@ -15,7 +15,7 @@ This appendix is the operating manual for answering under time pressure. The phi
 
 > **30-second answer (memorize).** Power held, so leave the power ledger. First scope the failure (unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ fleet). On the black-box surface, chase BER/FEC, sensitivity, injected loss, telemetry, and retrains. With engineering access, add Tx-only/Rx-only, breakout, PRBS, loopback, and external optical eye. Therefore I would isolate with a golden swap and a bias sweep, then decide contain, retune, or ATP change.
 
-<pre class="dectree" aria-label="Decision tree"><code>Elevated BER, power stable
+<pre class="dectree" aria-label="Elevated BER, power stable"><code>Elevated BER, power stable
   |
 Scope analysis (how large?)
   |
@@ -68,7 +68,7 @@ BER waterfall $\rightarrow$ shift or floor? $\rightarrow$ sensitivity vs noise.
 
 > **30-second answer (memorize).** Power moved, so stay on the power ledger. First scope the failure. Confirm with an external meter at a named plane, then bisect source enable, coupling, connectors, MUX loss, and monitor-PD / APC honesty. Therefore I would contain if lot-correlated, clean or replace the plant if local, and update ATP or hygiene rules so it does not recur.
 
-<pre class="dectree" aria-label="Decision tree"><code>Power down
+<pre class="dectree" aria-label="Power down"><code>Power down
   |
 Scope
   |
@@ -114,7 +114,7 @@ Lot query $\rightarrow$ population? $\rightarrow$ contain vs unit fix.
 
 > **30-second answer (memorize).** First scope: one lane, one unit, or a pattern across the lot? Compare sibling lanes, then optical-versus-electrical swap to split path from driver or TIA. Therefore I would fix assembly or the array element that owns the fault, and add the screen that would have caught it.
 
-<pre class="dectree" aria-label="Decision tree"><code>One weak lane
+<pre class="dectree" aria-label="One weak lane"><code>One weak lane
   |
 Siblings OK?
   |-- NO --&gt; shared supply / thermal / host
@@ -157,7 +157,7 @@ LIV on weak lane $\rightarrow$ device or coupling? $\rightarrow$ FAU vs die.
 
 > **30-second answer (memorize).** Power held, so leave the power ledger. First scope the failure and whether cool-down recovers. At the failing temperature, read externally visible remaining margin: BER/FEC, telemetry, retrains, and control headroom. With engineering access, add bias sweep, OSA, and external optical eye. Therefore I would fix the table or thermal design and put that loaded corner in the ATP.
 
-<pre class="dectree" aria-label="Decision tree"><code>Hot BER, power stable
+<pre class="dectree" aria-label="Hot BER, power stable"><code>Hot BER, power stable
   |
 Scope + cool-down recovers?
   |-- YES --&gt; operating point / table / control
@@ -203,7 +203,7 @@ OSA $\rightarrow$ spectral alignment? $\rightarrow$ lock / filter.
 
 > **30-second answer (memorize).** Physical aging often changes a baseline: LIV, power, spectrum, RIN, sensitivity, or drive. Calibration drift changes the operating point while the device remains substantially healthy. Start black-box: BER/FEC, telemetry, and whether recalibration recovers. Recalibration recovery updates probability; it is not proof. With engineering access, compare external LIV and other physical baselines to ship data. Therefore I would route aging to life/derate/replace and drift to table control plus an ATP loaded-corner check.
 
-<pre class="dectree" aria-label="Decision tree"><code>Symptom (bias up / BER up)
+<pre class="dectree" aria-label="Symptom (bias up / BER up)"><code>Symptom (bias up / BER up)
   |
 Black-box telemetry first
   |
@@ -250,7 +250,7 @@ Stress-hours plot $\rightarrow$ monotonic or step? $\rightarrow$ confirms.
 
 > **30-second answer (memorize).** Freeze the requirements slice, not the incumbent datasheet. Walk the canonical lifecycle on the customer-visible surface: bring-up, nominal and margin characterization, interoperability, environmental and reliability qualification, manufacturing and ATP readiness, controlled pilot, then fleet monitoring. Request engineering access only when black-box evidence is insufficient. Therefore I would gate open volume on FAIR, ATP correlation, and split RMA codes, not on a hero sample.
 
-<pre class="dectree" aria-label="Decision tree"><code>Second source
+<pre class="dectree" aria-label="Second source"><code>Second source
   |
 Requirements freeze
   |
@@ -298,7 +298,7 @@ RMA split $\rightarrow$ field falsifies qual? $\rightarrow$ reopen.
 
 > **30-second answer (memorize).** Validation is staged uncertainty reduction. Walk requirements, bring-up, nominal characterization, margin characterization, interop, environmental and reliability qualification, manufacturing and ATP readiness, controlled pilot, then fleet monitoring. Each stage answers a question the previous could not. Therefore I would refuse any test that answers no new question and watch the ledgers margin budgeting says will be spent first.
 
-<pre class="dectree" aria-label="Decision tree"><code>Requirements
+<pre class="dectree" aria-label="Requirements"><code>Requirements
   |
 Bring-up -&gt; Nominal characterization
   |
@@ -340,7 +340,7 @@ Margin sweeps $\rightarrow$ which ledger dies first? $\rightarrow$ telemetry ala
 
 > **30-second answer (memorize).** First scope: unit, lot, vendor, rack, datacenter, or fleet? Ask trend and change history. Classify performance versus reliability versus manufacturability before pulling hardware. Therefore I would contain if growing and supplier-specific, or monitor-only if tiny, flat, and no customer impact, with an owner on the next control.
 
-<pre class="dectree" aria-label="Decision tree"><code>Fleet symptom
+<pre class="dectree" aria-label="Fleet symptom"><code>Fleet symptom
   |
 Scope ladder
   |
@@ -381,7 +381,7 @@ Golden host in rack $\rightarrow$ environment vs module? $\rightarrow$ owner.
 
 > **30-second answer (memorize).** Contain first, then own the loop. Stop shipment of Supplier B affected lots, scope the deployed population, compare failing versus healthy units, open joint FA with the supplier, drive corrective action, expand ATP or process control, verify the next lot, and keep fleet monitoring. The customer keeps ownership of evidence quality and the ship decision. Therefore I would contain today rather than wait for SEM before acting.
 
-<pre class="dectree" aria-label="Decision tree"><code>Escape detected
+<pre class="dectree" aria-label="Escape detected"><code>Escape detected
   |
 Contain lot / pause deploy
   |
@@ -428,7 +428,7 @@ DPA sample $\rightarrow$ mechanism class? $\rightarrow$ permanent fix.
 
 > **30-second answer (memorize).** A floor means additional received power no longer removes the dominant impairment. Confirm floor versus shift on a waterfall, then test for signal-dependent noise, reflections or MPI, pattern dependence, crosstalk, timing or CDR limits, and DSP or equalization limits. Therefore I would fix the limiting mechanism rather than raise OMA.
 
-<pre class="dectree" aria-label="Decision tree"><code>BER stops improving with power
+<pre class="dectree" aria-label="BER stops improving with power"><code>BER stops improving with power
   |
 Power no longer limiting
   |
@@ -471,7 +471,7 @@ Supply noise / FEC histogram $\rightarrow$ PSRR or burst? $\rightarrow$ owner.
 
 > **30-second answer (memorize).** Preserve the failing state and telemetry before you reseat, clean, or reboot. Scope time and change: dwell, temperature, vibration, firmware, connector. Prefer burst/FEC histograms and long dwell over a single golden retest. Therefore I would contain if lot-correlated, tighten dwell/ATP if escape, and refuse to close an NFF without a reproduction plan.
 
-<pre class="dectree" aria-label="Decision tree"><code>Intermittent
+<pre class="dectree" aria-label="Intermittent"><code>Intermittent
   |
 Preserve state / telemetry
   |
@@ -512,7 +512,7 @@ Mate/demate $\rightarrow$ connector? $\rightarrow$ hygiene / replace.
 
 > **30-second answer (memorize).** Name the escape path and the measurement that would have caught it at a named plane and corner. Size the new limit from characterization and repeatability, correlate stations, and set a reaction plan. Therefore I would ship the ATP change with an owner and a metric, not a hope that operators will be careful.
 
-<pre class="dectree" aria-label="Decision tree"><code>Escape
+<pre class="dectree" aria-label="Escape"><code>Escape
   |
 Which uncertainty ATP missed?
   |
@@ -555,7 +555,7 @@ Golden units across stations $\rightarrow$ correlation? $\rightarrow$ ship.
 
 > **30-second answer (memorize).** Log what discriminates hypotheses: per-lane power, bias, pre-FEC BER and FEC histograms; module temperature and actuator drive; LOS/LOL and firmware with context. Alarm on trends and disagreements, not only hard thresholds. Therefore I would instrument the ledgers margin testing said die first.
 
-<pre class="dectree" aria-label="Decision tree"><code>Telemetry purpose: early margin erosion
+<pre class="dectree" aria-label="Telemetry purpose: early margin erosion"><code>Telemetry purpose: early margin erosion
   |
 Per-lane: power, bias, pre-FEC BER
   |
@@ -594,7 +594,7 @@ Actuator near rail $\rightarrow$ control margin? $\rightarrow$ thermal design.
 
 > **30-second answer (memorize).** Start from customer-visible requirements and a margin budget: which stresses will spend which ledgers. Walk nominal function, remaining margin, environment and interop, reliability and manufacturing, ATP readiness, then a controlled pilot. Therefore I would gate ship on remaining margin after those stresses, not on a checklist of rituals.
 
-<pre class="dectree" aria-label="Decision tree"><code>Requirements + margin budget
+<pre class="dectree" aria-label="Requirements + margin budget"><code>Requirements + margin budget
   |
 Nominal function
   |
@@ -637,7 +637,7 @@ ATP correlation $\rightarrow$ factory control? $\rightarrow$ volume.
 
 > **30-second answer (memorize).** State evidence, confidence weights, and residual risk. Decide with today's evidence: contain the scoped population, keep a healthy path shipping, open FA, and add the ATP or telemetry control that would catch the next escape. Therefore I would not wait for certainty before ownership actions.
 
-<pre class="dectree" aria-label="Decision tree"><code>Unknown mechanism
+<pre class="dectree" aria-label="Unknown mechanism"><code>Unknown mechanism
   |
 Evidence + scope + rate/trend
   |

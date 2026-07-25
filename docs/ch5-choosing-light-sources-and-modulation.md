@@ -11,7 +11,7 @@ Do not choose a laser by comparing data sheets in isolation. Start with reach, l
 
 Freeze the system problem before asking a supplier for samples:
 
-<pre class="dectree" aria-label="Decision tree"><code>Reach / fiber plant
+<pre class="dectree" aria-label="Reach / fiber plant"><code>Reach / fiber plant
   |
 Lane rate / bandwidth
   |
@@ -70,7 +70,7 @@ EML (externally modulated laser)
 
 CW laser + TFLN MZM
 
-: an external CW source feeds a thin-film lithium niobate Mach--Zehnder modulator on a separate chip. Very low chirp and $\gtrsim$`<!-- -->`{=html}100 GHz EO bandwidth make this the leading path to 400G/lane pluggables and high-baud FR links; see §3.14.3, Table 3.12.
+: an external CW source feeds a thin-film lithium niobate Mach--Zehnder modulator on a separate chip. Very low chirp and $\gtrsim$100 GHz EO bandwidth make this the leading path to 400G/lane pluggables and high-baud FR links; see §3.14.3, Table 3.12.
 
 CW laser + Si MZM
 
@@ -240,7 +240,7 @@ An electro-absorption modulated laser integrates a DFB with an *EAM* on one chip
 
 ##### When to pick which.
 
-Through 200G/lane DR, EML usually wins on cost and integration. A CW DFB (or ELSFP/CW-WDM bank) plus Si MZM, ring, or TFLN wins when the modulator must sit on silicon or needs $\gtrsim$`<!-- -->`{=html}100 GHz EO bandwidth (Table 3.12, §3.14.3). At CPO scale the laser often leaves the optical engine entirely so it can be replaced without pulling the ASIC package (§5.14). Looking forward, 400G/lane pluggables are pushing harder toward external CW plus TFLN or high-BW silicon modulators, while EMLs remain the workhorse of the installed 100--200G base.
+Through 200G/lane DR, EML usually wins on cost and integration. A CW DFB (or ELSFP/CW-WDM bank) plus Si MZM, ring, or TFLN wins when the modulator must sit on silicon or needs $\gtrsim$100 GHz EO bandwidth (Table 3.12, §3.14.3). At CPO scale the laser often leaves the optical engine entirely so it can be replaced without pulling the ASIC package (§5.14). Looking forward, 400G/lane pluggables are pushing harder toward external CW plus TFLN or high-BW silicon modulators, while EMLs remain the workhorse of the installed 100--200G base.
 
   -------------------------------------------------------------------------------------------
   Source          Typical use                  Top risks
@@ -412,7 +412,7 @@ Worked numbers at $I-I_\mathrm{th}=50$ mA (typical CW DFB window): $i_n=500$ p
 
   Higher-current CW (DRV200-A-400)   480 pA$/\sqrt{\mathrm{Hz}}$                                     $\approx-160$ dB/Hz                    Still below $-155$ intrinsic
 
-  Shared digital LDO, poor PSRR      often $\gg$`<!-- -->`{=html}1 nA$/\sqrt{\mathrm{Hz}}$ + tones   can exceed $-145$                      False "RIN" on ESA
+  Shared digital LDO, poor PSRR      often $\gg$1 nA$/\sqrt{\mathrm{Hz}}$ + tones   can exceed $-145$                      False "RIN" on ESA
   ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 **Table 5.6.** Bias-driver current noise converted to equivalent RIN at $I-I_\mathrm{th}=50$ mA using $\mathrm{RIN}_{\mathrm{eq}}=20\log_{10}(i_n/(I-I_\mathrm{th}))$. Densities for the DRV200 rows are from the Koheron datasheet at 1 kHz; the last row is qualitative (board-dependent).
@@ -595,7 +595,7 @@ Twenty-four contacts: multiple 3.3 V VCC and GND pins, module reset (`ResetL`),
 
          TBD         reserved                   ---
 
-         SCL         TWI clock                  host 4.7 k$\Omega$ pull-up; module $\ge$`<!-- -->`{=html}10 k$\Omega$
+         SCL         TWI clock                  host 4.7 k$\Omega$ pull-up; module $\ge$10 k$\Omega$
 
          SDA         TWI data                   same pull-ups as SCL
 
@@ -624,7 +624,7 @@ Acceptance test plans should cover the checklist in Table 8.5, §8.10: laser LI
 
 ### Hazard and laser classes
 
-Laser safety for interconnects is governed by IEC 60825-1 (laser product classification) and IEC 60825-2 (optical-fiber communication systems, OFCS) . Classes run from Class 1 (safe under normal use) through Class 1M (safe unless the beam is collected by optics), Class 3R/3B, and Class 4. At 1310 nm and 1550 nm the beam is invisible, which raises the operational risk: technicians cannot see exposure. The retinal-hazard band ends near 1400 nm, but corneal and skin hazards remain, and single-mode power confined to a $\sim$`<!-- -->`{=html}9 μm core is high radiance even at modest milliwatt levels.
+Laser safety for interconnects is governed by IEC 60825-1 (laser product classification) and IEC 60825-2 (optical-fiber communication systems, OFCS) . Classes run from Class 1 (safe under normal use) through Class 1M (safe unless the beam is collected by optics), Class 3R/3B, and Class 4. At 1310 nm and 1550 nm the beam is invisible, which raises the operational risk: technicians cannot see exposure. The retinal-hazard band ends near 1400 nm, but corneal and skin hazards remain, and single-mode power confined to a $\sim$9 μm core is high radiance even at modest milliwatt levels.
 
 Short-reach datacom modules are usually engineered so each fiber port stays Class 1 or Class 1M under rated launch power. That is a design constraint on EML/DFB bias and on how much power each lane launches, not a label you add after the fact.
 
@@ -808,7 +808,7 @@ Control margin
 
 Recompute the link at combined production corners. A nominal part at nominal temperature says little about whether a slow loss in two ledgers will push a tail unit across the pre-FEC BER limit. §7.9, Table 7.6 carry the same ledgers into validation and fleet triage. The interview review compresses this checklist in Appendix A.6.4. The wall-chart form is Appendix C.9.
 
-<pre class="dectree" aria-label="Decision tree"><code>Nominal system margin
+<pre class="dectree" aria-label="Nominal system margin"><code>Nominal system margin
   |
 Temperature debit
   |

@@ -2,222 +2,258 @@
 \label{ch:abbrev}
 \label{app:abbreviations}
 
-This glossary is adapted from the OIF \emph{Next Generation CEI-448G Framework}
-glossary (pages 7--11, OIF-FD-CEI-448G-01.0, September 2025)~\cite{cei448},
-extended with optical, reliability, and manufacturing terms used in the book
-(including the must-know list in \Cref{app:interview-review}).
-Some entries include material from public reference sources noted in the original.
+This glossary merges OIF CEI-448G Framework terms (OIF-FD-CEI-448G-01.0,
+September 2025)~\cite{cei448} with optical, reliability, and manufacturing terms
+used in the book (including the must-know list in \Cref{app:interview-review}).
+Entries are alphabetical. Market-position claims belong in dated chapter
+sidebars, not here.
 
+\section{Glossary}
 \small
 \begin{description}
-\item[ADC] An analog-to-digital converter is a system that converts an analog signal into a digital signal.
-\item[AI] Artificial intelligence.
-\item[ACC] Active copper cable. ACCs are a type of active copper cable used in data centers. ACCs primarily use Redriver chips and Continuous Time Linear Equalization (CTLE) to amplify and equalize the signal and provide longer reach than DACs. ACCs generally are lower power and cost than AECs (another type of active copper cable), but provide shorter reach than AECs.
-\item[AEC] Active electrical cable. AECs are a type of active copper cable used in data centers. AECs use retimer chips with clock and data recovery (CDR) to reshape and retransmit signals which generally offer longer reach and better signal integrity compared to ACCs, but at a higher cost.
-\item[Application spaces] Portions of equipment or network architecture that could benefit from having a defined set of interconnection parameters.
-\item[ASIC] An application-specific integrated circuit is an integrated circuit (IC) customized for a particular use, rather than intended for general-purpose use.
-\item[Backplane] A group of electrical connections used as a backbone to connect several printed circuit boards together to make up a switch, computing or storage system.
-\item[BER] Bit error ratio is a measure of the number of bit errors that occur during data transmission, expressed as a ratio of erroneous bits to the total number of bits transmitted.
-\item[BoW] Bunch of wires is a die-to-die interface specification. It is part of the open compute project (OCP) and, like UCIe, is used to connect chiplets within a package.
-\item[Cabled host] An implementation where twinaxial cable is used instead of PCB traces expressly for the insertion loss benefits or 3D architecture.
-\item[CDR] Clock and data recovery, a component that re-establishes the timing of a signal that may have degraded due to impairments on a transmission line, the retimed signal is able to continue further to its destination.
-\item[CEI] Common Electrical IO, an OIF Implementation Agreement containing clauses defining electrical interface specifications, each optimized for various reaches at minimal power.
-\item[Coded modulation] Coded modulation is a technique in digital communication that combines error-control coding with modulation to enhance reliability and efficiency. Its main goal is to balance bandwidth efficiency, power efficiency, and error probability.
-\item[CMIS] Common Management Interface Specification.
-\item[CMIS-LT] CMIS-based link training provides a message set and exchange mechanism for out-of-band link training or tuning between a pluggable module and a host.
-\item[CMIS-VCS] CMIS versatile control set extends the base CMIS standard to allow for more advanced and flexible signal integrity (SI) capabilities.
-\item[CPC] Co-packaged copper is an emerging interconnect technology where copper cables are directly attached to the top of an Application-Specific Integrated Circuit (ASIC) or other high-speed integrated circuit within a single package. This design minimizes the length of high-speed electrical signals on the printed circuit board (PCB) and package, addressing the limitations of traditional copper traces at increasingly high data rates (e.g., 224G and above).
-\item[CPO] Co-packaged optics. An electrical to optical device intended to be mounted on the host package.
-\item[CTLE] Continuous time linear equalizer.
-\item[DAC] Direct attach copper cable. A high-speed cable assembly made of copper twinaxial cable with fixed passive transceiver modules on each end. DAC cables enable direct, electrical connections between networking devices over short distances.
-\item[DER] Detector error ratio.
-\item[DFE] Decision feedback equalizer. An equalizer by adding a filtered version of previous symbol estimates to the original filter output.
-\item[DSP] Digital signal processing.
-\item[ENOB] Effective number of bits. A measure of the dynamic performance of an analog-to-digital converter (ADC).
-\item[Faceplate] A plate, cover, or bezel on the front of a device which may contain I/O ports.
-\item[FEC] Forward error correction gives a receiver the ability to correct errors without needing a reverse channel to request retransmission of data.
-\item[FFE] Feed forward equalizer.
-\item[Gbps] Gigabits per second. The throughput or data rate of a port or piece of equipment. Gbps is $1\times10^{9}$ bits per second.
-\item[GBd] The baud rate is the number of electrical transitions per second, also called symbol rate. Giga Baud is $1\times10^{9}$ symbols per second.
-\item[Gearbox] A component used for managing and manipulating data streams, primarily by converting multiple serial data streams at one rate to multiple streams at another rate,
-\item[Hamming codes] A type of linear error-correcting code used in digital communication and data storage systems. It enhances data integrity by detecting and correcting single-bit errors that may occur during transmission or storage.
-\item[HPC] High performance compute.
-\item[HPDC] High-performance data center. A general term for data centers designed for high-compute workloads like AI/HPC.
-\item[IA] Implementation Agreements, what the OIF names their defined interface specifications.
-\item[IC] Integrated circuit.
-\item[IMDD] Intensity modulation direct detection is a method where the intensity of a light source is modulated by an electrical signal. This modulated light then travels through an optical medium (like a fiber optic cable) and is directly detected by a photo detector at the receiving end. This is a common and relatively straightforward technique for transmitting information over optical links.
-\item[I/O] Input Output, a common name for describing a port or ports on equipment.
-\item[ISI] Intersymbol interference.
-\item[KP4 FEC] A specific Reed-Solomon FEC (544,514) defined in IEEE 802.3 Clause 91, commonly used in Ethernet standards.
-\item[LDPC] A low-density parity-check code is a linear error correcting code, a method of transmitting a message over a noisy transmission channel. An LDPC is constructed using a sparse Tanner graph. LDPC codes are capacity-approaching codes.
-\item[LR] Long reach. CEI LR specifies backplane/midplane and copper cable electrical interfaces.
-\item[LPO] Linear pluggable optic is a technology used in optical transceivers that simplifies the design of pluggable optical modules by removing the traditional Digital Signal Processor (DSP) and Clock Data Recovery (CDR) chips. Instead, LPO uses a direct-drive linear approach where the signal path is considered linear, relying on the capabilities of the Application Specific Integrated Circuit (ASIC) in the host system (like a switch or Network Interface Card) to perform signal conditioning and equalization.
-\item[MCM] Multi chip module, a specialized electronic package where multiple integrated circuits (ICs), semiconductor dies or other discrete components are packaged onto a unifying substrate, facilitating their use as a single component (as though a larger IC).
-\item[Mid-board optics] an optical transceiver that is mounted on a PCBA away from the PCBA edge, close to a switch ASIC to reduce the amount of PCBA trace loss between an ASIC and the optical transceiver. This is in contrast to the common practice today of locating optical transceivers at the PCBA edge.
-\item[Midplane] Some backplanes are constructed with slots for connecting to devices on both sides and are referred to as midplanes.
-\item[MLSD] Maximum likelihood sequence detection is a mathematical algorithm to extract useful data out of a noisy data stream.
-\item[MR] Medium reach. CEI MR specifies chip-to-chip electrical interfaces.
-\item[NG] Next generation.
-\item[NRZ (PAM2)] Non return to zero, a binary code in which 1s are represented by one significant condition (usually a positive voltage) and 0s are represented by some other significant condition (usually a negative voltage), with no other neutral or rest condition.
-\item[NPC] Near-package copper. NPC uses a copper cable to bring the front panel signal to a location close to the host silicon to minimize the host PCB losses. It reduces PCB losses by bringing the signals to a connector on the PCB close to the ASIC whereas CPC (Co-packaged copper) brings the signal to a connector on the ASIC package.
-\item[NPO] Near-package optics. Similar to CPO (Co-packaged optics) and NPC (Near-package copper), NPO is an electrical to optical device intended to be mounted on the host PCB at a location adjacent to the host silicon to minimize host PCB traces to minimize electrical signaling requirements.
-\item[OE] Optical engine.
-\item[O-to-E and E-to-O] Optical to electrical interface and Electrical to optical interface, a component that converts an optical signal to an electrical signal or vice versa.
-\item[PAM] Pulse amplitude modulation, a form of signal modulation where the message information is encoded in the amplitude of a series of signal pulses. For optical links it refers to intensity modulation.
-\item[PAM4] Pulse amplitude modulation-4 is a two-bit modulation that takes two bits at a time and maps the signal amplitude to one of four possible levels.
-\item[PAM6] A digital signal modulation scheme that encodes information by varying the amplitude of a pulse across six distinct voltage levels. Each of these six levels can represent approximately 2.5 bits of data.
-\item[PAM8] A digital signal modulation scheme that encodes information by varying the amplitude of a pulse across eight distinct voltage levels. Each of these eight levels can represent 3 bits of data.
-\item[PCB/PCBA] Printed circuit board (PCB) assembly, an assembly of electrical components built on a rigid glass-reinforced epoxy-based board.
-\item[Repeater] A low-latency electronic device that receives a signal and retransmits it. Repeaters are used to extend transmissions so that the signal can cover a longer distance. Besides signal equalization, clock and data recovery (CDR) functions could be also added to remove jitter from received signals effectively.
-\item[RoCE] RDMA over Converged Ethernet (CE) is a network protocol which allows remote direct memory access (RDMA) over an Ethernet network.
-\item[RS] Reed Solomon FEC coding is a type of block code. Block codes work on fixed-size blocks (packets) of bits or symbols of predetermined size. It can detect and correct multiple random and burst errors.
-\item[RTLR] (Retimed Transmit, Linear Receive) also generically referred to as Linear receive optic (LRO), is a type of optical transceiver technology used primarily in high-speed data center and networking applications, especially within AI clusters. The RTLR naming convention is within OIF. LRO is characterized by the presence of a Digital Signal Processor (DSP) solely on the transmit path, while the receive path operates with a linear, non-retimed architecture. This differs from fully retimed optical modules that use DSPs on both transmit and receive paths, and also from Linear Pluggable Optics (LPO) that eliminate DSPs entirely.
-\item[Scale out] also known as horizontal scaling, refers to the process of increasing capacity and performance by adding more individual machines or nodes to a distributed system.
-\item[Scale up] also known as vertical scaling, refers to the process of increasing the capacity or performance of a single server or system within an AI data center by adding more resources.
-\item[SDO] standard development organizations.
-\item[SerDes] A Serializer/Deserializer is a pair of functional blocks commonly used in high-speed communications to transfer data over a relatively low number of lanes.
-\item[SFP] Small form-factor pluggable connector is a modular, hot-pluggable interface used in networking devices to connect to various types of fiber optic or copper cables. It uses a PCB card edge interface.
-\item[SI] Signal integrity is a set of measures of the quality of an electrical signal.
-\item[SNDR] Signal-to-noise-and-distortion ratio is a measurement of the purity of a signal.
-\item[SNR] Signal-to-noise ratio.
-\item[TBD] To be determined.
-\item[Tbps] Terabits per second. The throughput or data rate of a port or piece of equipment. Tbps is $1\times10^{12}$ bits per second.
-\item[TCM] Trellis coded modulation is a technique that combines convolutional coding and modulation to improve data transmission efficiency over bandwidth-limited channels, like telephone lines. It achieves this by intelligently integrating the encoding and modulation processes, increasing the distance between signal points in the constellation to enhance error correction without expanding bandwidth.
-\item[TME] Test and measurement equipment.
-\item[Twinax copper cable] A type of copper cable similar to coaxial cable, but with two inner conductors instead of one.
-\item[UCIe] Universal chiplet interconnect express is an open industry standard that defines the interconnect between chiplets, or small component dies, within a single package.
-\item[VLC] Vertical line card. A new line card design in which vertical I/O connectors and ASIC are mounted side by side, reducing the signal trace distance.
-\item[VSR] Very short reach. CEI VSR specifies chip-to-module electrical interfaces.
-\item[XSR] Extra short reach. CEI XSR specifies die-to-optical engine (D2OE) and die-to-die (D2D) electrical interfaces.
 \item[448G] A generic name for an expected technology enabling data rates (including overhead) of approximately 448 Gbps per lane.
 \item[8D / CAPA] Eight-discipline problem solving and corrective and preventive action. Structured containment, root cause, correction, and recurrence control for supplier or production failures.
+\item[ACC] Active copper cable. ACCs are a type of active copper cable used in data centers. ACCs primarily use Redriver chips and Continuous Time Linear Equalization (CTLE) to amplify and equalize the signal and provide longer reach than DACs. ACCs generally are lower power and cost than AECs (another type of active copper cable), but provide shorter reach than AECs.
+\item[ADC] An analog-to-digital converter is a system that converts an analog signal into a digital signal.
+\item[AEC] Active electrical cable. AECs are a type of active copper cable used in data centers. AECs use retimer chips with clock and data recovery (CDR) to reshape and retransmit signals which generally offer longer reach and better signal integrity compared to ACCs, but at a higher cost.
+\item[AI] Artificial intelligence.
 \item[ALS] Automatic laser shutdown. A safety mechanism that cuts laser output when fiber continuity is lost. Modern systems prefer APR with automatic restart over full shutdown.
 \item[APC] Automatic power control. A feedback loop from a monitor photodiode that holds average optical output power constant against temperature drift and aging.
-\item[APD] Avalanche photodiode. A photodiode with internal multiplication gain (5--9~dB sensitivity improvement over PIN) at the cost of excess noise factor and bias voltage.
+\item[APD] Avalanche photodiode. A photodiode with internal multiplication gain. Any sensitivity benefit versus PIN depends on multiplication gain, bandwidth, excess-noise factor, receiver design, and BER target; do not treat 5--9~dB as universal.
+\item[Application spaces] Portions of equipment or network architecture that could benefit from having a defined set of interconnection parameters.
 \item[APR] Automatic power reduction. Holds laser output at or below Hazard Level 1M on fiber break and probes for re-mate with safe low-power pulses (ITU-T G.664).
 \item[Arrhenius / $E_a$] Life-acceleration model. Temperature stress multiplies wear-out by $\exp[(E_a/k)(1/T_\mathrm{use}-1/T_\mathrm{stress})]$. $E_a$ must be justified for the named mechanism on that process.
 \item[ASE] Amplified spontaneous emission. Broadband optical noise generated by optical amplifiers (SOA, EDFA); adds to the receiver noise floor.
+\item[ASIC] An application-specific integrated circuit is an integrated circuit (IC) customized for a particular use, rather than intended for general-purpose use.
 \item[ATP] Acceptance test plan. Production test limits, methods, reference planes, and reaction rules for ship or hold decisions.
 \item[AUI] Attachment unit interface. The electrical serial lane set between a host ASIC and the module cage connector (e.g.\ 400GAUI-4).
+\item[Backplane] A group of electrical connections used as a backbone to connect several printed circuit boards together to make up a switch, computing or storage system.
 \item[Bathtub curve] Reliability failure-rate shape: infant mortality (falling), useful life (roughly constant FIT), then wear-out (rising). Burn-in targets the left; Arrhenius life targets the right.
+\item[BER] Bit error ratio is a measure of the number of bit errors that occur during data transmission, expressed as a ratio of erroneous bits to the total number of bits transmitted.
 \item[BERT] Bit-error-ratio tester. An instrument or ASIC function that generates PRBS patterns and counts bit errors for pre-FEC and post-FEC BER measurement.
 \item[BiCMOS] A semiconductor process combining bipolar transistors (high $f_T$) with CMOS on one die; used for high-speed TIAs and modulator drivers.
 \item[BOM] Bill of materials. The component and assembly cost of a module or system; DSP presence is a large BOM driver.
+\item[BoW] Bunch of wires is a die-to-die interface specification. It is part of the open compute project (OCP) and, like UCIe, is used to connect chiplets within a package.
 \item[Burn-in] Production or sample screen that removes infant-mortality parts before ship. Distinct from HTOL life projection.
-\item[CMOS] Complementary metal-oxide-semiconductor. The mainstream IC fabrication process; TIAs and SerDes are built at 16~nm to 3~nm nodes.
-\item[COBO] Consortium for On-Board Optics. Standardized mid-board optical engine placement; largely leapfrogged by CPO in hyperscale deployments.
+\item[Cabled host] An implementation where twinaxial cable is used instead of PCB traces expressly for the insertion loss benefits or 3D architecture.
+\item[CDR] Clock and data recovery, a component that re-establishes the timing of a signal that may have degraded due to impairments on a transmission line, the retimed signal is able to continue further to its destination.
+\item[CEI] Common Electrical IO, an OIF Implementation Agreement containing clauses defining electrical interface specifications, each optimized for various reaches at minimal power.
+\item[CMIS] Common Management Interface Specification.
+\item[CMIS-LT] CMIS-based link training provides a message set and exchange mechanism for out-of-band link training or tuning between a pluggable module and a host.
+\item[CMIS-VCS] CMIS versatile control set extends the base CMIS standard to allow for more advanced and flexible signal integrity (SI) capabilities.
+\item[CMOS] Complementary metal-oxide-semiconductor. Common IC fabrication process; TIAs and SerDes are built at nodes such as 16~nm to 3~nm.
+\item[COBO] Consortium for On-Board Optics. Standardized mid-board optical engine placement; an on-board (OBO) architecture alternative to faceplate pluggables and CPO.
 \item[COD] Catastrophic optical damage. A sudden, irreversible failure of a laser facet under thermal or optical overstress.
+\item[Coded modulation] Coded modulation is a technique in digital communication that combines error-control coding with modulation to enhance reliability and efficiency. Its main goal is to balance bandwidth efficiency, power efficiency, and error probability.
 \item[COM] Channel operating margin. A statistical SNR metric for the fully equalized electrical link; CEI go/no-go is typically COM~$\ge$~3~dB.
 \item[COUPE] Compact Universal Photonic Engine. TSMC's SoIC-X hybrid-bonded EIC-on-PIC packaging platform for co-packaged optics; mass production in 2026.
+\item[CPC] Co-packaged copper is an emerging interconnect technology where copper cables are directly attached to the top of an Application-Specific Integrated Circuit (ASIC) or other high-speed integrated circuit within a single package. This design minimizes the length of high-speed electrical signals on the printed circuit board (PCB) and package, addressing the limitations of traditional copper traces at increasingly high data rates (e.g., 224G and above).
+\item[CPO] Co-packaged optics. An electrical to optical device intended to be mounted on the host package.
+\item[CTLE] Continuous time linear equalizer.
 \item[CW] Continuous wave. Unmodulated laser output; external modulators (MZM, ring, EAM) encode data onto a CW source.
 \item[CW-WDM] Continuous-wave wavelength division multiplexing. A multi-source agreement for multi-wavelength CW laser sources feeding WDM photonic engines.
 \item[CXL] Compute Express Link. A coherent memory interconnect protocol built on the PCIe PHY (CXL 4.0 on PCIe 7.0); potential optical-reach application.
-\item[DCA] Digital communication analyzer. A sampling oscilloscope used for PAM4 eye diagrams, TDECQ, OMA, and RLM measurements.
+\item[DAC] Direct attach copper cable. A high-speed cable assembly made of copper twinaxial cable with fixed passive transceiver modules on each end. DAC cables enable direct, electrical connections between networking devices over short distances.
 \item[DBR] Distributed Bragg reflector. A laser architecture where the grating sits outside the gain region, enabling tunable single-mode output.
+\item[DCA] Digital communication analyzer. A sampling oscilloscope used for PAM4 eye diagrams, TDECQ, OMA, and RLM measurements.
 \item[DDM] Digital diagnostic monitoring. Per-lane telemetry in CMIS: Tx/Rx optical power, laser bias, module temperature, LOS/LOL flags.
-\item[DFB] Distributed feedback laser. A laser with a grating along the active region that selects one longitudinal mode; the workhorse CW or directly modulated source.
+\item[DER] Detector error ratio.
+\item[DFB] Distributed feedback laser. A laser with a grating along the active region that selects one longitudinal mode; a common CW or directly modulated source.
+\item[DFE] Decision feedback equalizer. An equalizer by adding a filtered version of previous symbol estimates to the original filter output.
 \item[DML] Directly modulated laser. Modulates bias current to encode data; simple and efficient but chirp-limited over dispersive fiber.
 \item[DPA] Destructive physical analysis. Cross-section, SEM, or EDX on failed units to confirm facet, solder, FAU, or die failure modes.
-\item[DPPM] Defective parts per million. Incoming or outgoing quality rate used in supplier quality and ATP escape tracking.
-\item[DR] Datacenter reach. An IEEE 802.3 single-mode fiber class, typically 500~m at 1310~nm; the default for AI scale-out optics.
+\item[DPPM] Defective parts per million. Always state the denominator and window (incoming, outgoing, or escaped field). Distinct from FIT.
+\item[DR] Datacenter reach. An IEEE 802.3 single-mode fiber class, typically 500~m at 1310~nm; a common reach for AI scale-out IM/DD optics.
+\item[DSP] Digital signal processing.
 \item[DVT] Design Validation Test. Proves the design meets requirements across corners, margin, and a frozen life plan before volume tooling (\Cref{tab:npi}).
 \item[DWDM] Dense wavelength division multiplexing. WDM with channel spacing $\le$100~GHz; used in metro/long-haul and dense CPO architectures.
 \item[EAM] Electro-absorption modulator. A voltage-controlled absorption region on InP; low chirp compared with direct modulation; paired with a DFB in an EML.
 \item[EECQ] Electrical eye closure quaternary. The electrical analog of TDECQ, quoted at host-referenced test points TP1a and TP4a.
 \item[ELS] External laser source. A CW laser module feeding a co-packaged optical engine; superset of ELSFP and CW-WDM module forms.
 \item[ELSFP] External Laser Small Form-Factor Pluggable. An OIF-defined faceplate-pluggable CW laser module for CPO with a 24-pin card edge, CMIS management, and blind-mate MT optics.
-\item[EML] Externally modulated laser. A DFB laser integrated with an EAM on one InP chip; the dominant 100--200G/lane pluggable transmitter.
+\item[EML] Externally modulated laser. A DFB laser integrated with an EAM on one InP chip; a common transmitter architecture for 100--200G/lane pluggables.
+\item[ENOB] Effective number of bits. A measure of the dynamic performance of an analog-to-digital converter (ADC).
 \item[EO] Electro-optic. Conversion from voltage to optical phase or intensity; EO bandwidth is the primary speed metric for a modulator.
 \item[EOL] End of life. The defined wear-out criterion (threshold rise, slope drop, or hard fail) used in HTOL projection and derating.
-\item[ER] Extinction ratio. $P_1/P_0$ in dB; higher ER widens OMA for a given average power and trades against chirp and driver swing.
+\item[ER] Extinction ratio. Linear $\mathrm{ER}_\mathrm{lin}=P_1/P_0$ (PAM4 outer uses $P_3/P_0$). In decibels, $\mathrm{ER}_\mathrm{dB}=10\log_{10}(\mathrm{ER}_\mathrm{lin})$. Higher ER widens OMA for a given average power and trades against chirp and driver swing.
 \item[ESD] Electrostatic discharge. Handling or assembly damage to drivers or TIAs; sudden hard fail, not Arrhenius wear-out. Qual uses HBM/CDM models.
 \item[EVT] Engineering Validation Test. Early bring-up on engineering samples: first light, CMIS, basic LIV/SMSR/RIN, one closing BER (\Cref{tab:npi}).
+\item[Faceplate] A plate, cover, or bezel on the front of a device which may contain I/O ports.
 \item[FAIR] First-article inspection report. Re-qualify after tooling, site, epi, or firmware change before open volume.
 \item[FAU] Fiber array unit. A precision V-groove assembly that mates multiple fibers to a PIC edge or grating coupler array.
-\item[FIT] Failures in time. Failures per $10^9$ device-hours; fleet FIT times link count sets expected failures per day.
+\item[FEC] Forward error correction gives a receiver the ability to correct errors without needing a reverse channel to request retransmission of data.
+\item[FFE] Feed forward equalizer.
+\item[FIT] Failures in time. Failures per $10^9$ device-hours. State component versus module versus link FIT, predicted versus observed, and the observation window. Distinct from DPPM.
 \item[FR] Far reach. An IEEE 802.3 single-mode fiber class, typically 2~km; tighter chirp and dispersion budget than DR.
 \item[FSR] Free spectral range. The wavelength or frequency span between adjacent resonances of a ring resonator or etalon.
+\item[GBd] The baud rate is the number of electrical transitions per second, also called symbol rate. Giga Baud is $1\times10^{9}$ symbols per second.
+\item[Gbps] Gigabits per second. The throughput or data rate of a port or piece of equipment. Gbps is $1\times10^{9}$ bits per second.
+\item[Gearbox] A component used for managing and manipulating data streams, primarily by converting multiple serial data streams at one rate to multiple streams at another rate,
 \item[Golden unit / host] Known-good reference used to bisect station, fixture, host, module, and fiber. Essential in debug and ATP correlation.
 \item[GR-468] Telcordia optoelectronic device qualification framework covering HTOL, environmental, and mechanical stresses.
+\item[Hamming codes] A type of linear error-correcting code used in digital communication and data storage systems. It enhances data integrity by detecting and correcting single-bit errors that may occur during transmission or storage.
 \item[HAST] Highly accelerated stress test. Humidity plus temperature and bias; exercises corrosion and delamination.
 \item[HBM] High-bandwidth memory. Stacked DRAM on an interposer beside the accelerator die; memory bandwidth sets the decode roofline.
 \item[HCF] Hollow-core fiber. Guides light primarily in air ($n\approx1$), giving roughly 33\% lower latency than solid silica SMF.
+\item[HPC] High performance compute.
+\item[HPDC] High-performance data center. A general term for data centers designed for high-compute workloads like AI/HPC.
 \item[HTOL] High-temperature operating life. An accelerated reliability stress test (GR-468); Arrhenius modeling projects field wear-out from HTOL results.
 \item[HTSL] High-temperature storage life. Unbiased bake; separates storage mechanisms from biased HTOL wear-out.
+\item[IA] Implementation Agreements, what the OIF names their defined interface specifications.
 \item[IBTA] InfiniBand Trade Association. Maintains the InfiniBand Architecture spec (NDR 400G, XDR 800G/port); reuses QSFP/OSFP optics with Ethernet.
+\item[IC] Integrated circuit.
 \item[IEEE] Institute of Electrical and Electronics Engineers. IEEE 802.3 owns Ethernet PHY/MAC rates, KP4 FEC, and IM/DD optical PMD clauses.
 \item[IL] Insertion loss. Optical power lost traversing a component (connector, fiber, MUX); quoted in dB.
+\item[IMDD] Intensity modulation direct detection is a method where the intensity of a light source is modulated by an electrical signal. This modulated light then travels through an optical medium (like a fiber optic cable) and is directly detected by a photo detector at the receiving end. This is a common and relatively straightforward technique for transmitting information over optical links.
 \item[InP] Indium phosphide. A III-V semiconductor material for lasers, EAMs, SOAs, and high-speed photodiodes in the 1310/1550~nm bands.
+\item[I/O] Input Output, a common name for describing a port or ports on equipment.
+\item[ISI] Intersymbol interference.
 \item[JESD47] JEDEC IC qualification stress suite. Silicon-side counterpart to GR-468 for drivers and TIAs.
+\item[KP4 FEC] Reed--Solomon RS(544,514) FEC defined in IEEE 802.3 Clause 91; used on many PAM4 Ethernet PHYs. See also RS-FEC.
+\item[LDPC] A low-density parity-check code is a linear error correcting code, a method of transmitting a message over a noisy transmission channel. An LDPC is constructed using a sparse Tanner graph. LDPC codes are capacity-approaching codes.
 \item[LIV] Light--current--voltage. The fundamental laser characterization curve: plots optical power and voltage versus bias current to read threshold, slope, kinks, and rollover.
 \item[LOL] Loss of lock. A CDR or SerDes flag indicating the clock recovery circuit has lost symbol timing.
 \item[LOS] Loss of signal. A receiver or host flag indicating optical input power has fallen below the detect threshold.
+\item[LPO] Linear pluggable optic is a technology used in optical transceivers that simplifies the design of pluggable optical modules by removing the traditional Digital Signal Processor (DSP) and Clock Data Recovery (CDR) chips. Instead, LPO uses a direct-drive linear approach where the signal path is considered linear, relying on the capabilities of the Application Specific Integrated Circuit (ASIC) in the host system (like a switch or Network Interface Card) to perform signal conditioning and equalization.
+\item[LR] Long reach. CEI LR specifies backplane/midplane and copper cable electrical interfaces.
 \item[LRO] Linear receive optic (also called RTLR). A module with a retimer/DSP only on the transmit path; the receive path is linear into the host SerDes.
 \item[MAC] Media access control. The Ethernet data-link sublayer that builds frames, handles addressing and CRC. MAC rate is payload throughput.
 \item[MACsec] IEEE 802.1AE media access control security. Provides line-rate encryption, frame integrity, and data origin authentication at Layer~2; transparent to the optical PMD.
+\item[MCM] Multi chip module, a specialized electronic package where multiple integrated circuits (ICs), semiconductor dies or other discrete components are packaged onto a unifying substrate, facilitating their use as a single component (as though a larger IC).
 \item[MDI] Medium dependent interface. The optical connector where a module meets the fiber; test points TP2 (Tx launch) and TP3 (Rx input) sit at the MDI.
 \item[MEMS] Micro-electro-mechanical systems. Tilting mirror arrays used in optical circuit switches; millisecond switching at $\sim$2~dB loss.
+\item[Mid-board optics] an optical transceiver that is mounted on a PCBA away from the PCBA edge, close to a switch ASIC to reduce the amount of PCBA trace loss between an ASIC and the optical transceiver. This is in contrast to the common practice today of locating optical transceivers at the PCBA edge.
+\item[Midplane] Some backplanes are constructed with slots for connecting to devices on both sides and are referred to as midplanes.
 \item[MLC] Multi-level coding. Coded modulation paired with PAM6/PAM8; OIF 448G workshop models often add a strong outer RS code at $\sim$12\% overhead.
+\item[MLSD] Maximum likelihood sequence detection is a mathematical algorithm to extract useful data out of a noisy data stream.
 \item[MMF] Multimode fiber. Fiber supporting many spatial modes (50/125~$\mu$m); used with VCSELs at 850--940~nm for SR links (OM3/OM4/OM5 grades).
 \item[MoE] Mixture of experts. A transformer architecture that routes tokens to specialist sub-networks; drives all-to-all collective traffic on the fabric.
+\item[MP] Mass production. Sustained volume after PVT: DPPM, RMA ownership, ECO control (\Cref{tab:npi}).
 \item[MPI] Multipath interference. Coherent beating from reflective paths; often floors BER and clusters FEC errors.
 \item[MPO] Multi-fiber push-on. A standard multi-fiber connector for parallel optics (8, 12, 16, 24, or 32 fibers per ferrule).
-\item[MRM] Microring modulator. A resonant silicon modulator; compact and WDM-native but requires wavelength lock. The CPO workhorse at 200G/channel.
+\item[MR] Medium reach. CEI MR specifies chip-to-chip electrical interfaces.
+\item[MRM] Microring modulator. A resonant silicon modulator; compact and WDM-native but usually needs active wavelength control. Common in CPO engines at 200G/channel class.
 \item[MSA] Multi-source agreement. An industry specification for interoperable products (e.g.\ LPO MSA, CW-WDM MSA, 100G Lambda MSA).
 \item[MTBF] Mean time between failures. For constant failure rate, $\mathrm{MTBF}=10^9/\mathrm{FIT}$ hours. Fleet math usually uses FIT times population.
 \item[MZM] Mach--Zehnder modulator. A push-pull interferometer; broadband, low chirp. Built in silicon, TFLN, or III-V platforms.
-\item[MP] Mass production. Sustained volume after PVT: DPPM, RMA ownership, ECO control (\Cref{tab:npi}).
 \item[NFF] No fault found. An RMA unit that passes all tests on return; high NFF rate points at triage or intermittent connector faults.
-\item[NPI] New product introduction. Gate sequence EVT $\to$ DVT $\to$ PVT $\to$ MP that maps onto the validation ladder (\Cref{tab:npi}).
+\item[NG] Next generation.
 \item[NIC] Network interface card. A host adapter connecting an accelerator or CPU to the scale-out fabric (Ethernet or InfiniBand).
-\item[OBO] On-board optics. Optical engines mounted mid-board on the host PCB (COBO standard); mostly bypassed for CPO in hyperscale.
-\item[OCS] Optical circuit switch. A Layer-1 switch that steers light from input to output fiber with no O-E-O conversion; transparent to rate, format, and wavelength.
-\item[OMA] Optical modulation amplitude. The outer PAM4 signal swing ($P_1-P_0$); the primary power metric for IM/DD transmitters.
-\item[ORL] Optical return loss. The ratio of reflected to incident power at a fiber interface; low ORL raises laser RIN and can cause burst errors.
+\item[NPC] Near-package copper. NPC uses a copper cable to bring the front panel signal to a location close to the host silicon to minimize the host PCB losses. It reduces PCB losses by bringing the signals to a connector on the PCB close to the ASIC whereas CPC (Co-packaged copper) brings the signal to a connector on the ASIC package.
+\item[NPI] New product introduction. Gate sequence EVT $\to$ DVT $\to$ PVT $\to$ MP that maps onto the validation ladder (\Cref{tab:npi}).
+\item[NPO] Near-package optics. Similar to CPO (Co-packaged optics) and NPC (Near-package copper), NPO is an electrical to optical device intended to be mounted on the host PCB at a location adjacent to the host silicon to minimize host PCB traces to minimize electrical signaling requirements.
+\item[NRZ (PAM2)] Non return to zero, a binary code in which 1s are represented by one significant condition (usually a positive voltage) and 0s are represented by some other significant condition (usually a negative voltage), with no other neutral or rest condition.
+\item[OBO] On-board optics. Optical engines mounted mid-board on the host PCB (COBO and related approaches); an architecture alternative to faceplate pluggables and CPO.
+\item[OCS] Optical circuit switch. A Layer-1 switch that steers light without O-E-O conversion. Transparent to digital format and rate within the supported wavelength band, optical power, polarization, loss, crosstalk, and switching constraints.
+\item[OE] Optical engine.
+\item[OMA] Optical modulation amplitude. For binary NRZ, $\mathrm{OMA}=P_1-P_0$. For PAM4, outer OMA is $P_3-P_0$; do not use $P_1-P_0$ as the general PAM4 definition. Distinct from average optical power.
+\item[ORL] Optical return loss.
+$\mathrm{ORL}_\mathrm{dB}=-10\log_{10}(P_\mathrm{reflected}/P_\mathrm{incident})$.
+Higher ORL means less reflected power and is generally better. Low ORL can raise laser RIN and contribute to burst errors.
 \item[OSA] Optical spectrum analyzer. An instrument that measures wavelength, SMSR, side-mode structure, and spectral width of a laser source.
 \item[OSFP] Octal Small Form-factor Pluggable. A high-power faceplate module cage for 800G/1.6T/3.2T; larger thermal envelope than QSFP-DD.
+\item[O-to-E and E-to-O] Optical to electrical interface and Electrical to optical interface, a component that converts an optical signal to an electrical signal or vice versa.
+\item[PAM] Pulse amplitude modulation, a form of signal modulation where the message information is encoded in the amplitude of a series of signal pulses. For optical links it refers to intensity modulation.
+\item[PAM4] Pulse amplitude modulation-4 is a two-bit modulation that takes two bits at a time and maps the signal amplitude to one of four possible levels.
+\item[PAM6] Pulse-amplitude modulation with six levels. Information-theoretically, $\log_2 6\approx2.585$ bits per uncoded symbol. Practical systems require a defined coding or mapping method; do not treat ``2.5 bits'' as a complete system rate.
+\item[PAM8] A digital signal modulation scheme that encodes information by varying the amplitude of a pulse across eight distinct voltage levels. Each of these eight levels can represent 3 bits of data.
+\item[PCB/PCBA] Printed circuit board (PCB) assembly, an assembly of electrical components built on a rigid glass-reinforced epoxy-based board.
 \item[PCS] Physical coding sublayer. The IEEE 802.3 sublayer that performs 64B/66B line coding, 256B/257B transcoding, scrambling, and RS-FEC encoding.
 \item[PD] Photodiode. A semiconductor device that converts photons to photocurrent (PIN, APD, or UTC variants).
 \item[PHY] Physical layer. The combined PCS, PMA, and PMD that maps MAC frames to signals on the wire or fiber.
 \item[PIC] Photonic integrated circuit. A chip integrating waveguides, modulators, detectors, and couplers (typically on SOI at 220~nm silicon).
-\item[PIN] A p-intrinsic-n photodiode with no internal gain and the lowest excess noise; Ge-on-Si waveguide PIN is the mainstream short-reach detector.
+\item[PIN] A p-intrinsic-n photodiode with no internal gain and low excess noise; Ge-on-Si waveguide PIN is a common short-reach detector.
 \item[PMA] Physical medium attachment. The IEEE 802.3 sublayer that serializes, lane-multiplexes, and recovers clock. The SerDes lives here.
 \item[PMD] Physical medium dependent. The IEEE 802.3 sublayer that modulates and detects light: the optical transceiver (laser, driver, PD, TIA).
 \item[PRBS] Pseudo-random binary sequence. A deterministic test pattern that exercises all bit transitions; used for BER and eye measurements.
-\item[PVT] Production Validation Test. Proves the factory can build the qualified design repeatedly at yield with ATP and SPC (\Cref{tab:npi}).
 \item[PSRR] Power supply rejection ratio. A circuit's ability to suppress supply-rail noise; critical for laser bias drivers to avoid injecting RIN.
 \item[PUE] Power usage effectiveness. Total facility power divided by IT equipment power; typical hyperscale values 1.1--1.3.
+\item[PVT] Production Validation Test. Proves the factory can build the qualified design repeatedly at yield with ATP and SPC (\Cref{tab:npi}).
 \item[QSFP-DD] Quad Small Form-factor Pluggable Double Density. A faceplate module cage carrying eight electrical lanes for 400G/800G/1.6T.
 \item[RDMA] Remote direct memory access. Zero-copy network transfer between accelerator memories; carried over RoCE (Ethernet) or native InfiniBand.
-\item[RIN] Relative intensity noise. The laser's own amplitude-noise spectral density (dB/Hz); sets a BER floor that power cannot overcome.
+\item[Repeater] A low-latency electronic device that receives a signal and retransmits it. Repeaters are used to extend transmissions so that the signal can cover a longer distance. Besides signal equalization, clock and data recovery (CDR) functions could be also added to remove jitter from received signals effectively.
+\item[RIN] Relative intensity noise. The laser's amplitude-noise spectral density (dB/Hz). Intrinsic RIN is a source property; $\mathrm{RIN}_x\mathrm{OMA}$ is a standard-specific stressed-transmitter metric. RIN can create a BER floor when signal-proportional intensity noise dominates; not every BER floor is RIN-limited.
 \item[RLM] Relative level mismatch. A measure of PAM4 level spacing uniformity (1.0 = perfectly even); CEI typically requires $\ge$0.95.
 \item[RMA] Return merchandise authorization. A field-failed unit returned to the supplier for failure analysis. Distinct RMA codes keep FIT accounting honest.
+\item[RoCE] RDMA over Converged Ethernet (CE) is a network protocol which allows remote direct memory access (RDMA) over an Ethernet network.
+\item[RS-FEC] Reed--Solomon forward error correction. A block code on fixed-size symbols (for example KP4 RS(544,514) on 10-bit symbols). Distinct from the Ethernet RS sublayer.
+\item[RS sublayer] Reconciliation Sublayer. Adapts the MAC to the PHY across the xMII. Distinct from RS-FEC.
+\item[RTLR] (Retimed Transmit, Linear Receive) also generically referred to as Linear receive optic (LRO), is a type of optical transceiver technology used primarily in high-speed data center and networking applications, especially within AI clusters. The RTLR naming convention is within OIF. LRO is characterized by the presence of a Digital Signal Processor (DSP) solely on the transmit path, while the receive path operates with a linear, non-retimed architecture. This differs from fully retimed optical modules that use DSPs on both transmit and receive paths, and also from Linear Pluggable Optics (LPO) that eliminate DSPs entirely.
+\item[Scale-out] Fabric connecting racks, systems, or scale-up domains (for example Ethernet or InfiniBand cluster networking).
+\item[Scale-up] Tightly coupled accelerator fabric inside a scale-up domain (memory-coherent or high-bandwidth GPU/XPU interconnect). Not ``adding RAM to one server.''
+\item[SDO] standard development organizations.
 \item[SECQ] Stressed eye closure quaternary. A receiver-side metric that applies calibrated optical stress and reports remaining margin before BER threshold.
+\item[SerDes] A Serializer/Deserializer is a pair of functional blocks commonly used in high-speed communications to transfer data over a relatively low number of lanes.
+\item[SFP] Small form-factor pluggable connector is a modular, hot-pluggable interface used in networking devices to connect to various types of fiber optic or copper cables. It uses a PCB card edge interface.
+\item[SI] Signal integrity is a set of measures of the quality of an electrical signal.
 \item[SiGe] Silicon-germanium BiCMOS. A high-$f_T$ semiconductor process for TIAs and modulator drivers operating at 100--200+~GHz bandwidth.
-\item[SiPh] Silicon photonics. Waveguides and modulators on silicon-on-insulator; CMOS fab-compatible and the mainstream for DR/FR and CPO.
+\item[SiPh] Silicon photonics. Waveguides and modulators on silicon-on-insulator; CMOS fab-compatible and widely used for DR/FR and CPO engines.
 \item[SMF] Single-mode fiber. Fiber with a $\sim$9~$\mu$m core carrying one spatial mode; G.652.D (standard) and G.657 (bend-insensitive) for datacenter plant.
 \item[SMSR] Side-mode suppression ratio. The power difference (dB) between the dominant lasing mode and the strongest side mode on an OSA.
+\item[SNDR] Signal-to-noise-and-distortion ratio is a measurement of the purity of a signal.
+\item[SNR] Signal-to-noise ratio.
 \item[SOA] Semiconductor optical amplifier. A III-V inline optical gain block; adds ASE noise. Used as a receiver preamplifier for sensitivity.
 \item[SOI] Silicon on insulator. A wafer substrate for silicon photonics: a thin ($\sim$220~nm) silicon layer on buried oxide confines the optical mode.
 \item[SPC] Statistical process control. Tracks process distributions and trends to catch drift before escapes ship.
 \item[SR] Short reach. An IEEE 802.3 multimode fiber class, typically $\le$100~m over OM4; VCSEL at 850~nm.
+\item[TBD] To be determined.
+\item[Tbps] Terabits per second. The throughput or data rate of a port or piece of equipment. Tbps is $1\times10^{12}$ bits per second.
+\item[TCM] Trellis coded modulation is a technique that combines convolutional coding and modulation to improve data transmission efficiency over bandwidth-limited channels, like telephone lines. It achieves this by intelligently integrating the encoding and modulation processes, increasing the distance between signal points in the constellation to enhance error correction without expanding bandwidth.
 \item[TCO] Total cost of ownership. Acquisition (BOM, yield) plus lifetime energy plus service cost (FIT $\times$ replacement + labor).
 \item[TDECQ] Transmitter and dispersion eye closure quaternary. The headline PAM4 transmitter-quality metric; measured after a reference receiver and bounded FFE, including a test fiber.
 \item[TEC] Thermoelectric cooler. A Peltier device that holds a laser junction or ring at a controlled temperature against case thermal variations.
 \item[TECQ] Transmitter eye closure quaternary. Same measurement as TDECQ without the test fiber; used alongside TDECQ in LPO MSA OMA tables.
-\item[TFLN] Thin-film lithium niobate. A sub-micrometer LN layer on a silicon or silica handle; $>$110~GHz EO BW and the leading path to native 224~GBd PAM4.
+\item[TFLN] Thin-film lithium niobate. A sub-micrometer LN layer on a silicon or silica handle; EO bandwidth can exceed 110~GHz and is a candidate path for native 224~GBd PAM4.
 \item[TIA] Transimpedance amplifier. Converts photodiode current to voltage with low input-referred noise; co-packaging with the PD minimizes capacitance and noise.
+\item[TME] Test and measurement equipment.
 \item[TP] Test point. A defined reference plane where a link measurement is taken (TP0 through TP5, plus TP1a/TP4a).
 \item[TRO] Transmit retimed optic. A module with DSP only on the transmit (electrical-to-optical) path; the receive path is linear.
 \item[TWE] Traveling-wave electrode. An RF transmission line on a modulator that velocity-matches the electrical and optical group indices for high EO bandwidth.
 \item[TWI] Two-wire interface. An I2C-like serial bus (SCL + SDA) used for CMIS module management communication.
+\item[Twinax copper cable] A type of copper cable similar to coaxial cable, but with two inner conductors instead of one.
 \item[UALink] Ultra Accelerator Link. An open scale-up fabric specification for direct accelerator memory access (200G/lane class; $\sim$400G/lane next).
+\item[UCIe] Universal chiplet interconnect express is an open industry standard that defines the interconnect between chiplets, or small component dies, within a single package.
 \item[UEC] Ultra Ethernet Consortium. Builds an open Ethernet-based stack (UET transport, PHY) optimized for AI/HPC scale-out with cluster-scale congestion control.
 \item[UI] Unit interval. One symbol period ($=1/R_\mathrm{sym}$); jitter budgets and eye diagrams are referenced in UI.
 \item[UTC / MUTC] Uni-traveling-carrier (modified UTC) photodiode. Uses electron-only transport for $>$200~GHz bandwidth and high saturation current; linear/LPO niche.
 \item[VCSEL] Vertical-cavity surface-emitting laser. 850~nm class source for multimode short-reach links.
+\item[VLC] Vertical line card. A new line card design in which vertical I/O connectors and ASIC are mounted side by side, reducing the signal trace distance.
 \item[VNA] Vector network analyzer. Measures electrical or electro-optic $S$-parameters versus frequency for bandwidth and reflection.
 \item[VOA] Variable optical attenuator. A calibrated loss element used for sensitivity sweeps and stressed-receiver testing.
+\item[VSR] Very short reach. CEI VSR specifies chip-to-module electrical interfaces.
 \item[WDM] Wavelength division multiplexing. Sending multiple wavelengths on one fiber; CWDM (20~nm spacing) or DWDM ($\le$100~GHz spacing).
 \item[XPO] eXtra-dense Pluggable Optics. A liquid-cooled, 12.8~Tb/s faceplate pluggable module (Arista MSA, OFC 2026); front-panel serviceable at CPO-class density.
+\item[XSR] Extra short reach. CEI XSR specifies die-to-optical engine (D2OE) and die-to-die (D2D) electrical interfaces.
+\end{description}
+
+\section{Symbols and units}
+\label{sec:glossary-symbols}
+\begin{description}
+\item[dB] Decibel. A relative power or ratio unit: $10\log_{10}(P_a/P_b)$ for power ratios.
+\item[dBm] Absolute optical or electrical power relative to 1~mW: $10\log_{10}(P/1\,\mathrm{mW})$.
+\item[GBd] Gigabaud. $10^9$ symbols per second (symbol rate).
+\item[Gb/s] Gigabits per second. Bit rate; for PAM4, roughly $2\times$ baud before coding details.
+\item[UI] Unit interval. One symbol period ($=1/R_\mathrm{sym}$).
+\item[BER] Bit error ratio. Erroneous bits divided by bits observed; state pre-FEC or post-FEC.
+\item[SER] Symbol error ratio. Erroneous symbols divided by symbols observed; related to but not identical to BER.
+\item[OMA] Optical modulation amplitude (power units, often dBm when converted). See glossary entry.
+\item[Average optical power] Mean optical power over the pattern; not OMA.
+\item[Wavelength spacing] Channel separation in nm; not constant when frequency spacing is constant.
+\item[Frequency spacing] Channel separation in GHz (for example LAN-WDM or DWDM grids).
+\item[FIT] Failures per $10^9$ device-hours. See glossary entry.
+\item[DPPM] Defective parts per million. See glossary entry.
+\item[pJ/bit] Picojoules per bit. Energy per bit; always name the measurement boundary.
+\end{description}
+
+\section{Do not confuse}
+\label{sec:glossary-confuse}
+\begin{description}
+\item[BER / SER / FLR] BER counts bits; SER counts symbols; FLR (frame-loss ratio) is a post-FEC packet/frame metric. State which one and the confidence window.
+\item[OMA / average optical power] OMA is the outer swing; average power is the mean. Same dBm number is not interchangeable.
+\item[TDECQ / SECQ / EECQ] TDECQ is Tx optical with test fiber; TECQ omits that fiber; SECQ is stressed Rx optical; EECQ is electrical eye closure at host test points.
+\item[DVT / PVT / EVT] EVT is early engineering validation; DVT proves the design; PVT proves the factory can build it (\Cref{tab:npi}).
+\item[FIT / DPPM] FIT is a rate per device-hours; DPPM is a fraction of units defective in a population and window.
+\item[CPO / NPO / OBO] CPO mounts optics on the host package; NPO is adjacent on the PCB; OBO/COBO is mid-board on the PCB.
+\item[LPO / LRO / TRO / RTLR] LPO is linear both directions; LRO/RTLR retimes Tx only (linear Rx); TRO retimes Tx (linear Rx) under that naming. Draw the host electrical Tx/Rx path rather than expanding acronyms alone (\Cref{ch:networking}).
+\item[RS sublayer / RS-FEC] RS sublayer is Reconciliation; RS-FEC is Reed--Solomon forward error correction in the PCS.
 \end{description}
