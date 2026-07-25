@@ -8,7 +8,7 @@ engineering process automatic under time pressure.
 \section{Three principles}
 \label{sec:interview-philosophy}
 
-\paragraph{Principle 1: Engineering reduces uncertainty.}
+\noindent\textbf{Principle 1: Engineering reduces uncertainty.}
 \keyidea{The purpose of engineering is not to find certainty. It is to reduce
 uncertainty enough to make the next decision.}
 Validation, measurement, debugging, qualification, supplier choices, and
@@ -18,16 +18,17 @@ engineering decisions under uncertainty using measurements, physics, and
 evidence. Ask the scale of the problem (device, module, rack, fleet) before
 you chase a root cause: scale picks the owner.
 
-\paragraph{Principle 2: Measurements exist to unlock decisions.}
+\noindent\textbf{Principle 2: Measurements exist to unlock decisions.}\\
 Instruments do not exist to produce plots. They exist to unlock a decision.
 A power meter asks whether you should chase the optical path or signal
 integrity. An OSA asks whether spectral alignment is still plausible. An LIV
-asks whether the device itself changed. A DCA or TDECQ asks whether the eye
-is still inside budget. A BER waterfall asks whether you have a sensitivity
-shift or a noise floor. On every answer, name the decision unlocked (ship,
-derate, second-source, ATP change, partner action) as well as the instrument.
+asks whether the device itself changed. A DCA\termnote{DCA} or
+TDECQ\termnote{TDECQ} asks whether the eye is still inside budget. A BER
+waterfall asks whether you have a sensitivity shift or a noise floor. On every
+answer, name the decision unlocked (ship, derate, second-source,
+ATP\termnote{ATP} change, partner action) as well as the instrument.
 
-\paragraph{Principle 3: Every measurement updates your beliefs.}
+\noindent\textbf{Principle 3: Every measurement updates your beliefs.}\\
 Treat engineering as hypothesis testing:
 \[
 \begin{split}

@@ -9,18 +9,16 @@ Use this appendix as a standalone review sheet for about a week of focused prep.
 
 ## Three principles
 
-##### Principle 1: Engineering reduces uncertainty.
+**Principle 1: Engineering reduces uncertainty.**
 
 **Key idea.** The purpose of engineering is not to find certainty. It is to reduce uncertainty enough to make the next decision.
 
 Validation, measurement, debugging, qualification, supplier choices, and production are the same work under different names. The goal of an optical systems engineer is not to know every component. It is to make good engineering decisions under uncertainty using measurements, physics, and evidence. Ask the scale of the problem (device, module, rack, fleet) before you chase a root cause: scale picks the owner.
 
-##### Principle 2: Measurements exist to unlock decisions.
-
+**Principle 2: Measurements exist to unlock decisions.**\
 Instruments do not exist to produce plots. They exist to unlock a decision. A power meter asks whether you should chase the optical path or signal integrity. An OSA asks whether spectral alignment is still plausible. An LIV asks whether the device itself changed. A DCA or TDECQ asks whether the eye is still inside budget. A BER waterfall asks whether you have a sensitivity shift or a noise floor. On every answer, name the decision unlocked (ship, derate, second-source, ATP change, partner action) as well as the instrument.
 
-##### Principle 3: Every measurement updates your beliefs.
-
+**Principle 3: Every measurement updates your beliefs.**\
 Treat engineering as hypothesis testing: $$\begin{split}
 \text{observation} &\longrightarrow \text{hypotheses}
 \longrightarrow \text{measurement}\\
