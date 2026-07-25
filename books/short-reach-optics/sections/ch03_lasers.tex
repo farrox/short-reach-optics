@@ -371,6 +371,11 @@ ELS / ELSFP & co-packaged optics & connectorization, fleet serviceability \\
 {\raggedright\footnotesize\textbf{Table~\thetable.} When each source is used, and its top validation risks.\par}
 \end{table*}
 
+Use \Cref{tab:laser-choice} as a short risk card once the path is roughly
+known. Use \Cref{tab:source-mod-matrix} when you still need to compare
+attribute rows across paths. Do not treat this card as a substitute for the
+full matrix or for \Cref{tab:laser-prd}.
+
 \section{Choosing the modulation path}
 \label{sec:siph-platforms}
 
@@ -428,6 +433,10 @@ Derate policy & Operating $I$, $T$, power below abs-max & Bias window, thermal c
 specs each one forces. Freeze these before DVT samples are built
 (\Cref{sec:supplier-exec}).\par}
 \end{table*}
+
+Each ``Specs you must freeze early'' cell is the exit criterion for that fork.
+\textbf{Exit when} every active fork has numbers (or explicit N/A) before DVT
+samples are built.
 
 \paragraph{One-page requirements slice.}
 \Cref{tab:laser-prd} is the PRD-sized list. Fill every row with a number (or an
@@ -490,6 +499,11 @@ below turn an architecture choice into ATP limits:
 Hand the filled slice to the supplier with the ATP checklist
 (\Cref{tab:atp-laser}). If a roadmap slide cannot point to a row in
 \Cref{tab:laser-prd}, the requirement is not real yet.
+
+\textbf{Exit when} every cell in \Cref{tab:laser-prd} is a program number or
+explicit N/A, with ORL stated wherever RIN appears and case-$T$ class stated
+wherever power or bias appears. \textbf{Decision unlocked:} negotiate ATP
+limits, or reopen the architecture fork that left a cell empty.
 
 \keyidea{Laser leadership is a requirements sheet: architecture forks force
 specific specs (power, grid, RIN@ORL, SMSR, bias window, CMIS, FIT). Fill
@@ -565,6 +579,13 @@ EAM bias (EML) & bias sweep + DCA/TDECQ & extinction, chirp, RLM & aging shifts 
 {\raggedright\footnotesize\textbf{Table~\thetable.} Laser measurement playbook: what to
 measure, with what, and what failure looks like.\par}
 \end{table*}
+
+Measure in order: LIV $\to$ SMSR $\to$ wavelength $\to$ RIN (quiet then
+stressed ORL) $\to$ EAM or bias-driver checks as the path requires. Stop when
+distributions across temperature and units support the bias window, grid, and
+RIN policy in \Cref{tab:laser-prd} (see also
+\Cref{tab:laser-engineering-checklist}). Do not keep measuring for its own
+sake once those exits close.
 
 \section{Laser drivers and the RIN budget}
 \label{sec:laser-drivers}

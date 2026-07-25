@@ -618,6 +618,31 @@ points at a different owner.
       reliability engineering.
 \end{description}
 
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:yield-split}%
+\centering
+\setlength{\tabcolsep}{3.5pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.25}%
+\begin{tabular}{@{}p{0.22\linewidth}p{0.28\linewidth}p{0.22\linewidth}p{0.22\linewidth}@{}}
+\toprule
+Yield stage & Main limit & First catch & Owner \\
+\midrule
+Wafer / die & Waveguide, resonance, heater, PD dark & Wafer probe & Foundry SPC \\
+\addlinespace[1.5em]
+Assembly & FAU align, solder, wirebond, epoxy & Module ATP & Assembly supplier \\
+\addlinespace[1.5em]
+Test (first-pass) & ATP fails; may include false rejects & ATP station + GR\&R & Test engineering \\
+\addlinespace[1.5em]
+Escaped DPPM & Passed screens; failed in fleet & Field RMA / triage & Quality / reliability \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Yield stages, first catch, and
+owner. Split escapes further in \Cref{tab:escape-classes}.\par}
+\end{table*}
+\FloatBarrier
+
 Track yield by ATP row, lot, supplier site, tester, and date code. A yield drop
 that correlates with one tester is likely a measurement problem. A yield drop that
 correlates with one supplier lot is likely a process problem. A yield drop with no
@@ -651,6 +676,27 @@ margin with the five ledgers before naming a component
 An escaped defect is a unit that passed every production screen and failed in the
 field. Post-screen field failures split into two categories with different
 corrective actions:
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:escape-classes}%
+\centering
+\setlength{\tabcolsep}{3.5pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.25}%
+\begin{tabular}{@{}p{0.20\linewidth}p{0.28\linewidth}p{0.24\linewidth}p{0.22\linewidth}@{}}
+\toprule
+Class & Meaning & Typical action & Lands in \\
+\midrule
+Preventable coverage & Screen could have caught it & Add/tighten ATP or SPC & Escape DPPM, CAPA \\
+\addlinespace[1.5em]
+Residual latent & No cost-effective screen & FIT / redundancy / replace & Residual FIT model \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Escape classes. Preventable rows
+change production; residual rows change the life model.\par}
+\end{table*}
+\FloatBarrier
 
 \paragraph{Preventable coverage escapes.}
 A defect that a cost-effective screen could have caught but did not, because the
@@ -963,209 +1009,55 @@ negotiate with the supplier.\par}
 \subsection{Reading the ATP checklist}
 \label{sec:atp-laser-read}
 
-Each ATP line is a screen with a purpose, not a museum of instruments. Limits
-come from the requirements slice and link budget; the notes below state what
-uncertainty each line removes.
+Each ATP line is a screen with a purpose, not a museum of instruments
+(\Cref{tab:atp-laser}). Limits come from the requirements slice. The notes
+below teach the rows that most often mis-classify escapes; the rest are
+Risk-if-omitted only.
 
-\paragraph{LIV ($I_\mathrm{th.}$, slope, kink)}
-
-\textbf{Purpose.}
-Is there a kink-free bias window at rated temperature?
-
-\textbf{Uncertainty removed.}
-Without LIV you cannot separate a dead bias window from later eye or BER
-fails. Ship LIV is also the baseline for wear-out triage
-(\Cref{sec:laser-params,sec:wearout-modes}).
-
-\textbf{Activities.}
-Sweep current with an SMU and power meter at rated $T$. Record threshold,
-slope, and kink presence.
-
-\textbf{Exit criteria.}
-\textbf{Exit when} the unit shows a kink-free window inside the bias policy.
-
-\textbf{Decision unlocked.}
-Ship, reject, or tighten bias/derate.
-
-\paragraph{Risk if omitted.}
-Kinked or weak diodes escape and age into soft BER without a compare baseline.
-
-\paragraph{SMSR.}
-
-\textbf{Purpose.}
-Does single-mode purity meet the floor so modal noise stays controlled?
-
-\textbf{Activities.}
-Measure SMSR on an OSA versus the spec floor at temperature.
-
-\textbf{Exit criteria.}
-\textbf{Exit when} SMSR clears the floor with the program guardband.
-
-\textbf{Decision unlocked.}
-Ship or reject for modal risk; feed aging SMSR into life screens.
-
-\paragraph{Risk if omitted.}
-Temperature-dependent side modes look like random link errors in the field.
+\paragraph{LIV ($I_\mathrm{th}$, slope, kink).}
+Without ship LIV you cannot separate a dead bias window from later eye or
+BER fails, and wear-out triage has no baseline
+(\Cref{sec:laser-params,sec:wearout-modes}). \textbf{Exit when} the unit
+shows a kink-free window inside the bias policy. \textbf{Decision:} ship,
+reject, or tighten bias/derate. \textbf{Risk if omitted:} kinked diodes age
+into soft BER with nothing to compare.
 
 \paragraph{RIN (intrinsic + stressed ORL).}
-
-\textbf{Purpose.}
-Does the noise floor survive quiet and stressed optical return loss?
-
-\textbf{Activities.}
-Measure RIN with a PD and ESA at stated ORL and bandwidth
-(\Cref{sec:rin-values}).
-
-\textbf{Exit criteria.}
-\textbf{Exit when} quiet and stressed RIN meet the BER-floor budget.
-
-\textbf{Decision unlocked.}
-Ship, require isolation, or reject for reflection sensitivity.
-
-\paragraph{Risk if omitted.}
-Clean-bench parts floor under field ORL.
-
-\paragraph{Wavelength / grid.}
-
-\textbf{Purpose.}
-Is the channel ID correct, and is $d\lambda/dT$ inside the lock budget
-(\Cref{ch:wdm})?
-
-\textbf{Activities.}
-OSA or wavemeter at temperature corners.
-
-\textbf{Exit criteria.}
-\textbf{Exit when} wavelength and drift support the assigned grid and filters.
-
-\textbf{Decision unlocked.}
-Ship on channel, retune, or reject for grid miss.
-
-\paragraph{Risk if omitted.}
-WDM unlock and crosstalk appear as host or DSP bugs.
-
-\paragraph{Optical power class.}
-
-\textbf{Purpose.}
-Does launch power meet the ELSFP / MSA class the link budget assumed?
-
-\textbf{Activities.}
-Power meter at the named reference plane.
-
-\textbf{Exit criteria.}
-\textbf{Exit when} power class is met with guardband.
-
-\textbf{Decision unlocked.}
-Ship, bin, or reject for budget failure.
-
-\paragraph{Risk if omitted.}
-Under-powered ports pass other screens and fail reach in the rack.
+Quiet-bench RIN does not prove field reflection survival
+(\Cref{sec:rin-values}). \textbf{Exit when} quiet and stressed RIN meet the
+BER-floor budget. \textbf{Decision:} ship, require isolation, or reject.
+\textbf{Risk if omitted:} clean-bench parts floor under field ORL.
 
 \paragraph{EAM bias / chirp (EML).}
-
-\textbf{Purpose.}
-Do ER, RLM, and TDECQ at baud close with a stable EAM bias
-(\Cref{sec:tdecq})?
-
-\textbf{Activities.}
-EAM bias sweep with a DCA under named driver conditions.
-
-\textbf{Exit criteria.}
-\textbf{Exit when} eye metrics meet limits inside the bias window.
-
-\textbf{Decision unlocked.}
-Ship EML, retune bias tables, or reject modulator quality.
-
-\paragraph{Risk if omitted.}
-Average power passes while Tx quality fails under temperature and age.
-
-\paragraph{CMIS / TWI bring-up.}
-
-\textbf{Purpose.}
-Do registers, alarms, and the state machine work so field telemetry is real?
-
-\textbf{Activities.}
-Host or CMIS tool bring-up through ready state; check alarms and key pages.
-
-\textbf{Exit criteria.}
-\textbf{Exit when} management presence, state progression, and alarm paths
-pass.
-
-\textbf{Decision unlocked.}
-Ship with trusted telemetry, or hold for firmware / TWI faults.
-
-\paragraph{Risk if omitted.}
-Fleet triage has no trustworthy dump when the first RMA arrives.
+Average power can pass while Tx quality fails
+(\Cref{sec:tdecq}). \textbf{Exit when} ER, RLM, and TDECQ meet limits inside
+the bias window. \textbf{Decision:} ship, retune tables, or reject.
+\textbf{Risk if omitted:} temperature and age close the eye after ship.
 
 \paragraph{Connector / ORL.}
+Mate life and endface grade are packaging screens, not laser FIT
+(\Cref{sec:connector-reliability,sec:elsfp}). \textbf{Exit when} cycles and
+grade meet the claimed service life. \textbf{Decision:} ship, derate mate
+life, or reject packaging. \textbf{Risk if omitted:} service raises ORL and
+RIN after ship.
 
-\textbf{Purpose.}
-Do mate cycles and endface grade meet IEC~61300 limits for the service model
-(\Cref{sec:connector-reliability,sec:elsfp})?
-
-\textbf{Activities.}
-ORL meter and mate-cycle sample against rating; endface grade as required.
-
-\textbf{Exit criteria.}
-\textbf{Exit when} cycles and grade meet the claimed service life.
-
-\textbf{Decision unlocked.}
-Ship, derate mate life, or reject packaging.
-
-\paragraph{Risk if omitted.}
-Connector wear raises ORL and RIN after routine service.
-
-\paragraph{Burn-in screen.}
-
-\textbf{Purpose.}
-Are infant-mortality parts culled before ship (\Cref{sec:gr468})?
-
-\textbf{Activities.}
-HTOL sample or 100\% screen per the reliability plan; track fallout.
-
-\textbf{Exit criteria.}
-\textbf{Exit when} the screen completes and fallout is inside control limits.
-
-\textbf{Decision unlocked.}
-Ship the lot, hold for process excursion, or tighten burn-in.
-
-\paragraph{Risk if omitted.}
-Early-life clusters hit the fleet by date code.
-
-\paragraph{Driver / TIA ESD and latch-up.}
-
-\textbf{Purpose.}
-Is IC ESD/latch-up rating on file, and does sample audit support it
-(\Cref{sec:ic-reliability})?
-
-\textbf{Activities.}
-Review supplier JESD47 / HBM / CDM reports; sample audit as required.
-
-\textbf{Exit criteria.}
-\textbf{Exit when} ratings are on file and audit finds no latch-up under the
-agreed injection.
-
-\textbf{Decision unlocked.}
-Accept electronics reliability evidence, or hold for IC margin / handling.
-
-\paragraph{Risk if omitted.}
-Dark modules from handling ESD are mis-labeled as laser COD.
-
-\paragraph{Thermal class.}
-
-\textbf{Purpose.}
-Do LIV, RIN, and CMIS still pass at the claimed case temperature?
-
-\textbf{Activities.}
-Chamber at case $T$ with the ATP subset that protects derate policy.
-
-\textbf{Exit criteria.}
-\textbf{Exit when} thermal-class ATP rows pass at the rated case $T$.
-
-\textbf{Decision unlocked.}
-Approve thermal class, derate, or reject.
-
-\paragraph{Risk if omitted.}
-Room-temperature ATP ships parts that fail in the sled.
+\paragraph{Other ATP rows (retrieve from the table).}
+\begin{description}
+\item[SMSR] \textbf{Risk if omitted:} temperature-dependent side modes look
+      like random link errors.
+\item[Wavelength / grid] \textbf{Risk if omitted:} WDM unlock appears as host
+      or DSP bugs (\Cref{ch:wdm}).
+\item[Optical power class] \textbf{Risk if omitted:} under-powered ports fail
+      reach after other screens pass.
+\item[CMIS / TWI] \textbf{Risk if omitted:} fleet triage has no trustworthy
+      dump on the first RMA.
+\item[Burn-in] \textbf{Risk if omitted:} early-life clusters hit by date code
+      (\Cref{sec:gr468}).
+\item[Driver/TIA ESD] \textbf{Risk if omitted:} dark modules from handling
+      are mis-labeled as laser COD (\Cref{sec:ic-reliability}).
+\item[Thermal class] \textbf{Risk if omitted:} room-temperature ATP ships
+      parts that fail in the sled.
+\end{description}
 
 \subsection{Why these ATP lines stay coupled}
 

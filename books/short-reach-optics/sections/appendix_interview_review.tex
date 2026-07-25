@@ -110,7 +110,7 @@ nodes:
 \begin{dectree}
 Understand:   requirements -> architecture
 Investigate:  measure -> observe -> hypothesize -> isolate
-Resolve:      root cause -> corrective action
+Resolve:      ownership + action (mechanism may still be open)
 Prevent:      recurrence control -> decision
 \end{dectree}
 The diagram is a memory aid, not the answer. Speak one clear paragraph per
@@ -327,208 +327,41 @@ mechanism is still open.\par}
 \subsection{Reading the decision vocabulary}
 \label{sec:interview-decisions-read}
 
-Measurements unlock actions. Name the action, the evidence that unlocks it,
-and the residual risk if you choose it too early.
+Measurements unlock actions (\Cref{tab:interview-decisions}). Expand
+ship, contain, and modify-ATP under time pressure; retrieve the rest from
+the table and the summary below.
 
 \paragraph{Ship / don't ship.}
-
-\textbf{Purpose.}
-Does the population meet ATP and the life model for the claimed envelope?
-
-\textbf{Uncertainty removed.}
-Hero samples and open mechanisms do not answer ship. Multi-lot ATP and named
-life evidence do.
-
-\textbf{Exit criteria.}
-\textbf{Exit when} population data meet versioned ATP and life claims, or
-explicitly fail them.
-
-\textbf{Decision unlocked.}
-Ship, hold, or restrict the envelope.
-
-\textbf{Risk if chosen too early.}
-You learn the escape mechanism from customer outage.
-
-\paragraph{Continue validation.}
-
-\textbf{Purpose.}
-Does remaining uncertainty still block a ship or architecture call?
-
-\textbf{Exit criteria.}
-\textbf{Exit when} the missing measurement or corner is named and scheduled.
-
-\textbf{Decision unlocked.}
-Spend lab time on a specific ladder stage, not on open-ended ``more testing.''
-
-\textbf{Risk if chosen too late.}
-You keep measuring after the decision is already blocked only by courage.
-
-\paragraph{Escalate supplier.}
-
-\textbf{Purpose.}
-Does scope show a lot, site, or vendor signature that the supplier must own?
-
-\textbf{Exit criteria.}
-\textbf{Exit when} correlation plots and split RMA codes justify the
-escalation pack.
-
-\textbf{Decision unlocked.}
-Open 8D / CAPA with evidence; do not escalate a single dirty connector as a
-vendor crisis.
-
-\textbf{Risk if chosen too early.}
-You burn supplier trust and miss a host or plant cause.
-
-\paragraph{Derate.}
-
-\textbf{Purpose.}
-Is margin too thin for the full claim, but acceptable under tighter use?
-
-\textbf{Exit criteria.}
-\textbf{Exit when} the restricted envelope is written and validated at the
-new corner.
-
-\textbf{Decision unlocked.}
-Ship under derate, or reject if derate kills the product purpose.
-
-\textbf{Risk if chosen too early.}
-You hide a design defect behind a temporary thermal or reach cut.
-
-\paragraph{Second source.}
-
-\textbf{Purpose.}
-Does single-vendor risk exceed fleet tolerance even if the first source
-still works?
-
-\textbf{Exit criteria.}
-\textbf{Exit when} business risk and dual-qual cost are explicit, and the
-second source has its own ATP and life evidence.
-
-\textbf{Decision unlocked.}
-Fund dual source, or accept single-source risk in writing.
-
-\textbf{Risk if chosen too early.}
-You dual-source before the first source's failure mode is understood, and
-copy the same blind spot.
+Hero samples do not answer ship. \textbf{Exit when} population data meet
+versioned ATP and life claims, or explicitly fail them. \textbf{Decision:}
+ship, hold, or restrict. \textbf{Risk if too early:} you learn the escape
+from customer outage.
 
 \paragraph{Contain lot.}
-
-\textbf{Purpose.}
-Is there a date-code or lot escape that must stop further exposure today?
-
-\textbf{Exit criteria.}
-\textbf{Exit when} suspect lots are identified and ship/fleet holds are in
-place.
-
-\textbf{Decision unlocked.}
-Quarantine WIP and field exposure while FA continues.
-
-\textbf{Risk if chosen too late.}
-Bad lots keep shipping while SEM photos are pending.
+Date-code or lot escapes need a hold today. \textbf{Exit when} suspect lots
+are identified and ship/fleet holds are in place. \textbf{Decision:}
+quarantine while FA continues. \textbf{Risk if too late:} bad lots keep
+shipping while SEM photos are pending.
 
 \paragraph{Modify ATP.}
+An escape path must become a production catch. \textbf{Exit when} the new
+row has limits, guardband, and GR\&R. \textbf{Decision:} version the ATP;
+hold failing lots. \textbf{Risk if skipped:} FA closes; the factory ships
+the same escape tomorrow.
 
-\textbf{Purpose.}
-Was an escape path found that production must catch next time?
-
-\textbf{Exit criteria.}
-\textbf{Exit when} the new or tightened ATP row has limits, guardband, and
-GR\&R.
-
-\textbf{Decision unlocked.}
-Version the ATP with the requirements slice; hold lots that fail the new
-screen.
-
-\textbf{Risk if skipped.}
-FA closes; the factory ships the same escape tomorrow.
-
-\paragraph{Open RMA / request FA.}
-
-\textbf{Purpose.}
-Does a field or partner unit need mechanism work beyond remote triage?
-
-\textbf{Exit criteria.}
-\textbf{Exit when} preserve pack exists and remote triage cannot close
-ownership.
-
-\textbf{Decision unlocked.}
-Pull the unit under chain of custody; do not reseat away the evidence first.
-
-\textbf{Risk if chosen too early.}
-You RMA healthy units and starve the lab with noise.
-
-\paragraph{Perform DPA.}
-
-\textbf{Purpose.}
-Do you need physical confirmation of facet, solder, FAU, or die?
-
-\textbf{Exit criteria.}
-\textbf{Exit when} non-destructive evidence has narrowed the site and DPA
-will change the decision.
-
-\textbf{Decision unlocked.}
-Section the part; update mechanism and CAPA.
-
-\textbf{Risk if chosen too early.}
-You destroy the only unit before electrical and optical falsifiers run
-(\Cref{sec:failure-analysis-checklist}).
-
-\paragraph{Change firmware.}
-
-\textbf{Purpose.}
-Is the control loop, table, or guard wrong while the hardware is healthy?
-
-\textbf{Exit criteria.}
-\textbf{Exit when} before/after at the failing corner shows the firmware
-change restores margin.
-
-\textbf{Decision unlocked.}
-Rev firmware under change control; treat the rev like a process change for
-FAIR.
-
-\textbf{Risk if chosen too early.}
-You mask a hardware wear-out with a table patch that drifts again.
-
-\paragraph{Retune calibration.}
-
-\textbf{Purpose.}
-Is the device healthy but the setpoint or table segment wrong?
-
-\textbf{Exit criteria.}
-\textbf{Exit when} calibration restore clears the corner and LIV/SMSR/RIN
-baselines are unchanged.
-
-\textbf{Decision unlocked.}
-Fix tables and screening; do not open laser life CAPA for a bad segment.
-
-\textbf{Risk if chosen too early.}
-You ``calibrate away'' real aging and ship drifting parts.
-
-\paragraph{Monitor only.}
-
-\textbf{Purpose.}
-Is the rate tiny, flat, and without customer impact so watching is enough?
-
-\textbf{Exit criteria.}
-\textbf{Exit when} rate, trend, and impact criteria for monitor-only are
-met and alarms are armed.
-
-\textbf{Decision unlocked.}
-Watch weekly; escalate to contain if growth or impact appears.
-
-\textbf{Risk if chosen too early.}
-A growing supplier-specific rate is treated as noise until it is a fleet
-event.
-
-\subsection{Why these actions are not interchangeable}
-
-Ship and don't-ship need population and life evidence. Continue validation is
-for named missing corners, not delay. Escalate supplier and contain lot need
-scope. Derate and second source are product decisions, not FA hobbies. Modify
-ATP is how FA becomes production. RMA, FA, and DPA climb the measurement
-hierarchy only as far as the decision requires. Firmware and calibration are
-allowed only when hardware baselines clear. Monitor-only is an economics call
-with tripwires, not a default.
+\paragraph{Other actions (expand on ask).}
+\begin{description}
+\item[Continue validation] Name the missing corner; do not delay with
+      open-ended testing.
+\item[Escalate supplier] Needs lot/site/vendor correlation, not one dirty
+      connector.
+\item[Derate / second source] Product decisions with written envelope or
+      dual-qual evidence.
+\item[RMA / FA / DPA] Climb only as far as the decision requires; preserve
+      first (\Cref{sec:failure-analysis-checklist}).
+\item[Firmware / calibration] Allowed only when hardware baselines clear.
+\item[Monitor only] Tiny, flat, no impact; armed alarms; escalate on growth.
+\end{description}
 
 \subsection{Learning summary}
 
@@ -1508,19 +1341,22 @@ without notes. Entries are alphabetical by the leading abbreviation.
 \item[DPPM] Defective parts per million. Incoming or outgoing quality rate.
 \item[DR / FR] Datacenter reach ($\sim$500~m) and far reach (2~km). IEEE
       single-mode classes at 1310~nm.
-\item[DVT / PVT] Design validation test and production validation test.
-\item[EOL] End of life. The defined wear-out criterion (threshold rise, slope
-      drop, or hard fail) used in HTOL projection and derating.
-\item[ESD] Electrostatic discharge. Handling or assembly damage to drivers or
-      TIAs; sudden hard fail, not Arrhenius wear-out. Qual uses HBM/CDM models.
+\item[DVT] Design Validation Test. Corners, margin, and frozen life plan before
+      volume tooling (\Cref{tab:npi}).
 \item[EAM] Electro-absorption modulator. Voltage-controlled absorption; pairs
       with a DFB in an EML.
 \item[ELSFP] External Laser Small Form-Factor Pluggable. Replaceable continuous-
       wave source for co-packaged optics.
 \item[EML] Electro-absorption modulated laser. DFB plus EAM on one InP chip;
       dominant 100--200G/lane pluggable transmitter.
+\item[EOL] End of life. The defined wear-out criterion (threshold rise, slope
+      drop, or hard fail) used in HTOL projection and derating.
 \item[ER] Extinction ratio. $P_1/P_0$ in dB. Higher ER widens OMA at fixed
       average power; trades against chirp and swing.
+\item[ESD] Electrostatic discharge. Handling or assembly damage to drivers or
+      TIAs; sudden hard fail, not Arrhenius wear-out. Qual uses HBM/CDM models.
+\item[EVT] Engineering Validation Test. Bring-up on engineering samples
+      (\Cref{tab:npi}).
 \item[FAIR] First-article inspection report. Re-qualify after tooling, site,
       epi, or firmware change before open volume.
 \item[FAU] Fiber array unit. Precision multi-fiber attachment to a photonic
@@ -1557,8 +1393,12 @@ without notes. Entries are alphabetical by the leading abbreviation.
       times population.
 \item[MZM] Mach--Zehnder modulator. Broadband interferometric modulator (Si or
       TFLN); needs quadrature bias control.
+\item[MP] Mass production. Sustained volume after PVT: DPPM, RMA, ECO control
+      (\Cref{tab:npi}).
 \item[NFF / RMA] No fault found and return merchandise authorization. High NFF
       rates often indicate weak triage or intermittent faults.
+\item[NPI] New product introduction. EVT $\to$ DVT $\to$ PVT $\to$ MP
+      (\Cref{tab:npi}).
 \item[OMA] Optical modulation amplitude. Outer level swing $P_1-P_0$.
 \item[ORL] Optical return loss. Reflected power toward the laser; low ORL raises
       RIN and can seed burst errors.
@@ -1569,6 +1409,8 @@ without notes. Entries are alphabetical by the leading abbreviation.
       silicon-photonics chip and substrate.
 \item[PRBS] Pseudo-random binary sequence. Repeatable pattern for eye and BER
       measurements.
+\item[PVT] Production Validation Test. Multi-lot yield, ATP, SPC, FAIR
+      (\Cref{tab:npi}).
 \item[PSRR] Power-supply rejection ratio. Weak PSRR can turn electrical rail
       noise into optical intensity noise.
 \item[RIN] Relative intensity noise. Laser amplitude noise (dB/Hz); often

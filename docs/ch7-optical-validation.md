@@ -192,11 +192,11 @@ Can the supplier reproduce the qualified result at volume, with screens that cat
 
 ##### Uncertainty removed.
 
-A few carefully built engineering samples cannot establish volume readiness. Production readiness asks whether yield, process control, and ATP coverage survive lot-to-lot variation (§8.9, §8.10). Design Validation Test (*DVT*) asks whether the design meets requirements; Production Validation Test (*PVT*) asks whether the manufacturing line can build that design repeatedly at the intended scale.
+A few carefully built engineering samples cannot establish volume readiness. Production readiness is the Production Validation Test (*PVT*) question: whether yield, process control, and ATP coverage survive lot-to-lot variation (§8.9, §8.10, Table 8.4). Design Validation Test (*DVT*) belongs earlier: it freezes corners, margin, and the life plan before volume tooling (Table 8.4). Do not park DVT inside this stage.
 
 ##### Activities.
 
-Review multi-lot yield and statistical process control (*SPC*). Correlate automated test equipment (*ATE*) to bench truth. Freeze ATP limits that catch the known escape paths. Complete first-article / FAIR gates and DVT / PVT exits that match the requirements slice.
+Review multi-lot yield and statistical process control (*SPC*). Correlate automated test equipment (*ATE*) to bench truth. Freeze ATP limits that catch the known escape paths. Complete first-article / FAIR gates and PVT exit criteria that match the requirements slice.
 
 ##### Measurements and evidence.
 
@@ -549,7 +549,7 @@ Table 7.4 is the short form you can put on a lab wall.
 
 ##### Production-representative corners.
 
-Bench corners ($T$, $V$) are necessary and not sufficient. Before you call DVT or PVT done, run the corners that match how the fleet will abuse the link. Table 7.5 is the minimum set for IM/DD + laser programs.
+Bench corners ($T$, $V$) are necessary and not sufficient. Chassis thermal, host rails, and ORL belong before Design Validation Test (DVT) exit on a representative unit. The full set in Table 7.5 belongs before Production Validation Test (PVT) exit (Table 8.4).
 
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Corner              What to run                                                                                         Why it catches                                                Points to
@@ -575,145 +575,59 @@ Bench corners ($T$, $V$) are necessary and not sufficient. Before you call DVT o
 
 ### Reading the production-corner map
 
-Bench temperature and voltage sweeps answer how the part behaves. The corners in Table 7.5 answer whether that behavior survives the rack, host, plant, and service actions the fleet will actually apply. Run them before you call DVT or PVT done.
+Quiet $T$/$V$ characterization maps the part. Table 7.5 asks whether that map survives rack, host, plant, and service abuse. Use the table for the full set. The notes below teach the two corners that most often fool a quiet bench; the rest are Exit/Decision only.
 
-##### Chassis thermal.
+##### Chassis thermal (worked).
 
-**Purpose.** Does the module hold lock, power, and BER when faceplate temperature and TEC load match a powered sled, not only a quiet chamber setpoint?
+Chamber case-$T$ does not prove sled airflow or faceplate gradient. Run the module in the target rack at production load; log case $T$, TEC current, lock, and pre-FEC BER versus the chamber baseline. **Exit when** loaded thermal closes with margin or names a derate / TEC / unlock restriction. **Decision:** approve the envelope, restrict deployment, or redesign cooling. **Risk if skipped:** quiet-chamber passes unlock in the first dense tray.
 
-**Uncertainty removed.** Chamber case-$T$ does not prove airflow, neighbor heat, or faceplate gradient. After chassis thermal you know whether derate, TEC, or ring unlock risk is real under load.
+##### LPO / linear path (worked).
 
-**Activities.** Install in the target rack or sled. Apply production airflow and power load. Log case $T$, TEC current, lock, and pre-FEC BER versus the chamber baseline.
+Retimed modules hide host FIR and module linearity faults (§3.14.2, §9.5.2, §3.14.3). Run host COM and pre-FEC BER on the linear path. **Exit when** BER and COM meet targets on the production host, or LPO is rejected for that host class. **Decision:** approve LPO, force retimed optics, or redesign host FIR / module linearity. **Risk if skipped:** LPO ships on hope and fails on the production ASIC SerDes.
 
-**Exit criteria.** **Exit when** loaded sled thermal either closes with margin or names a derate / TEC / unlock restriction.
+##### Other corners (retrieve from the table).
 
-**Decision unlocked.** Approve the thermal envelope, restrict deployment, or redesign cooling / lock.
+Host rails live
 
-**Risk if skipped.** Quiet-chamber passes unlock or floor in the first dense tray.
+: **Exit when** BER and bias telemetry stay clean under host supplies with traffic. **Decision:** approve pairing or demand PSRR/ground work. **Risk:** chasing optical RIN for host noise.
 
-##### Host rails live.
+Dirty fiber / ORL
 
-**Purpose.** Does laser bias and CMIS stay clean when host supplies switch under SerDes traffic?
+: **Exit when** stressed-ORL BER meets the plant budget or forces isolator / cleaning rules. **Decision:** approve plant practice or tighten service. **Risk:** lab heroes fail the first dirty install.
 
-**Uncertainty removed.** A lab PSU hides switching noise into bias that looks like RIN (§5.8). After live rails you know whether PSRR, ground, or APC owns the floor.
+Cable plant
 
-**Activities.** Power bias and CMIS from the target host with traffic on. Compare BER and bias telemetry to a quiet supply.
+: **Exit when** production fiber/MPO/bend closes the signed budget. **Decision:** approve plant or cut reach. **Risk:** budget fiction on long MPO chains.
 
-**Exit criteria.** **Exit when** host-rail corners meet BER and telemetry limits, or a named supply / grounding fix is required.
+ELS hot-swap
 
-**Decision unlocked.** Approve host pairing, demand PSRR/ground work, or hold LPO / linear paths that cannot tolerate the noise.
+: **Exit when** swap recovers to ready and BER, or service is restricted (§5.14). **Decision:** approve field replace or forbid hot-swap. **Risk:** service story fails the first maintenance window.
 
-**Risk if skipped.** You chase optical RIN while the host injects the noise.
+Neighbor load
 
-##### Dirty fiber / ORL.
+: **Exit when** full-traffic neighbors close lock and BER. **Decision:** approve dense packing or derate. **Risk:** single-module DVT passes; tray bring-up fails.
 
-**Purpose.** Does the link survive controlled contamination or ORL stress the way field installs will?
+Voltage corners
 
-**Uncertainty removed.** Pristine MT fiber hides reflection-driven RIN and burst errors. After clean versus dirty BER you know whether connector, isolator, or feedback limits the plant.
-
-**Activities.** Apply controlled ORL or contamination on MT/FAU. Compare BER, RIN proxies, and recovery after clean.
-
-**Exit criteria.** **Exit when** stressed-ORL BER either meets the plant budget or forces isolator / connector / service rules.
-
-**Decision unlocked.** Approve plant practice, tighten cleaning / mate rules, or require better isolation.
-
-**Risk if skipped.** Lab heroes fail the first dirty install and look like random laser RMAs.
-
-##### Cable plant.
-
-**Purpose.** Does the link budget survive production fiber length, MPO count, and bend radius?
-
-**Uncertainty removed.** A short golden patchcord does not prove the ledger. After production plant you know whether extra loss and reflections eat the assumed margin (§7.7).
-
-**Activities.** Run the production cable set. Measure loss, ORL, and BER against the signed budget.
-
-**Exit criteria.** **Exit when** production plant closes the budget with remaining margin, or the ledger is revised.
-
-**Decision unlocked.** Approve plant design, cut reach or connectors, or raise launch / Rx requirements.
-
-**Risk if skipped.** Budget fiction becomes field brownouts on long MPO chains.
-
-##### ELS hot-swap.
-
-**Purpose.** Can the external laser source be pulled and replaced under the service model the architecture promised (§5.14)?
-
-**Uncertainty removed.** Static bring-up does not prove CMIS state machines, mate wear, or traffic recovery under swap. After hot-swap (or controlled stop per CMIS) you know whether service is real.
-
-**Activities.** Pull/replace ELSFP under traffic or under the documented traffic stop. Log state machine, mate cycles, and recovery BER.
-
-**Exit criteria.** **Exit when** swap recovers to ready state and BER without undefined hangs, or service is restricted.
-
-**Decision unlocked.** Approve field-replaceable ELS service, or forbid hot-swap and rewrite ops.
-
-**Risk if skipped.** The replaceable-laser story fails the first maintenance window.
-
-##### Neighbor load.
-
-**Purpose.** Do crosstalk, shared supply droop, and thermal crosstalk stay inside margin when adjacent modules and lanes run full traffic at max case $T$?
-
-**Uncertainty removed.** A lone hero module hides tray-level coupling. After neighbor load you know whether WDM lock, SI, or PSU owns the fail.
-
-**Activities.** Light neighbors at full traffic and temperature. Watch lock, BER, supply droop, and lane coupling.
-
-**Exit criteria.** **Exit when** loaded-neighbor corners close, or a spacing / power / lock restriction is named.
-
-**Decision unlocked.** Approve dense packing, derate neighbor density, or redesign supply / lock.
-
-**Risk if skipped.** Single-module DVT passes; tray bring-up fails.
-
-##### LPO / linear path.
-
-**Purpose.** Does host channel operating margin (COM) and pre-FEC BER close without a module DSP crutch (§3.14.2, §9.5.2, §3.14.3)?
-
-**Uncertainty removed.** Retimed modules hide host FIR and module linearity faults. After the linear path corner you know whether LPO is shippable on the target host.
-
-**Activities.** Run host COM and pre-FEC BER on the linear electrical path. Sweep host equalization as needed.
-
-**Exit criteria.** **Exit when** LPO/linear BER and COM meet targets on the production host, or LPO is rejected for that host class.
-
-**Decision unlocked.** Approve LPO deployment, force retimed optics, or redesign host FIR / module linearity.
-
-**Risk if skipped.** LPO ships on hope and fails first on the production ASIC SerDes.
-
-##### Voltage corners.
-
-**Purpose.** Do brown-out and CMIS glitches stay clear at host Vcc min/max under traffic?
-
-**Uncertainty removed.** Nominal Vcc hides state-machine and bias glitches at rail edges. After voltage corners you know whether power design and ATP cover the envelope.
-
-**Activities.** Sweep host Vcc with traffic. Log CMIS state, alarms, and BER.
-
-**Exit criteria.** **Exit when** min/max Vcc corners pass with stable management and BER, or power design changes.
-
-**Decision unlocked.** Approve voltage envelope, tighten ATP voltage screens, or redesign power.
-
-**Risk if skipped.** Field brown-outs look like firmware or optics bugs.
+: **Exit when** host Vcc min/max holds CMIS and BER. **Decision:** approve envelope or tighten ATP. **Risk:** brown-outs look like firmware bugs.
 
 ### Why these corners come after quiet characterization
 
-Quiet $T$/$V$ characterization maps the part. Production corners ask whether that map survives chassis heat, live host noise, dirty plant, service swaps, neighbors, linear hosts, and rail edges. Later fleet monitoring must not be asked to invent coverage that these corners never ran. Chassis thermal, host rails, and ORL are the minimum before you call bring-up or DVT done on a representative unit; the full set in Table 7.5 belongs before PVT exit.
+Chassis thermal, host rails, and ORL are the minimum before DVT exit on a representative unit. The full set belongs before PVT exit (Table 8.4). Later fleet monitoring must not invent coverage these corners never ran.
 
 ### Learning summary
 
-Chassis thermal
+Before DVT
 
-: Does sled airflow and faceplate $T$ match the claim?
+: Chassis thermal, host rails, and ORL on a representative unit.
 
-Host rails / voltage
+Before PVT
 
-: Does live supply noise and rail edge stay clean?
+: Full Table 7.5 set, including LPO if claimed.
 
-Dirty fiber / cable plant
+Each corner
 
-: Does the real plant leave margin?
-
-ELS hot-swap / neighbors
-
-: Does service and dense packing survive?
-
-LPO / linear path
-
-: Does the host close without module DSP?
+: Exit when the claim closes or a restriction is named.
 
 ##### System bring-up.
 

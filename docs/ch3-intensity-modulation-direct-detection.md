@@ -38,13 +38,15 @@ Digital
 
 : KP4 FEC in host or retimer (§3.12); module DSP optional (§9.3, §9.5.1, Table 9.4).
 
+**Exit when** you can name the blocks, the test planes, and where FEC and equalization sit before diving into a modulator family. **Decision unlocked:** place measurements and ATP surface for this link class, or reopen the platform choice in Chapter 5.
+
 The rest of this chapter fills in modulation physics, equalization, FEC, and the modulator platforms. Noise math and measurement practice live in Chapter 4, Chapter 7.
 
 ### A pluggable link, end to end
 
 The block list above is one module. A working rack-to-rack link chains two of them back to back across a fiber, and it helps to trace a single bit through the whole path once. §3.1 follows that path as a folded loop: the transmit side runs left to right across the top, the fiber turns the corner on the right, and the receive side runs back along the bottom into the far switch.
 
-Start at the switch ASIC in rack A. It builds Ethernet frames, runs the reconciliation and coding sublayers, and encodes KP4 FEC (§3.8, §3.12), then hands parallel bit streams to the host *SerDes*. The SerDes serializes each stream to a 112 GBd PAM4 lane, applies transmit FFE, and drives the host PCB and the module cage connector. That electrical hop, host to module, is the AUI (an OIF VSR-class channel; §3.3, §3.14). Inside the module, an optional DSP or retimer reshapes the lane, or for a linear pluggable (LPO) nothing does and the host SerDes owns the whole electrical budget (§3.6, §3.14.2). The driver then swings a modulator, an EML, Mach-Zehnder, or ring (§3.14.3), and electrons become photons. That is the first domain crossing, marked E$\to$O in the figure.
+Start at the switch ASIC in rack A. It builds Ethernet frames, runs the reconciliation and coding sublayers, and encodes KP4 FEC (§3.8, §3.12), then hands parallel bit streams to the host *SerDes*. The SerDes serializes each stream to a 112 GBd PAM4 lane, applies transmit FFE, and drives the host PCB and the module cage connector. That electrical hop, host to module, is the AUI (an OIF VSR-class channel; §3.3, §3.14). Inside the module, an optional DSP or retimer reshapes the lane, or for a linear pluggable (LPO) nothing does and the host SerDes owns the whole electrical budget (§3.6, §3.14.2). The driver then swings a modulator, an EML, Mach--Zehnder, or ring (§3.14.3), and electrons become photons. That is the first domain crossing, marked E$\to$O in the figure.
 
 The fiber plant is the quiet middle: duplex or parallel single-mode fiber, connectors, and patch panels carrying the light a few meters to a few hundred meters (§7.2.2, §3.3). At the far module the light hits a photodiode and TIA and becomes current again (O$\to$E, the second crossing; §4.5). An optional module DSP cleans it up, and the rack B host SerDes recovers timing, equalizes the lane, and decodes KP4. The switch ASIC reassembles frames and forwards them into the fabric, out a NIC, and over the in-node link (PCIe or an NVLink-class fabric) into the destination GPU or CPU. Every pluggable link is this shape; form factors and CPO only rearrange where the boundaries fall.
 
@@ -560,6 +562,8 @@ On the optics side, the industry assumption is still IM/DD PAM4 at $\approx$`<!-
 - **Receivers:** Ge/Si PIN and APD photodiodes above 100 GHz and 224G TIAs exist (§4.5); the receive side is not the long pole relative to modulator/driver bandwidth at 448G.
 
 ##### Silicon microring and microdisk modulators.
+
+Skim the platform notes below for device vocabulary. Requirements-led choice, ATP, and ownership live in Chapter 5; return here when you need ring, MZM, TFLN, or driver physics after the path is frozen.
 
 A microring modulator (MRM) wraps a phase-shifter waveguide into a closed loop coupled to a straight *bus* waveguide. A *microdisk* is the same idea in disk form: a pillar cavity evanescently coupled to the bus, often with a wider free spectral range (FSR) in a smaller footprint. Both are resonant filters as well as modulators: when the input wavelength sits on resonance, drop-port power is high; off resonance it is rejected. Data modulation shifts the resonance (carrier depletion or injection in an embedded pn junction) or detunes the laser relative to a fixed ring, mapping voltage to intensity at the through or drop port.
 

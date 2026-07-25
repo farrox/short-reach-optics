@@ -21,7 +21,7 @@ ACC
 
 AEC
 
-: Active electrical cable. AECs are a type of active copper cable used in data centers. AECs utilize Retimer chips with Clock and Data Recovery (CDR) to reshape and retransmit signals which generally offer longer reach and better signal integrity compared to ACCs, but at a higher cost.
+: Active electrical cable. AECs are a type of active copper cable used in data centers. AECs use retimer chips with clock and data recovery (CDR) to reshape and retransmit signals which generally offer longer reach and better signal integrity compared to ACCs, but at a higher cost.
 
 Application spaces
 
@@ -173,7 +173,7 @@ LR
 
 LPO
 
-: Linear pluggable optic is a technology used in optical transceivers that simplifies the design of pluggable optical modules by removing the traditional Digital Signal Processor (DSP) and Clock Data Recovery (CDR) chips. Instead, LPO utilizes a direct-drive linear approach where the signal path is considered linear, relying on the capabilities of the Application Specific Integrated Circuit (ASIC) in the host system (like a switch or Network Interface Card) to perform signal conditioning and equalization.
+: Linear pluggable optic is a technology used in optical transceivers that simplifies the design of pluggable optical modules by removing the traditional Digital Signal Processor (DSP) and Clock Data Recovery (CDR) chips. Instead, LPO uses a direct-drive linear approach where the signal path is considered linear, relying on the capabilities of the Application Specific Integrated Circuit (ASIC) in the host system (like a switch or Network Interface Card) to perform signal conditioning and equalization.
 
 MCM
 
@@ -253,7 +253,7 @@ RS
 
 RTLR
 
-: (Retimed Transmit, Linear Receive) also generically referred to as Linear receive optic (LRO), is a type of optical transceiver technology used primarily in high-speed data center and networking applications, especially within AI clusters. The RTLR naming convention is within OIF. LRO is characterized by the presence of a Digital Signal Processor (DSP) solely on the transmit path, while the receive path operates with a linear, non-retimed architecture. This differs from fully retimed optical modules that utilize DSPs on both transmit and receive paths, and also from Linear Pluggable Optics (LPO) that eliminate DSPs entirely.
+: (Retimed Transmit, Linear Receive) also generically referred to as Linear receive optic (LRO), is a type of optical transceiver technology used primarily in high-speed data center and networking applications, especially within AI clusters. The RTLR naming convention is within OIF. LRO is characterized by the presence of a Digital Signal Processor (DSP) solely on the transmit path, while the receive path operates with a linear, non-retimed architecture. This differs from fully retimed optical modules that use DSPs on both transmit and receive paths, and also from Linear Pluggable Optics (LPO) that eliminate DSPs entirely.
 
 Scale out
 
@@ -447,9 +447,9 @@ DR
 
 : Datacenter reach. An IEEE 802.3 single-mode fiber class, typically 500 m at 1310 nm; the default for AI scale-out optics.
 
-DVT / PVT
+DVT
 
-: Design validation test and production validation test. DVT proves the design; PVT proves the factory can build it at rate.
+: Design Validation Test. Proves the design meets requirements across corners, margin, and a frozen life plan before volume tooling (Table 8.4).
 
 DWDM
 
@@ -490,6 +490,10 @@ ER
 ESD
 
 : Electrostatic discharge. Handling or assembly damage to drivers or TIAs; sudden hard fail, not Arrhenius wear-out. Qual uses HBM/CDM models.
+
+EVT
+
+: Engineering Validation Test. Early bring-up on engineering samples: first light, CMIS, basic LIV/SMSR/RIN, one closing BER (Table 8.4).
 
 FAIR
 
@@ -627,9 +631,17 @@ MZM
 
 : Mach--Zehnder modulator. A push-pull interferometer; broadband, low chirp. Built in silicon, TFLN, or III-V platforms.
 
+MP
+
+: Mass production. Sustained volume after PVT: DPPM, RMA ownership, ECO control (Table 8.4).
+
 NFF
 
 : No fault found. An RMA unit that passes all tests on return; high NFF rate points at triage or intermittent connector faults.
+
+NPI
+
+: New product introduction. Gate sequence EVT $\to$ DVT $\to$ PVT $\to$ MP that maps onto the validation ladder (Table 8.4).
 
 NIC
 
@@ -690,6 +702,10 @@ PMD
 PRBS
 
 : Pseudo-random binary sequence. A deterministic test pattern that exercises all bit transitions; used for BER and eye measurements.
+
+PVT
+
+: Production Validation Test. Proves the factory can build the qualified design repeatedly at yield with ATP and SPC (Table 8.4).
 
 PSRR
 

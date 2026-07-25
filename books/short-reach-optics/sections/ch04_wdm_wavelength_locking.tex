@@ -61,6 +61,11 @@ sets (\Cref{sec:cwwdm}); spacing is set by the chosen span and channel count, no
 by Ethernet CWDM4.\par}
 \end{table*}
 
+\textbf{Exit when} fiber count, lock burden, and cooling class pick one grid
+family for the product. \textbf{Decision unlocked:} accept uncooled CWDM4, or
+fund locked denser grids (LAN-WDM, DWDM, CW-WDM) with the control page they
+require.
+
 \section{Why ``locked'' is the operative word}
 \label{sec:why-locked}
 
@@ -145,6 +150,14 @@ WDM engine (\Cref{sec:lock-validation,sec:cwwdm-laser}).\par}
 Validation adds channel isolation sweeps, grid alignment across temperature, and
 MUX imbalance (uneven OMA per $\lambda$). Treat the weakest channel as the
 budget-limiting lane, not the average.
+
+\paragraph{How to read the MUX budget.}
+\Cref{tab:mux-budget} is an FA map, not a datasheet. Stage loss hits every
+lane; ripple and imbalance make the weakest $\lambda$ the limit; crosstalk and
+grid misalignment show up as Tx quality or unlock before average power looks
+dead. \textbf{Exit when} the weakest lane's OMA, isolation, and grid alignment
+close the budget, or a MUX stage is redesigned. \textbf{Decision unlocked:}
+approve the MUX for ATP, or open packaging / PIC FA on the failing row.
 
 \section{Lock-loop mechanics}
 \label{sec:locking-techniques}
@@ -430,6 +443,16 @@ the wrong domain.
 \item \textbf{Close the link:} BER / TDECQ / sensitivity on the weakest lane
       first (\Cref{sec:tdecq,sec:link-budget}).
 \end{enumerate}
+
+\textbf{Exit when} every assigned $\lambda$ is grid-identified, captures at
+operating power, holds under neighbor heat and case $T$, and the weakest lane
+closes BER. \textbf{Decision unlocked:} proceed to loaded characterization, or
+stop and bisect laser versus ring before trusting any BER number.
+
+Host-visible CMIS may report lock error, heater codes, or wavelength monitors;
+use those for fleet triage. Grid ID and absolute alignment still need an OSA
+or wavemeter when engineering access exists. Do not treat a ``locked'' flag
+alone as proof the comb is on the assigned grid.
 
 \paragraph{Bisect laser versus ring.}
 If one $\lambda$ unlocks or walks, change one actuator at a time:

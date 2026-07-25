@@ -398,7 +398,7 @@ ATP / process-control update
 Verify next lot
   |
 Fleet monitoring (customer owns ship gate)</code></pre>
-**Engineering reasoning.** Containment, suspected mechanism, confirmed root cause, and recurrence control are separate steps. The system owner keeps responsibility for evidence quality and verifying the fix (Appendix C.8, Appendix A.4).
+**Engineering reasoning.** Containment, suspected mechanism, confirmed mechanism class, and recurrence control are separate steps. The system owner keeps responsibility for evidence quality and verifying the fix (Appendix C.8, Appendix A.4).
 
 **Measurements.** Lot genealogy $\rightarrow$ exposure? $\rightarrow$ quarantine list.\
 ATP hot corner $\rightarrow$ escape path? $\rightarrow$ production gate.\

@@ -165,13 +165,17 @@ Component
 Needed physics
 \end{dectree}
 
+\textbf{Exit when} reach, lane rate, power, lifetime, cost, and manufacturing
+volume have named owners and numbers. \textbf{Decision unlocked:} freeze an
+architecture class (fiber, modulation path, service model), or send the
+requirement back. Do not pick a laser die before those constraints rule out the
+other paths.
+
 A component choice is never isolated. A VCSEL usually commits the link to an
 850~nm multimode path, direct modulation, and a short reach. A 1310~nm DFB points
 toward single-mode fiber and can feed a DML, EML, Mach--Zehnder modulator, or ring.
 Those paths then set detector material, fiber plant, thermal control, test
-coverage, and service policy. Start with reach, lane rate, power, cost, lifetime,
-and manufacturing volume. Choose the component only after those constraints rule
-out the other paths.
+coverage, and service policy.
 
 \paragraph{Validation reduces uncertainty.}
 Characterization asks what the design does across its operating range. Margin

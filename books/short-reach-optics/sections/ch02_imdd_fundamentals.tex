@@ -46,6 +46,11 @@ Validation and ATP surface
       (\Cref{sec:pluggables,sec:conditioning,tab:placement}).
 \end{description}
 
+\textbf{Exit when} you can name the blocks, the test planes, and where FEC and
+equalization sit before diving into a modulator family. \textbf{Decision
+unlocked:} place measurements and ATP surface for this link class, or reopen
+the platform choice in \Cref{ch:lasers}.
+
 The rest of this chapter fills in modulation physics, equalization, FEC, and the
 modulator platforms. Noise math and measurement practice live in
 \Cref{ch:models,ch:validation}.
@@ -67,7 +72,7 @@ module cage connector. That electrical hop, host to module, is the AUI (an OIF V
 channel; \Cref{sec:reach,sec:224g}). Inside the module, an optional DSP or retimer
 reshapes the lane, or for a linear pluggable (LPO) nothing does and the host SerDes
 owns the whole electrical budget (\Cref{sec:equalization,sec:224g-deploy}). The driver
-then swings a modulator, an EML, Mach-Zehnder, or ring
+then swings a modulator, an EML, Mach--Zehnder, or ring
 (\Cref{sec:eml-eam,sec:simzm,sec:siring}), and electrons become photons. That is the
 first domain crossing, marked E$\to$O in the figure.
 
@@ -1153,6 +1158,10 @@ The snapshot below is the state of play; device sections later unpack each famil
 
 \paragraph{Silicon microring and microdisk modulators.}
 \label{sec:siring}
+
+Skim the platform notes below for device vocabulary. Requirements-led choice,
+ATP, and ownership live in \Cref{ch:lasers}; return here when you need ring,
+MZM, TFLN, or driver physics after the path is frozen.
 
 A microring modulator (MRM)\firstterm{MRM} wraps a phase-shifter waveguide into a closed loop
 coupled to a straight \emph{bus} waveguide. A \emph{microdisk} is the same idea in

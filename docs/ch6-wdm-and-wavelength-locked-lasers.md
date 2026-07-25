@@ -27,6 +27,8 @@ Historically the industry climbed a ladder of spacing. Coarse CWDM4 used $\appro
 
 **Table 6.1.** WDM grids for short-reach AI interconnects. CW-WDM MSA normative grids sit in O-band with 9/18/36 nm spans and 8/16/32-line sets (§6.6); spacing is set by the chosen span and channel count, not by Ethernet CWDM4.
 
+**Exit when** fiber count, lock burden, and cooling class pick one grid family for the product. **Decision unlocked:** accept uncooled CWDM4, or fund locked denser grids (LAN-WDM, DWDM, CW-WDM) with the control page they require.
+
 ## Why "locked" is the operative word
 
 WDM alone does not force active locking. CWDM4 packs four wavelengths with enough spacing that uncooled lasers can wander and still stay in their slots. Locking becomes the operative word only when either the channel spacing is tight or the modulator itself is wavelength-selective. Those two situations drive nearly every modern CPO and dense optical-I/O control loop.
@@ -80,6 +82,10 @@ Table 6.2 maps common MUX faults to the measurement that catches them.
 **Table 6.2.** MUX/demux defects and where they appear in validation. Isolation and imbalance tests belong in ATP for any dense WDM engine (§6.7, §5.16).
 
 Validation adds channel isolation sweeps, grid alignment across temperature, and MUX imbalance (uneven OMA per $\lambda$). Treat the weakest channel as the budget-limiting lane, not the average.
+
+##### How to read the MUX budget.
+
+Table 6.2 is an FA map, not a datasheet. Stage loss hits every lane; ripple and imbalance make the weakest $\lambda$ the limit; crosstalk and grid misalignment show up as Tx quality or unlock before average power looks dead. **Exit when** the weakest lane's OMA, isolation, and grid alignment close the budget, or a MUX stage is redesigned. **Decision unlocked:** approve the MUX for ATP, or open packaging / PIC FA on the failing row.
 
 ## Lock-loop mechanics
 
@@ -218,6 +224,10 @@ Instruments and BER methods live in Chapter 7. What is special to WDM is the or
 4.  **Stress neighbors / temperature:** max case $T$, neighbor heaters and traffic on (§6.5, §7.9). Confirm hold, not just capture.
 
 5.  **Close the link:** BER / TDECQ / sensitivity on the weakest lane first (§7.4, §7.7).
+
+**Exit when** every assigned $\lambda$ is grid-identified, captures at operating power, holds under neighbor heat and case $T$, and the weakest lane closes BER. **Decision unlocked:** proceed to loaded characterization, or stop and bisect laser versus ring before trusting any BER number.
+
+Host-visible CMIS may report lock error, heater codes, or wavelength monitors; use those for fleet triage. Grid ID and absolute alignment still need an OSA or wavemeter when engineering access exists. Do not treat a "locked" flag alone as proof the comb is on the assigned grid.
 
 ##### Bisect laser versus ring.
 

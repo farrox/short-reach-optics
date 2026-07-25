@@ -262,6 +262,8 @@ Through 200G/lane DR, EML usually wins on cost and integration. A CW DFB (or ELS
 
 **Table 5.2.** When each source is used, and its top validation risks.
 
+Use Table 5.2 as a short risk card once the path is roughly known. Use Table 5.1 when you still need to compare attribute rows across paths. Do not treat this card as a substitute for the full matrix or for Table 5.4.
+
 ## Choosing the modulation path
 
 The source decision and modulation decision must close together. Direct modulation minimizes parts and power but carries laser chirp into the link. An EML adds an EAM on the laser die and is a mature low-chirp path for 100--200G/lane. A silicon MZM uses more area and drive but gives a broad optical passband. A ring is compact and fits dense WDM, but adds resonance control and thermal-crosstalk tests. TFLN offers high bandwidth and low chirp with a separate material platform and assembly flow.
@@ -293,6 +295,8 @@ Each architecture decision forces a different requirements set (Table 5.3):
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 **Table 5.3.** Architecture forks and the laser specs each one forces. Freeze these before DVT samples are built (§8.10).
+
+Each "Specs you must freeze early" cell is the exit criterion for that fork. **Exit when** every active fork has numbers (or explicit N/A) before DVT samples are built.
 
 ##### One-page requirements slice.
 
@@ -334,7 +338,9 @@ Work backward from the link, not forward from a marketing slide. The four steps 
 
 4.  From service model, choose ELSFP mate-cycle / hot-swap requirements or accept on-package FIT and write COD/aging screens accordingly (§5.14).
 
-Hand the filled slice to the supplier with the ATP checklist (Table 8.3). If a roadmap slide cannot point to a row in Table 5.4, the requirement is not real yet.
+Hand the filled slice to the supplier with the ATP checklist (Table 8.5). If a roadmap slide cannot point to a row in Table 5.4, the requirement is not real yet.
+
+**Exit when** every cell in Table 5.4 is a program number or explicit N/A, with ORL stated wherever RIN appears and case-$T$ class stated wherever power or bias appears. **Decision unlocked:** negotiate ATP limits, or reopen the architecture fork that left a cell empty.
 
 **Key idea.** Laser leadership is a requirements sheet: architecture forks force specific specs (power, grid, RIN@ORL, SMSR, bias window, CMIS, FIT). Fill Table 5.4 from the link budget and fleet model, then enforce it with the ATP (§8.10).
 
@@ -378,6 +384,8 @@ Measure RIN with a calibrated photodetector and RF spectrum analyzer (or a dedic
   -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 **Table 5.5.** Laser measurement playbook: what to measure, with what, and what failure looks like.
+
+Measure in order: LIV $\to$ SMSR $\to$ wavelength $\to$ RIN (quiet then stressed ORL) $\to$ EAM or bias-driver checks as the path requires. Stop when distributions across temperature and units support the bias window, grid, and RIN policy in Table 5.4 (see also Table 5.9). Do not keep measuring for its own sake once those exits close.
 
 ## Laser drivers and the RIN budget
 
@@ -610,7 +618,7 @@ Twenty-four contacts: multiple 3.3 V VCC and GND pins, module reset (`ResetL`),
 
 ##### Qual hooks for suppliers.
 
-Acceptance test plans should cover the checklist in Table 8.3, §8.10: laser LIV/SMSR/RIN inside the module; optical power-class compliance; connector mating cycles and contamination/ORL; burn-in before ship; CMIS register sanity; and thermal class at rated case temperature. Module bring-up must also prove the CMIS enable sequence and ModuleReady laser policy (§7.9). Field returns split between laser wear-out and connector/fiber-attach faults; keep both in the triage tree (§7.12).
+Acceptance test plans should cover the checklist in Table 8.5, §8.10: laser LIV/SMSR/RIN inside the module; optical power-class compliance; connector mating cycles and contamination/ORL; burn-in before ship; CMIS register sanity; and thermal class at rated case temperature. Module bring-up must also prove the CMIS enable sequence and ModuleReady laser policy (§7.9). Field returns split between laser wear-out and connector/fiber-attach faults; keep both in the triage tree (§7.12).
 
 ## Optical safety and laser classes
 
@@ -947,7 +955,7 @@ Table 5.9 is the decision sequence for a laser program. Measurement methods for
 
 ##### Manufacturing.
 
-**Purpose.** Can the ATP catch bad units and lot drift at useful test cost (Table 8.3)?
+**Purpose.** Can the ATP catch bad units and lot drift at useful test cost (Table 8.5)?
 
 **Exit criteria.** **Exit when** limits, guardbands, GR&R, yield, and a reaction plan exist for the ship screens.
 
