@@ -33,6 +33,10 @@ Treat engineering as hypothesis testing: $$\begin{split}
 
 Every measurement updates the probability of competing hypotheses. Speak the update out loud. "At this point I am about 70% on calibration drift, 20% on wavelength walk, and 10% on receiver noise; before I change firmware I would verify the eye with a bias sweep." A test that leaves the weights unchanged was the wrong test, or the wrong reference plane.
 
+##### Engineering priors.
+
+Before touching the bench, assign higher probability to common failure modes than to exotic ones. Calibration drift is more likely than simultaneous laser aging and receiver degradation. A supplier-specific hot-corner escape is more likely than a new physics mechanism. Choose the first measurements to test those higher-probability hypotheses while eliminating as many alternatives as possible. Priors are not prejudice; they are how you spend lab hours.
+
 **Key idea.** Engineering is decision making. Decision making is uncertainty reduction. Measurements reduce uncertainty. Therefore measurements exist to improve decisions.
 
 This role owns laser direction inside an IM/DD interconnect effort. Lab measurement is how you decide, not the whole job. Hands-on fluency still matters: LIV, RIN, ORL, TDECQ, and a BER waterfall. Senior people lose the level if they stop at plots and never close on a decision and a control.
@@ -91,11 +95,11 @@ A VNA answers electrical or electro-optic bandwidth. An ORL meter and inspection
 
 ##### Observations.
 
-Report what the instruments actually showed, not what you hoped they would show. Separate facts from interpretation. "Received power held at $-4$ dBm while pre-FEC BER rose from $10^{-8}$ to $10^{-5}$ at $70^\circ$C" is an observation. "The laser is dying" is not. Scope the observation: one lane or all lanes, one unit or a lot, sudden or gradual, recoverable on cool-down or permanent. Preserve telemetry, screenshots, and the failing state before you reseat, clean, reboot, or rewrite a calibration table. Observations that disappear under debugging are observations you never had.
+Report what the instruments actually showed, not what you hoped they would show. Separate facts from interpretation. "Received power held at $-4$ dBm while pre-FEC BER rose from $10^{-8}$ to $10^{-5}$ at $70^\circ$C" is an observation. "The laser is dying" is not. First scope the failure (unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ fleet), and note sudden versus gradual and recoverable versus permanent. Preserve telemetry before you reseat, clean, reboot, or rewrite a calibration table. Observations that disappear under debugging are observations you never had.
 
 ##### Hypotheses.
 
-Turn the observations into a short list of competing causes, ranked by how well they explain the full pattern. Use the power-versus-signal-quality fork as the first split. If average power moved, hypothesize source output, coupling, connector loss, multiplexer loss, or monitor calibration. If power held but BER worsened, hypothesize eye closure from ER, OMA, RLM, or TDECQ degradation; RIN under reflection; ISI or jitter; wavelength walking off a filter; receiver sensitivity loss; or a wrong calibration table. Keep the list short enough that the next measurement can kill more than one item. A hypothesis you cannot falsify with a bench step does not belong on the list yet.
+Turn observations into a short ranked list. Start from engineering priors (common modes first), then apply the power-versus-quality fork (§A.5.3). Keep the list short enough that the next measurement can kill more than one item. A hypothesis you cannot falsify with a bench step does not belong on the list yet.
 
 ##### Isolation.
 
@@ -121,7 +125,7 @@ Close with the control that stops the same escape next month, then state the pro
 
 **Key idea.** I first want to understand the scope of the problem, then determine which margin ledger is being spent, choose the measurement that eliminates the largest number of hypotheses, make the product decision, and finally add the control that prevents the next escape.
 
-Quiz me on the three principles and the four spine phases. Give me a failed module at high temperature with stable average power. Stop me if I skip scope, the power fork, the control ledger, the product decision, or recurrence control.
+Quiz me on the three principles, priors, and the four spine phases. Give me a failed module at high temperature with stable average power. Stop me if I skip scope, the power fork, the control ledger, the product decision, or recurrence control.
 
 ## Staff judgment under uncertainty
 
@@ -317,7 +321,7 @@ The device and link treatment is in §5.19. Always ask the control ledger when a
 
 **Key idea.** Validation is staged uncertainty reduction. Engineering is decision making; decision making is uncertainty reduction; measurements reduce uncertainty; therefore measurements exist to improve decisions.
 
-For every stage, name the question the stage answers and the uncertainty it removes. A test that answers no question is cost, not confidence.
+For every stage, name the question the stage answers and the uncertainty it removes. A test that answers no question is cost, not confidence. Later sections only say "walk the validation ladder"; this is the full map.
 
 Bring-up
 
@@ -351,7 +355,7 @@ Fleet monitoring
 
 : Which telemetry catches margin erosion before service failure, and does the RMA Pareto match the life model?
 
-Table 7.1 maps these stages to activities and instruments. The worked interview answer in §A.7.2 walks the same ladder as spoken prose.
+Table 7.1 maps these stages to activities and instruments. The worked answer in §A.7.2 is practice prose built on this ladder.
 
 ### Know what each instrument answers
 
@@ -473,73 +477,35 @@ I will tell you my two story titles only. Interview me on each for five minutes.
 
 Rehearse these until the structure is automatic. Each answer starts with scope or requirements, names measurements and the hypotheses they separate, and ends with a decision and a control. Do not recite; adapt the skeleton to the follow-up questions.
 
-##### Memorize the 30-second versions.
+##### How to use the worked answers.
 
-Nobody remembers six pages in an interview. Memorize the executive close for each question. Deliver that first. Expand only where the interviewer asks: $$\text{30-second answer}
+Each long question opens with a green **30-second answer (memorize)** box. That is what you deliver first. The 3-minute section is for practice. The 10-minute section is read-only reference. Expand only where the interviewer asks: $$\text{30-second answer}
 \longrightarrow \text{interviewer asks}
-\longrightarrow \text{expand only there}.$$ The 3-minute and 10-minute versions are references, not scripts.
-
-##### Three lengths for every long answer.
-
-Executive (30 seconds)
-
-: Frame, decision, and one control. Memorize this.
-
-Engineering (3 minutes)
-
-: Scope, fork or ladder, key measurements, ledger, root-cause class, recurrence control.
-
-Deep dive (10 minutes)
-
-: Full spine with numbers, reference planes, and tradeoffs. Offer this; do not dump it unprompted.
+\longrightarrow \text{expand only there}.$$
 
 ### How would you set laser requirements for a new IM/DD link?
 
 This is the ownership question. Start from the system, not from a laser datasheet. The output is a requirements slice a supplier and an ATP can both test against (Table 5.4, Table 5.1).
 
-##### Step 1: freeze the system constraints.
+##### 3-minute answer (practice).
 
-Name reach, lane rate, fiber plant (MMF or SMF), wavelength class, power envelope, lifetime FIT target, operating temperature, and manufacturing volume. Those constraints choose the architecture path before any part number appears.
+Walk four steps: (1) system constraints choose the architecture path before any part number; (2) optical budget at named planes (OMA, RIN at ORL, SMSR, chirp); (3) thermal, life, and control headroom with a named HTOL mechanism; (4) ATP methods, FAIR triggers, and RMA codes split by supplier. Name one hard number you would fight for (RIN under ORL, or APC headroom at hot) and what fails if it is missing.
 
-A short multimode path points toward a VCSEL. A 500 m or 2 km single-mode path points toward a DFB or EML at 1310 nm. The modulator choice among direct modulation, EAM, silicon MZM, or ring comes after that path is fixed.
+##### 10-minute reference (read only).
 
-##### Step 2: write the optical budget the laser must close.
-
-Translate the link into numbers the source must support: minimum OMA at the launch reference plane, maximum RIN at a stated ORL, SMSR if filters or WDM sit downstream, chirp or dispersion allowance for the reach, and the bias and extinction window the modulator path needs.
-
-Say the reference plane with every number. A launch spec without TP2 or the module connector is not a requirement.
-
-##### Step 3: write the thermal, life, and control requirements.
-
-Case temperature range, whether a TEC is allowed, wavelength drift over temperature and life, threshold and slope aging limits, and the calibration tables the product will store (APC target, EAM bias versus temperature, or ring lock range).
-
-HTOL and burn-in belong here as named mechanisms with justified activation energy, not as a ritual checklist. If the laser cannot hold lock or APC headroom at the hot corner, the link does not close even if room-temperature OMA looks fine.
-
-##### Step 4: write what production and partners must prove.
-
-Every requirement needs a measurement method, a limit, and a reaction plan. Map OMA, RIN, SMSR, LIV, and eye metrics into the ATP. State lot traceability, FAIR triggers, and how RMA codes stay split by supplier so field data can falsify the qual.
-
-The decision you are making is not "which laser looks best on a bench." It is "which requirements let us ship, second-source, and operate the fleet without guessing."
-
-##### How to say it aloud.
-
-"System constraints first, then OMA and RIN at a named plane and ORL, then thermal and life with a named HTOL mechanism, then ATP and supplier reaction plan." Offer to walk one number, usually RIN at ORL or hot-corner APC headroom, if they want depth.
-
-##### Executive answer (30 seconds).
-
-Freeze reach, lane rate, fiber, power, lifetime, and volume. Those choose the source path. Then write OMA and RIN at a named plane and ORL, thermal and control headroom, a named HTOL mechanism, and an ATP with supplier reaction plan. The decision is which requirements let us ship and second-source, not which laser looks best on a bench.
-
-##### Engineering answer (3 minutes).
-
-Walk the four steps above: system constraints, optical budget with reference planes, thermal/life/control requirements, then production proof. Name one hard number you would fight for (RIN under ORL, or APC headroom at hot) and what fails if it is missing.
-
-##### Deep dive (10 minutes).
-
-Expand one constraint into the full budget table and show how it lands in ATP limits and partner FAIR triggers.
+Expand one constraint into the full budget table and show how it lands in ATP limits and partner FAIR triggers. Details: a short multimode path points toward a VCSEL; a 500 m or 2 km single-mode path toward a DFB or EML at 1310 nm. Say the reference plane with every number. If the laser cannot hold lock or APC headroom at the hot corner, the link does not close even if room-temperature OMA looks fine.
 
 ### How would you validate a new optical transmitter from bring-up through production?
 
-This is the question most likely to open the interview, so it gets the full treatment. The frame to state before any detail: validation is staged uncertainty reduction. Each stage answers a question the previous stage could not, and a test that answers no question is cost, not confidence. Walk the stages in order, and at every one name the reference plane where the measurement is taken and the criterion that decides pass (Table 7.1).
+This is the question most likely to open the interview. The ladder itself is in §A.5.5, Table 7.1. Frame first: validation is staged uncertainty reduction. Each stage answers a question the previous stage could not.
+
+##### 3-minute answer (practice).
+
+Walk the ladder in order. For each stage, name one instrument, the uncertainty removed, and the decision unlocked (continue, redesign, tighten ATP, stop ship). End on which ledger the telemetry must watch.
+
+##### 10-minute reference (read only).
+
+Expand the stage the interviewer picks. The stage-by-stage notes below are reference detail; do not memorize them.
 
 ##### Stage 1: bring-up.
 
@@ -569,81 +535,29 @@ For production, the question changes from is the design good to can the factory 
 
 Deployment is the last validation stage, not the end of validation. Fleet telemetry watches the margins that stage 3 identified: per-lane transmit power, bias current, pre-FEC BER, temperature, and actuator drive such as TEC current, with alarms on trends and disagreements rather than only on hard thresholds. Field returns close the loop: the RMA Pareto is compared against the qualification projection, and divergence means the life model was wrong, not that the fleet is unlucky. A high NFF rate is itself a finding, usually pointing at intermittents or triage gaps. The uncertainty removed is the honest one: what every earlier stage missed.
 
-##### How to say it aloud.
-
-In the interview, give the frame in one sentence, then walk the seven stages in order, one sentence each, naming for each stage one instrument and the uncertainty it removes. Then offer to go deep on whichever stage the interviewer cares about. That structure shows judgment before detail, and it turns a memorized list into a conversation.
-
-##### Executive answer (30 seconds).
-
-Validation is staged uncertainty reduction. Bring-up proves the setup is sane. Characterization maps the population. Margin finds the cliff. Interop removes combination risk. Qual projects life with a named mechanism. Production proves the ATP catches escapes. Fleet telemetry closes the loop. Every stage answers a question the previous stage could not.
-
-##### Engineering answer (3 minutes).
-
-Walk the seven stages in order. For each, name one instrument, the uncertainty removed, and the decision unlocked (continue, redesign, tighten ATP, stop ship). End on which ledger (power, noise, timing, spectral, control) the telemetry must watch.
-
-##### Deep dive (10 minutes).
-
-Expand the stage the interviewer picks. Bring numbers, reference planes, sample sizes, and the failure mode that stage exists to catch.
-
 ### BER worsens at high temperature but average power is stable. What do you do?
 
-This is a classic fork question. The frame to state first: average power held means the power ledger is intact, so the loss lives in signal quality or in a receiver that got noisier. Scope before instruments, measure at the failing temperature, and end with the control that stops recurrence (§10.13).
+Classic fork question (§10.13, §A.5.3).
 
-##### Step 1: scope the failure.
+##### 3-minute answer (practice).
 
-Ask how wide the problem is before touching a knob. One unit or many? One lane or all lanes? One host or every host? One lot or the population? Then ask whether the BER recovers when the unit is cooled. Recovery makes it a thermal operating-point problem, not aging. Aging does not reverse on a cool-down. A single-unit, single-lane, recoverable failure points at a local bias table, heater, or alignment. A multi-unit, multi-lane, recoverable failure points at a system thermal design or a shared calibration method. Scope cuts the candidate list before the first instrument is opened.
+First scope the failure. Apply the power-versus-quality fork: APC is hitting setpoint, so candidates are ER collapse, wrong modulator bias, wavelength walk, exhausted control ledger (TEC or heater at rail), or hotter receiver noise. Measure at the failing temperature on a DCA (ER, OMA, TDECQ), bias-sweep the EAM or MZM, check OSA wavelength, and read actuator codes. If a bias sweep restores the eye, retune the table; if the actuator is railed, fix thermal design. Close with the new ATP corner.
 
-##### Step 2: apply the power-versus-signal-quality fork.
+##### 10-minute reference (read only).
 
-Average power held by the monitor or an external meter means the APC loop is still hitting its setpoint. The candidates that remain are the ones that close the eye without moving average power: extinction ratio collapse, modulator bias parked on the wrong part of its curve, wavelength walking off a filter or ring passband, a TEC or heater running out of range, and receiver noise rising with temperature. Do not chase laser threshold or fiber loss first. Those would have moved the power meter.
-
-##### Step 3: measure at the failing temperature.
-
-Take the unit to the temperature where it fails and stay there. On a DCA, read the eye for ER, OMA, and TDECQ. Sweep the EAM or MZM bias and ask whether the optimum moved away from the stored table value. Read wavelength on an OSA and compare it with the filter or ring passband. Read TEC current and heater DAC codes for actuator headroom: an actuator near its rail is consumed margin even when performance still passes. If a bias sweep restores a clean eye, the laser is healthy and the calibration table is wrong. If the eye stays closed across the full bias range, look at wavelength lock, thermal crosstalk, or the receiver.
-
-##### Step 4: fix the root cause and close the escape.
-
-A collapsed eye that a bias sweep restores is usually a temperature-segment boundary in the calibration table, or a table that was taken at station ambient and never verified at the loaded high-temperature corner. Fix the table or the thermal design, then add that loaded corner to the ATP that missed it. If the actuator is railed, the fix is thermal design or a wider tuning range, not a tighter BER limit. Recurrence control is the new test condition, not a hope that the next lot will behave.
-
-##### How to say it aloud.
-
-Scope, fork, measure at the failing temperature, name the hypothesis the measurement eliminates, then name the control. Offer to walk the bias-sweep or the calibration-table story if the interviewer wants depth.
-
-##### Executive answer (30 seconds).
-
-Power held, so leave the power ledger. Scope unit/lane/lot and whether cool- down recovers. At the failing temperature, read eye, bias sweep, wavelength, and actuator headroom. Fix the table or thermal design; put that corner in ATP.
-
-##### Engineering answer (3 minutes).
-
-Walk the four steps: scope ladder, power fork, hot-corner measurements that kill hypotheses, then recurrence control. Name control margin (TEC/heater DAC rails) as a first-class ledger.
+Offer the calibration-table segment-boundary story or the railed-heater story if asked. Aging does not reverse on cool-down; recoverable failures are operating-point problems.
 
 ### How do you distinguish laser aging from calibration drift?
 
-This question tests whether you separate device physics from control-loop bookkeeping. Aging changes the device. Calibration drift changes the operating point applied to a healthy device. The frame is an external reference plus a recovery test (§5.11, §5.10).
+Separates device physics from control-loop bookkeeping (§5.11, §5.10).
 
-##### Step 1: state the two hypotheses cleanly.
+##### 3-minute answer (practice).
 
-Laser aging raises threshold and lowers slope efficiency at a fixed junction temperature. The APC loop then raises bias to hold power, and eventually the eye or the RIN budget fails even though average power still looks fine. Calibration drift leaves the LIV curve unchanged but parks the product at the wrong bias, wrong EAM voltage, wrong MZM quadrature, or wrong ring heater code. The symptoms can look identical in telemetry. The separation requires an external reference the product does not control.
+Remeasure LIV against ship data at fixed junction temperature. Compare monitor-PD to an external power meter. Sweep modulator bias for a moved optimum. Aging: life model, derating, burn-in, or replacement. Drift: table version control, temperature-segment verification, monitor integrity, ATP corner under load. Do not mix owners.
 
-##### Step 2: remeasure the device against ship data.
+##### 10-minute reference (read only).
 
-Bring the unit to a controlled temperature and rerun LIV. Compare threshold and slope with the shipping record at the same junction temperature. A threshold rise or slope drop is device aging. If LIV matches ship data, the device is still healthy and the problem is in the operating point or the monitor path. Next compare the monitor photodiode current against an external power meter at the same launch. A monitor that disagrees with the external meter will drive the APC loop to the wrong place silently. Then sweep modulator bias and ask whether the optimum moved away from the stored table. A healthy LIV with a moved optimum is calibration drift.
-
-##### Step 3: use time behavior as a second separator.
-
-Aging accumulates monotonically across stress intervals. Plot threshold or bias against cumulative stress hours and look for a steady climb. Calibration error appears as a step after a thermal excursion, a repair, a rework, a firmware flash, or a table rewrite, and it is fully corrected by recalibration. A unit that returns to ship performance after a table reload was never aged. A unit whose LIV still fails after a fresh calibration is aged, and recalibration only masks the wear until the next corner.
-
-##### Step 4: choose the corrective action by the mechanism.
-
-Aging routes to life modeling, derating, burn-in, or field replacement. Calibration drift routes to table version control, temperature-segment verification, monitor-PD integrity checks, and an ATP corner that exercises the table under load. Mixing the two owners wastes weeks: a reliability team cannot fix a wrong table, and a firmware team cannot fix a worn facet.
-
-##### How to say it aloud.
-
-"Aging changes the device; calibration drift changes the setpoint. I separate them with an external LIV and a recovery test, then use time behavior to confirm." Offer the monitor-PD corruption story as the silent failure mode.
-
-##### Executive answer (30 seconds).
-
-Aging changes the LIV. Drift changes the setpoint on a healthy LIV. External LIV plus recovery after recalibration separates them. Time behavior confirms: monotonic climb versus a step after a table or firmware change. Owner follows the mechanism.
+Monitor-PD corruption is the silent drift mode: APC holds the wrong launch while telemetry looks fine. A unit that returns to ship performance after a table reload was never aged.
 
 ### How would you qualify a second laser or photonic-integrated-circuit supplier?
 
@@ -695,27 +609,11 @@ Across lanes, units, and lots, the pattern chooses the fix: a rework instruction
 
 ### Received power is unchanged but required receiver power increased. What hypotheses remain?
 
-This is the other face of the power-versus-signal-quality fork. Average received power held means the loss is not in the link-budget power ledger. The frame: eye quality or the receiver itself (§10.2).
+Apply the power-versus-quality fork (§A.5.3): power ledger intact, so eye quality or the receiver (§10.2).
 
-##### Step 1: restate what the observation rules out.
+##### 3-minute answer (practice).
 
-Unchanged received power rules out average launch drop, connector loss, and fiber attenuation as the primary cause. What remains is signal-quality erosion on the transmitter or channel, or a receiver whose sensitivity got worse. Say that out loud so the interviewer hears the fork.
-
-##### Step 2: list the remaining hypotheses by location.
-
-Transmitter: eye closure at constant average power from modulator bias drift, falling ER, rising RIN under reflection, or increased jitter and chirp. Channel: a new reflection raising MPI, or wavelength moving relative to a filter edge, both of which degrade quality without moving the power meter. Receiver: TIA noise, photodiode responsivity, or equalizer misadaptation. Keep the list short and location-tagged.
-
-##### Step 3: isolate with golden swaps and a waterfall.
-
-Swap a known-good transmitter into the link, then a known-good receiver. Whichever side restores the old sensitivity owns the fault. Sweep BER versus received power with a VOA. A parallel shift of the waterfall means the sensitivity moved. A floor that will not go down with more power points at multiplicative noise: RIN, MPI, or crosstalk. Finish with a stressed-eye check of the receiver against a known transmitter if the golden swap indicts the receive path.
-
-##### Step 4: close with the mechanism, not the symptom.
-
-A shifted waterfall with a clean golden transmitter is a receiver problem: noise, responsivity, or adaptation. A floor is a noise problem; chase ORL, supply PSRR, and aggressor lanes before replacing a laser. The recurrence control depends on the mechanism: a calibration table, a connector hygiene rule, a supply filter, or a receiver lot screen.
-
-##### How to say it aloud.
-
-"Power ledger intact, so quality or receiver. Golden swap, then waterfall shape, then mechanism." Offer to draw the shifted-versus-floored waterfall on the whiteboard.
+List location-tagged hypotheses (Tx ER/RIN/jitter, channel MPI or filter walk, Rx TIA/PD/equalizer). Golden-swap to own the side. Waterfall with a VOA: parallel shift means sensitivity moved; a floor means multiplicative noise. Stressed-eye if Rx is indicted. Control follows the mechanism: table, hygiene, supply filter, or lot screen.
 
 ### Why can a link show a BER floor that more launch power does not fix?
 
@@ -1161,35 +1059,25 @@ Internalize this one page. The rest of the appendix is supporting detail.
 
 *Philosophy.* Engineering reduces uncertainty. Measurements unlock decisions. Every measurement updates belief. The job is the best decision with today's evidence, not finding the truth.
 
-*Debug.* Bayesian inference in the lab. Minimum measurement that kills the most hypotheses.
+*Debug.* Bayesian inference in the lab. Priors favor common modes. Minimum measurement that kills the most hypotheses.
 
-*Spine (4 phases).* Understand (requirements, architecture) $\rightarrow$ Investigate (measure, observe, hypothesize, isolate) $\rightarrow$ Resolve (root cause, corrective action) $\rightarrow$ Prevent (recurrence control, decision).
+*Spine (4 phases).* Understand $\rightarrow$ Investigate $\rightarrow$ Resolve $\rightarrow$ Prevent (end on the decision).
 
 *Checklist.* Scope? Ledger? Power or quality? Fastest measurement? Decision? Control?
 
-*Five ledgers.* Power $\cdot$ Noise $\cdot$ Timing $\cdot$ Spectral $\cdot$ Control. Prefer "control ledger exhausted" over "TEC maxed."
+*Memorize.* Three principles, four-phase spine, five ledgers, power-versus-quality fork, validation ladder, decision vocabulary, two stories. Rest is reference.
 
-*Power fork.* Power moved: optical path. Power held: signal quality or receiver.
+*Five ledgers.* Power $\cdot$ Noise $\cdot$ Timing $\cdot$ Spectral $\cdot$ Control.
 
-*Validation ladder.* Bring-up $\rightarrow$ characterization $\rightarrow$ margin $\rightarrow$ interop $\rightarrow$ environment $\rightarrow$ reliability $\rightarrow$ production $\rightarrow$ fleet.
+*Power fork / scope / ladder.* Apply the fork; first scope (unit$\rightarrow$lot$\rightarrow$vendor$\rightarrow$fleet); walk the validation ladder (§A.5.5).
 
 *Decisions.* Ship / don't ship, continue validation, escalate supplier, derate, second source, contain lot, modify ATP, open RMA, FA/DPA, firmware, retune calibration, monitor only (Table A.1).
 
-*Scope.* Unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ rack $\rightarrow$ datacenter $\rightarrow$ fleet.
+*Waterfall / thermal.* Shift vs floor vs burst. Cool-down recovery vs monotonic aging.
 
-*Waterfall.* Shift vs floor vs burst.
+*Lab time / hierarchy.* Golden swap $\rightarrow$ power $\rightarrow$ bias sweep $\rightarrow$ DCA/OSA/RIN. Telemetry $\rightarrow$ bench $\rightarrow$ swap $\rightarrow$ characterization $\rightarrow$ FA/DPA.
 
-*Thermal vs aging.* Recovers on cool-down vs monotonic permanent.
-
-*Lab time.* Golden swap $\rightarrow$ power $\rightarrow$ bias sweep $\rightarrow$ then DCA/OSA/RIN.
-
-*Measure hierarchy.* Telemetry $\rightarrow$ bench $\rightarrow$ swap $\rightarrow$ characterization $\rightarrow$ FA/DPA.
-
-*Traps.* No component-first. No symptom-as-root-cause. No stop after fix. No instrument list without decisions. No one-unit-as-fleet.
-
-*Ownership.* Contain, notify, FA path, ATP/telemetry control, monitor RMA, requalify.
-
-*Delivery.* Memorize 30-second closes. Expand only where asked.
+*Traps / ownership / delivery.* No component-first; no symptom-as-root-cause; no stop after fix. Contain, notify, FA, ATP, monitor RMA. Memorize green 30-second boxes only.
 
 **Key idea.** I first want to understand the scope of the problem, then determine which margin ledger is being spent, choose the measurement that eliminates the largest number of hypotheses, make the product decision, and finally add the control that prevents the next escape.
 
