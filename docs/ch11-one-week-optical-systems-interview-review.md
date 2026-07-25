@@ -52,7 +52,7 @@ Work the day plan at the end of this appendix. Memorize the one-page cheat sheet
 
 Interview questions are usually solved by walking a sequence of uncertainty-reduction decisions. The exact branches differ. The philosophy never changes. Debugging asks what broke and which margin ledger is spent. Qualification asks what uncertainty remains before shipment. The playbooks in Appendix B are specialized trees under these two universal ones. The same trees, plus supplier, escape, unknown-failure, and margin-budget variants, live as a wall chart in Appendix C.
 
-Memorize the two shapes, not the ASCII: Debugging = scope $\rightarrow$ power/quality $\rightarrow$ isolation $\rightarrow$ decision $\rightarrow$ control. Qualification = bring-up $\rightarrow$ margin $\rightarrow$ environment $\rightarrow$ interop $\rightarrow$ reliability $\rightarrow$ ATP $\rightarrow$ pilot $\rightarrow$ fleet. Full wall charts, including power fork, scope versus correlation, black-box access, and measurement selection, are in Appendix C. Night-before drill opens the matching playbook in Appendix B.
+Memorize the two shapes, not the ASCII: Debugging = scope $\rightarrow$ power/quality $\rightarrow$ isolation $\rightarrow$ decision $\rightarrow$ control. Qualification = bring-up $\rightarrow$ characterization $\rightarrow$ margin/interop $\rightarrow$ reliability $\rightarrow$ manufacturing/ATP $\rightarrow$ pilot $\rightarrow$ fleet. Full wall charts, including power fork, scope versus correlation, black-box access, and measurement selection, are in Appendix C. Night-before drill opens the matching playbook in Appendix B.
 
 ## The answer spine
 
@@ -405,24 +405,17 @@ A good answer explains why each choice constrains the next one. A VCSEL path poi
 
 ### Scope before root cause
 
-Before you open an instrument, walk the failure up the scope ladder. Each rung changes the owner and the next action: $$\begin{split}
-\text{failure observed} &\longrightarrow \text{single unit?}
-\longrightarrow \text{lot?}\\
-&\longrightarrow \text{vendor?}
-\longrightarrow \text{rack?}\\
-&\longrightarrow \text{datacenter?}
-\longrightarrow \text{fleet?}
-\end{split}$$ Also ask time and change: new failure or long-running trend; sudden, gradual, intermittent, or temperature-dependent; firmware, supplier, process, fixture, workload, or environment change just before the symptom. Scope often removes more hypotheses than the first bench measurement. A fleet-wide gradual drift cannot be a single dirty connector. A single-lane sudden failure after a rework cannot be a population aging problem. A vendor-lot signature points to supplier containment before you redesign the module.
+Before you open an instrument, walk the failure up the scope ladder (unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ site $\rightarrow$ fleet). Each rung changes the owner and the next action (Appendix C.4, Appendix C.8). Also ask time and change: sudden versus gradual, intermittent versus constant, and what changed just before the symptom. Scope often removes more hypotheses than the first bench measurement. A fleet-wide gradual drift cannot be a single dirty connector. A vendor-lot signature points to supplier containment before you redesign the module.
 
-Preserve the failing state and its telemetry before you reseat, clean, reboot, or change calibration. Capture CMIS monitors, pre- FEC BER, bias currents, temperatures, LOS and LOL flags, and firmware versions. An intermittent that disappears under debugging is still a real failure; you just destroyed the evidence (§7.12, Table 10.1).
+Preserve the failing state and its telemetry before you reseat, clean, reboot, or change calibration. Capture CMIS monitors, pre-FEC BER, bias currents, temperatures, LOS and LOL flags, and firmware versions. An intermittent that disappears under debugging is still a real failure; you just destroyed the evidence (§7.12, Table 10.1).
 
 ### Use the power-versus-signal-quality fork
 
-First ask whether received optical power changed. That one question splits the debug tree.
+First ask whether received optical power changed. That one question splits the debug tree. Full instrument paths and worked examples live in §4.8, §7.11.
 
-If power changed, the power ledger moved. Inspect source output and enable state, coupling and FAU alignment, connector cleanliness, ORL, fiber and multiplexer loss, and monitor-photodiode calibration. An APC loop that trusts a drifting monitor will hold a wrong launch power while reporting that everything is fine. Confirm with an external power meter at a named reference plane.
+If power changed, stay on the power ledger: source enable, coupling, connectors, ORL, plant loss, and monitor calibration. Confirm with an external meter at a named plane before retuning eyes or equalizers.
 
-If power held but BER worsened, the loss is in signal quality or in the receiver. Inspect OMA, ER, RLM, and TDECQ on a DCA; RIN under controlled ORL; jitter and ISI; wavelength alignment to filters or rings; receiver sensitivity and equalization; and calibration tables that set modulator bias. Also ask the receiver-side equivalent: did the required optical power increase even though the power meter reading did not? A sensitivity shift can look exactly like transmitter degradation until you do a golden swap (§4.8, §7.11).
+If power held but BER worsened, leave the power ledger. Signal quality, receiver sensitivity, wavelength or lock, and calibration tables are next. A sensitivity shift can look like transmitter degradation until you golden-swap.
 
 ### Track five margin ledgers
 
@@ -457,45 +450,45 @@ Name the spent ledger before naming a laser, TIA, or connector. The ledger picks
 
 **Key idea.** Validation is staged uncertainty reduction. Engineering is decision making; decision making is uncertainty reduction; measurements reduce uncertainty; therefore measurements exist to improve decisions.
 
-For every stage, name the question the stage answers and the uncertainty it removes. A test that answers no question is cost, not confidence. Later sections only say "walk the validation ladder"; this is the canonical map. Table 7.1, Table 7.2 are grouped views of the same order.
+For every stage, name the question the stage answers and the uncertainty it removes. A test that answers no question is cost, not confidence. Full exit criteria, activities, and decisions live in §7.1, Table 7.1. The expanded names below are interview vocabulary for the same six grouped stages.
 
 Requirements
 
-: Freeze operating envelope, hosts, reach, BER/FEC, optical and electrical limits, environment, lifetime, and production needs.
+: What envelope and production needs freeze the program?
 
 Bring-up
 
-: Power, initialize, emit, lock, telemetry, and pass data on a known-good host. Removes integration unknowns only.
+: Does it operate on a known-good host?
 
 Nominal characterization
 
-: Map normal performance across temperature, voltage, lane, wavelength, pattern, and unit: power, sensitivity, BER, eye or signal-quality metrics, FEC, lane variation. Distributions, not a hero sample.
+: How does it behave across corners and units?
 
 Margin characterization
 
-: How far from each failure boundary? Optical loss, sensitivity, electrical, timing, control authority, environmental headroom.
+: How close is it to failure?
 
 Interoperability
 
-: Target hosts, ASICs, firmware, fibers, connectors, peer devices, and supplier combinations.
+: Does margin survive real hosts, plant, and peers?
 
 Environmental and reliability qualification
 
-: Temperature, voltage, ripple, airflow, humidity, contamination, vibration, connector cycling, aging, and accelerated stress with a named mechanism and justified $E_a$ where life is claimed.
+: Will it survive intended life under named stress?
 
 Manufacturing and ATP readiness
 
-: Lot consistency, distributions, measurable limits, ATP coverage, guardbands, supplier controls, escape detection.
+: Can it be built and screened at volume?
 
 Controlled pilot
 
-: Limited population, enhanced monitoring, exit criteria, rollback or containment plan.
+: Do lab assumptions hold in a limited field cohort?
 
 Fleet deployment and monitoring
 
-: BER/FEC, retrains, power, temperature, lane behavior, cohort trends, field failures, supplier and lot correlations.
+: Do those assumptions remain valid at scale?
 
-The worked answer in Appendix A.8.2 is practice prose built on this ladder. Night-before path: Framework 7 in Appendix B.
+Margin and interoperability map to Stage 3; controlled pilot and fleet map to Stage 6. Night-before path: Framework 7 in Appendix B. Practice prose: Appendix A.8.2.
 
 ### Margin budgeting
 

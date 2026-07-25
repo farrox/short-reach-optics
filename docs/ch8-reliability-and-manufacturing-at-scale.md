@@ -44,19 +44,7 @@ Production + fleet monitoring</code></pre>
 > Customer: BER, sensitivity, FEC, telemetry, environmental sweeps, interop.\
 > Engineering samples (Tx-only, Rx-only, breakout, PRBS) open isolation; otherwise stay on the external surface.
 
-<pre class="dectree" aria-label="Decision tree"><code>Bookended product
-  |
-End-to-end qualification
-  |-- BER / FEC / telemetry / sensitivity
-  |-- environment / interoperability
-  |
-Enough confidence to decide?
-  |-- YES --&gt; deployment decision
-  |-- NO  --&gt; request engineering access
-              Tx-only / Rx-only / breakout / diagnostics
-              |
-              Isolate margin</code></pre>
-The vendor designs the internals. The customer characterizes the behavior and owns the deployment decision. An optical eye is measured externally with suitable access; do not assume the module reports a conventional eye (Appendix C.10, Appendix A.6.7).
+The vendor designs the internals. The customer characterizes externally observable behavior and owns the deployment decision. For a bookended product, begin with BER, FEC, sensitivity, telemetry, environment, and interop. Request engineering access (Tx-only, Rx-only, breakout, external eye or TDECQ) only when that surface cannot decide. Do not assume a module reports a conventional optical eye (Appendix C.10, Appendix A.6.7).
 
 Optoelectronics inherited a common qualification language from telecom: *Telcordia GR-468-CORE*. The core stress tests still show up on every laser and module program:
 
@@ -366,28 +354,14 @@ Track yield by ATP row, lot, supplier site, tester, and date code. A yield drop 
 
 <pre class="dectree" aria-label="Decision tree"><code>Escape
   |
-Contain risk now
+Contain scoped population
   |
 Investigate mechanism
   |
-Prevent recurrence (ATP / SPC / process)</code></pre>
-<<<DECTREE>>>
-    Production escape
-      |
-    Contain scoped population
-      |
-    Scope + evidence
-      |
-    Supplier / FA
-      |
-    ATP or screen update
-      |
-    Verify next lot
-      |
-    Fleet monitoring
-    <<<ENDDECTREE>>>
-
-Containment, root-cause investigation, and recurrence control are three different actions. The system owner keeps responsibility for evidence quality and verifying corrective action (Appendix C.8, Appendix C.11). Organize the spent margin with the five ledgers before naming a component (§5.19, §4.8).
+Prevent recurrence (ATP / SPC / process)
+  |
+Verify next lot + fleet watch</code></pre>
+Containment, root-cause investigation, and recurrence control are three different actions. Apply the supplier-escape and recurrence trees in Appendix C.8, Appendix C.11 to separate immediate hold from FA and from the ATP or SPC change that closes the loop. Organize the spent margin with the five ledgers before naming a component (§5.19, §4.8).
 
 An escaped defect is a unit that passed every production screen and failed in the field. Post-screen field failures split into two categories with different corrective actions:
 

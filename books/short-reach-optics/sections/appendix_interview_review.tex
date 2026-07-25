@@ -98,7 +98,7 @@ margin-budget variants, live as a wall chart in \Cref{app:decision-trees}.
 Memorize the two shapes, not the ASCII: Debugging =
 scope~$\rightarrow$~power/quality~$\rightarrow$~isolation~$\rightarrow$~decision~$\rightarrow$~control.
 Qualification =
-bring-up~$\rightarrow$~margin~$\rightarrow$~environment~$\rightarrow$~interop~$\rightarrow$~reliability~$\rightarrow$~ATP~$\rightarrow$~pilot~$\rightarrow$~fleet.
+bring-up~$\rightarrow$~characterization~$\rightarrow$~margin/interop~$\rightarrow$~reliability~$\rightarrow$~manufacturing/ATP~$\rightarrow$~pilot~$\rightarrow$~fleet.
 Full wall charts, including power fork, scope versus correlation, black-box
 access, and measurement selection, are in \Cref{app:decision-trees}. Night-before
 drill opens the matching playbook in \Cref{app:interview-frameworks}.
@@ -645,29 +645,19 @@ is in \Cref{tab:source-mod-matrix}.
 
 \subsection{Scope before root cause}
 
-Before you open an instrument, walk the failure up the scope ladder. Each rung
-changes the owner and the next action:
-\[
-\begin{split}
-\text{failure observed} &\longrightarrow \text{single unit?}
-\longrightarrow \text{lot?}\\
-&\longrightarrow \text{vendor?}
-\longrightarrow \text{rack?}\\
-&\longrightarrow \text{datacenter?}
-\longrightarrow \text{fleet?}
-\end{split}
-\]
-Also ask time and change: new failure or long-running trend; sudden, gradual,
-intermittent, or temperature-dependent; firmware, supplier, process, fixture,
-workload, or environment change just before the symptom. Scope often removes
-more hypotheses than the first bench measurement. A fleet-wide gradual drift
-cannot be a single dirty connector. A single-lane sudden failure after a rework
-cannot be a population aging problem. A vendor-lot signature points to supplier
-containment before you redesign the module.
+Before you open an instrument, walk the failure up the scope ladder
+(unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ site $\rightarrow$
+fleet). Each rung changes the owner and the next action
+(\Cref{sec:tree-scope-population,sec:tree-escape}). Also ask time and change:
+sudden versus gradual, intermittent versus constant, and what changed just
+before the symptom. Scope often removes more hypotheses than the first bench
+measurement. A fleet-wide gradual drift cannot be a single dirty connector. A
+vendor-lot signature points to supplier containment before you redesign the
+module.
 
 Preserve the failing state and its telemetry before you reseat, clean,
-reboot, or change calibration. Capture CMIS\termnote{CMIS} monitors, pre-
-FEC\termnote{FEC} BER\termnote{BER}, bias currents, temperatures,
+reboot, or change calibration. Capture CMIS\termnote{CMIS} monitors,
+\mbox{pre-FEC}\termnote{FEC} BER\termnote{BER}, bias currents, temperatures,
 LOS\termnote{LOS} and LOL\termnote{LOL} flags, and firmware versions. An
 intermittent that disappears under debugging is still a real failure; you
 just destroyed the evidence
@@ -677,23 +667,17 @@ just destroyed the evidence
 \label{sec:interview-power-fork}
 
 First ask whether received optical power changed. That one question splits
-the debug tree.
+the debug tree. Full instrument paths and worked examples live in
+\Cref{sec:debug-fork,sec:validation-fork}.
 
-If power changed, the power ledger moved. Inspect source output and enable
-state, coupling and FAU\termnote{FAU} alignment, connector cleanliness,
-ORL\termnote{ORL}, fiber and multiplexer loss, and monitor-photodiode
-calibration. An APC\termnote{APC} loop that trusts a drifting monitor will
-hold a wrong launch power while reporting that everything is fine. Confirm
-with an external power meter at a named reference plane.
+If power changed, stay on the power ledger: source enable, coupling,
+connectors, ORL, plant loss, and monitor calibration. Confirm with an
+external meter at a named plane before retuning eyes or equalizers.
 
-If power held but BER worsened, the loss is in signal quality or in the
-receiver. Inspect OMA, ER, RLM, and TDECQ\termnote{TDECQ} on a DCA;
-RIN\termnote{RIN} under controlled ORL; jitter and ISI; wavelength alignment
-to filters or rings; receiver sensitivity and equalization; and calibration
-tables that set modulator bias. Also ask the receiver-side equivalent: did
-the required optical power increase even though the power meter reading did
-not? A sensitivity shift can look exactly like transmitter degradation until
-you do a golden swap (\Cref{sec:debug-fork,sec:validation-fork}).
+If power held but BER worsened, leave the power ledger. Signal quality,
+receiver sensitivity, wavelength or lock, and calibration tables are next.
+A sensitivity shift can look like transmitter degradation until you
+golden-swap.
 
 \subsection{Track five margin ledgers}
 \label{sec:interview-margin-ledgers}
@@ -769,41 +753,28 @@ making; decision making is uncertainty reduction; measurements reduce
 uncertainty; therefore measurements exist to improve decisions.}
 
 For every stage, name the question the stage answers and the uncertainty it
-removes. A test that answers no question is cost, not confidence. Later
-sections only say ``walk the validation ladder''; this is the canonical map.
-\Cref{tab:ladder,tab:ladder-gates} are grouped views of the same order.
+removes. A test that answers no question is cost, not confidence. Full exit
+criteria, activities, and decisions live in
+\Cref{sec:validation-workflow,tab:ladder}. The expanded names below are
+interview vocabulary for the same six grouped stages.
 
 \begin{description}
-\item[Requirements] Freeze operating envelope, hosts, reach, BER/FEC, optical
-      and electrical limits, environment, lifetime, and production needs.
-\item[Bring-up] Power, initialize, emit, lock, telemetry, and pass data on a
-      known-good host. Removes integration unknowns only.
-\item[Nominal characterization] Map normal performance across temperature,
-      voltage, lane, wavelength, pattern, and unit: power, sensitivity, BER,
-      eye or signal-quality metrics, FEC, lane variation. Distributions, not a
-      hero sample.
-\item[Margin characterization] How far from each failure boundary? Optical
-      loss, sensitivity, electrical, timing, control authority, environmental
-      headroom.
-\item[Interoperability] Target hosts, ASICs, firmware, fibers, connectors,
-      peer devices, and supplier combinations.
-\item[Environmental and reliability qualification] Temperature, voltage,
-      ripple, airflow, humidity, contamination, vibration, connector cycling,
-      aging, and accelerated stress with a named mechanism and justified
-      $E_a$ where life is claimed.
-\item[Manufacturing and ATP readiness] Lot consistency, distributions,
-      measurable limits, ATP coverage, guardbands, supplier controls,
-      escape detection.
-\item[Controlled pilot] Limited population, enhanced monitoring, exit
-      criteria, rollback or containment plan.
-\item[Fleet deployment and monitoring] BER/FEC, retrains, power, temperature,
-      lane behavior, cohort trends, field failures, supplier and lot
-      correlations.
+\item[Requirements] What envelope and production needs freeze the program?
+\item[Bring-up] Does it operate on a known-good host?
+\item[Nominal characterization] How does it behave across corners and units?
+\item[Margin characterization] How close is it to failure?
+\item[Interoperability] Does margin survive real hosts, plant, and peers?
+\item[Environmental and reliability qualification] Will it survive intended
+      life under named stress?
+\item[Manufacturing and ATP readiness] Can it be built and screened at volume?
+\item[Controlled pilot] Do lab assumptions hold in a limited field cohort?
+\item[Fleet deployment and monitoring] Do those assumptions remain valid at
+      scale?
 \end{description}
 
-The worked answer in \Cref{sec:interview-worked-validation} is practice prose
-built on this ladder. Night-before path: Framework~7 in
-\Cref{app:interview-frameworks}.
+Margin and interoperability map to Stage~3; controlled pilot and fleet map to
+Stage~6. Night-before path: Framework~7 in \Cref{app:interview-frameworks}.
+Practice prose: \Cref{sec:interview-worked-validation}.
 
 \subsection{Margin budgeting}
 \label{sec:interview-margin-budget}

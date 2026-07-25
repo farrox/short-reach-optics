@@ -61,7 +61,7 @@ Coded modulation
 
 CMIS
 
-: Common management information specification.
+: Common Management Interface Specification.
 
 CMIS-LT
 

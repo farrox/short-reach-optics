@@ -11,7 +11,7 @@ Debugging asks which margin ledger was exhausted. Qualification asks how much ma
 
 ## The validation ladder
 
-Optical programs fail in the same places again and again: a part that looks good in characterization but cannot bring up on a production host, or a module that passes acceptance test procedure (*ATP*) and then unlocks under neighbor heat. The ladder below is a decision framework, not a test menu. Each stage answers one question the previous stage could not answer. Skipping a rung does not save time. It moves the escape into a later, more expensive stage.
+Optical programs fail in the same places again and again: a part that looks good in characterization but cannot bring up on a production host, or a module that passes acceptance test plan (*ATP*) and then unlocks under neighbor heat. The ladder below is a decision framework, not a test menu. Each stage answers one question the previous stage could not answer. Skipping a rung does not save time. It moves the escape into a later, more expensive stage.
 
 Requirements sit above the first gate: reach, lane rate, hosts, BER/FEC target, power and thermal envelope, lifetime, and production volume. Without those constraints, later measurements have no pass criterion (Appendix A.6.5).
 
@@ -33,25 +33,25 @@ Requirements sit above the first gate: reach, lane rate, hosts, BER/FEC target, 
 
 **Table 7.1.** Validation ladder as a decision map. Instrument lists and stage detail follow below. The same order appears in expanded form in Appendix A.6.5, Appendix C.2.
 
-  -----------------------------------------------------------------------------------------------------------------------------
-  Stage              Entry uncertainty            Exit criteria                                  Decision unlocked
-  ------------------ ---------------------------- ---------------------------------------------- ------------------------------
-  Bring-up           Part present; host unknown   Ready state, light, lock, BER on golden host   Continue / debug integration
+  ---------------------------------------------------------------------------------------------------------------------------------
+  Stage                  Entry uncertainty            Exit criteria                                  Decision unlocked
+  ---------------------- ---------------------------- ---------------------------------------------- ------------------------------
+  Bring-up               Part present; host unknown   Ready state, light, lock, BER on golden host   Continue / debug integration
 
-  Characterization   Links at one corner          Mapped response vs $T$, $V$, ORL, age          Derate / redesign / proceed
+  Characterization       Links at one corner          Mapped response vs $T$, $V$, ORL, age          Derate / redesign / proceed
 
-  Margin / interop   Nominal map known            Loaded corners and target hosts close          Fleet corner OK / restrict
+  Margin and interop     Nominal map known            Loaded corners and target hosts close          Fleet corner OK / restrict
 
-  Reliability        Mechanisms named             Life / env evidence with sample plan           Life risk accepted / hold
+  Stress qualification   Mechanisms named             Life / env evidence with sample plan           Life risk accepted / hold
 
-  Production ready   Qual evidence in hand        Multi-lot yield, ATP, SPC, FAIR                Open volume / hold
+  Production readiness   Qual evidence in hand        Multi-lot yield, ATP, SPC, FAIR                Open volume / hold
 
-  Pilot / fleet      Volume candidate             Exit criteria + telemetry owners               Ship / restrict / reject
-  -----------------------------------------------------------------------------------------------------------------------------
+  Pilot and fleet        Volume candidate             Exit criteria + telemetry owners               Ship / restrict / reject
+  ---------------------------------------------------------------------------------------------------------------------------------
 
 **Table 7.2.** Ladder gates for rapid retrieval. Do not treat an earlier exit as evidence for a later gate (Appendix C.2).
 
-These tables are a grouped view of one canonical lifecycle, not a competing sequence. Bring-up plus nominal characterization cover early functional learning. Margin characterization and interoperability cover remaining-margin questions. Environmental and reliability qualification cover life risk. Manufacturing and ATP readiness cover volume screens. Controlled pilot and fleet monitoring close the loop after ship.
+These tables are a grouped view of one canonical lifecycle, not a competing sequence. Stage 2 is nominal characterization. Stage 3 groups margin characterization with interoperability. Stage 4 is environmental and reliability qualification (stress / life). Stage 5 is manufacturing and ATP readiness. Stage 6 groups controlled pilot with fleet monitoring. The expanded stage names in Appendix A.6.5 map onto these six grouped stages in the same order.
 
 <pre class="dectree" aria-label="Decision tree"><code>Requirement
   |
@@ -68,7 +68,7 @@ Fleet feedback</code></pre>
 
 ##### Purpose.
 
-Does the product operate at all on a known-good host? Bring-up asks whether power, management, light, timing recovery, and a usable error rate exist before anyone argues about margin.
+Does the product operate at all on a known-good host? Bring-up is not qualification. It asks whether power, management, light, timing recovery, and a usable error rate exist before anyone argues about margin.
 
 ##### Uncertainty removed.
 
@@ -76,7 +76,7 @@ Before bring-up you do not know whether a failure is integration (seat, cable, f
 
 ##### Activities.
 
-Power the module or engine. Confirm management presence and state progression through the Common Management Interface Specification (*CMIS*) state machine to a ready state. Enable transmit only when commanded. Verify first light and received power. Confirm clock and data recovery (*CDR*) lock. Measure pre-FEC bit error ratio (*pre-FEC BER*) on a golden host. Details and fail branches live in §7.9, Table 7.4.
+Power the module or engine. Confirm management presence and state progression through the Common Management Interface Specification (*CMIS*) state machine to a ready state. Enable transmit only when commanded. Verify first light and received power. Confirm clock and data recovery (*CDR*) lock, so later BER work is not dominated by a basic timing-recovery fail. Measure pre-FEC bit error ratio (*pre-FEC BER*) on a golden host. Details and fail branches live in §7.9, Table 7.4.
 
 ##### Measurements and evidence.
 
@@ -162,15 +162,15 @@ Will the product survive its intended life under a named wear-out or environment
 
 ##### Uncertainty removed.
 
-Functional and margin stages do not answer lifetime. Stress qualification separates infant mortality and wear-out risk from operating-point mistakes (§8.2, §8.3).
+Functional and margin stages do not answer lifetime. Environmental sweeps ask how performance changes under a condition; reliability qualification asks whether exposure creates unacceptable permanent degradation over the intended life. Stress qualification covers both, and separates infant mortality and wear-out risk from operating-point mistakes (§8.2, §8.3).
 
 ##### Activities.
 
-Run high-temperature operating life (*HTOL*), temperature cycling, humidity where claimed, electrostatic discharge (*ESD*) robustness, and connector mating cycles as required by the product class (often GR-468 / GR-1221 for optics and JESD47-class thinking for ICs). Name the mechanism and justify activation energy $E_a$ when you project FIT.
+Run high-temperature operating life (*HTOL*), temperature cycling, humidity where claimed, electrostatic discharge (*ESD*) robustness, and connector mating cycles as required by the product class (often GR-468 / GR-1221 for optics and JESD47-class thinking for ICs). Name the failure class each stress is meant to expose, and justify activation energy $E_a$ when you project FIT.
 
 ##### Measurements and evidence.
 
-Track the same customer-visible margins (power, BER/FEC, lock, wavelength) before and after stress. LIV, SMSR, or dark checks on returns separate true aging from calibration drift. A life claim without a mechanism is a narrative, not evidence.
+Track the same customer-visible margins (power, BER/FEC, lock, wavelength) before and after stress. Compare LIV, SMSR, spectrum, and other physical baselines on returns: a permanent baseline shift supports physical aging, while a healthy baseline with recovery after recalibration supports setpoint or control drift. LIV is one useful baseline, not a universal aging detector. A life claim without a mechanism is a narrative, not evidence.
 
 ##### Exit criteria.
 
@@ -192,11 +192,11 @@ Can the supplier reproduce the qualified result at volume, with screens that cat
 
 ##### Uncertainty removed.
 
-Qualification on engineering lots does not prove manufacturing control. Production readiness asks whether yield, process control, and ATP coverage survive lot-to-lot variation (§8.9, §8.10).
+A few carefully built engineering samples cannot establish volume readiness. Production readiness asks whether yield, process control, and ATP coverage survive lot-to-lot variation (§8.9, §8.10). Design Validation Test (*DVT*) asks whether the design meets requirements; Production Validation Test (*PVT*) asks whether the manufacturing line can build that design repeatedly at the intended scale.
 
 ##### Activities.
 
-Review multi-lot yield and statistical process control (*SPC*). Correlate automated test equipment (*ATE*) to bench truth. Freeze ATP limits that catch the known escape paths. Complete first-article / FAIR gates and Design Validation Test / Production Validation Test (*DVT* / *PVT*) exits that match the requirements slice.
+Review multi-lot yield and statistical process control (*SPC*). Correlate automated test equipment (*ATE*) to bench truth. Freeze ATP limits that catch the known escape paths. Complete first-article / FAIR gates and DVT / PVT exits that match the requirements slice.
 
 ##### Measurements and evidence.
 
@@ -246,9 +246,9 @@ You learn the real escape mechanism from customer outage instead of from a contr
 
 ### Why the stages occur in this order
 
-Bring-up establishes that the setup and product fundamentally operate. Characterization maps behavior and variation. Margin and interoperability determine whether behavior survives realistic use. Stress qualification tests projected lifetime under a named mechanism. Production readiness determines whether the supplier can reproduce the result at volume. Pilot and fleet monitoring check whether assumptions remain valid after deployment.
+Bring-up confirms that the system can produce interpretable data. Characterization establishes normal behavior. Margin testing identifies distance from failure; interoperability tests whether that margin survives realistic system variation (grouped as Stage 3). Stress qualification tests whether behavior survives time and named stress. Production readiness determines whether performance can be reproduced at volume. Controlled pilot and fleet monitoring check laboratory assumptions in the field, then at scale (grouped as Stage 6).
 
-Later stages must not compensate for incomplete earlier stages. An HTOL pass does not prove bring-up on the target host. An ATP correlation does not prove remaining margin under neighbor heat. Treat each exit as evidence only for its own question (Table 7.2, Appendix C.2).
+Later stages must not compensate for incomplete earlier stages. A large interoperability matrix cannot fix unstable bring-up. Reliability testing cannot establish manufacturing consistency from one engineering lot. An HTOL pass does not prove bring-up on the target host. Treat each exit as evidence only for its own question (Table 7.2, Appendix C.2).
 
 ### Learning summary
 
@@ -262,7 +262,7 @@ Characterization
 
 Margin and interoperability
 
-: Does it survive realistic system variation?
+: How close is it to failure, and does that margin survive real system variation?
 
 Stress qualification
 
@@ -274,7 +274,7 @@ Production readiness
 
 Pilot and fleet
 
-: Were the qualification assumptions correct in deployment?
+: Do laboratory assumptions hold in a controlled cohort, and remain valid at scale?
 
 > **Before qualification**
 >
@@ -865,7 +865,7 @@ Ask whether the operating point or the device changed with heat. Telemetry for t
 
 ##### Slow BER creep over weeks/months.
 
-Ask whether wear-out is spending the noise or power ledger. Bias current rising at fixed Tx power is a classic aging tell. Confirm LIV/SMSR against ship ATP and lot history. **Decision:** replace, derate, or update burn- in. **Risk if skipped:** FIT models stay optimistic until the fleet teaches you.
+Ask whether wear-out is spending the noise or power ledger. Bias current rising at fixed Tx power raises $P(\mathrm{aging})$. Confirm against ship ATP baselines (LIV, SMSR, power, spectrum) and lot history; recovery after recalibration raises $P(\mathrm{control/cal})$ instead. **Decision:** replace, derate, or update burn-in. **Risk if skipped:** FIT models stay optimistic until the fleet teaches you.
 
 ##### Sudden hard fail, was healthy.
 
@@ -909,7 +909,7 @@ Scope before mechanism. Telemetry before destructive FA. Bucket before owner. Co
 
 ##### Worked paths (three common tickets).
 
-*"High temp only."* CMIS shows module near thermal limit and Tx power sagging. Bucket starts as performance (thermal design / derate) until LIV at temperature shows threshold rise matching an aged lot, which flips it to reliability. Measure OSA wavelength before blaming the laser: a ring unlock is still performance (§3.14.3, Chapter 6).
+*"High temp only."* CMIS shows module near thermal limit and Tx power sagging. Bucket starts as performance (thermal design / derate). A permanent LIV or spectrum shift at temperature that matches an aged lot raises $P(\mathrm{aging})$ and justifies moving the ticket toward reliability; cool-down recovery without baseline shift keeps it in performance. Measure OSA wavelength before blaming the laser: a ring unlock is still performance (§3.14.3, Chapter 6).
 
 *"Random burst errors, average power fine."* Check FEC histogram for clustered errors and CMIS for Rx power dropouts. Clean and measure ORL. If RIN rises with ORL, it is performance/architecture (feedback). If ORL is fine and bursts track a date code, it is mfg (intermittent fiber attach). If bursts grow over months at fixed ORL, suspect laser or driver aging (§5.8, §5.13).
 
@@ -919,7 +919,7 @@ Scope before mechanism. Telemetry before destructive FA. Bucket before owner. Co
 
 RMA codes should be distinct, not a single "optics fail":
 
-- laser wear-out (LIV/SMSR/EAM aging confirmed);
+- laser wear-out (LIV/SMSR/EAM baselines support aging; not proof alone);
 
 - COD / sudden dark;
 
