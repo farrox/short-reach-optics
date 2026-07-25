@@ -7,6 +7,8 @@ title: "Ch 7: Optical validation"
 
 A datasheet that closes on a quiet bench is not a product. *Validation* reduces uncertainty about whether a link meets its requirements across the temperatures, hosts, connectors, production spread, and lifetime the fleet will actually see. Passing tests is an output, not the purpose. This chapter walks the ladder from a single device to a deployed fleet, the engineering question at each stage, module and system bring-up under production-like corners, and the hypothesis-driven debug method the work demands.
 
+Debugging asks which margin ledger was exhausted. Qualification asks how much margin remains after the expected stresses. Both are uncertainty reduction that ends in a decision (§C).
+
 ## The validation ladder
 
 Optical programs fail in the same places again and again: a part that looks good in characterization but cannot bring up on a production host, or a module that passes ATP and then unlocks under neighbor heat. The practical way to avoid those gaps is a ladder of five stages, each answering a sharper question than the last. Skipping one creates escapes that surface later at higher cost.
@@ -32,6 +34,14 @@ Optical programs fail in the same places again and again: a part that looks good
 For every metric at every stage, name the instrument, the reference plane (§3.9), the pass criterion, and the failure signature. A number without a plane and a method is not a measurement.
 
 Each stage removes a different uncertainty. Bring-up removes basic integration unknowns. Characterization maps response and variation. Margin and interop tests find combinations that consume power, noise, timing, spectral, or control headroom (§5.19). Qualification separates life and environmental risks. Production readiness proves that the chosen screens can control variation and escapes at volume. Do not use one stage as evidence for another.
+
+::: dectree
+Requirement \| Budget (power / noise / timing / spectrum / control) \| Allocation to stages \| Verification on the ladder \| Production readiness \| Fleet feedback
+:::
+
+> **Before qualification**
+>
+> Functional $\cdot$ margin $\cdot$ environment $\cdot$ interoperability $\cdot$ reliability $\cdot$ manufacturing $\cdot$ fleet feedback (§C.7).
 
 ## The core IM/DD measurements
 
@@ -292,6 +302,14 @@ The third step is where modern PAM4 links differ from older eye-mask work. Tap s
 
 Apply the debugging fork (§4.8) before sweeping parameters or changing firmware: check the power meter or CMIS Rx power monitor first. If power moved, the fault is in the optical path (laser, coupling, connector, fiber, MUX); if power held but BER or TDECQ worsened, it is signal quality (bandwidth, noise, jitter, bias, equalization, reflection). This one check prevents the most common validation mistake: retuning an equalizer or laser bias when the real cause is a dirty connector. Then check which margin ledger moved (§5.19) before descending to component physics.
 
+::: dectree
+Observation \| Possible ledgers (power / noise / timing / spectrum / control) \| Measurements (power first) \| Hypotheses removed \| Decision \| Recurrence control
+:::
+
+> **Before debugging**
+>
+> Scope $\cdot$ time behavior $\cdot$ population $\cdot$ power or quality $\cdot$ highest-value measurement $\cdot$ decision $\cdot$ recurrence control (§C.7).
+
 ## Fleet and field triage
 
 Lab debug asks: *what is broken on this unit?* Fleet triage asks: *which bucket does this failure belong in, and who owns the fix?* Optical programs at fleet scale own that split across performance, reliability, and manufacturability. Wrong bucket wastes weeks (sending a contaminated connector to laser FA, or rewriting a SerDes FIR when the laser is rolling over).
@@ -327,6 +345,10 @@ At scale you rarely start with a DCA. Start with what the host and module alread
 ##### Decision tree (symptom $\to$ bucket).
 
 Table 7.5 is the working map. Read left to right: observe, check telemetry, pick a provisional bucket, then run the named confirm measurement before you open an RMA or change a design rule.
+
+::: dectree
+Fleet symptom \| Contain if growing \| Bucket: performance / reliability / manufacturability \| Confirm measurement \| FA / CAPA / ATP / telemetry update \| Fleet monitoring
+:::
 
 []
 

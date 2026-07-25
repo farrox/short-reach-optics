@@ -315,6 +315,10 @@ When BER moves from $10^{-12}$ class to $10^{-6}$ class, save the failing condit
 
 When BER degrades, ask one question first:
 
+::: dectree
+BER degraded \| Received power changed? \|-- YES --\> Power ledger \| laser / coupling / connector / fiber / MUX / monitor \|-- NO --\> Quality / receiver eye / noise / jitter / bias / EQ / RIN / Rx \| Highest-value measurement \| Decision + recurrence control
+:::
+
 ##### Did received optical power change?
 
 If yes, the failure is in the power path:

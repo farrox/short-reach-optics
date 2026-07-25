@@ -5,12 +5,17 @@ title: "Ch 10: Failure analysis handbook"
 
 # Failure analysis handbook
 
-This chapter is a symptom-first field guide. Start with what the bench, production line, or fleet reports. Preserve the failing state until its evidence has been captured, then use the same workflow for every incident: $$\begin{split}
-\text{observe} &\longrightarrow \text{scope unit, lot, vendor, site, or fleet}\\
-&\longrightarrow \text{classify sudden or gradual}\\
-&\longrightarrow \text{identify the changing margin}\\
-&\longrightarrow \text{measure, isolate, correct, and prevent recurrence}.
-\end{split}$$ Choose each measurement for its ability to separate competing hypotheses. The debugging pyramid in §1.8, the power-versus-signal fork in §4.8, and the fleet router in Table 7.5 provide the same method at different scales.
+This chapter is a symptom-first field guide. Start with what the bench, production line, or fleet reports. Preserve the failing state until its evidence has been captured, then use the same workflow for every incident:
+
+::: dectree
+Observe \| Scope (unit / lot / vendor / site / fleet) \| Time behavior (sudden / gradual / intermittent) \| Changing margin ledger \| Measure / isolate \| Correct \| Recurrence control
+:::
+
+::: dectree
+Escalation \| Contain if population can grow \| Bench confirm at named plane \| FA / DPA when mechanism unknown \| CAPA + ATP / SPC / telemetry update \| Fleet monitor until burn-down
+:::
+
+Choose each measurement for its ability to separate competing hypotheses. The debugging pyramid in §1.8, the power-versus-signal fork in §4.8, the fleet router in Table 7.5, and the wall-chart trees in §C provide the same method at different scales.
 
 Power loss
 
@@ -48,6 +53,10 @@ The cases below provide the detailed measurements and corrective actions. Use th
 
 ## Power loss
 
+::: dectree
+Power loss \| External meter vs CMIS \| Plane walk (source -\> coupling -\> MUX -\> connector -\> Rx) \| LIV at failing T \| Decision: source / path / monitor \| Recurrence: earliest ATP power check
+:::
+
 ##### Observed behavior.
 
 Received power or OMA falls at one or more lanes. BER may remain stable at first, then rise as receiver margin is consumed. The module monitor and an external power meter may disagree.
@@ -73,6 +82,10 @@ Launch power can fall because the laser is disabled, thermally rolled over, or a
 Repair the first plane where power diverges. Correct calibration or monitor coefficients before changing source bias. Add a power check at the earliest production plane that can catch the signature and retain golden-path baselines for fleet comparison.
 
 ## BER increase: waterfall shift or floor
+
+::: dectree
+BER up \| Power held? \|-- NO --\> power path (§10.1) \|-- YES --\> waterfall \|-- shift --\> sensitivity / OMA / IL \|-- floor --\> RIN / MPI / noise / crosstalk \| Decision + ATP / telemetry control
+:::
 
 ##### Observed behavior.
 
@@ -253,6 +266,10 @@ In a faceplate pluggable, double-digit-watt module power must leave through the 
 System-level: improve airflow, lower ambient, or reduce module count per cage. Module-level: derate the laser (lower bias current reduces self-heating) or switch to a lower-power module style (LPO instead of retimed, §9.5.1). CPO: ensure the cold-plate thermal interface material (TIM) is intact and the liquid loop meets flow-rate spec. Long-term: specify a tighter thermal class in the laser requirements (§5.6).
 
 ## Intermittent failures
+
+::: dectree
+Intermittent / burst \| Preserve state (do not reseat yet) \| Scope time + change history \| ORL / connector / supply / lock / attach \| Decision: contain / clean / redesign / ATP dwell \| Recurrence: dwell + FEC histograms
+:::
 
 ##### Observed behavior.
 

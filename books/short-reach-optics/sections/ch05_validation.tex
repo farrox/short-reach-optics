@@ -9,6 +9,10 @@ ladder from a single device to a deployed fleet, the engineering question at
 each stage, module and system bring-up under production-like corners, and the
 hypothesis-driven debug method the work demands.
 
+Debugging asks which margin ledger was exhausted. Qualification asks how much
+margin remains after the expected stresses. Both are uncertainty reduction that
+ends in a decision (\Cref{app:decision-trees}).
+
 \section{The validation ladder}
 \label{sec:validation-workflow}
 
@@ -52,6 +56,30 @@ find combinations that consume power, noise, timing, spectral, or control headro
 environmental risks. Production readiness proves that the chosen screens can
 control variation and escapes at volume. Do not use one stage as evidence for
 another.
+
+\begin{dectree}
+Requirement
+  |
+Budget (power / noise / timing / spectrum / control)
+  |
+Allocation to stages
+  |
+Verification on the ladder
+  |
+Production readiness
+  |
+Fleet feedback
+\end{dectree}
+
+\engcheck{Before qualification}{%
+Functional $\cdot$
+margin $\cdot$
+environment $\cdot$
+interoperability $\cdot$
+reliability $\cdot$
+manufacturing $\cdot$
+fleet feedback
+(\Cref{sec:tree-checklists}).}
 
 \section{The core IM/DD measurements}
 
@@ -519,6 +547,30 @@ validation mistake: retuning an equalizer or laser bias when the real cause is a
 dirty connector. Then check which margin ledger moved
 (\Cref{sec:laser-margin-erosion}) before descending to component physics.
 
+\begin{dectree}
+Observation
+  |
+Possible ledgers (power / noise / timing / spectrum / control)
+  |
+Measurements (power first)
+  |
+Hypotheses removed
+  |
+Decision
+  |
+Recurrence control
+\end{dectree}
+
+\engcheck{Before debugging}{%
+Scope $\cdot$
+time behavior $\cdot$
+population $\cdot$
+power or quality $\cdot$
+highest-value measurement $\cdot$
+decision $\cdot$
+recurrence control
+(\Cref{sec:tree-checklists}).}
+
 \section{Fleet and field triage}
 \label{sec:fleet-triage}
 
@@ -574,6 +626,20 @@ report:
 \Cref{tab:fleet-triage} is the working map. Read left to right: observe, check
 telemetry, pick a provisional bucket, then run the named confirm measurement
 before you open an RMA or change a design rule.
+
+\begin{dectree}
+Fleet symptom
+  |
+Contain if growing
+  |
+Bucket: performance / reliability / manufacturability
+  |
+Confirm measurement
+  |
+FA / CAPA / ATP / telemetry update
+  |
+Fleet monitoring
+\end{dectree}
 
 \begin{table*}[ht]
 \refstepcounter{table}\label{tab:fleet-triage}%

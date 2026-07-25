@@ -26,8 +26,9 @@ title: "Table of Contents"
 - [**10.** Failure analysis handbook](ch10-failure-analysis-handbook)
 - [**11.** One-week optical systems interview review](ch11-one-week-optical-systems-interview-review)
 - [**12.** Thirty-second interview frameworks](ch12-thirty-second-interview-frameworks)
-- [**13.** Abbreviations](ch13-abbreviations)
-- [**14.** References](ch14-references)
+- [**13.** Engineering decision trees](ch13-engineering-decision-trees)
+- [**14.** Abbreviations](ch14-abbreviations)
+- [**15.** References](ch15-references)
 
 ---
 

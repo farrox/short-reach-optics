@@ -445,6 +445,18 @@ open an 8D on the wrong supplier.
 Because locking is only worth its complexity under specific conditions, its
 presence narrows the design space considerably.
 
+\begin{dectree}
+Locking present
+  |
+WDM (usually dense)
+  |
+Thermal / heater / TEC control
+  |
+ATP: lock range, unlock, crosstalk
+  |
+Fleet: unlock alarms, wavelength telemetry
+\end{dectree}
+
 \begin{table*}[ht]
 \refstepcounter{table}\label{tab:wdm-read}%
 \centering

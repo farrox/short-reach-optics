@@ -23,6 +23,22 @@ DPPM (defective parts per million)
 
 ## Qualification flows
 
+Qualification measures remaining margin after stress. Debugging is what you do when that remaining margin hits zero. Keep the customer view and the vendor view distinct: the vendor designs internals; the customer characterizes externally visible behavior and decides deployment (§A.6.6, §A.6.7, §C).
+
+::: dectree
+Requirement \| Budget (life / FIT / DPPM / power) \| Allocation (die / package / module / host) \| Verification (GR-468 / GR-1221 / JESD47 / ATP) \| Production + fleet monitoring
+:::
+
+> **Margin budgeting**
+>
+> Every stress spends margin: temperature, voltage, ripple, contamination, insertion loss, connector wear, vibration, aging, process variation. Qual verifies what remains, not only that the part still links.
+
+> **Customer view vs vendor view**
+>
+> Vendor: internals, device physics, implementation.\
+> Customer: BER, sensitivity, FEC, telemetry, environmental sweeps, interop.\
+> Engineering samples (Tx-only, Rx-only, breakout, PRBS) open isolation; otherwise stay on the external surface.
+
 Optoelectronics inherited a common qualification language from telecom: *Telcordia GR-468-CORE*. The core stress tests still show up on every laser and module program:
 
 - HTOL (high-temperature operating life) and burn-in.
@@ -157,6 +173,10 @@ Track yield by ATP row, lot, supplier site, tester, and date code. A yield drop 
 
 ## Escaped defect analysis
 
+::: dectree
+Escape \| Contain \| Scope \| Evidence \| Root cause class \| Supplier / FA \| ATP update \| SPC \| Fleet monitoring
+:::
+
 An escaped defect is a unit that passed every production screen and failed in the field. Post-screen field failures split into two categories with different corrective actions:
 
 ##### Preventable coverage escapes.
@@ -194,6 +214,10 @@ ELSFP cycling adds connector wear and contamination that raise ORL (§7.2.2, §5
 Destructive physical analysis (cross-section, EDX) and structured 8D/CAPA with suppliers close the loop from RMA to design rule (§8.10, §7.12). Without that loop, packaging FIT gets mis-attributed to laser Arrhenius models and the wrong part gets redesigned.
 
 ## Production test at volume
+
+> **Before production**
+>
+> ATP $\cdot$ SPC $\cdot$ telemetry $\cdot$ supplier gates $\cdot$ monitoring owners $\cdot$ RMA-to-ATP feedback (§C.7).
 
 ### Test time is a cost, coverage is a risk
 

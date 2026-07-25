@@ -135,19 +135,36 @@ network, optics, and software are designed as one system.
 \section{The systems engineering loop}
 \label{sec:systems-engineering-loop}
 
-Work from the system downward:
-\begin{center}
-\small
-\textsc{Requirements}\\[-0.2em]
-$\downarrow$\\[-0.2em]
-\textsc{Architecture}\\[-0.2em]
-$\downarrow$\\[-0.2em]
-\textsc{Subsystem}\\[-0.2em]
-$\downarrow$\\[-0.2em]
-\textsc{Component}\\[-0.2em]
-$\downarrow$\\[-0.2em]
-\textsc{Needed physics}
-\end{center}
+Work from the system downward, then close the loop in the fleet:
+
+\begin{dectree}
+Requirements
+  |
+Architecture
+  |
+Validation
+  |
+Deployment
+  |
+Fleet (telemetry / RMA / FIT)
+  |
+Feedback into requirements
+\end{dectree}
+
+Inside architecture, descend only as far as the requirement forces:
+
+\begin{dectree}
+Requirements
+  |
+Architecture
+  |
+Subsystem
+  |
+Component
+  |
+Needed physics
+\end{dectree}
+
 A component choice is never isolated. A VCSEL usually commits the link to an
 850~nm multimode path, direct modulation, and a short reach. A 1310~nm DFB points
 toward single-mode fiber and can feed a DML, EML, Mach--Zehnder modulator, or ring.
@@ -217,6 +234,20 @@ Do not skip layers.
 
 When a link fails, work from the top down. Each layer narrows the search before you
 open a connector or reseat a module. This framework reappears in every chapter.
+
+\begin{dectree}
+System symptom
+  |
+Signal quality (BER / FEC / eye)
+  |
+Link budget (power / noise / timing / spectrum)
+  |
+Subsystem bisect (Tx / channel / Rx)
+  |
+Physical root cause
+  |
+Decision + recurrence control
+\end{dectree}
 
 \begin{description}
 \item[Layer 1: System] What is failing at the workload level? BER, throughput,

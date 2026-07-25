@@ -11,6 +11,10 @@ Do not choose a laser by comparing data sheets in isolation. Start with reach, l
 
 Freeze the system problem before asking a supplier for samples:
 
+::: dectree
+Reach / fiber plant \| Lane rate / bandwidth \| Laser choice \| Modulator path \| Receiver / detector \| Validation burden (ATP, lock, thermal, life)
+:::
+
 Reach and fiber
 
 : decide whether multimode loss and modal bandwidth are acceptable or whether the link needs single-mode fiber.

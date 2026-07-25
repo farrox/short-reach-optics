@@ -306,6 +306,47 @@ def replace_keyidea(content: str) -> str:
     return "".join(result)
 
 
+def replace_engcheck(content: str) -> str:
+    """Replace \\engcheck{title}{body} with a pandoc-friendly quote."""
+    result = []
+    i = 0
+    tag = "\\engcheck{"
+    while i < len(content):
+        idx = content.find("\\engcheck{", i)
+        if idx == -1:
+            result.append(content[i:])
+            break
+        result.append(content[i:idx])
+        pos = idx + len(tag) - 1
+        title, pos = extract_braced_arg(content, pos)
+        body, pos = extract_braced_arg(content, pos)
+        result.append(
+            f"\n\n\\begin{{quote}}\\textbf{{{title}}}\\par {body}\\end{{quote}}\n\n"
+        )
+        i = pos
+    return "".join(result)
+
+
+def replace_execanswer(content: str) -> str:
+    """Replace \\execanswer{...} handling nested braces."""
+    result = []
+    i = 0
+    tag = "\\execanswer{"
+    while i < len(content):
+        idx = content.find("\\execanswer{", i)
+        if idx == -1:
+            result.append(content[i:])
+            break
+        result.append(content[i:idx])
+        arg, end = extract_braced_arg(content, idx + len(tag) - 1)
+        result.append(
+            f"\n\n\\begin{{quote}}\\textbf{{30-second answer (memorize).}} {arg}"
+            f"\\end{{quote}}\n\n"
+        )
+        i = end
+    return "".join(result)
+
+
 def replace_fillme(content: str) -> str:
     """Remove \\fillme{...}{...}{...}{...}{...} handling nested braces."""
     result = []
@@ -386,6 +427,8 @@ def apply_transforms(content: str) -> str:
     """Apply all regex transformations."""
     # Handle nested-brace commands first
     content = replace_keyidea(content)
+    content = replace_engcheck(content)
+    content = replace_execanswer(content)
     content = replace_fillme(content)
     content = replace_failuremode(content)
     content = replace_debugstory(content)

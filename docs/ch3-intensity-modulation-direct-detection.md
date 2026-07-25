@@ -13,6 +13,10 @@ Almost every short-reach datacenter link still uses the same basic deal with phy
 
 Every pluggable module and every co-packaged engine is a rearrangement of the same chain. Once you can name the blocks, you can place equalization, FEC, and validation measurements without getting lost in form-factor jargon.
 
+::: dectree
+Modulation / platform choice \| Driver / EQ placement \| Test points (faceplate, host, optical) \| FEC / retimer burden \| Validation and ATP surface
+:::
+
 Transmit
 
 : laser or CW source $\to$ modulator (EML, MZM, ring) $\to$ driver $\to$ fiber coupling (Chapter 5, §3.14.3).
@@ -472,7 +476,7 @@ Co-packaged engines shipping in 2025--26 typically run *200 Gb/s per optical ch
 
 ### 448G is where the modulation debate lives
 
-The next step, *CEI-448G* (framework published in late 2025, targeting 3.2 Tb/s systems from 2026 onward), is where the long PAM4 consensus finally comes under pressure . A full CEI-448G glossary of terms is in §B.15. The debate is not whether 448 Gb/s *per lane* is useful (eight lanes make a 3.2 Tb/s OSFP-class port), but what *symbol rate* and *modulation order* each part of the link must run at to get there.
+The next step, *CEI-448G* (framework published in late 2025, targeting 3.2 Tb/s systems from 2026 onward), is where the long PAM4 consensus finally comes under pressure . A full CEI-448G glossary of terms is in §C.7. The debate is not whether 448 Gb/s *per lane* is useful (eight lanes make a 3.2 Tb/s OSFP-class port), but what *symbol rate* and *modulation order* each part of the link must run at to get there.
 
 ##### Line rate, symbol rate, and where each applies.
 

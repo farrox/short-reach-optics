@@ -298,16 +298,17 @@
   \endgraf\medskip
 }
 
-% ASCII decision trees (interview appendices). Keep trees narrow for the
-% text column; use flexible columns so long lines wrap rather than overflow.
+% ASCII decision trees. Keep trees narrow for the text column; use flexible
+% columns so long lines wrap rather than overflow.
+\definecolor{dectreerule}{HTML}{8A7A5A}
 \lstnewenvironment{dectree}{%
   \lstset{
     language         = {},
     basicstyle       = \ttfamily\footnotesize,
     backgroundcolor  = \color{codebg},
     frame            = single,
-    framerule        = 0pt,
-    rulecolor        = \color{codebg},
+    framerule        = 0.4pt,
+    rulecolor        = \color{dectreerule},
     breaklines       = true,
     breakatwhitespace = true,
     columns          = flexible,
@@ -319,6 +320,20 @@
     belowskip        = 0.6em,
   }%
 }{}
+
+% Recurring engineering checklist motif (field-manual boxes).
+\definecolor{checkbg}{HTML}{F4F0E6}
+\definecolor{checkrule}{HTML}{5C5346}
+\newcommand{\engcheck}[2]{%
+  \endgraf\medskip\noindent
+  \fcolorbox{checkrule}{checkbg}{%
+    \begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}
+      \textbf{#1}\par\smallskip
+      #2
+    \end{minipage}%
+  }%
+  \endgraf\medskip
+}
 
 % Fixed skeleton for Appendix B playbooks (tree is a separate dectree env).
 % Use \section so frameworks number as B.1, B.2, ... (not B.0.x).

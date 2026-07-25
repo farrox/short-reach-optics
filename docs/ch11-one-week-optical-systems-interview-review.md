@@ -5,7 +5,9 @@ title: "Ch 11: One-week optical systems interview review"
 
 # One-week optical systems interview review
 
-Use this appendix as a standalone review sheet for about a week of focused prep. Its purpose is not to cover the most optics. Its purpose is to make your engineering process automatic under time pressure.
+Use this appendix as a standalone drill for about a week of focused prep. Its purpose is not to cover the most optics. Its purpose is to make your engineering process automatic under time pressure.
+
+Read order when time is short: the four principles and answer spine here, then the green boxes in §B, then the wall-chart trees in §C. Do not re-read every worked answer unless a topic is weak. Compression is the point: recover the method in minutes, not hours.
 
 **Key idea.** Every answer should end with the engineering decision. Interviewers remember decisions more than measurements. Close with "Therefore I would continue validation," "stop shipment," "contain Supplier B," or "update the ATP."
 
@@ -48,7 +50,7 @@ Work the day plan at the end of this appendix. Memorize the one-page cheat sheet
 
 ## Engineering decision trees
 
-Interview questions are usually solved by walking a sequence of uncertainty-reduction decisions. The exact branches differ. The philosophy never changes. Debugging asks what broke and which margin ledger is spent. Qualification asks what uncertainty remains before shipment. The playbooks in §B are specialized trees under these two universal ones.
+Interview questions are usually solved by walking a sequence of uncertainty-reduction decisions. The exact branches differ. The philosophy never changes. Debugging asks what broke and which margin ledger is spent. Qualification asks what uncertainty remains before shipment. The playbooks in §B are specialized trees under these two universal ones. The same trees, plus supplier, escape, unknown-failure, and margin-budget variants, live as a wall chart in §C.
 
 ##### Universal Tree 1: Debugging.
 
@@ -493,6 +495,8 @@ Each long question opens with a green **30-second answer (memorize)** box. That 
 
 This is the ownership question. Start from the system, not from a laser datasheet. The output is a requirements slice a supplier and an ATP can both test against (Table 5.4, Table 5.1).
 
+> **30-second answer (memorize).** Freeze reach, lane rate, fiber, power, lifetime, and volume. Those choose the source path. Then write OMA and RIN at a named plane and ORL, thermal and control headroom, a named HTOL mechanism, and an ATP with supplier reaction plan. Therefore I would freeze requirements that let us ship and second-source, not pick the laser that looks best on a bench.
+
 ##### 3-minute answer (practice).
 
 Walk four steps: (1) system constraints choose the architecture path before any part number; (2) optical budget at named planes (OMA, RIN at ORL, SMSR, chirp); (3) thermal, life, and control headroom with a named HTOL mechanism; (4) ATP methods, FAIR triggers, and RMA codes split by supplier. Name one hard number you would fight for (RIN under ORL, or APC headroom at hot) and what fails if it is missing.
@@ -504,6 +508,8 @@ Expand one constraint into the full budget table and show how it lands in ATP li
 ### How would you validate a new optical transmitter from bring-up through production?
 
 This is the question most likely to open the interview. The ladder itself is in §A.6.5, Table 7.1. Frame first: validation is staged uncertainty reduction. Each stage answers a question the previous stage could not.
+
+> **30-second answer (memorize).** Validation is staged uncertainty reduction. Bring-up proves the setup is sane. Characterization maps the population. Margin finds the cliff. Interop removes combination risk. Qual projects life with a named mechanism. Production proves the ATP catches escapes. Fleet telemetry closes the loop. Therefore I would walk the ladder in order and refuse any test that answers no new question.
 
 ##### 3-minute answer (practice).
 
@@ -545,6 +551,8 @@ Deployment is the last validation stage, not the end of validation. Fleet teleme
 
 Classic fork question (§10.13, §A.6.3).
 
+> **30-second answer (memorize).** Power held, so leave the power ledger. First scope the failure (unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ fleet) and whether cool-down recovers. At the failing temperature, read eye, bias sweep, wavelength, and control headroom. Therefore I would fix the table or thermal design and put that loaded corner in the ATP.
+
 ##### 3-minute answer (practice).
 
 First scope the failure. Apply the power-versus-quality fork: APC is hitting setpoint, so candidates are ER collapse, wrong modulator bias, wavelength walk, exhausted control ledger (TEC or heater at rail), or hotter receiver noise. Measure at the failing temperature on a DCA (ER, OMA, TDECQ), bias-sweep the EAM or MZM, check OSA wavelength, and read actuator codes. If a bias sweep restores the eye, retune the table; if the actuator is railed, fix thermal design. Close with the new ATP corner.
@@ -556,6 +564,8 @@ Offer the calibration-table segment-boundary story or the railed-heater story if
 ### How do you distinguish laser aging from calibration drift?
 
 Separates device physics from control-loop bookkeeping (§5.11, §5.10).
+
+> **30-second answer (memorize).** Aging changes the LIV. Drift changes the setpoint on a healthy LIV. External LIV plus recovery after recalibration separates them. Time behavior confirms: monotonic climb versus a step after a table or firmware change. Therefore I would route aging to life/derate/replace and drift to table version control plus an ATP loaded-corner check.
 
 ##### 3-minute answer (practice).
 
@@ -616,6 +626,8 @@ Across lanes, units, and lots, the pattern chooses the fix: a rework instruction
 ### Received power is unchanged but required receiver power increased. What hypotheses remain?
 
 Apply the power-versus-quality fork (§A.6.3): power ledger intact, so eye quality or the receiver (§10.2).
+
+> **30-second answer (memorize).** Power held rules out average launch and connector loss as the primary cause. Remaining hypotheses are Tx eye quality, channel MPI or wavelength walk, or Rx sensitivity. Therefore I would golden-swap Tx then Rx, read the BER waterfall shift versus floor, and close on the mechanism and control.
 
 ##### 3-minute answer (practice).
 

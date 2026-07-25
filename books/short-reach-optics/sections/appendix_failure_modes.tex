@@ -4,18 +4,42 @@
 This chapter is a symptom-first field guide. Start with what the bench,
 production line, or fleet reports. Preserve the failing state until its evidence
 has been captured, then use the same workflow for every incident:
-\[
-\begin{split}
-\text{observe} &\longrightarrow \text{scope unit, lot, vendor, site, or fleet}\\
-&\longrightarrow \text{classify sudden or gradual}\\
-&\longrightarrow \text{identify the changing margin}\\
-&\longrightarrow \text{measure, isolate, correct, and prevent recurrence}.
-\end{split}
-\]
+
+\begin{dectree}
+Observe
+  |
+Scope (unit / lot / vendor / site / fleet)
+  |
+Time behavior (sudden / gradual / intermittent)
+  |
+Changing margin ledger
+  |
+Measure / isolate
+  |
+Correct
+  |
+Recurrence control
+\end{dectree}
+
+\begin{dectree}
+Escalation
+  |
+Contain if population can grow
+  |
+Bench confirm at named plane
+  |
+FA / DPA when mechanism unknown
+  |
+CAPA + ATP / SPC / telemetry update
+  |
+Fleet monitor until burn-down
+\end{dectree}
+
 Choose each measurement for its ability to separate competing hypotheses. The
 debugging pyramid in \Cref{sec:debug-pyramid}, the power-versus-signal fork in
-\Cref{sec:debug-fork}, and the fleet router in \Cref{tab:fleet-triage} provide
-the same method at different scales.
+\Cref{sec:debug-fork}, the fleet router in \Cref{tab:fleet-triage}, and the
+wall-chart trees in \Cref{app:decision-trees} provide the same method at
+different scales.
 
 \begin{description}
 \item[Power loss] Split launch-power loss from coupling, connector, MUX, fiber,
@@ -46,6 +70,20 @@ of operations.
 
 \section{Power loss}
 \label{sec:fm-power-loss}
+
+\begin{dectree}
+Power loss
+  |
+External meter vs CMIS
+  |
+Plane walk (source -> coupling -> MUX -> connector -> Rx)
+  |
+LIV at failing T
+  |
+Decision: source / path / monitor
+  |
+Recurrence: earliest ATP power check
+\end{dectree}
 
 \paragraph{Observed behavior.}
 Received power or OMA falls at one or more lanes. BER may remain stable at first,
@@ -80,6 +118,18 @@ for fleet comparison.
 
 \section{BER increase: waterfall shift or floor}
 \label{sec:fm-ber-increase}
+
+\begin{dectree}
+BER up
+  |
+Power held?
+  |-- NO  --> power path (\Cref{sec:fm-power-loss})
+  |-- YES --> waterfall
+              |-- shift --> sensitivity / OMA / IL
+              |-- floor --> RIN / MPI / noise / crosstalk
+  |
+Decision + ATP / telemetry control
+\end{dectree}
 
 \paragraph{Observed behavior.}
 Pre-FEC BER rises, but the first task is to determine whether the whole BER
@@ -374,6 +424,21 @@ laser requirements (\Cref{sec:laser-reqs}).
 
 \section{Intermittent failures}
 \label{sec:fm-intermittent}
+
+\begin{dectree}
+Intermittent / burst
+  |
+Preserve state (do not reseat yet)
+  |
+Scope time + change history
+  |
+ORL / connector / supply / lock / attach
+  |
+Decision: contain / clean / redesign / ATP dwell
+  |
+Recurrence: dwell + FEC histograms
+\end{dectree}
+
 
 \paragraph{Observed behavior.}
 Links flap, lose lock, or show bursts of FEC errors while average power and a

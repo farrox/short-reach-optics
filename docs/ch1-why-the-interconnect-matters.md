@@ -83,18 +83,16 @@ More compute increases the amount of traffic the system can inject. It does not 
 
 ## The systems engineering loop
 
-Work from the system downward:
+Work from the system downward, then close the loop in the fleet:
 
-::: center
-[Requirements]{.smallcaps}\
-$\downarrow$\
-[Architecture]{.smallcaps}\
-$\downarrow$\
-[Subsystem]{.smallcaps}\
-$\downarrow$\
-[Component]{.smallcaps}\
-$\downarrow$\
-[Needed physics]{.smallcaps}
+::: dectree
+Requirements \| Architecture \| Validation \| Deployment \| Fleet (telemetry / RMA / FIT) \| Feedback into requirements
+:::
+
+Inside architecture, descend only as far as the requirement forces:
+
+::: dectree
+Requirements \| Architecture \| Subsystem \| Component \| Needed physics
 :::
 
 A component choice is never isolated. A VCSEL usually commits the link to an 850 nm multimode path, direct modulation, and a short reach. A 1310 nm DFB points toward single-mode fiber and can feed a DML, EML, Mach--Zehnder modulator, or ring. Those paths then set detector material, fiber plant, thermal control, test coverage, and service policy. Start with reach, lane rate, power, cost, lifetime, and manufacturing volume. Choose the component only after those constraints rule out the other paths.
@@ -132,6 +130,10 @@ Use the debugging pyramid: start at the system symptom, narrow to signal quality
 ## The debugging pyramid
 
 When a link fails, work from the top down. Each layer narrows the search before you open a connector or reseat a module. This framework reappears in every chapter.
+
+::: dectree
+System symptom \| Signal quality (BER / FEC / eye) \| Link budget (power / noise / timing / spectrum) \| Subsystem bisect (Tx / channel / Rx) \| Physical root cause \| Decision + recurrence control
+:::
 
 Layer 1: System
 

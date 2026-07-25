@@ -32,6 +32,35 @@ laser sources and redundancy are attractive.}
 
 \section{Qualification flows}
 
+Qualification measures remaining margin after stress. Debugging is what you do
+when that remaining margin hits zero. Keep the customer view and the vendor view
+distinct: the vendor designs internals; the customer characterizes externally
+visible behavior and decides deployment
+(\Cref{sec:interview-margin-budget,sec:interview-customer-vendor,app:decision-trees}).
+
+\begin{dectree}
+Requirement
+  |
+Budget (life / FIT / DPPM / power)
+  |
+Allocation (die / package / module / host)
+  |
+Verification (GR-468 / GR-1221 / JESD47 / ATP)
+  |
+Production + fleet monitoring
+\end{dectree}
+
+\engcheck{Margin budgeting}{%
+Every stress spends margin: temperature, voltage, ripple, contamination,
+insertion loss, connector wear, vibration, aging, process variation.
+Qual verifies what remains, not only that the part still links.}
+
+\engcheck{Customer view vs vendor view}{%
+Vendor: internals, device physics, implementation.\\
+Customer: BER, sensitivity, FEC, telemetry, environmental sweeps, interop.\\
+Engineering samples (Tx-only, Rx-only, breakout, PRBS) open isolation;
+otherwise stay on the external surface.}
+
 Optoelectronics inherited a common qualification language from telecom:
 \term{Telcordia GR-468-CORE}\firstcite{gr468}. The core stress tests still show up
 on every laser and module program:
@@ -272,6 +301,27 @@ corrective action until the measurement system is cleared (\Cref{sec:hvm-test}).
 \section{Escaped defect analysis}
 \label{sec:escaped-defects}
 
+\begin{dectree}
+Escape
+  |
+Contain
+  |
+Scope
+  |
+Evidence
+  |
+Root cause class
+  |
+Supplier / FA
+  |
+ATP update
+  |
+SPC
+  |
+Fleet monitoring
+\end{dectree}
+
+
 An escaped defect is a unit that passed every production screen and failed in the
 field. Post-screen field failures split into two categories with different
 corrective actions:
@@ -365,6 +415,15 @@ mis-attributed to laser Arrhenius models and the wrong part gets redesigned.
 
 \section{Production test at volume}
 \label{sec:hvm-test}
+
+\engcheck{Before production}{%
+ATP $\cdot$
+SPC $\cdot$
+telemetry $\cdot$
+supplier gates $\cdot$
+monitoring owners $\cdot$
+RMA-to-ATP feedback
+(\Cref{sec:tree-checklists}).}
 
 \subsection{Test time is a cost, coverage is a risk}
 

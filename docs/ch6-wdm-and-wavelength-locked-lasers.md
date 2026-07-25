@@ -241,6 +241,10 @@ Slow BER creep with rising bias on one line is often laser wear-out (§8.4). Sud
 
 Because locking is only worth its complexity under specific conditions, its presence narrows the design space considerably.
 
+::: dectree
+Locking present \| WDM (usually dense) \| Thermal / heater / TEC control \| ATP: lock range, unlock, crosstalk \| Fleet: unlock alarms, wavelength telemetry
+:::
+
 []
 
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

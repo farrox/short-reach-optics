@@ -696,6 +696,10 @@ The book quantifies two of its three themes. Power has a ledger in pJ/bit (§9.1
 
 This chapter sits at the end of the book because it joins the decisions from every earlier chapter into one system. The path below is not a waterfall; teams iterate. But each step produces evidence that either advances the design or sends it back.
 
+::: dectree
+Workload / collectives \| Reach / topology \| Placement (pluggable / LPO / CPO / CPC) \| Laser / modulator / WDM \| Budgets (optical / electrical / energy / thermal) \| Validation ladder \| Supplier / ATP / SPC \| Fleet telemetry + corrective action
+:::
+
 1.  **Workload and collective requirements.** What traffic pattern, latency target, and tail tolerance does the job demand? (Chapter 1, §9.7, §9.6)
 
 2.  **Reach and topology.** What physical extent, link count, and oversubscription does the cluster need? Does copper close, or does optics take the link? (§9.2, §9.5, Table 9.1)
