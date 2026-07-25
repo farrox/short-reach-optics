@@ -25,8 +25,9 @@ title: "Table of Contents"
 - [**9.** AI datacenter networking](ch9-ai-datacenter-networking)
 - [**10.** Failure analysis handbook](ch10-failure-analysis-handbook)
 - [**11.** One-week optical systems interview review](ch11-one-week-optical-systems-interview-review)
-- [**12.** Abbreviations](ch12-abbreviations)
-- [**13.** References](ch13-references)
+- [**12.** Thirty-second interview frameworks](ch12-thirty-second-interview-frameworks)
+- [**13.** Abbreviations](ch13-abbreviations)
+- [**14.** References](ch14-references)
 
 ---
 

@@ -22,7 +22,10 @@ Validation, measurement, debugging, qualification, supplier choices, and product
 **Principle 2: Measurements exist to unlock decisions.**\
 Instruments do not exist to produce plots. They exist to unlock an action. A power meter asks whether you should chase the optical path or signal integrity. An OSA asks whether spectral alignment is still plausible. An LIV asks whether the device itself changed. A DCA or TDECQ asks whether the eye is still inside budget. A BER waterfall asks whether you have a sensitivity shift or a noise floor. On every answer, name the decision unlocked (ship, derate, second-source, ATP change, partner action) as well as the instrument (Table A.1).
 
-**Principle 3: Every measurement updates your beliefs.**\
+**Principle 3: Measurements characterize margin.**\
+Engineering is not only proving that a product works. It determines how much uncertainty and margin remain before failure. Debugging identifies exhausted margin. Qualification verifies that remaining margin is still acceptable after expected stresses. The same ledgers (power, noise, timing, spectral, control) appear in both jobs.
+
+**Principle 4: Every measurement updates your beliefs.**\
 Treat engineering as hypothesis testing: $$\begin{split}
 \text{observation} &\longrightarrow \text{hypotheses}
 \longrightarrow \text{measurement}\\
@@ -41,39 +44,33 @@ Before touching the bench, assign higher probability to common failure modes tha
 
 This role owns laser direction inside an IM/DD interconnect effort. Lab measurement is how you decide, not the whole job. Hands-on fluency still matters: LIV, RIN, ORL, TDECQ, and a BER waterfall. Senior people lose the level if they stop at plots and never close on a decision and a control.
 
-Work the day plan at the end of this appendix. Memorize the one-page cheat sheet before Day 7. Use each LLM practice box the day it is scheduled. Do not add new topics after Day 6.
+Work the day plan at the end of this appendix. Memorize the one-page cheat sheet before Day 7. Night-before drill is §B: open the matching thirty-second framework. Use each LLM practice box the day it is scheduled. Do not add new topics after Day 6 beyond that drill.
+
+## Engineering decision trees
+
+Interview questions are usually solved by walking a sequence of uncertainty-reduction decisions. The exact branches differ. The philosophy never changes. Debugging asks what broke and which margin ledger is spent. Qualification asks what uncertainty remains before shipment. The playbooks in §B are specialized trees under these two universal ones.
+
+##### Universal Tree 1: Debugging.
+
+::: dectree
+Problem \| Scope (unit -\> lot -\> vendor -\> fleet) \| Population / time behavior \| Power changed? \|-- YES --\> Power ledger --\> optical path \|-- NO --\> Quality / receiver \| Isolation \| Root cause \| Decision \| Recurrence control
+:::
+
+##### Universal Tree 2: Qualification.
+
+::: dectree
+New product \| Works? (bring-up) \| Margins? \| Environmental? \| Interoperability? \| Reliability? \| Manufacturing / ATP? \| Pilot deployment? \| Production \| Fleet monitoring
+:::
 
 ## The answer spine
 
 Move every answer through the same sequence. Memorize four phases, not nine nodes:
 
-Understand
+::: dectree
+Understand: requirements -\> architecture Investigate: measure -\> observe -\> hypothesize -\> isolate Resolve: root cause -\> corrective action Prevent: recurrence control -\> decision
+:::
 
-: Requirements, architecture.
-
-Investigate
-
-: Measurements, observations, hypotheses, isolation.
-
-Resolve
-
-: Root cause, corrective action.
-
-Prevent
-
-: Recurrence control, and the product decision that closes the answer.
-
-The diagram is a memory aid, not the answer. Speak one clear paragraph per phase under time pressure, and expand a node only when asked. Do not jump from a symptom to a component. End every debug answer with the decision (Table A.1). The systems loop in §1.6, the debugging pyramid in §1.8, and the failure-analysis method in Chapter 10 are the full versions of this spine. $$\begin{split}
-\text{requirements} &\longrightarrow \text{architecture}
-\longrightarrow \text{measurements}\\
-&\longrightarrow \text{observations}
-\longrightarrow \text{hypotheses}\\
-&\longrightarrow \text{isolation}
-\longrightarrow \text{root cause}\\
-&\longrightarrow \text{corrective action}
-\longrightarrow \text{recurrence control}\\
-&\longrightarrow \text{decision}.
-\end{split}$$
+The diagram is a memory aid, not the answer. Speak one clear paragraph per phase under time pressure, and expand a node only when asked. Do not jump from a symptom to a component. End every debug answer with the decision (Table A.1). The systems loop in §1.6, the debugging pyramid in §1.8, and the failure-analysis method in Chapter 10 are the full versions of this spine.
 
 ##### Requirements.
 
@@ -99,7 +96,7 @@ Report what the instruments actually showed, not what you hoped they would show.
 
 ##### Hypotheses.
 
-Turn observations into a short ranked list. Start from engineering priors (common modes first), then apply the power-versus-quality fork (§A.5.3). Keep the list short enough that the next measurement can kill more than one item. A hypothesis you cannot falsify with a bench step does not belong on the list yet.
+Turn observations into a short ranked list. Start from engineering priors (common modes first), then apply the power-versus-quality fork (§A.6.3). Keep the list short enough that the next measurement can kill more than one item. A hypothesis you cannot falsify with a bench step does not belong on the list yet.
 
 ##### Isolation.
 
@@ -113,7 +110,7 @@ Good engineers perform measurements. Do not perform two experiments when one can
 
 ##### Root cause.
 
-State the mechanism that survived isolation, with the evidence that killed the alternatives. "EAM bias table segment wrong above $60^\circ$C" is a root cause. "Bad eye at high temperature" is still a symptom. Name the physical or process mechanism when you can: facet wear, monitor-PD corruption, FAU misalignment, MPI from a dirty connector pair, control ledger exhausted (TEC or heater at rail), supplier lot with high threshold. If the evidence only reaches "calibration drift" and not a deeper mechanism, say so. Overclaiming the root cause is worse than stopping one layer early with honesty. Sometimes the product decision is due before the mechanism is known; that case is §A.3.
+State the mechanism that survived isolation, with the evidence that killed the alternatives. "EAM bias table segment wrong above $60^\circ$C" is a root cause. "Bad eye at high temperature" is still a symptom. Name the physical or process mechanism when you can: facet wear, monitor-PD corruption, FAU misalignment, MPI from a dirty connector pair, control ledger exhausted (TEC or heater at rail), supplier lot with high threshold. If the evidence only reaches "calibration drift" and not a deeper mechanism, say so. Overclaiming the root cause is worse than stopping one layer early with honesty. Sometimes the product decision is due before the mechanism is known; that case is §A.4.
 
 ##### Corrective action.
 
@@ -125,7 +122,7 @@ Close with the control that stops the same escape next month, then state the pro
 
 **Key idea.** I first want to understand the scope of the problem, then determine which margin ledger is being spent, choose the measurement that eliminates the largest number of hypotheses, make the product decision, and finally add the control that prevents the next escape.
 
-Quiz me on the three principles, priors, and the four spine phases. Give me a failed module at high temperature with stable average power. Stop me if I skip scope, the power fork, the control ledger, the product decision, or recurrence control.
+Quiz me on the four principles, priors, and the four spine phases. Give me a failed module at high temperature with stable average power. Stop me if I skip scope, the power fork, the control ledger, the product decision, or recurrence control.
 
 ## Staff judgment under uncertainty
 
@@ -191,12 +188,11 @@ Every measurement costs hours. Optimize uncertainty removed per hour of lab time
 
 ### Measurement hierarchy
 
-Not every failure deserves destructive analysis. Climb only as far as the decision requires: $$\begin{split}
-\text{telemetry} &\longrightarrow \text{simple bench}
-\longrightarrow \text{swap}\\
-&\longrightarrow \text{characterization}
-\longrightarrow \text{failure analysis}.
-\end{split}$$
+Not every failure deserves destructive analysis. Climb only as far as the decision requires:
+
+::: dectree
+telemetry -\> simple bench -\> swap -\> characterization -\> FA / DPA
+:::
 
 ### Fleet economics
 
@@ -289,11 +285,11 @@ If power held but BER worsened, the loss is in signal quality or in the receiver
 
 ### Track five margin ledgers
 
-Links rarely fail from one dramatic excursion. They fail when several small shifts spend different ledgers at once. Almost every failure can be described as spending one or more ledgers. Use that language in every debug answer. Name which ledger moved, by how much, and what spent it. $$\text{Power}\;\cdot\;
-\text{Noise}\;\cdot\;
-\text{Timing}\;\cdot\;
-\text{Spectral}\;\cdot\;
-\text{Control}$$
+Links rarely fail from one dramatic excursion. They fail when several small shifts spend different ledgers at once. Almost every failure can be described as spending one or more ledgers. Use that language in every debug answer. Name which ledger moved, by how much, and what spent it.
+
+::: dectree
+Power · Noise · Timing · Spectral · Control
+:::
 
 Power
 
@@ -355,7 +351,15 @@ Fleet monitoring
 
 : Which telemetry catches margin erosion before service failure, and does the RMA Pareto match the life model?
 
-Table 7.1 maps these stages to activities and instruments. The worked answer in §A.7.2 is practice prose built on this ladder.
+Table 7.1 maps these stages to activities and instruments. The worked answer in §A.8.2 is practice prose built on this ladder. Night-before path: Framework 7 in §B.
+
+### Margin budgeting
+
+Every environmental or use stress consumes part of the system margin: temperature, voltage variation, supply ripple, fiber contamination, insertion loss, connector wear, aging, mechanical vibration, and process variation. Qualification is not a tour of each mechanism for its own sake. It verifies that after the expected stresses, remaining margin is still acceptable. Stress consumes margin. Qualification measures remaining margin. Debugging finds which ledger is exhausted when that remaining margin hits zero (§A.6.4).
+
+### Customer view versus vendor view
+
+The vendor designs internals. The customer characterizes externally observable behavior. As a customer you often do not need laser threshold, driver architecture, or TIA topology. You measure BER, sensitivity, FEC statistics, launch and receive power, telemetry, and environmental response; eye metrics when engineering access exists. If the product is a black box, qualification focuses on that external surface. If engineering samples are available, request transmitter-only, receiver-only, breakout, or diagnostic hardware to isolate Tx and Rx margins independently. Keep the view explicit in second-source and qualification answers (§A.8.5).
 
 ### Know what each instrument answers
 
@@ -475,7 +479,7 @@ I will tell you my two story titles only. Interview me on each for five minutes.
 
 ## Questions to rehearse aloud, with model answers
 
-Rehearse these until the structure is automatic. Each answer starts with scope or requirements, names measurements and the hypotheses they separate, and ends with a decision and a control. Do not recite; adapt the skeleton to the follow-up questions.
+Rehearse these until the structure is automatic. For night-before review use the matching playbook in §B; the prose below is practice depth. Each answer starts with scope or requirements, names measurements and the hypotheses they separate, and ends with a decision and a control. Do not recite; adapt the skeleton to the follow-up questions.
 
 ##### How to use the worked answers.
 
@@ -497,7 +501,7 @@ Expand one constraint into the full budget table and show how it lands in ATP li
 
 ### How would you validate a new optical transmitter from bring-up through production?
 
-This is the question most likely to open the interview. The ladder itself is in §A.5.5, Table 7.1. Frame first: validation is staged uncertainty reduction. Each stage answers a question the previous stage could not.
+This is the question most likely to open the interview. The ladder itself is in §A.6.5, Table 7.1. Frame first: validation is staged uncertainty reduction. Each stage answers a question the previous stage could not.
 
 ##### 3-minute answer (practice).
 
@@ -517,7 +521,7 @@ For characterization, map what the design actually does across its operating ran
 
 ##### Stage 3: margin testing.
 
-For margin, stop asking whether the part passes and ask how far it sits from the cliff. Push each parameter to its failure boundary: sweep received power down with a calibrated VOA until the pre-FEC BER waterfall crosses the FEC threshold; take case temperature to the limit and past it; pull supply rails to their corners; degrade ORL with a controlled reflector and watch the error floor. Measure the distance to failure in dB, degrees, and volts, then compare it against the variation found in characterization. The uncertainty removed is the one that kills fleets: a design can pass every nominal test while sitting half a decibel from its limit, and normal lot spread plus aging will spend that half decibel in the first year. Margin testing also reveals which of the five margins, power, noise, timing, spectral, or control, runs out first, which tells you what telemetry must watch (§A.5.4, §5.19).
+For margin, stop asking whether the part passes and ask how far it sits from the cliff. Push each parameter to its failure boundary: sweep received power down with a calibrated VOA until the pre-FEC BER waterfall crosses the FEC threshold; take case temperature to the limit and past it; pull supply rails to their corners; degrade ORL with a controlled reflector and watch the error floor. Measure the distance to failure in dB, degrees, and volts, then compare it against the variation found in characterization. The uncertainty removed is the one that kills fleets: a design can pass every nominal test while sitting half a decibel from its limit, and normal lot spread plus aging will spend that half decibel in the first year. Margin testing also reveals which of the five margins, power, noise, timing, spectral, or control, runs out first, which tells you what telemetry must watch (§A.6.4, §5.19).
 
 ##### Stage 4: interoperability.
 
@@ -537,7 +541,7 @@ Deployment is the last validation stage, not the end of validation. Fleet teleme
 
 ### BER worsens at high temperature but average power is stable. What do you do?
 
-Classic fork question (§10.13, §A.5.3).
+Classic fork question (§10.13, §A.6.3).
 
 ##### 3-minute answer (practice).
 
@@ -609,7 +613,7 @@ Across lanes, units, and lots, the pattern chooses the fix: a rework instruction
 
 ### Received power is unchanged but required receiver power increased. What hypotheses remain?
 
-Apply the power-versus-quality fork (§A.5.3): power ledger intact, so eye quality or the receiver (§10.2).
+Apply the power-versus-quality fork (§A.6.3): power ledger intact, so eye quality or the receiver (§10.2).
 
 ##### 3-minute answer (practice).
 
@@ -1019,13 +1023,13 @@ Drill abbreviations. Give me ten random terms mixing optical debug and reliabili
 
 Assume seven days, with the interview near the end of Day 7. Protect sleep. Each day has one primary drill and one LLM practice box. If a day slips, cut new reading first, not story rehearsal or the mock interview.
 
-##### Day 1: principles, four-phase spine, traps, and Staff judgment.
+##### Day 1: principles, decision trees, spine, traps, Staff judgment.
 
-Read the three principles, the answer spine, the traps, and §A.3. Memorize: every answer ends with a decision; the job is the best decision with today's evidence; debugging is Bayesian inference in the lab. Memorize the four phases (Understand / Investigate / Resolve / Prevent), the six-question checklist, the decision table, and the five ledgers. Speak one paragraph per phase. Use the answer-spine LLM practice box. Write ownership language: stop ship, notify supplier, request FA, update ATP, monitor RMA.
+Read the four principles, §A.2, the answer spine, the traps, and §A.4. Memorize: every answer ends with a decision; measurements characterize margin; debugging is Bayesian inference in the lab. Memorize the two universal trees, the four phases, the six-question checklist, the decision table, and the five ledgers. Speak one paragraph per phase. Use the answer-spine LLM practice box. Write ownership language: stop ship, notify supplier, request FA, update ATP, monitor RMA.
 
 ##### Day 2: requirements and validation ladder.
 
-Rehearse §A.7.1 and §A.7.2 aloud until the structure is automatic. Name a reference plane in every measurement sentence. Skim Table 7.1, Table 5.4, Table 5.1 for numbers you already believe; do not hunt new optics.
+Rehearse §A.8.1 and §A.8.2 aloud until the structure is automatic. Name a reference plane in every measurement sentence. Skim Table 7.1, Table 5.4, Table 5.1 for numbers you already believe; do not hunt new optics.
 
 ##### Day 3: two real stories.
 
@@ -1033,7 +1037,7 @@ Draft and rehearse one bench or component story and one system, production, or f
 
 ##### Day 4: instruments, waterfall, and debug forks.
 
-Review what each instrument removes as uncertainty. Drill waterfall shift versus floor versus burst pattern (§A.5.7, §10.2, §10.3). Rehearse hot BER with stable power, aging versus calibration, and weak-lane isolation. Use the ten-concepts LLM practice box.
+Review what each instrument removes as uncertainty. Drill waterfall shift versus floor versus burst pattern (§A.6.9, §10.2, §10.3). Rehearse hot BER with stable power, aging versus calibration, and weak-lane isolation. Use the ten-concepts LLM practice box.
 
 ##### Day 5: reliability, manufacturing, and suppliers.
 
@@ -1043,9 +1047,9 @@ Drill HTOL credibility, Arrhenius/$E_a$, bathtub (burn-in versus wear-out), seco
 
 Run the abbreviations LLM practice box until expansions are fast. Rehearse fleet telemetry, modulator choice (EML / Si MZM / ring), replayable test data, and BER-floor physics. Do one short mixed quiz: three debug questions and three reliability questions.
 
-##### Day 7: cheat sheet, mock interview, and stop.
+##### Day 7: cheat sheet, Appendix B frameworks, mock, and stop.
 
-Read §A.10 once aloud. Use the 45-minute mock-interview LLM practice box. No new chapters. Light review of your two stories and the laser-requirements opener only. Stop two to three hours before the call. Sleep.
+Read §A.11 once aloud. Drill the green thirty-second boxes in §B for the topics you expect. Use the 45-minute mock-interview LLM practice box. No new chapters beyond that drill. Light review of your two stories only. Stop two to three hours before the call. Sleep.
 
 ##### If you have less than seven days.
 
@@ -1057,27 +1061,25 @@ Internalize this one page. The rest of the appendix is supporting detail.
 
 *Close.* Every answer ends with the engineering decision.
 
-*Philosophy.* Engineering reduces uncertainty. Measurements unlock decisions. Every measurement updates belief. The job is the best decision with today's evidence, not finding the truth.
+*Philosophy.* Engineering reduces uncertainty. Measurements unlock decisions. Measurements characterize margin. Every measurement updates belief. The job is the best decision with today's evidence.
 
-*Debug.* Bayesian inference in the lab. Priors favor common modes. Minimum measurement that kills the most hypotheses.
+*Trees.* Debug: scope $\rightarrow$ power fork $\rightarrow$ isolation $\rightarrow$ decision $\rightarrow$ control. Qual: works $\rightarrow$ margins $\rightarrow$ environment $\rightarrow$ interop $\rightarrow$ life $\rightarrow$ ATP $\rightarrow$ fleet (§A.2).
 
-*Spine (4 phases).* Understand $\rightarrow$ Investigate $\rightarrow$ Resolve $\rightarrow$ Prevent (end on the decision).
+*Spine (4 phases).* Understand $\rightarrow$ Investigate $\rightarrow$ Resolve $\rightarrow$ Prevent.
 
 *Checklist.* Scope? Ledger? Power or quality? Fastest measurement? Decision? Control?
 
-*Memorize.* Three principles, four-phase spine, five ledgers, power-versus-quality fork, validation ladder, decision vocabulary, two stories. Rest is reference.
+*Night before.* Open the matching framework in §B. Memorize green 30-second boxes only.
 
 *Five ledgers.* Power $\cdot$ Noise $\cdot$ Timing $\cdot$ Spectral $\cdot$ Control.
 
-*Power fork / scope / ladder.* Apply the fork; first scope (unit$\rightarrow$lot$\rightarrow$vendor$\rightarrow$fleet); walk the validation ladder (§A.5.5).
+*Margin budget.* Stress consumes margin; qual measures what remains (§A.6.6).
+
+*Customer vs vendor.* Customer measures external behavior; vendor owns internals (§A.6.7).
 
 *Decisions.* Ship / don't ship, continue validation, escalate supplier, derate, second source, contain lot, modify ATP, open RMA, FA/DPA, firmware, retune calibration, monitor only (Table A.1).
 
-*Waterfall / thermal.* Shift vs floor vs burst. Cool-down recovery vs monotonic aging.
-
-*Lab time / hierarchy.* Golden swap $\rightarrow$ power $\rightarrow$ bias sweep $\rightarrow$ DCA/OSA/RIN. Telemetry $\rightarrow$ bench $\rightarrow$ swap $\rightarrow$ characterization $\rightarrow$ FA/DPA.
-
-*Traps / ownership / delivery.* No component-first; no symptom-as-root-cause; no stop after fix. Contain, notify, FA, ATP, monitor RMA. Memorize green 30-second boxes only.
+*Traps / ownership.* No component-first; no stop after fix. Contain, notify, FA, ATP, monitor RMA.
 
 **Key idea.** I first want to understand the scope of the problem, then determine which margin ledger is being spent, choose the measurement that eliminates the largest number of hypotheses, make the product decision, and finally add the control that prevents the next escape.
 
@@ -1085,5 +1087,5 @@ Internalize this one page. The rest of the appendix is supporting detail.
 <div class="nav-links">
   <a href="ch10-failure-analysis-handbook">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch12-abbreviations">Next &rarr;</a>
+  <a href="ch12-thirty-second-interview-frameworks">Next &rarr;</a>
 </div>

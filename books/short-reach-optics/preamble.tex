@@ -288,6 +288,58 @@
   }\par\medskip
 }
 
+% ASCII decision trees (interview appendices). Keep trees narrow for the
+% text column; use flexible columns so long lines wrap rather than overflow.
+\lstnewenvironment{dectree}{%
+  \lstset{
+    language         = {},
+    basicstyle       = \ttfamily\footnotesize,
+    backgroundcolor  = \color{codebg},
+    frame            = single,
+    framerule        = 0pt,
+    rulecolor        = \color{codebg},
+    breaklines       = true,
+    breakatwhitespace = true,
+    columns          = flexible,
+    keepspaces       = true,
+    showstringspaces = false,
+    xleftmargin      = 0pt,
+    xrightmargin     = 0pt,
+    aboveskip        = 0.6em,
+    belowskip        = 0.6em,
+  }%
+}{}
+
+% Fixed skeleton for Appendix B playbooks (tree is a separate dectree env).
+% Use \section so frameworks number as B.1, B.2, ... (not B.0.x).
+\newcommand{\framework}[1]{%
+  \section{#1}%
+}
+\newcommand{\fwquestion}[1]{%
+  \paragraph{Interview question.}
+  \begin{quote}#1\end{quote}%
+}
+\newcommand{\fwwhy}[1]{%
+  \paragraph{Engineering reasoning.}
+  #1\par
+}
+\newcommand{\fwmeas}[1]{%
+  \paragraph{Measurements.}
+  #1\par
+}
+\newcommand{\fwfollow}[1]{%
+  \paragraph{Typical follow-ups.}
+  #1\par
+}
+\newcommand{\fwmistakes}[1]{%
+  \paragraph{Common mistakes.}
+  #1\par
+}
+\newcommand{\fwdeep}[1]{%
+  \paragraph{Deep dive.}
+  #1\par
+}
+
 \definecolor{failurebg}{HTML}{FCEDEA}
 \definecolor{failurerule}{HTML}{A5483D}
 \definecolor{debugbg}{HTML}{EAF3F6}

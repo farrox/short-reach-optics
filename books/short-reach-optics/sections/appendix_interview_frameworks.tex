@@ -1,0 +1,723 @@
+\chapter{Thirty-second interview frameworks}
+\label{app:interview-frameworks}
+
+This appendix is the operating manual for answering under time pressure. The
+philosophy lives in \Cref{app:interview-review}. Here each topic is a reusable
+reasoning template: question, thirty-second close, decision tree,
+measurements, follow-ups, and mistakes. Memorize the green boxes. Expand only
+where the interviewer asks.
+
+\framework{BER increased with stable power}
+\label{fw:ber-stable-power}
+
+\fwquestion{Pre-FEC BER rose while average received power held steady. How do
+you debug it?}
+
+\execanswer{Power held, so leave the power ledger. First scope the failure
+(unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ fleet). Apply the
+power-versus-quality fork: chase eye, bias, wavelength, noise, or receiver.
+Therefore I would isolate with a golden swap and a bias sweep, then decide
+contain, retune, or ATP change.}
+
+\begin{dectree}
+BER up, power stable
+  |
+Scope: unit / lot / vendor / fleet
+  |
+Power fork: power held -> quality or Rx
+  |
+Golden swap Tx vs Rx
+  |-- Tx --> eye / bias / wavelength / RIN
+  |-- Rx --> TIA / sensitivity / EQ
+  |
+Decision -> control (ATP / table / lot)
+\end{dectree}
+
+\fwwhy{Stable power rules out average launch and connector loss as the primary
+cause. The tree forces scope and the fork before any component name so you
+spend hours on the ledger that actually moved
+(\Cref{sec:interview-power-fork,sec:interview-worked-sensitivity}).}
+
+\fwmeas{Power meter $\rightarrow$ power ledger intact? $\rightarrow$ optical
+path or SI.\\
+DCA / bias sweep $\rightarrow$ eye or setpoint? $\rightarrow$ retune vs device.\\
+Golden swap $\rightarrow$ Tx or Rx? $\rightarrow$ owner.\\
+BER waterfall $\rightarrow$ shift or floor? $\rightarrow$ sensitivity vs noise.}
+
+\fwfollow{\begin{itemize}
+\item Why measure power before the DCA?
+\item Why not start with RIN?
+\item What if cool-down recovers the BER?
+\end{itemize}}
+
+\fwmistakes{\begin{itemize}
+\item Naming the laser first.
+\item Calling ``bad eye'' a root cause.
+\item Listing instruments without a decision.
+\item Stopping before recurrence control.
+\end{itemize}}
+
+\fwdeep{Full prose: \Cref{sec:interview-worked-sensitivity,sec:fm-ber-increase}.
+Ledgers: \Cref{sec:interview-margin-ledgers}.}
+
+\framework{Received power decreased}
+\label{fw:power-down}
+
+\fwquestion{Received optical power dropped and the link is failing. How do you
+debug it?}
+
+\execanswer{Power moved, so stay on the power ledger. First scope the failure.
+Confirm with an external meter at a named plane, then bisect source enable,
+coupling, connectors, MUX loss, and monitor-PD / APC honesty. Therefore I
+would contain if lot-correlated, clean or replace the plant if local, and
+update ATP or hygiene rules so it does not recur.}
+
+\begin{dectree}
+Power down
+  |
+Scope
+  |
+External meter @ named plane
+  |
+Monitor vs external agree?
+  |-- NO --> APC / monitor-PD / cal
+  |-- YES --> source / coupling / connector / MUX
+  |
+Population?
+  |-- lot/vendor --> contain + FA
+  |-- single --> plant or unit repair
+  |
+Decision + control
+\end{dectree}
+
+\fwwhy{A power drop is not automatically a dying laser. Monitor corruption and
+dirty plant fake laser failure. The external meter is the cut that protects
+you from trusting a lying APC loop.}
+
+\fwmeas{External power meter $\rightarrow$ true power? $\rightarrow$ optical
+path.\\
+Inspect / ORL $\rightarrow$ plant dirty or reflective? $\rightarrow$ clean /
+replace.\\
+LIV $\rightarrow$ device changed? $\rightarrow$ replace vs setpoint.\\
+Lot query $\rightarrow$ population? $\rightarrow$ contain vs unit fix.}
+
+\fwfollow{\begin{itemize}
+\item Why not trust the module's reported Tx power?
+\item When do you stop ship versus clean the connector?
+\end{itemize}}
+
+\fwmistakes{\begin{itemize}
+\item Trusting monitor-PD without an external meter.
+\item Treating one dirty connector as a fleet laser problem.
+\end{itemize}}
+
+\fwdeep{Power fork and instruments: \Cref{sec:interview-power-fork}. APC and
+calibration: \Cref{sec:laser-calibration}.}
+
+\framework{One weak lane}
+\label{fw:weak-lane}
+
+\fwquestion{A single lane in a four-lane transceiver has elevated BER while
+received power on that lane looks normal. How would you isolate it?}
+
+\execanswer{First scope: one lane, one unit, or a pattern across the lot?
+Compare sibling lanes, then optical-versus-electrical swap to split path from
+driver or TIA. Therefore I would fix assembly or the array element that owns
+the fault, and add the screen that would have caught it.}
+
+\begin{dectree}
+One weak lane
+  |
+Siblings OK?
+  |-- NO --> shared supply / thermal / host
+  |-- YES --> lane-local
+        |
+   Opt vs elec swap
+        |-- optical --> FAU / coupling / PIC lane
+        |-- electrical --> driver / TIA / SerDes
+        |
+   Lot pattern?
+        |
+   Decision: rework / screen / supplier
+\end{dectree}
+
+\fwwhy{Sibling comparison is the cheapest population cut inside one module.
+Optical-versus-electrical swap prevents weeks of laser FA on a TIA lane
+(\Cref{sec:interview-worked-lane}).}
+
+\fwmeas{Sibling BER/power $\rightarrow$ shared or local? $\rightarrow$ scope.\\
+Lane swap $\rightarrow$ optical or electrical? $\rightarrow$ owner.\\
+LIV on weak lane $\rightarrow$ device or coupling? $\rightarrow$ FAU vs die.}
+
+\fwfollow{\begin{itemize}
+\item Why compare siblings before opening the module?
+\item What lot pattern would make you call the supplier today?
+\end{itemize}}
+
+\fwmistakes{\begin{itemize}
+\item Rewriting the module spec for one assembly escape.
+\item Skipping the electrical path when power looks fine.
+\end{itemize}}
+
+\fwdeep{Worked answer: \Cref{sec:interview-worked-lane}. FAU and parallel
+optics appear throughout \Cref{ch:failure-modes}.}
+
+\framework{High-temperature failures}
+\label{fw:hot-fail}
+
+\fwquestion{BER worsens at high temperature but average power is stable. What
+do you do?}
+
+\execanswer{Power held, so leave the power ledger. First scope the failure and
+whether cool-down recovers. At the failing temperature, read eye, bias sweep,
+wavelength, and control headroom. Therefore I would fix the table or thermal
+design and put that loaded corner in the ATP.}
+
+\begin{dectree}
+Hot BER, power stable
+  |
+Scope + cool-down recovers?
+  |-- YES --> operating point / table / control
+  |-- NO  --> aging / permanent damage
+  |
+At failing T: eye, bias sweep, OSA, TEC/heater codes
+  |
+Control ledger exhausted?
+  |-- YES --> thermal design / tuning range
+  |-- NO  --> cal table / wavelength / Rx
+  |
+Decision: retune + ATP corner
+\end{dectree}
+
+\fwwhy{Temperature failures are often control or calibration, not a dead
+laser. Measuring at room temperature misses the spent ledger
+(\Cref{sec:interview-worked-hot-ber}).}
+
+\fwmeas{Cool-down test $\rightarrow$ reversible? $\rightarrow$ thermal vs aging.\\
+Bias sweep at hot $\rightarrow$ optimum moved? $\rightarrow$ table.\\
+Actuator codes $\rightarrow$ control authority left? $\rightarrow$ thermal
+design.\\
+OSA $\rightarrow$ spectral alignment? $\rightarrow$ lock / filter.}
+
+\fwfollow{\begin{itemize}
+\item Why insist on measuring at the failing temperature?
+\item How do you say ``TEC maxed'' in product language?
+\end{itemize}}
+
+\fwmistakes{\begin{itemize}
+\item Debugging only at ambient.
+\item Saying TEC current hit max instead of control ledger exhausted.
+\end{itemize}}
+
+\fwdeep{\Cref{sec:interview-worked-hot-ber,sec:fm-temperature}. Control
+ledger: \Cref{sec:interview-margin-ledgers}.}
+
+\framework{Laser aging versus calibration drift}
+\label{fw:aging-vs-cal}
+
+\fwquestion{How do you distinguish laser aging from calibration drift?}
+
+\execanswer{Aging changes the LIV. Drift changes the setpoint on a healthy
+LIV. External LIV plus recovery after recalibration separates them. Time
+behavior confirms: monotonic climb versus a step after a table or firmware
+change. Therefore I would route aging to life/derate/replace and drift to
+table control plus an ATP loaded-corner check.}
+
+\begin{dectree}
+Symptom (bias up / BER up)
+  |
+External LIV vs ship data
+  |-- LIV moved --> aging --> life / derate / replace
+  |-- LIV OK ----> drift path
+        |
+   Monitor vs external power
+        |
+   Bias sweep / table reload recovers?
+        |-- YES --> calibration / firmware
+        |-- NO  --> deeper FA
+\end{dectree}
+
+\fwwhy{Telemetry can look identical for aging and drift. Only an external
+reference and a recovery test pick the owner
+(\Cref{sec:interview-worked-aging-vs-cal}).}
+
+\fwmeas{External LIV $\rightarrow$ device changed? $\rightarrow$ aging vs
+setpoint.\\
+Monitor vs meter $\rightarrow$ APC honesty? $\rightarrow$ monitor-PD.\\
+Table reload $\rightarrow$ recovers? $\rightarrow$ calibration owner.\\
+Stress-hours plot $\rightarrow$ monotonic or step? $\rightarrow$ confirms.}
+
+\fwfollow{\begin{itemize}
+\item What is the silent failure mode if the monitor lies?
+\item Who owns aging versus who owns the table?
+\end{itemize}}
+
+\fwmistakes{\begin{itemize}
+\item Recalibrating an aged device and calling it fixed.
+\item Sending a table bug to the reliability team.
+\end{itemize}}
+
+\fwdeep{\Cref{sec:interview-worked-aging-vs-cal,sec:laser-calibration,sec:laser-thermal-vs-aging}.}
+
+\framework{Second-source qualification}
+\label{fw:second-source}
+
+\fwquestion{How would you qualify a second laser or PIC supplier?}
+
+\execanswer{Freeze the requirements slice, not the incumbent datasheet.
+Characterize distributions across lots and temperature from the customer
+view: OMA, RIN at ORL, wavelength, eye, and life with a named HTOL mechanism.
+Therefore I would gate open volume on FAIR, ATP correlation, and split RMA
+codes, not on a hero sample.}
+
+\begin{dectree}
+Second source
+  |
+Freeze requirements (customer-visible)
+  |
+Distributions vs means (lots, T)
+  |
+HTOL + named mechanism
+  |
+ATP correlation + FAIR
+  |
+Fleet codes split by supplier
+  |
+Decision: qualify / hold / reject
+\end{dectree}
+
+\fwwhy{The incumbent proves one process can meet the link. The second source
+must meet the same external requirements, not copy a datasheet. Customer view
+beats internal curiosity early (\Cref{sec:interview-customer-vendor,sec:interview-worked-second-source}).}
+
+\fwmeas{Multi-lot LIV/RIN/SMSR $\rightarrow$ process spread? $\rightarrow$ risk.\\
+HTOL $\rightarrow$ life hypothesis? $\rightarrow$ FIT / derate.\\
+ATP on both sources $\rightarrow$ escape risk? $\rightarrow$ ship gate.\\
+RMA split $\rightarrow$ field falsifies qual? $\rightarrow$ reopen.}
+
+\fwfollow{\begin{itemize}
+\item Why not just match the incumbent datasheet?
+\item What customer measurements matter if the part is a black box?
+\end{itemize}}
+
+\fwmistakes{\begin{itemize}
+\item Qualifying a hero sample.
+\item Merging supplier RMA codes.
+\end{itemize}}
+
+\fwdeep{\Cref{sec:interview-worked-second-source,sec:supplier-exec}.}
+
+\framework{Validation plan for a new transceiver}
+\label{fw:validation-plan}
+
+\fwquestion{How would you validate a new optical transmitter from bring-up
+through production?}
+
+\execanswer{Validation is staged uncertainty reduction. Walk bring-up,
+characterization, margin, interop, environment, reliability, production, and
+fleet. Each stage answers a question the previous could not. Therefore I
+would refuse any test that answers no new question and watch the ledgers
+margin budgeting says will be spent first.}
+
+\begin{dectree}
+New transceiver
+  |
+Bring-up -> Characterization -> Margin
+  |
+Interop -> Environment -> Reliability
+  |
+ATP / manufacturing -> Pilot -> Fleet
+  |
+Each stage: question? uncertainty? decision?
+\end{dectree}
+
+\fwwhy{The ladder is Universal Tree~2. Margin budgeting says stresses consume
+margin; stages exist to measure remaining margin from the customer-visible
+surface first (\Cref{sec:interview-validation-ladder,sec:interview-margin-budget}).}
+
+\fwmeas{Each ladder stage $\rightarrow$ named uncertainty removed
+$\rightarrow$ continue / redesign / tighten ATP / stop ship.\\
+Margin sweeps $\rightarrow$ which ledger dies first? $\rightarrow$ telemetry
+alarms.}
+
+\fwfollow{\begin{itemize}
+\item Which stage removes combination risk?
+\item How does margin budgeting change what you instrument in the fleet?
+\end{itemize}}
+
+\fwmistakes{\begin{itemize}
+\item Treating bring-up as population proof.
+\item Running HTOL without a named mechanism.
+\end{itemize}}
+
+\fwdeep{\Cref{sec:interview-worked-validation,tab:ladder,sec:interview-customer-vendor}.}
+
+\framework{Fleet issue}
+\label{fw:fleet}
+
+\fwquestion{Field telemetry shows rising pre-FEC BER on a subset of racks.
+How do you triage?}
+
+\execanswer{First scope: unit, lot, vendor, rack, datacenter, or fleet? Ask
+trend and change history. Classify performance versus reliability versus
+manufacturability before pulling hardware. Therefore I would contain if
+growing and supplier-specific, or monitor-only if tiny, flat, and no customer
+impact, with an owner on the next control.}
+
+\begin{dectree}
+Fleet symptom
+  |
+Scope ladder
+  |
+Rate / trend / customer impact
+  |-- tiny, flat, no impact --> monitor only
+  |-- growing / supplier --> contain now
+  |
+Bucket: performance / reliability / manufacturability
+  |
+Decision + owner + telemetry control
+\end{dectree}
+
+\fwwhy{Fleet economics and scope pick the owner before FA. Pulling units
+without a bucket wastes the only failing state you had
+(\Cref{sec:interview-under-uncertainty,sec:fleet-triage}).}
+
+\fwmeas{Telemetry query $\rightarrow$ scope and trend? $\rightarrow$ contain
+vs monitor.\\
+Lot/date correlation $\rightarrow$ manufacturability? $\rightarrow$ supplier.\\
+Golden host in rack $\rightarrow$ environment vs module? $\rightarrow$ owner.}
+
+\fwfollow{\begin{itemize}
+\item When is monitor-only the correct Staff answer?
+\item What do you do before the mechanism is known?
+\end{itemize}}
+
+\fwmistakes{\begin{itemize}
+\item Treating one rack as the fleet.
+\item Waiting for DPA before containing a growing lot.
+\end{itemize}}
+
+\fwdeep{\Cref{sec:interview-under-uncertainty,tab:fleet-triage}.}
+
+\framework{Supplier escape}
+\label{fw:supplier-escape}
+
+\fwquestion{A new date code from Supplier~B fails the hot corner at about 3\%.
+What do you do?}
+
+\execanswer{Evidence beats an unknown mechanism. Stop shipment of Supplier~B
+affected lots, continue Supplier~A, expand the ATP hot-corner screen, open FA
+with DPA on fails, and watch RMA daily. Therefore I would contain today and
+keep the FA path open rather than wait for SEM before acting.}
+
+\begin{dectree}
+Escape signal
+  |
+Scope: supplier / lot / corner / rate
+  |
+Mechanism known?
+  |-- NO --> still decide
+  |
+Contain B + continue A
+  |
+ATP screen + FA/DPA + telemetry
+  |
+Close when mechanism + control proven
+\end{dectree}
+
+\fwwhy{This is Staff judgment under incomplete information. Product deadlines
+do not wait for certainty
+(\Cref{sec:interview-under-uncertainty}).}
+
+\fwmeas{Lot genealogy $\rightarrow$ exposure? $\rightarrow$ quarantine list.\\
+ATP hot corner $\rightarrow$ escape path? $\rightarrow$ production gate.\\
+DPA sample $\rightarrow$ mechanism class? $\rightarrow$ permanent fix.}
+
+\fwfollow{\begin{itemize}
+\item Why contain before FA completes?
+\item What residual risk do you name to leadership?
+\end{itemize}}
+
+\fwmistakes{\begin{itemize}
+\item Waiting for root cause before stop-ship.
+\item Blocking all vendors for one supplier's lot.
+\end{itemize}}
+
+\fwdeep{\Cref{sec:interview-under-uncertainty,tab:interview-decisions}.}
+
+\framework{BER floor}
+\label{fw:ber-floor}
+
+\fwquestion{Why can a link show a BER floor that more launch power does not
+fix?}
+
+\execanswer{A floor means multiplicative noise: SNR stops improving as power
+rises. Prioritize RIN under ORL, MPI from reflections, weak PSRR, and
+crosstalk. Therefore I would confirm floor versus shift on a waterfall, then
+remove the noise source rather than raise OMA.}
+
+\begin{dectree}
+BER vs power
+  |
+Shape?
+  |-- parallel shift --> sensitivity
+  |-- floor ---------> multiplicative noise
+        |
+   ORL / RIN / MPI / PSRR / crosstalk
+        |
+   Fix noise source, not launch
+\end{dectree}
+
+\fwwhy{More power cannot beat noise that scales with the signal. The waterfall
+shape is the fast cut between sensitivity and floor
+(\Cref{sec:interview-worked-ber-floor,sec:interview-waterfall}).}
+
+\fwmeas{Waterfall $\rightarrow$ shift or floor? $\rightarrow$ next hunt.\\
+Controlled ORL $\rightarrow$ reflection-driven RIN? $\rightarrow$ plant.\\
+Supply noise $\rightarrow$ PSRR path? $\rightarrow$ filter / layout.}
+
+\fwfollow{\begin{itemize}
+\item Why not just increase OMA?
+\item How do FEC histograms look for MPI bursts?
+\end{itemize}}
+
+\fwmistakes{\begin{itemize}
+\item Raising launch into a floor.
+\item Skipping ORL when RIN is blamed.
+\end{itemize}}
+
+\fwdeep{\Cref{sec:interview-worked-ber-floor,sec:fm-ber-floor,sec:rin}.}
+
+\framework{Intermittent failures}
+\label{fw:intermittent}
+
+\fwquestion{The link fails intermittently and often passes when retested. How
+do you proceed?}
+
+\execanswer{Preserve the failing state and telemetry before you reseat, clean,
+or reboot. Scope time and change: dwell, temperature, vibration, firmware,
+connector. Prefer burst/FEC histograms and long dwell over a single golden
+retest. Therefore I would contain if lot-correlated, tighten dwell/ATP if
+escape, and refuse to close an NFF without a reproduction plan.}
+
+\begin{dectree}
+Intermittent
+  |
+Preserve state / telemetry
+  |
+Triggers: T, time, mate, vibration, FW
+  |
+Reproduce with dwell / stress
+  |
+Scope population
+  |
+Decision: contain / ATP dwell / monitor
+\end{dectree}
+
+\fwwhy{Intermittents die when the evidence is destroyed. NFF is often a triage
+failure, not a healthy part (\Cref{sec:fleet-triage}).}
+
+\fwmeas{FEC histogram $\rightarrow$ burst vs Gaussian? $\rightarrow$ MPI /
+intermittent.\\
+Dwell BER $\rightarrow$ reproduces? $\rightarrow$ ATP change.\\
+Mate/demate $\rightarrow$ connector? $\rightarrow$ hygiene / replace.}
+
+\fwfollow{\begin{itemize}
+\item What do you refuse to do on first touch?
+\item How does high NFF change your answer?
+\end{itemize}}
+
+\fwmistakes{\begin{itemize}
+\item Reseating before capture.
+\item Closing NFF without a reproduction plan.
+\end{itemize}}
+
+\fwdeep{\Cref{sec:fleet-triage,tab:failure-analysis-checklist}.}
+
+\framework{Production ATP update}
+\label{fw:atp-update}
+
+\fwquestion{A failure escaped to the field that ATP did not catch. How do you
+update production test?}
+
+\execanswer{Name the escape path and the measurement that would have caught
+it at a named plane and corner. Size the new limit from characterization and
+repeatability, correlate stations, and set a reaction plan. Therefore I would
+ship the ATP change with an owner and a metric, not a hope that operators will
+be careful.}
+
+\begin{dectree}
+Escape
+  |
+Which uncertainty ATP missed?
+  |
+New measurement / corner / limit
+  |
+Guard band from repeatability
+  |
+Station correlation
+  |
+Reaction plan + owner
+  |
+Ship ATP change
+\end{dectree}
+
+\fwwhy{Recurrence control is usually an ATP or telemetry change. A limit
+nobody can trace gets waived under ship pressure
+(\Cref{sec:interview-worked-validation}).}
+
+\fwmeas{Escape unit replay $\rightarrow$ missed corner? $\rightarrow$ new
+test.\\
+Gage R\&R $\rightarrow$ repeatability? $\rightarrow$ guard band.\\
+Golden units across stations $\rightarrow$ correlation? $\rightarrow$ ship.}
+
+\fwfollow{\begin{itemize}
+\item How do you set the guard band?
+\item What is the reaction plan when the new limit fails?
+\end{itemize}}
+
+\fwmistakes{\begin{itemize}
+\item Adding a test with no reaction plan.
+\item Limits from one hero unit.
+\end{itemize}}
+
+\fwdeep{Production readiness stage in \Cref{sec:interview-validation-ladder}.}
+
+\framework{Telemetry design}
+\label{fw:telemetry}
+
+\fwquestion{What would you put in fleet telemetry, and why?}
+
+\execanswer{Log what discriminates hypotheses: per-lane power, bias, pre-FEC
+BER and FEC histograms; module temperature and actuator drive; LOS/LOL and
+firmware with context. Alarm on trends and disagreements, not only hard
+thresholds. Therefore I would instrument the ledgers margin testing said die
+first.}
+
+\begin{dectree}
+Telemetry purpose: early margin erosion
+  |
+Per-lane: power, bias, pre-FEC BER
+  |
+Module: T, TEC/heater, rails, lock
+  |
+Events + lot/age/rack context
+  |
+Alarms: trends / disagreements
+\end{dectree}
+
+\fwwhy{Telemetry exists to triage without pulling hardware and to catch dying
+units before dead ones (\Cref{sec:interview-worked-telemetry}).}
+
+\fwmeas{Bias at constant power $\rightarrow$ aging? $\rightarrow$ reliability
+bucket.\\
+Power at constant bias $\rightarrow$ optical path? $\rightarrow$ plant.\\
+Actuator near rail $\rightarrow$ control margin? $\rightarrow$ thermal
+design.}
+
+\fwfollow{\begin{itemize}
+\item Why alarm on actuator headroom?
+\item What context fields make lot queries possible?
+\end{itemize}}
+
+\fwmistakes{\begin{itemize}
+\item Logging every register with no hypothesis.
+\item Hard thresholds only, no trends.
+\end{itemize}}
+
+\fwdeep{\Cref{sec:interview-worked-telemetry,sec:cmis}.}
+
+\framework{Qualification planning}
+\label{fw:qual-plan}
+
+\fwquestion{How do you plan qualification for a new IM/DD module?}
+
+\execanswer{Start from customer-visible requirements and a margin budget:
+which stresses will spend which ledgers. Map stresses to mechanisms, run HTOL
+only with a named activation energy, and prove ATP can catch escapes at rate.
+Therefore I would gate ship on remaining margin after environment, interop,
+and life, not on a checklist of rituals.}
+
+\begin{dectree}
+Qual plan
+  |
+Customer requirements + margin budget
+  |
+Stress -> mechanism -> ledger spent
+  |
+HTOL with named Ea
+  |
+ATP catches escapes?
+  |
+Ship gate = remaining margin OK
+\end{dectree}
+
+\fwwhy{Margin budgeting and customer view keep qual from becoming museum of
+tests. Stress consumes margin; qual measures what remains
+(\Cref{sec:interview-margin-budget,sec:interview-customer-vendor}).}
+
+\fwmeas{Margin sweeps $\rightarrow$ cliff distance? $\rightarrow$ derate or
+redesign.\\
+HTOL $\rightarrow$ wear-out hypothesis? $\rightarrow$ FIT.\\
+ATP correlation $\rightarrow$ factory control? $\rightarrow$ volume.}
+
+\fwfollow{\begin{itemize}
+\item What does ``remaining margin'' mean in one sentence?
+\item When do you ask for Tx-only or Rx-only samples?
+\end{itemize}}
+
+\fwmistakes{\begin{itemize}
+\item HTOL without mechanism or $E_a$.
+\item Qualifying internals the customer never observes.
+\end{itemize}}
+
+\fwdeep{\Cref{sec:interview-validation-ladder,sec:gr468,sec:laser-aging}.}
+
+\framework{Unknown failure}
+\label{fw:unknown}
+
+\fwquestion{You must make a ship decision this week, but the physical mechanism
+is still unknown. What do you do?}
+
+\execanswer{State evidence, confidence weights, and residual risk. Decide with
+today's evidence: contain the scoped population, keep a healthy path shipping,
+open FA, and add the ATP or telemetry control that would catch the next
+escape. Therefore I would not wait for certainty before ownership actions.}
+
+\begin{dectree}
+Unknown mechanism
+  |
+Evidence + scope + rate/trend
+  |
+Priors: common modes first
+  |
+Decision today (contain / ship / derate)
+  |
+FA path + control + owner
+  |
+Update when mechanism closes
+\end{dectree}
+
+\fwwhy{The job is the best decision with today's evidence. Unknown mechanism
+is Framework~15 of Staff judgment, not a reason to freeze
+(\Cref{sec:interview-under-uncertainty}).}
+
+\fwmeas{Whatever removes the most uncertainty per hour toward the ship
+decision: scope query, golden swap, external power, hot-corner ATP sample.\\
+DPA later $\rightarrow$ mechanism class? $\rightarrow$ permanent fix.}
+
+\fwfollow{\begin{itemize}
+\item What do you tell leadership about residual risk?
+\item Which measurement is worth delaying the decision for?
+\end{itemize}}
+
+\fwmistakes{\begin{itemize}
+\item Freezing all action until SEM.
+\item Making a ship call with no control and no owner.
+\end{itemize}}
+
+\fwdeep{\Cref{sec:interview-under-uncertainty,sec:interview-decision-trees,tab:interview-decisions}.}
+
+\keyidea{Open the matching framework, deliver the thirty-second box, walk the
+tree, end on the decision and the control. Philosophy is in
+\Cref{app:interview-review}; this appendix is how you speak it under pressure.}

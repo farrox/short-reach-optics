@@ -34,7 +34,14 @@ answer, name the decision unlocked (ship, derate, second-source,
 ATP\termnote{ATP} change, partner action) as well as the instrument
 (\Cref{tab:interview-decisions}).
 
-\noindent\textbf{Principle 3: Every measurement updates your beliefs.}\\
+\noindent\textbf{Principle 3: Measurements characterize margin.}\\
+Engineering is not only proving that a product works. It determines how much
+uncertainty and margin remain before failure. Debugging identifies exhausted
+margin. Qualification verifies that remaining margin is still acceptable after
+expected stresses. The same ledgers (power, noise, timing, spectral, control)
+appear in both jobs.
+
+\noindent\textbf{Principle 4: Every measurement updates your beliefs.}\\
 Treat engineering as hypothesis testing:
 \[
 \begin{split}
@@ -68,20 +75,74 @@ matters: LIV, RIN, ORL, TDECQ, and a BER waterfall. Senior people lose the
 level if they stop at plots and never close on a decision and a control.
 
 Work the day plan at the end of this appendix. Memorize the one-page cheat
-sheet before Day~7. Use each LLM practice box the day it is scheduled. Do not
-add new topics after Day~6.
+sheet before Day~7. Night-before drill is \Cref{app:interview-frameworks}:
+open the matching thirty-second framework. Use each LLM practice box the day
+it is scheduled. Do not add new topics after Day~6 beyond that drill.
+
+\section{Engineering decision trees}
+\label{sec:interview-decision-trees}
+
+Interview questions are usually solved by walking a sequence of
+uncertainty-reduction decisions. The exact branches differ. The philosophy
+never changes. Debugging asks what broke and which margin ledger is spent.
+Qualification asks what uncertainty remains before shipment. The playbooks in
+\Cref{app:interview-frameworks} are specialized trees under these two
+universal ones.
+
+\paragraph{Universal Tree 1: Debugging.}
+\begin{dectree}
+Problem
+  |
+Scope (unit -> lot -> vendor -> fleet)
+  |
+Population / time behavior
+  |
+Power changed?
+  |-- YES --> Power ledger --> optical path
+  |-- NO  --> Quality / receiver
+  |
+Isolation
+  |
+Root cause
+  |
+Decision
+  |
+Recurrence control
+\end{dectree}
+
+\paragraph{Universal Tree 2: Qualification.}
+\begin{dectree}
+New product
+  |
+Works? (bring-up)
+  |
+Margins?
+  |
+Environmental?
+  |
+Interoperability?
+  |
+Reliability?
+  |
+Manufacturing / ATP?
+  |
+Pilot deployment?
+  |
+Production
+  |
+Fleet monitoring
+\end{dectree}
 
 \section{The answer spine}
 
 Move every answer through the same sequence. Memorize four phases, not nine
 nodes:
-\begin{description}
-\item[Understand] Requirements, architecture.
-\item[Investigate] Measurements, observations, hypotheses, isolation.
-\item[Resolve] Root cause, corrective action.
-\item[Prevent] Recurrence control, and the product decision that closes the
-      answer.
-\end{description}
+\begin{dectree}
+Understand:   requirements -> architecture
+Investigate:  measure -> observe -> hypothesize -> isolate
+Resolve:      root cause -> corrective action
+Prevent:      recurrence control -> decision
+\end{dectree}
 The diagram is a memory aid, not the answer. Speak one clear paragraph per
 phase under time pressure, and expand a node only when asked. Do not jump from
 a symptom to a component. End every debug answer with the decision
@@ -89,19 +150,6 @@ a symptom to a component. End every debug answer with the decision
 \Cref{sec:systems-engineering-loop}, the debugging pyramid in
 \Cref{sec:debug-pyramid}, and the failure-analysis method in
 \Cref{ch:failure-modes} are the full versions of this spine.
-\[
-\begin{split}
-\text{requirements} &\longrightarrow \text{architecture}
-\longrightarrow \text{measurements}\\
-&\longrightarrow \text{observations}
-\longrightarrow \text{hypotheses}\\
-&\longrightarrow \text{isolation}
-\longrightarrow \text{root cause}\\
-&\longrightarrow \text{corrective action}
-\longrightarrow \text{recurrence control}\\
-&\longrightarrow \text{decision}.
-\end{split}
-\]
 
 \paragraph{Requirements.}
 Start by stating what the system must do before you name a part. Reach, lane
@@ -227,11 +275,11 @@ which margin ledger is being spent, choose the measurement that eliminates the
 largest number of hypotheses, make the product decision, and finally add the
 control that prevents the next escape.}
 
-\llmpractice{Three principles plus: the job is the best decision with today's
-evidence. Debugging is Bayesian inference in the lab with engineering priors
-(common modes first). Chunk the spine as Understand / Investigate / Resolve /
-Prevent. Every answer ends with a decision. Name the ledger that moved.}
-{Quiz me on the three principles, priors, and the four spine phases. Give me a
+\llmpractice{Four principles: uncertainty reduction; measurements unlock
+decisions; measurements characterize margin; every measurement updates belief.
+Chunk the spine as Understand / Investigate / Resolve / Prevent. Every answer
+ends with a decision. Name the ledger that moved.}
+{Quiz me on the four principles, priors, and the four spine phases. Give me a
 failed module at high temperature with stable average power. Stop me if I skip
 scope, the power fork, the control ledger, the product decision, or recurrence
 control.}
@@ -304,14 +352,9 @@ setup. SEM and DPA come last, not first.
 
 Not every failure deserves destructive analysis. Climb only as far as the
 decision requires:
-\[
-\begin{split}
-\text{telemetry} &\longrightarrow \text{simple bench}
-\longrightarrow \text{swap}\\
-&\longrightarrow \text{characterization}
-\longrightarrow \text{failure analysis}.
-\end{split}
-\]
+\begin{dectree}
+telemetry -> simple bench -> swap -> characterization -> FA / DPA
+\end{dectree}
 
 \subsection{Fleet economics}
 
@@ -460,13 +503,9 @@ Links rarely fail from one dramatic excursion. They fail when several small
 shifts spend different ledgers at once. Almost every failure can be described
 as spending one or more ledgers. Use that language in every debug answer.
 Name which ledger moved, by how much, and what spent it.
-\[
-\text{Power}\;\cdot\;
-\text{Noise}\;\cdot\;
-\text{Timing}\;\cdot\;
-\text{Spectral}\;\cdot\;
-\text{Control}
-\]
+\begin{dectree}
+Power · Noise · Timing · Spectral · Control
+\end{dectree}
 
 \begin{description}
 \item[Power] Launch power, insertion loss, coupling, connector loss,
@@ -536,7 +575,34 @@ sections only say ``walk the validation ladder''; this is the full map.
 
 \Cref{tab:ladder} maps these stages to activities and instruments. The
 worked answer in \Cref{sec:interview-worked-validation} is practice prose
-built on this ladder.
+built on this ladder. Night-before path: Framework~7 in
+\Cref{app:interview-frameworks}.
+
+\subsection{Margin budgeting}
+\label{sec:interview-margin-budget}
+
+Every environmental or use stress consumes part of the system margin:
+temperature, voltage variation, supply ripple, fiber contamination, insertion
+loss, connector wear, aging, mechanical vibration, and process variation.
+Qualification is not a tour of each mechanism for its own sake. It verifies
+that after the expected stresses, remaining margin is still acceptable.
+Stress consumes margin. Qualification measures remaining margin. Debugging
+finds which ledger is exhausted when that remaining margin hits zero
+(\Cref{sec:interview-margin-ledgers}).
+
+\subsection{Customer view versus vendor view}
+\label{sec:interview-customer-vendor}
+
+The vendor designs internals. The customer characterizes externally
+observable behavior. As a customer you often do not need laser threshold,
+driver architecture, or TIA topology. You measure BER, sensitivity, FEC
+statistics, launch and receive power, telemetry, and environmental response;
+eye metrics when engineering access exists. If the product is a black box,
+qualification focuses on that external surface. If engineering samples are
+available, request transmitter-only, receiver-only, breakout, or diagnostic
+hardware to isolate Tx and Rx margins independently. Keep the view explicit
+in second-source and qualification answers
+(\Cref{sec:interview-worked-second-source}).
 
 \subsection{Know what each instrument answers}
 
@@ -756,10 +822,11 @@ scope, or end without a control that would catch the next escape.}
 
 \section{Questions to rehearse aloud, with model answers}
 
-Rehearse these until the structure is automatic. Each answer starts with scope
-or requirements, names measurements and the hypotheses they separate, and ends
-with a decision and a control. Do not recite; adapt the skeleton to the
-follow-up questions.
+Rehearse these until the structure is automatic. For night-before review use
+the matching playbook in \Cref{app:interview-frameworks}; the prose below is
+practice depth. Each answer starts with scope or requirements, names
+measurements and the hypotheses they separate, and ends with a decision and a
+control. Do not recite; adapt the skeleton to the follow-up questions.
 
 \paragraph{How to use the worked answers.}
 Each long question opens with a green \textbf{30-second answer (memorize)}
@@ -1482,15 +1549,15 @@ Assume seven days, with the interview near the end of Day~7. Protect sleep.
 Each day has one primary drill and one LLM practice box. If a day slips, cut
 new reading first, not story rehearsal or the mock interview.
 
-\paragraph{Day 1: principles, four-phase spine, traps, and Staff judgment.}
-Read the three principles, the answer spine, the traps, and
-\Cref{sec:interview-under-uncertainty}. Memorize: every answer ends with a
-decision; the job is the best decision with today's evidence; debugging is
-Bayesian inference in the lab. Memorize the four phases (Understand /
-Investigate / Resolve / Prevent), the six-question checklist, the decision
-table, and the five ledgers. Speak one paragraph per phase. Use the
-answer-spine LLM practice box. Write ownership language: stop ship, notify
-supplier, request FA, update ATP, monitor RMA.
+\paragraph{Day 1: principles, decision trees, spine, traps, Staff judgment.}
+Read the four principles, \Cref{sec:interview-decision-trees}, the answer
+spine, the traps, and \Cref{sec:interview-under-uncertainty}. Memorize: every
+answer ends with a decision; measurements characterize margin; debugging is
+Bayesian inference in the lab. Memorize the two universal trees, the four
+phases, the six-question checklist, the decision table, and the five ledgers.
+Speak one paragraph per phase. Use the answer-spine LLM practice box. Write
+ownership language: stop ship, notify supplier, request FA, update ATP,
+monitor RMA.
 
 \paragraph{Day 2: requirements and validation ladder.}
 Rehearse \Cref{sec:interview-worked-laser-reqs} and
@@ -1525,11 +1592,12 @@ fleet telemetry, modulator choice (EML / Si MZM / ring), replayable test data,
 and BER-floor physics. Do one short mixed quiz: three debug questions and three
 reliability questions.
 
-\paragraph{Day 7: cheat sheet, mock interview, and stop.}
-Read \Cref{sec:interview-cheat-sheet} once aloud. Use the 45-minute
-mock-interview LLM practice box. No new chapters. Light review of your two
-stories and the laser-requirements opener only. Stop two to three hours before
-the call. Sleep.
+\paragraph{Day 7: cheat sheet, Appendix~B frameworks, mock, and stop.}
+Read \Cref{sec:interview-cheat-sheet} once aloud. Drill the green
+thirty-second boxes in \Cref{app:interview-frameworks} for the topics you
+expect. Use the 45-minute mock-interview LLM practice box. No new chapters
+beyond that drill. Light review of your two stories only. Stop two to three
+hours before the call. Sleep.
 
 \paragraph{If you have less than seven days.}
 Compress in this order: Day~1 spine, Day~3 stories, Day~2 requirements and
@@ -1545,33 +1613,29 @@ Internalize this one page. The rest of the appendix is supporting detail.
 {\small\setlength{\parskip}{0.3em}%
 \noindent\textit{Close.} Every answer ends with the engineering decision.\par
 \noindent\textit{Philosophy.} Engineering reduces uncertainty. Measurements
-unlock decisions. Every measurement updates belief. The job is the best
-decision with today's evidence, not finding the truth.\par
-\noindent\textit{Debug.} Bayesian inference in the lab. Priors favor common
-modes. Minimum measurement that kills the most hypotheses.\par
+unlock decisions. Measurements characterize margin. Every measurement updates
+belief. The job is the best decision with today's evidence.\par
+\noindent\textit{Trees.} Debug: scope $\rightarrow$ power fork $\rightarrow$
+isolation $\rightarrow$ decision $\rightarrow$ control. Qual: works $\rightarrow$
+margins $\rightarrow$ environment $\rightarrow$ interop $\rightarrow$ life
+$\rightarrow$ ATP $\rightarrow$ fleet (\Cref{sec:interview-decision-trees}).\par
 \noindent\textit{Spine (4 phases).} Understand $\rightarrow$ Investigate
-$\rightarrow$ Resolve $\rightarrow$ Prevent (end on the decision).\par
+$\rightarrow$ Resolve $\rightarrow$ Prevent.\par
 \noindent\textit{Checklist.} Scope? Ledger? Power or quality? Fastest
 measurement? Decision? Control?\par
-\noindent\textit{Memorize.} Three principles, four-phase spine, five ledgers,
-power-versus-quality fork, validation ladder, decision vocabulary, two
-stories. Rest is reference.\par
+\noindent\textit{Night before.} Open the matching framework in
+\Cref{app:interview-frameworks}. Memorize green 30-second boxes only.\par
 \noindent\textit{Five ledgers.} Power $\cdot$ Noise $\cdot$ Timing $\cdot$
 Spectral $\cdot$ Control.\par
-\noindent\textit{Power fork / scope / ladder.} Apply the fork; first scope
-(unit$\rightarrow$lot$\rightarrow$vendor$\rightarrow$fleet); walk the
-validation ladder (\Cref{sec:interview-validation-ladder}).\par
+\noindent\textit{Margin budget.} Stress consumes margin; qual measures what
+remains (\Cref{sec:interview-margin-budget}).\par
+\noindent\textit{Customer vs vendor.} Customer measures external behavior;
+vendor owns internals (\Cref{sec:interview-customer-vendor}).\par
 \noindent\textit{Decisions.} Ship / don't ship, continue validation, escalate
 supplier, derate, second source, contain lot, modify ATP, open RMA, FA/DPA,
 firmware, retune calibration, monitor only (\Cref{tab:interview-decisions}).\par
-\noindent\textit{Waterfall / thermal.} Shift vs floor vs burst. Cool-down
-recovery vs monotonic aging.\par
-\noindent\textit{Lab time / hierarchy.} Golden swap $\rightarrow$ power
-$\rightarrow$ bias sweep $\rightarrow$ DCA/OSA/RIN. Telemetry $\rightarrow$
-bench $\rightarrow$ swap $\rightarrow$ characterization $\rightarrow$ FA/DPA.\par
-\noindent\textit{Traps / ownership / delivery.} No component-first; no
-symptom-as-root-cause; no stop after fix. Contain, notify, FA, ATP, monitor
-RMA. Memorize green 30-second boxes only.\par
+\noindent\textit{Traps / ownership.} No component-first; no stop after fix.
+Contain, notify, FA, ATP, monitor RMA.\par
 }
 
 \keyidea{I first want to understand the scope of the problem, then determine
