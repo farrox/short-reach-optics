@@ -3,7 +3,7 @@ layout: default
 title: "Ch 2: First principles: the energy of moving a bit"
 ---
 
-# First principles: the energy of moving a bit
+# 2 First principles: the energy of moving a bit
 
 Before any device, modulation format, or standard, one quantity governs short-reach interconnect design: the energy required to move a bit from one place to another. David Miller's work on optical interconnects to silicon lays out the clearest first-principles framework for this,[^3] and although the specific numbers are years old, the scaling arguments are what matter, and they still decide where the optics go.
 

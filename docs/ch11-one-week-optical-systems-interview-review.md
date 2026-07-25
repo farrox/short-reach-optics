@@ -1,17 +1,17 @@
 ---
 layout: default
-title: "Ch 11: One-week optical systems interview review"
+title: "Appendix A: One-week optical systems interview review"
 ---
 
-# One-week optical systems interview review
+# Appendix A: One-week optical systems interview review
 
 Use this appendix as a standalone drill for about a week of focused prep. Its purpose is not to cover the most optics. Its purpose is to make your engineering process automatic under time pressure.
 
-Read order when time is short: the four principles and answer spine here, then the green boxes in §B, then the wall-chart trees in §C. Do not re-read every worked answer unless a topic is weak. Compression is the point: recover the method in minutes, not hours.
+Read order when time is short: the four principles and answer spine here, then the green boxes in Appendix B, then the wall-chart trees in Appendix C. Do not re-read every worked answer unless a topic is weak. Compression is the point: recover the method in minutes, not hours.
 
 **Key idea.** Every answer should end with the engineering decision. Interviewers remember decisions more than measurements. Close with "Therefore I would continue validation," "stop shipment," "contain Supplier B," or "update the ATP."
 
-## Three principles
+## Four principles
 
 **Principle 1: Engineering reduces uncertainty.**
 
@@ -21,13 +21,10 @@ Read order when time is short: the four principles and answer spine here, then t
 
 Validation, measurement, debugging, qualification, supplier choices, and production are the same work under different names. Ask the scale of the problem (device, module, rack, fleet) before you chase a root cause: scale picks the owner.
 
-**Principle 2: Measurements exist to unlock decisions.**\
+**Principle 2: Measurements unlock decisions.**\
 Instruments do not exist to produce plots. They exist to unlock an action. A power meter asks whether you should chase the optical path or signal integrity. An OSA asks whether spectral alignment is still plausible. An LIV asks whether the device itself changed. A DCA or TDECQ asks whether the eye is still inside budget. A BER waterfall asks whether you have a sensitivity shift or a noise floor. On every answer, name the decision unlocked (ship, derate, second-source, ATP change, partner action) as well as the instrument (Table A.1).
 
-**Principle 3: Measurements characterize margin.**\
-Engineering is not only proving that a product works. It determines how much uncertainty and margin remain before failure. Debugging identifies exhausted margin. Qualification verifies that remaining margin is still acceptable after expected stresses. The same ledgers (power, noise, timing, spectral, control) appear in both jobs.
-
-**Principle 4: Every measurement updates your beliefs.**\
+**Principle 3: Every measurement updates your beliefs.**\
 Treat engineering as hypothesis testing: $$\begin{split}
 \text{observation} &\longrightarrow \text{hypotheses}
 \longrightarrow \text{measurement}\\
@@ -38,6 +35,9 @@ Treat engineering as hypothesis testing: $$\begin{split}
 
 Every measurement updates the probability of competing hypotheses. Speak the update out loud. "At this point I am about 70% on calibration drift, 20% on wavelength walk, and 10% on receiver noise; before I change firmware I would verify the eye with a bias sweep." A test that leaves the weights unchanged was the wrong test, or the wrong reference plane.
 
+**Principle 4: Measurements characterize margin.**\
+Engineering is not only proving that a product works. It determines how much uncertainty and margin remain before failure. Debugging identifies exhausted margin. Qualification verifies that remaining margin is still acceptable after expected stresses. The same ledgers (power, noise, timing, spectral, control) appear in both jobs.
+
 ##### Engineering priors.
 
 Before touching the bench, assign higher probability to common failure modes than to exotic ones. Calibration drift is more likely than simultaneous laser aging and receiver degradation. A supplier-specific hot-corner escape is more likely than a new physics mechanism. Choose the first measurements to test those higher-probability hypotheses while eliminating as many alternatives as possible. Priors are not prejudice; they are how you spend lab hours.
@@ -46,22 +46,22 @@ Before touching the bench, assign higher probability to common failure modes tha
 
 This role owns laser direction inside an IM/DD interconnect effort. Lab measurement is how you decide, not the whole job. Hands-on fluency still matters: LIV, RIN, ORL, TDECQ, and a BER waterfall. Senior people lose the level if they stop at plots and never close on a decision and a control.
 
-Work the day plan at the end of this appendix. Memorize the one-page cheat sheet before Day 7. Night-before drill is §B: open the matching thirty-second framework. Use each LLM practice box the day it is scheduled. Do not add new topics after Day 6 beyond that drill.
+Work the day plan at the end of this appendix. Memorize the one-page cheat sheet before Day 7. Night-before drill is Appendix B: open the matching thirty-second framework. Use each LLM practice box the day it is scheduled. Do not add new topics after Day 6 beyond that drill.
 
 ## Engineering decision trees
 
-Interview questions are usually solved by walking a sequence of uncertainty-reduction decisions. The exact branches differ. The philosophy never changes. Debugging asks what broke and which margin ledger is spent. Qualification asks what uncertainty remains before shipment. The playbooks in §B are specialized trees under these two universal ones. The same trees, plus supplier, escape, unknown-failure, and margin-budget variants, live as a wall chart in §C.
+Interview questions are usually solved by walking a sequence of uncertainty-reduction decisions. The exact branches differ. The philosophy never changes. Debugging asks what broke and which margin ledger is spent. Qualification asks what uncertainty remains before shipment. The playbooks in Appendix B are specialized trees under these two universal ones. The same trees, plus supplier, escape, unknown-failure, and margin-budget variants, live as a wall chart in Appendix C.
 
-Memorize the two shapes, not the ASCII: Debugging = scope $\rightarrow$ power/quality $\rightarrow$ isolation $\rightarrow$ decision $\rightarrow$ control. Qualification = bring-up $\rightarrow$ margin $\rightarrow$ environment $\rightarrow$ interop $\rightarrow$ reliability $\rightarrow$ ATP $\rightarrow$ pilot $\rightarrow$ fleet. Full wall charts, including power fork, scope versus correlation, black-box access, and measurement selection, are in §C. Night-before drill opens the matching playbook in §B.
+Memorize the two shapes, not the ASCII: Debugging = scope $\rightarrow$ power/quality $\rightarrow$ isolation $\rightarrow$ decision $\rightarrow$ control. Qualification = bring-up $\rightarrow$ margin $\rightarrow$ environment $\rightarrow$ interop $\rightarrow$ reliability $\rightarrow$ ATP $\rightarrow$ pilot $\rightarrow$ fleet. Full wall charts, including power fork, scope versus correlation, black-box access, and measurement selection, are in Appendix C. Night-before drill opens the matching playbook in Appendix B.
 
 ## The answer spine
 
 Move every answer through the same sequence. Memorize four phases, not nine nodes:
 
-::: dectree
-Understand: requirements -\> architecture Investigate: measure -\> observe -\> hypothesize -\> isolate Resolve: root cause -\> corrective action Prevent: recurrence control -\> decision
-:::
-
+<pre class="dectree" aria-label="Decision tree"><code>Understand:   requirements -&gt; architecture
+Investigate:  measure -&gt; observe -&gt; hypothesize -&gt; isolate
+Resolve:      root cause -&gt; corrective action
+Prevent:      recurrence control -&gt; decision</code></pre>
 The diagram is a memory aid, not the answer. Speak one clear paragraph per phase under time pressure, and expand a node only when asked. Do not jump from a symptom to a component. End every debug answer with the decision (Table A.1). The systems loop in §1.6, the debugging pyramid in §1.8, and the failure-analysis method in Chapter 10 are the full versions of this spine.
 
 ##### Requirements.
@@ -88,7 +88,7 @@ Report what the instruments actually showed, not what you hoped they would show.
 
 ##### Hypotheses.
 
-Turn observations into a short ranked list. Start from engineering priors (common modes first), then apply the power-versus-quality fork (§A.6.3). Keep the list short enough that the next measurement can kill more than one item. A hypothesis you cannot falsify with a bench step does not belong on the list yet.
+Turn observations into a short ranked list. Start from engineering priors (common modes first), then apply the power-versus-quality fork (Appendix A.6.3). Keep the list short enough that the next measurement can kill more than one item. A hypothesis you cannot falsify with a bench step does not belong on the list yet.
 
 ##### Isolation.
 
@@ -104,7 +104,7 @@ Optimize uncertainty removed per hour of lab time, not uncertainty removed in th
 
 ##### Root cause.
 
-State the mechanism that survived isolation, with the evidence that killed the alternatives. "EAM bias table segment wrong above $60^\circ$C" is a root cause. "Bad eye at high temperature" is still a symptom. Name the physical or process mechanism when you can: facet wear, monitor-PD corruption, FAU misalignment, MPI from a dirty connector pair, control ledger exhausted (TEC or heater at rail), supplier lot with high threshold. If the evidence only reaches "calibration drift" and not a deeper mechanism, say so. Overclaiming the root cause is worse than stopping one layer early with honesty. Sometimes the product decision is due before the mechanism is known; that case is §A.4.
+State the mechanism that survived isolation, with the evidence that killed the alternatives. "EAM bias table segment wrong above $60^\circ$C" is a root cause. "Bad eye at high temperature" is still a symptom. Name the physical or process mechanism when you can: facet wear, monitor-PD corruption, FAU misalignment, MPI from a dirty connector pair, control ledger exhausted (TEC or heater at rail), supplier lot with high threshold. If the evidence only reaches "calibration drift" and not a deeper mechanism, say so. Overclaiming the root cause is worse than stopping one layer early with honesty. Sometimes the product decision is due before the mechanism is known; that case is Appendix A.4.
 
 ##### Corrective action.
 
@@ -144,8 +144,6 @@ That is real engineering. Waiting for SEM photos while bad lots keep shipping is
 
 Measurements do not unlock understanding as an end in itself. They unlock actions. Keep this vocabulary ready and use it in answers (Table A.1).
 
-[]
-
   -------------------------------------------------------------------------------
   Action                  Typical unlock
   ----------------------- -------------------------------------------------------
@@ -184,10 +182,7 @@ Every measurement costs hours. Optimize uncertainty removed per hour of lab time
 
 Not every failure deserves destructive analysis. Climb only as far as the decision requires:
 
-::: dectree
-telemetry -\> simple bench -\> swap -\> characterization -\> FA / DPA
-:::
-
+<pre class="dectree" aria-label="Decision tree"><code>telemetry -&gt; simple bench -&gt; swap -&gt; characterization -&gt; FA / DPA</code></pre>
 ### Fleet economics
 
 Product engineering is economics as well as physics. A tiny, flat, no-impact fail rate can stay on a monitor-only plan. A growing, supplier-specific rate demands containment the same day.
@@ -281,10 +276,7 @@ If power held but BER worsened, the loss is in signal quality or in the receiver
 
 Links rarely fail from one dramatic excursion. They fail when several small shifts spend different ledgers at once. Almost every failure can be described as spending one or more ledgers. Use that language in every debug answer. Name which ledger moved, by how much, and what spent it.
 
-::: dectree
-Power · Noise · Timing · Spectral · Control
-:::
-
+<pre class="dectree" aria-label="Decision tree"><code>Power · Noise · Timing · Spectral · Control</code></pre>
 Power
 
 : Launch power, insertion loss, coupling, connector loss, multiplexer loss, and receiver sensitivity. Track average power and OMA separately: average power can look healthy while OMA collapses.
@@ -311,53 +303,57 @@ The device and link treatment is in §5.19. Always ask the control ledger when a
 
 **Key idea.** Validation is staged uncertainty reduction. Engineering is decision making; decision making is uncertainty reduction; measurements reduce uncertainty; therefore measurements exist to improve decisions.
 
-For every stage, name the question the stage answers and the uncertainty it removes. A test that answers no question is cost, not confidence. Later sections only say "walk the validation ladder"; this is the full map.
+For every stage, name the question the stage answers and the uncertainty it removes. A test that answers no question is cost, not confidence. Later sections only say "walk the validation ladder"; this is the canonical map. Table 7.1, Table 7.2 are grouped views of the same order.
+
+Requirements
+
+: Freeze operating envelope, hosts, reach, BER/FEC, optical and electrical limits, environment, lifetime, and production needs.
 
 Bring-up
 
-: Does the hardware power, initialize, emit, lock, and pass data on a known-good host? Removes integration unknowns only.
+: Power, initialize, emit, lock, telemetry, and pass data on a known-good host. Removes integration unknowns only.
 
-Characterization
+Nominal characterization
 
-: How does performance vary with temperature, voltage, lane, wavelength, pattern, and unit? Maps the population, not a hero sample. Record LIV, spectrum, RIN, OMA, ER, RLM, and TDECQ as distributions.
+: Map normal performance across temperature, voltage, lane, wavelength, pattern, and unit: power, sensitivity, BER, eye or signal-quality metrics, FEC, lane variation. Distributions, not a hero sample.
 
-Margin testing
+Margin characterization
 
-: How far is the design from each failure boundary? Push power, temperature, ORL, and supplies to the cliff and measure the distance in dB, degrees, and volts.
+: How far from each failure boundary? Optical loss, sensitivity, electrical, timing, control authority, environmental headroom.
 
 Interoperability
 
-: Does it work with target hosts, production fiber, real modules, and real firmware? Removes combination failures that golden benches miss.
+: Target hosts, ASICs, firmware, fibers, connectors, peer devices, and supplier combinations.
 
-Environmental testing
+Environmental and reliability qualification
 
-: What changes under temperature cycling, humidity, vibration, shock, and connector mating?
+: Temperature, voltage, ripple, airflow, humidity, contamination, vibration, connector cycling, aging, and accelerated stress with a named mechanism and justified $E_a$ where life is claimed.
 
-Reliability qualification
+Manufacturing and ATP readiness
 
-: Which parameters drift with stress and time? HTOL, with a named mechanism and justified activation energy, projects wear-out as a FIT number.
+: Lot consistency, distributions, measurable limits, ATP coverage, guardbands, supplier controls, escape detection.
 
-Production readiness
+Controlled pilot
 
-: Can the ATP catch bad units and process drift at useful cost and cycle time, with station correlation and guard bands sized to repeatability?
+: Limited population, enhanced monitoring, exit criteria, rollback or containment plan.
 
-Fleet monitoring
+Fleet deployment and monitoring
 
-: Which telemetry catches margin erosion before service failure, and does the RMA Pareto match the life model?
+: BER/FEC, retrains, power, temperature, lane behavior, cohort trends, field failures, supplier and lot correlations.
 
-Table 7.1 maps these stages to activities and instruments. The worked answer in §A.8.2 is practice prose built on this ladder. Night-before path: Framework 7 in §B.
+The worked answer in Appendix A.8.2 is practice prose built on this ladder. Night-before path: Framework 7 in Appendix B.
 
 ### Margin budgeting
 
-Every environmental or use stress consumes part of the system margin: temperature, voltage variation, supply ripple, fiber contamination, insertion loss, connector wear, aging, mechanical vibration, and process variation. Qualification is not a tour of each mechanism for its own sake. It verifies that after the expected stresses, remaining margin is still acceptable. Stress consumes margin. Qualification measures remaining margin. Debugging finds which ledger is exhausted when that remaining margin hits zero (§A.6.4).
+Every environmental or use stress consumes part of the system margin: temperature, voltage variation, supply ripple, fiber contamination, insertion loss, connector wear, aging, mechanical vibration, and process variation. Qualification is not a tour of each mechanism for its own sake. It verifies that after the expected stresses, remaining margin is still acceptable. Stress consumes margin. Qualification measures remaining margin. Debugging finds which ledger is exhausted when that remaining margin hits zero (Appendix A.6.4).
 
 ### Customer view versus vendor view
 
-The vendor designs internals. The customer characterizes externally observable behavior. As a customer you often do not need laser threshold, driver architecture, or TIA topology. You measure BER, sensitivity, FEC statistics, launch and receive power, telemetry, and environmental response; eye metrics when engineering access exists. If the product is a black box, qualification focuses on that external surface. If engineering samples are available, request transmitter-only, receiver-only, breakout, or diagnostic hardware to isolate Tx and Rx margins independently. Keep the view explicit in second-source and qualification answers (§C.10, §A.8.5).
+The vendor designs internals. The customer characterizes externally observable behavior. As a customer you often do not need laser threshold, driver architecture, or TIA topology. You measure BER, sensitivity, FEC statistics, launch and receive power, telemetry, and environmental response; eye metrics when engineering access exists. If the product is a black box, qualification focuses on that external surface. If engineering samples are available, request transmitter-only, receiver-only, breakout, or diagnostic hardware to isolate Tx and Rx margins independently. Keep the view explicit in second-source and qualification answers (Appendix C.10, Appendix A.8.5).
 
 ### Know what each instrument answers
 
-Do not recite instrument names. Use Measurement $\rightarrow$ uncertainty removed $\rightarrow$ decision unlocked (§C.13). Fast map: power meter (power ledger), LIV (device vs setpoint), OSA (spectral), RIN/ORL (floor), DCA (eye), BERT/FEC (waterfall shape), VNA (electrical plant), thermal chamber (reversible vs aging), bias sweep (control ledger). Details and reference planes live in §7.6, Table 7.3.
+Do not recite instrument names. Use Measurement $\rightarrow$ uncertainty removed $\rightarrow$ decision unlocked (Appendix C.13). Fast map: power meter (power ledger), LIV (device vs setpoint), OSA (spectral), RIN/ORL (floor), DCA (eye), BERT/FEC (waterfall shape), VNA (electrical plant), thermal chamber (reversible vs aging), bias sweep (control ledger). Details and reference planes live in §7.6, Table 7.3.
 
 ### Read a BER waterfall: shift, floor, and burst pattern
 
@@ -373,7 +369,7 @@ A parallel shift means the whole curve moved left or right while keeping a simil
 
 ##### What a BER floor means.
 
-A floor is a horizontal asymptote: as you raise received power, BER improves for a while and then stops. More power no longer helps. That happens when the dominant noise scales with the signal itself. Relative intensity noise is the textbook case: intensity fluctuations grow in proportion to optical power, so the signal-to-noise ratio saturates and $$Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}.$$ Multipath interference, bias-rail noise through weak PSRR, and aggressor crosstalk that tracks the aggressor power make the same shape. The interview trap is to keep raising launch power or cleaning for loss when the curve has already floored. The fix is to remove the multiplicative noise source (ORL and isolator hygiene, supply filtering, connector reflections, crosstalk isolation), not to buy more photons. Confirm the floor with a full sweep before you name the mechanism; then bisect with a quiet laser source versus the product bias board, an ORL reflector sweep, and the FEC error timing below.
+A floor is a horizontal asymptote: as you raise received power, BER improves for a while and then stops. Additional received power no longer removes the dominant impairment. That is a diagnostic pattern, not a single mechanism. Relative intensity noise is a common case ($Q$ saturates when noise scales with the signal), but floors also arise from multipath interference, reflections, pattern-dependent distortion, residual ISI, crosstalk, timing or CDR limits, supply noise, DSP or equalization limits, error propagation, and nonlinear behavior. The interview trap is to keep raising launch power or cleaning for loss when the curve has already floored, or to name RIN before bisecting. Confirm the floor with a full sweep, then choose the next measurement from the leading hypothesis: quiet laser versus product bias board, ORL reflector sweep, pattern change, FEC error timing, or equalizer diagnostics.
 
 ##### What a burst pattern means.
 
@@ -381,7 +377,7 @@ Average BER alone hides how errors arrive in time. A burst pattern means errors 
 
 ##### How to say the three together.
 
-"I sweep BER versus received power. A parallel shift is a sensitivity or power-ledger problem; more power can still help. A floor is multiplicative noise; more power cannot help. A bursty FEC histogram means clustered impairments such as MPI or intermittents, not plain Gaussian noise." Offer to draw the shifted curve next to the floored curve on the whiteboard.
+"I sweep BER versus received power. A parallel shift is a sensitivity or power-margin problem; more power can still help. A floor means power is no longer the limiting variable; more power cannot help until the dominant impairment is removed. A bursty FEC histogram means time-correlated events such as MPI, retrains, or intermittents, not plain Gaussian noise." Offer to draw the shifted curve next to the floored curve on the whiteboard.
 
 ### Separate thermal response from aging
 
@@ -431,7 +427,7 @@ I will tell you my two story titles only. Interview me on each for five minutes.
 
 ## Questions to rehearse aloud, with model answers
 
-Rehearse these until the structure is automatic. For night-before review use the matching playbook in §B; the prose below is practice depth. Each answer starts with scope or requirements, names measurements and the hypotheses they separate, and ends with a decision and a control. Do not recite; adapt the skeleton to the follow-up questions.
+Rehearse these until the structure is automatic. For night-before review use the matching playbook in Appendix B; the prose below is practice depth. Each answer starts with scope or requirements, names measurements and the hypotheses they separate, and ends with a decision and a control. Do not recite; adapt the skeleton to the follow-up questions.
 
 ##### How to use the worked answers.
 
@@ -451,13 +447,13 @@ Walk four steps: (1) system constraints choose the architecture path before any
 
 ##### 10-minute reference (read only).
 
-Open §B.7 only if the interviewer expands into the ladder; otherwise expand one constraint into the budget table and ATP/FAIR landing. Architecture forks: §5.1, Table 5.1.
+Open Appendix B.7 only if the interviewer expands into the ladder; otherwise expand one constraint into the budget table and ATP/FAIR landing. Architecture forks: §5.1, Table 5.1.
 
 ### How would you validate a new optical transmitter from bring-up through production?
 
-This is the question most likely to open the interview. The ladder itself is in §A.6.5, Table 7.1. Frame first: validation is staged uncertainty reduction. Each stage answers a question the previous stage could not.
+This is the question most likely to open the interview. The ladder itself is in Appendix A.6.5, Table 7.1. Frame first: validation is staged uncertainty reduction. Each stage answers a question the previous stage could not.
 
-> **30-second answer (memorize).** Validation is staged uncertainty reduction. Bring-up proves the setup is sane. Characterization maps the population. Margin finds the cliff. Interop removes combination risk. Qual projects life with a named mechanism. Production proves the ATP catches escapes. Fleet telemetry closes the loop. Therefore I would walk the ladder in order and refuse any test that answers no new question.
+> **30-second answer (memorize).** Validation is staged uncertainty reduction along the canonical lifecycle: requirements, bring-up, nominal and margin characterization, interoperability, environmental and reliability qualification, manufacturing and ATP readiness, controlled pilot, then fleet deployment and monitoring. Each stage answers a question the previous stage could not. Therefore I would walk that order and refuse any test that answers no new question.
 
 ##### 3-minute answer (practice).
 
@@ -465,39 +461,39 @@ Walk the ladder in order. For each stage, name one instrument, the uncertainty r
 
 ##### 10-minute reference (read only).
 
-Open §B.7 for the thirty-second playbook. Expand only the stage the interviewer picks using Table 7.1, Table 7.2: entry condition, key uncertainty, exit criteria, decision unlocked. Body detail is in Chapter 7, Chapter 8. Prefer customer-visible measurements unless engineering access is available (§C.10).
+Open Appendix B.7 for the thirty-second playbook. Expand only the stage the interviewer picks using Table 7.1, Table 7.2: entry condition, key uncertainty, exit criteria, decision unlocked. Body detail is in Chapter 7, Chapter 8. Prefer customer-visible measurements unless engineering access is available (Appendix C.10).
 
 ### BER worsens at high temperature but average power is stable. What do you do?
 
-Classic fork question (§10.13, §A.6.3).
+Classic fork question (§10.13, Appendix A.6.3).
 
-> **30-second answer (memorize).** Power held, so leave the power ledger. First scope the failure (unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ fleet) and whether cool-down recovers. At the failing temperature, read eye, bias sweep, wavelength, and control headroom. Therefore I would fix the table or thermal design and put that loaded corner in the ATP.
+> **30-second answer (memorize).** Power held, so leave the power ledger. First scope the failure (unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ fleet) and whether cool-down recovers. At the failing temperature, read externally visible remaining margin (BER/FEC, telemetry, control headroom). With engineering access, add bias sweep, OSA, and external optical eye (Appendix C.10). Therefore I would fix the table or thermal design and put that loaded corner in the ATP.
 
 ##### 3-minute answer (practice).
 
-First scope the failure. Apply the power-versus-quality fork: APC is hitting setpoint, so candidates are ER collapse, wrong modulator bias, wavelength walk, exhausted control ledger (TEC or heater at rail), or hotter receiver noise. Measure at the failing temperature on a DCA (ER, OMA, TDECQ), bias-sweep the EAM or MZM, check OSA wavelength, and read actuator codes. If a bias sweep restores the eye, retune the table; if the actuator is railed, fix thermal design. Close with the new ATP corner.
+First scope the failure. Apply the power-versus-quality fork: APC is hitting setpoint, so candidates are ER collapse, wrong modulator bias, wavelength walk, exhausted control ledger (TEC or heater at rail), or hotter receiver noise. Measure remaining margin at the failing temperature first. With engineering access, use a DCA (ER, OMA, TDECQ), bias-sweep the EAM or MZM, check OSA wavelength, and read actuator codes. If a bias sweep restores the external optical eye, retune the table; if the actuator is railed, fix thermal design. Close with the new ATP corner.
 
 ##### 10-minute reference (read only).
 
-Playbook: §B.4. Offer the calibration-table segment-boundary story or the railed-heater story if asked. Aging does not reverse on cool-down; recoverable failures are operating-point problems.
+Playbook: Appendix B.4. Offer the calibration-table segment-boundary story or the railed-heater story if asked. Aging does not reverse on cool-down; recoverable failures are operating-point problems.
 
 ### How do you distinguish laser aging from calibration drift?
 
 Separates device physics from control-loop bookkeeping (§5.11, §5.10).
 
-> **30-second answer (memorize).** Aging changes the LIV. Drift changes the setpoint on a healthy LIV. External LIV plus recovery after recalibration separates them. Time behavior confirms: monotonic climb versus a step after a table or firmware change. Therefore I would route aging to life/derate/replace and drift to table version control plus an ATP loaded-corner check.
+> **30-second answer (memorize).** Physical aging often changes a baseline (LIV, power, spectrum, RIN, sensitivity, or drive). Calibration drift changes the operating point while the device remains substantially healthy. Start black-box; recalibration recovery updates probability but is not proof. With engineering access, compare external baselines to ship data. Therefore I would route aging to life/derate/replace and drift to table version control plus an ATP loaded-corner check.
 
 ##### 3-minute answer (practice).
 
-Remeasure LIV against ship data at fixed junction temperature. Compare monitor-PD to an external power meter. Sweep modulator bias for a moved optimum. Aging: life model, derating, burn-in, or replacement. Drift: table version control, temperature-segment verification, monitor integrity, ATP corner under load. Do not mix owners.
+Black-box first: BER/FEC, telemetry, recal trial. Then, with engineering access, remeasure LIV and other physical baselines against ship data at fixed junction temperature. Compare monitor-PD to an external power meter. Aging: life model, derating, burn-in, or replacement. Drift: table version control, temperature-segment verification, monitor integrity, ATP corner under load. Do not mix owners (Appendix C.10).
 
 ##### 10-minute reference (read only).
 
-Playbook: §B.5. Monitor-PD corruption is the silent drift mode: APC holds the wrong launch while telemetry looks fine. A unit that returns to ship performance after a table reload was never aged.
+Playbook: Appendix B.5. Monitor-PD corruption is the silent drift mode: APC holds the wrong launch while telemetry looks fine. Recalibration recovery raises $P(\mathrm{drift})$; it does not prove the device is unchanged. Confirm with external baselines when access exists.
 
 ### How would you qualify a second laser or photonic-integrated-circuit supplier?
 
-This question tests supplier judgment, not vendor names. Night-before playbook: §B.6. The frame: the first supplier's failure distribution does not transfer. Qualify against the requirements slice, not against the incumbent's datasheet (Table 5.4, §8.10). Prefer customer-visible remaining margin; request engineering access only when black-box evidence is insufficient (§C.10).
+This question tests supplier judgment, not vendor names. Night-before playbook: Appendix B.6. The frame: the first supplier's failure distribution does not transfer. Qualify against the requirements slice, not against the incumbent's datasheet (Table 5.4, §8.10). Prefer customer-visible remaining margin; request engineering access only when black-box evidence is insufficient (Appendix C.10).
 
 ##### Step 1: freeze the requirements, not the part number.
 
@@ -545,37 +541,37 @@ Across lanes, units, and lots, the pattern chooses the fix: a rework instruction
 
 ### Received power is unchanged but required receiver power increased. What hypotheses remain?
 
-Apply the power-versus-quality fork (§A.6.3): power ledger intact, so eye quality or the receiver (§10.2).
+Apply the power-versus-quality fork (Appendix A.6.3): power ledger intact, so eye quality or the receiver (§10.2).
 
 > **30-second answer (memorize).** Power held rules out average launch and connector loss as the primary cause. Remaining hypotheses are Tx eye quality, channel MPI or wavelength walk, or Rx sensitivity. Therefore I would golden-swap Tx then Rx, read the BER waterfall shift versus floor, and close on the mechanism and control.
 
 ##### 3-minute answer (practice).
 
-List location-tagged hypotheses (Tx ER/RIN/jitter, channel MPI or filter walk, Rx TIA/PD/equalizer). Golden-swap to own the side. Waterfall with a VOA: parallel shift means sensitivity moved; a floor means multiplicative noise. Stressed-eye if Rx is indicted. Control follows the mechanism: table, hygiene, supply filter, or lot screen.
+List location-tagged hypotheses (Tx ER/RIN/jitter, channel MPI or filter walk, Rx TIA/PD/equalizer). Golden-swap to own the side. Waterfall with a VOA: parallel shift means sensitivity moved; a floor means power is no longer limiting. Stressed-eye if Rx is indicted. Control follows the mechanism: table, hygiene, supply filter, or lot screen.
 
 ### Why can a link show a BER floor that more launch power does not fix?
 
 This question has a short physics answer and a longer debug answer. Give both (§10.3, §4.3).
 
-##### Step 1: state the physics in one sentence.
+##### Step 1: state the pattern in one sentence.
 
-A BER floor means the dominant noise scales with the signal. Raising launch power raises that noise in proportion, so the signal-to-noise ratio saturates. For relative intensity noise the ceiling is $Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$. More power cannot buy you past that ceiling. Additive noise (thermal, dark current) does not make a floor; multiplicative noise does.
+A BER floor means additional received power no longer removes the dominant impairment. Raising launch into a floor does not buy margin. That is a diagnostic pattern, not a confirmed mechanism.
 
-##### Step 2: name the usual multiplicative sources.
+##### Step 2: name common non-power-limited causes.
 
-Laser RIN, often feedback-driven through poor ORL. Multipath interference from a pair of reflective interfaces. Bias-rail noise converting to intensity noise through the laser when PSRR is weak. Crosstalk that scales with the aggressor. Each of these raises the error rate in a way that looks like "the link just will not clean up," and each is fixed by removing the noise source, not by raising OMA.
+Signal-dependent noise such as laser RIN (often feedback-driven through poor ORL); multipath interference from reflective interfaces; residual ISI or pattern-dependent distortion; crosstalk; timing or CDR limits; supply noise through weak PSRR; DSP or equalization limits; error propagation; nonlinear behavior. For RIN specifically, $Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$ is the ceiling when that term dominates. Each candidate is fixed by removing the impairment, not by raising OMA.
 
 ##### Step 3: diagnose by waterfall shape and bisect.
 
-Sweep received power and plot the BER waterfall. Confirm it floors rather than shifts. Then bisect: measure RIN with a quiet lab source versus the product bias board to separate intrinsic laser RIN from board-induced noise. Sweep ORL with a controlled reflector and watch the floor rise and fall. Read the FEC error histogram: MPI and burst noise cluster errors in time, while Gaussian noise spreads them. That histogram often picks the mechanism before a scope does.
+Sweep received power and plot the BER waterfall. Confirm it floors rather than shifts. Then choose the next measurement from the leading hypothesis: RIN with a quiet lab source versus the product bias board; ORL reflector sweep; pattern change; FEC error histogram (MPI and bursts cluster; Gaussian noise spreads); equalizer or CDR diagnostics.
 
 ##### Step 4: fix the mechanism, then prevent recurrence.
 
-Isolator or connector hygiene for feedback. Supply filtering and PSRR improvement for electrical noise. Aggressor silencing or better isolation for crosstalk. Replace the laser only if intrinsic RIN is truly out of spec after the board and ORL have been cleared. Add the ORL or supply stress to the qualification and to the ATP if that path was never tested.
+Isolator or connector hygiene for feedback. Supply filtering for electrical noise. Aggressor isolation for crosstalk. Equalizer or pattern fixes when ISI or DSP limits. Replace the laser only if intrinsic RIN remains out of spec after board and ORL are cleared. Add the missed stress to qualification and ATP.
 
 ##### How to say it aloud.
 
-"Floor means multiplicative noise; more power cannot help. I confirm with a waterfall, then bisect RIN, ORL, and the FEC histogram." Offer the $Q_{\max}$ line if they want the equation.
+"A floor means power is no longer the limiting variable. I confirm with a waterfall, then bisect the leading non-power-limited hypothesis." Offer the $Q_{\max}$ line when RIN is the candidate.
 
 ### What makes an HTOL projection credible?
 
@@ -693,7 +689,7 @@ Run a 45-minute mock interview. Pick six of the rehearsal questions at random. A
 
 ## Must-know abbreviations
 
-A fuller glossary follows this appendix. By the end of the week, know these without notes. Entries are alphabetical by the leading abbreviation.
+A fuller glossary is in Appendix D. By the end of the week, know these without notes. Entries are alphabetical by the leading abbreviation.
 
 8D / CAPA
 
@@ -959,11 +955,11 @@ Assume seven days, with the interview near the end of Day 7. Protect sleep. Eac
 
 ##### Day 1: principles, decision trees, spine, traps, Staff judgment.
 
-Read the four principles, §A.2, the answer spine, the traps, and §A.4. Memorize: every answer ends with a decision; measurements characterize margin; debugging is Bayesian inference in the lab. Memorize the two universal trees, the four phases, the six-question checklist, the decision table, and the five ledgers. Speak one paragraph per phase. Use the answer-spine LLM practice box. Write ownership language: stop ship, notify supplier, request FA, update ATP, monitor RMA.
+Read the four principles, Appendix A.2, the answer spine, the traps, and Appendix A.4. Memorize: every answer ends with a decision; measurements characterize margin; debugging is Bayesian inference in the lab. Memorize the two universal trees, the four phases, the six-question checklist, the decision table, and the five ledgers. Speak one paragraph per phase. Use the answer-spine LLM practice box. Write ownership language: stop ship, notify supplier, request FA, update ATP, monitor RMA.
 
 ##### Day 2: requirements and validation ladder.
 
-Rehearse §A.8.1 and §A.8.2 aloud until the structure is automatic. Name a reference plane in every measurement sentence. Skim Table 7.1, Table 5.4, Table 5.1 for numbers you already believe; do not hunt new optics.
+Rehearse Appendix A.8.1 and Appendix A.8.2 aloud until the structure is automatic. Name a reference plane in every measurement sentence. Skim Table 7.1, Table 5.4, Table 5.1 for numbers you already believe; do not hunt new optics.
 
 ##### Day 3: two real stories.
 
@@ -971,7 +967,7 @@ Draft and rehearse one bench or component story and one system, production, or f
 
 ##### Day 4: instruments, waterfall, and debug forks.
 
-Review what each instrument removes as uncertainty. Drill waterfall shift versus floor versus burst pattern (§A.6.9, §10.2, §10.3). Rehearse hot BER with stable power, aging versus calibration, and weak-lane isolation. Use the ten-concepts LLM practice box.
+Review what each instrument removes as uncertainty. Drill waterfall shift versus floor versus burst pattern (Appendix A.6.9, §10.2, §10.3). Rehearse hot BER with stable power, aging versus calibration, and weak-lane isolation. Use the ten-concepts LLM practice box.
 
 ##### Day 5: reliability, manufacturing, and suppliers.
 
@@ -983,7 +979,7 @@ Run the abbreviations LLM practice box until expansions are fast. Rehearse fleet
 
 ##### Day 7: cheat sheet, Appendix B frameworks, mock, and stop.
 
-Read §A.11 once aloud. Drill the green thirty-second boxes in §B for the topics you expect. Use the 45-minute mock-interview LLM practice box. No new chapters beyond that drill. Light review of your two stories only. Stop two to three hours before the call. Sleep.
+Read Appendix A.11 once aloud. Drill the green thirty-second boxes in Appendix B for the topics you expect. Use the 45-minute mock-interview LLM practice box. No new chapters beyond that drill. Light review of your two stories only. Stop two to three hours before the call. Sleep.
 
 ##### If you have less than seven days.
 
@@ -995,21 +991,21 @@ Internalize this one page. The rest of the appendix is supporting detail.
 
 *Close.* Every answer ends with the engineering decision.
 
-*Philosophy.* Engineering reduces uncertainty. Measurements unlock decisions. Measurements characterize margin. Every measurement updates belief. The job is the best decision with today's evidence.
+*Philosophy.* Engineering reduces uncertainty. Measurements unlock decisions. Every measurement updates beliefs. Measurements characterize margin. The job is the best decision with today's evidence.
 
-*Trees.* Debug: scope $\rightarrow$ power fork $\rightarrow$ isolation $\rightarrow$ decision $\rightarrow$ control. Qual: works $\rightarrow$ margins $\rightarrow$ environment $\rightarrow$ interop $\rightarrow$ life $\rightarrow$ ATP $\rightarrow$ fleet (§A.2).
+*Trees.* Debug: scope $\rightarrow$ power fork $\rightarrow$ isolation $\rightarrow$ decision $\rightarrow$ control. Qual: requirements $\rightarrow$ bring-up $\rightarrow$ nominal/margin $\rightarrow$ interop $\rightarrow$ env/reliability $\rightarrow$ ATP $\rightarrow$ pilot $\rightarrow$ fleet (Appendix A.2).
 
 *Spine (4 phases).* Understand $\rightarrow$ Investigate $\rightarrow$ Resolve $\rightarrow$ Prevent.
 
 *Checklist.* Scope? Ledger? Power or quality? Fastest measurement? Decision? Control?
 
-*Night before.* Open the matching framework in §B. Memorize green 30-second boxes only.
+*Night before.* Open the matching framework in Appendix B. Memorize green 30-second boxes only.
 
 *Five ledgers.* Power $\cdot$ Noise $\cdot$ Timing $\cdot$ Spectral $\cdot$ Control.
 
-*Margin budget.* Stress consumes margin; qual measures what remains (§A.6.6).
+*Margin budget.* Stress consumes margin; qual measures what remains (Appendix A.6.6).
 
-*Customer vs vendor.* Customer measures external behavior; vendor owns internals (§A.6.7).
+*Customer vs vendor.* Customer measures external behavior; vendor owns internals (Appendix A.6.7).
 
 *Decisions.* Ship / don't ship, continue validation, escalate supplier, derate, second source, contain lot, modify ATP, open RMA, FA/DPA, firmware, retune calibration, monitor only (Table A.1).
 

@@ -3,17 +3,15 @@ layout: default
 title: "Ch 7: Optical validation"
 ---
 
-# Optical validation
+# 7 Optical validation
 
 A datasheet that closes on a quiet bench is not a product. *Validation* reduces uncertainty about whether a link meets its requirements across the temperatures, hosts, connectors, production spread, and lifetime the fleet will actually see. Passing tests is an output, not the purpose. This chapter walks the ladder from a single device to a deployed fleet, the engineering question at each stage, module and system bring-up under production-like corners, and the hypothesis-driven debug method the work demands.
 
-Debugging asks which margin ledger was exhausted. Qualification asks how much margin remains after the expected stresses. Both are uncertainty reduction that ends in a decision (§C).
+Debugging asks which margin ledger was exhausted. Qualification asks how much margin remains after the expected stresses. Both are uncertainty reduction that ends in a decision (Appendix C).
 
 ## The validation ladder
 
 Optical programs fail in the same places again and again: a part that looks good in characterization but cannot bring up on a production host, or a module that passes ATP and then unlocks under neighbor heat. The practical way to avoid those gaps is a ladder of five stages, each answering a sharper question than the last. Skipping one creates escapes that surface later at higher cost.
-
-[]
 
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       Stage                  Question                               Activity and instruments
@@ -31,8 +29,6 @@ Optical programs fail in the same places again and again: a part that looks good
 
 **Table 7.1.** The validation ladder: five stages from bench to fleet. A sixth concern, scaled deployment and fleet triage, runs continuously once material ships (§7.12). Field telemetry, RMA tracking, and FIT burn-down feed back into stages 3--5.
 
-[]
-
   -----------------------------------------------------------------------------------------------------------------------------------
   Stage              Entry / key uncertainty      Exit criteria                                        Decision unlocked
   ------------------ ---------------------------- ---------------------------------------------------- ------------------------------
@@ -49,19 +45,39 @@ Optical programs fail in the same places again and again: a part that looks good
   Pilot / fleet      Volume candidate             Exit criteria + telemetry owners                     Ship / restrict / reject
   -----------------------------------------------------------------------------------------------------------------------------------
 
-**Table 7.2.** Ladder gates: each stage removes a different uncertainty. Do not treat an earlier exit as evidence for a later gate (§C.2).
+**Table 7.2.** Ladder gates: each stage removes a different uncertainty. Do not treat an earlier exit as evidence for a later gate (Appendix C.2).
+
+These tables are a grouped view of one canonical lifecycle, not a competing sequence:
+
+  Grouped stage                         Expanded lifecycle
+  ------------------------------------- ---------------------------------------------------
+  Bring-up + nominal characterization   Bring-up; nominal characterization
+  Margin validation                     Margin characterization
+  Margin / interop                      Interoperability (+ loaded corners)
+  Stress / reliability                  Environmental and reliability qualification
+  Production readiness                  Manufacturing and ATP readiness
+  Pilot / fleet                         Controlled pilot; fleet deployment and monitoring
+
+Requirements sit above the first gate. Full names and exit criteria live in Appendix A.6.5, Appendix C.2.
 
 For every metric at every stage, name the instrument, the reference plane (§3.9), the pass criterion, and the failure signature. A number without a plane and a method is not a measurement.
 
-Each stage removes a different uncertainty. Bring-up removes basic integration unknowns. Characterization maps response and variation. Margin and interop tests find combinations that consume power, noise, timing, spectral, or control headroom (§5.19). Qualification separates life and environmental risks. Production readiness proves that the chosen screens can control variation and escapes at volume. Do not use one stage as evidence for another.
+Each stage removes a different uncertainty. Bring-up removes basic integration unknowns. Nominal characterization maps response and variation. Margin characterization finds how close the design sits to each cliff. Interoperability and loaded corners find combinations that consume power, noise, timing, spectral, or control headroom (§5.19). Environmental and reliability qualification separate life risk. Manufacturing and ATP readiness prove screens catch escapes at volume. Controlled pilot and fleet monitoring close the loop. Do not use one stage as evidence for another.
 
-::: dectree
-Requirement \| Budget (power / noise / timing / spectrum / control) \| Allocation to stages \| Verification on the ladder \| Production readiness \| Fleet feedback
-:::
-
+<pre class="dectree" aria-label="Decision tree"><code>Requirement
+  |
+Budget (power / noise / timing / spectrum / control)
+  |
+Allocation to stages
+  |
+Verification on the ladder
+  |
+Production readiness
+  |
+Fleet feedback</code></pre>
 > **Before qualification**
 >
-> Functional $\cdot$ margin $\cdot$ environment $\cdot$ interoperability $\cdot$ reliability $\cdot$ manufacturing $\cdot$ fleet feedback (§C.15).
+> Functional $\cdot$ margin $\cdot$ environment $\cdot$ interoperability $\cdot$ reliability $\cdot$ manufacturing $\cdot$ fleet feedback (Appendix C.15).
 
 ## The core IM/DD measurements
 
@@ -88,8 +104,6 @@ Only after Tx, channel, and Rx each look sane do you trust a full-link verdict: 
 ## Measurement mapping
 
 The metrics above are scattered across Tx, channel, Rx, and link level because that is how you debug them. Table 7.3 collects the same metrics into one reference: what is measured, the instrument, why it matters, and the failure signature that points back to it. Use the chapter subsections for the debug logic; use this table to look up an instrument fast.
-
-[]
 
   ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Metric                        Instrument                          Why it matters                                                                          Failure signature
@@ -182,20 +196,42 @@ Use electrical loopback (host SerDes), optical loopback (Tx$\to$Rx on module), a
 
 A link budget is a signed dB (or power) ledger from transmitter to receiver. For IM/DD short reach, start from outer OMA at the Tx faceplate and subtract every loss and penalty until you compare against receiver sensitivity (with target BER and KP4 pre-FEC threshold, §3.12, §4.4).
 
-::: dectree
-Transmitter output (OMA) \| Coupling loss \| Connector loss \| Fiber / waveguide loss \| Additional penalties (TDECQ / dispersion / ORL) \| Receiver input \| Sensitivity requirement \| Remaining margin
-:::
-
-Keep power budget, signal-quality penalties, timing, thermal, and control authority as separate ledgers when the impairment is not a pure optical-power number (§5.19, §C.9).
+<pre class="dectree" aria-label="Decision tree"><code>Transmitter output (OMA)
+  |
+Coupling loss
+  |
+Connector loss
+  |
+Fiber / waveguide loss
+  |
+Additional penalties (TDECQ / dispersion / ORL)
+  |
+Receiver input
+  |
+Sensitivity requirement
+  |
+Remaining margin</code></pre>
+Keep power budget, signal-quality penalties, timing, thermal, and control authority as separate ledgers when the impairment is not a pure optical-power number (§5.19, Appendix C.9).
 
 ##### Design allocation versus validation measurement.
 
 Distinguish margin allocation in design from margin verification in test. During design, engineers allocate transmitter output, receiver sensitivity, insertion loss, temperature degradation, aging, jitter, and manufacturing variation. During customer or system qualification, the integrator often validates the net behavior across the operating envelope.
 
-::: dectree
-Design: allocate line items \| Build / integrate \| Test: measure net at named plane \| Room-T sensitivity margin \| Temperature / stress sweep \| Observed margin loss \| Remaining headroom \| Deployment decision
-:::
-
+<pre class="dectree" aria-label="Decision tree"><code>Design: allocate line items
+  |
+Build / integrate
+  |
+Test: measure net at named plane
+  |
+Room-T sensitivity margin
+  |
+Temperature / stress sweep
+  |
+Observed margin loss
+  |
+Remaining headroom
+  |
+Deployment decision</code></pre>
 ##### Typical ledger (single-mode DR class).
 
 Start from Tx OMA on the DCA (or from average power and ER). Subtract connector/coupling loss (1--3 dB per mated pair; fiber attach in CPO), fiber loss ($\sim$`<!-- -->`{=html}0.3--0.4 dB/km at 1310 nm; often negligible at 500 m), and MUX/de-MUX if WDM (2--5 dB per stage, §6.3). Add penalties for TDECQ (already in the OMA spec for many PMDs), dispersion (§3.11), and ORL/RIN reflection (§7.2.2, §4.3.1). Compare the remainder to stressed sensitivity at pre-FEC BER $2.4\times10^{-4}$, and keep 1--3 dB+ of production margin (more for fleet corners). Numbers here are examples for a DR-class sketch, not universal limits. Electrical budgets parallel this for the host-to-module path: COM and pre-FEC BER (§9.5.2, §3.6). LPO requires *both* ledgers to close without module DSP help.
@@ -248,8 +284,6 @@ Run this order on every new module (pluggable, ELSFP, or CPO engine with CMIS). 
 
 Table 7.4 is the short form you can put on a lab wall.
 
-[]
-
   -------------------------------------------------------------------------------------------------------------------
   Step   Action                  Pass signal                                        Fail $\to$ first look
   ------ ----------------------- -------------------------------------------------- ---------------------------------
@@ -273,8 +307,6 @@ Table 7.4 is the short form you can put on a lab wall.
 ##### Production-representative corners.
 
 Bench corners ($T$, $V$) are necessary and not sufficient. Before you call DVT or PVT done, run the corners that match how the fleet will abuse the link. Table 7.5 is the minimum set for IM/DD + laser programs.
-
-[]
 
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Corner              What to run                                                                                         Why it catches                                                Points to
@@ -336,13 +368,20 @@ The third step is where modern PAM4 links differ from older eye-mask work. Tap s
 
 Apply the debugging fork (§4.8) before sweeping parameters or changing firmware: check the power meter or CMIS Rx power monitor first. If power moved, the fault is in the optical path (laser, coupling, connector, fiber, MUX); if power held but BER or TDECQ worsened, it is signal quality (bandwidth, noise, jitter, bias, equalization, reflection). This one check prevents the most common validation mistake: retuning an equalizer or laser bias when the real cause is a dirty connector. Then check which margin ledger moved (§5.19) before descending to component physics.
 
-::: dectree
-Observation \| Possible ledgers (power / noise / timing / spectrum / control) \| Measurements (power first) \| Hypotheses removed \| Decision \| Recurrence control
-:::
-
+<pre class="dectree" aria-label="Decision tree"><code>Observation
+  |
+Possible ledgers (power / noise / timing / spectrum / control)
+  |
+Measurements (power first)
+  |
+Hypotheses removed
+  |
+Decision
+  |
+Recurrence control</code></pre>
 > **Before debugging**
 >
-> Scope $\cdot$ time behavior $\cdot$ population $\cdot$ power or quality $\cdot$ highest-value measurement $\cdot$ decision $\cdot$ recurrence control (§C.15).
+> Scope $\cdot$ time behavior $\cdot$ population $\cdot$ power or quality $\cdot$ highest-value measurement $\cdot$ decision $\cdot$ recurrence control (Appendix C.15).
 
 ## Fleet and field triage
 
@@ -380,13 +419,20 @@ At scale you rarely start with a DCA. Start with what the host and module alread
 
 Table 7.6 is the working map. Read left to right: observe, check telemetry, pick a provisional bucket, then run the named confirm measurement before you open an RMA or change a design rule.
 
-::: dectree
-Fleet symptom \| Scope analysis (how large?) \| Technical isolation \| Correlation analysis (which cohort?) \| Bucket: performance / reliability / manufacturability \| Contain / FA / ATP / telemetry \| Fleet monitoring
-:::
-
-Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (§C.4).
-
-[]
+<pre class="dectree" aria-label="Decision tree"><code>Fleet symptom
+  |
+Scope analysis (how large?)
+  |
+Technical isolation
+  |
+Correlation analysis (which cohort?)
+  |
+Bucket: performance / reliability / manufacturability
+  |
+Contain / FA / ATP / telemetry
+  |
+Fleet monitoring</code></pre>
+Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (Appendix C.4).
 
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Symptom                               First telemetry check                                  Bucket                           Confirm on bench / FA                                                  Typical fix owner

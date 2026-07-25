@@ -44,7 +44,10 @@ def parse_aux_labels():
         if key.endswith("@cref"):
             continue
         # Determine type prefix for display
-        if type_dot_num.startswith("chapter"):
+        if type_dot_num.startswith("appendix"):
+            # appendix.A / appendix.B.3 → Appendix A / Appendix B.3
+            label_type = "Appendix"
+        elif type_dot_num.startswith("chapter"):
             label_type = "Chapter"
         elif type_dot_num.startswith("table"):
             label_type = "Table"
@@ -53,7 +56,13 @@ def parse_aux_labels():
         elif type_dot_num.startswith("equation"):
             label_type = "Eq."
         else:
-            label_type = "§"
+            # Lettered appendix sections often appear as section.A.1 in aux
+            if number and number[0].isalpha() and (
+                len(number) == 1 or (len(number) > 1 and number[1] == ".")
+            ):
+                label_type = "Appendix"
+            else:
+                label_type = "§"
         LABEL_MAP[key] = (label_type, number)
     print(f"  Loaded {len(LABEL_MAP)} label→number mappings from main.aux")
 
@@ -380,6 +389,37 @@ def replace_framework(content: str) -> str:
     return "".join(result)
 
 
+def replace_dectree(content: str) -> str:
+    """
+    Convert dectree envs to verbatim before pandoc.
+
+    Markers let build_html_split.py rewrite the resulting indented code block
+    into a semantic <pre class="dectree"> (latex reader has no raw_html).
+    """
+    pattern = re.compile(
+        r"\\begin\{dectree\}(.*?)\\end\{dectree\}",
+        re.DOTALL,
+    )
+
+    def repl(m: re.Match) -> str:
+        body = m.group(1)
+        lines = body.splitlines()
+        while lines and not lines[0].strip():
+            lines.pop(0)
+        while lines and not lines[-1].strip():
+            lines.pop()
+        tree = "\n".join(lines)
+        return (
+            "\n\n\\begin{verbatim}\n"
+            "<<<DECTREE>>>\n"
+            f"{tree}\n"
+            "<<<ENDDECTREE>>>\n"
+            "\\end{verbatim}\n\n"
+        )
+
+    return pattern.sub(repl, content)
+
+
 def replace_fillme(content: str) -> str:
     """Remove \\fillme{...}{...}{...}{...}{...} handling nested braces."""
     result = []
@@ -463,6 +503,7 @@ def apply_transforms(content: str) -> str:
     content = replace_engcheck(content)
     content = replace_execanswer(content)
     content = replace_framework(content)
+    content = replace_dectree(content)
     content = replace_fw_macro(content, "fwquestion", "Interview question.")
     content = replace_fw_macro(content, "fwtesting", "What the interviewer is testing.")
     content = replace_fw_macro(content, "fwwhy", "Engineering reasoning.")
@@ -501,10 +542,16 @@ def apply_transforms(content: str) -> str:
     content = content.replace("\\begin{fullwidth}", "")
     content = content.replace("\\end{fullwidth}", "")
 
-    # Remove \frontmatter, \mainmatter, \backmatter
+    # Drop center wrappers; pandoc emits ::: center fences otherwise.
+    content = content.replace("\\begin{center}", "")
+    content = content.replace("\\end{center}", "")
+
+    # Remove \frontmatter, \mainmatter, \backmatter, \appendix
+    # Keep appendix chapter titles; lettering is restored in build_html_split.
     content = content.replace("\\frontmatter", "")
     content = content.replace("\\mainmatter", "")
     content = content.replace("\\backmatter", "")
+    content = content.replace("\\appendix", "")
 
     # Remove \maketitle (pandoc handles title from metadata)
     content = re.sub(r"\\maketitle", "", content)
@@ -565,6 +612,9 @@ def apply_transforms(content: str) -> str:
                 ltype, num = LABEL_MAP[key]
                 if ltype == "§":
                     text = f"§{num}"
+                elif ltype == "Appendix":
+                    # Avoid "Appendix~A" tilde; HTML wants a normal space.
+                    text = f"Appendix {num}"
                 else:
                     text = f"{ltype}~{num}"
             else:

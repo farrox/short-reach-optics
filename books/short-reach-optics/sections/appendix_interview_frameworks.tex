@@ -17,10 +17,11 @@ you debug it?}
 \fwtesting{Debugging discipline: scope before components, power-versus-quality fork, and ending on a decision with recurrence control.}
 
 \execanswer{Power held, so leave the power ledger. First scope the failure
-(unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ fleet). Apply the
-power-versus-quality fork: chase eye, bias, wavelength, noise, or receiver.
-Therefore I would isolate with a golden swap and a bias sweep, then decide
-contain, retune, or ATP change.}
+(unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ fleet). On the
+black-box surface, chase BER/FEC, sensitivity, injected loss, telemetry, and
+retrains. With engineering access, add Tx-only/Rx-only, breakout, PRBS,
+loopback, and external optical eye. Therefore I would isolate with a golden
+swap and a bias sweep, then decide contain, retune, or ATP change.}
 
 \begin{dectree}
 Elevated BER, power stable
@@ -29,7 +30,7 @@ Scope analysis (how large?)
   |
 Sudden or gradual?
   |
-Signal-quality path
+Signal-quality path (black-box first)
   |
 Tx quality clean?
   |-- NO --> stay on Tx
@@ -42,11 +43,13 @@ Decision + recurrence control
 
 \fwwhy{Stable power rules out average launch and connector loss as the primary
 cause. Scope sets severity first; correlation after isolation unlocks contain
-or lot action (\Cref{sec:tree-scope-population,sec:interview-power-fork}).}
+or lot action. Optical eye is external unless an internal eye-monitor is
+named (\Cref{sec:tree-scope-population,sec:interview-power-fork,sec:tree-blackbox-access}).}
 
 \fwmeas{Power meter $\rightarrow$ power ledger intact? $\rightarrow$ optical
 path or SI.\\
-DCA / bias sweep $\rightarrow$ eye or setpoint? $\rightarrow$ retune vs device.\\
+Black-box BER/FEC $\rightarrow$ quality path? $\rightarrow$ next isolate.\\
+External optical eye / bias (if access) $\rightarrow$ setpoint? $\rightarrow$ retune.\\
 Golden swap $\rightarrow$ Tx or Rx? $\rightarrow$ owner.\\
 BER waterfall $\rightarrow$ shift or floor? $\rightarrow$ sensitivity vs noise.}
 
@@ -63,7 +66,9 @@ BER waterfall $\rightarrow$ shift or floor? $\rightarrow$ sensitivity vs noise.}
 \item Stopping before recurrence control.
 \end{itemize}}
 
-\fwclose{Power held, so I leave the power ledger, scope the population, isolate Tx versus Rx, and close with the control that catches the next escape.}
+\fwclose{Power held, so I leave the power ledger, scope the population, chase
+signal quality on the black-box surface first, isolate Tx versus Rx, then
+close with the control that catches the next escape.}
 
 \fwdeep{Full prose: \Cref{sec:interview-worked-sensitivity,sec:fm-ber-increase}.
 Ledgers: \Cref{sec:interview-margin-ledgers}.}
@@ -187,9 +192,11 @@ do you do?}
 \fwtesting{Corner debugging: measure where it fails, separate reversible control/calibration from permanent damage.}
 
 \execanswer{Power held, so leave the power ledger. First scope the failure and
-whether cool-down recovers. At the failing temperature, read eye, bias sweep,
-wavelength, and control headroom. Therefore I would fix the table or thermal
-design and put that loaded corner in the ATP.}
+whether cool-down recovers. At the failing temperature, read externally
+visible remaining margin: BER/FEC, telemetry, retrains, and control headroom.
+With engineering access, add bias sweep, OSA, and external optical eye.
+Therefore I would fix the table or thermal design and put that loaded corner
+in the ATP.}
 
 \begin{dectree}
 Hot BER, power stable
@@ -198,7 +205,8 @@ Scope + cool-down recovers?
   |-- YES --> operating point / table / control
   |-- NO  --> aging / permanent damage
   |
-At failing T: eye, bias sweep, OSA, TEC/heater codes
+At failing T: black-box margin first
+  |-- access --> external eye / bias / OSA
   |
 Control ledger exhausted?
   |-- YES --> thermal design / tuning range
@@ -208,11 +216,12 @@ Decision: retune + ATP corner
 \end{dectree}
 
 \fwwhy{Temperature failures are often control or calibration, not a dead
-laser. Measuring at room temperature misses the spent ledger
-(\Cref{sec:interview-worked-hot-ber}).}
+laser. The decision uses externally visible remaining margin; internal physics
+is optional (\Cref{sec:interview-worked-hot-ber,sec:tree-blackbox-access}).}
 
 \fwmeas{Cool-down test $\rightarrow$ reversible? $\rightarrow$ thermal vs aging.\\
-Bias sweep at hot $\rightarrow$ optimum moved? $\rightarrow$ table.\\
+Black-box BER/FEC at hot $\rightarrow$ remaining margin? $\rightarrow$ gate.\\
+Bias sweep at hot (if access) $\rightarrow$ optimum moved? $\rightarrow$ table.\\
 Actuator codes $\rightarrow$ control authority left? $\rightarrow$ thermal
 design.\\
 OSA $\rightarrow$ spectral alignment? $\rightarrow$ lock / filter.}
@@ -227,7 +236,9 @@ OSA $\rightarrow$ spectral alignment? $\rightarrow$ lock / filter.}
 \item Saying TEC current hit max instead of control ledger exhausted.
 \end{itemize}}
 
-\fwclose{I measure at the failing temperature, ask whether cool-down recovers, fix table or thermal design, and put that loaded corner in ATP.}
+\fwclose{I measure externally visible remaining margin at the failing
+temperature, ask whether cool-down recovers, fix table or thermal design, and
+put that loaded corner in ATP.}
 
 \fwdeep{\Cref{sec:interview-worked-hot-ber,sec:fm-temperature}. Control
 ledger: \Cref{sec:interview-margin-ledgers}.}
@@ -239,37 +250,41 @@ ledger: \Cref{sec:interview-margin-ledgers}.}
 
 \fwtesting{Mechanism separation with external references and reversibility, not telemetry narrative alone.}
 
-\execanswer{Aging changes the LIV. Drift changes the setpoint on a healthy
-LIV. External LIV plus recovery after recalibration separates them. Time
-behavior confirms: monotonic climb versus a step after a table or firmware
-change. Therefore I would route aging to life/derate/replace and drift to
-table control plus an ATP loaded-corner check.}
+\execanswer{Physical aging often changes a baseline: LIV, power, spectrum, RIN,
+sensitivity, or drive. Calibration drift changes the operating point while
+the device remains substantially healthy. Start black-box: BER/FEC,
+telemetry, and whether recalibration recovers. Recalibration recovery updates
+probability; it is not proof. With engineering access, compare external LIV
+and other physical baselines to ship data. Therefore I would route aging to
+life/derate/replace and drift to table control plus an ATP loaded-corner
+check.}
 
 \begin{dectree}
 Symptom (bias up / BER up)
   |
 Black-box telemetry first
   |
-Need mechanism split?
-  |-- YES --> engineering access / external LIV
+Degraded?
   |
-External LIV vs ship data
-  |-- LIV moved --> aging --> life / derate / replace
-  |-- LIV OK ----> drift path
-        |
-   Table reload recovers?
-        |-- YES --> calibration / firmware
-        |-- NO  --> deeper FA
+Recal recovers?
+  |-- YES --> raise P(calibration drift); not proof
+  |-- NO  --> raise P(physical aging / damage)
+  |
+Need mechanism split?
+  |-- YES --> engineering access / external baselines
+  |
+Physical baselines vs ship data
+  |-- moved --> aging --> life / derate / replace
+  |-- OK ----> deeper FA or table owner
 \end{dectree}
 
-\fwwhy{Telemetry can look identical for aging and drift. Only an external
-reference and a recovery test pick the owner
-(\Cref{sec:interview-worked-aging-vs-cal}).}
+\fwwhy{Telemetry can look identical for aging and drift. Recalibration
+recovery updates belief; external baselines confirm the owner
+(\Cref{sec:interview-worked-aging-vs-cal,sec:tree-blackbox-access}).}
 
-\fwmeas{External LIV $\rightarrow$ device changed? $\rightarrow$ aging vs
-setpoint.\\
+\fwmeas{Recal trial $\rightarrow$ recovers? $\rightarrow$ updates P(drift).\\
+External LIV / power / spectrum (if access) $\rightarrow$ baseline moved?\\
 Monitor vs meter $\rightarrow$ APC honesty? $\rightarrow$ monitor-PD.\\
-Table reload $\rightarrow$ recovers? $\rightarrow$ calibration owner.\\
 Stress-hours plot $\rightarrow$ monotonic or step? $\rightarrow$ confirms.}
 
 \fwfollow{\begin{itemize}
@@ -278,11 +293,13 @@ Stress-hours plot $\rightarrow$ monotonic or step? $\rightarrow$ confirms.}
 \end{itemize}}
 
 \fwmistakes{\begin{itemize}
-\item Recalibrating an aged device and calling it fixed.
+\item Treating recalibration recovery as proof of healthy silicon.
 \item Sending a table bug to the reliability team.
 \end{itemize}}
 
-\fwclose{External LIV separates aging from drift; I route aging to life actions and drift to table control plus a loaded-corner screen.}
+\fwclose{I start black-box, treat recal recovery as evidence not proof, then
+compare physical baselines when access exists; aging goes to life actions and
+drift to table control plus a loaded-corner screen.}
 
 \fwdeep{\Cref{sec:interview-worked-aging-vs-cal,sec:laser-calibration,sec:laser-thermal-vs-aging}.}
 
@@ -293,35 +310,39 @@ Stress-hours plot $\rightarrow$ monotonic or step? $\rightarrow$ confirms.}
 
 \fwtesting{Second-source judgment: customer-visible margin across the envelope, not datasheet cloning.}
 
-\execanswer{Freeze the requirements slice, not the incumbent datasheet.
-Characterize distributions across lots and temperature from the customer
-view: OMA, RIN at ORL, wavelength, eye, and life with a named HTOL mechanism.
-Therefore I would gate open volume on FAIR, ATP correlation, and split RMA
-codes, not on a hero sample.}
+\execanswer{Freeze the requirements slice, not the incumbent datasheet. Walk the
+canonical lifecycle on the customer-visible surface: bring-up, nominal and
+margin characterization, interoperability, environmental and reliability
+qualification, manufacturing and ATP readiness, controlled pilot, then fleet
+monitoring. Request engineering access only when black-box evidence is
+insufficient. Therefore I would gate open volume on FAIR, ATP correlation,
+and split RMA codes, not on a hero sample.}
 
 \begin{dectree}
 Second source
   |
-Nominal function
+Requirements freeze
   |
-Margin + environment + interop
+Bring-up + nominal + margin
   |
-Reliability + manufacturing variation
+Interop + env/reliability
   |
-ATP compatibility
+Manufacturing + ATP readiness
   |
 Black-box enough?
-  |-- YES --> pilot / ship gate
-  |-- NO  --> Tx-only / Rx-only / breakout
+  |-- YES --> controlled pilot
+  |-- NO  --> Tx-only / Rx-only / breakout / external eye
+  |
+Fleet deployment + monitoring
   |
 Ship / hold / reject
 \end{dectree}
 
 \fwwhy{The objective is acceptable system behavior and remaining margin across
 the deployment envelope, not nominal equivalence to the incumbent
-(\Cref{sec:tree-blackbox-access,sec:interview-worked-second-source}).}
+(\Cref{sec:tree-blackbox-access,sec:interview-worked-second-source,sec:interview-validation-ladder}).}
 
-\fwmeas{Multi-lot LIV/RIN/SMSR $\rightarrow$ process spread? $\rightarrow$ risk.\\
+\fwmeas{Multi-lot black-box margin $\rightarrow$ process spread? $\rightarrow$ risk.\\
 HTOL $\rightarrow$ life hypothesis? $\rightarrow$ FIT / derate.\\
 ATP on both sources $\rightarrow$ escape risk? $\rightarrow$ ship gate.\\
 RMA split $\rightarrow$ field falsifies qual? $\rightarrow$ reopen.}
@@ -336,7 +357,9 @@ RMA split $\rightarrow$ field falsifies qual? $\rightarrow$ reopen.}
 \item Merging supplier RMA codes.
 \end{itemize}}
 
-\fwclose{I qualify distributions and remaining margin on the customer-visible surface, then gate volume on FAIR, ATP correlation, and split RMA.}
+\fwclose{I walk the canonical lifecycle on the customer-visible surface, request
+engineering access only when needed, then gate volume on FAIR, ATP
+correlation, controlled pilot, and split RMA.}
 
 \fwdeep{\Cref{sec:interview-worked-second-source,sec:supplier-exec}.}
 
@@ -348,27 +371,33 @@ through production?}
 
 \fwtesting{Staged uncertainty reduction and margin budgeting from bring-up through fleet.}
 
-\execanswer{Validation is staged uncertainty reduction. Walk bring-up,
-characterization, margin, interop, environment, reliability, production, and
-fleet. Each stage answers a question the previous could not. Therefore I
-would refuse any test that answers no new question and watch the ledgers
-margin budgeting says will be spent first.}
+\execanswer{Validation is staged uncertainty reduction. Walk requirements,
+bring-up, nominal characterization, margin characterization, interop,
+environmental and reliability qualification, manufacturing and ATP readiness,
+controlled pilot, then fleet monitoring. Each stage answers a question the
+previous could not. Therefore I would refuse any test that answers no new
+question and watch the ledgers margin budgeting says will be spent first.}
 
 \begin{dectree}
-New transceiver
+Requirements
   |
-Bring-up -> Characterization -> Margin
+Bring-up -> Nominal characterization
   |
-Interop -> Environment -> Reliability
+Margin characterization -> Interoperability
   |
-ATP / manufacturing -> Pilot -> Fleet
+Env + reliability qual
   |
-Each stage: question? uncertainty? decision?
+Manufacturing / ATP -> Controlled pilot
+  |
+Fleet monitoring
+  |
+Ship / restrict / reject
 \end{dectree}
 
-\fwwhy{The ladder is Universal Tree~2. Margin budgeting says stresses consume
-margin; stages exist to measure remaining margin from the customer-visible
-surface first (\Cref{sec:interview-validation-ladder,sec:interview-margin-budget}).}
+\fwwhy{The ladder is the canonical qualification tree. Margin budgeting says
+stresses consume margin; stages exist to measure remaining margin from the
+customer-visible surface first
+(\Cref{sec:interview-validation-ladder,sec:tree-qualification}).}
 
 \fwmeas{Each ladder stage $\rightarrow$ named uncertainty removed
 $\rightarrow$ continue / redesign / tighten ATP / stop ship.\\
@@ -448,10 +477,12 @@ What do you do?}
 
 \fwtesting{Staff judgment under uncertainty: contain today, keep FA open, own recurrence control.}
 
-\execanswer{Evidence beats an unknown mechanism. Stop shipment of Supplier~B
-affected lots, continue Supplier~A, expand the ATP hot-corner screen, open FA
-with DPA on fails, and watch RMA daily. Therefore I would contain today and
-keep the FA path open rather than wait for SEM before acting.}
+\execanswer{Contain first, then own the loop. Stop shipment of Supplier~B
+affected lots, scope the deployed population, compare failing versus healthy
+units, open joint FA with the supplier, drive corrective action, expand ATP or
+process control, verify the next lot, and keep fleet monitoring. The customer
+keeps ownership of evidence quality and the ship decision. Therefore I would
+contain today rather than wait for SEM before acting.}
 
 \begin{dectree}
 Escape detected
@@ -462,19 +493,20 @@ Scope deployed population
   |
 Compare failing vs healthy
   |
-Supplier joint FA
+Joint FA with supplier
   |
 Corrective action
   |
-ATP or process-control update
+ATP / process-control update
   |
 Verify next lot
   |
-Fleet monitoring
+Fleet monitoring (customer owns ship gate)
 \end{dectree}
 
-\fwwhy{Containment, root cause, and prevention are three actions. The system
-owner keeps responsibility for evidence quality and verifying the fix
+\fwwhy{Containment, suspected mechanism, confirmed root cause, and recurrence
+control are separate steps. The system owner keeps responsibility for evidence
+quality and verifying the fix
 (\Cref{sec:tree-escape,sec:interview-under-uncertainty}).}
 
 \fwmeas{Lot genealogy $\rightarrow$ exposure? $\rightarrow$ quarantine list.\\
@@ -491,7 +523,9 @@ DPA sample $\rightarrow$ mechanism class? $\rightarrow$ permanent fix.}
 \item Blocking all vendors for one supplier's lot.
 \end{itemize}}
 
-\fwclose{I contain Supplier~B today, keep a healthy path shipping, open FA, expand ATP, and own verification of the next lot.}
+\fwclose{I contain Supplier~B today, scope exposure, open joint FA, expand ATP,
+verify the next lot, keep fleet monitoring, and keep ownership of the ship
+gate.}
 
 \fwdeep{\Cref{sec:interview-under-uncertainty,tab:interview-decisions}.}
 
@@ -501,32 +535,37 @@ DPA sample $\rightarrow$ mechanism class? $\rightarrow$ permanent fix.}
 \fwquestion{Why can a link show a BER floor that more launch power does not
 fix?}
 
-\fwtesting{Separating sensitivity shift from multiplicative-noise floor and choosing the fix that matches the shape.}
+\fwtesting{Separating waterfall shift from floor, then choosing measurements for the leading non-power-limited impairment.}
 
-\execanswer{A floor means multiplicative noise: SNR stops improving as power
-rises. Prioritize RIN under ORL, MPI from reflections, weak PSRR, and
-crosstalk. Therefore I would confirm floor versus shift on a waterfall, then
-remove the noise source rather than raise OMA.}
+\execanswer{A floor means additional received power no longer removes the
+dominant impairment. Confirm floor versus shift on a waterfall, then test for
+signal-dependent noise, reflections or MPI, pattern dependence, crosstalk,
+timing or CDR limits, and DSP or equalization limits. Therefore I would fix
+the limiting mechanism rather than raise OMA.}
 
 \begin{dectree}
-BER vs power
+BER stops improving with power
   |
-Shape?
-  |-- parallel shift --> sensitivity
-  |-- floor ---------> multiplicative noise
-        |
-   ORL / RIN / MPI / PSRR / crosstalk
-        |
-   Fix noise source, not launch
+Power no longer limiting
+  |
+Test for:
+  |-- signal-dependent noise (RIN)
+  |-- reflections / MPI
+  |-- deterministic / pattern distortion
+  |-- crosstalk / timing / CDR / DSP-EQ
+  |
+Choose measurement from leading hypothesis
+  |
+Fix mechanism, not launch
 \end{dectree}
 
-\fwwhy{More power cannot beat noise that scales with the signal. The waterfall
-shape is the fast cut between sensitivity and floor
-(\Cref{sec:interview-worked-ber-floor,sec:interview-waterfall}).}
+\fwwhy{A floor is a diagnostic pattern, not a single mechanism. The waterfall
+shape is the fast cut between sensitivity shift and a non-power-limited
+impairment (\Cref{sec:interview-worked-ber-floor,sec:interview-waterfall}).}
 
 \fwmeas{Waterfall $\rightarrow$ shift or floor? $\rightarrow$ next hunt.\\
-Controlled ORL $\rightarrow$ reflection-driven RIN? $\rightarrow$ plant.\\
-Supply noise $\rightarrow$ PSRR path? $\rightarrow$ filter / layout.}
+Controlled ORL $\rightarrow$ reflection-driven path? $\rightarrow$ plant.\\
+Supply noise / FEC histogram $\rightarrow$ PSRR or burst? $\rightarrow$ owner.}
 
 \fwfollow{\begin{itemize}
 \item Why not just increase OMA?
@@ -535,10 +574,11 @@ Supply noise $\rightarrow$ PSRR path? $\rightarrow$ filter / layout.}
 
 \fwmistakes{\begin{itemize}
 \item Raising launch into a floor.
-\item Skipping ORL when RIN is blamed.
+\item Equating every floor with RIN before bisecting.
 \end{itemize}}
 
-\fwclose{I confirm floor versus shift on a waterfall, then remove the multiplicative noise source rather than raise launch power.}
+\fwclose{I confirm floor versus shift on a waterfall, then remove the
+non-power-limited impairment rather than raise launch power.}
 
 \fwdeep{\Cref{sec:interview-worked-ber-floor,sec:fm-ber-floor,sec:rin}.}
 
@@ -701,23 +741,25 @@ design.}
 \fwtesting{Qualification as remaining-margin verification with named mechanisms and customer view.}
 
 \execanswer{Start from customer-visible requirements and a margin budget:
-which stresses will spend which ledgers. Map stresses to mechanisms, run HTOL
-only with a named activation energy, and prove ATP can catch escapes at rate.
-Therefore I would gate ship on remaining margin after environment, interop,
-and life, not on a checklist of rituals.}
+which stresses will spend which ledgers. Walk nominal function, remaining
+margin, environment and interop, reliability and manufacturing, ATP readiness,
+then a controlled pilot. Therefore I would gate ship on remaining margin after
+those stresses, not on a checklist of rituals.}
 
 \begin{dectree}
-Qual plan
+Requirements + margin budget
   |
-Customer requirements + margin budget
+Nominal function
   |
-Stress -> mechanism -> ledger spent
+Remaining margin
   |
-HTOL with named Ea
+Environment + interop
   |
-ATP catches escapes?
+Reliability + manufacturing / ATP
   |
-Ship gate = remaining margin OK
+Controlled pilot
+  |
+Ship / restrict / reject
 \end{dectree}
 
 \fwwhy{Margin budgeting and customer view keep qual from becoming museum of

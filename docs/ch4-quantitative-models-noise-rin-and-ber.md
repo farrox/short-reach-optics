@@ -3,7 +3,7 @@ layout: default
 title: "Ch 4: Quantitative models: noise, RIN, and BER"
 ---
 
-# Quantitative models: noise, RIN, and BER
+# 4 Quantitative models: noise, RIN, and BER
 
 The previous chapters argued mostly in architecture and measurement vocabulary. This one puts numbers behind the two questions every link engineer eventually asks: *what bit-error ratio (BER) will this receiver deliver?* and *what is the minimum signal it needs?* The answers follow a short chain of physics that has been stable for decades of IM/DD design: Gaussian statistics at the decision circuit, a handful of noise sources, and the way relative intensity noise (RIN) turns into an error floor. Understanding that chain is what lets you read a sensitivity number or a RIN floor without treating the datasheet as magic.
 
@@ -24,13 +24,10 @@ A binary receiver samples a noisy voltage and compares it to a threshold. If the
     def ber_to_q(ber):
         return np.sqrt(2) * erfcinv(2 * ber)
 
-::::
-![](figures/fig_ber_vs_q.pdf){width="\\linewidth"}
-
-::: caption
-The Gaussian decision curve. Every dB of $Q$ buys orders of magnitude of BER near the knee, which is why FEC (trading a modest $Q$ for a huge BER improvement) is decisive.[]
-:::
-::::
+<figure id="fig:berq" data-latex-placement="ht">
+<embed src="figures/fig_ber_vs_q.pdf" />
+<figcaption>The Gaussian decision curve. Every dB of <span class="math inline"><em>Q</em></span> buys orders of magnitude of BER near the knee, which is why FEC (trading a modest <span class="math inline"><em>Q</em></span> for a huge BER improvement) is decisive.<span id="fig:berq" data-label="fig:berq"></span></figcaption>
+</figure>
 
 Fig. berq shows why the curve is so steep near the operating point: a small change in $Q$ (equivalently, in received power) moves the BER by orders of magnitude. This steepness is exactly what FEC exploits: nudging the required $Q$ from 7.03 down to 3.5 relaxes the optical power budget by several dB.
 
@@ -69,21 +66,15 @@ Because shot and RIN noise are signal dependent, we evaluate $\sigma_1$ and $\si
 Here is the consequence that makes RIN worth its own section. Thermal noise is fixed, so pouring on more optical power raises $I_1-I_0$ while $\sigma_{\text{th}}$ stays put, so $Q$ improves without limit. But RIN noise scales *with the signal itself*: $\sigma_{\text{RIN}} \propto I$. Once RIN dominates, the signal and its noise grow together and $Q$ stops improving. Taking the high-power, high-extinction limit (thermal and shot negligible, $I_0\to0$): $$Q_{\max} \;=\; \frac{I_1}{\sigma_{\text{RIN},1}}
            \;=\; \frac{1}{\sqrt{\mathrm{RIN}_{\text{lin}}\,\mathrm{BW}}}.$$ This is a hard ceiling: no amount of transmit power or receiver sensitivity can push $Q$ past it, so there is a BER floor set entirely by the laser and the bandwidth. Equivalently, the power penalty to hold a target $Q$ is $$\mathrm{PP} = \frac{1}{\sqrt{1 - Q^2\,\mathrm{RIN}_{\text{lin}}\,\mathrm{BW}}},$$ which diverges as $Q\to Q_{\max}$.
 
-::::
-![](figures/fig_ber_vs_power_rin.pdf){width="\\linewidth"}
+<figure id="fig:berpower" data-latex-placement="ht">
+<embed src="figures/fig_ber_vs_power_rin.pdf" />
+<figcaption>With RIN present, the BER stops falling no matter how much power is added. The thermal/shot-only curve dives; each RIN level flattens into a floor. (RIN values here are deliberately high to make the floor visible in-frame; good DFBs at <span class="math inline"> &lt; −150</span> dB/Hz have no floor at these rates; see text.)<span id="fig:berpower" data-label="fig:berpower"></span></figcaption>
+</figure>
 
-::: caption
-With RIN present, the BER stops falling no matter how much power is added. The thermal/shot-only curve dives; each RIN level flattens into a floor. (RIN values here are deliberately high to make the floor visible in-frame; good DFBs at $<-150$ dB/Hz have no floor at these rates; see text.)[]
-:::
-::::
-
-::::
-![](figures/fig_rin_floor.pdf){width="\\linewidth"}
-
-::: caption
-The RIN ceiling $Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$. Wider receiver bandwidth (higher lane rate) integrates more RIN, lowering the ceiling. Where a curve dips below the dotted anchors, that link can no longer reach the corresponding BER.[]
-:::
-::::
+<figure id="fig:rinfloor" data-latex-placement="ht">
+<embed src="figures/fig_rin_floor.pdf" />
+<figcaption>The RIN ceiling <span class="math inline">$Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$</span>. Wider receiver bandwidth (higher lane rate) integrates more RIN, lowering the ceiling. Where a curve dips below the dotted anchors, that link can no longer reach the corresponding BER.<span id="fig:rinfloor" data-label="fig:rinfloor"></span></figcaption>
+</figure>
 
 §4.2 shows the floor directly; §4.3 plots the ceiling versus RIN for three lane rates. The bandwidth dependence matters: doubling the lane rate doubles the noise bandwidth and drops $Q_{\max}$ by $\sqrt{2}$ ($\approx1.5$ dB of margin), so RIN that is harmless at 25G can bite at 200G. This is the quantitative reason the laser chapter (Chapter 5) lists RIN among the parameters that decide pass/fail.
 
@@ -94,8 +85,6 @@ How much RIN headroom do real sources have? Table 4.1 collects representative f
 A RIN number in dB/Hz is, by itself, incomplete: because RIN is *relative*, it only becomes an absolute noise current once the photocurrent $I=\mathcal{R}P$ is fixed. The intensity-noise current density is $$i_{\text{RIN}} = \sqrt{\mathrm{RIN}_{\text{lin}}}\;I \quad[\text{A}/\sqrt{\text{Hz}}],
   \qquad
   S_{\text{RIN}} = \mathrm{RIN}_{\text{lin}}\,I^2 \quad[\text{A}^2/\text{Hz}],$$ so it scales linearly with received power. Table 4.1 therefore lists both the RIN and the current density it produces at a common reference operating point ($\mathcal{R}=0.8$ A/W, $P_{\text{rx}}=0$ dBm, i.e. $I=0.8$ mA), the units a receiver designer actually compares against.
-
-[]
 
   --------------------------------------------------------------------------------------------------------------------------------------------------------
   Source                                           RIN (dB/Hz)            $i_{\text{RIN}}$ @ 0 dBm (pA/$\sqrt{\text{Hz}}$)   Note
@@ -117,13 +106,10 @@ A RIN number in dB/Hz is, by itself, incomplete: because RIN is *relative*, it o
 
 For scale, at that same $0.8$ mA the *shot*-noise density is $\sqrt{2qI}=16$ pA/$\sqrt{\text{Hz}}$ ($S=2.6\times10^{-22}$ A$^2$/Hz) and a good high-speed TIA adds roughly $25$ pA/$\sqrt{\text{Hz}}$ of thermal noise. So a VCSEL at $-140$ dB/Hz ($80$ pA/$\sqrt{\text{Hz}}$) already dominates both, while a heterogeneous source at $-160$ dB/Hz ($8$ pA/$\sqrt{\text{Hz}}$) is a minor term. The key asymmetry: thermal noise is fixed and shot grows only as $\sqrt{I}$, but RIN grows as $I$, so at low received power thermal wins and RIN is irrelevant, and only above a break-in power (Table 4.4) does RIN take over. That is why quoting a RIN figure without an operating power says little.
 
-::::
-![](figures/fig_noise_density_vs_power.pdf){width="\\linewidth"}
-
-::: caption
-Noise current densities versus received power. Thermal is flat, shot $\propto\!\sqrt{I}$, RIN $\propto\!I$; the RIN curves cross the fixed thermal floor only above a break-in power, which is why RIN only "makes sense" once the optical power (hence $I=\mathcal{R}P$) is stated.[]
-:::
-::::
+<figure id="fig:noisedensity" data-latex-placement="ht">
+<embed src="figures/fig_noise_density_vs_power.pdf" />
+<figcaption>Noise current densities versus received power. Thermal is flat, shot <span class="math inline">$\propto\!\sqrt{I}$</span>, RIN <span class="math inline">∝ <em>I</em></span>; the RIN curves cross the fixed thermal floor only above a break-in power, which is why RIN only “makes sense” once the optical power (hence <span class="math inline"><em>I</em> = ℛ<em>P</em></span>) is stated.<span id="fig:noisedensity" data-label="fig:noisedensity"></span></figcaption>
+</figure>
 
 Put these against the ceiling. At 200G-PAM4 bandwidths ($\mathrm{BW}\approx75$ GHz), even the worst spec-compliant number ($-136$ dB/Hz) gives $Q_{\max}\approx23$ (far above the $Q=7$ needed for $10^{-12}$), so for well-behaved sources RIN is *not* the limiter; thermal noise is. RIN becomes the story only when feedback, aging, or a marginal source pushes the effective figure toward $-125$ dB/Hz, where $Q_{\max}$ falls through the uncoded target. That is why the practical spec is written against a stressed ORL, and why feedback-tolerant sources matter for dense, isolator-free integration. A third path to excess intensity noise is electrical: laser bias-driver current noise converts to equivalent RIN (§5.8) and must be budgeted separately from intrinsic laser RIN.
 
@@ -201,8 +187,6 @@ The TIA is the receive twin of the modulator driver (§3.14.3). At 224 GBd PAM4
 
 Table 4.2 puts the model numbers next to published front-ends. Shot noise at 0 dBm into $\mathcal{R}=0.8$ A/W is $\sqrt{2qI}\approx16$ pA$/\sqrt{\mathrm{Hz}}$; a good TIA sits near that floor. Worse $i_n$ or higher $C$ burns sensitivity linearly via $P_{\mathrm{sens}}=Q\,i_n/\mathcal{R}$ (§4.4).
 
-[]
-
   ----------------------------------------------------------------------------------------------------------------------------------------------------
   Front-end                                                 $i_n$ (pA$/\sqrt{\mathrm{Hz}}$)   BW / rate            Sensitivity note
   --------------------------------------------------------- --------------------------------- -------------------- -----------------------------------
@@ -222,8 +206,6 @@ Table 4.2 puts the model numbers next to published front-ends. Shot noise at 0�
 ##### Record and commercial snapshot (2025--26).
 
 Table 4.3 pairs detectors and TIAs. Commercial linear-optics TIAs (Semtech GN1834L/DL, GN1838DL) target LPO/LRO/CPO at 224G/lane with on-chip EQ; Semtech has also shown 448G-class PMD ICs (TN14740 TIA) at OFC 2026 demos (vendor demonstration; not a volume datasheet claim) . On the detector side, recessed Ge/Si PINs at 106 GHz / 0.93 A/W , Ge/Si UMC-APDs at 105 GHz with $\sim$`<!-- -->`{=html}9 dB sensitivity gain over PIN at 224/260G PAM4 , waveguide Ge/Si APDs toward 100 GHz at 2 A/W , and OFC 2026 Ge-on-Si APDs at 180 GBd PAM4  mark the research edge. UTC/MUTC PDs remain the high-saturation / $>\!200$ GHz niche .
-
-[]
 
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Part / paper                                 Type      BW / $i_n$ or $\mathcal{R}$                   Rate / sens.                    Note
@@ -253,8 +235,6 @@ Table 4.3 pairs detectors and TIAs. Commercial linear-optics TIAs (Semtech GN18
 
 Table 4.4 lays the detector menu out. III-V InGaAs PINs (flip-chipped) trade monolithic integration for higher power handling and remain common in discrete modules. Avalanche photodiodes add internal gain for $\sim\!5$--$9$ dB of sensitivity (attractive for power-starved or high-split links) at the cost of excess noise, bias complexity, and, historically, bandwidth; that bandwidth excuse is fading fast above 100 GHz . Uni-traveling-carrier (UTC/MUTC) PDs use electron-only transport for very high saturation current, linearity, and bandwidth ($>\!200$ GHz) but modest responsivity, a fit for linear/LPO and $>\!200$ GBd analog optics more than for raw sensitivity . SOA-preamplified receivers bolt optical gain ahead of the PD for large effective responsivity and reach, but pay in ASE noise figure, power, and complexity.
 
-[]
-
   ------------------------------------------------------------------------------------------------------------------------------------------------------
   Detector                       $\mathcal{R}$ (A/W)           $-3$ dB BW               Integration          Where it fits
   ------------------------------ ----------------------------- ------------------------ -------------------- -------------------------------------------
@@ -281,13 +261,10 @@ Volume short-reach receive stays on PIN + SiGe/CMOS TIA: noise in the low teens 
 
 The 224G-per-lane roadmap (Chapter 3) rides on PAM4, so it is worth seeing the trade quantitatively. PAM4 sends two bits per symbol using four levels, so at a fixed bit rate its symbol rate (and thus noise bandwidth) is halved, collecting less noise. But its three eyes each span only a third of the OMA, costing roughly $20\log_{10}3 \approx 9.5$ dB of vertical separation. §4.5 pits the two at a common 100 Gb/s: PAM4's narrower bandwidth partly offsets its level penalty, but it still needs several dB more received power for the same BER, repaid by halving the electrical bandwidth the SerDes and optics must support. That balance is exactly why 100G/lane went NRZ and 200G/lane went PAM4.
 
-::::
-![](figures/fig_nrz_vs_pam4.pdf){width="\\linewidth"}
-
-::: caption
-NRZ (100 GBaud) versus PAM4 (50 GBaud) at the same 100 Gb/s. PAM4 pays a level penalty but relaxes bandwidth; the crossover with the KP4 pre-FEC threshold sets the required operating power.[]
-:::
-::::
+<figure id="fig:pam4" data-latex-placement="ht">
+<embed src="figures/fig_nrz_vs_pam4.pdf" />
+<figcaption>NRZ (100 GBaud) versus PAM4 (50 GBaud) at the same 100 Gb/s. PAM4 pays a level penalty but relaxes bandwidth; the crossover with the KP4 pre-FEC threshold sets the required operating power.<span id="fig:pam4" data-label="fig:pam4"></span></figcaption>
+</figure>
 
 ## Engineering lens
 
@@ -315,10 +292,17 @@ When BER moves from $10^{-12}$ class to $10^{-6}$ class, save the failing condit
 
 When BER degrades, ask one question first:
 
-::: dectree
-BER degraded \| Received power changed? \|-- YES --\> Power ledger \| laser / coupling / connector / fiber / MUX / monitor \|-- NO --\> Quality / receiver eye / noise / jitter / bias / EQ / RIN / Rx \| Highest-value measurement \| Decision + recurrence control
-:::
-
+<pre class="dectree" aria-label="Decision tree"><code>BER degraded
+  |
+Received power changed?
+  |-- YES --&gt; Power ledger
+  |           laser / coupling / connector / fiber / MUX / monitor
+  |-- NO  --&gt; Quality / receiver
+              eye / noise / jitter / bias / EQ / RIN / Rx
+  |
+Highest-value measurement
+  |
+Decision + recurrence control</code></pre>
 ##### Did received optical power change?
 
 If yes, the failure is in the power path:

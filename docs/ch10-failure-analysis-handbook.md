@@ -3,23 +3,47 @@ layout: default
 title: "Ch 10: Failure analysis handbook"
 ---
 
-# Failure analysis handbook
+# 10 Failure analysis handbook
 
 This chapter is a symptom-first field guide. Start with what the bench, production line, or fleet reports. Preserve the failing state until its evidence has been captured, then use the same workflow for every incident:
 
-::: dectree
-Observe \| Scope (unit / lot / vendor / site / fleet) \| Time behavior (sudden / gradual / intermittent) \| Changing margin ledger \| Measure / isolate \| Correct \| Recurrence control
-:::
+<pre class="dectree" aria-label="Decision tree"><code>Observe
+  |
+Scope (unit / lot / vendor / site / fleet)
+  |
+Time behavior (sudden / gradual / intermittent)
+  |
+Changing margin ledger
+  |
+Measure / isolate
+  |
+Correct
+  |
+Recurrence control</code></pre>
+<<<DECTREE>>>
+    Escalation
+      |
+    Contain if population can grow
+      |
+    Bench confirm at named plane
+      |
+    FA / DPA when mechanism unknown
+      |
+    CAPA + ATP / SPC / telemetry update
+      |
+    Fleet monitor until burn-down
+    <<<ENDDECTREE>>>
 
-::: dectree
-Escalation \| Contain if population can grow \| Bench confirm at named plane \| FA / DPA when mechanism unknown \| CAPA + ATP / SPC / telemetry update \| Fleet monitor until burn-down
-:::
-
-::: dectree
-Failure onset \| Sudden? \|-- config / handling / firmware / mechanical / power event \| Gradual? \|-- aging / drift / margin erosion / contamination / cal movement \| Prioritize measurements (priors, not conclusions)
-:::
-
-Choose each measurement for its ability to separate competing hypotheses. The debugging pyramid in §1.8, the power-versus-signal fork in §4.8, the fleet router in Table 7.6, and the wall-chart trees in §C provide the same method at different scales.
+<pre class="dectree" aria-label="Decision tree"><code>Failure onset
+  |
+Sudden?
+  |-- config / handling / firmware / mechanical / power event
+  |
+Gradual?
+  |-- aging / drift / margin erosion / contamination / cal movement
+  |
+Prioritize measurements (priors, not conclusions)</code></pre>
+Choose each measurement for its ability to separate competing hypotheses. The debugging pyramid in §1.8, the power-versus-signal fork in §4.8, the fleet router in Table 7.6, and the wall-chart trees in Appendix C provide the same method at different scales.
 
 Power loss
 
@@ -57,10 +81,17 @@ The cases below provide the detailed measurements and corrective actions. Use th
 
 ## Power loss
 
-::: dectree
-Power loss \| External meter vs CMIS \| Plane walk (source -\> coupling -\> MUX -\> connector -\> Rx) \| LIV at failing T \| Decision: source / path / monitor \| Recurrence: earliest ATP power check
-:::
-
+<pre class="dectree" aria-label="Decision tree"><code>Power loss
+  |
+External meter vs CMIS
+  |
+Plane walk (source -&gt; coupling -&gt; MUX -&gt; connector -&gt; Rx)
+  |
+LIV at failing T
+  |
+Decision: source / path / monitor
+  |
+Recurrence: earliest ATP power check</code></pre>
 ##### Observed behavior.
 
 Received power or OMA falls at one or more lanes. BER may remain stable at first, then rise as receiver margin is consumed. The module monitor and an external power meter may disagree.
@@ -87,10 +118,15 @@ Repair the first plane where power diverges. Correct calibration or monitor coef
 
 ## BER increase: waterfall shift or floor
 
-::: dectree
-BER up \| Power held? \|-- NO --\> power path (§10.1) \|-- YES --\> waterfall \|-- shift --\> sensitivity / OMA / IL \|-- floor --\> RIN / MPI / noise / crosstalk \| Decision + ATP / telemetry control
-:::
-
+<pre class="dectree" aria-label="Decision tree"><code>BER up
+  |
+Power held?
+  |-- NO  --&gt; power path (§10.1)
+  |-- YES --&gt; waterfall
+              |-- shift --&gt; sensitivity / OMA / IL
+              |-- floor --&gt; RIN / MPI / noise / crosstalk
+  |
+Decision + ATP / telemetry control</code></pre>
 ##### Observed behavior.
 
 Pre-FEC BER rises, but the first task is to determine whether the whole BER waterfall moved to higher received power or whether it stopped improving at a horizontal floor. A waterfall is BER versus received power from a VOA sweep at a named reference plane. One operating-point BER is not enough to classify the failure.
@@ -111,7 +147,7 @@ A shifted waterfall points toward lost power, receiver sensitivity, eye closure,
 
 ##### Corrective action and recurrence control.
 
-Restore the margin ledger that moved, then repeat the full BER sweep at loaded corners. Store waterfall shape, not only pass/fail BER, so later fleet changes can be classified without guessing. The interview study treatment of these shapes is in §A.6.9.
+Restore the margin ledger that moved, then repeat the full BER sweep at loaded corners. Store waterfall shape, not only pass/fail BER, so later fleet changes can be classified without guessing. The interview study treatment of these shapes is in Appendix A.6.9.
 
 ## BER floor
 
@@ -121,7 +157,7 @@ Pre-FEC BER improves as you increase transmit or received power, then stops impr
 
 ##### Likely hypotheses.
 
-A BER floor means a noise source that grows with signal power dominates the link. The classic cause is *relative intensity noise* (RIN): because $\sigma_\mathrm{RIN} \propto I$, once RIN dominates the noise budget, signal and noise grow together and $Q$ saturates at $Q_\mathrm{max} = 1/\sqrt{\mathrm{RIN}_\mathrm{lin} \cdot \mathrm{BW}}$ (§4.3). Other causes: multipath interference (MPI) from dirty connectors or high back-reflection, or broadband noise on the laser bias rail that converts to equivalent RIN (§5.8).
+A BER floor means additional received power no longer removes the dominant impairment. That is a diagnostic pattern, not one mechanism. A common cause is *relative intensity noise* (RIN): because $\sigma_\mathrm{RIN} \propto I$, once RIN dominates, signal and noise grow together and $Q$ saturates at $Q_\mathrm{max} = 1/\sqrt{\mathrm{RIN}_\mathrm{lin} \cdot \mathrm{BW}}$ (§4.3). Other causes include multipath interference (MPI) from dirty connectors or high back-reflection, bias-rail noise that converts to equivalent RIN (§5.8), pattern-dependent distortion or residual ISI, crosstalk, timing or CDR limits, and DSP or equalization limits.
 
 ##### Measurements and root-cause isolation.
 
@@ -271,10 +307,17 @@ System-level: improve airflow, lower ambient, or reduce module count per cage. M
 
 ## Intermittent failures
 
-::: dectree
-Intermittent / burst \| Preserve state (do not reseat yet) \| Scope time + change history \| ORL / connector / supply / lock / attach \| Decision: contain / clean / redesign / ATP dwell \| Recurrence: dwell + FEC histograms
-:::
-
+<pre class="dectree" aria-label="Decision tree"><code>Intermittent / burst
+  |
+Preserve state (do not reseat yet)
+  |
+Scope time + change history
+  |
+ORL / connector / supply / lock / attach
+  |
+Decision: contain / clean / redesign / ATP dwell
+  |
+Recurrence: dwell + FEC histograms</code></pre>
 ##### Observed behavior.
 
 Links flap, lose lock, or show bursts of FEC errors while average power and a short bench BER test look normal. The symptom may clear after reseating, cooling, or restarting firmware.
@@ -394,8 +437,6 @@ Laser threshold and slope drift, wavelength movement, ring-resonance drift, TEC 
 Restore thermal headroom, correct calibration and control limits, reduce coupling, or derate the operating point. Add the loaded-neighbor temperature ramp to the ATP or design-validation plan that missed it.
 
 ## Failure-analysis checklist
-
-[]
 
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Step            Question                                                                       Required record

@@ -3,7 +3,7 @@ layout: default
 title: "Ch 5: Choosing light sources and modulation"
 ---
 
-# Choosing light sources and modulation
+# 5 Choosing light sources and modulation
 
 Do not choose a laser by comparing data sheets in isolation. Start with reach, lane rate, fiber plant, power, cost, lifetime, manufacturing volume, and service policy. Those requirements select an architecture. The architecture then limits the useful source, modulation, detector, packaging, and validation choices.
 
@@ -11,10 +11,17 @@ Do not choose a laser by comparing data sheets in isolation. Start with reach, l
 
 Freeze the system problem before asking a supplier for samples:
 
-::: dectree
-Reach / fiber plant \| Lane rate / bandwidth \| Laser choice \| Modulator path \| Receiver / detector \| Validation burden (ATP, lock, thermal, life)
-:::
-
+<pre class="dectree" aria-label="Decision tree"><code>Reach / fiber plant
+  |
+Lane rate / bandwidth
+  |
+Laser choice
+  |
+Modulator path
+  |
+Receiver / detector
+  |
+Validation burden (ATP, lock, thermal, life)</code></pre>
 Reach and fiber
 
 : decide whether multimode loss and modal bandwidth are acceptable or whether the link needs single-mode fiber.
@@ -85,8 +92,6 @@ External laser source (ELS/ELSFP)
 
 : a pluggable laser module supplying CW light to a co-packaged switch, so a failed laser is field-replaceable (§5.14).
 
-[]
-
   -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Attribute            VCSEL direct                    DFB direct                     DFB + EAM                    CW DFB/DBR + MZM                   CW DFB/DBR + ring                     External cavity + modulator
   -------------------- ------------------------------- ------------------------------ ---------------------------- ---------------------------------- ------------------------------------- -----------------------------------------
@@ -135,8 +140,6 @@ An electro-absorption modulated laser integrates a DFB with an *EAM* on one chip
 
 Through 200G/lane DR, EML usually wins on cost and integration. A CW DFB (or ELSFP/CW-WDM bank) plus Si MZM, ring, or TFLN wins when the modulator must sit on silicon or needs $\gtrsim$`<!-- -->`{=html}100 GHz EO bandwidth (Table 3.12, §3.14.3). At CPO scale the laser often leaves the optical engine entirely so it can be replaced without pulling the ASIC package (§5.14). Looking forward, 400G/lane pluggables are pushing harder toward external CW plus TFLN or high-BW silicon modulators, while EMLs remain the workhorse of the installed 100--200G base.
 
-[]
-
   -------------------------------------------------------------------------------------------
   Source          Typical use                  Top risks
   --------------- ---------------------------- ----------------------------------------------
@@ -171,8 +174,6 @@ Laser requirements only work when they are numbers a supplier can fail and a lin
 
 Each architecture decision forces a different requirements set (Table 5.3):
 
-[]
-
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------
   Roadmap choice                      Laser implication                           Specs you must freeze early
   ----------------------------------- ------------------------------------------- -------------------------------------------------------------------------------
@@ -194,8 +195,6 @@ Each architecture decision forces a different requirements set (Table 5.3):
 ##### One-page requirements slice.
 
 Table 5.4 is the PRD-sized list. Fill every row with a number (or an explicit "N/A for this architecture") before you negotiate ATP limits. Do not leave RIN without an ORL, or power without a case-temperature class.
-
-[]
 
   -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Parameter                How to set the number                                      Measure / ATP              Reject if                            Derate / ops note
@@ -247,13 +246,10 @@ The LIV curve plots optical power and forward voltage versus bias current. Read 
 
 High-temp LIV failures look like: $I_\mathrm{th}$ rise, slope collapse, early rollover, or a kink that moves into the bias window. Those map to aging, TEC saturation, or package thermal resistance (§5.13).
 
-::::
-![](figures/fig_liv_sketch.pdf){width="85%"}
-
-::: caption
-Schematic LIV curve with threshold, slope, kink, and thermal rollover labeled. Idealized for teaching; use measured LIV for pass/fail. []
-:::
-::::
+<figure id="fig:liv-sketch" data-latex-placement="ht">
+<embed src="figures/fig_liv_sketch.pdf" style="width:85.0%" />
+<figcaption>Schematic LIV curve with threshold, slope, kink, and thermal rollover labeled. Idealized for teaching; use measured LIV for pass/fail. <span id="fig:liv-sketch" data-label="fig:liv-sketch"></span></figcaption>
+</figure>
 
 ##### SMSR (side-mode suppression ratio).
 
@@ -262,8 +258,6 @@ SMSR is the power difference (dB) between the lasing mode and the strongest side
 ##### RIN (relative intensity noise).
 
 Measure RIN with a calibrated photodetector and RF spectrum analyzer (or a dedicated RIN analyzer), under a controlled optical return loss. Distinguish *intrinsic* RIN (quiet bench, high ORL) from stressed $\mathrm{RIN}_x\mathrm{OMA}$ used in Ethernet/MSA specs. IEEE 802.3 / 100G Lambda class links cap $\mathrm{RIN}_{17.1}\mathrm{OMA}$ at $-136$ dB/Hz with 17.1 dB ORL . Quiet datacom DFB/EML parts typically sit well below that when feedback is controlled; CPO ELS designs care as much about feedback tolerance as about the quiet number (§4.3.1, §4.3).
-
-[]
 
   -----------------------------------------------------------------------------------------------------------------------------------------------------------
   Parameter           Instrument                               Pass/fail intent                                      Failure signature
@@ -298,8 +292,6 @@ Above threshold, optical power tracks bias approximately as $P\propto(I-I_\mathr
 20\log_{10}\!\left(\frac{i_n}{I-I_\mathrm{th}}\right),$$ where $i_n$ is the one-sided current-noise density in A$/\sqrt{\mathrm{Hz}}$ at the laser terminals (driver plus board pickup). The approximation assumes linear slope efficiency and ignores intrinsic laser dynamics; it is a budget tool, not a device model.
 
 Worked numbers at $I-I_\mathrm{th}=50$ mA (typical CW DFB window): $i_n=500$ pA$/\sqrt{\mathrm{Hz}}$ maps to $\mathrm{RIN}_{\mathrm{eq}}\approx-160$ dB/Hz; $270$ pA$/\sqrt{\mathrm{Hz}}$ maps to about $-165$ dB/Hz. Commercial low-noise laser drivers quote roughly $50$--$500$ pA$/\sqrt{\mathrm{Hz}}$ at 1 kHz depending on current range (Table 5.6); the Koheron DRV200 family is a concrete example . Against a good datacom intrinsic RIN of $-145$ to $-155$ dB/Hz (§4.3.1), those 1 kHz densities look comfortable. The budget tightens when $(I-I_\mathrm{th})$ is small (near threshold, derated CW, or low-current VCSELs), when you integrate broadband switching noise rather than a 1 kHz spot, or when SerDes/DSP rails dump discrete tones onto the bias network.
-
-[]
 
   ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Driver class (example)             $i_n$ @ 1 kHz                                                   $\mathrm{RIN}_{\mathrm{eq}}$ @ 50 mA   What it means
@@ -469,8 +461,6 @@ ELSFP uses CMIS and the CMIS module state machine over TWI. On plug-in the modul
 
 Twenty-four contacts: multiple 3.3 V VCC and GND pins, module reset (`ResetL`), low-power mode (`LPModeL`), two-wire serial management (`SCL`/`SDA`), presence (`ModPrsL`), and interrupt (`IntL`), plus reserved pins for future power/ground . Table 5.7 summarizes the published map.
 
-[]
-
   -----------------------------------------------------------------------------------------------------------------------
   Pin      Function    Requirements               Notes
   -------- ----------- -------------------------- -----------------------------------------------------------------------
@@ -571,8 +561,6 @@ Source integrated with the PIC
 
 : reduces optical interfaces and can improve density, but makes laser yield and wear-out part of package yield and service life.
 
-[]
-
   ------------------------------------------------------------------------------------------------------
   Approach                         Qualification ownership and risk
   -------------------------------- ---------------------------------------------------------------------
@@ -627,12 +615,27 @@ Control margin
 
 : headroom in APC, TEC, heaters, ring lock, bias DACs, and calibration tables. A railed loop can fail the link while the diode is still healthy.
 
-Recompute the link at combined production corners. A nominal part at nominal temperature says little about whether a slow loss in two ledgers will push a tail unit across the pre-FEC BER limit. §7.9, Table 7.6 carry the same ledgers into validation and fleet triage. The interview review compresses this checklist in §A.6.4. The wall-chart form is §C.9.
+Recompute the link at combined production corners. A nominal part at nominal temperature says little about whether a slow loss in two ledgers will push a tail unit across the pre-FEC BER limit. §7.9, Table 7.6 carry the same ledgers into validation and fleet triage. The interview review compresses this checklist in Appendix A.6.4. The wall-chart form is Appendix C.9.
 
-::: dectree
-Nominal system margin \| Temperature debit \| Voltage / power-quality debit \| Channel / connector debit \| Manufacturing variation \| Aging / wear \| Interoperability variation \| Remaining margin \| Above deployment requirement? \|-- YES --\> proceed \|-- NO --\> redesign / restrict / recalibrate / reject
-:::
-
+<pre class="dectree" aria-label="Decision tree"><code>Nominal system margin
+  |
+Temperature debit
+  |
+Voltage / power-quality debit
+  |
+Channel / connector debit
+  |
+Manufacturing variation
+  |
+Aging / wear
+  |
+Interoperability variation
+  |
+Remaining margin
+  |
+Above deployment requirement?
+  |-- YES --&gt; proceed
+  |-- NO  --&gt; redesign / restrict / recalibrate / reject</code></pre>
 Not every debit is naturally in decibels. Depending on the subsystem, remaining margin may be optical power, sensitivity, BER or FEC headroom, eye or TDECQ, jitter, control range, lifetime, or yield. Validation often measures the net externally visible result; do not double-count internal penalties the test cannot separate (§7.7).
 
 ## Engineering lens
@@ -658,8 +661,6 @@ For power degradation, compare external optical power, monitor current, bias, an
 \> \*\*Debug story\*\* \> \> \*\*Observed.\*\* BER worsened after thermal cycling while average optical power stayed in range. \> \> \*\*Investigation.\*\* The DCA showed that extinction ratio had collapsed. LIV and SMSR were unchanged, and an EAM bias sweep restored the eye. \> \> \*\*Finding.\*\* The light source was healthy, but its modulator operating point was wrong. \> \> \*\*Root cause.\*\* A calibration table used the wrong temperature segment after the cycle. \> \> \*\*Resolution.\*\* The table and screening limits were fixed, and EAM bias sweep data became part of the thermal-cycle readout.
 
 ## Engineering checklist
-
-[]
 
   -----------------------------------------------------------------------------------------------------------------------------------------------------------------
   Decision or test   Question it answers                                                                Evidence to retain

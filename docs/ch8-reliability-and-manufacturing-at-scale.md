@@ -3,7 +3,7 @@ layout: default
 title: "Ch 8: Reliability and manufacturing at scale"
 ---
 
-# Reliability and manufacturing at scale
+# 8 Reliability and manufacturing at scale
 
 A link that closes in the lab can still fail the business case if lasers die in the field or suppliers cannot hold yield. At gigawatt, multi-generation scale, reliability and manufacturability stop being afterthoughts and become design constraints: they decide whether you put the laser on the ASIC package or in a replaceable module, how hard you derate, and what ATP language you freeze with partners. This chapter covers the vocabulary of failure at scale, the qualification flows that project field life, and the supplier-execution work these systems demand.
 
@@ -23,12 +23,17 @@ DPPM (defective parts per million)
 
 ## Qualification flows
 
-Qualification measures remaining margin after stress. Debugging is what you do when that remaining margin hits zero. Keep the customer view and the vendor view distinct: the vendor designs internals; the customer characterizes externally visible behavior and decides deployment (§A.6.6, §A.6.7, §C).
+Qualification measures remaining margin after stress. Debugging is what you do when that remaining margin hits zero. Use the same canonical validation lifecycle as Appendix A.6.5, Appendix C.2 (requirements through controlled pilot and fleet monitoring); this chapter owns the environmental, reliability, manufacturing, and ATP gates. Keep the customer view and the vendor view distinct: the vendor designs internals; the customer characterizes externally visible behavior and decides deployment (Appendix A.6.6, Appendix A.6.7, Appendix C).
 
-::: dectree
-Requirement \| Budget (life / FIT / DPPM / power) \| Allocation (die / package / module / host) \| Verification (GR-468 / GR-1221 / JESD47 / ATP) \| Production + fleet monitoring
-:::
-
+<pre class="dectree" aria-label="Decision tree"><code>Requirement
+  |
+Budget (life / FIT / DPPM / power)
+  |
+Allocation (die / package / module / host)
+  |
+Verification (GR-468 / GR-1221 / JESD47 / ATP)
+  |
+Production + fleet monitoring</code></pre>
 > **Margin budgeting**
 >
 > Every stress spends margin: temperature, voltage, ripple, contamination, insertion loss, connector wear, vibration, aging, process variation. Qual verifies what remains, not only that the part still links.
@@ -39,11 +44,19 @@ Requirement \| Budget (life / FIT / DPPM / power) \| Allocation (die / package /
 > Customer: BER, sensitivity, FEC, telemetry, environmental sweeps, interop.\
 > Engineering samples (Tx-only, Rx-only, breakout, PRBS) open isolation; otherwise stay on the external surface.
 
-::: dectree
-Bookended product \| End-to-end qualification \|-- BER / FEC / telemetry / sensitivity \|-- environment / interoperability \| Enough confidence to decide? \|-- YES --\> deployment decision \|-- NO --\> request engineering access Tx-only / Rx-only / breakout / diagnostics \| Isolate margin
-:::
-
-The vendor designs the internals. The customer characterizes the behavior and owns the deployment decision. An optical eye is measured externally with suitable access; do not assume the module reports a conventional eye (§C.10, §A.6.7).
+<pre class="dectree" aria-label="Decision tree"><code>Bookended product
+  |
+End-to-end qualification
+  |-- BER / FEC / telemetry / sensitivity
+  |-- environment / interoperability
+  |
+Enough confidence to decide?
+  |-- YES --&gt; deployment decision
+  |-- NO  --&gt; request engineering access
+              Tx-only / Rx-only / breakout / diagnostics
+              |
+              Isolate margin</code></pre>
+The vendor designs the internals. The customer characterizes the behavior and owns the deployment decision. An optical eye is measured externally with suitable access; do not assume the module reports a conventional eye (Appendix C.10, Appendix A.6.7).
 
 Optoelectronics inherited a common qualification language from telecom: *Telcordia GR-468-CORE*. The core stress tests still show up on every laser and module program:
 
@@ -108,8 +121,6 @@ Field failures come in three clocks, and mixing them up wastes CAPA. Infant mort
 ##### Mechanism map.
 
 Table 8.1 is the working list for laser-bearing modules and CPO/ELS paths. Customize limits in the ATP; keep the classification discipline.
-
-[]
 
   ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Mechanism                        Observable                                                            ATP / telemetry                                                            Triage bucket
@@ -179,15 +190,30 @@ Track yield by ATP row, lot, supplier site, tester, and date code. A yield drop 
 
 ## Escaped defect analysis
 
-::: dectree
-Escape \| Contain risk now \| Investigate mechanism \| Prevent recurrence (ATP / SPC / process)
-:::
+<pre class="dectree" aria-label="Decision tree"><code>Escape
+  |
+Contain risk now
+  |
+Investigate mechanism
+  |
+Prevent recurrence (ATP / SPC / process)</code></pre>
+<<<DECTREE>>>
+    Production escape
+      |
+    Contain scoped population
+      |
+    Scope + evidence
+      |
+    Supplier / FA
+      |
+    ATP or screen update
+      |
+    Verify next lot
+      |
+    Fleet monitoring
+    <<<ENDDECTREE>>>
 
-::: dectree
-Production escape \| Contain scoped population \| Scope + evidence \| Supplier / FA \| ATP or screen update \| Verify next lot \| Fleet monitoring
-:::
-
-Containment, root-cause investigation, and recurrence control are three different actions. The system owner keeps responsibility for evidence quality and verifying corrective action (§C.8, §C.11). Organize the spent margin with the five ledgers before naming a component (§5.19, §4.8).
+Containment, root-cause investigation, and recurrence control are three different actions. The system owner keeps responsibility for evidence quality and verifying corrective action (Appendix C.8, Appendix C.11). Organize the spent margin with the five ledgers before naming a component (§5.19, §4.8).
 
 An escaped defect is a unit that passed every production screen and failed in the field. Post-screen field failures split into two categories with different corrective actions:
 
@@ -229,7 +255,7 @@ Destructive physical analysis (cross-section, EDX) and structured 8D/CAPA with s
 
 > **Before production**
 >
-> ATP $\cdot$ SPC $\cdot$ telemetry $\cdot$ supplier gates $\cdot$ monitoring owners $\cdot$ RMA-to-ATP feedback (§C.15).
+> ATP $\cdot$ SPC $\cdot$ telemetry $\cdot$ supplier gates $\cdot$ monitoring owners $\cdot$ RMA-to-ATP feedback (Appendix C.15).
 
 ### Test time is a cost, coverage is a risk
 
@@ -251,17 +277,26 @@ Burn-in and HTOL screens trade infant-mortality escape rate against test time an
 
 The supplier path is milestones, performance targets, quality, and manufacturability triage. That is not a soft skill. It is a concrete contract: requirements, gates, acceptance tests, process control, and corrective action when a lot goes wrong.
 
-::: dectree
-Design requirements \| Qualification \| ATP \| Production data \| Fleet data \| Failure analysis \| Updated limits or screens \| Next production cycle
-:::
-
-Production validation is replayable and decision-oriented (§C.12).
+<pre class="dectree" aria-label="Decision tree"><code>Design requirements
+  |
+Qualification
+  |
+ATP
+  |
+Production data
+  |
+Fleet data
+  |
+Failure analysis
+  |
+Updated limits or screens
+  |
+Next production cycle</code></pre>
+Production validation is replayable and decision-oriented (Appendix C.12).
 
 ##### NPI gates and exit criteria.
 
 Table 8.2 is the usual stage map. For lasers and IM/DD modules, write exit criteria that a supplier can fail clearly, not slogans.
-
-[]
 
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Gate    Question               Laser / optics exit criteria (examples)                                                                                    Who signs
@@ -288,8 +323,6 @@ ATP and the requirements doc are the contract. Write both and keep them versione
 2.  **Acceptance test plan (ATP):** the measurable tests that prove those requirements on every ship lot (or on a defined sample). Map each ATP line to a GR-468 or design-validation stress where life is claimed (§8.2).
 
 Table 8.3 is a working ATP checklist for an EML pluggable or an ELSFP CW module. Customize limits from the datasheet and the link budget; do not invent numbers in the ATP itself.
-
-[]
 
   -------------------------------------------------------------------------------------------------------------------------------------------------------------------
   ATP item                             Instrument / method                            Pass intent                                           Ties to

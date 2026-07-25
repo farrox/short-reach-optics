@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "Ch 14: Abbreviations"
+title: "Appendix D: Abbreviations and terminology"
 ---
 
-# Abbreviations
+# Appendix D: Abbreviations and terminology
 
-This glossary is adapted from the OIF *Next Generation CEI-448G Framework* glossary (pages 7--11, OIF-FD-CEI-448G-01.0, September 2025) , extended with optical, reliability, and manufacturing terms used in the book (including the must-know list in §A). Some entries include material from public reference sources noted in the original.
+This glossary is adapted from the OIF *Next Generation CEI-448G Framework* glossary (pages 7--11, OIF-FD-CEI-448G-01.0, September 2025) , extended with optical, reliability, and manufacturing terms used in the book (including the must-know list in Appendix A). Some entries include material from public reference sources noted in the original.
 
 ADC
 

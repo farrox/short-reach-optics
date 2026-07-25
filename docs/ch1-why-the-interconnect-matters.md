@@ -3,7 +3,7 @@ layout: default
 title: "Ch 1: Why the interconnect matters"
 ---
 
-# Why the interconnect matters
+# 1 Why the interconnect matters
 
 ## The two themes of this book
 
@@ -85,16 +85,28 @@ More compute increases the amount of traffic the system can inject. It does not 
 
 Work from the system downward, then close the loop in the fleet:
 
-::: dectree
-Requirements \| Architecture \| Validation \| Deployment \| Fleet (telemetry / RMA / FIT) \| Feedback into requirements
-:::
-
+<pre class="dectree" aria-label="Decision tree"><code>Requirements
+  |
+Architecture
+  |
+Validation
+  |
+Deployment
+  |
+Fleet (telemetry / RMA / FIT)
+  |
+Feedback into requirements</code></pre>
 Inside architecture, descend only as far as the requirement forces:
 
-::: dectree
-Requirements \| Architecture \| Subsystem \| Component \| Needed physics
-:::
-
+<pre class="dectree" aria-label="Decision tree"><code>Requirements
+  |
+Architecture
+  |
+Subsystem
+  |
+Component
+  |
+Needed physics</code></pre>
 A component choice is never isolated. A VCSEL usually commits the link to an 850 nm multimode path, direct modulation, and a short reach. A 1310 nm DFB points toward single-mode fiber and can feed a DML, EML, Mach--Zehnder modulator, or ring. Those paths then set detector material, fiber plant, thermal control, test coverage, and service policy. Start with reach, lane rate, power, cost, lifetime, and manufacturing volume. Choose the component only after those constraints rule out the other paths.
 
 ##### Validation reduces uncertainty.
@@ -129,12 +141,19 @@ Use the debugging pyramid: start at the system symptom, narrow to signal quality
 
 ## The debugging pyramid
 
-When a link fails, work from the top down. Each layer narrows the search before you open a connector or reseat a module. This framework reappears in every chapter. Apply the power-versus-quality fork early (§4.8, §C.3) and organize lost margin with the five ledgers (§5.19).
+When a link fails, work from the top down. Each layer narrows the search before you open a connector or reseat a module. This framework reappears in every chapter. Apply the power-versus-quality fork early (§4.8, Appendix C.3) and organize lost margin with the five ledgers (§5.19).
 
-::: dectree
-System symptom \| Signal quality (BER / FEC / eye) \| Link budget (power / noise / timing / spectrum) \| Subsystem bisect (Tx / channel / Rx) \| Physical root cause \| Decision + recurrence control
-:::
-
+<pre class="dectree" aria-label="Decision tree"><code>System symptom
+  |
+Signal quality (BER / FEC / eye)
+  |
+Link budget (power / noise / timing / spectrum)
+  |
+Subsystem bisect (Tx / channel / Rx)
+  |
+Physical root cause
+  |
+Decision + recurrence control</code></pre>
 Layer 1: System
 
 : What is failing at the workload level? BER, throughput, latency, training instability, collective stall. Start here because the symptom often rules out entire subsystems.

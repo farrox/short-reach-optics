@@ -3,7 +3,7 @@ layout: default
 title: "Ch 9: AI datacenter networking"
 ---
 
-# AI datacenter networking
+# 9 AI datacenter networking
 
 Optics only make sense once you see the fabric they sit in. Training and inference clusters are not one network; they are several overlapping networks with different bandwidth, latency, and reach needs. This chapter places the devices and validation methods from earlier chapters into that system context: how AI clusters are wired, why the interconnect sits on the inference critical path, and where optics dominates cost and power.
 
@@ -19,13 +19,10 @@ Scale-out
 
 : coupling across racks and pods over a switched network (Ethernet or InfiniBand). This is where pluggable and co-packaged optics have long lived.
 
-::::
-![](figures/fig_scale_up_node.pdf){width="\\linewidth"}
-
-::: caption
-Schematic AI compute node (one tray in a larger cluster). *Accelerators* are the heavy compute engines (typically GPUs; the book also uses XPU for GPUs and custom ASICs). **Scale-up** links (red) tie accelerators through a high-bandwidth, low-latency switch fabric inside the node or rack (NVLink-class). **Scale-out** links (blue) leave via a dedicated NIC per accelerator into the datacenter Ethernet or InfiniBand fabric. The CPU and front-end NIC handle host, storage, and management traffic.[]
-:::
-::::
+<figure id="fig:scale-node" data-latex-placement="ht">
+<embed src="figures/fig_scale_up_node.pdf" />
+<figcaption>Schematic AI compute node (one tray in a larger cluster). <em>Accelerators</em> are the heavy compute engines (typically GPUs; the book also uses XPU for GPUs and custom ASICs). <strong>Scale-up</strong> links (red) tie accelerators through a high-bandwidth, low-latency switch fabric inside the node or rack (NVLink-class). <strong>Scale-out</strong> links (blue) leave via a dedicated NIC per accelerator into the datacenter Ethernet or InfiniBand fabric. The CPU and front-end NIC handle host, storage, and management traffic.<span id="fig:scale-node" data-label="fig:scale-node"></span></figcaption>
+</figure>
 
 ### Three networks, two that set the optics budget
 
@@ -49,8 +46,6 @@ Scale-up carries the majority of *interconnect* bandwidth inside a training job;
 
 Table 9.1 condenses OIF Table 1 (CEI-448G framework, §2.2): order-of- magnitude targets for node count, physical extent, and media type . Numbers are industry snapshots, not hard limits, but they explain why "optics inside the rack" and "optics between racks" arrive on different timelines.
 
-[]
-
 +-----------------------------+---------------------------------------------------------+----------------------------------------------------+
 |                             | Scale-up                                                | Scale-out                                          |
 +:============================+:===========================+:===========================+:=====================+:============================+
@@ -72,8 +67,6 @@ Table 9.1 condenses OIF Table 1 (CEI-448G framework, §2.2): order-of- magnitu
 ### Standards bodies: who owns what
 
 448G/lane signaling is not owned by one standards body, and that is by design. Electrical reach, Ethernet naming, connectors, and rack packaging evolved in different rooms; AI fabrics forced them to meet at the same lane rate. OIF's CEI-448G framework (§2.3) lists the groups that must align . Table 9.2 maps each body to the layer an optical engineer actually touches. The short version: OIF sets the electrical baud and reach classes; IEEE names the Ethernet optical PMD; UALink and UEC own scale-up and scale-out protocol stacks; SNIA and OCP decide connectors and where the optics physically live. The *LPO MSA* is not a standards body, but it publishes the only open end-to-end spec that stitches CEI Linear electrical limits to IEEE optical PMD limits for DSP-less modules (§9.3.1). Prose below expands each row, OIF and non-OIF.
-
-[]
 
   ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Body                        Fabric                     What matters for short-reach optics
@@ -281,13 +274,10 @@ Every form factor above is really an answer to one physical question: *how far c
 
 **Trace loss scales with frequency.** A PCB stripline's insertion loss grows roughly with $\sqrt{f}$ (skin effect) plus a dielectric term linear in $f$, so it is quoted per inch *at the Nyquist frequency*. Going from 112G to 224G PAM4 moves Nyquist from 28 GHz to 56 GHz, and the loss per inch roughly doubles. Recent 224G board studies measure $\approx2.8$ dB/inch for regular stripline and $\approx1.9$ dB/inch with skip-layer routing at 56 GHz, against a next-generation *target* of 1 dB/inch that demands ultra-low-loss dielectric, HVLP copper, and short via stubs . §9.2 shows the consequence: at a fixed PCB-trace budget, doubling the baud rate roughly halves the copper reach.
 
-::::
-![](figures/fig_trace_loss.pdf){width="\\linewidth"}
-
-::: caption
-PCB trace insertion loss versus length at each rate's Nyquist. The reach to a fixed budget shrinks from $\sim\!10$ inches (112G) to a few inches (224G), which is why the optical conversion must move closer to the ASIC.[]
-:::
-::::
+<figure id="fig:traceloss" data-latex-placement="ht">
+<embed src="figures/fig_trace_loss.pdf" />
+<figcaption>PCB trace insertion loss versus length at each rate’s Nyquist. The reach to a fixed budget shrinks from <span class="math inline">∼ 10</span> inches (112G) to a few inches (224G), which is why the optical conversion must move closer to the ASIC.<span id="fig:traceloss" data-label="fig:traceloss"></span></figcaption>
+</figure>
 
 **The CEI channel classes name the reaches.** OIF's Common Electrical I/O project defines the electrical link budgets the whole industry designs to. Table 3.8 is the CEI-224G lookup card (XSR / VSR / MR / LR, plus Linear for DSP-less modules); the reach map is §3.5. At 56 GHz Nyquist the same names mean much shorter copper than at 112G :
 
@@ -324,8 +314,6 @@ On-substrate copper has been validated at 224G-PAM4 with a stated roadmap to 448
 Past that wall the conversion to light pays for itself. When the reach exceeds what a clean substrate channel can carry, or the port count makes copper bulk and cabling weight unmanageable, optics takes the link (Table 9.1). CPC and NPC do not remove that crossover; they move it, buying copper one more rate generation before the optics win. Read the placement ladder in Table 9.4 from the copper side and this is the same trade seen in reverse.
 
 **So the optics march inward.** Shortening the electrical path is exactly what trades power and reach for serviceability, the through-line of this chapter. Table 9.4 lays out the ladder from faceplate to interposer.
-
-[]
 
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Placement                      Host electrical reach                                           Energy/bit                                                     Serviceability
@@ -489,8 +477,6 @@ Crosstalk, return loss, polarization
 
 : a mirror that leaks light into the wrong port is crosstalk; a reflective interface raises ORL and feeds laser RIN (§7.2.2, §4.3). Free-space paths are largely polarization-insensitive, which suits IM/DD.
 
-[]
-
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Technology                       Switching          Insertion loss                   Radix                            Where it fits
   -------------------------------- ------------------ -------------------------------- -------------------------------- -----------------------------------------------
@@ -555,8 +541,6 @@ NVIDIA's CPO story is the scale-up and scale-out fabric vendor converging on the
 
 *COUPE* (Compact Universal Photonic Engine) stacks an electronic IC on a photonic IC via SoIC-X hybrid bonding (a 6 nm EIC on a 65 nm SOI PIC), giving a low-impedance die-to-die interface. The roadmap: pluggable qualification in 2025, CoWoS-based CPO integration and *mass production in 2026*, with 800G/1.6T engines now and 3.2T/6.4T (toward 12.8 Tb/s on-package) to follow. TSMC cites the energy-per-bit trajectory from $>$`<!-- -->`{=html}30 pJ/bit for copper toward $<$`<!-- -->`{=html}5 pJ/bit for CPO on substrate and $<$`<!-- -->`{=html}2 pJ/bit once optical I/O moves onto the interposer (§9.13). The hard problems it names (wafer-level test, fiber-array-unit integration, and high-speed optical packaging assembly) are exactly the validation and manufacturing challenges of Chapter 7, Chapter 8.
 
-[]
-
   --------------------------------------------------------------------------------------------------------------------------------
   Program                    Technology                                                        Status
   -------------------------- ----------------------------------------------------------------- -----------------------------------
@@ -592,8 +576,6 @@ Arista, with Coherent, Marvell, Lightmatter, and a broad partner list, launched 
 - **Integrated liquid-cooled cold plate** rated for 400 W+ per module, with blind-mate dripless quick-disconnects; this, not the connector, is what makes the high per-module power serviceable.
 
 - **Universal reach and interface**: SR/DR/FR/LR plus ZR/ZR+, and fully-retimed, half-retimed, or linear (LPO/LRO) optics in one form factor.
-
-[]
 
   ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Attribute        Retimed / LPO pluggable            XPO                                                    CPO
@@ -696,10 +678,21 @@ The book quantifies two of its three themes. Power has a ledger in pJ/bit (§9.1
 
 This chapter sits at the end of the book because it joins the decisions from every earlier chapter into one system. The path below is not a waterfall; teams iterate. But each step produces evidence that either advances the design or sends it back.
 
-::: dectree
-Workload / collectives \| Reach / topology \| Placement (pluggable / LPO / CPO / CPC) \| Laser / modulator / WDM \| Budgets (optical / electrical / energy / thermal) \| Validation ladder \| Supplier / ATP / SPC \| Fleet telemetry + corrective action
-:::
-
+<pre class="dectree" aria-label="Decision tree"><code>Workload / collectives
+  |
+Reach / topology
+  |
+Placement (pluggable / LPO / CPO / CPC)
+  |
+Laser / modulator / WDM
+  |
+Budgets (optical / electrical / energy / thermal)
+  |
+Validation ladder
+  |
+Supplier / ATP / SPC
+  |
+Fleet telemetry + corrective action</code></pre>
 1.  **Workload and collective requirements.** What traffic pattern, latency target, and tail tolerance does the job demand? (Chapter 1, §9.7, §9.6)
 
 2.  **Reach and topology.** What physical extent, link count, and oversubscription does the cluster need? Does copper close, or does optics take the link? (§9.2, §9.5, Table 9.1)
@@ -738,7 +731,7 @@ Scaling can fail through oversubscription, poor route balance, head-of-line bloc
 
 ### How it is debugged
 
-Start with the workload symptom and identify the slow collective, rail, or time window. Compare topology and route data with link counters. A single lane with rising FEC points to the optical path; many clean links with full queues point to fabric capacity or scheduling. On the optical path, apply the power-versus-quality fork and the five ledgers (§4.8, §5.19, §C). Remove one rail, reroute one group, or replace one suspect module to test causality. Keep optics, switch, and workload timestamps aligned. Otherwise a link flap and a collective stall cannot be ordered reliably.
+Start with the workload symptom and identify the slow collective, rail, or time window. Compare topology and route data with link counters. A single lane with rising FEC points to the optical path; many clean links with full queues point to fabric capacity or scheduling. On the optical path, apply the power-versus-quality fork and the five ledgers (§4.8, §5.19, Appendix C). Remove one rail, reroute one group, or replace one suspect module to test causality. Keep optics, switch, and workload timestamps aligned. Otherwise a link flap and a collective stall cannot be ordered reliably.
 
 \> \*\*Debug story\*\* \> \> \*\*Observed.\*\* All-reduce tail latency rose after a rack expansion, while average link utilization looked normal. \> \> \*\*Investigation.\*\* Per-rail traces showed one path with FEC bursts and retries. A module swap moved the symptom with the module. \> \> \*\*Finding.\*\* The fabric had capacity, but one marginal optical lane set the collective tail. \> \> \*\*Root cause.\*\* A contaminated connector raised ORL and produced burst errors without a large average-power change. \> \> \*\*Resolution.\*\* The connector was replaced, inspection was added to the expansion runbook, and collective-tail alarms were tied to link-level error bursts.
 

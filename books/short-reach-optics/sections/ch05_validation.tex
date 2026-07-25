@@ -68,17 +68,38 @@ removes a different uncertainty. Do not treat an earlier exit as evidence for a
 later gate (\Cref{sec:tree-qualification}).\par}
 \end{table*}
 
+These tables are a grouped view of one canonical lifecycle, not a competing
+sequence:
+\begin{center}
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Grouped stage & Expanded lifecycle \\
+\midrule
+Bring-up + nominal characterization & Bring-up; nominal characterization \\
+Margin validation & Margin characterization \\
+Margin / interop & Interoperability (+ loaded corners) \\
+Stress / reliability & Environmental and reliability qualification \\
+Production readiness & Manufacturing and ATP readiness \\
+Pilot / fleet & Controlled pilot; fleet deployment and monitoring \\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent Requirements sit above the first gate. Full names and exit criteria
+live in \Cref{sec:interview-validation-ladder,sec:tree-qualification}.
+
 For every metric at every stage, name the instrument, the reference plane
 (\Cref{sec:test-points}), the pass criterion, and the failure signature. A number
 without a plane and a method is not a measurement.
 
 Each stage removes a different uncertainty. Bring-up removes basic integration
-unknowns. Characterization maps response and variation. Margin and interop tests
-find combinations that consume power, noise, timing, spectral, or control headroom
-(\Cref{sec:laser-margin-erosion}). Qualification separates life and
-environmental risks. Production readiness proves that the chosen screens can
-control variation and escapes at volume. Do not use one stage as evidence for
-another.
+unknowns. Nominal characterization maps response and variation. Margin
+characterization finds how close the design sits to each cliff. Interoperability
+and loaded corners find combinations that consume power, noise, timing, spectral,
+or control headroom (\Cref{sec:laser-margin-erosion}). Environmental and
+reliability qualification separate life risk. Manufacturing and ATP readiness
+prove screens catch escapes at volume. Controlled pilot and fleet monitoring
+close the loop. Do not use one stage as evidence for another.
 
 \begin{dectree}
 Requirement

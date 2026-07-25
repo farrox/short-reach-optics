@@ -3,7 +3,7 @@ layout: default
 title: "Ch 15: References"
 ---
 
-# References
+# 15 References
 
 ## References
 
@@ -53,7 +53,7 @@ See the PDF version for the full bibliography.
 
 
 <div class="nav-links">
-  <a href="ch14-abbreviations">&larr; Previous</a>
+  <a href="ch14-abbreviations-and-terminology">&larr; Previous</a>
   <a href="./">Table of Contents</a>
   <span></span>
 </div>

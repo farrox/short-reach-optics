@@ -57,14 +57,14 @@ print(f'  Found {len(chapters)} chapters')
 
 echo "[2/4] Converting full document to Markdown..."
 pandoc .build/combined_for_html.tex \
-  -f latex \
-  -t markdown-raw_html \
-  --toc \
-  --toc-depth=2 \
-  --number-sections \
-  --wrap=none \
-  --markdown-headings=atx \
-  -o .build/full_book.md 2>/dev/null || true
+    -f latex \
+    -t markdown \
+    --toc \
+    --toc-depth=2 \
+    --number-sections \
+    --wrap=none \
+    --markdown-headings=atx \
+    -o .build/full_book.md
 
 echo "[3/4] Splitting into per-chapter pages..."
 python3 build_html_split.py "${DOCS_DIR}"

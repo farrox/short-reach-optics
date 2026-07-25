@@ -192,14 +192,15 @@ you add. The FEC histogram may still look random (steady RIN) or bursty
 (MPI, intermittents); the floor shape alone does not decide that split.
 
 \paragraph{Likely hypotheses.}
-A BER floor means a noise source that grows with signal power dominates the link.
-The classic cause is \emph{relative intensity noise} (RIN): because
-$\sigma_\mathrm{RIN} \propto I$, once RIN dominates the noise budget, signal and
-noise grow together and $Q$ saturates at
+A BER floor means additional received power no longer removes the dominant
+impairment. That is a diagnostic pattern, not one mechanism. A common cause is
+\emph{relative intensity noise} (RIN): because $\sigma_\mathrm{RIN} \propto I$,
+once RIN dominates, signal and noise grow together and $Q$ saturates at
 $Q_\mathrm{max} = 1/\sqrt{\mathrm{RIN}_\mathrm{lin} \cdot \mathrm{BW}}$
-(\Cref{sec:rin}). Other causes: multipath interference (MPI) from dirty
-connectors or high back-reflection, or broadband noise on the laser bias rail
-that converts to equivalent RIN (\Cref{sec:laser-drivers}).
+(\Cref{sec:rin}). Other causes include multipath interference (MPI) from dirty
+connectors or high back-reflection, bias-rail noise that converts to equivalent
+RIN (\Cref{sec:laser-drivers}), pattern-dependent distortion or residual ISI,
+crosstalk, timing or CDR limits, and DSP or equalization limits.
 
 \paragraph{Measurements and root-cause isolation.}
 \begin{enumerate}
