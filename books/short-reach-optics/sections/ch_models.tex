@@ -177,15 +177,21 @@ receiver designer actually compares against.
 \refstepcounter{table}\label{tab:rin-values}%
 \centering
 \setlength{\tabcolsep}{5pt}%
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.29\linewidth}p{0.13\linewidth}p{0.21\linewidth}p{0.21\linewidth}@{}}
 \toprule
 Source & RIN (dB/Hz) & $i_{\text{RIN}}$ @ 0 dBm (pA/$\sqrt{\text{Hz}}$) & Note \\
 \midrule
 Standards spec limit (400G-FR4, 100GBASE-BR) & $\le -136$ & $\ge 127$ & stressed, w/ ORL \\
+\addlinespace[1.5em]
 Datacom VCSEL, 850~nm (MMF) & $-135$ to $-145$ & $45$ to $142$ & quiet parts $\le\!-145$ \\
+\addlinespace[1.5em]
 Good datacom DFB / EML & $-145$ to $-155$ & $14$ to $45$ & CPO ELS targets $\le\!-145$ \\
+\addlinespace[1.5em]
 Quantum-dot laser on Si & $-140$ to $-150$ & $25$ to $80$ & temp-stable, isolator-free \\
+\addlinespace[1.5em]
 Heterogeneous / self-injection-locked Si laser & $-155$ to $-165$ & $4.5$ to $14$ & high-$Q$ feedback \\
+\addlinespace[1.5em]
 Lab record (QD, quiet pump + injection lock) & down to $\sim\!-168$ & $\sim 3.2$ & research \\
 \bottomrule
 \end{tabular}
@@ -401,13 +407,17 @@ linearly via $P_{\mathrm{sens}}=Q\,i_n/\mathcal{R}$ (\Cref{sec:sensitivity}).
 \centering
 \setlength{\tabcolsep}{3.5pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.28\linewidth}p{0.18\linewidth}p{0.22\linewidth}p{0.24\linewidth}@{}}
 \toprule
 Front-end & $i_n$ (pA$/\sqrt{\mathrm{Hz}}$) & BW / rate & Sensitivity note \\
 \midrule
 Typical ``good'' short-reach TIA (book model) & $\sim$25 & --- & older rule-of-thumb floor \\
+\addlinespace[1.5em]
 16-nm CMOS + co-pkg PD & 16.9 & 32~GHz / 112G PAM4 & $-8.2$~dBm class \\
+\addlinespace[1.5em]
 55-nm SiGe $4\times$112~GBd linear TIA & 13.2 & 65~GHz / 224G & $\sim$1.2~pJ/bit \\
+\addlinespace[1.5em]
 Shot noise @ 0~dBm, $\mathcal{R}=0.8$~A/W & $\approx$16 & --- & physics floor at that power \\
 \bottomrule
 \end{tabular}
@@ -442,18 +452,27 @@ edge. UTC/MUTC PDs remain the high-saturation / $>\!200$~GHz niche~\cite{utc}.
 \centering
 \setlength{\tabcolsep}{3pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.26\linewidth}p{0.14\linewidth}p{0.16\linewidth}p{0.18\linewidth}p{0.18\linewidth}@{}}
 \toprule
 Part / paper & Type & BW / $i_n$ or $\mathcal{R}$ & Rate / sens. & Note \\
 \midrule
 Semtech GN1834L/DL / GN1838DL & TIA & 224G-class; linear+EQ & 224~Gb/s/lane & Commercial LPO/CPO family \\
+\addlinespace[1.5em]
 Semtech TN14740 (demo) & TIA & 448G-class & 448G/lane demo & OFC 2026 booth; provisional \\
+\addlinespace[1.5em]
 SiGe $4\times$112~GBd TIA & TIA & 65~GHz; 13.2~pA$/\sqrt{\mathrm{Hz}}$ & 224G PAM4 & Research / product-class paper \\
+\addlinespace[1.5em]
 16-nm CMOS + co-pkg PD & TIA+PD & 16.9~pA$/\sqrt{\mathrm{Hz}}$ & 112G; $-8.2$~dBm & Co-packaged win \\
+\addlinespace[1.5em]
 Recessed Ge/Si PIN & PD & 106~GHz; 0.93~A/W & 200~GBd-class & $<$10~nA dark \\
+\addlinespace[1.5em]
 Ge/Si UMC-APD & APD & 105~GHz @ $M\!\approx\!7$ & 224/260G; $-10.9$/$-10.1$~dBm & $\sim$9~dB over PIN \\
+\addlinespace[1.5em]
 Ge/Si WG APD (300~mm) & APD & $>$100~GHz; 2~A/W @ 70~GHz & 400G/lane target & 7~V bias class \\
+\addlinespace[1.5em]
 OFC 2026 Ge-on-Si APD & APD & 70--100~GHz; 1.5--2~A/W & 180~GBd PAM4 & O- and C-band \\
+\addlinespace[1.5em]
 UTC / MUTC-PD & PD & $>\!110$--200~GHz & high $I_{\mathrm{sat}}$ & Linear / LPO niche \\
 \bottomrule
 \end{tabular}
@@ -482,14 +501,19 @@ power, and complexity.
 \centering
 \setlength{\tabcolsep}{5pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.22\linewidth}p{0.13\linewidth}p{0.15\linewidth}p{0.16\linewidth}p{0.21\linewidth}@{}}
 \toprule
 Detector & $\mathcal{R}$ (A/W) & $-3$~dB BW & Integration & Where it fits \\
 \midrule
 Ge-on-Si waveguide PIN & $0.8$--$1.0$ & $60$--$>\!100$~GHz & monolithic on SiPh & mainstream short-reach / CPO \\
+\addlinespace[1.5em]
 III-V InGaAs PIN (flip-chip) & $0.6$--$0.9$ & $60$--$>\!100$~GHz & hybrid / flip-chip & discrete modules, high power \\
+\addlinespace[1.5em]
 APD (Ge/Si, InP, UMC) & effective $\uparrow$ (gain) & up to $\sim\!100$~GHz+ & hybrid / emerging & power-starved links; $+5$--$9$~dB sens. \\
+\addlinespace[1.5em]
 UTC / MUTC-PD & $0.1$--$0.8$ & $>\!110$--$200$~GHz & III-V & linear/LPO, $>\!200$~GBd, high saturation \\
+\addlinespace[1.5em]
 SOA-preamplified PD & effective $\gg\!1$ & $\sim\!50$~GHz & III-V PIC & tight power budgets; adds ASE noise \\
 \bottomrule
 \end{tabular}

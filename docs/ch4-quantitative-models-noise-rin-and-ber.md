@@ -187,17 +187,17 @@ The TIA is the receive twin of the modulator driver (§3.14.3). At 224 GBd PAM4
 
 Table 4.2 puts the model numbers next to published front-ends. Shot noise at 0 dBm into $\mathcal{R}=0.8$ A/W is $\sqrt{2qI}\approx16$ pA$/\sqrt{\mathrm{Hz}}$; a good TIA sits near that floor. Worse $i_n$ or higher $C$ burns sensitivity linearly via $P_{\mathrm{sens}}=Q\,i_n/\mathcal{R}$ (§4.4).
 
-  ----------------------------------------------------------------------------------------------------------------------------------------------------
-  Front-end                                                 $i_n$ (pA$/\sqrt{\mathrm{Hz}}$)   BW / rate            Sensitivity note
-  --------------------------------------------------------- --------------------------------- -------------------- -----------------------------------
-  Typical "good" short-reach TIA (book model)               $\sim$`<!-- -->`{=html}25         ---                  older rule-of-thumb floor
+  --------------------------------------------------------------------------------------------------------------------------------------------------
+  Front-end                                               $i_n$ (pA$/\sqrt{\mathrm{Hz}}$)   BW / rate            Sensitivity note
+  ------------------------------------------------------- --------------------------------- -------------------- -----------------------------------
+  Typical "good" short-reach TIA (book model)             $\sim$`<!-- -->`{=html}25         ---                  older rule-of-thumb floor
 
-  16-nm CMOS + co-pkg PD                                    16.9                              32 GHz / 112G PAM4   $-8.2$ dBm class
+  -nm CMOS + co-pkg PD                                    16.9                              32 GHz / 112G PAM4   $-8.2$ dBm class
 
-  55-nm SiGe $4\times$`<!-- -->`{=html}112 GBd linear TIA   13.2                              65 GHz / 224G        $\sim$`<!-- -->`{=html}1.2 pJ/bit
+  -nm SiGe $4\times$`<!-- -->`{=html}112 GBd linear TIA   13.2                              65 GHz / 224G        $\sim$`<!-- -->`{=html}1.2 pJ/bit
 
-  Shot noise @ 0 dBm, $\mathcal{R}=0.8$ A/W                 $\approx$`<!-- -->`{=html}16      ---                  physics floor at that power
-  ----------------------------------------------------------------------------------------------------------------------------------------------------
+  Shot noise @ 0 dBm, $\mathcal{R}=0.8$ A/W               $\approx$`<!-- -->`{=html}16      ---                  physics floor at that power
+  --------------------------------------------------------------------------------------------------------------------------------------------------
 
 **Table 4.2.** Input-referred TIA noise densities used in link budgets (c. 2023--26 published front-ends). Integrate $i_n\sqrt{\mathrm{BW}}$ for rms noise before applying $Q$ (§4.4). Sources in text.
 
@@ -216,7 +216,7 @@ Table 4.3 pairs detectors and TIAs. Commercial linear-optics TIAs (Semtech GN18
 
   SiGe $4\times$`<!-- -->`{=html}112 GBd TIA   TIA       65 GHz; 13.2 pA$/\sqrt{\mathrm{Hz}}$          224G PAM4                       Research / product-class paper
 
-  16-nm CMOS + co-pkg PD                       TIA+PD    16.9 pA$/\sqrt{\mathrm{Hz}}$                  112G; $-8.2$ dBm                Co-packaged win
+  -nm CMOS + co-pkg PD                         TIA+PD    16.9 pA$/\sqrt{\mathrm{Hz}}$                  112G; $-8.2$ dBm                Co-packaged win
 
   Recessed Ge/Si PIN                           PD        106 GHz; 0.93 A/W                             200 GBd-class                   $<$`<!-- -->`{=html}10 nA dark
 

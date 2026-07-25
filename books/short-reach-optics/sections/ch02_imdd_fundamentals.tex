@@ -115,13 +115,17 @@ data-center-interconnect links that have moved toward coherent optics.
 \refstepcounter{table}\label{tab:reach}%
 \centering
 \setlength{\tabcolsep}{6pt}%
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.22\linewidth}p{0.18\linewidth}p{0.54\linewidth}@{}}
 \toprule
 Regime & Distance & Notes \\
 \midrule
 In-package / die-to-die & mm--cm & optical I/O chiplets (e.g. \Cref{sec:cwwdm}) \\
+\addlinespace[1.5em]
 Chip-to-chip / co-packaged & cm & CPO engines on the switch/XPU substrate \\
+\addlinespace[1.5em]
 Scale-up (rack scale) & $\sim$1--10~m & XPU-to-XPU; copper below $\sim$1--2~m, optics beyond \\
+\addlinespace[1.5em]
 Intra-rack / intra-row & up to $\sim$100--500~m & SR over MMF; DR single-mode \\
 \midrule
 Campus / DCI \emph{(out of scope)} & 2~km (FR), 10~km (LR), and beyond & increasingly coherent, not IM/DD \\
@@ -215,12 +219,15 @@ blocks.
 \begin{table}[ht]
 \centering
 \caption{Per-lane rates and symbol rates (PAM4).\label{tab:pam4-rates}}
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}lll@{}}
 \toprule
 Per-lane rate & Symbol rate & Context \\
 \midrule
 100G/lane & $\approx$53.1~GBd & 400G/800G today \\
+\addlinespace[1.5em]
 200G/lane & $\approx$106--112~GBd & 800G/1.6T ramp \\
+\addlinespace[1.5em]
 224G/lane & $\approx$112~GBd (CEI-224G) & next SerDes generation \\
 \bottomrule
 \end{tabular}
@@ -356,14 +363,19 @@ no retimer to hide behind (\Cref{sec:224g-deploy}).
 \caption{Where each block runs, by module style.\label{tab:serdes-dsp}}
 \setlength{\tabcolsep}{4pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.24\linewidth}p{0.22\linewidth}p{0.20\linewidth}p{0.22\linewidth}@{}}
 \toprule
 Block & Retimed & LPO & CPO (XSR) \\
 \midrule
 Serialize / PAM4 & Host SerDes & Host SerDes & Host SerDes \\
+\addlinespace[1.5em]
 Rx EQ (FFE/DFE) & Module DSP & Host SerDes DSP & Host SerDes DSP \\
+\addlinespace[1.5em]
 CDR / retiming & Module DSP & Host SerDes & Host SerDes \\
+\addlinespace[1.5em]
 KP4 FEC & Host (or module) & Host & Host \\
+\addlinespace[1.5em]
 Optical drive & Module DSP out & Linear driver & On-package engine \\
 \bottomrule
 \end{tabular}
@@ -395,14 +407,19 @@ walks through on transmit (receive runs in reverse).
 \caption{IEEE 802.3 PHY sublayers, transmit order.\label{tab:phy-stack}}
 \setlength{\tabcolsep}{4pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.14\linewidth}p{0.52\linewidth}p{0.24\linewidth}@{}}
 \toprule
 Sublayer & Function & Domain \\
 \midrule
 MAC & Frame, address, CRC & Digital, host \\
+\addlinespace[1.5em]
 RS & Reconciliation: adapt MAC to the PHY across the xMII & Digital, host \\
+\addlinespace[1.5em]
 PCS & 64B/66B, 256B/257B transcode, scramble, RS-FEC & Digital \\
+\addlinespace[1.5em]
 PMA & Serialize, lane mux, clock recovery (SerDes) & Mixed-signal \\
+\addlinespace[1.5em]
 PMD & Modulate/detect light: laser, driver, PD, TIA & Optical \\
 \bottomrule
 \end{tabular}
@@ -512,17 +529,25 @@ die pad.
 \centering
 \setlength{\tabcolsep}{5pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.05\linewidth}p{0.075\linewidth}p{0.29\linewidth}p{0.30\linewidth}p{0.15\linewidth}@{}}
 \toprule
 Point & Domain & Location & Principal measurement & Owning spec \\
 \midrule
 TP0 & Electrical & Tx ASIC/SerDes die pad (host) & Silicon Tx quality; design reference, hard to probe once packaged & OIF CEI C2M \\
+\addlinespace[1.5em]
 TP1a & Electrical & Host output at the cage, host-referenced (SerDes output via a host compliance board) & Host Tx eye, EECQ; the AUI the module must accept & OIF CEI C2M; LPO MSA \\
+\addlinespace[1.5em]
 TP1 & Electrical & Module electrical input (module side of the mated connector) & Module input stressor calibration & IEEE 802.3 AUI; OIF CEI \\
+\addlinespace[1.5em]
 TP2 & Optical & Transmitter MDI, fiber launch (after E$\to$O) & TDECQ, TECQ, OMA$_{\mathrm{outer}}$, ER, RIN$_x$OMA & IEEE 802.3 PMD; LPO MSA \\
+\addlinespace[1.5em]
 TP3 & Optical & Receiver MDI, fiber input (before O$\to$E) & Stressed receiver sensitivity, SECQ & IEEE 802.3 PMD; LPO MSA \\
+\addlinespace[1.5em]
 TP4 & Electrical & Module electrical output (module side of the connector) & Module Rx electrical output, EECQ & IEEE 802.3 AUI; OIF CEI \\
+\addlinespace[1.5em]
 TP4a & Electrical & Stressed host input, host-referenced (near the Rx SerDes) & Host Rx under worst-case module output & OIF CEI C2M; LPO MSA \\
+\addlinespace[1.5em]
 TP5 & Electrical & Rx ASIC/SerDes die pad (host) & Silicon Rx recovery; design reference, hard to probe & OIF CEI C2M \\
 \bottomrule
 \end{tabular}
@@ -661,12 +686,15 @@ $30/544\approx5.5\%$, so the \emph{line rate} on the wire exceeds the MAC/info r
 \begin{table}[ht]
 \centering
 \caption{Three rate names on one 802.3dj lane (200G Ethernet).\label{tab:rate-stack}}
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.18\linewidth}p{0.42\linewidth}p{0.32\linewidth}@{}}
 \toprule
 Term & Meaning & Example \\
 \midrule
 MAC rate & User Ethernet throughput at MAC & 200~Gb/s per lane \\
+\addlinespace[1.5em]
 Line rate & Bits on wire incl.\ FEC overhead & $\sim$211--224~Gb/s (context-dependent) \\
+\addlinespace[1.5em]
 Symbol rate & Baud on the electrical/optical lane & $\sim$112~GBd PAM4 \\
 \bottomrule
 \end{tabular}
@@ -715,12 +743,15 @@ tracks it closely.
 \begin{table}[ht]
 \centering
 \caption{The CEI per-lane roadmap.\label{tab:cei-roadmap}}
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}llll@{}}
 \toprule
 Generation & Per lane & Modulation & Ethernet rates \\
 \midrule
 CEI-112G & 112~Gb/s & PAM4 & 100/200/400G \\
+\addlinespace[1.5em]
 CEI-224G & 224~Gb/s & PAM4 ($\approx$112~GBd) & 200/400/800/1600G \\
+\addlinespace[1.5em]
 CEI-448G & 448~Gb/s & TBD (PAM4/6/8) & 400/800/1600/3200G \\
 \bottomrule
 \end{tabular}
@@ -777,14 +808,19 @@ copper.\label{fig:cei-reach-map}}
 \centering
 \setlength{\tabcolsep}{4pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.12\linewidth}p{0.22\linewidth}p{0.28\linewidth}p{0.30\linewidth}@{}}
 \toprule
 Class & Hop & Nominal reach / channel & Notes \\
 \midrule
 XSR & Die-to-die or die-to-OE & $\lesssim$50~mm package substrate & CPO / chiplet optics; light EQ \\
+\addlinespace[1.5em]
 VSR & Chip-to-pluggable module & $\sim$200~mm host + $\sim$20~mm module, 1 connector & Classic faceplate retimed path \\
+\addlinespace[1.5em]
 MR & Chip-to-chip / midplane & $\sim$500~mm, 1 connector & Board-scale copper \\
+\addlinespace[1.5em]
 LR & Backplane or copper cable & $\sim$1000~mm host+daughter, 2 connectors & DAC/ACC/AEC territory \\
+\addlinespace[1.5em]
 Linear & Chip-to-linear module & Same cages as VSR-class ports; no module DSP & LPO foundation; host EQ + FEC \\
 \bottomrule
 \end{tabular}
@@ -977,12 +1013,15 @@ architectures and the baud rate at each hop.
 \centering
 \caption{PAM-$M$ options at 448~Gb/s/lane (OIF CEI-448G framework, pre-FEC
          line-rate target).\label{tab:448-mod}}
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}lrrrr@{}}
 \toprule
 Scheme & Symbol rate & $f_N$ & UI & SNR penalty vs.\ PAM4 \\
 \midrule
 PAM4 & 224~GBd   & 112~GHz & 4.5~ps & 0~dB \\
+\addlinespace[1.5em]
 PAM6 & 173~GBd   & 87~GHz  & 5.8~ps & $\approx$2~dB \\
+\addlinespace[1.5em]
 PAM8 & 149~GBd   & 75~GHz  & 6.7~ps & $\approx$4--5~dB \\
 \bottomrule
 \end{tabular}
@@ -1010,18 +1049,23 @@ $\sim$2~dB SNR penalty on top, so workshop assumptions often pair PAM6 with
 \refstepcounter{table}\label{tab:448-fec}%
 \centering
 \setlength{\tabcolsep}{5pt}%
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.19\linewidth}p{0.15\linewidth}p{0.08\linewidth}p{0.49\linewidth}@{}}
 \toprule
 Context & FEC & OH & Role at 448G/lane \\
 \midrule
 802.3dj / 224G & KP4 RS(544,514) & 5.5\% &
   Baseline; pre-FEC BER near 2.4e-4. \\
+\addlinespace[1.5em]
 CEI-448G, PAM4 elec. & KP4 or stronger & 5.5\%+ &
   Target pre-FEC 1e-4; KP4 may fail on 40~dB-class channels. \\
+\addlinespace[1.5em]
 CEI-448G, PAM6 elec. & MLC + strong RS & 12\% &
   Offsets PAM6 SNR penalty; adds latency (workshop assumption). \\
+\addlinespace[1.5em]
 448G optical demos & HD-FEC / product & 10--15\% &
   3.2T TFLN demo threshold; not necessarily host FEC. \\
+\addlinespace[1.5em]
 FEC architecture & end-to-end vs.\ terminated & n/a &
   448G may need dedicated electrical inner code. \\
 \bottomrule
@@ -1326,17 +1370,25 @@ swing~\firstcite{simzm400}.
 \centering
 \setlength{\tabcolsep}{3pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.24\linewidth}p{0.12\linewidth}p{0.14\linewidth}p{0.16\linewidth}p{0.26\linewidth}@{}}
 \toprule
 Part / paper & Process & RF BW & Rate / swing & Note \\
 \midrule
 MACOM MAOM-025408 (MZM) & SiGe & $>$120~GHz & 448G-class PAM4 & Commercial; SiPh MZM \\
+\addlinespace[1.5em]
 MACOM MAOM-022404 (EML) & SiGe & $>$120~GHz & 448G-class PAM4 & Commercial; EML / TFLN \\
+\addlinespace[1.5em]
 Semtech GN1877 / GN1887 & --- & 224G-class & 224~Gb/s/lane & Quad/octal; LPO path \\
+\addlinespace[1.5em]
 RFIC 2026 distributed drv & 130~nm SiGe & 105.7~GHz & 232~GBd; 2.25~V & Research; TFLN; offline DSP \\
+\addlinespace[1.5em]
 OFC 2026 Si MZM + SiGe & commercial SiGe & (drv-limited) & 400~Gb/s/lane; 2.5~V & Postdeadline Th4A.4 \\
+\addlinespace[1.5em]
 OFC 2026 TFLN TOSA & co-designed & --- & 210~GBd / 420~Gb/s & Driver+TFLN engine \\
+\addlinespace[1.5em]
 OFC 2026 InP MZM + EML drv & InP + SiGe-class & 76~GHz MZM & 180~GBd PAM4 & Co-packaged engine \\
+\addlinespace[1.5em]
 Nokia/Bell Labs hybrid & SiGe + TFLN & --- & 140~GBd PAM8; 1.4~pJ/bit & Diff.\ drive; low $V_\pi L$ \\
 \bottomrule
 \end{tabular}
@@ -1403,13 +1455,17 @@ Nyquist without heavy peaking.
 \centering
 \setlength{\tabcolsep}{4pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.11\linewidth}p{0.10\linewidth}p{0.14\linewidth}p{0.08\linewidth}p{0.18\linewidth}p{0.33\linewidth}@{}}
 \toprule
 Platform & EO BW & Per-$\lambda$ demo & Chirp & Integration & Typical use \\
 \midrule
 Si microring & 90--110~GHz & 224--416~Gb/s PAM4 & low & monolithic SiPh & CPO, WDM \\
+\addlinespace[1.5em]
 Si MZM & 70--100+~GHz & 400~Gb/s PAM4 & low & monolithic SiPh & DR/FR, CPO \\
+\addlinespace[1.5em]
 TFLN MZM & 108--110+~GHz & 224--390~Gb/s PAM4/8 & very low & hybrid + driver die & 400G/lane pluggable, FR \\
+\addlinespace[1.5em]
 EML & 70--100~GHz & 200~Gb/s PAM4 & low & single InP chip & DR/FR to 200G/lane \\
 \bottomrule
 \end{tabular}
@@ -1448,12 +1504,15 @@ Ethernet standards trail CEI slightly but follow the same lane-doubling cadence.
 \begin{table}[ht]
 \centering
 \caption{IEEE 802.3 lane-rate generations.\label{tab:ieee-lane}}
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}llll@{}}
 \toprule
 Project & Status & Eth.\ lane & PHY line \\
 \midrule
 802.3df & Feb 2024 & 100~Gb/s & $\approx$112G PAM4 \\
+\addlinespace[1.5em]
 802.3dj & SA ballot 2026 & 200~Gb/s & $\approx$224G PAM4 \\
+\addlinespace[1.5em]
 802.3 400G/lane SG & Mar 2026 & 400~Gb/s & $\approx$448G \\
 \bottomrule
 \end{tabular}

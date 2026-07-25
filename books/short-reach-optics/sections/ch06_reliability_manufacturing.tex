@@ -227,18 +227,27 @@ paths. Customize limits in the ATP; keep the classification discipline.
 \centering
 \setlength{\tabcolsep}{3pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.16\linewidth}p{0.22\linewidth}p{0.28\linewidth}p{0.26\linewidth}@{}}
 \toprule
 Mechanism & Observable & ATP / telemetry & Triage bucket \\
 \midrule
 COD (facet) & Sudden dark or hard fail; was healthy & Dark LIV; DPA facet; date-code cluster? & Reliability (COD) or mfg (ESD) \\
+\addlinespace[1.5em]
 Gradual facet / active region & $I_\mathrm{th}$ up, slope down over life & LIV trend vs ship ATP; HTOL lot history & Reliability (wear-out) \\
+\addlinespace[1.5em]
 SMSR collapse & Side modes rise; modal noise / BER & OSA SMSR vs floor at $T$ & Reliability; watch aging \\
+\addlinespace[1.5em]
 EAM aging (EML) & TDECQ/RLM creep at fixed bias & EAM bias sweep + DCA; bias creep log & Reliability (EAM) \\
+\addlinespace[1.5em]
 RIN rise & BER floor up; feedback sensitive & RIN @ ORL; isolator / connector check & Perf if ORL; reliability if isolator \\
+\addlinespace[1.5em]
 TEC / thermal control & Unlock or $\lambda$ walk; LIV may look fine & TEC current, case $T$, lock status & Perf (lock) or reliability (TEC) \\
+\addlinespace[1.5em]
 Coupling / FAU / solder & Loss step, intermittent LOS, shock-related & ORL, mate cycles, DPA FAU/solder & Manufacturability / packaging \\
+\addlinespace[1.5em]
 Driver/TIA latch-up (ESD) & Sudden hard fail; no light, no LIV signature; supply current spikes & Supply current vs bias; JESD78 rating; date-code cluster? & Mfg (ESD) or design margin \\
+\addlinespace[1.5em]
 Connector wear / contamination & ORL creep after repeated mate cycles; RIN floor rise & Mate-cycle count vs IEC~61300-2-2 rating; endface grade (IEC~61300-3-35) & Manufacturability / packaging \\
 \bottomrule
 \end{tabular}
@@ -249,15 +258,323 @@ versus observables. Arrhenius projection and derating for the laser rows:
 \Cref{sec:ic-reliability}. Connector reliability: \Cref{sec:connector-reliability}.
 Field classification workflow: \Cref{sec:fleet-triage}.\par}
 \end{table*}
+\FloatBarrier
 
-\term{Catastrophic optical damage} (COD) is the sudden facet failure under optical
-or electrical overstress. Gradual facet and active-region degradation move
-threshold and slope on a slower clock. EAM aging shifts the absorption curve and
-shows up as transmitter and dispersion eye closure quaternary (TDECQ) or RLM
-drift before the DFB LIV looks dead. TEC and lock failures
-mimic optical wear-out until you bisect heater versus laser
-(\Cref{sec:lock-validation}). Coupling and FAU faults belong with packaging, not
-with Arrhenius $E_a$ arguments.
+\subsection{Reading the wear-out map}
+\label{sec:wearout-map-read}
+
+\Cref{tab:wearout-map} is a triage map, not a life calculator. Each row asks
+which mechanism fits the observable, which ATP or telemetry line can confirm it,
+and which owner should act. Arrhenius projection and derating live in
+\Cref{sec:laser-aging}; this section teaches how to classify before you CAPA.
+
+\paragraph{COD (facet).}
+
+\textbf{Purpose.}
+Is the sudden dark or hard fail catastrophic facet damage, or a handling /
+electrical overstress that looks like it?
+
+\textbf{Uncertainty removed.}
+Before classification you only know the unit stopped emitting after looking
+healthy. After it you know whether the facet failed, whether the lot clusters,
+and whether the owner is reliability (COD) or manufacturing (ESD).
+
+\textbf{Activities.}
+Compare ship ATP light--current--voltage (LIV) to a dark return. Run
+destructive physical analysis (DPA) on the facet when the signature is
+ambiguous. Check date-code clustering before assuming random wear-out.
+
+\textbf{Measurements and evidence.}
+A previously healthy unit that goes dark with no LIV kink history points at
+sudden facet failure. DPA facet damage separates
+\term{catastrophic optical damage} (COD) from a dead driver or open bond.
+Date-code clusters pull the case toward ESD or process escape rather than
+end-of-life wear.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} dark LIV, DPA (if needed), and cohort data place the fail in
+COD versus ESD/mfg, with a named owner.
+
+\textbf{Decision unlocked.}
+Open reliability CAPA and life review for COD, or tighten handling / ESD
+screens for a manufacturing cluster.
+
+\textbf{Risk if skipped.}
+You burn Arrhenius math on an ESD lot, or you run process CAPA on true
+facet wear-out.
+
+\paragraph{Gradual facet / active region.}
+
+\textbf{Purpose.}
+Is threshold rising and slope falling on a wear-out clock that life models
+must cover?
+
+\textbf{Uncertainty removed.}
+Before aging readouts you do not know whether a soft BER creep is bias drift,
+calibration, or real diode wear. After LIV trends versus ship ATP you know
+whether the device physics moved permanently.
+
+\textbf{Activities.}
+Trend $I_\mathrm{th}$ and slope against ship baselines across HTOL intervals
+and field returns. Compare lot history before blaming one unit.
+
+\textbf{Measurements and evidence.}
+Rising threshold and falling slope at fixed temperature separate diode wear
+from a monitor or setpoint change. HTOL lot history ties the rate to the
+activation energy you claim in the life model (\Cref{sec:laser-aging}).
+
+\textbf{Exit criteria.}
+\textbf{Exit when} LIV trends show permanent wear (or clear its absence) and
+the rate supports or falsifies the derate and FIT claim.
+
+\textbf{Decision unlocked.}
+Accept derate and replacement planning, tighten bias/temperature policy, or
+hold ship for life risk.
+
+\textbf{Risk if skipped.}
+Soft fails look like ``random BER'' until the fleet hits end-of-life together.
+
+\paragraph{SMSR collapse.}
+
+\textbf{Purpose.}
+Did side-mode suppression fail so modal noise or BER rises while average power
+still looks fine?
+
+\textbf{Uncertainty removed.}
+Before spectrum checks you may chase Tx eye or Rx sensitivity for a modal
+problem. After OSA SMSR versus the floor at temperature you know whether
+single-mode purity failed.
+
+\textbf{Activities.}
+Measure side-mode suppression ratio (SMSR) on an optical spectrum analyzer
+across temperature and age. Compare to the ATP floor and to ship records.
+
+\textbf{Measurements and evidence.}
+SMSR collapse raises modal noise and BER without a simple power-drop story.
+Temperature-dependent SMSR loss that worsens with age is a reliability signal,
+not a one-time set-and-forget spec.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} SMSR versus temperature and age either clears the floor with
+margin or names the fail as modal / aging risk.
+
+\textbf{Decision unlocked.}
+Tighten SMSR ATP and aging screens, derate temperature, or reject the lot /
+design for modal risk.
+
+\textbf{Risk if skipped.}
+Intermittent BER under temperature looks like connector or SerDes noise while
+the laser left single-mode operation.
+
+\paragraph{EAM aging (EML).}
+
+\textbf{Purpose.}
+Is the electro-absorption modulator (EAM) absorption curve shifting while the
+DFB LIV still looks healthy?
+
+\textbf{Uncertainty removed.}
+Before bias and eye trends you may blame the laser diode for transmitter and
+dispersion eye closure quaternary (TDECQ) or relative level mismatch (RLM)
+creep. After EAM sweeps you know whether the modulator aged.
+
+\textbf{Activities.}
+Hold laser bias policy fixed. Sweep EAM bias with a sampling scope / DCA.
+Log bias creep and TDECQ/RLM versus time and temperature.
+
+\textbf{Measurements and evidence.}
+TDECQ or RLM creep at fixed optical power with a restoring EAM bias sweep
+points at modulator aging, not facet wear. Bias-creep logs separate slow
+absorption shift from a one-time calibration error.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} EAM bias and eye metrics either stay inside the control
+window across age or show a named aging rate with an owner.
+
+\textbf{Decision unlocked.}
+Add EAM aging to life and ATP screens, retune bias tables, or hold EML ship
+for modulator risk.
+
+\textbf{Risk if skipped.}
+You replace ``good'' DFBs while the EAM curve walks the eye closed.
+
+\paragraph{RIN rise.}
+
+\textbf{Purpose.}
+Did relative intensity noise (RIN) rise because of optical return loss
+(ORL) / feedback, or because an isolator or source path degraded?
+
+\textbf{Uncertainty removed.}
+Before quiet versus stressed ORL RIN you cannot tell performance (reflection
+environment) from reliability (isolator or source). After the split you know
+which triage bucket owns the BER floor.
+
+\textbf{Activities.}
+Measure RIN at stated ORL and bandwidth. Inspect connectors and isolator path.
+Compare clean versus stressed floors (\Cref{sec:rin-values}).
+
+\textbf{Measurements and evidence.}
+A BER floor that tracks ORL and recovers when reflections fall is a
+performance / plant problem. A floor that stays high after ORL is controlled
+and isolator integrity fails is a reliability path.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} RIN@ORL and plant checks assign the floor to ORL/performance
+or to isolator/source reliability.
+
+\textbf{Decision unlocked.}
+Fix connectors and reflection budget, or open reliability work on isolator /
+source packaging.
+
+\textbf{Risk if skipped.}
+You derate a healthy laser for dirty plant, or you polish connectors forever
+on a dead isolator.
+
+\paragraph{TEC / thermal control.}
+
+\textbf{Purpose.}
+Is unlock or wavelength walk a cooler / control fault while the diode LIV is
+still fine?
+
+\textbf{Uncertainty removed.}
+Before TEC current, case temperature, and lock status you may treat every
+wavelength walk as laser aging. After the bisect you know whether the cooler
+or lock loop failed (\Cref{sec:lock-validation}).
+
+\textbf{Activities.}
+Log TEC current, case $T$, and lock status with wavelength. Cool down and
+recover. Compare LIV before and after unlock events.
+
+\textbf{Measurements and evidence.}
+Healthy LIV with rising TEC current, unlock flags, or $\lambda$ walk that
+tracks case $T$ points at thermal control. Permanent LIV shift after the same
+event points back at the diode.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} telemetry and recovery tests place the event in lock /
+TEC performance or in TEC hardware reliability.
+
+\textbf{Decision unlocked.}
+Retune lock/thermal policy, replace TEC path, or open diode aging if LIV
+moved.
+
+\textbf{Risk if skipped.}
+You scrap lasers for control faults, or you ignore a dying TEC until WDM
+unlocks fleet-wide.
+
+\paragraph{Coupling / FAU / solder.}
+
+\textbf{Purpose.}
+Is the optical or mechanical attach path intermittent or stepped, rather than
+the semiconductor wearing out?
+
+\textbf{Uncertainty removed.}
+Before mate, ORL, and DPA work you may assign shock-related LOS to laser FIT.
+After packaging evidence you know the owner is manufacturability.
+
+\textbf{Activities.}
+Measure ORL and mate cycles. Correlate to shock or service events. Section FAU
+and solder when needed.
+
+\textbf{Measurements and evidence.}
+Step loss, intermittent LOS, and shock correlation with clean semiconductor
+metrics point at fiber-array unit (FAU) align, epoxy, or solder. DPA confirms
+the mechanical path.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} packaging evidence (or a clean DPA clear) assigns the fail
+to attach / FAU / solder versus diode physics.
+
+\textbf{Decision unlocked.}
+Open assembly CAPA, tighten attach screens, or clear packaging and return to
+reliability rows.
+
+\textbf{Risk if skipped.}
+Life models absorb packaging escapes, and the next lot fails the same way.
+
+\paragraph{Driver / TIA latch-up (ESD).}
+
+\textbf{Purpose.}
+Is the sudden hard fail electronics latch-up or ESD, with no optical LIV
+aging signature?
+
+\textbf{Uncertainty removed.}
+Before supply-current and rating checks a dark module looks like COD. After
+electrical evidence you know whether the IC path failed.
+
+\textbf{Activities.}
+Compare supply current versus bias. Review JESD78 / ESD ratings and date-code
+clusters. Confirm no light and no laser LIV signature of wear.
+
+\textbf{Measurements and evidence.}
+Supply current spikes, latch-up under injection, and date-code clusters with
+a dark but undamaged facet path point at manufacturing ESD or design margin
+on the driver/TIA, not facet COD.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} electrical signature and rating evidence clear or confirm
+ESD/latch-up ownership.
+
+\textbf{Decision unlocked.}
+Tighten handling and ESD screens, or reopen IC design margin
+(\Cref{sec:ic-reliability}).
+
+\textbf{Risk if skipped.}
+You open laser DPA on every dark return and miss a handling epidemic.
+
+\paragraph{Connector wear / contamination.}
+
+\textbf{Purpose.}
+Did repeated mate cycles or endface contamination raise ORL and the RIN /
+BER floor without semiconductor wear?
+
+\textbf{Uncertainty removed.}
+Before mate-cycle and endface grade checks soft floors look like laser aging.
+After IEC~61300 evidence you know the plant and packaging own the trend.
+
+\textbf{Activities.}
+Count mate cycles versus IEC~61300-2-2 rating. Grade endfaces
+(IEC~61300-3-35). Correlate ORL creep to service actions
+(\Cref{sec:connector-reliability}).
+
+\textbf{Measurements and evidence.}
+ORL creep after mates, recoverable with clean/replace, and endface fails are
+manufacturability / packaging. Permanent semiconductor LIV or SMSR shift is
+not this row.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} mate history, ORL, and endface grade explain the floor, or
+when clean connectors leave a residual that returns you to RIN/reliability.
+
+\textbf{Decision unlocked.}
+Change service practice, connector rating, or ATP mate screens; do not open
+laser life CAPA for dirty MT.
+
+\textbf{Risk if skipped.}
+Fleet polish and reseat theater continues while the real limit is mate-cycle
+budget.
+
+\subsection{Why triage buckets matter more than mechanism names}
+
+Classify before corrective action. Reliability rows (COD, gradual wear, SMSR,
+EAM, true isolator/source RIN) need life models, derate, and supplier physics
+work. Performance rows (ORL-driven RIN, lock/thermal control) need plant,
+bias, and control fixes. Manufacturing and packaging rows (ESD, FAU, solder,
+connector) need process, handling, and ATP screens. Mixing buckets wastes CAPA
+and teaches the wrong lesson to the next lot (\Cref{sec:fleet-triage}).
+
+Later evidence must not rewrite an earlier wrong bucket without new data. A
+clean facet DPA does not prove the connector was innocent if ORL was never
+measured. An HTOL pass does not clear a date-code ESD cluster.
+
+\subsection{Learning summary}
+
+\begin{description}
+\item[COD / ESD dark fails] Sudden dark: facet physics or electrical overstress?
+\item[Gradual LIV wear] Threshold up, slope down: life and derate.
+\item[SMSR / EAM / RIN] Spectrum, modulator, or noise floor: which ledger moved?
+\item[TEC / lock] Wavelength walk with healthy LIV: control before diode.
+\item[FAU / solder / connector] Step loss and mate history: packaging, not FIT.
+\end{description}
 
 \section{The reliability bathtub: three failure regimes}
 \label{sec:bathtub}
@@ -537,32 +854,79 @@ Production validation is replayable and decision-oriented
 (\Cref{sec:tree-production-loop}).
 
 \paragraph{NPI gates and exit criteria.}
-\Cref{tab:npi} is the usual stage map. For lasers and IM/DD modules, write exit
-criteria that a supplier can fail clearly, not slogans.
+New product introduction (\term{NPI}\firstterm{NPI}) gates are the manufacturing
+face of the validation ladder. \Cref{tab:npi} is the usual stage map. Write exit
+criteria a supplier can fail clearly, not slogans. EVT/DVT/PVT/MP are stage
+names, not a calendar; dates and sample sizes belong in the program plan.
 
 \begin{table*}[ht]
 \refstepcounter{table}\label{tab:npi}%
 \centering
 \setlength{\tabcolsep}{4pt}%
 \footnotesize
-\begin{tabular}{@{}p{0.10\linewidth}p{0.22\linewidth}p{0.34\linewidth}p{0.28\linewidth}@{}}
+\renewcommand{\arraystretch}{1.25}%
+\begin{tabular}{@{}p{0.10\linewidth}p{0.24\linewidth}p{0.34\linewidth}p{0.26\linewidth}@{}}
 \toprule
-Gate & Question & Laser / optics exit criteria (examples) & Who signs \\
+Gate & Main question & Evidence required & Decision unlocked \\
 \midrule
-EVT & Does it work at all? & First light; CMIS bring-up sequence (\Cref{sec:bringup}); LIV/SMSR/RIN on engineering samples; one link closes BER & Optical eng + supplier FAE \\
-DVT & Spec across corners? & Full ATP at $T$/$V$ corners; prod-rep corners (\Cref{sec:prod-corners}); TDECQ/OMA/sensitivity; GR-468 stress plan frozen; FIT model agreed & Optical eng + reliability \\
-PVT & Buildable at yield? & Multi-lot yield vs ATP; SPC charts live; burn-in escape rate; FAIR on production tooling; bring-up on production host & Optical eng + SQE / mfg \\
-MP & Sustained quality? & Steady DPPM; RMA Pareto owned; ECO control on CMIS/firmware and process & Program + supplier QM \\
+EVT & Does it operate at all? & First light; CMIS bring-up; basic LIV/SMSR/RIN; one link closes BER & Continue / redesign integration \\
+\addlinespace[1.35em]
+DVT & Does it meet spec across corners? & Full ATP at $T$/$V$; prod-rep corners; stress plan + FIT model frozen & Enter PVT / hold / redesign \\
+\addlinespace[1.35em]
+PVT & Is it buildable at yield? & Multi-lot yield; SPC; burn-in escape; FAIR; production-host bring-up & Open volume / hold \\
+\addlinespace[1.35em]
+MP & Is quality sustained? & Steady DPPM; owned RMA Pareto; ECO control & Keep shipping / CAPA / restrict \\
 \bottomrule
 \end{tabular}
 \par\medskip
-{\raggedright\footnotesize\textbf{Table~\thetable.} NPI gates with laser-relevant exit
-criteria. EVT/DVT/PVT/MP are stage names, not a schedule; dates and sample sizes
-belong in the program plan with the supplier.\par}
+{\raggedright\footnotesize\textbf{Table~\thetable.} NPI gates as a decision map.
+Detailed exit examples and owners follow below.\par}
 \end{table*}
 
-Hold a gate if the exit data are missing. Shipping PVT material without frozen
-ATP limits is how field NFF and FIT arguments start (\Cref{sec:fleet-triage}).
+\paragraph{EVT (engineering validation test).}
+\textbf{Purpose:} prove the design can operate, not that it is ready for
+fleet corners. \textbf{Uncertainty removed:} basic integration and first-order
+laser health on engineering samples. \textbf{Activities:} CMIS bring-up
+sequence (\Cref{sec:bringup}), first light, LIV/SMSR/RIN on samples, one link
+to a usable BER. \textbf{Exit:} ready state, light, and a closing BER on a
+known-good path. \textbf{Decision:} continue to DVT, or debug integration /
+redesign. \textbf{Risk if skipped:} DVT matrices run on parts that never
+reliably link.
+
+\paragraph{DVT (design validation test).}
+\textbf{Purpose:} prove the requirements slice across temperature, voltage,
+and production-representative corners, with a frozen life plan.
+\textbf{Uncertainty removed:} whether margin and named stress coverage close
+before volume tooling. \textbf{Activities:} full ATP at $T$/$V$, prod-rep
+corners (\Cref{sec:prod-corners}), TDECQ/OMA/sensitivity, freeze GR-468-class
+stress plan and FIT model. \textbf{Exit:} corner closures plus agreed life
+evidence plan. \textbf{Decision:} enter PVT, hold, or redesign.
+\textbf{Risk if skipped:} PVT yield work hides missing corner coverage.
+
+\paragraph{PVT (production validation test).}
+\textbf{Purpose:} prove the supplier can build the qualified result at yield
+on production tooling and hosts. \textbf{Uncertainty removed:} lot variation,
+process control, and ATP escape coverage. \textbf{Activities:} multi-lot yield
+versus ATP, live SPC, burn-in escape rate, FAIR on production tooling,
+bring-up on the production host. \textbf{Exit:} yield and SPC support open
+volume. \textbf{Decision:} open MP volume or hold for process CAPA.
+\textbf{Risk if skipped:} shipping PVT material without frozen ATP limits
+seeds field NFF and dishonest FIT arguments (\Cref{sec:fleet-triage}).
+
+\paragraph{MP (mass production).}
+\textbf{Purpose:} sustain quality after ramp. \textbf{Uncertainty removed:}
+whether DPPM, RMA ownership, and ECO control remain stable.
+\textbf{Activities:} track DPPM, own RMA Pareto by mechanism, control ECOs on
+CMIS/firmware and process. \textbf{Exit:} steady quality with clear owners.
+\textbf{Decision:} keep shipping, restrict, or open CAPA. \textbf{Risk if
+skipped:} silent process drifts until the fleet trips.
+
+\paragraph{Why NPI order matches the ladder.}
+EVT is bring-up. DVT is characterization plus margin/interop plus frozen
+stress intent. PVT is production readiness. MP is fleet monitoring with
+manufacturing ownership. Do not use an EVT hero sample as PVT evidence.
+
+Hold a gate if the exit data are missing.
 
 \paragraph{Requirements and ATP are the contract.}
 ATP\firstterm{ATP} and the requirements doc are the contract. Write both and keep
@@ -586,20 +950,31 @@ numbers in the ATP itself.
 \centering
 \setlength{\tabcolsep}{3.5pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.20\linewidth}p{0.22\linewidth}p{0.28\linewidth}p{0.24\linewidth}@{}}
 \toprule
 ATP item & Instrument / method & Pass intent & Ties to \\
 \midrule
 LIV ($I_\mathrm{th}$, slope, kink) & SMU + power meter & kink-free bias window at rated $T$ & wear-out, derate (\Cref{sec:laser-params}) \\
+\addlinespace[1.5em]
 SMSR & OSA & single-mode vs.\ spec floor & modal noise, aging \\
+\addlinespace[1.5em]
 RIN (intrinsic + stressed ORL) & PD + ESA & $\mathrm{RIN}_x\mathrm{OMA}$ / quiet floor & BER floor (\Cref{sec:rin-values}) \\
+\addlinespace[1.5em]
 Wavelength / grid & OSA / wavemeter & channel ID; $d\lambda/dT$ & WDM lock (\Cref{ch:wdm}) \\
+\addlinespace[1.5em]
 Optical power class & power meter & ELSFP / MSA class met & link budget \\
+\addlinespace[1.5em]
 EAM bias / chirp (EML) & bias sweep + DCA & ER, RLM, TDECQ at baud & Tx quality (\Cref{sec:tdecq}) \\
+\addlinespace[1.5em]
 CMIS / TWI bring-up & host or CMIS tool & registers, alarms, state machine & field telemetry \\
+\addlinespace[1.5em]
 Connector / ORL & mate cycles + ORL meter & cycles + endface grade vs IEC~61300 limits & packaging (\Cref{sec:connector-reliability,sec:elsfp}) \\
+\addlinespace[1.5em]
 Burn-in screen & HTOL sample or 100\% screen & infant mortality culled & GR-468 (\Cref{sec:gr468}) \\
+\addlinespace[1.5em]
 Driver/TIA ESD, latch-up & supplier JESD47/HBM/CDM report; sample audit & rating on file; no latch-up under current injection & IC reliability (\Cref{sec:ic-reliability}) \\
+\addlinespace[1.5em]
 Thermal class & chamber at case $T$ & LIV/RIN/CMIS still pass & derate policy \\
 \bottomrule
 \end{tabular}
@@ -608,6 +983,237 @@ Thermal class & chamber at case $T$ & LIV/RIN/CMIS still pass & derate policy \\
 modules (EML or ELSFP). Limits are program-specific; the structure is what you
 negotiate with the supplier.\par}
 \end{table*}
+\FloatBarrier
+
+\subsection{Reading the ATP checklist}
+\label{sec:atp-laser-read}
+
+Each ATP line is a screen with a purpose, not a museum of instruments. Limits
+come from the requirements slice and link budget; the notes below state what
+uncertainty each line removes.
+
+\paragraph{LIV ($I_\mathrm{th.}$, slope, kink)}
+
+\textbf{Purpose.}
+Is there a kink-free bias window at rated temperature?
+
+\textbf{Uncertainty removed.}
+Without LIV you cannot separate a dead bias window from later eye or BER
+fails. Ship LIV is also the baseline for wear-out triage
+(\Cref{sec:laser-params,sec:wearout-modes}).
+
+\textbf{Activities.}
+Sweep current with an SMU and power meter at rated $T$. Record threshold,
+slope, and kink presence.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} the unit shows a kink-free window inside the bias policy.
+
+\textbf{Decision unlocked.}
+Ship, reject, or tighten bias/derate.
+
+\paragraph{Risk if omitted.}
+Kinked or weak diodes escape and age into soft BER without a compare baseline.
+
+\paragraph{SMSR.}
+
+\textbf{Purpose.}
+Does single-mode purity meet the floor so modal noise stays controlled?
+
+\textbf{Activities.}
+Measure SMSR on an OSA versus the spec floor at temperature.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} SMSR clears the floor with the program guardband.
+
+\textbf{Decision unlocked.}
+Ship or reject for modal risk; feed aging SMSR into life screens.
+
+\paragraph{Risk if omitted.}
+Temperature-dependent side modes look like random link errors in the field.
+
+\paragraph{RIN (intrinsic + stressed ORL).}
+
+\textbf{Purpose.}
+Does the noise floor survive quiet and stressed optical return loss?
+
+\textbf{Activities.}
+Measure RIN with a PD and ESA at stated ORL and bandwidth
+(\Cref{sec:rin-values}).
+
+\textbf{Exit criteria.}
+\textbf{Exit when} quiet and stressed RIN meet the BER-floor budget.
+
+\textbf{Decision unlocked.}
+Ship, require isolation, or reject for reflection sensitivity.
+
+\paragraph{Risk if omitted.}
+Clean-bench parts floor under field ORL.
+
+\paragraph{Wavelength / grid.}
+
+\textbf{Purpose.}
+Is the channel ID correct, and is $d\lambda/dT$ inside the lock budget
+(\Cref{ch:wdm})?
+
+\textbf{Activities.}
+OSA or wavemeter at temperature corners.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} wavelength and drift support the assigned grid and filters.
+
+\textbf{Decision unlocked.}
+Ship on channel, retune, or reject for grid miss.
+
+\paragraph{Risk if omitted.}
+WDM unlock and crosstalk appear as host or DSP bugs.
+
+\paragraph{Optical power class.}
+
+\textbf{Purpose.}
+Does launch power meet the ELSFP / MSA class the link budget assumed?
+
+\textbf{Activities.}
+Power meter at the named reference plane.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} power class is met with guardband.
+
+\textbf{Decision unlocked.}
+Ship, bin, or reject for budget failure.
+
+\paragraph{Risk if omitted.}
+Under-powered ports pass other screens and fail reach in the rack.
+
+\paragraph{EAM bias / chirp (EML).}
+
+\textbf{Purpose.}
+Do ER, RLM, and TDECQ at baud close with a stable EAM bias
+(\Cref{sec:tdecq})?
+
+\textbf{Activities.}
+EAM bias sweep with a DCA under named driver conditions.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} eye metrics meet limits inside the bias window.
+
+\textbf{Decision unlocked.}
+Ship EML, retune bias tables, or reject modulator quality.
+
+\paragraph{Risk if omitted.}
+Average power passes while Tx quality fails under temperature and age.
+
+\paragraph{CMIS / TWI bring-up.}
+
+\textbf{Purpose.}
+Do registers, alarms, and the state machine work so field telemetry is real?
+
+\textbf{Activities.}
+Host or CMIS tool bring-up through ready state; check alarms and key pages.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} management presence, state progression, and alarm paths
+pass.
+
+\textbf{Decision unlocked.}
+Ship with trusted telemetry, or hold for firmware / TWI faults.
+
+\paragraph{Risk if omitted.}
+Fleet triage has no trustworthy dump when the first RMA arrives.
+
+\paragraph{Connector / ORL.}
+
+\textbf{Purpose.}
+Do mate cycles and endface grade meet IEC~61300 limits for the service model
+(\Cref{sec:connector-reliability,sec:elsfp})?
+
+\textbf{Activities.}
+ORL meter and mate-cycle sample against rating; endface grade as required.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} cycles and grade meet the claimed service life.
+
+\textbf{Decision unlocked.}
+Ship, derate mate life, or reject packaging.
+
+\paragraph{Risk if omitted.}
+Connector wear raises ORL and RIN after routine service.
+
+\paragraph{Burn-in screen.}
+
+\textbf{Purpose.}
+Are infant-mortality parts culled before ship (\Cref{sec:gr468})?
+
+\textbf{Activities.}
+HTOL sample or 100\% screen per the reliability plan; track fallout.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} the screen completes and fallout is inside control limits.
+
+\textbf{Decision unlocked.}
+Ship the lot, hold for process excursion, or tighten burn-in.
+
+\paragraph{Risk if omitted.}
+Early-life clusters hit the fleet by date code.
+
+\paragraph{Driver / TIA ESD and latch-up.}
+
+\textbf{Purpose.}
+Is IC ESD/latch-up rating on file, and does sample audit support it
+(\Cref{sec:ic-reliability})?
+
+\textbf{Activities.}
+Review supplier JESD47 / HBM / CDM reports; sample audit as required.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} ratings are on file and audit finds no latch-up under the
+agreed injection.
+
+\textbf{Decision unlocked.}
+Accept electronics reliability evidence, or hold for IC margin / handling.
+
+\paragraph{Risk if omitted.}
+Dark modules from handling ESD are mis-labeled as laser COD.
+
+\paragraph{Thermal class.}
+
+\textbf{Purpose.}
+Do LIV, RIN, and CMIS still pass at the claimed case temperature?
+
+\textbf{Activities.}
+Chamber at case $T$ with the ATP subset that protects derate policy.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} thermal-class ATP rows pass at the rated case $T$.
+
+\textbf{Decision unlocked.}
+Approve thermal class, derate, or reject.
+
+\paragraph{Risk if omitted.}
+Room-temperature ATP ships parts that fail in the sled.
+
+\subsection{Why these ATP lines stay coupled}
+
+LIV, SMSR, and wavelength protect semiconductor and channel identity. RIN and
+connector/ORL protect the reflection environment. EAM/DCA protects Tx quality
+when the path is EML. CMIS protects field evidence. Burn-in and ESD protect
+infant mortality and handling. Thermal class protects the derate claim. No
+single line substitutes for another: a power-class pass does not clear a RIN
+floor, and an HTOL pass does not clear a CMIS state-machine bug.
+
+\textbf{Exit for the ATP as a whole:} every ship lot (or defined sample) has
+traceable pass data against versioned limits tied to the requirements slice.
+\textbf{Decision unlocked:} ship, hold, or reopen DVT limits.
+\textbf{Risk if lines are slogans:} field escapes with no ATP hook.
+
+\subsection{Learning summary}
+
+\begin{description}
+\item[LIV / SMSR / wavelength] Source and channel health at ship.
+\item[RIN / ORL / connector] Noise and plant survive service.
+\item[EAM / power / thermal] Eye, budget, and case $T$ close.
+\item[CMIS / burn-in / ESD] Telemetry, infant mortality, and electronics.
+\end{description}
 
 \paragraph{Incoming QC and SPC.}
 Qual lots are small. Production catches drift that qual missed.

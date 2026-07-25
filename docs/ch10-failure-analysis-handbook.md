@@ -438,6 +438,8 @@ Restore thermal headroom, correct calibration and control limits, reduce couplin
 
 ## Failure-analysis checklist
 
+The checklist in Table 10.1 is a lifecycle, not a suggestion list. Each step removes a class of uncertainty before the next step spends lab time. Skip Preserve and you often destroy the only evidence that separated host, plant, and product.
+
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Step            Question                                                                       Required record
   --------------- ------------------------------------------------------------------------------ ----------------------------------------------------------------------------
@@ -459,6 +461,146 @@ Restore thermal headroom, correct calibration and control limits, reduce couplin
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 **Table 10.1.** Failure-analysis checklist. The incident is not closed until the cause is reproduced, corrected, and covered by a recurrence control.
+
+### Reading the failure-analysis checklist
+
+##### Preserve.
+
+**Purpose.** What volatile evidence will a reseat, reboot, clean, or retest destroy?
+
+**Uncertainty removed.** Before preserve you do not know the failing state. After a CMIS dump, BER/FEC history, rails, temperature, firmware, fixture, and timestamp, later swaps cannot erase the original signature.
+
+**Activities.** Snapshot management registers and alarms. Export BER/FEC and retrain history. Record rails, case $T$, firmware, host slot, and time. Photograph endfaces before cleaning if contamination is plausible.
+
+**Exit criteria.** **Exit when** the failing-state pack is filed before any invasive action.
+
+**Decision unlocked.** Proceed to scope, or stop ops from "just reseating" until the pack exists.
+
+**Risk if skipped.** The fail clears on reseat and you learn nothing; the next unit fails the same way.
+
+##### Scope.
+
+**Purpose.** Is the incident one unit, lane, lot, vendor, site, or the fleet?
+
+**Uncertainty removed.** A single ticket does not set containment width. After population and correlation plots you know whether to contain a date code, a vendor, a site, or watch a rare unit.
+
+**Activities.** Plot fail rate by lot, vendor, site, and time. Compare neighbors and golden slots (§7.12).
+
+**Exit criteria.** **Exit when** the population boundary is named with evidence, not opinion.
+
+**Decision unlocked.** Contain a lot or vendor, treat as one-off, or escalate as fleet-wide.
+
+**Risk if skipped.** You either quarantine the world for one dirty connector, or you leave a bad lot shipping.
+
+##### Classify.
+
+**Purpose.** Is the fault sudden or gradual, constant or intermittent, thermal or cumulative?
+
+**Uncertainty removed.** Timeline and recovery decide which mechanism class is even plausible before you pick instruments.
+
+**Activities.** Build a time axis. Cool down and recover. Note whether the fault tracks temperature, mate cycles, or cumulative hours.
+
+**Exit criteria.** **Exit when** the time/recovery class is recorded and weak hypotheses are struck.
+
+**Decision unlocked.** Choose the first margin ledger and instrument set that match the class.
+
+**Risk if skipped.** You run aging FA on an intermittent connector, or connector FA on true wear.
+
+##### Locate margin.
+
+**Purpose.** Which ledger moved first: power, noise, timing, spectrum, or control?
+
+**Uncertainty removed.** BER alone does not say which physical margin failed. Golden comparison and the margin ledger name the thin ledger (Appendix A.6.4).
+
+**Activities.** Compare failing unit to golden on power, RIN/ORL proxies, CDR lock, spectrum, and lock/TEC telemetry.
+
+**Exit criteria.** **Exit when** the first-moving ledger is named with before/after or golden deltas.
+
+**Decision unlocked.** Pick the falsifying measurement for that ledger, not a random lab tour.
+
+**Risk if skipped.** You measure everything and confirm nothing.
+
+##### Falsify.
+
+**Purpose.** Which single measurement best separates the leading hypotheses?
+
+**Uncertainty removed.** Before a planned falsifier you only have a story. After expected results are written down, a pass or fail kills branches.
+
+**Activities.** Write two or three hypotheses. For each, state the measurement and the expected outcome before running it.
+
+**Exit criteria.** **Exit when** one measurement has cleanly killed or promoted the leading set.
+
+**Decision unlocked.** Move the surviving hypothesis to Confirm, or reopen Locate margin.
+
+**Risk if skipped.** Confirmation bias: every plot "supports" the favorite theory.
+
+##### Confirm.
+
+**Purpose.** Does the fault follow the suspected block under a controlled swap or stress?
+
+**Uncertainty removed.** A correlating measurement is not ownership. Swap or stress proves the fault travels with the block.
+
+**Activities.** Golden swap (module versus host). Controlled stress that recreates the failing corner. Keep a passing control.
+
+**Exit criteria.** **Exit when** the fail repeats with the suspect block and the control passes.
+
+**Decision unlocked.** Assign owner (product, host, plant, supplier lot) and open Correct.
+
+**Risk if skipped.** You "fix" the wrong block and the fleet fail rate does not move.
+
+##### Correct.
+
+**Purpose.** Does the fix restore the original failing condition with margin?
+
+**Uncertainty removed.** A theory without before/after at the loaded corner is not a fix.
+
+**Activities.** Apply the change. Retest the original failing corner and a loaded neighbor / ORL / thermal corner as relevant.
+
+**Exit criteria.** **Exit when** before/after data show restored margin at the failing condition.
+
+**Decision unlocked.** Close the unit-level fix and move to Prevent, or reopen Confirm.
+
+**Risk if skipped.** The lab unit passes; the next lot fails the same corner.
+
+##### Prevent.
+
+**Purpose.** Where can production or fleet monitoring catch recurrence earliest?
+
+**Uncertainty removed.** Without an ATP change, control limit, alarm, owner, and due date, the same escape returns.
+
+**Activities.** Add or tighten an ATP row, SPC limit, or fleet alarm. Name owner and date. Watch the cohort after the change.
+
+**Exit criteria.** **Exit when** recurrence control is versioned and owned, and the cohort trend is under watch.
+
+**Decision unlocked.** Close the incident; keep monitor-only only if rate and impact justify it (Table A.1).
+
+**Risk if skipped.** You solve one RMA and train the factory to recreate it.
+
+### Why the steps occur in this order
+
+Preserve first because reseat and reboot destroy state. Scope next so containment width matches the population. Classify and locate margin before falsify so you pick the cheap separating test. Confirm before correct so you do not ship a story. Prevent last so the factory and fleet catch the next escape. Later steps must not compensate for a missing preserve pack or a wrong scope.
+
+### Learning summary
+
+Preserve
+
+: Snapshot before you touch it.
+
+Scope
+
+: One unit, lot, vendor, site, or fleet?
+
+Classify / locate
+
+: Time class and which ledger moved first?
+
+Falsify / confirm
+
+: Kill hypotheses; prove the block owns the fail.
+
+Correct / prevent
+
+: Restore the corner; catch the next escape in ATP or telemetry.
 
 ## Interview and design review questions
 

@@ -681,11 +681,11 @@ No modulation order is locked yet in CEI-448G. PAM4 remains attractive if connec
 
 Ethernet standards trail CEI slightly but follow the same lane-doubling cadence. §3.13 is the map as of mid-2026.
 
-  Project              Status           Eth. lane   PHY line
-  -------------------- ---------------- ----------- -------------------------------------
-  802.3df              Feb 2024         100 Gb/s    $\approx$`<!-- -->`{=html}112G PAM4
-  802.3dj              SA ballot 2026   200 Gb/s    $\approx$`<!-- -->`{=html}224G PAM4
-  802.3 400G/lane SG   Mar 2026         400 Gb/s    $\approx$`<!-- -->`{=html}448G
+  Project        Status           Eth. lane   PHY line
+  -------------- ---------------- ----------- -------------------------------------
+  802.3df        Feb 2024         100 Gb/s    $\approx$`<!-- -->`{=html}112G PAM4
+  802.3dj        SA ballot 2026   200 Gb/s    $\approx$`<!-- -->`{=html}224G PAM4
+  400G/lane SG   Mar 2026         400 Gb/s    $\approx$`<!-- -->`{=html}448G
 
   : IEEE 802.3 lane-rate generations.
 

@@ -67,6 +67,94 @@ def save(fig, name):
 
 
 # ---------------------------------------------------------------------------
+def fig_accelerated_aging():
+    """Schematic accelerated aging: degradation vs time at several temperatures.
+
+    Shows time-to-failure shortening as temperature rises, with a shared EOL
+    threshold. Teaching schematic for Arrhenius / HTOL discussion; not measured
+    data.
+    """
+    from mpl_toolkits.mplot3d import Axes3D  # noqa: F401  (registers 3d proj)
+
+    # Schematic exponential approach toward failure at rate set by T.
+    # Higher T -> faster decay. Failure when parameter drops to EOL level.
+    t = np.linspace(0, 1.0, 220)
+    # Relative temperatures (schematic ranks, not Celsius labels on axis ticks)
+    T_ranks = np.array([1.0, 2.0, 3.0, 4.0])
+    # Decay rates increase with T (arbitrary but monotonic)
+    rates = np.array([0.55, 1.1, 2.0, 3.6])
+    eol = 0.55  # failure threshold on normalized degradation parameter
+    colors = [BLUE, ORANGE, "#c9a227", GREEN]
+    markers = ["v", "^", ">", "<"]
+
+    fig = plt.figure(figsize=(5.2, 3.8))
+    ax = fig.add_subplot(111, projection="3d")
+    ax.set_proj_type("ortho")
+
+    fail_t = []
+    fail_T = []
+    for Ti, k, col, mk in zip(T_ranks, rates, colors, markers):
+        # Normalized performance starts at 1 and decays; schematic only.
+        y = np.exp(-k * t)
+        # Stop plotting a bit past EOL for readability
+        mask = y >= eol * 0.92
+        ax.plot(t[mask], np.full(mask.sum(), Ti), y[mask], color=col, lw=1.6)
+        # discrete markers along curve
+        idx = np.linspace(0, mask.sum() - 1, 8, dtype=int)
+        ax.scatter(
+            t[mask][idx], np.full(len(idx), Ti), y[mask][idx],
+            color=col, marker=mk, s=18, depthshade=False, zorder=5,
+        )
+        # time to EOL
+        t_f = float(-np.log(eol) / k)
+        fail_t.append(t_f)
+        fail_T.append(Ti)
+        ax.scatter(
+            [t_f], [Ti], [eol], color=GREEN, marker="s", s=28,
+            depthshade=False, zorder=6, edgecolors="#1a1a1a", linewidths=0.4,
+        )
+
+    # EOL plane (light grey grid)
+    tt, TT = np.meshgrid(
+        np.linspace(0, max(fail_t) * 1.05, 12),
+        np.linspace(T_ranks.min() - 0.15, T_ranks.max() + 0.15, 10),
+    )
+    ax.plot_surface(
+        tt, TT, np.full_like(tt, eol),
+        color="#b0b0b0", alpha=0.28, linewidth=0, antialiased=True,
+    )
+
+    # Dashed connector across failure points (time-to-failure vs T)
+    ax.plot(
+        fail_t, fail_T, [eol] * len(fail_t),
+        color="#5b9bd5", ls="--", lw=1.2, zorder=4,
+    )
+
+    ax.set_xlabel("Time", labelpad=6)
+    ax.set_ylabel("Temperature", labelpad=6)
+    ax.set_zlabel("Degradation parameter", labelpad=6)
+    ax.set_yticks(T_ranks)
+    ax.set_yticklabels([r"$T_1$", r"$T_2$", r"$T_3$", r"$T_4$"])
+    ax.set_zticks([0.4, 0.6, 0.8, 1.0])
+    ax.set_zlim(0.35, 1.05)
+    ax.set_xlim(0, max(fail_t) * 1.08)
+    ax.view_init(elev=22, azim=-55)
+    ax.xaxis.pane.fill = False
+    ax.yaxis.pane.fill = False
+    ax.zaxis.pane.fill = False
+    ax.grid(True, alpha=0.25)
+    ax.set_title(
+        "Schematic accelerated aging (gradual wear-out)",
+        fontsize=9, pad=2,
+    )
+    # Annotate EOL plane in 2d figure coords-ish via text in axes
+    ax.text(
+        max(fail_t) * 0.55, T_ranks[-1] + 0.05, eol + 0.04,
+        "failure threshold", fontsize=7, color=GREY,
+    )
+    save(fig, "fig_accelerated_aging.pdf")
+
+
 def fig_liv_sketch():
     """Idealized LIV curve with labeled I_th, slope, kink, rollover (schematic)."""
     I = np.linspace(0, 120, 500)  # mA
@@ -1284,4 +1372,5 @@ if __name__ == "__main__":
     fig_link_chain()
     fig_test_points()
     fig_liv_sketch()
+    fig_accelerated_aging()
     print("done")

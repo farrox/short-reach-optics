@@ -174,6 +174,158 @@ Measurements do not unlock understanding as an end in itself. They unlock action
 
 **Table A.1.** Decision vocabulary for interview answers. Name the action, the owner, and the residual risk when the mechanism is still open.
 
+### Reading the decision vocabulary
+
+Measurements unlock actions. Name the action, the evidence that unlocks it, and the residual risk if you choose it too early.
+
+##### Ship / don't ship.
+
+**Purpose.** Does the population meet ATP and the life model for the claimed envelope?
+
+**Uncertainty removed.** Hero samples and open mechanisms do not answer ship. Multi-lot ATP and named life evidence do.
+
+**Exit criteria.** **Exit when** population data meet versioned ATP and life claims, or explicitly fail them.
+
+**Decision unlocked.** Ship, hold, or restrict the envelope.
+
+**Risk if chosen too early.** You learn the escape mechanism from customer outage.
+
+##### Continue validation.
+
+**Purpose.** Does remaining uncertainty still block a ship or architecture call?
+
+**Exit criteria.** **Exit when** the missing measurement or corner is named and scheduled.
+
+**Decision unlocked.** Spend lab time on a specific ladder stage, not on open-ended "more testing."
+
+**Risk if chosen too late.** You keep measuring after the decision is already blocked only by courage.
+
+##### Escalate supplier.
+
+**Purpose.** Does scope show a lot, site, or vendor signature that the supplier must own?
+
+**Exit criteria.** **Exit when** correlation plots and split RMA codes justify the escalation pack.
+
+**Decision unlocked.** Open 8D / CAPA with evidence; do not escalate a single dirty connector as a vendor crisis.
+
+**Risk if chosen too early.** You burn supplier trust and miss a host or plant cause.
+
+##### Derate.
+
+**Purpose.** Is margin too thin for the full claim, but acceptable under tighter use?
+
+**Exit criteria.** **Exit when** the restricted envelope is written and validated at the new corner.
+
+**Decision unlocked.** Ship under derate, or reject if derate kills the product purpose.
+
+**Risk if chosen too early.** You hide a design defect behind a temporary thermal or reach cut.
+
+##### Second source.
+
+**Purpose.** Does single-vendor risk exceed fleet tolerance even if the first source still works?
+
+**Exit criteria.** **Exit when** business risk and dual-qual cost are explicit, and the second source has its own ATP and life evidence.
+
+**Decision unlocked.** Fund dual source, or accept single-source risk in writing.
+
+**Risk if chosen too early.** You dual-source before the first source's failure mode is understood, and copy the same blind spot.
+
+##### Contain lot.
+
+**Purpose.** Is there a date-code or lot escape that must stop further exposure today?
+
+**Exit criteria.** **Exit when** suspect lots are identified and ship/fleet holds are in place.
+
+**Decision unlocked.** Quarantine WIP and field exposure while FA continues.
+
+**Risk if chosen too late.** Bad lots keep shipping while SEM photos are pending.
+
+##### Modify ATP.
+
+**Purpose.** Was an escape path found that production must catch next time?
+
+**Exit criteria.** **Exit when** the new or tightened ATP row has limits, guardband, and GR&R.
+
+**Decision unlocked.** Version the ATP with the requirements slice; hold lots that fail the new screen.
+
+**Risk if skipped.** FA closes; the factory ships the same escape tomorrow.
+
+##### Open RMA / request FA.
+
+**Purpose.** Does a field or partner unit need mechanism work beyond remote triage?
+
+**Exit criteria.** **Exit when** preserve pack exists and remote triage cannot close ownership.
+
+**Decision unlocked.** Pull the unit under chain of custody; do not reseat away the evidence first.
+
+**Risk if chosen too early.** You RMA healthy units and starve the lab with noise.
+
+##### Perform DPA.
+
+**Purpose.** Do you need physical confirmation of facet, solder, FAU, or die?
+
+**Exit criteria.** **Exit when** non-destructive evidence has narrowed the site and DPA will change the decision.
+
+**Decision unlocked.** Section the part; update mechanism and CAPA.
+
+**Risk if chosen too early.** You destroy the only unit before electrical and optical falsifiers run (§10.14).
+
+##### Change firmware.
+
+**Purpose.** Is the control loop, table, or guard wrong while the hardware is healthy?
+
+**Exit criteria.** **Exit when** before/after at the failing corner shows the firmware change restores margin.
+
+**Decision unlocked.** Rev firmware under change control; treat the rev like a process change for FAIR.
+
+**Risk if chosen too early.** You mask a hardware wear-out with a table patch that drifts again.
+
+##### Retune calibration.
+
+**Purpose.** Is the device healthy but the setpoint or table segment wrong?
+
+**Exit criteria.** **Exit when** calibration restore clears the corner and LIV/SMSR/RIN baselines are unchanged.
+
+**Decision unlocked.** Fix tables and screening; do not open laser life CAPA for a bad segment.
+
+**Risk if chosen too early.** You "calibrate away" real aging and ship drifting parts.
+
+##### Monitor only.
+
+**Purpose.** Is the rate tiny, flat, and without customer impact so watching is enough?
+
+**Exit criteria.** **Exit when** rate, trend, and impact criteria for monitor-only are met and alarms are armed.
+
+**Decision unlocked.** Watch weekly; escalate to contain if growth or impact appears.
+
+**Risk if chosen too early.** A growing supplier-specific rate is treated as noise until it is a fleet event.
+
+### Why these actions are not interchangeable
+
+Ship and don't-ship need population and life evidence. Continue validation is for named missing corners, not delay. Escalate supplier and contain lot need scope. Derate and second source are product decisions, not FA hobbies. Modify ATP is how FA becomes production. RMA, FA, and DPA climb the measurement hierarchy only as far as the decision requires. Firmware and calibration are allowed only when hardware baselines clear. Monitor-only is an economics call with tripwires, not a default.
+
+### Learning summary
+
+Ship decisions
+
+: Population ATP and life, or hold / derate / dual source.
+
+Containment
+
+: Lot and supplier actions follow scope, not a single ticket.
+
+Learning loop
+
+: Escape $\to$ ATP or alarm change with owner and date.
+
+Escalation ladder
+
+: Telemetry $\to$ bench $\to$ swap $\to$ FA/DPA as needed.
+
+Monitor only
+
+: Tiny, flat, no impact; armed alarms; review on a clock.
+
 ### Time is a resource
 
 Every measurement costs hours. Optimize uncertainty removed per hour of lab time. Prefer the cheap cut that kills many hypotheses before the slow characterization. Telemetry and a golden swap often beat an immediate RIN setup. SEM and DPA come last, not first.
@@ -274,30 +426,32 @@ If power held but BER worsened, the loss is in signal quality or in the receiver
 
 ### Track five margin ledgers
 
-Links rarely fail from one dramatic excursion. They fail when several small shifts spend different ledgers at once. Almost every failure can be described as spending one or more ledgers. Use that language in every debug answer. Name which ledger moved, by how much, and what spent it.
+Links rarely fail from one dramatic excursion. They fail when several small shifts spend different ledgers at once. The five-ledger map is a teaching and debug framework: name which ledger moved, what spent it, and which decision that update unlocks. Full device treatment is in §5.19.
 
 <pre class="dectree" aria-label="Decision tree"><code>Power · Noise · Timing · Spectral · Control</code></pre>
-Power
+##### Power.
 
-: Launch power, insertion loss, coupling, connector loss, multiplexer loss, and receiver sensitivity. Track average power and OMA separately: average power can look healthy while OMA collapses.
+**Question:** Is there enough light at the decision point? Launch, insertion loss, coupling, connectors, multiplexers, and receiver sensitivity live here. Track average power and OMA separately: average power can look healthy while OMA collapses. **Evidence:** external meter at a named plane, monitor-versus-meter agreement, sensitivity. **Decision:** clean/replace plant, retune APC, derate reach, or leave the power ledger. **Risk if ignored:** quality-path debug on a loss problem.
 
-Noise
+##### Noise.
 
-: RIN, receiver thermal noise, shot noise, crosstalk, supply noise through weak PSRR, and MPI from reflective interfaces. Noise that scales with the signal makes a BER floor that more launch power cannot fix.
+**Question:** Is the error rate limited by impairments that power cannot buy out? RIN, receiver thermal noise, shot noise, crosstalk, supply noise through weak PSRR, and MPI from reflections live here. Signal-dependent noise and other non-power-limited impairments make BER floors (Appendix A.6.9). **Evidence:** waterfall shape, RIN under ORL, FEC histogram timing. **Decision:** remove the impairment, do not raise launch into a floor. **Risk if ignored:** endless OMA increases.
 
-Timing
+##### Timing.
 
-: Bandwidth, dispersion, jitter, ISI, and equalization reserve. A SerDes that is already using most of its FFE and DFE taps has little timing margin left even if the eye still opens on a DCA.
+**Question:** Is there still equalization and jitter reserve? Bandwidth, dispersion, ISI, jitter, and SerDes FFE/DFE tap use live here. An eye that still opens on a DCA can hide a SerDes with no remaining taps. **Evidence:** TDECQ/RLM, tap saturation, COM on linear paths. **Decision:** retune EQ, shorten channel, or redesign SI. **Risk if ignored:** "good eye" tickets that fail only in the host.
 
-Spectral
+##### Spectral.
 
-: Wavelength, SMSR, filter or ring passband, thermal drift, and lock range. A ring whose heater is near its DAC rail is spending spectral margin even while BER still passes.
+**Question:** Is the line still inside the filter or lock window? Wavelength, SMSR, passband, thermal drift, and lock range live here. A heater near its DAC rail spends spectral margin while BER still passes. **Evidence:** OSA/wavemeter, lock-loop status, actuator codes. **Decision:** retune lock/thermal design, derate temperature, or replace the source. **Risk if ignored:** unlocks mislabeled as random BER.
 
-Control
+##### Control.
 
-: Headroom in the loops that keep the optics healthy: APC, TEC, heaters, ring lock, bias DACs, and calibration tables. Prefer product language over bench language: say "the control ledger is exhausted" or "we have no remaining control authority," not only "TEC current hit maximum" or "heater DAC went full scale." A railed actuator or a corrupted table can fail the link while the laser diode itself is still healthy. Control margin is what separates "optics broke" from "the product can no longer hold the operating point."
+**Question:** Do the loops still have authority to hold the operating point? APC, TEC, heaters, ring lock, bias DACs, and calibration tables live here. Prefer product language: "control ledger exhausted," not only "TEC current hit max." A railed actuator or bad table can fail the link while the diode is healthy. **Evidence:** actuator codes, cool-down recovery, table reload trials. **Decision:** retune tables, fix thermal design, or route to aging FA. **Risk if ignored:** healthy silicon sent to reliability for a firmware bug.
 
-The device and link treatment is in §5.19. Always ask the control ledger when actuators and tables are in the product.
+##### Why ledger language comes before component names.
+
+Name the spent ledger before naming a laser, TIA, or connector. The ledger picks the measurement. The measurement updates belief. The belief unlocks contain, retune, derate, RMA, or monitor-only. Component names without a ledger are guesses.
 
 ### Use the validation ladder
 

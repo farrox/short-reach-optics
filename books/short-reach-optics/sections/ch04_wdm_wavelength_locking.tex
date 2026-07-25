@@ -40,13 +40,17 @@ short-reach AI optics today.
 \centering
 \setlength{\tabcolsep}{3.5pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.16\linewidth}p{0.14\linewidth}p{0.12\linewidth}p{0.18\linewidth}p{0.32\linewidth}@{}}
 \toprule
 Grid family & Spacing (class) & Channels / fiber & Cooling / lock & Typical short-reach use \\
 \midrule
 CWDM4 & $\approx$20~nm & 4 & Uncooled; loose control & FR-class pluggables; faceplate WDM \\
+\addlinespace[1.5em]
 LAN-WDM & $\approx$800~GHz ($\approx$4--5~nm @ 1310~nm) & 4 & Cooled or tight open-loop & 2~km-class FR4 (edge of book scope) \\
+\addlinespace[1.5em]
 Datacom DWDM & 200/100/50~GHz & many & Locked to grid & Discrete DFB/EML DWDM modules \\
+\addlinespace[1.5em]
 CW-WDM / CPO O-band & 100--800~GHz class (MSA spans) & 8 / 16 / 32 & Locked; often ring-tuned & CPO engines, optical I/O chiplets \\
 \bottomrule
 \end{tabular}
@@ -116,14 +120,19 @@ PIC and area dominates (\Cref{sec:siring,ch:networking}).
 \centering
 \setlength{\tabcolsep}{3.5pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.22\linewidth}p{0.28\linewidth}p{0.22\linewidth}p{0.22\linewidth}@{}}
 \toprule
 Fault & Optical symptom & Hits & Catch with \\
 \midrule
 Stage insertion loss & Lower launch OMA on all $\lambda$ & Link budget OMA & Power meter / OMA \\
+\addlinespace[1.5em]
 Passband ripple / tilt & Uneven OMA across bank & Weakest $\lambda$ & Per-$\lambda$ OMA map \\
+\addlinespace[1.5em]
 Adjacent-channel crosstalk & Closed eyes, RLM/TDECQ up & Tx quality / BER & Isolation sweep + DCA \\
+\addlinespace[1.5em]
 MUX imbalance & One $\lambda$ weak, neighbors OK & Single-lane BER & Per-lane power + BER \\
+\addlinespace[1.5em]
 Grid misalignment & Filter edge clipping & TDECQ, unlock risk & OSA + lock status \\
 \bottomrule
 \end{tabular}
@@ -461,13 +470,17 @@ Fleet: unlock alarms, wavelength telemetry
 \refstepcounter{table}\label{tab:wdm-read}%
 \centering
 \setlength{\tabcolsep}{5pt}%
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.30\linewidth}p{0.66\linewidth}@{}}
 \toprule
 Implication & Strength \\
 \midrule
 Some form of WDM is in use & Near-certain: locking only matters with WDM. \\
+\addlinespace[1.5em]
 Dense (D)WDM rather than coarse CWDM & Likely: locking implies tight spacing. \\
+\addlinespace[1.5em]
 Microring-based silicon photonics with external multi-wavelength (CW-WDM) sources, often trending toward co-packaged optics & Common in modern AI interconnects (e.g. Broadcom and NVIDIA Quantum-X programs), driven by fiber-count pressure at scale. \\
+\addlinespace[1.5em]
 Discrete DFB/EML DWDM (no rings) & Also possible; locking alone does not prove rings. \\
 \bottomrule
 \end{tabular}

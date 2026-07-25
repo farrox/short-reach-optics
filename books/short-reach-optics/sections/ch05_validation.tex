@@ -18,31 +18,43 @@ ends in a decision (\Cref{app:decision-trees}).
 
 Optical programs fail in the same places again and again: a part that looks good
 in characterization but cannot bring up on a production host, or a module that
-passes ATP and then unlocks under neighbor heat. The practical way to avoid those
-gaps is a ladder of five stages, each answering a sharper question than the last.
-Skipping one creates escapes that surface later at higher cost.
+passes acceptance test procedure (\term{ATP}\firstterm{ATP}) and then unlocks
+under neighbor heat. The ladder below is a decision framework, not a test menu.
+Each stage answers one question the previous stage could not answer. Skipping a
+rung does not save time. It moves the escape into a later, more expensive stage.
+
+Requirements sit above the first gate: reach, lane rate, hosts, BER/FEC target,
+power and thermal envelope, lifetime, and production volume. Without those
+constraints, later measurements have no pass criterion
+(\Cref{sec:interview-validation-ladder}).
 
 \begin{table*}[ht]
 \refstepcounter{table}\label{tab:ladder}%
 \centering
 \setlength{\tabcolsep}{4pt}%
 \footnotesize
-\begin{tabular}{@{}p{0.04\linewidth}p{0.14\linewidth}p{0.26\linewidth}p{0.48\linewidth}@{}}
+\renewcommand{\arraystretch}{1.25}%
+\begin{tabular}{@{}p{0.04\linewidth}p{0.16\linewidth}p{0.28\linewidth}p{0.24\linewidth}p{0.22\linewidth}@{}}
 \toprule
- & Stage & Question & Activity and instruments \\
+ & Stage & Main question & Evidence required & Decision unlocked \\
 \midrule
-1 & Bring-up & Does it link? & Power-on, CMIS state machine, first light, CDR lock, pre-FEC BER on golden host (\Cref{sec:bringup}) \\
-2 & Characterization & How much margin, across corners? & Sweep $T$, $V$, ORL, aging; TDECQ, sensitivity, link budget; component LIV/RIN/SMSR (\Cref{sec:tdecq,sec:link-budget}) \\
-3 & Margin and interop & Does margin survive the fleet? & Production-representative corners: chassis thermal, host rails, neighbor load, dirty fiber, ELS hot-swap, target host/NIC/ASIC (\Cref{sec:prod-corners}) \\
-4 & Stress qualification & Does it survive its projected life? & HTOL, temperature cycle, humidity, ESD, mating cycles per GR-468, GR-1221, JESD47 (\Cref{sec:gr468,sec:ic-reliability}) \\
-5 & Production readiness & Can the supplier build it at volume? & Multi-lot yield, SPC stability, ATP coverage, ATE correlation, first-article, DVT/PVT gates (\Cref{sec:hvm-test,sec:supplier-exec}) \\
+1 & Bring-up & Does it operate on a known-good host? & Power, management ready, light, lock, usable BER & Continue / debug integration \\
+\addlinespace[1.25em]
+2 & Characterization & How does it behave across corners and units? & Mapped response vs $T$, $V$, ORL, age, lane & Derate / redesign / proceed \\
+\addlinespace[1.25em]
+3 & Margin and interop & Does margin survive realistic use? & Loaded corners + target hosts/modules & Fleet corner OK / restrict \\
+\addlinespace[1.25em]
+4 & Stress qualification & Will it survive intended life? & Named mechanism + justified life evidence & Accept life risk / hold \\
+\addlinespace[1.25em]
+5 & Production readiness & Can it be built and screened at volume? & Multi-lot yield, ATP, SPC, FAIR & Open volume / hold \\
+\addlinespace[1.25em]
+6 & Pilot and fleet & Were the assumptions correct in deployment? & Exit criteria + telemetry owners & Ship / restrict / reject \\
 \bottomrule
 \end{tabular}
 \par\medskip
-{\raggedright\footnotesize\textbf{Table~\thetable.} The validation ladder: five
-stages from bench to fleet. A sixth concern, scaled deployment and fleet triage,
-runs continuously once material ships (\Cref{sec:fleet-triage}).
-Field telemetry, RMA tracking, and FIT burn-down feed back into stages~3--5.\par}
+{\raggedright\footnotesize\textbf{Table~\thetable.} Validation ladder as a decision
+map. Instrument lists and stage detail follow below. The same order appears in
+expanded form in \Cref{sec:interview-validation-ladder,sec:tree-qualification}.\par}
 \end{table*}
 
 \begin{table*}[ht]
@@ -50,56 +62,36 @@ Field telemetry, RMA tracking, and FIT burn-down feed back into stages~3--5.\par
 \centering
 \setlength{\tabcolsep}{3pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.16\linewidth}p{0.22\linewidth}p{0.28\linewidth}p{0.26\linewidth}@{}}
 \toprule
-Stage & Entry / key uncertainty & Exit criteria & Decision unlocked \\
+Stage & Entry uncertainty & Exit criteria & Decision unlocked \\
 \midrule
-Bring-up & Part present; host unknown & ModuleReady, light, lock, BER floor on golden host & Continue / debug integration \\
+Bring-up & Part present; host unknown & Ready state, light, lock, BER on golden host & Continue / debug integration \\
+\addlinespace[1.25em]
 Characterization & Links at one corner & Mapped response vs $T$, $V$, ORL, age & Derate / redesign / proceed \\
+\addlinespace[1.25em]
 Margin / interop & Nominal map known & Loaded corners and target hosts close & Fleet corner OK / restrict \\
-Reliability & Mechanisms named & HTOL / env with $E_a$ and sample plan & Life risk accepted / hold \\
+\addlinespace[1.25em]
+Reliability & Mechanisms named & Life / env evidence with sample plan & Life risk accepted / hold \\
+\addlinespace[1.25em]
 Production ready & Qual evidence in hand & Multi-lot yield, ATP, SPC, FAIR & Open volume / hold \\
+\addlinespace[1.25em]
 Pilot / fleet & Volume candidate & Exit criteria + telemetry owners & Ship / restrict / reject \\
 \bottomrule
 \end{tabular}
 \par\medskip
-{\raggedright\footnotesize\textbf{Table~\thetable.} Ladder gates: each stage
-removes a different uncertainty. Do not treat an earlier exit as evidence for a
-later gate (\Cref{sec:tree-qualification}).\par}
+{\raggedright\footnotesize\textbf{Table~\thetable.} Ladder gates for rapid
+retrieval. Do not treat an earlier exit as evidence for a later gate
+(\Cref{sec:tree-qualification}).\par}
 \end{table*}
 
 These tables are a grouped view of one canonical lifecycle, not a competing
-sequence:
-\begin{center}
-\small
-\begin{tabular}{@{}ll@{}}
-\toprule
-Grouped stage & Expanded lifecycle \\
-\midrule
-Bring-up + nominal characterization & Bring-up; nominal characterization \\
-Margin validation & Margin characterization \\
-Margin / interop & Interoperability (+ loaded corners) \\
-Stress / reliability & Environmental and reliability qualification \\
-Production readiness & Manufacturing and ATP readiness \\
-Pilot / fleet & Controlled pilot; fleet deployment and monitoring \\
-\bottomrule
-\end{tabular}
-\end{center}
-\noindent Requirements sit above the first gate. Full names and exit criteria
-live in \Cref{sec:interview-validation-ladder,sec:tree-qualification}.
-
-For every metric at every stage, name the instrument, the reference plane
-(\Cref{sec:test-points}), the pass criterion, and the failure signature. A number
-without a plane and a method is not a measurement.
-
-Each stage removes a different uncertainty. Bring-up removes basic integration
-unknowns. Nominal characterization maps response and variation. Margin
-characterization finds how close the design sits to each cliff. Interoperability
-and loaded corners find combinations that consume power, noise, timing, spectral,
-or control headroom (\Cref{sec:laser-margin-erosion}). Environmental and
-reliability qualification separate life risk. Manufacturing and ATP readiness
-prove screens catch escapes at volume. Controlled pilot and fleet monitoring
-close the loop. Do not use one stage as evidence for another.
+sequence. Bring-up plus nominal characterization cover early functional learning.
+Margin characterization and interoperability cover remaining-margin questions.
+Environmental and reliability qualification cover life risk. Manufacturing and
+ATP readiness cover volume screens. Controlled pilot and fleet monitoring close
+the loop after ship.
 
 \begin{dectree}
 Requirement
@@ -115,15 +107,278 @@ Production readiness
 Fleet feedback
 \end{dectree}
 
+\subsection{Stage 1: Bring-up}
+\label{sec:ladder-bringup}
+
+\paragraph{Purpose.}
+Does the product operate at all on a known-good host? Bring-up asks whether
+power, management, light, timing recovery, and a usable error rate exist before
+anyone argues about margin.
+
+\paragraph{Uncertainty removed.}
+Before bring-up you do not know whether a failure is integration (seat, cable,
+firmware, host) or product physics. After bring-up you know the unit can emit,
+receive, and pass data under controlled conditions.
+
+\paragraph{Activities.}
+Power the module or engine. Confirm management presence and state progression
+through the Common Management Interface Specification
+(\term{CMIS}\firstterm{CMIS}) state machine to a ready state. Enable transmit
+only when commanded. Verify first light and received power. Confirm clock and
+data recovery (\term{CDR}\firstterm{CDR}) lock. Measure pre-forward-error-
+correction bit error ratio (\term{pre-FEC BER}\firstterm{pre-FEC BER}) on a
+golden host. Details and fail branches live in \Cref{sec:bringup,tab:bringup-checklist}.
+
+\paragraph{Measurements and evidence.}
+CMIS presence and ready state confirm the management path before you blame
+optics. CDR lock confirms the receiver can recover timing from the incoming
+stream; without stable lock, later BER work may only restate an integration
+fault. Pre-FEC BER is the first system health number: it is the error rate
+before FEC cleans the link, so it still reveals optical and electrical margin.
+
+\paragraph{Exit criteria.}
+\textbf{Exit when} the unit reaches ready state, emits and receives light in
+class, holds CDR lock, and shows a usable pre-FEC BER on the golden host with
+named reference planes.
+
+\paragraph{Decision unlocked.}
+Continue into characterization, or stop and debug integration (seat, power,
+firmware, fiber, host).
+
+\paragraph{Risk if skipped.}
+You may spend weeks optimizing TDECQ or life models on a part that never
+reliably links in a real chassis.
+
+\subsection{Stage 2: Characterization}
+\label{sec:ladder-characterization}
+
+\paragraph{Purpose.}
+How does the product behave across temperature, voltage, optical return loss
+(\term{ORL}\firstterm{ORL}), aging proxies, lanes, and units? Characterization
+maps the response surface. It does not yet prove fleet survival.
+
+\paragraph{Uncertainty removed.}
+Before characterization you know one corner works. After it you know how
+distributions move with stress variables and which ledgers (power, noise,
+timing, spectral, control) are thin.
+
+\paragraph{Activities.}
+Sweep case or junction temperature and supply. Stress ORL where reflections
+matter. Compare units and lots. On the transmitter path, measure transmitter
+and dispersion eye closure quaternary (\term{TDECQ}\firstterm{TDECQ}), outer
+optical modulation amplitude, extinction ratio, and level linearity. On
+components with access, measure light--current--voltage (\term{LIV}\firstterm{LIV}),
+relative intensity noise (\term{RIN}\firstterm{RIN}), and side-mode suppression
+ratio (\term{SMSR}\firstterm{SMSR}). Close a signed link-budget ledger
+(\Cref{sec:tdecq,sec:link-budget,sec:laser-params}).
+
+\paragraph{Measurements and evidence.}
+TDECQ scores transmitter quality after a reference equalizer; a rise with
+stable average power points at bandwidth, linearity, or bias, not simple loss.
+LIV separates device aging from setpoint drift. RIN under controlled ORL
+reveals feedback-sensitive floors. SMSR checks single-mode purity as
+temperature or age changes. Sensitivity and BER-versus-power waterfalls show
+whether the receiver path shifts or floors (\Cref{sec:interview-waterfall}).
+
+\paragraph{Exit criteria.}
+\textbf{Exit when} you have mapped population behavior versus the required
+corners, named the thin ledgers, and decided whether the design needs derate
+or redesign before loaded-fleet work.
+
+\paragraph{Decision unlocked.}
+Proceed to margin and interoperability, derate the envelope, or redesign.
+
+\paragraph{Risk if skipped.}
+A hero sample that worked at 25~$^\circ$C becomes the silent assumption for
+life and volume. Corner failures then appear as ``surprises'' in DVT.
+
+\subsection{Stage 3: Margin and interoperability}
+\label{sec:ladder-margin-interop}
+
+\paragraph{Purpose.}
+Does remaining margin survive realistic system variation: chassis thermal load,
+live host supplies, dirty fiber, neighbor traffic, cable plant, and the target
+host or peer module?
+
+\paragraph{Uncertainty removed.}
+Characterization maps the part. This stage asks whether that map still holds
+when the surrounding system is hostile in production-like ways
+(\Cref{sec:prod-corners,sec:laser-margin-erosion}).
+
+\paragraph{Activities.}
+Run production-representative corners: module in target sled airflow, host
+rails with SerDes traffic, controlled contamination or ORL stress, production
+fiber length and bend radius, ELS hot-swap if the architecture promises it,
+adjacent modules at full load, and at least one non-golden host or second-
+source peer when multi-source is claimed.
+
+\paragraph{Measurements and evidence.}
+Compare pre-FEC BER, telemetry, retrain count, and control headroom at the
+failing corner against the characterization baseline. An optical eye, when
+used, is measured externally unless an internal eye-monitor is explicitly
+named (\Cref{sec:tree-blackbox-access}). Interop failures often land in CMIS,
+media type, or electrical eye rather than laser physics.
+
+\paragraph{Exit criteria.}
+\textbf{Exit when} loaded corners and target hosts close with acceptable
+remaining margin, or when a documented restriction defines where the product
+may ship.
+
+\paragraph{Decision unlocked.}
+Approve the fleet corner, restrict deployment, or send the design back.
+
+\paragraph{Risk if skipped.}
+Quiet-bench margin evaporates in the first rack. Field tickets then look like
+random laser failures when the real escape was an untested corner.
+
+\subsection{Stage 4: Stress qualification}
+\label{sec:ladder-stress}
+
+\paragraph{Purpose.}
+Will the product survive its intended life under a named wear-out or
+environmental mechanism, not merely pass a short burn-in?
+
+\paragraph{Uncertainty removed.}
+Functional and margin stages do not answer lifetime. Stress qualification
+separates infant mortality and wear-out risk from operating-point mistakes
+(\Cref{sec:gr468,sec:ic-reliability}).
+
+\paragraph{Activities.}
+Run high-temperature operating life (\term{HTOL}\firstterm{HTOL}), temperature
+cycling, humidity where claimed, electrostatic discharge
+(\term{ESD}\firstterm{ESD}) robustness, and connector mating cycles as required
+by the product class (often GR-468 / GR-1221 for optics and JESD47-class
+thinking for ICs). Name the mechanism and justify activation energy $E_a$ when
+you project FIT.
+
+\paragraph{Measurements and evidence.}
+Track the same customer-visible margins (power, BER/FEC, lock, wavelength)
+before and after stress. LIV, SMSR, or dark checks on returns separate true
+aging from calibration drift. A life claim without a mechanism is a narrative,
+not evidence.
+
+\paragraph{Exit criteria.}
+\textbf{Exit when} the sample plan, mechanism, and projected life support the
+requirements slice, or when you explicitly hold ship for life risk.
+
+\paragraph{Decision unlocked.}
+Accept life risk for the envelope, derate life or use conditions, or hold.
+
+\paragraph{Risk if skipped.}
+Early life failures concentrate by date code after volume ramp. Containment
+then costs more than the omitted HTOL matrix.
+
+\subsection{Stage 5: Production readiness}
+\label{sec:ladder-production}
+
+\paragraph{Purpose.}
+Can the supplier reproduce the qualified result at volume, with screens that
+catch the escapes you care about?
+
+\paragraph{Uncertainty removed.}
+Qualification on engineering lots does not prove manufacturing control.
+Production readiness asks whether yield, process control, and ATP coverage
+survive lot-to-lot variation (\Cref{sec:hvm-test,sec:supplier-exec}).
+
+\paragraph{Activities.}
+Review multi-lot yield and statistical process control
+(\term{SPC}\firstterm{SPC}). Correlate automated test equipment
+(\term{ATE}\firstterm{ATE}) to bench truth. Freeze ATP limits that catch the
+known escape paths. Complete first-article / FAIR gates and design or process
+verification / production verification (\term{DVT}\firstterm{DVT} /
+\term{PVT}\firstterm{PVT}) exits that match the requirements slice.
+
+\paragraph{Measurements and evidence.}
+Lot distributions for the same metrics used in characterization, guardbands
+between ATP and field fail, and evidence that the ATP would have caught prior
+escapes. Split supplier RMA codes so one vendor cannot hide inside a merged
+bucket.
+
+\paragraph{Exit criteria.}
+\textbf{Exit when} multi-lot yield, ATP coverage, SPC stability, and FAIR
+evidence support opening volume, or when you hold for process control.
+
+\paragraph{Decision unlocked.}
+Open volume, hold shipment, or demand corrective action before ramp.
+
+\paragraph{Risk if skipped.}
+A qualified hero process ships an uncontrolled second lot. Fleet triage then
+becomes your de facto ATP.
+
+\subsection{Stage 6: Controlled pilot and fleet monitoring}
+\label{sec:ladder-fleet}
+
+\paragraph{Purpose.}
+Were the qualification assumptions correct after real deployment, install
+practice, and traffic mix?
+
+\paragraph{Uncertainty removed.}
+Lab corners never reproduce every rack. Pilot and fleet monitoring ask whether
+remaining margin, escape rate, and cohort signatures match the model
+(\Cref{sec:fleet-triage}).
+
+\paragraph{Activities.}
+Run a limited population with enhanced telemetry and clear exit criteria.
+Watch BER/FEC, retrains, power, temperature, lane behavior, and lot or site
+cohorts. Preserve CMIS dumps before reseat. Feed signatures back into ATP and
+design rules.
+
+\paragraph{Measurements and evidence.}
+Cohort rates, not single tickets. Time behavior (sudden versus creep).
+Cool-down recovery versus permanent shift. Owner assignment uses the fleet
+triage map in \Cref{tab:fleet-triage}.
+
+\paragraph{Exit criteria.}
+\textbf{Exit when} pilot exit criteria are met and named owners watch the
+fleet metrics that would falsify the qual assumptions, or when you restrict
+or reject based on observed risk.
+
+\paragraph{Decision unlocked.}
+Ship broadly, restrict, pause a supplier or lot, or reopen an earlier ladder
+stage.
+
+\paragraph{Risk if skipped.}
+You learn the real escape mechanism from customer outage instead of from a
+controlled pilot.
+
+\subsection{Why the stages occur in this order}
+
+Bring-up establishes that the setup and product fundamentally operate.
+Characterization maps behavior and variation. Margin and interoperability
+determine whether behavior survives realistic use. Stress qualification tests
+projected lifetime under a named mechanism. Production readiness determines
+whether the supplier can reproduce the result at volume. Pilot and fleet
+monitoring check whether assumptions remain valid after deployment.
+
+Later stages must not compensate for incomplete earlier stages. An HTOL pass
+does not prove bring-up on the target host. An ATP correlation does not prove
+remaining margin under neighbor heat. Treat each exit as evidence only for its
+own question (\Cref{tab:ladder-gates,sec:tree-qualification}).
+
+\subsection{Learning summary}
+\label{sec:ladder-summary}
+
+\begin{description}
+\item[Bring-up] Does it operate?
+\item[Characterization] How does it behave?
+\item[Margin and interoperability] Does it survive realistic system variation?
+\item[Stress qualification] Will it survive its intended life?
+\item[Production readiness] Can it be built and screened repeatedly at volume?
+\item[Pilot and fleet] Were the qualification assumptions correct in deployment?
+\end{description}
+
 \engcheck{Before qualification}{%
-Functional $\cdot$
-margin $\cdot$
-environment $\cdot$
-interoperability $\cdot$
-reliability $\cdot$
-manufacturing $\cdot$
-fleet feedback
-(\Cref{sec:tree-checklists}).}
+Bring-up $\cdot$
+characterization $\cdot$
+margin/interop $\cdot$
+stress/life $\cdot$
+manufacturing/ATP $\cdot$
+pilot/fleet feedback
+(\Cref{sec:tree-checklists,tab:ladder}).}
+
+For every metric at every stage, name the instrument, the reference plane
+(\Cref{sec:test-points}), the pass criterion, and the failure signature. A
+number without a plane and a method is not a measurement.
 
 \section{The core IM/DD measurements}
 
@@ -200,6 +455,7 @@ debug logic; use this table to look up an instrument fast.
 \centering
 \setlength{\tabcolsep}{3.5pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.14\linewidth}p{0.16\linewidth}p{0.32\linewidth}p{0.30\linewidth}@{}}
 \toprule
 Metric & Instrument & Why it matters & Failure signature \\
@@ -207,24 +463,31 @@ Metric & Instrument & Why it matters & Failure signature \\
 OMA / TDECQ & DCA + reference equalizer & Scores transmitter quality against an
   ideal source; governs PAM4 acceptance (\Cref{sec:tdecq}) & TDECQ rises with no
   average-power change; points to bandwidth, RLM, or bias \\
+\addlinespace[1.25em]
 Extinction ratio / RLM & DCA level histograms & Sets OMA at fixed average power
   (\Cref{sec:sensitivity}); poor RLM inflates TDECQ & Compressed inner eyes with
   passing average power \\
+\addlinespace[1.25em]
 Wavelength / SMSR & OSA or wavemeter & Confirms grid placement and single-mode
   purity (\Cref{sec:laser-params}) & Side modes rise with $T$ or age; line walks
   off grid \\
+\addlinespace[1.25em]
 RIN & PD + electrical spectrum analyzer & Sets the BER floor
   $Q_\mathrm{max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$ (\Cref{sec:rin}) & BER
   improves with power then flattens (a floor) \\
+\addlinespace[1.25em]
 Insertion loss / ORL & Power meter + ORL meter & First ledger line; reflections
   raise RIN and seed bursts (\Cref{sec:optical-channel}) & Burst errors with
   stable average power; RIN rises with ORL \\
+\addlinespace[1.25em]
 Receiver sensitivity & BERT + calibrated attenuator & Minimum OMA at target BER,
   the budget's bottom line (\Cref{sec:sensitivity,sec:secq}) & Waterfall shifts
   uniformly right without flooring \\
+\addlinespace[1.25em]
 Pre-FEC BER / FEC histogram & BERT + FEC counters & The single number every other
   metric feeds; histogram shape reveals mechanism (\Cref{sec:kp4}) & Clustered
   errors point to bursts; sparse errors point to Gaussian noise margin \\
+\addlinespace[1.25em]
 CMIS state / DDM & Host or CMIS tool & Confirms management layer before blaming
   optics (\Cref{sec:cmis}) & Module never reaches ModuleReady; DDM disagrees with
   bench truth \\
@@ -232,9 +495,86 @@ CMIS state / DDM & Host or CMIS tool & Confirms management layer before blaming
 \end{tabular}
 \par\medskip
 {\raggedright\footnotesize\textbf{Table~\thetable.} Measurement mapping: metric,
-instrument, rationale, and failure signature in one reference. Cross-references
-point to the full treatment of each metric elsewhere in this chapter.\par}
+instrument, rationale, and failure signature in one reference. Row explanations
+follow; chapter subsections give the full treatment of each metric.\par}
 \end{table*}
+
+\subsection{Reading the measurement map}
+
+Use the table for lookup. Use the notes below when a metric is new, or when you
+need the decision the measurement unlocks.
+
+\paragraph{OMA / TDECQ.}
+TDECQ asks how much worse this transmitter is than an ideal source after a
+reference equalizer. Outer OMA is the optical swing the receiver actually uses.
+Together they answer whether the Tx path still has signal-quality margin.
+\textbf{Exit when} TDECQ and OMA meet the PMD/ATP at the named pattern and
+temperature. \textbf{Decision:} continue, retune bias/equalization, or reject
+the transmitter path. \textbf{Risk if skipped:} you chase receiver noise while
+the eye was already out of budget.
+
+\paragraph{Extinction ratio / RLM.}
+Extinction ratio and level separation mismatch (RLM) set how much OMA you get
+at fixed average power and how linear the PAM4 levels are. Poor RLM inflates
+TDECQ even when average power looks fine. \textbf{Exit when} ER/RLM meet the
+mask at the failing corner. \textbf{Decision:} retune modulator bias or
+driver, or accept a derate. \textbf{Risk if skipped:} average-power APC hides
+a collapsing outer eye.
+
+\paragraph{Wavelength / SMSR.}
+Wavelength placement and side-mode suppression ask whether the spectral ledger
+still closes: on-grid for filters or rings, single-mode under temperature and
+age. \textbf{Exit when} the line sits in the allowed window with SMSR in
+spec. \textbf{Decision:} retune lock/thermal control, derate temperature, or
+replace the laser. \textbf{Risk if skipped:} BER failures get blamed on RIN
+when the line walked onto a filter edge.
+
+\paragraph{RIN.}
+Relative intensity noise sets how far $Q$ can rise with power. Measure with a
+quiet bias path and under controlled ORL so you separate intrinsic laser noise
+from feedback. \textbf{Exit when} RIN at the stated ORL meets the budget.
+\textbf{Decision:} fix reflections/supply, replace the laser, or stop raising
+launch into a floor. \textbf{Risk if skipped:} you keep adding photons to a
+non-power-limited impairment (\Cref{sec:interview-waterfall}).
+
+\paragraph{Insertion loss / ORL.}
+Insertion loss is the first power-ledger line. ORL asks whether reflections
+are seeding RIN or bursts. \textbf{Exit when} loss and ORL are inside the
+plant assumptions used in the link budget. \textbf{Decision:} clean/replace
+connectors, add isolation, or reopen the budget. \textbf{Risk if skipped:}
+burst tickets look like random laser death.
+
+\paragraph{Receiver sensitivity.}
+Sensitivity is the minimum OMA for the target BER, the budget's bottom line.
+A parallel waterfall shift with no floor usually means the Rx path or channel
+loss changed. \textbf{Exit when} sensitivity meets the ledger with stated
+pattern and stress. \textbf{Decision:} golden-swap ownership, derate reach, or
+redesign Rx. \textbf{Risk if skipped:} Tx FA on an Rx-limited link.
+
+\paragraph{Pre-FEC BER / FEC histogram.}
+Pre-FEC BER is the system score every other metric feeds. The FEC histogram
+shape separates sparse Gaussian-like errors from clustered bursts (MPI,
+intermittents, unlocked intervals). \textbf{Exit when} BER and histogram
+support the claimed mechanism class. \textbf{Decision:} contain, clean,
+retune, or open FA. \textbf{Risk if skipped:} average BER hides a bursty
+escape that ATP never stressed.
+
+\paragraph{CMIS state / DDM.}
+Management state and digital diagnostics confirm the control and monitor path
+before you blame photons. Disagreement between digital diagnostics monitoring
+(DDM) and an external meter is itself a finding (monitor-PD or calibration).
+\textbf{Exit when} state progression and DDM match bench truth at the named
+plane. \textbf{Decision:} fix firmware/seat/power, or proceed to optics.
+\textbf{Risk if skipped:} weeks of optical FA on a module that never reached
+ready.
+
+\subsection{Why this map is ordered by isolation}
+
+Transmitter metrics come before channel and receiver metrics because a bad Tx
+eye contaminates every downstream number. Channel loss and ORL come before Rx
+sensitivity arguments for the same reason. Link-level BER is last: it is the
+verdict, not the first bisect. If you start at BER alone, you still need this
+map to choose the next instrument.
 
 \section{Transmitter and dispersion eye closure quaternary (TDECQ)}
 \label{sec:tdecq}
@@ -514,16 +854,23 @@ ignored will fail the first host that enforces the state machine
 \centering
 \setlength{\tabcolsep}{3.5pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.08\linewidth}p{0.22\linewidth}p{0.28\linewidth}p{0.36\linewidth}@{}}
 \toprule
 Step & Action & Pass signal & Fail $\to$ first look \\
 \midrule
 1 & Presence / Vcc / temp & CMIS alive, rails in range & cable, seat, PSU \\
+\addlinespace[1.25em]
 2 & CMIS state machine & ModuleReady (or equiv.) & firmware, TWI, LPMode \\
+\addlinespace[1.25em]
 3 & Enable Tx / ELS & Tx power in class; lasers on only when commanded & bias driver, enable pin, APC \\
+\addlinespace[1.25em]
 4 & Fiber / Rx power & Rx power up; LOS clear & dirty MT, polarity, break \\
+\addlinespace[1.25em]
 5 & CDR / SerDes lock & LOL clear; taps not saturated & host SI, LPO COM, retimer \\
+\addlinespace[1.25em]
 6 & Pre-FEC BER & below KP4 target with margin & Tx quality, ORL, Rx sensitivity \\
+\addlinespace[1.25em]
 7 & Snapshot & CMIS dump + BER + $T$ logged & (needed for RMA later) \\
 \bottomrule
 \end{tabular}
@@ -532,6 +879,7 @@ Step & Action & Pass signal & Fail $\to$ first look \\
 loss of signal; LOL = loss of lock. Limits come from the ATP and PMD, not from
 this table.\par}
 \end{table*}
+\FloatBarrier
 
 \paragraph{Production-representative corners.}
 \label{sec:prod-corners}
@@ -545,24 +893,262 @@ or PVT done, run the corners that match how the fleet will abuse the link.
 \centering
 \setlength{\tabcolsep}{3.5pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.20\linewidth}p{0.28\linewidth}p{0.24\linewidth}p{0.22\linewidth}@{}}
 \toprule
 Corner & What to run & Why it catches & Points to \\
 \midrule
 Chassis thermal & Module in target rack/sled at airflow and power load; not only a quiet chamber on a bench fixture & Faceplate $T$ and TEC load differ from chamber setpoints & derate, TEC, ring unlock \\
+\addlinespace[1.25em]
 Host rails live & Bias / CMIS powered from host supplies with SerDes traffic on & Switching noise into laser bias looks like RIN (\Cref{sec:laser-drivers}) & PSRR, ground, APC \\
+\addlinespace[1.25em]
 Dirty fiber / ORL & Controlled contamination or ORL stress on MT/FAU; clean vs dirty BER & Field installs are not lab-clean; ORL raises RIN and bursts & connector, isolator, feedback \\
+\addlinespace[1.25em]
 Cable plant & Production fiber length, MPO count, and bend radius & Extra loss and reflections eat margin the ledger assumed & link budget (\Cref{sec:link-budget}) \\
+\addlinespace[1.25em]
 ELS hot-swap & Pull/replace ELSFP under traffic (or under controlled traffic stop per CMIS) & Service action the architecture promised (\Cref{sec:elsfp}) & state machine, mate cycles \\
+\addlinespace[1.25em]
 Neighbor load & Adjacent modules/lanes at full traffic and max case $T$ & Crosstalk, shared supply droop, thermal crosstalk on rings & WDM lock, SI, PSU \\
+\addlinespace[1.25em]
 LPO / linear path & Host COM and pre-FEC BER without module DSP crutch & LPO fails here first (\Cref{sec:224g-deploy,sec:com,sec:drivers}) & host FIR, module linearity \\
+\addlinespace[1.25em]
 Voltage corners & Host Vcc min/max with traffic & Brown-out and CMIS glitches & power design, ATP \\
+\bottomrule
 \end{tabular}
 \par\medskip
 {\raggedright\footnotesize\textbf{Table~\thetable.} Production-representative corners.
 A quiet BERT at 25~$^\circ$C with pristine fiber is characterization, not
 production readiness.\par}
 \end{table*}
+\FloatBarrier
+
+\subsection{Reading the production-corner map}
+\label{sec:prod-corners-read}
+
+Bench temperature and voltage sweeps answer how the part behaves. The corners
+in \Cref{tab:prod-corners} answer whether that behavior survives the rack,
+host, plant, and service actions the fleet will actually apply. Run them
+before you call DVT or PVT done.
+
+\paragraph{Chassis thermal.}
+
+\textbf{Purpose.}
+Does the module hold lock, power, and BER when faceplate temperature and TEC
+load match a powered sled, not only a quiet chamber setpoint?
+
+\textbf{Uncertainty removed.}
+Chamber case-$T$ does not prove airflow, neighbor heat, or faceplate gradient.
+After chassis thermal you know whether derate, TEC, or ring unlock risk is
+real under load.
+
+\textbf{Activities.}
+Install in the target rack or sled. Apply production airflow and power load.
+Log case $T$, TEC current, lock, and pre-FEC BER versus the chamber baseline.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} loaded sled thermal either closes with margin or names a
+derate / TEC / unlock restriction.
+
+\textbf{Decision unlocked.}
+Approve the thermal envelope, restrict deployment, or redesign cooling /
+lock.
+
+\textbf{Risk if skipped.}
+Quiet-chamber passes unlock or floor in the first dense tray.
+
+\paragraph{Host rails live.}
+
+\textbf{Purpose.}
+Does laser bias and CMIS stay clean when host supplies switch under SerDes
+traffic?
+
+\textbf{Uncertainty removed.}
+A lab PSU hides switching noise into bias that looks like RIN
+(\Cref{sec:laser-drivers}). After live rails you know whether PSRR, ground,
+or APC owns the floor.
+
+\textbf{Activities.}
+Power bias and CMIS from the target host with traffic on. Compare BER and
+bias telemetry to a quiet supply.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} host-rail corners meet BER and telemetry limits, or a
+named supply / grounding fix is required.
+
+\textbf{Decision unlocked.}
+Approve host pairing, demand PSRR/ground work, or hold LPO / linear paths
+that cannot tolerate the noise.
+
+\textbf{Risk if skipped.}
+You chase optical RIN while the host injects the noise.
+
+\paragraph{Dirty fiber / ORL.}
+
+\textbf{Purpose.}
+Does the link survive controlled contamination or ORL stress the way field
+installs will?
+
+\textbf{Uncertainty removed.}
+Pristine MT fiber hides reflection-driven RIN and burst errors. After clean
+versus dirty BER you know whether connector, isolator, or feedback limits
+the plant.
+
+\textbf{Activities.}
+Apply controlled ORL or contamination on MT/FAU. Compare BER, RIN proxies,
+and recovery after clean.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} stressed-ORL BER either meets the plant budget or forces
+isolator / connector / service rules.
+
+\textbf{Decision unlocked.}
+Approve plant practice, tighten cleaning / mate rules, or require better
+isolation.
+
+\textbf{Risk if skipped.}
+Lab heroes fail the first dirty install and look like random laser RMAs.
+
+\paragraph{Cable plant.}
+
+\textbf{Purpose.}
+Does the link budget survive production fiber length, MPO count, and bend
+radius?
+
+\textbf{Uncertainty removed.}
+A short golden patchcord does not prove the ledger. After production plant
+you know whether extra loss and reflections eat the assumed margin
+(\Cref{sec:link-budget}).
+
+\textbf{Activities.}
+Run the production cable set. Measure loss, ORL, and BER against the signed
+budget.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} production plant closes the budget with remaining margin,
+or the ledger is revised.
+
+\textbf{Decision unlocked.}
+Approve plant design, cut reach or connectors, or raise launch / Rx
+requirements.
+
+\textbf{Risk if skipped.}
+Budget fiction becomes field brownouts on long MPO chains.
+
+\paragraph{ELS hot-swap.}
+
+\textbf{Purpose.}
+Can the external laser source be pulled and replaced under the service model
+the architecture promised (\Cref{sec:elsfp})?
+
+\textbf{Uncertainty removed.}
+Static bring-up does not prove CMIS state machines, mate wear, or traffic
+recovery under swap. After hot-swap (or controlled stop per CMIS) you know
+whether service is real.
+
+\textbf{Activities.}
+Pull/replace ELSFP under traffic or under the documented traffic stop. Log
+state machine, mate cycles, and recovery BER.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} swap recovers to ready state and BER without undefined
+hangs, or service is restricted.
+
+\textbf{Decision unlocked.}
+Approve field-replaceable ELS service, or forbid hot-swap and rewrite ops.
+
+\textbf{Risk if skipped.}
+The replaceable-laser story fails the first maintenance window.
+
+\paragraph{Neighbor load.}
+
+\textbf{Purpose.}
+Do crosstalk, shared supply droop, and thermal crosstalk stay inside margin
+when adjacent modules and lanes run full traffic at max case $T$?
+
+\textbf{Uncertainty removed.}
+A lone hero module hides tray-level coupling. After neighbor load you know
+whether WDM lock, SI, or PSU owns the fail.
+
+\textbf{Activities.}
+Light neighbors at full traffic and temperature. Watch lock, BER, supply
+droop, and lane coupling.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} loaded-neighbor corners close, or a spacing / power /
+lock restriction is named.
+
+\textbf{Decision unlocked.}
+Approve dense packing, derate neighbor density, or redesign supply / lock.
+
+\textbf{Risk if skipped.}
+Single-module DVT passes; tray bring-up fails.
+
+\paragraph{LPO / linear path.}
+
+\textbf{Purpose.}
+Does host channel operating margin (COM) and pre-FEC BER close without a
+module DSP crutch (\Cref{sec:224g-deploy,sec:com,sec:drivers})?
+
+\textbf{Uncertainty removed.}
+Retimed modules hide host FIR and module linearity faults. After the linear
+path corner you know whether LPO is shippable on the target host.
+
+\textbf{Activities.}
+Run host COM and pre-FEC BER on the linear electrical path. Sweep host
+equalization as needed.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} LPO/linear BER and COM meet targets on the production
+host, or LPO is rejected for that host class.
+
+\textbf{Decision unlocked.}
+Approve LPO deployment, force retimed optics, or redesign host FIR / module
+linearity.
+
+\textbf{Risk if skipped.}
+LPO ships on hope and fails first on the production ASIC SerDes.
+
+\paragraph{Voltage corners.}
+
+\textbf{Purpose.}
+Do brown-out and CMIS glitches stay clear at host Vcc min/max under traffic?
+
+\textbf{Uncertainty removed.}
+Nominal Vcc hides state-machine and bias glitches at rail edges. After
+voltage corners you know whether power design and ATP cover the envelope.
+
+\textbf{Activities.}
+Sweep host Vcc with traffic. Log CMIS state, alarms, and BER.
+
+\textbf{Exit criteria.}
+\textbf{Exit when} min/max Vcc corners pass with stable management and BER,
+or power design changes.
+
+\textbf{Decision unlocked.}
+Approve voltage envelope, tighten ATP voltage screens, or redesign power.
+
+\textbf{Risk if skipped.}
+Field brown-outs look like firmware or optics bugs.
+
+\subsection{Why these corners come after quiet characterization}
+
+Quiet $T$/$V$ characterization maps the part. Production corners ask whether
+that map survives chassis heat, live host noise, dirty plant, service swaps,
+neighbors, linear hosts, and rail edges. Later fleet monitoring must not be
+asked to invent coverage that these corners never ran. Chassis thermal, host
+rails, and ORL are the minimum before you call bring-up or DVT done on a
+representative unit; the full set in \Cref{tab:prod-corners} belongs before
+PVT exit.
+
+\subsection{Learning summary}
+
+\begin{description}
+\item[Chassis thermal] Does sled airflow and faceplate $T$ match the claim?
+\item[Host rails / voltage] Does live supply noise and rail edge stay clean?
+\item[Dirty fiber / cable plant] Does the real plant leave margin?
+\item[ELS hot-swap / neighbors] Does service and dense packing survive?
+\item[LPO / linear path] Does the host close without module DSP?
+\end{description}
 
 \paragraph{System bring-up.}
 A module that passes on a golden host can still fail in a real chassis:
@@ -743,18 +1329,27 @@ pause, replace, or supplier escalate (\Cref{sec:tree-scope-population}).
 \centering
 \setlength{\tabcolsep}{3.5pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.17\linewidth}p{0.22\linewidth}p{0.14\linewidth}p{0.22\linewidth}p{0.20\linewidth}@{}}
 \toprule
 Symptom & First telemetry check & Bucket & Confirm on bench / FA & Typical fix owner \\
 \midrule
 Link never comes up (fresh install) & CMIS presence, Vcc, Tx power flatline, LOS & Mfg or install & Visual fiber/connector; golden module swap; CMIS dump & Ops install; supplier ATP if lot-correlated \\
+\addlinespace[1.8em]
 Intermittent LOS / burst errors & Rx power dropouts; FEC bursts; ORL events & Perf (ORL) or mfg (contam.) & Clean/inspect MT; ORL meter; RIN vs ORL (\Cref{sec:laser-drivers,sec:rin-values}) & Ops cleaning; packaging if repeat RMA \\
+\addlinespace[1.8em]
 Pre-FEC BER high, power OK & Tap saturation; RLM/TDECQ if logged; case $T$ & Perf & DCA TDECQ/RLM; host COM; LPO vs retimed path (\Cref{sec:tdecq,sec:com}) & Host SI / module Tx design \\
+\addlinespace[1.8em]
 BER rises only at high case $T$ & Module temp alarm; Tx power drop; $\lambda$ walk & Perf or reliability & LIV at $T$; OSA grid; TEC current; EAM bias (\Cref{sec:laser-aging}) & Derate / TEC / laser supplier \\
+\addlinespace[1.8em]
 Slow BER creep over weeks/months & Bias current up for same Tx power; SMSR if monitored & Reliability & LIV/SMSR vs ship ATP; Arrhenius lot history & Laser wear-out; ELS replace \\
+\addlinespace[1.8em]
 Sudden hard fail, was healthy & Last good CMIS snapshot; neighbor links OK & Reliability (COD) or mfg (ESD) & Dark LIV; DPA on facet/solder; date-code cluster? & FA + supplier 8D \\
+\addlinespace[1.8em]
 One date code / site fails early & Lot Pareto; burn-in escape rate & Mfg & Incoming SPC vs ATP; FA on sample of lot & Supplier CAPA; hold shipment \\
+\addlinespace[1.8em]
 WDM / ring unlock, power OK & Channel ID; thermal of neighbors; lock-loop status & Perf & Resonance tune; crosstalk; CW-WDM line power (\Cref{sec:lock-validation,sec:thermal-xtalk,sec:cwwdm-laser}) & Lock firmware / thermal design \\
+\addlinespace[1.8em]
 ELSFP swap restores link & Old module CMIS vs new; connector cycles & Reliability or mfg (connector) & Inspect MT; mating-cycle count; laser LIV in returned module (\Cref{sec:elsfp}) & Laser vs connector split in FA \\
 \bottomrule
 \end{tabular}
@@ -762,8 +1357,86 @@ ELSFP swap restores link & Old module CMIS vs new; connector cycles & Reliabilit
 {\raggedright\footnotesize\textbf{Table~\thetable.} Fleet triage map: symptom to
 provisional bucket to confirm measurement. Perf $=$ performance (design/operating
 point); reliability $=$ time-dependent wear; mfg $=$ lot/process/install
-excursion.\par}
+excursion. Row notes follow.\par}
 \end{table*}
+
+\subsection{Reading the fleet triage map}
+
+Each row is a provisional route, not a confirmed root cause. Capture telemetry
+first. Confirm with the smallest measurement that can falsify the bucket. Then
+assign an owner.
+
+\paragraph{Link never comes up (fresh install).}
+Ask whether the part is seated, powered, and managed before you open laser FA.
+CMIS presence, supply rails, Tx power flatline, and loss-of-signal (LOS) split
+install from product. Confirm with visual fiber/connector checks, a golden
+module swap, and a frozen CMIS dump. \textbf{Decision:} ops fix, or supplier
+ATP if the fail tracks a lot. \textbf{Risk if skipped:} manufacturing escapes
+get filed as design defects.
+
+\paragraph{Intermittent LOS / burst errors.}
+Ask whether the plant is reflecting or contaminating. Rx power dropouts and
+bursty FEC histograms point at connectors or ORL before intrinsic RIN. Confirm
+with inspect/clean, ORL meter, and RIN versus ORL. \textbf{Decision:} cleaning
+discipline or packaging FA if RMAs repeat. \textbf{Risk if skipped:} burst
+tickets become endless laser replacements.
+
+\paragraph{Pre-FEC BER high, power OK.}
+Power held, so leave the power ledger. Tap saturation, logged TDECQ/RLM, and
+case temperature point at signal quality or host SI. Confirm on a DCA and with
+host channel operating margin (COM) thinking on linear paths.
+\textbf{Decision:} host SI, module Tx design, or retune. \textbf{Risk if
+skipped:} you reseat fiber forever on a quality-path fail.
+
+\paragraph{BER rises only at high case $T$.}
+Ask whether the operating point or the device changed with heat. Telemetry for
+temp alarms, Tx sag, and wavelength walk comes first. Confirm with LIV at
+temperature, OSA, TEC/heater codes, and modulator bias. Cool-down recovery
+raises $P(\mathrm{operating\ point})$; permanent shift raises
+$P(\mathrm{aging})$. \textbf{Decision:} derate, thermal design, or supplier
+life action. \textbf{Risk if skipped:} ambient-only debug misses the spent
+control ledger.
+
+\paragraph{Slow BER creep over weeks/months.}
+Ask whether wear-out is spending the noise or power ledger. Bias current
+rising at fixed Tx power is a classic aging tell. Confirm LIV/SMSR against
+ship ATP and lot history. \textbf{Decision:} replace, derate, or update burn-
+in. \textbf{Risk if skipped:} FIT models stay optimistic until the fleet
+teaches you.
+
+\paragraph{Sudden hard fail, was healthy.}
+Ask whether the event is catastrophic optical damage, ESD, or a shared
+infrastructure hit. Neighbor links and the last good CMIS snapshot matter.
+Confirm with dark LIV and physical FA; check date-code clusters.
+\textbf{Decision:} FA plus supplier 8D, or infrastructure fix.
+\textbf{Risk if skipped:} one COD event becomes a false process CAPA.
+
+\paragraph{One date code / site fails early.}
+Ask whether this is a manufacturing subpopulation. Lot Pareto and burn-in
+escape rate are the first cuts. Confirm incoming SPC versus ATP and FA on a
+sample. \textbf{Decision:} quarantine, CAPA, hold shipment. \textbf{Risk if
+skipped:} a bad lot keeps deploying while FA studies one unit.
+
+\paragraph{WDM / ring unlock, power OK.}
+Ask whether the spectral or lock ledger was spent while average power looked
+fine. Channel ID, neighbor thermal, and lock-loop status are the telemetry.
+Confirm resonance tune, crosstalk, and line power. \textbf{Decision:} lock
+firmware or thermal design. \textbf{Risk if skipped:} unlocks get mislabeled
+as random BER.
+
+\paragraph{ELSFP swap restores link.}
+Ask whether the external laser, the connector, or the engine owned the fail.
+Compare old versus new CMIS and connector cycles. Confirm MT inspect and LIV
+on the returned module. \textbf{Decision:} split RMA codes for laser versus
+connector. \textbf{Risk if skipped:} FIT burns down the wrong wear-out mode
+(\Cref{sec:elsfp}).
+
+\subsection{Why triage order matters}
+
+Scope before mechanism. Telemetry before destructive FA. Bucket before owner.
+Confirm before CAPA. Closing the loop into ATP is part of the incident, not
+optional paperwork. Reversing that order produces NFF piles and merged RMA
+codes that make life models dishonest.
 
 \paragraph{How to walk an incident (order of operations).}
 \begin{enumerate}

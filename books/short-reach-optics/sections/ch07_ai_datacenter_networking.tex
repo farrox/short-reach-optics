@@ -72,6 +72,7 @@ inside the rack'' and ``optics between racks'' arrive on different timelines.
 \centering
 \setlength{\tabcolsep}{4pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.22\linewidth}p{0.17\linewidth}p{0.17\linewidth}p{0.17\linewidth}p{0.17\linewidth}@{}}
 \toprule
  & \multicolumn{2}{c}{Scale-up} & \multicolumn{2}{c}{Scale-out} \\
@@ -79,12 +80,16 @@ inside the rack'' and ``optics between racks'' arrive on different timelines.
 Metric & Today & Next gen & Today & Next gen \\
 \midrule
 Accelerator nodes in domain & $\sim$100 & $\sim$1\,k & 100\,k+ & $\gg$100\,k \\
+\addlinespace[1.5em]
 Physical extent & Rack & Rack to row & Datacenter & Datacenter \\
+\addlinespace[1.5em]
 Network properties & \multicolumn{2}{p{0.34\linewidth}}{Lossless, low latency} &
   \multicolumn{2}{p{0.34\linewidth}}{Large scale; multi-tier switching} \\
+\addlinespace[1.5em]
 Media within rack &
   \multicolumn{2}{p{0.34\linewidth}}{Electrical: passive PCB / twinax backplane} &
   \multicolumn{2}{p{0.34\linewidth}}{Electrical: twinax backplane} \\
+\addlinespace[1.5em]
 Media between racks &
   AEC (adjacent racks) & Optical (within row) &
   \multicolumn{2}{p{0.34\linewidth}}{Optical (pluggable or CPO on switch/NIC)} \\
@@ -117,20 +122,31 @@ OIF and non-OIF.
 \centering
 \setlength{\tabcolsep}{5pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.12\linewidth}p{0.14\linewidth}p{0.70\linewidth}@{}}
 \toprule
 Body & Fabric & What matters for short-reach optics \\
 \midrule
 OIF CEI & All reaches & Electrical PHY: XSR/VSR/MR/LR, 448G PAM4/6/8, LPO/LRO; CMIS for module management \\
+\addlinespace[1.5em]
 UALink & Scale-up & Open load/store pod fabric; 200G/lane today, $\sim$400G/lane next; drives XSR-class PHY needs \\
+\addlinespace[1.5em]
 UEC & Scale-out & Ultra Ethernet Transport, congestion control; PHY group surveying 400G/lane enhancements \\
+\addlinespace[1.5em]
 SNIA SFF & Host / backplane & Cables, connectors, PCIe/EDSFF form factors; SFF 448G COM for backplane (complements CEI front-panel work) \\
+\addlinespace[1.5em]
 OCP & Rack / system & Open rack designs, CPO/XPO placement, optical circuit switching (OCS) for AI clusters \\
+\addlinespace[1.5em]
 IEEE 802.3 & Scale-out (+ optics PMD) & Ethernet MAC rates (802.3dj, 400G/lane SG), KP4 FEC, IM/DD PMD clauses (DR/FR, TDECQ) \\
+\addlinespace[1.5em]
 100G Lambda MSA & Scale-out optics & Originated the 100G/$\lambda$ single-mode PMDs (100G-FR/LR, 400G-DR4/FR4/LR4) later folded into IEEE 802.3; RIN$_x$OMA transmitter method the DR/FR and LPO specs inherit \\
+\addlinespace[1.5em]
 IBTA & Scale-out & InfiniBand Architecture; NDR 400G, XDR 800G/port at 200G/lane, 1.6T switch links; reuses QSFP/OSFP + MPO optics with Ethernet \\
+\addlinespace[1.5em]
 IEEE 802.1 & All fabrics & Link-layer security: MACsec (802.1AE) line-rate encryption; 802.1X port access control \\
+\addlinespace[1.5em]
 PCI-SIG / CXL & Scale-up, in-node & PCIe 7.0 (128~GT/s PAM4) and CXL 4.0 memory fabric; PCI-SIG Optical Workgroup for optical PCIe \\
+\addlinespace[1.5em]
 DMTF / OpenConfig / SONiC & Management & Box and fleet telemetry and config (Redfish, OpenConfig, SONiC); complement OIF CMIS module management \\
 \bottomrule
 \end{tabular}
@@ -374,15 +390,21 @@ the point tests pass.
 \caption{LPO MSA test points (100G-DR-LPO).\label{tab:lpo-tp}}
 \setlength{\tabcolsep}{4pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.08\linewidth}p{0.30\linewidth}p{0.54\linewidth}@{}}
 \toprule
 Point & Location & Principal measurements \\
 \midrule
 TP1a & Host SerDes output & EECQ (electrical eye closure), host TX quality \\
+\addlinespace[1.5em]
 TP1 & Module electrical input & Module input stressor calibration \\
+\addlinespace[1.5em]
 TP2 & Optical TX (2--5~m patch cord) & TDECQ, TECQ, OMA$_{\mathrm{outer}}$, RIN$_{x\mathrm{OMA}}$, ER \\
+\addlinespace[1.5em]
 TP3 & Optical RX input & Stressed receiver calibration (SECQ), sensitivity masks \\
+\addlinespace[1.5em]
 TP4 & Module electrical output & Module RX linear output (EECQ) \\
+\addlinespace[1.5em]
 TP4a & Stressed host input & Host RX under worst-case module output \\
 \bottomrule
 \end{tabular}
@@ -579,14 +601,19 @@ what trades power and reach for serviceability, the through-line of this chapter
 \refstepcounter{table}\label{tab:placement}%
 \centering
 \setlength{\tabcolsep}{5pt}%
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.20\linewidth}p{0.22\linewidth}p{0.15\linewidth}p{0.30\linewidth}@{}}
 \toprule
 Placement & Host electrical reach & Energy/bit & Serviceability \\
 \midrule
 Pluggable (faceplate) & full VSR host run ($\sim$200~mm) + connector & highest ($>$30~pJ/bit w/ DSP; less for LPO) & hot-swap at faceplate (best) \\
+\addlinespace[1.5em]
 On-board optics (OBO / COBO) & shorter mid-board trace & lower & board-level (solder/socket); largely bypassed for CPO \\
+\addlinespace[1.5em]
 Near-packaged (NPO) & engine beside the ASIC on substrate & lower still & module on substrate; limited \\
+\addlinespace[1.5em]
 Co-packaged (CPO) & mm-scale die-to-engine (XSR) & $<$5~pJ/bit & soldered; ELSFP lasers field-replaceable \\
+\addlinespace[1.5em]
 Optical I/O on interposer & on-die / interposer & $<$2~pJ/bit & not field-serviceable (emerging) \\
 \bottomrule
 \end{tabular}
@@ -785,12 +812,15 @@ networking.''
 \begin{table}[ht]
 \centering
 \caption{Where optics fits the inference bottlenecks.\label{tab:inference}}
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}lll@{}}
 \toprule
 Phase & Bottleneck & Network role \\
 \midrule
 Prefill & compute & moderate (parallel) \\
+\addlinespace[1.5em]
 Decode & memory bandwidth & high for sharded models (collectives) \\
+\addlinespace[1.5em]
 MoE routing & interconnect & dominant (all-to-all) \\
 \bottomrule
 \end{tabular}
@@ -896,14 +926,19 @@ parameters that matter are the ones that land in the link budget and the fleet m
 \centering
 \setlength{\tabcolsep}{4pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.22\linewidth}p{0.16\linewidth}p{0.15\linewidth}p{0.13\linewidth}p{0.24\linewidth}@{}}
 \toprule
 Technology & Switching & Insertion loss & Radix & Where it fits \\
 \midrule
 MEMS mirror array (free-space) & ms & $\sim$1--3~dB & 100s ($136\times136$ shipping) & DC fabric and AI-pod topology reconfiguration \\
+\addlinespace[1.5em]
 Piezoelectric beam steering & ms & low--moderate & 10s--100s & free-space alternative to MEMS \\
+\addlinespace[1.5em]
 Liquid crystal (LCoS) & ms & moderate & wavelength-selective & wavelength add/drop, WSS roles \\
+\addlinespace[1.5em]
 3D robotic fiber & seconds--minutes & $\sim$0.5~dB & 1000s & automated patch and provisioning, not per-job \\
+\addlinespace[1.5em]
 Silicon photonic (MZI / SOA) & ns--$\mu$s & higher (integrated) & 10s & fast, low-radix; research and niche \\
 \bottomrule
 \end{tabular}
@@ -1035,16 +1070,23 @@ validation and manufacturing challenges of \Cref{ch:validation,ch:reliability}.
 \refstepcounter{table}\label{tab:cpo-programs}%
 \centering
 \setlength{\tabcolsep}{5pt}%
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.20\linewidth}p{0.40\linewidth}p{0.36\linewidth}@{}}
 \toprule
 Program & Technology & Status \\
 \midrule
 Broadcom TH6-Davisson & 102.4~Tb/s, 200G/ch, COUPE, ELSFP lasers & 3rd-gen CPO, shipping Oct 2025 \\
+\addlinespace[1.5em]
 Broadcom TH5-Bailly & 51.2~Tb/s CPO & 2nd-gen, extensively field-tested \\
+\addlinespace[1.5em]
 NVIDIA Quantum-X (IB) & 144$\times$800G, MRM, COUPE, detachable lasers & available late 2025 \\
+\addlinespace[1.5em]
 NVIDIA Spectrum-X (Enet) & up to 409.6~Tb/s, MRM, COUPE & 2H 2026 \\
+\addlinespace[1.5em]
 TSMC COUPE & SoIC-X EIC-on-PIC packaging & mass production 2026 \\
+\addlinespace[1.5em]
 Samsung (foundry) & optical engines / turnkey CPO & OE 2027, CPO 2029 \\
+\addlinespace[1.5em]
 Ayar Labs & TeraPHY optical I/O + SuperNova CW-WDM source & merchant scale-up optical I/O \\
 \bottomrule
 \end{tabular}
@@ -1088,16 +1130,23 @@ closing most of the density and power gap to CPO:
 \centering
 \setlength{\tabcolsep}{5pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.12\linewidth}p{0.22\linewidth}p{0.22\linewidth}p{0.38\linewidth}@{}}
 \toprule
 Attribute & Retimed / LPO pluggable & XPO & CPO \\
 \midrule
 Capacity & 0.8--1.6~Tb/s/module & 12.8~Tb/s/module & 100+~Tb/s on-package \\
+\addlinespace[1.5em]
 Density & baseline & $\sim$4$\times$ (204.8~Tb/s per RU) & highest \\
+\addlinespace[1.5em]
 Power path & full electrical run to faceplate & short run to dense faceplate & shortest (on substrate) \\
+\addlinespace[1.5em]
 Cooling & air (or LPO savings) & integrated cold plate, 400~W+ & switch-package liquid cooling \\
+\addlinespace[1.5em]
 Serviceability & field-replaceable (best) & field-replaceable (slide-out) & soldered; ELSFP lasers replaceable \\
+\addlinespace[1.5em]
 Energy/bit & highest & intermediate & lowest ($<$5, then $<$2~pJ/bit) \\
+\addlinespace[1.5em]
 Maturity & shipping & MSA launched OFC 2026 & shipping (Broadcom, NVIDIA) \\
 \bottomrule
 \end{tabular}
@@ -1134,17 +1183,25 @@ propagation term that does.
 \begin{table}[ht]
 \centering
 \caption{Approximate one-way latency contributors, 200G/lane class.\label{tab:latency}}
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}ll@{}}
 \toprule
 Contributor & Typical latency \\
 \midrule
 PCS framing / serialization & a few ns \\
+\addlinespace[1.5em]
 FEC encode $+$ decode (KP4) & $\sim$20--100~ns each \\
+\addlinespace[1.5em]
 Module DSP / retimer (per hop) & $\sim$8--10~ns (fully retimed) \\
+\addlinespace[1.5em]
 \quad LPO (no DSP) & $<$3~ns \\
+\addlinespace[1.5em]
 Driver, modulator, PD, TIA & sub-ns \\
+\addlinespace[1.5em]
 Fiber propagation (silica) & $\sim$4.9~ns/m \\
+\addlinespace[1.5em]
 \quad hollow-core fiber & $\sim$3.3~ns/m \\
+\addlinespace[1.5em]
 Switch hop (O-E-O) & $\sim$100--560~ns \\
 \bottomrule
 \end{tabular}
@@ -1212,12 +1269,15 @@ The trajectory that CPO is chasing, per TSMC's COUPE disclosures:
 \begin{table}[ht]
 \centering
 \caption{Approximate interconnect energy per bit.\label{tab:pjbit}}
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}ll@{}}
 \toprule
 Link style & Energy per bit \\
 \midrule
 Conventional copper / retimed & $>$30~pJ/bit \\
+\addlinespace[1.5em]
 Co-packaged optics on substrate & $<$5~pJ/bit \\
+\addlinespace[1.5em]
 Optical I/O on the interposer & $<$2~pJ/bit \\
 \bottomrule
 \end{tabular}

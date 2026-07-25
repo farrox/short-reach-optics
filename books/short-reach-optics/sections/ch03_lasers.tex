@@ -96,17 +96,25 @@ constraint set:
 \centering
 \setlength{\tabcolsep}{2.5pt}%
 \scriptsize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.12\linewidth}p{0.13\linewidth}p{0.13\linewidth}p{0.13\linewidth}p{0.13\linewidth}p{0.13\linewidth}p{0.13\linewidth}@{}}
 \toprule
 Attribute & VCSEL direct & DFB direct & DFB + EAM & CW DFB/DBR + MZM & CW DFB/DBR + ring & External cavity + modulator \\
 \midrule
 Wavelength / fiber & 850--940~nm / MMF & 1310~nm / SMF & 1310~nm / SMF & 1310 or 1550~nm / SMF & WDM grid / SMF & Tunable grid / SMF \\
+\addlinespace[1.5em]
 Modulation fit & Direct only & Direct & Integrated EML & Si or TFLN MZM & Resonant Si ring & External MZM or ring \\
+\addlinespace[1.5em]
 Bandwidth / reach & Short, modal limit & Chirp-limited & High BW, low chirp & High BW, broad passband & High BW, lock-limited & High BW, architecture-specific \\
+\addlinespace[1.5em]
 RIN / linewidth & RIN and modal noise & RIN and chirp & RIN plus EAM bias & RIN; linewidth usually secondary & RIN plus spectral alignment & Low linewidth; verify feedback response \\
+\addlinespace[1.5em]
 Power / efficiency & Low Tx complexity & Low Tx complexity & Driver and EAM loss & Laser, driver, and MZM loss & Laser, heater, and lock power & Laser plus control overhead \\
+\addlinespace[1.5em]
 Reliability & Junction and temperature wear & Facet and active-region wear & Laser plus EAM aging & Source, attach, and bias drift & Source, heater, and lock faults & Cavity, package, and lock faults \\
+\addlinespace[1.5em]
 Manufacturing & Array-friendly, MMF plant & Simple Tx, SMF attach & Mature integrated Tx & Multi-die attach and RF match & Dense PIC, tight thermal control & Tight optical assembly and control \\
+\addlinespace[1.5em]
 Validation burden & Modal, temperature, aging & Chirp, LIV, RIN & LIV, RIN, EAM sweep, TDECQ & Source plus bias and RF path & Source plus resonance and crosstalk & Spectrum, lock, feedback, environment \\
 \bottomrule
 \end{tabular}
@@ -115,6 +123,154 @@ Validation burden & Modal, temperature, aging & Chirp, LIV, RIN & LIV, RIN, EAM 
 source and modulation paths. Entries show the dominant engineering concern, not
 fixed rankings. Program limits come from \Cref{tab:laser-prd}.\par}
 \end{table*}
+\FloatBarrier
+
+\subsection{Reading the source and modulation matrix}
+\label{sec:source-mod-matrix-read}
+
+\Cref{tab:source-mod-matrix} is a decision map across paths, not a datasheet.
+Read it by \emph{attribute row}: each row asks one engineering question that
+every path must answer. Family detail for VCSEL, DML, EML, MZM, and rings
+follows in later sections; use this matrix to see which questions become hard
+before you commit.
+
+\paragraph{Wavelength / fiber.}
+
+\textbf{Purpose.}
+Which wavelength band and fiber type does the path assume?
+
+\textbf{Uncertainty removed.}
+Reach, plant, and WDM grid are not free variables after this choice. MMF at
+850--940~nm and SMF at 1310/1550~nm pull different connectors, modal limits,
+and lock burdens.
+
+\textbf{Decision unlocked.}
+Accept the plant class, or reject a path that cannot meet the fiber and grid
+requirement.
+
+\textbf{Risk if skipped.}
+You pick a modulator before you know whether the link is MMF short-reach or
+SMF WDM.
+
+\paragraph{Modulation fit.}
+
+\textbf{Purpose.}
+Is the path direct modulation, integrated EAM, external MZM, or resonant
+ring?
+
+\textbf{Uncertainty removed.}
+Driver, chirp, and lock problems change with the modulator class. Direct
+paths buy simplicity and pay chirp or modal limits; external paths buy
+bandwidth and pay attach and control.
+
+\textbf{Decision unlocked.}
+Allocate driver, bias, and control ownership for the chosen modulator class.
+
+\paragraph{Bandwidth / reach.}
+
+\textbf{Purpose.}
+Can the path close the baud and reach without a physics veto?
+
+\textbf{Uncertainty removed.}
+Modal bandwidth, chirp, or lock range may kill a path before cost discussions
+matter.
+
+\textbf{Decision unlocked.}
+Keep the path, derate reach/rate, or move to a higher-BW class (for example
+EML or MZM over DML).
+
+\paragraph{RIN / linewidth.}
+
+\textbf{Purpose.}
+Which noise and spectral purity limits dominate the BER floor and WDM fit?
+
+\textbf{Uncertainty removed.}
+Isolator-free and reflection-rich plants harden RIN. Rings and WDM harden
+spectral alignment. External cavities often win linewidth but still need
+feedback checks.
+
+\textbf{Decision unlocked.}
+Set RIN@ORL and SMSR/linewidth requirements in \Cref{tab:laser-prd}.
+
+\paragraph{Power / efficiency.}
+
+\textbf{Purpose.}
+Where does wall-plug and optical power go: laser only, or laser plus driver,
+EAM/MZM loss, heaters, and lock?
+
+\textbf{Uncertainty removed.}
+``Efficient laser'' claims fail if heater and lock power dominate the module
+budget.
+
+\textbf{Decision unlocked.}
+Accept the power split, or reject a dense path that breaks the rack power
+envelope.
+
+\paragraph{Reliability.}
+
+\textbf{Purpose.}
+Which wear-out and fault classes own life: junction, facet, EAM, attach,
+heater, or lock?
+
+\textbf{Uncertainty removed.}
+Life models and FA paths differ by class (\Cref{sec:wearout-modes}). An
+integrated source makes laser yield a package risk; an ELS makes the optical
+interface a service risk.
+
+\textbf{Decision unlocked.}
+Name the life owner and the screens (HTOL, EAM age, mate cycles) before NPI.
+
+\paragraph{Manufacturing.}
+
+\textbf{Purpose.}
+What assembly and plant skills does the path demand?
+
+\textbf{Uncertainty removed.}
+Array MMF plants, SMF attach, multi-die RF match, and dense PIC thermal
+control are different factories. Path choice is also a supplier-capability
+choice.
+
+\textbf{Decision unlocked.}
+Pick a path the supply chain can screen, or fund the missing process.
+
+\paragraph{Validation burden.}
+
+\textbf{Purpose.}
+Which measurements become mandatory because of the path?
+
+\textbf{Uncertainty removed.}
+VCSEL needs modal and temperature work. EML needs LIV, RIN, EAM sweep, and
+TDECQ. Rings need resonance, crosstalk, and lock. External cavities need
+spectrum, lock, and feedback.
+
+\textbf{Decision unlocked.}
+Size the ATP and DVT matrix to the path; do not copy another product's
+checklist blindly.
+
+\subsection{How to use the matrix}
+
+\begin{enumerate}
+\item Freeze wavelength/fiber and reach/rate from the product requirements.
+\item Strike paths that fail bandwidth/reach or plant class.
+\item Among survivors, score RIN/linewidth, power, reliability, and
+      manufacturing against your constraints.
+\item Read the validation-burden row as a cost: every hard cell is an ATP
+      and FA investment you must fund.
+\item Fill \Cref{tab:laser-prd} from the winning path; reject alternatives
+      with a one-line reason retained for review.
+\end{enumerate}
+
+Later sections teach each family. Do not let family enthusiasm override a row
+that already vetoes the path.
+
+\subsection{Learning summary}
+
+\begin{description}
+\item[Wavelength / fiber] Plant and grid first.
+\item[Modulation / BW] Physics veto before cost.
+\item[RIN / power / reliability] The ledgers that usually decide.
+\item[Manufacturing / validation] Can you build and screen it repeatedly?
+\end{description}
 
 \section{Directly modulated lasers and VCSELs}
 \label{sec:dml-vcsel}
@@ -191,16 +347,23 @@ remain the workhorse of the installed 100--200G base.
 \refstepcounter{table}\label{tab:laser-choice}%
 \centering
 \setlength{\tabcolsep}{5pt}%
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.14\linewidth}p{0.24\linewidth}p{0.58\linewidth}@{}}
 \toprule
 Source & Typical use & Top risks \\
 \midrule
 DML & short reach, cost-driven & chirp/dispersion, extinction ratio \\
+\addlinespace[1.5em]
 EML & $\le$DR, 100--200G/lane & EAM bias/aging, thermal \\
+\addlinespace[1.5em]
 CW + TFLN MZM & 400G/lane FR/DR, NPO & MZM bias drift, fiber attach, driver match \\
+\addlinespace[1.5em]
 CW + Si MZM & DR/FR SiPh, 100--400G/lane & driver match, bias drift, fiber coupling \\
+\addlinespace[1.5em]
 CW + Si ring & CPO, WDM transceivers & wavelength lock, thermal crosstalk, coupling \\
+\addlinespace[1.5em]
 VCSEL & SR over MMF & modal noise, reach, temperature \\
+\addlinespace[1.5em]
 ELS / ELSFP & co-packaged optics & connectorization, fleet serviceability \\
 \bottomrule
 \end{tabular}
@@ -242,15 +405,21 @@ Each architecture decision forces a different requirements set
 \centering
 \setlength{\tabcolsep}{3.5pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.22\linewidth}p{0.28\linewidth}p{0.44\linewidth}@{}}
 \toprule
 Roadmap choice & Laser implication & Specs you must freeze early \\
 \midrule
 Pluggable EML vs CW+Si/TFLN & Integrated EAM vs external CW + modulator & EAM bias/aging and TDECQ vs CW power class, RIN, and modulator $V_\pi$ match \\
+\addlinespace[1.5em]
 On-package laser vs ELSFP/CW-WDM & Field replace vs FIT inside the package & Connector/ORL/mate cycles and hot-swap CMIS vs COD/aging inside ASIC thermal \\
+\addlinespace[1.5em]
 Isolator vs isolator-free (CPO) & Feedback tolerance vs quiet RIN only & Stressed $\mathrm{RIN}_x\mathrm{OMA}$ at stated ORL; monitor PD / lock policy \\
+\addlinespace[1.5em]
 Single-$\lambda$ vs CW-WDM / comb & One line vs $N$ lines into rings/filters & Per-line power flatness, SMSR, grid, crosstalk (\Cref{sec:cwwdm-laser}) \\
+\addlinespace[1.5em]
 Retimed vs LPO & Module DSP hides Tx vs host sees raw eye & Laser+modulator TDECQ/RLM floor vs host COM budget (\Cref{sec:com,sec:drivers}) \\
+\addlinespace[1.5em]
 Derate policy & Operating $I$, $T$, power below abs-max & Bias window, thermal class, FIT/$E_a$ assumptions (\Cref{sec:laser-aging}) \\
 \bottomrule
 \end{tabular}
@@ -270,18 +439,27 @@ leave RIN without an ORL, or power without a case-temperature class.
 \centering
 \setlength{\tabcolsep}{3pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.16\linewidth}p{0.22\linewidth}p{0.20\linewidth}p{0.18\linewidth}p{0.18\linewidth}@{}}
 \toprule
 Parameter & How to set the number & Measure / ATP & Reject if & Derate / ops note \\
 \midrule
 Launch power / class & Link budget + connector loss + aging margin (\Cref{sec:link-budget}) & Power meter; ELSFP class & Below min at rated $T$ & Cap max power for COD \\
+\addlinespace[1.5em]
 Wavelength / grid & PMD or ring FSR plan; $d\lambda/dT$ headroom (\Cref{ch:wdm}) & OSA / wavemeter & Off-grid at case $T$ & TEC setpoints \\
+\addlinespace[1.5em]
 SMSR floor & Datasheet + modal-noise budget & OSA & Below floor at $T$ & Watch aging \\
+\addlinespace[1.5em]
 RIN (quiet + stressed) & BER floor vs BW (\Cref{sec:rin}); ORL from plant & PD+ESA; stated ORL & Above limit at ORL & Bias-driver noise budget (\Cref{sec:laser-drivers}) \\
+\addlinespace[1.5em]
 Bias window & LIV kink-free range at max case $T$ & LIV & Kink in window & Run below abs-max $I$ \\
+\addlinespace[1.5em]
 EAM / MZM (if any) & ER, RLM, TDECQ at baud (\Cref{sec:tdecq}) & DCA + bias sweep & TDECQ/RLM fail & Bias aging policy \\
+\addlinespace[1.5em]
 ORL / isolator & Architecture: isolator-free needs tighter RIN & ORL meter; mate cycles & ORL out of range & Cleaning / ELS mate life \\
+\addlinespace[1.5em]
 CMIS monitors & What fleet triage will read (\Cref{sec:fleet-triage}) & CMIS dump & Missing alarms / bad state machine & Enable sequence (\Cref{sec:bringup}) \\
+\addlinespace[1.5em]
 FIT / life & Fleet failures/day target (\Cref{sec:fit-example}) & GR-468 + $E_a$ & Screen escape & Burn-in depth; ELS replace \\
 \bottomrule
 \end{tabular}
@@ -365,15 +543,21 @@ as about the quiet number (\Cref{sec:rin-values,sec:rin}).
 \centering
 \setlength{\tabcolsep}{4pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.12\linewidth}p{0.18\linewidth}p{0.28\linewidth}p{0.36\linewidth}@{}}
 \toprule
 Parameter & Instrument & Pass/fail intent & Failure signature \\
 \midrule
 LIV & SMU + power meter / integrating sphere & $I_\mathrm{th}$, slope, kink-free bias window & high-temp rollover; kink in bias range \\
+\addlinespace[1.5em]
 SMSR & OSA & single-mode purity vs.\ datasheet/ATP & side modes rise with $T$ or age \\
+\addlinespace[1.5em]
 RIN & PD + ESA / RIN analyzer & intrinsic and stressed $\mathrm{RIN}_x\mathrm{OMA}$ & RIN rises with ORL; BER floor (\Cref{sec:rin}) \\
+\addlinespace[1.5em]
 Bias-driver noise & SMU vs.\ product bias board & $\mathrm{RIN}_{\mathrm{eq}}$ from $i_n$ (\Cref{sec:laser-drivers}) & RIN rises with rails on, flat vs.\ ORL \\
+\addlinespace[1.5em]
 Wavelength & OSA / wavemeter & grid placement, $d\lambda/dT$, $d\lambda/dI$ & walk off ring or MSA grid \\
+\addlinespace[1.5em]
 EAM bias (EML) & bias sweep + DCA/TDECQ & extinction, chirp, RLM & aging shifts absorption curve \\
 \bottomrule
 \end{tabular}
@@ -427,13 +611,17 @@ tones onto the bias network.
 \centering
 \setlength{\tabcolsep}{4pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.28\linewidth}p{0.18\linewidth}p{0.22\linewidth}p{0.26\linewidth}@{}}
 \toprule
 Driver class (example) & $i_n$ @ 1~kHz & $\mathrm{RIN}_{\mathrm{eq}}$ @ 50~mA & What it means \\
 \midrule
 Ultra-low-noise CW (DRV200-A-40) & 55~pA$/\sqrt{\mathrm{Hz}}$ & $\approx-179$~dB/Hz & Bench / metrology floor \\
+\addlinespace[1.5em]
 Low-noise CW (DRV200-A-200) & 270~pA$/\sqrt{\mathrm{Hz}}$ & $\approx-165$~dB/Hz & Typical quiet CW source \\
+\addlinespace[1.5em]
 Higher-current CW (DRV200-A-400) & 480~pA$/\sqrt{\mathrm{Hz}}$ & $\approx-160$~dB/Hz & Still below $-155$ intrinsic \\
+\addlinespace[1.5em]
 Shared digital LDO, poor PSRR & often $\gg$1~nA$/\sqrt{\mathrm{Hz}}$ + tones & can exceed $-145$ & False ``RIN'' on ESA \\
 \bottomrule
 \end{tabular}
@@ -633,6 +821,27 @@ size, and confidence bounds when converting a 1000-hour HTOL lot into field-year
 FIT. Activation energies are mechanism-specific; use the value justified in the
 qual plan, not a generic number copied from another product.
 
+\begin{figure*}[ht]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/fig_accelerated_aging.pdf}
+\caption{Schematic accelerated aging for gradual laser wear-out. A degradation
+parameter (for example optical power at fixed bias, or threshold current rise
+mapped to a falling health metric) is tracked versus time at several stress
+temperatures $T_1 < T_2 < T_3 < T_4$. Higher temperature reaches the failure
+threshold sooner. The dashed curve on the threshold plane is the
+time-to-failure trend that Arrhenius acceleration turns into a use-condition
+life estimate. Not measured data. Valid only for one thermally activated
+mechanism with junction temperature as the stress variable; sudden modes such
+as COD or ESD do not draw this surface.
+\label{fig:accelerated-aging}}
+\end{figure*}
+
+\Cref{fig:accelerated-aging} is the mental model behind HTOL: same starting
+health, faster drift at higher temperature, a defined end-of-life threshold, and
+shorter time-to-failure as stress rises. For lasers the vertical axis is usually
+tied to LIV or power at constant current; the temperature axis must be junction
+temperature, not only chamber set point.
+
 \paragraph{When the projection is valid.}
 Acceleration assumes the stress speeds up the \emph{same} physical mechanism the
 fleet will see. The projection fails in two ways: the stress activates a
@@ -642,7 +851,9 @@ never exercises (connector wear, bias-rail transients, thermal cycling from
 traffic load). So a qual number is a hypothesis, not a fact: compare field-return
 Pareto and failure signatures against the qual projection, and treat divergence
 as evidence that $E_a$ or the mechanism model is wrong, not that the fleet is
-unlucky (\Cref{sec:fleet-triage}).
+unlucky (\Cref{sec:fleet-triage}). Sudden fails (COD, ESD, cracked fiber attach)
+sit outside \Cref{fig:accelerated-aging}; classify those separately before you
+fit Arrhenius parameters.
 
 \paragraph{Derating.}
 Run below absolute-max current, case temperature, and optical power. Derating
@@ -699,25 +910,41 @@ map.
 \centering
 \setlength{\tabcolsep}{4pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.08\linewidth}p{0.16\linewidth}p{0.28\linewidth}p{0.42\linewidth}@{}}
 \toprule
 Pin & Function & Requirements & Notes \\
 \midrule
 1--3 & VCC & 1.5~A, 3.3~V & with noise filtering \\
+\addlinespace[1.5em]
 4 & TBD & reserved & future power \\
+\addlinespace[1.5em]
 5 & ResetL & pull-up 10~k$\Omega$ & reset module, LVTTL \\
+\addlinespace[1.5em]
 6 & LPModeL & MMC on only & low-power mode (low), LVTTL \\
+\addlinespace[1.5em]
 7 & TBD & reserved & future ground \\
+\addlinespace[1.5em]
 8--10 & GND & 1.5~A, 3.3~V & with noise filtering \\
+\addlinespace[1.5em]
 11 & TBD & reserved & --- \\
+\addlinespace[1.5em]
 12 & SCL & TWI clock & host 4.7~k$\Omega$ pull-up; module $\ge$10~k$\Omega$ \\
+\addlinespace[1.5em]
 13 & SDA & TWI data & same pull-ups as SCL \\
+\addlinespace[1.5em]
 14 & TBD & reserved & --- \\
+\addlinespace[1.5em]
 15--17 & GND & 1.5~A, 3.3~V & with noise filtering \\
+\addlinespace[1.5em]
 18 & TBD & reserved & future ground \\
+\addlinespace[1.5em]
 19 & ModPrsL & shorted to GND in module & presence (low), LVTTL \\
+\addlinespace[1.5em]
 20 & IntL & pull-up 10~k$\Omega$ & interrupt, LVTTL \\
+\addlinespace[1.5em]
 21 & TBD & reserved & future power \\
+\addlinespace[1.5em]
 22--24 & VCC & 1.5~A, 3.3~V & with noise filtering \\
 \bottomrule
 \end{tabular}
@@ -840,13 +1067,17 @@ rights. A vendor list ages quickly and does not answer those questions.
 \refstepcounter{table}\label{tab:laser-suppliers}%
 \centering
 \setlength{\tabcolsep}{5pt}%
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.28\linewidth}p{0.68\linewidth}@{}}
 \toprule
 Approach & Qualification ownership and risk \\
 \midrule
 Merchant DFB/EML/CW die & Integrator owns attach, driver match, screen, and module qual \\
+\addlinespace[1.5em]
 External CW-WDM / ELSFP module & Supplier owns source module; system owns interface and service qual \\
+\addlinespace[1.5em]
 Multi-wavelength source & Shared yield, power-flatness, and replacement risk across channels \\
+\addlinespace[1.5em]
 Source integrated with PIC & Highest density; laser yield and life become package risks \\
 \bottomrule
 \end{tabular}
@@ -854,6 +1085,116 @@ Source integrated with PIC & Highest density; laser yield and life become packag
 {\raggedright\footnotesize\textbf{Table~\thetable.} Light-source sourcing paths
 and the qualification ownership each one creates.\par}
 \end{table*}
+\FloatBarrier
+
+\subsection{Reading the supplier ownership matrix}
+\label{sec:laser-suppliers-read}
+
+\Cref{tab:laser-suppliers} is a qualification-ownership map. The fork decides
+who owns life data, screens, and field service, not only who ships a die.
+
+\paragraph{Merchant DFB / EML / CW die.}
+
+\textbf{Purpose.}
+Who owns attach, driver match, module screen, and package reliability when
+the source is a merchant die?
+
+\textbf{Uncertainty removed.}
+Die datasheets do not qualify the module. After ownership is explicit, the
+integrator knows which FAIR, ATP, and HTOL packages stay in-house.
+
+\textbf{Evidence the other party still owes.}
+Die-level LIV, SMSR, RIN, and life sample data from the merchant; change
+control on epi and process.
+
+\textbf{Decision unlocked.}
+Accept integrator-owned module qual, or reject the path if attach and screen
+capability are missing.
+
+\textbf{Risk if ownership is assumed wrong.}
+You treat a die cert as module qual and discover attach or driver match in
+the fleet.
+
+\paragraph{External CW-WDM / ELSFP module.}
+
+\textbf{Purpose.}
+What does the source supplier own versus what the system still must qualify?
+
+\textbf{Uncertainty removed.}
+A replaceable ELS moves source life into a field unit, but connector, ORL,
+hot-swap, and host interop remain system-owned (\Cref{sec:elsfp}).
+
+\textbf{Evidence the other party still owes.}
+Supplier: source-module ATP, CMIS, life, and mate ratings. System: optical
+mate, ORL plant, service sequence, and engine bring-up with light present.
+
+\textbf{Decision unlocked.}
+Approve ELS architecture only when both ownership packs exist.
+
+\textbf{Risk if ownership is assumed wrong.}
+You qualify the laser module and skip the optical interface that fails first
+in service.
+
+\paragraph{Multi-wavelength source.}
+
+\textbf{Purpose.}
+How do channel yield, power flatness, and replacement couple across the
+comb?
+
+\textbf{Uncertainty removed.}
+One weak channel can scrap or derate the whole source. Shared control means
+shared field risk (\Cref{sec:cwwdm-laser}).
+
+\textbf{Evidence required.}
+Per-channel power and wavelength distributions, flatness over temperature,
+and a replacement/service policy when one channel fails.
+
+\textbf{Decision unlocked.}
+Accept coupled yield, require channel redundancy, or split into multiple
+sources.
+
+\textbf{Risk if ownership is assumed wrong.}
+You buy ``one laser'' economics and inherit N-channel fail modes without
+N-channel screens.
+
+\paragraph{Source integrated with PIC.}
+
+\textbf{Purpose.}
+When laser yield and wear-out become package risks, who owns life and
+service?
+
+\textbf{Uncertainty removed.}
+Density gains remove a replaceable optical interface. Failures then pull the
+engine or package, not a pluggable source.
+
+\textbf{Evidence required.}
+Package-level life, known-good attach, and a service model that matches
+non-replaceable sources.
+
+\textbf{Decision unlocked.}
+Accept integrated risk for density, or keep ELS/merchant die for field
+replaceability.
+
+\textbf{Risk if ownership is assumed wrong.}
+You qualify the die physics and underfund package yield and fleet
+replacement cost.
+
+\subsection{Why ownership order matters}
+
+Choose the service and ownership model before you freeze the optical
+architecture. An external source is replaceable and adds a managed interface.
+An integrated source removes that interface and places source yield inside
+the package. Qualify the architecture you will service, not only the laser
+die.
+
+\subsection{Learning summary}
+
+\begin{description}
+\item[Merchant die] Integrator owns module qual; merchant owns die life data.
+\item[ELS / CW-WDM module] Supplier owns source; system owns mate, ORL, swap.
+\item[Multi-wavelength] Channels share yield and replacement risk.
+\item[Integrated PIC] Laser life is package life; plan service accordingly.
+\end{description}
 
 \aside{The fork is a reliability and ownership decision. An external source makes
 the source replaceable but adds a managed optical interface. An integrated source
@@ -1002,18 +1343,27 @@ and EAM bias sweep data became part of the thermal-cycle readout.}
 \centering
 \setlength{\tabcolsep}{4pt}%
 \footnotesize
+\renewcommand{\arraystretch}{1.25}%
 \begin{tabular}{@{}p{0.20\linewidth}p{0.34\linewidth}p{0.40\linewidth}@{}}
 \toprule
 Decision or test & Question it answers & Evidence to retain \\
 \midrule
 Architecture & Does the source and modulation path close reach, rate, power, cost, and service? & Requirement allocation and rejected alternatives \\
+\addlinespace[1.5em]
 LIV & Is the operating window clear of threshold, kinks, and rollover? & Curves by unit, lot, temperature, and age \\
+\addlinespace[1.5em]
 Spectrum & Does wavelength and SMSR stay inside the assigned grid and filter passband? & OSA or wavemeter data across corners \\
+\addlinespace[1.5em]
 RIN and ORL & Does noise margin survive the reflection environment? & Quiet and stressed RIN with stated ORL and bandwidth \\
+\addlinespace[1.5em]
 Modulation & Does bias, drive, chirp, and bandwidth close the eye? & Bias sweeps, TDECQ or equivalent, and driver conditions \\
+\addlinespace[1.5em]
 Thermal behavior & Are reversible shifts within control and actuator range? & Temperature and heater sweeps, TEC current, recovery data \\
+\addlinespace[1.5em]
 Long-term aging & Which parameters drift permanently, and at what rate? & HTOL intervals, LIV, spectrum, and modulation trends \\
+\addlinespace[1.5em]
 Manufacturing & Can the ATP catch bad units and lot drift at useful test cost? & Limits, guard bands, GR\&R, yield, and reaction plan \\
+\addlinespace[1.5em]
 Fleet operation & Which monitors distinguish source, modulator, cooler, and optical path? & Telemetry map, alarm thresholds, and golden baselines \\
 \bottomrule
 \end{tabular}
@@ -1022,6 +1372,180 @@ Fleet operation & Which monitors distinguish source, modulator, cooler, and opti
 engineering checklist. Each row ties a decision to evidence, not only a test
 name.\par}
 \end{table*}
+\FloatBarrier
+
+\subsection{Reading the laser engineering checklist}
+\label{sec:lasers-checklist-read}
+
+\Cref{tab:laser-engineering-checklist} is the decision sequence for a laser
+program. Measurement methods for LIV, SMSR, RIN, and aging are taught earlier
+in this chapter; the notes below focus on what each row unlocks and when you
+may leave it.
+
+\paragraph{Architecture.}
+
+\textbf{Purpose.}
+Does the source and modulation path close reach, rate, power, cost, and
+service?
+
+\textbf{Uncertainty removed.}
+Component enthusiasm does not allocate requirements. After architecture you
+have a chosen path, rejected alternatives, and owners for lock, attach, and
+life (\Cref{tab:source-mod-matrix,tab:laser-suppliers}).
+
+\textbf{Exit criteria.}
+\textbf{Exit when} requirement allocation and rejected alternatives are
+written and reviewed.
+
+\textbf{Decision unlocked.}
+Freeze the path into \Cref{tab:laser-prd}, or reopen the matrix.
+
+\textbf{Risk if skipped.}
+You validate a hero topology that cannot be serviced or powered in the rack.
+
+\paragraph{LIV.}
+
+\textbf{Purpose.}
+Is the operating window clear of threshold, kinks, and rollover across unit,
+lot, temperature, and age (\Cref{sec:laser-params})?
+
+\textbf{Exit criteria.}
+\textbf{Exit when} kink-free bias windows and distributions support the
+bias policy.
+
+\textbf{Decision unlocked.}
+Set bias and derate, or reject lots / redesign the window.
+
+\textbf{Risk if skipped.}
+Soft BER and sudden dark fails appear without a ship baseline to compare.
+
+\paragraph{Spectrum.}
+
+\textbf{Purpose.}
+Do wavelength and SMSR stay inside the assigned grid and filter passband?
+
+\textbf{Exit criteria.}
+\textbf{Exit when} OSA or wavemeter data across corners meet grid and SMSR
+floors.
+
+\textbf{Decision unlocked.}
+Approve channel assignment, tighten temperature policy, or reject modal risk.
+
+\textbf{Risk if skipped.}
+WDM unlock and modal noise show up as ``random'' BER.
+
+\paragraph{RIN and ORL.}
+
+\textbf{Purpose.}
+Does noise margin survive the reflection environment the plant will present
+(\Cref{sec:rin-values})?
+
+\textbf{Exit criteria.}
+\textbf{Exit when} quiet and stressed RIN at stated ORL and bandwidth meet
+the BER-floor budget.
+
+\textbf{Decision unlocked.}
+Approve isolator-free or isolator-required design; set plant cleaning rules.
+
+\textbf{Risk if skipped.}
+Lab RIN looks fine; field ORL raises the floor.
+
+\paragraph{Modulation.}
+
+\textbf{Purpose.}
+Do bias, drive, chirp, and bandwidth close the eye at baud?
+
+\textbf{Exit criteria.}
+\textbf{Exit when} bias sweeps and TDECQ (or equivalent) at named driver
+conditions meet Tx quality limits (\Cref{sec:tdecq}).
+
+\textbf{Decision unlocked.}
+Freeze EAM/MZM/ring bias policy, or reject the modulator class for this rate.
+
+\textbf{Risk if skipped.}
+Average power passes while the eye fails under temperature.
+
+\paragraph{Thermal behavior.}
+
+\textbf{Purpose.}
+Are reversible shifts within control and actuator range?
+
+\textbf{Exit criteria.}
+\textbf{Exit when} temperature and heater sweeps, TEC current, and recovery
+data show control headroom at loaded corners.
+
+\textbf{Decision unlocked.}
+Approve thermal envelope, add heaters/TEC margin, or derate case $T$.
+
+\textbf{Risk if skipped.}
+Lock and calibration faults are misread as permanent aging.
+
+\paragraph{Long-term aging.}
+
+\textbf{Purpose.}
+Which parameters drift permanently, and at what rate
+(\Cref{sec:laser-aging})?
+
+\textbf{Exit criteria.}
+\textbf{Exit when} HTOL intervals with LIV, spectrum, and modulation trends
+support the life claim or force derate.
+
+\textbf{Decision unlocked.}
+Accept FIT/replacement plan, or hold ship for life risk.
+
+\textbf{Risk if skipped.}
+Useful-life planning uses hope instead of a mechanism.
+
+\paragraph{Manufacturing.}
+
+\textbf{Purpose.}
+Can the ATP catch bad units and lot drift at useful test cost
+(\Cref{tab:atp-laser})?
+
+\textbf{Exit criteria.}
+\textbf{Exit when} limits, guardbands, GR\&R, yield, and a reaction plan
+exist for the ship screens.
+
+\textbf{Decision unlocked.}
+Open volume screens, or hold for process control.
+
+\textbf{Risk if skipped.}
+Qualified engineering lots diverge from production without a catch point.
+
+\paragraph{Fleet operation.}
+
+\textbf{Purpose.}
+Which monitors distinguish source, modulator, cooler, and optical path
+(\Cref{sec:fleet-triage})?
+
+\textbf{Exit criteria.}
+\textbf{Exit when} telemetry map, alarm thresholds, and golden baselines are
+named and owned.
+
+\textbf{Decision unlocked.}
+Arm fleet triage; feed escapes back into ATP.
+
+\textbf{Risk if skipped.}
+Field tickets cannot separate laser wear from connector or TEC faults.
+
+\subsection{Why the checklist order matters}
+
+Architecture first, or you characterize the wrong path. LIV and spectrum
+establish semiconductor and channel health before RIN and modulation argue
+about floors and eyes. Thermal separates reversible control from permanent
+drift before aging claims. Manufacturing and fleet close the loop so life and
+screens stay honest after ship. Later rows must not compensate for a missing
+architecture or ship baseline.
+
+\subsection{Learning summary}
+
+\begin{description}
+\item[Architecture] Does the path close the product?
+\item[LIV / spectrum / RIN] Is the source healthy in its plant?
+\item[Modulation / thermal] Does the eye and control survive corners?
+\item[Aging] What drifts permanently, and how fast?
+\item[Manufacturing / fleet] Can you screen it and triage it at volume?
+\end{description}
 
 \section{Interview and design review questions}
 \label{sec:lasers-design-review}
