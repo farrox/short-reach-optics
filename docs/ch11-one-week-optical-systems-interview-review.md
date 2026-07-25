@@ -7,63 +7,27 @@ title: "Ch 11: One-week optical systems interview review"
 
 Use this appendix as a standalone review sheet for about a week of focused prep. Its purpose is not to cover the most optics. Its purpose is to make your engineering process automatic under time pressure.
 
-## The philosophy: reduce uncertainty to decide
+## Three principles
+
+##### Principle 1: Engineering reduces uncertainty.
 
 **Key idea.** The purpose of engineering is not to find certainty. It is to reduce uncertainty enough to make the next decision.
 
-Validation, measurement, debugging, qualification, supplier choices, and production are the same activity under different names: uncertainty reduction. $$\begin{split}
-\text{validation} &\longrightarrow \text{measurements}
-\longrightarrow \text{debugging}\\
-&\longrightarrow \text{qualification}
-\longrightarrow \text{supplier decisions}\\
-&\longrightarrow \text{production}.
-\end{split}$$
+Validation, measurement, debugging, qualification, supplier choices, and production are the same work under different names. The goal of an optical systems engineer is not to know every component. It is to make good engineering decisions under uncertainty using measurements, physics, and evidence. Ask the scale of the problem (device, module, rack, fleet) before you chase a root cause: scale picks the owner.
 
-**Key idea.** The goal of an optical systems engineer is not to know every component. It is to make good engineering decisions under uncertainty using measurements, physics, and evidence.
+##### Principle 2: Measurements exist to unlock decisions.
 
-This role owns laser direction inside an IM/DD interconnect effort: requirements, validation strategy, partner quality, and fleet risk. Lab measurement is how you decide, not the whole job. Hands-on fluency still matters. Senior people lose credibility if they cannot run or interpret LIV, RIN, ORL, TDECQ, and a BER waterfall. They also lose the level if they stop at plots and never close on a control.
+Instruments do not exist to produce plots. They exist to unlock a decision. A power meter asks whether you should chase the optical path or signal integrity. An OSA asks whether spectral alignment is still plausible. An LIV asks whether the device itself changed. A DCA or TDECQ asks whether the eye is still inside budget. A BER waterfall asks whether you have a sensitivity shift or a noise floor. On every answer, name the decision unlocked (ship, derate, second-source, ATP change, partner action) as well as the instrument.
 
-##### Bayesian engineering, named.
+##### Principle 3: Every measurement updates your beliefs.
 
-You already use this pattern. Name it so the interviewer hears the method: $$\begin{split}
+Treat engineering as hypothesis testing: $$\begin{split}
 \text{observation} &\longrightarrow \text{hypotheses}
 \longrightarrow \text{measurement}\\
 &\longrightarrow \text{belief updated / hypothesis eliminated}.
-\end{split}$$ Every measurement should change what you believe. A test that leaves the hypothesis list unchanged was the wrong test, or the wrong reference plane.
+\end{split}$$ This is essentially Bayesian reasoning: every measurement updates the probability of competing hypotheses. A test that leaves the hypothesis list unchanged was the wrong test, or the wrong reference plane.
 
-##### Ask the scale before the root cause.
-
-Root cause is not enough. Ask at what scale the problem exists: $$\begin{split}
-\text{device} &\longrightarrow \text{subsystem}
-\longrightarrow \text{module}\\
-&\longrightarrow \text{rack}
-\longrightarrow \text{datacenter}
-\longrightarrow \text{fleet}.
-\end{split}$$ Scale picks the owner: design, process, supplier, manufacturing, or operations.
-
-##### What decision does this measurement unlock?
-
-Make this a mantra. Instruments do not exist to produce plots. They exist to unlock a decision.
-
-Power meter
-
-: Should I chase the optical path or signal integrity?
-
-OSA
-
-: Is spectral alignment still plausible?
-
-LIV
-
-: Has the device itself changed?
-
-DCA / TDECQ
-
-: Is the eye still inside the budget at this corner?
-
-BER waterfall
-
-: Is this a sensitivity shift or a noise floor?
+This role owns laser direction inside an IM/DD interconnect effort. Lab measurement is how you decide, not the whole job. Hands-on fluency still matters: LIV, RIN, ORL, TDECQ, and a BER waterfall. Senior people lose the level if they stop at plots and never close on a control.
 
 Work the day plan at the end of this appendix. Use each LLM practice box the day it is scheduled. Do not add new topics after Day 6.
 
@@ -108,7 +72,7 @@ Turn the observations into a short list of competing causes, ranked by how well 
 
 ##### Isolation.
 
-Good engineers perform measurements. Great engineers perform the minimum measurement that eliminates the largest number of hypotheses. Choose the next cut for uncertainty removed per hour of bench time, not for the instrument you like. A golden swap of transmitter versus receiver splits Tx from Rx. An optical-versus-electrical lane swap in a multi-lane module splits the optical path from the driver or TIA. A bias sweep at the failing temperature asks whether the optimum moved away from the stored table. An LIV compared with ship data asks whether the device aged or only the setpoint drifted. A BER-versus-power waterfall asks whether the curve shifted or floored.
+Good engineers perform measurements. Great engineers perform the minimum measurement that eliminates the largest number of hypotheses. Do not perform two experiments when one can separate the hypotheses. Choose the next cut for uncertainty removed per hour of bench time, not for the instrument you like. A golden swap of transmitter versus receiver splits Tx from Rx. An optical-versus-electrical lane swap in a multi-lane module splits the optical path from the driver or TIA. A bias sweep at the failing temperature asks whether the optimum moved away from the stored table. An LIV compared with ship data asks whether the device aged or only the setpoint drifted. A BER-versus-power waterfall asks whether the curve shifted or floored.
 
 ##### Root cause.
 
@@ -122,7 +86,7 @@ Fix the mechanism you named, under the condition that failed. Retune the table, 
 
 Close with the control that stops the same escape next month. That control is usually a new or tightened test, an SPC chart, a telemetry alarm, a process-control limit, a supplier screen, or a firmware guard that refuses to boot with a railed actuator. Name the owner and the measurable closure criterion. Root cause without recurrence control is a story, not an engineering result. In the interview, ending on recurrence control is what separates a debug narrative from a product-engineering answer.
 
-Quiz me on the philosophy and the answer spine. Ask for the uncertainty- reduction line, then one paragraph per spine step. Give me a failed module at high temperature with stable average power and make me walk the full spine. Stop me if I skip scope, the power fork, the control ledger, or recurrence control.
+Quiz me on the three principles and the answer spine. Ask for each principle in one sentence, then one paragraph per spine step. Give me a failed module at high temperature with stable average power and make me walk the full spine. Stop me if I skip scope, the power fork, the control ledger, or recurrence control.
 
 ## Ten concepts to know cold
 
@@ -997,9 +961,9 @@ Drill abbreviations. Give me ten random terms mixing optical debug and reliabili
 
 Assume seven days, with the interview near the end of Day 7. Protect sleep. Each day has one primary drill and one LLM practice box. If a day slips, cut new reading first, not story rehearsal or the mock interview.
 
-##### Day 1: philosophy, answer spine, and ownership frame.
+##### Day 1: three principles, answer spine, and ownership frame.
 
-Read the philosophy section and the answer spine. Memorize the uncertainty- reduction line, the Bayesian update rule (every measurement changes belief), the scope ladder, the five ledgers, and the nine spine steps. Speak one paragraph per spine step. Use the answer-spine LLM practice box. Write down the decision language you will reuse: ship, derate, second-source, ATP change, partner action.
+Read the three principles and the answer spine. Memorize: engineering reduces uncertainty; measurements unlock decisions; every measurement updates belief. Also memorize the scope ladder, the five ledgers, and the nine spine steps. Speak one paragraph per spine step. Use the answer-spine LLM practice box. Write down the decision language you will reuse: ship, derate, second-source, ATP change, partner action.
 
 ##### Day 2: requirements and validation ladder.
 

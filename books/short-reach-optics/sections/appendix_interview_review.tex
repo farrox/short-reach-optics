@@ -5,37 +5,30 @@ Use this appendix as a standalone review sheet for about a week of focused
 prep. Its purpose is not to cover the most optics. Its purpose is to make your
 engineering process automatic under time pressure.
 
-\section{The philosophy: reduce uncertainty to decide}
+\section{Three principles}
 \label{sec:interview-philosophy}
 
+\paragraph{Principle 1: Engineering reduces uncertainty.}
 \keyidea{The purpose of engineering is not to find certainty. It is to reduce
 uncertainty enough to make the next decision.}
-
 Validation, measurement, debugging, qualification, supplier choices, and
-production are the same activity under different names: uncertainty reduction.
-\[
-\begin{split}
-\text{validation} &\longrightarrow \text{measurements}
-\longrightarrow \text{debugging}\\
-&\longrightarrow \text{qualification}
-\longrightarrow \text{supplier decisions}\\
-&\longrightarrow \text{production}.
-\end{split}
-\]
+production are the same work under different names. The goal of an optical
+systems engineer is not to know every component. It is to make good
+engineering decisions under uncertainty using measurements, physics, and
+evidence. Ask the scale of the problem (device, module, rack, fleet) before
+you chase a root cause: scale picks the owner.
 
-\keyidea{The goal of an optical systems engineer is not to know every
-component. It is to make good engineering decisions under uncertainty using
-measurements, physics, and evidence.}
+\paragraph{Principle 2: Measurements exist to unlock decisions.}
+Instruments do not exist to produce plots. They exist to unlock a decision.
+A power meter asks whether you should chase the optical path or signal
+integrity. An OSA asks whether spectral alignment is still plausible. An LIV
+asks whether the device itself changed. A DCA or TDECQ asks whether the eye
+is still inside budget. A BER waterfall asks whether you have a sensitivity
+shift or a noise floor. On every answer, name the decision unlocked (ship,
+derate, second-source, ATP change, partner action) as well as the instrument.
 
-This role owns laser direction inside an IM/DD interconnect effort:
-requirements, validation strategy, partner quality, and fleet risk. Lab
-measurement is how you decide, not the whole job. Hands-on fluency still
-matters. Senior people lose credibility if they cannot run or interpret LIV,
-RIN, ORL, TDECQ, and a BER waterfall. They also lose the level if they stop at
-plots and never close on a control.
-
-\paragraph{Bayesian engineering, named.}
-You already use this pattern. Name it so the interviewer hears the method:
+\paragraph{Principle 3: Every measurement updates your beliefs.}
+Treat engineering as hypothesis testing:
 \[
 \begin{split}
 \text{observation} &\longrightarrow \text{hypotheses}
@@ -43,33 +36,14 @@ You already use this pattern. Name it so the interviewer hears the method:
 &\longrightarrow \text{belief updated / hypothesis eliminated}.
 \end{split}
 \]
-Every measurement should change what you believe. A test that leaves the
-hypothesis list unchanged was the wrong test, or the wrong reference plane.
+This is essentially Bayesian reasoning: every measurement updates the
+probability of competing hypotheses. A test that leaves the hypothesis list
+unchanged was the wrong test, or the wrong reference plane.
 
-\paragraph{Ask the scale before the root cause.}
-Root cause is not enough. Ask at what scale the problem exists:
-\[
-\begin{split}
-\text{device} &\longrightarrow \text{subsystem}
-\longrightarrow \text{module}\\
-&\longrightarrow \text{rack}
-\longrightarrow \text{datacenter}
-\longrightarrow \text{fleet}.
-\end{split}
-\]
-Scale picks the owner: design, process, supplier, manufacturing, or
-operations.
-
-\paragraph{What decision does this measurement unlock?}
-Make this a mantra. Instruments do not exist to produce plots. They exist to
-unlock a decision.
-\begin{description}
-\item[Power meter] Should I chase the optical path or signal integrity?
-\item[OSA] Is spectral alignment still plausible?
-\item[LIV] Has the device itself changed?
-\item[DCA / TDECQ] Is the eye still inside the budget at this corner?
-\item[BER waterfall] Is this a sensitivity shift or a noise floor?
-\end{description}
+This role owns laser direction inside an IM/DD interconnect effort. Lab
+measurement is how you decide, not the whole job. Hands-on fluency still
+matters: LIV, RIN, ORL, TDECQ, and a BER waterfall. Senior people lose the
+level if they stop at plots and never close on a control.
 
 Work the day plan at the end of this appendix. Use each LLM practice box the
 day it is scheduled. Do not add new topics after Day~6.
@@ -165,9 +139,10 @@ step does not belong on the list yet.
 
 \paragraph{Isolation.}
 Good engineers perform measurements. Great engineers perform the minimum
-measurement that eliminates the largest number of hypotheses. Choose the next
-cut for uncertainty removed per hour of bench time, not for the instrument you
-like. A golden swap of transmitter versus receiver splits Tx from Rx. An
+measurement that eliminates the largest number of hypotheses. Do not perform
+two experiments when one can separate the hypotheses. Choose the next cut for
+uncertainty removed per hour of bench time, not for the instrument you like. A
+golden swap of transmitter versus receiver splits Tx from Rx. An
 optical-versus-electrical lane swap in a multi-lane module splits the optical
 path from the driver or TIA\termnote{TIA}. A bias sweep at the failing
 temperature asks whether the optimum moved away from the stored table. An
@@ -205,14 +180,14 @@ closure criterion. Root cause without recurrence control is a story, not an
 engineering result. In the interview, ending on recurrence control is what
 separates a debug narrative from a product-engineering answer.
 
-\llmpractice{Every answer reduces uncertainty enough to decide. Walk
+\llmpractice{Three principles: engineering reduces uncertainty; measurements
+unlock decisions; every measurement updates your beliefs. Then walk
 requirements to architecture to measurements to observations to hypotheses to
-isolation to root cause to corrective action to recurrence control. Every
-measurement should change what you believe. Name the reference plane, the
-decision unlocked, and the ledger that moved. Do not jump from a symptom to a
-part number.}
-{Quiz me on the philosophy and the answer spine. Ask for the uncertainty-
-reduction line, then one paragraph per spine step. Give me a failed module at
+isolation to root cause to corrective action to recurrence control. Name the
+reference plane, the decision unlocked, and the ledger that moved. Do not jump
+from a symptom to a part number.}
+{Quiz me on the three principles and the answer spine. Ask for each principle
+in one sentence, then one paragraph per spine step. Give me a failed module at
 high temperature with stable average power and make me walk the full spine.
 Stop me if I skip scope, the power fork, the control ledger, or recurrence
 control.}
@@ -1476,13 +1451,13 @@ Assume seven days, with the interview near the end of Day~7. Protect sleep.
 Each day has one primary drill and one LLM practice box. If a day slips, cut
 new reading first, not story rehearsal or the mock interview.
 
-\paragraph{Day 1: philosophy, answer spine, and ownership frame.}
-Read the philosophy section and the answer spine. Memorize the uncertainty-
-reduction line, the Bayesian update rule (every measurement changes belief),
-the scope ladder, the five ledgers, and the nine spine steps. Speak one
-paragraph per spine step. Use the answer-spine LLM practice box. Write down
-the decision language you will reuse: ship, derate, second-source, ATP change,
-partner action.
+\paragraph{Day 1: three principles, answer spine, and ownership frame.}
+Read the three principles and the answer spine. Memorize: engineering reduces
+uncertainty; measurements unlock decisions; every measurement updates belief.
+Also memorize the scope ladder, the five ledgers, and the nine spine steps.
+Speak one paragraph per spine step. Use the answer-spine LLM practice box.
+Write down the decision language you will reuse: ship, derate, second-source,
+ATP change, partner action.
 
 \paragraph{Day 2: requirements and validation ladder.}
 Rehearse \Cref{sec:interview-worked-laser-reqs} and
