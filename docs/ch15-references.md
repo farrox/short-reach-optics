@@ -27,16 +27,6 @@ ITU-T. [Recommendation ITU-T G.694.1 (10/2020), Spectral grids for WDM applicati
 
 ---
 
-<a id="ref-miller2009"></a>**Miller(2009)**
-
-*Source type:* standard · *Date:* 2009
-
-D. A. B. Miller. Device requirements for optical interconnects to silicon chips. *Proceedings of the IEEE 97(7):1166--1185, 2009. ([link](https://doi.org/10.1109/JPROC.2009.2014298))
-
-<span class="bibkey">`miller2009`</span>
-
----
-
 <a id="ref-g664"></a>**ITU-T(2012)**
 
 *Source type:* standard · *Date:* 2012
@@ -660,6 +650,16 @@ OFC 2026, paper W1A.3. [200-mm silicon-compatible TFLN platform](https://doi.org
 ---
 
 ## Books and foundational references
+
+<a id="ref-miller2009"></a>**Miller(2009)**
+
+*Source type:* research · *Date:* 2009
+
+D. A. B. Miller. Device requirements for optical interconnects to silicon chips. *Proceedings of the IEEE 97(7):1166--1185, 2009. ([link](https://doi.org/10.1109/JPROC.2009.2014298))
+
+<span class="bibkey">`miller2009`</span>
+
+---
 
 <a id="ref-miller2017"></a>**Miller(2017)**
 

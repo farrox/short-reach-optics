@@ -4,9 +4,12 @@
 This chapter is a symptom-first field guide. Start with what the bench,
 production line, or fleet reports. Preserve the failing state until its evidence
 has been captured, then use the same workflow for every incident. Distinguish
-observation, correlation, hypothesis, leading mechanism, and confirmed root
-cause. Do not call the last surviving hypothesis the root cause without
-controlled reproduction, swap testing, stress dependence, or physical evidence.
+observation, correlation, hypothesis, leading mechanism, and confirmed mechanism
+(after controlled confirmation). Do not call the last surviving hypothesis the root
+cause without controlled reproduction, swap testing, stress dependence, or
+physical evidence. For each symptom, state access (black-box versus
+engineering), the decision unlocked, and the earliest production or fleet
+control (\Cref{sec:tree-evidence-block}).
 
 \begin{dectree}
 Observe
@@ -111,14 +114,15 @@ aged. Power can disappear after the source through modulator loss, coupling
 shift, MUX loss, fiber bend, connector contamination, or a wrong reference-plane
 calibration. A drifting monitor photodiode can report loss that does not exist.
 
-\paragraph{Measurements and root-cause isolation.}
+\paragraph{Measurements, mechanism isolation, and confirmation.}
 \begin{enumerate}
 \item Compare CMIS Tx and Rx power, external power at the faceplate, bias current,
       and case temperature. Disagreement identifies the first suspect plane.
 \item Walk optical power plane by plane with a known source and calibrated meter.
       Do not change bias or equalization while locating the loss.
-\item Rerun LIV at the failing temperature. Moved LIV points toward the source;
-      stable LIV points toward the optical path or monitor.
+\item Rerun LIV at the failing temperature. A moved LIV raises $P(\mathrm{source})$;
+      a stable LIV raises $P(\mathrm{path\ or\ monitor})$ until confirmed. Do not treat
+      either as root cause before controlled confirmation.
 \item Preserve telemetry, then inspect connectors before cleaning
       (\Cref{sec:fm-contamination}). Measure insertion loss and ORL. Use a golden
       fiber and module swap to separate field plant from module.
@@ -165,7 +169,7 @@ FEC error timing further splits the floor and shift cases: randomly sprinkled
 errors fit Gaussian or steady RIN; clustered bursts fit MPI, connector
 intermittents, or shared supply and clock events.
 
-\paragraph{Measurements and root-cause isolation.}
+\paragraph{Measurements, mechanism isolation, and confirmation.}
 \begin{enumerate}
 \item Sweep received power and plot BER rather than recording one operating
       point. Confirm whether the curve shifted, floored, or both (a soft floor
@@ -273,7 +277,7 @@ At 10~dB ER the penalty is $\sim$0.87~dB; at 6~dB ER it rises to $\sim$2.2~dB
 (\Cref{sec:sensitivity}). This is an idealized receiver-penalty model, not a
 measured compliance quantity such as TDECQ.
 
-\paragraph{Measurements and root-cause isolation.}
+\paragraph{Measurements, mechanism isolation, and confirmation.}
 \begin{enumerate}
 \item Measure ER on the DCA (outer OMA / average power, or directly from the
       histogram levels). Compare against the PMD limit.
@@ -314,7 +318,7 @@ variation in fiber-array alignment (one channel of the FAU slightly misaligned),
 (3)~driver or TIA channel mismatch on the electronic IC, or (4)~thermal gradient
 across the die (edge lanes hotter or cooler than center lanes).
 
-\paragraph{Measurements and root-cause isolation.}
+\paragraph{Measurements, mechanism isolation, and confirmation.}
 \begin{enumerate}
 \item Measure all lanes: OMA, ER, TDECQ, RIN, wavelength. Identify the outlier.
 \item \textbf{Is it optical or electrical?} Swap the electrical lane assignment
@@ -363,7 +367,7 @@ In microring systems, resonance also moves strongly with temperature, and
 neighbor heaters create thermal crosstalk that pushes adjacent channels
 (\Cref{sec:locking-techniques,sec:thermal-xtalk}).
 
-\paragraph{Measurements and root-cause isolation.}
+\paragraph{Measurements, mechanism isolation, and confirmation.}
 \begin{enumerate}
 \item Measure wavelength on an OSA or wavemeter. Compare to the target grid.
 \item \textbf{Laser-side:} Check TEC current. If saturated (at max or min drive),
@@ -401,7 +405,7 @@ driver or modulator compression), (3)~pattern-dependent effects (ISI from
 bandwidth limit, reflections, or impedance mismatch), (4)~chromatic dispersion on
 FR-class fiber eating into the margin.
 
-\paragraph{Measurements and root-cause isolation.}
+\paragraph{Measurements, mechanism isolation, and confirmation.}
 \begin{enumerate}
 \item Inspect the raw (unequalized) eye on the DCA. Is it bandwidth-limited
       (rounded transitions), compressed (uneven levels), or noisy (RIN/jitter)?
@@ -443,7 +447,7 @@ on the switch substrate beside the ASIC; cooling-path faults concentrate heat on
 the source and ring controls~\cite{cpocooling}. Both sources are vendor or
 research orientation, so the product thermal model remains authoritative.
 
-\paragraph{Measurements and root-cause isolation.}
+\paragraph{Measurements, mechanism isolation, and confirmation.}
 \begin{enumerate}
 \item Read CMIS module temperature and compare to the module's rated case $T$
       range. If case $T$ exceeds the max, the system cooling is inadequate.
@@ -498,7 +502,7 @@ attach, supply noise, wavelength-lock loss, firmware state, or environmental
 stress. Reseating can remove the evidence by cleaning a contact, changing fiber
 stress, or resetting a state machine.
 
-\paragraph{Measurements and root-cause isolation.}
+\paragraph{Measurements, mechanism isolation, and confirmation.}
 \begin{enumerate}
 \item Freeze CMIS state, FEC error timing, LOS or LOL history, temperatures,
       rails, lock error, and neighbor activity before touching hardware.
@@ -585,7 +589,7 @@ Process drift, incoming material variation, fiber-array alignment, die-attach or
 solder change, tester or fixture drift, stale calibration, a software limit change,
 or a guardband that no longer matches measurement spread.
 
-\paragraph{Measurements and root-cause isolation.}
+\paragraph{Measurements, mechanism isolation, and confirmation.}
 \begin{enumerate}
 \item Contain suspect work in process and freeze tester software, limits, fixtures,
       and calibration records.
@@ -644,7 +648,7 @@ Laser threshold and slope drift, wavelength movement, ring-resonance drift, TEC 
 heater saturation, EAM or MZM bias error, receiver-noise rise, package stress, or a
 thermal gradient that affects one lane.
 
-\paragraph{Measurements and root-cause isolation.}
+\paragraph{Measurements, mechanism isolation, and confirmation.}
 \begin{enumerate}
 \item Record case temperature, external optical power, wavelength, bias, TEC or
       heater current, lock error, OMA, ER, TDECQ, and pre-FEC BER on one time axis.

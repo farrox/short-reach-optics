@@ -7,7 +7,7 @@ title: "Appendix A: One-week optical systems interview review"
 
 Use this appendix as a standalone drill for about a week of focused prep. Its purpose is not to cover the most optics. Its purpose is to make your engineering process automatic under time pressure.
 
-Read order when time is short: the four principles and answer spine here, then the green boxes in Appendix B, then the wall-chart trees in Appendix C. Do not re-read every worked answer unless a topic is weak. Compression is the point: recover the method in minutes, not hours.
+Read order when time is short: the four principles and answer spine here, then the "30-second answer" callouts in Appendix B, then the wall-chart trees in Appendix C. Do not re-read every worked answer unless a topic is weak. Compression is the point: recover the method in minutes, not hours. When a claim needs a release or ship decision, use the shared evidence block in Appendix C.16.
 
 **Key idea.** Every answer should end with the engineering decision. Interviewers remember decisions more than measurements. Close with "Therefore I would continue validation," "stop shipment," "contain Supplier B," or "update the ATP."
 
@@ -17,7 +17,7 @@ Read order when time is short: the four principles and answer spine here, then t
 
 **Key idea.** The purpose of engineering is not to find certainty. It is to reduce uncertainty enough to make the next decision.
 
-**Key idea.** The job is not finding the truth. The job is making the best decision with today's evidence.
+**Key idea.** The job is not to wait for complete knowledge before making a responsible and appropriately reversible decision.
 
 Validation, measurement, debugging, qualification, supplier choices, and production are the same work under different names. Ask the scale of the problem (device, module, rack, fleet) before you chase a root cause: scale picks the owner.
 
@@ -33,7 +33,7 @@ Treat engineering as hypothesis testing: $$\begin{split}
 
 **Key idea.** Debugging is simply Bayesian inference performed in a laboratory.
 
-Every measurement updates the probability of competing hypotheses. Speak the update out loud. "At this point I am about 70% on calibration drift, 20% on wavelength walk, and 10% on receiver noise; before I change firmware I would verify the eye with a bias sweep." A test that leaves the weights unchanged was the wrong test, or the wrong reference plane.
+Every measurement updates the probability of competing hypotheses. Speak the update out loud. "Calibration drift is my leading hypothesis, wavelength walk is second, and receiver noise is lower probability; the next measurement should sharply reorder those beliefs." A test that leaves the ranking unchanged was the wrong test, or the wrong reference plane.
 
 **Principle 4: Measurements characterize margin.**\
 Engineering is not only proving that a product works. It determines how much uncertainty and margin remain before failure. Debugging identifies exhausted margin. Qualification verifies that remaining margin is still acceptable after expected stresses. The same ledgers (power, noise, timing, spectral, control) appear in both jobs.
@@ -144,34 +144,7 @@ That is real engineering. Waiting for SEM photos while bad lots keep shipping is
 
 Measurements do not unlock understanding as an end in itself. They unlock actions. Keep this vocabulary ready and use it in answers (Table A.1).
 
-  -------------------------------------------------------------------------------
-  Action                  Typical unlock
-  ----------------------- -------------------------------------------------------
-  Ship / don't ship       Population meets ATP and life model, or it does not
-
-  Continue validation     Uncertainty still blocks a ship or architecture call
-
-  Escalate supplier       Lot, site, or vendor signature after scope
-
-  Derate                  Margin too thin; product can ship under tighter use
-
-  Second source           Single-vendor risk exceeds fleet tolerance
-
-  Contain lot             Date-code or lot escape; stop further exposure
-
-  Modify ATP              Escape path found; production must catch it next
-
-  Open RMA / request FA   Field or partner unit needs mechanism work
-
-  Perform DPA             Need physical confirmation of facet, solder, FAU, die
-
-  Change firmware         Control loop, table, or guard is wrong
-
-  Retune calibration      Device healthy; setpoint or table segment wrong
-
-  Monitor only            Rate tiny, flat, no customer impact; watch trends
-  -------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Action</th><th>Typical unlock</th></tr><tr><td>Ship / don't ship</td><td>Population meets ATP and life model, or it does not</td></tr><tr><td>Continue validation</td><td>Uncertainty still blocks a ship or architecture call</td></tr><tr><td>Escalate supplier</td><td>Lot, site, or vendor signature after scope</td></tr><tr><td>Derate</td><td>Margin too thin; product can ship under tighter use</td></tr><tr><td>Second source</td><td>Single-vendor risk exceeds fleet tolerance</td></tr><tr><td>Contain lot</td><td>Date-code or lot escape; stop further exposure</td></tr><tr><td>Modify ATP</td><td>Escape path found; production must catch it next</td></tr><tr><td>Open RMA / request FA</td><td>Field or partner unit needs mechanism work</td></tr><tr><td>Perform DPA</td><td>Need physical confirmation of facet, solder, FAU, die</td></tr><tr><td>Change firmware</td><td>Control loop, table, or guard is wrong</td></tr><tr><td>Retune calibration</td><td>Device healthy; setpoint or table segment wrong</td></tr><tr><td>Monitor only</td><td>Rate tiny, flat, no customer impact; watch trends</td></tr></table>
 **Table A.1.** Decision vocabulary for interview answers. Name the action, the owner, and the residual risk when the mechanism is still open.
 
 ### Reading the decision vocabulary
@@ -297,7 +270,19 @@ Trap 5: One unit as the fleet.
 
 **Key idea.** Before any debugging answer, ask: Scope? Which ledger moved? Power or quality? Fastest measurement? Decision? Control?
 
-## Ten concepts to know cold
+## Concepts to know cold
+
+Split the load. Memorize the core five cold; keep the supporting five as retrieval hooks you can expand under follow-up.
+
+##### Core five.
+
+Scope; power versus quality; Five Ledgers; measurement $\rightarrow$ uncertainty $\rightarrow$ decision; containment $\rightarrow$ correction $\rightarrow$ recurrence control.
+
+##### Supporting five.
+
+Lifecycle; BER signatures; thermal versus aging; production statistics; supplier qualification.
+
+The cards below expand those ten ideas.
 
 ### Start at the system
 
@@ -317,7 +302,7 @@ A good answer explains why each choice constrains the next one. A VCSEL path poi
 
 ### Scope before root cause
 
-Before you open an instrument, walk the failure up the scope ladder (unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ site $\rightarrow$ fleet). Each rung changes the owner and the next action (Appendix C.4, Appendix C.8). Also ask time and change: sudden versus gradual, intermittent versus constant, and what changed just before the symptom. Scope often removes more hypotheses than the first bench measurement. A fleet-wide gradual drift cannot be a single dirty connector. A vendor-lot signature points to supplier containment before you redesign the module.
+Before you open an instrument, walk the failure up the scope ladder (unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ site $\rightarrow$ fleet). Each rung changes the owner and the next action (Appendix C.5, Appendix C.9). Also ask time and change: sudden versus gradual, intermittent versus constant, and what changed just before the symptom. Scope often removes more hypotheses than the first bench measurement. A fleet-wide gradual drift cannot be a single dirty connector. A vendor-lot signature points to supplier containment before you redesign the module.
 
 Preserve the failing state and its telemetry before you reseat, clean, reboot, or change calibration. Capture CMIS monitors, pre-FEC BER, bias currents, temperatures, LOS and LOL flags, and firmware versions. An intermittent that disappears under debugging is still a real failure; you just destroyed the evidence (§7.12, Table 10.1).
 
@@ -408,11 +393,11 @@ Every environmental or use stress consumes part of the system margin: temperatur
 
 ### Customer view versus vendor view
 
-The vendor designs internals. The customer characterizes externally observable behavior. As a customer you often do not need laser threshold, driver architecture, or TIA topology. You measure BER, sensitivity, FEC statistics, launch and receive power, telemetry, and environmental response; eye metrics when engineering access exists. If the product is a black box, qualification focuses on that external surface. If engineering samples are available, request transmitter-only, receiver-only, breakout, or diagnostic hardware to isolate Tx and Rx margins independently. Keep the view explicit in second-source and qualification answers (Appendix C.10, Appendix A.8.5).
+The vendor designs internals. The customer characterizes externally observable behavior. As a customer you often do not need laser threshold, driver architecture, or TIA topology. You measure BER, sensitivity, FEC statistics, launch and receive power, telemetry, and environmental response; eye metrics when engineering access exists. If the product is a black box, qualification focuses on that external surface. If engineering samples are available, request transmitter-only, receiver-only, breakout, or diagnostic hardware to isolate Tx and Rx margins independently. Keep the view explicit in second-source and qualification answers (Appendix C.11, Appendix A.8.5).
 
 ### Know what each instrument answers
 
-Do not recite instrument names. Use Measurement $\rightarrow$ uncertainty removed $\rightarrow$ decision unlocked (Appendix C.13). Fast map: power meter (power ledger), LIV (device vs setpoint), OSA (spectral), RIN/ORL (floor), DCA (eye), BERT/FEC (waterfall shape), VNA (electrical plant), thermal chamber (reversible vs aging), bias sweep (control ledger). Details and reference planes live in §7.6, Table 7.3.
+Do not recite instrument names. Use Measurement $\rightarrow$ uncertainty removed $\rightarrow$ decision unlocked (Appendix C.14). Fast map: power meter (power ledger), LIV (device vs setpoint), OSA (spectral), RIN/ORL (floor), DCA (eye), BERT/FEC (waterfall shape), VNA (electrical plant), thermal chamber (reversible vs aging), bias sweep (control ledger). Details and reference planes live in §7.6, Table 7.2.
 
 ### Read a BER waterfall: shift, floor, and burst pattern
 
@@ -490,7 +475,7 @@ Rehearse these until the structure is automatic. For night-before review use the
 
 ##### How to use the worked answers.
 
-Each long question opens with a green **30-second answer (memorize)** box. That is what you deliver first. The 3-minute section is for practice. The 10-minute section is read-only reference. Expand only where the interviewer asks: $$\text{30-second answer}
+Each long question opens with a **30-second answer** callout. Prefer the canonical wording in Appendix B; the expansions below are for practice. The 10-minute section is read-only reference. Expand only where the interviewer asks: $$\text{30-second answer}
 \longrightarrow \text{interviewer asks}
 \longrightarrow \text{expand only there}.$$
 
@@ -506,13 +491,13 @@ Walk four steps: (1) system constraints choose the architecture path before any
 
 ##### 10-minute reference (read only).
 
-Open Appendix B.7 only if the interviewer expands into the ladder; otherwise expand one constraint into the budget table and ATP/FAIR landing. Architecture forks: §5.1, Table 5.1.
+Open Appendix B.8 only if the interviewer expands into the ladder; otherwise expand one constraint into the budget table and ATP/FAIR landing. Architecture forks: §5.1, Table 5.1.
 
 ### How would you validate a new optical transmitter from bring-up through production?
 
 This is the question most likely to open the interview. The ladder itself is in Appendix A.6.5, Table 7.1. Frame first: validation is staged uncertainty reduction. Each stage answers a question the previous stage could not.
 
-> **30-second answer (memorize).** Validation is staged uncertainty reduction along the canonical lifecycle: requirements, bring-up, nominal and margin characterization, interoperability, environmental and reliability qualification, manufacturing and ATP readiness, controlled pilot, then fleet deployment and monitoring. Each stage answers a question the previous stage could not. Therefore I would walk that order and refuse any test that answers no new question.
+> **30-second answer (memorize).** See Appendix B.8 for the canonical 30-second answer. Deliver that first; expand below only if asked.
 
 ##### 3-minute answer (practice).
 
@@ -520,13 +505,13 @@ Walk the ladder in order. For each stage, name one instrument, the uncertainty r
 
 ##### 10-minute reference (read only).
 
-Open Appendix B.7 for the thirty-second playbook. Expand only the stage the interviewer picks using Table 7.1, Table 7.2: entry condition, key uncertainty, exit criteria, decision unlocked. Body detail is in Chapter 7, Chapter 8. Prefer customer-visible measurements unless engineering access is available (Appendix C.10).
+Open Appendix B.8 for the thirty-second playbook. Expand only the stage the interviewer picks using Table 7.1: entry condition, key uncertainty, exit criteria, decision unlocked. Body detail is in Chapter 7, Chapter 8. Prefer customer-visible measurements unless engineering access is available (Appendix C.11).
 
 ### BER worsens at high temperature but average power is stable. What do you do?
 
 Classic fork question (§10.13, Appendix A.6.3).
 
-> **30-second answer (memorize).** Power held, so leave the power ledger. First scope the failure (unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ fleet) and whether cool-down recovers. At the failing temperature, read externally visible remaining margin (BER/FEC, telemetry, control headroom). With engineering access, add bias sweep, OSA, and external optical eye (Appendix C.10). Therefore I would fix the table or thermal design and put that loaded corner in the ATP.
+> **30-second answer (memorize).** See Appendix B.4 for the canonical 30-second answer. Deliver that first; expand below only if asked.
 
 ##### 3-minute answer (practice).
 
@@ -540,11 +525,11 @@ Playbook: Appendix B.4. Offer the calibration-table segment-boundary story or th
 
 Separates device physics from control-loop bookkeeping (§5.11, §5.10).
 
-> **30-second answer (memorize).** Physical aging often changes a baseline (LIV, power, spectrum, RIN, sensitivity, or drive). Calibration drift changes the operating point while the device remains substantially healthy. Start black-box; recalibration recovery updates probability but is not proof. With engineering access, compare external baselines to ship data. Therefore I would route aging to life/derate/replace and drift to table version control plus an ATP loaded-corner check.
+> **30-second answer (memorize).** See Appendix B.5 for the canonical 30-second answer. Deliver that first; expand below only if asked.
 
 ##### 3-minute answer (practice).
 
-Black-box first: BER/FEC, telemetry, recal trial. Then, with engineering access, remeasure LIV and other physical baselines against ship data at fixed junction temperature. Compare monitor-PD to an external power meter. Aging: life model, derating, burn-in, or replacement. Drift: table version control, temperature-segment verification, monitor integrity, ATP corner under load. Do not mix owners (Appendix C.10).
+Black-box first: BER/FEC, telemetry, recal trial. Then, with engineering access, remeasure LIV and other physical baselines against ship data at fixed junction temperature. Compare monitor-PD to an external power meter. Aging: life model, derating, burn-in, or replacement. Drift: table version control, temperature-segment verification, monitor integrity, ATP corner under load. Do not mix owners (Appendix C.11).
 
 ##### 10-minute reference (read only).
 
@@ -552,13 +537,15 @@ Playbook: Appendix B.5. Monitor-PD corruption is the silent drift mode: APC hold
 
 ### How would you qualify a second laser or photonic-integrated-circuit supplier?
 
-This question tests supplier judgment, not vendor names. Night-before playbook: Appendix B.6. The frame: the first supplier's failure distribution does not transfer. Qualify against the requirements slice, not against the incumbent's datasheet (Table 5.4, §8.10). Prefer customer-visible remaining margin; request engineering access only when black-box evidence is insufficient (Appendix C.10).
+This question tests supplier judgment, not vendor names. Night-before playbook: Appendix B.6. The frame: the first supplier's failure distribution does not transfer. Qualify against the requirements slice, not against the incumbent's datasheet (Table 5.4, §8.10). Prefer customer-visible remaining margin; request engineering access only when black-box evidence is insufficient (Appendix C.11).
+
+> **30-second answer (memorize).** See Appendix B.6 for the canonical 30-second answer (component / PIC path). For a finished module or cable second source, use Appendix B.7. Deliver that first; expand below only if asked.
 
 ##### Step 1: freeze the requirements, not the part number.
 
 Write what the new part must close: link budget, RIN at the stated ORL, bias window, wavelength class, thermal class, and lifetime FIT target. Those are the acceptance criteria. The incumbent's datasheet is evidence that one process can meet them, not a template the second source must copy. A second source that matches the datasheet but fails the link-budget corners is not qualified.
 
-##### Step 2: characterize distributions, not samples.
+##### Step 2: characterize representative multi-lot distributions, not hero units.
 
 Measure threshold, slope, wavelength, SMSR, and RIN across wafers, lots, and temperature. Compare spreads against the incumbent, not only means. A hero sample from a new supplier proves nothing about the process. Ask for wafer maps and lot genealogy so edge-of-wafer outliers are visible before they enter your module line. Record the same reference planes and fixtures you use on the incumbent, or the comparison is fiction.
 
@@ -602,7 +589,7 @@ Across lanes, units, and lots, the pattern chooses the fix: a rework instruction
 
 Apply the power-versus-quality fork (Appendix A.6.3): power ledger intact, so eye quality or the receiver (§10.2).
 
-> **30-second answer (memorize).** Power held rules out average launch and connector loss as the primary cause. Remaining hypotheses are Tx eye quality, channel MPI or wavelength walk, or Rx sensitivity. Therefore I would golden-swap Tx then Rx, read the BER waterfall shift versus floor, and close on the mechanism and control.
+> **30-second answer (memorize).** See Appendix B.1 for the canonical 30-second answer. Deliver that first; expand below only if asked.
 
 ##### 3-minute answer (practice).
 
@@ -746,283 +733,59 @@ Alarm on trends and disagreements, such as monitor versus expected power or bias
 
 Run a 45-minute mock interview. Pick six of the rehearsal questions at random. After each answer, ask one follow-up that forces a measurement choice or a supplier/fleet decision. Score me as Staff-level only if I name the decision unlocked, not only the instrument used.
 
-## Must-know abbreviations
+## Must-know abbreviations (drill list)
 
-A fuller glossary is in Appendix D. By the end of the week, know these without notes. Entries are alphabetical by the leading abbreviation.
+Definitions live in Appendix D. Do not maintain a second glossary here. Drill the expansions cold, then say one measurement, stress, or decision each term unlocks.
 
-8D / CAPA
+##### Optical / debug core.
 
-: Eight-discipline problem solving and corrective and preventive action. Structured containment, root cause, correction, and recurrence control for supplier or production failures.
+ATP, APC, BER/BERT, CMIS, DCA, EML, ER, FEC/KP4, FIT, HTOL, LIV, LOS/LOL, MPI, OMA, ORL, RIN, RLM, SECQ, TDECQ, TEC, TIA, VOA.
 
-APC
+##### Reliability / manufacturing core.
 
-: Automatic power control. Feedback from a monitor photodiode that holds average launch power; a drifting monitor corrupts it silently.
+Arrhenius/$E_a$, bathtub, burn-in, DPA, ESD, FAIR, golden unit, GR-468, HAST, HTSL, JESD47, MTBF, NFF/RMA, SPC, 8D/CAPA.
 
-Arrhenius / $E_a$
+##### Form-factor and architecture hooks.
 
-: Life-acceleration model. Temperature stress multiplies wear-out by $\exp[(E_a/k)(1/T_\mathrm{use}-1/T_\mathrm{stress})]$. $E_a$ must be justified for the named mechanism on that process.
-
-ATP
-
-: Acceptance test plan. Production test limits, methods, reference planes, and reaction rules.
-
-Bathtub curve
-
-: Infant mortality (falling rate), useful life (roughly constant FIT), then wear-out (rising rate). Burn-in targets the left; Arrhenius life targets the right.
-
-BER
-
-: Bit error ratio. Pre-FEC BER is the validation metric; post-FEC is the service metric. Always say which.
-
-BERT
-
-: Bit-error-ratio tester. Generates PRBS and counts errors for waterfalls, floors, and dwell tests.
-
-Burn-in
-
-: Production or sample screen that removes infant-mortality parts before ship. Distinct from HTOL life projection.
-
-CDR
-
-: Clock-data recovery. Extracts bit clock from the data stream; LOL means unlock even if light is present.
-
-CMIS
-
-: Common Management Interface Specification. Module state, controls, alarms, and telemetry.
-
-COD
-
-: Catastrophic optical damage. Sudden, irreversible laser-facet failure.
-
-COM
-
-: Channel operating margin. Statistical electrical-link margin after loss, noise, crosstalk, and equalization.
-
-DCA
-
-: Digital communication analyzer. Sampling oscilloscope for eyes, OMA, ER, RLM, and TDECQ.
-
-DFB
-
-: Distributed-feedback laser. Single-mode 1310 nm class source; also the gain section in an EML.
-
-DML
-
-: Directly modulated laser. Simple and efficient, but chirp limits reach.
-
-DPA
-
-: Destructive physical analysis. Cross-section or EDX on failed units to confirm facet, solder, FAU, or die failure modes.
-
-DPPM
-
-: Defective parts per million. Incoming or outgoing quality rate.
-
-DR / FR
-
-: Datacenter reach ($\sim$500 m) and far reach (2 km). IEEE single-mode classes at 1310 nm.
-
-DVT
-
-: Design Validation Test. Corners, margin, and frozen life plan before volume tooling (Table 8.4).
-
-EAM
-
-: Electro-absorption modulator. Voltage-controlled absorption; pairs with a DFB in an EML.
-
-ELSFP
-
-: External Laser Small Form-Factor Pluggable. Replaceable continuous- wave source for co-packaged optics.
-
-EML
-
-: Electro-absorption modulated laser. DFB plus EAM on one InP chip; dominant 100--200G/lane pluggable transmitter.
-
-EOL
-
-: End of life. The defined wear-out criterion (threshold rise, slope drop, or hard fail) used in HTOL projection and derating.
-
-ER
-
-: Extinction ratio. $P_1/P_0$ in dB. Higher ER widens OMA at fixed average power; trades against chirp and swing.
-
-ESD
-
-: Electrostatic discharge. Handling or assembly damage to drivers or TIAs; sudden hard fail, not Arrhenius wear-out. Qual uses HBM/CDM models.
-
-EVT
-
-: Engineering Validation Test. Bring-up on engineering samples (Table 8.4).
-
-FAIR
-
-: First-article inspection report. Re-qualify after tooling, site, epi, or firmware change before open volume.
-
-FAU
-
-: Fiber array unit. Precision multi-fiber attachment to a photonic integrated circuit.
-
-FEC / KP4
-
-: Forward error correction; KP4 is Reed--Solomon RS(544,514). Pre-FEC BER and error histograms show margin before FEC failure.
-
-FIT
-
-: Failures in time. Failures per $10^9$ device-hours.
-
-Golden unit / host
-
-: Known-good reference used to bisect station, fixture, host, module, and fiber. Essential in debug and ATP correlation.
-
-GR-468
-
-: Telcordia optoelectronic qualification framework (HTOL, environmental, mechanical).
-
-HAST
-
-: Highly accelerated stress test. Humidity plus temperature and bias; exercises corrosion and delamination.
-
-HTOL
-
-: High-temperature operating life. Accelerated stress used with an Arrhenius model to project field wear-out; credible only with a named mechanism.
-
-HTSL
-
-: High-temperature storage life. Unbiased bake; separates storage mechanisms from biased HTOL wear-out.
-
-JESD47
-
-: JEDEC IC qualification stress suite. Silicon-side counterpart to GR-468 for drivers and TIAs.
-
-LIV
-
-: Light--current--voltage curve. Threshold, slope efficiency, kink-free range, and thermal rollover versus bias.
-
-LOS / LOL
-
-: Loss of signal and loss of lock. LOS points first toward power; LOL can occur with adequate power but poor timing or signal quality.
-
-MPI
-
-: Multipath interference. Coherent beating from reflective paths; often floors BER and clusters FEC errors.
-
-MPO
-
-: Multi-fiber push-on connector. Parallel-optics plant (8--32 fibers).
-
-MRM
-
-: Microring modulator. Compact, WDM-native silicon modulator; needs wavelength lock and heater budget.
-
-MSA
-
-: Multi-source agreement. An industry specification for interoperable products.
-
-MTBF
-
-: Mean time between failures. For constant failure rate, $\mathrm{MTBF}=10^9/\mathrm{FIT}$ hours. Fleet math usually uses FIT times population.
-
-MZM
-
-: Mach--Zehnder modulator. Broadband interferometric modulator (Si or TFLN); needs quadrature bias control.
-
-MP
-
-: Mass production. Sustained volume after PVT: DPPM, RMA, ECO control (Table 8.4).
-
-NFF / RMA
-
-: No fault found and return merchandise authorization. High NFF rates often indicate weak triage or intermittent faults.
-
-NPI
-
-: New product introduction. EVT $\to$ DVT $\to$ PVT $\to$ MP (Table 8.4).
-
-OMA
-
-: Optical modulation amplitude. Outer level swing $P_1-P_0$.
-
-ORL
-
-: Optical return loss. Reflected power toward the laser; low ORL raises RIN and can seed burst errors.
-
-OSA
-
-: Optical spectrum analyzer. Wavelength, SMSR, and side-mode structure.
-
-OSFP / QSFP-DD
-
-: High-density pluggable module form factors with different mechanical and thermal limits.
-
-PIC / SOI
-
-: Photonic integrated circuit on silicon-on-insulator. The common silicon-photonics chip and substrate.
-
-PRBS
-
-: Pseudo-random binary sequence. Repeatable pattern for eye and BER measurements.
-
-PVT
-
-: Production Validation Test. Multi-lot yield, ATP, SPC, FAIR (Table 8.4).
-
-PSRR
-
-: Power-supply rejection ratio. Weak PSRR can turn electrical rail noise into optical intensity noise.
-
-RIN
-
-: Relative intensity noise. Laser amplitude noise (dB/Hz); often measured under a stated ORL.
-
-RLM
-
-: Relative level mismatch. PAM4 level-spacing quality.
-
-SECQ
-
-: Stressed eye closure quaternary. Receiver-side margin measured with a calibrated stressed optical signal.
-
-SerDes
-
-: Serializer/deserializer. Host high-speed I/O; equalization reserve is a timing-margin ledger.
-
-SMSR
-
-: Side-mode suppression ratio. Power difference between the lasing mode and the strongest side mode.
-
-SPC
-
-: Statistical process control. Tracks process distributions and trends.
-
-TDECQ
-
-: Transmitter and dispersion eye closure quaternary. Headline PAM4 transmitter-quality metric after a reference receiver and bounded FFE.
-
-TEC
-
-: Thermoelectric cooler. A TEC near its current limit has little thermal control margin left.
-
-TIA
-
-: Transimpedance amplifier. Converts photodiode current to voltage.
-
-VCSEL
-
-: Vertical-cavity surface-emitting laser. 850 nm class for multimode short-reach links.
-
-VNA
-
-: Vector network analyzer. Electrical or electro-optic $S$-parameters versus frequency.
-
-VOA
-
-: Variable optical attenuator. Calibrated loss for sensitivity and BER-waterfall sweeps.
-
-WDM
-
-: Wavelength division multiplexing. Multiple wavelengths on one fiber.
+DFB, DML, DR/FR, EAM, ELSFP, MZM, MRM, OSFP/QSFP-DD, PIC/SOI, VCSEL, WDM.
 
 Drill abbreviations. Give me ten random terms mixing optical debug and reliability/manufacturing. For each, I must expand it in one sentence and give one measurement, stress, or failure mode it connects to. Fail me if I only expand the letters or confuse burn-in with HTOL.
+
+## Scoring rubric (0--2)
+
+Score each dimension 0 (missing), 1 (named but thin), or 2 (used to drive the next action). Staff-level answers rarely leave zeros on scope, measurement, decision, and recurrence.
+
+Scope
+
+: Unit / lot / vendor / fleet / plant named before deep debug.
+
+Hypotheses
+
+: Competing mechanisms ranked; update spoken after evidence.
+
+Measurement
+
+: Named instrument or observable that cuts the tree.
+
+Plane / access
+
+: Reference plane stated; black-box versus engineering access honored.
+
+Causal discipline
+
+: Leading mechanism until controlled confirmation; no surviving-hypothesis-as-root-cause.
+
+Decision
+
+: Ship / stop / contain / redesign / continue named explicitly.
+
+Recurrence
+
+: ATP, sample, SPC, supplier, design, firmware, or telemetry control named.
+
+Communication
+
+: Short frame first; numbers and planes without buzzword soup.
 
 ## One-week study plan
 
@@ -1054,7 +817,7 @@ Run the abbreviations LLM practice box until expansions are fast. Rehearse fleet
 
 ##### Day 7: cheat sheet, Appendix B frameworks, mock, and stop.
 
-Read Appendix A.11 once aloud. Drill the green thirty-second boxes in Appendix B for the topics you expect. Use the 45-minute mock-interview LLM practice box. No new chapters beyond that drill. Light review of your two stories only. Stop two to three hours before the call. Sleep.
+Read Appendix A.12 once aloud. Drill the "30-second answer" callouts in Appendix B for the topics you expect. Use the 45-minute mock-interview LLM practice box. No new chapters beyond that drill. Light review of your two stories only. Stop two to three hours before the call. Sleep.
 
 ##### If you have less than seven days.
 
@@ -1066,7 +829,7 @@ Internalize this one page. The rest of the appendix is supporting detail.
 
 *Close.* Every answer ends with the engineering decision.
 
-*Philosophy.* Engineering reduces uncertainty. Measurements unlock decisions. Every measurement updates beliefs. Measurements characterize margin. The job is the best decision with today's evidence.
+*Philosophy.* Engineering reduces uncertainty. Measurements unlock decisions. Every measurement updates beliefs. Measurements characterize margin. The job is a responsible, appropriately reversible decision with today's evidence.
 
 *Trees.* Debug: scope $\rightarrow$ power fork $\rightarrow$ isolation $\rightarrow$ decision $\rightarrow$ control. Qual: requirements $\rightarrow$ bring-up $\rightarrow$ nominal/margin $\rightarrow$ interop $\rightarrow$ env/reliability $\rightarrow$ ATP $\rightarrow$ pilot $\rightarrow$ fleet (Appendix A.2).
 
@@ -1074,7 +837,7 @@ Internalize this one page. The rest of the appendix is supporting detail.
 
 *Checklist.* Scope? Ledger? Power or quality? Fastest measurement? Decision? Control?
 
-*Night before.* Open the matching framework in Appendix B. Memorize green 30-second boxes only.
+*Night before.* Open the matching framework in Appendix B. Memorize "30-second answer" callouts only.
 
 *Five ledgers.* Power $\cdot$ Noise $\cdot$ Timing $\cdot$ Spectral $\cdot$ Control.
 

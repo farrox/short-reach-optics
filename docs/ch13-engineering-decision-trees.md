@@ -9,30 +9,36 @@ This appendix is the wall chart. It collects the universal reasoning frameworks 
 
 Debugging and qualification are the same philosophy at different times. Debugging asks which margin was exhausted. Qualification asks how much margin remains after the expected stresses. Both end on an engineering decision and a recurrence control.
 
-## Universal debugging tree
+## Universal debugging decision tree
 
-<pre class="dectree" aria-label="Problem"><code>Problem
+<pre class="dectree" aria-label="Universal debugging decision tree"><code>Universal debugging decision tree
   |
-Scope (unit -&gt; lot -&gt; vendor -&gt; fleet)
+Problem
   |
-Population / time behavior
+Scope and time behavior
   |
-Power changed?
-  |-- YES --&gt; Power ledger --&gt; optical path
-  |-- NO  --&gt; Quality / receiver
+Stable average received power?
+  |-- NO  --&gt; Power ledger / optical path
+  |-- YES --&gt; Signal-quality path
+              Tx / channel / Rx / DSP
+              noise / timing / spectral / control
   |
-Isolation (highest-value measurement)
+Highest-value isolate
   |
-Root cause (surviving hypothesis)
+Leading mechanism
   |
-Decision (contain / retune / derate / RMA / monitor)
+Controlled confirmation
   |
-Recurrence control (ATP / SPC / telemetry / FA)</code></pre>
-Use when BER rises, a link flaps, a lane is weak, or a corner fails. Name the ledger before naming a component (§4.8, §7.11).
+Decision
+  |
+Recurrence control</code></pre>
+Stable average power deprioritizes gross optical loss but does not eliminate fast power fluctuations, clipping, monitor averaging, or reflection-dependent effects. A surviving hypothesis is only the leading mechanism until confirmed by reproduction, controlled swap, stress dependence, rollback, or physical evidence (§4.8, §7.11, Appendix C.16).
 
-## Universal qualification tree
+## Qualification lifecycle
 
-<pre class="dectree" aria-label="Requirements"><code>Requirements
+<pre class="dectree" aria-label="Qualification lifecycle"><code>Qualification lifecycle
+  |
+Requirements
   |
 Bring-up
   |
@@ -51,29 +57,58 @@ Controlled pilot
 Fleet deployment and monitoring
   |
 Ship / restrict / reject</code></pre>
-Each gate removes a different uncertainty. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness. Shorter ladders in Table 7.1, Table 7.2 are grouped views of this same order (§7.1, Appendix A.6.5, §8.2).
+Each gate removes a different uncertainty. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness. The shorter ladder in Table 7.1 is a grouped view of this same order (§7.1, Appendix A.6.5, §8.2).
 
-## Power-versus-quality fork
+## Qualification evidence tree
 
-<pre class="dectree" aria-label="BER or link degrade"><code>BER or link degrade
+<pre class="dectree" aria-label="Qualification evidence tree"><code>Qualification evidence tree
   |
-Received power changed?
-  |-- YES --&gt; Power ledger
+Requirement
+  |
+Named failure mechanism
+  |
+Stress that accelerates that mechanism
+  |
+Representative sample and confidence
+  |
+Observable before and after stress
+  |
+Acceptance criterion
+  |
+Production proxy
+  |
+Ship / restrict / reject</code></pre>
+Use inside the reliability gate of Appendix C.2. The lifecycle says *when*; this tree says *what evidence* is defensible (Appendix C.16, §8.2).
+
+## Power-versus-quality diagnostic fork
+
+<pre class="dectree" aria-label="Power-versus-quality diagnostic fork"><code>Power-versus-quality diagnostic fork
+  |
+BER or link degrade
+  |
+Stable average received power?
+  |-- NO  --&gt; Power ledger / optical path
   |           laser / coupling / connector / fiber / MUX / monitor
-  |-- NO  --&gt; Signal quality
-              eye / noise / jitter / bias / EQ / RIN / Rx
+  |-- YES --&gt; Signal-quality path
+              Tx / channel / Rx / DSP
+              noise / timing / spectral / control
   |
 Highest-value measurement
   |
+Leading mechanism -&gt; controlled confirmation
+  |
 Decision + recurrence control</code></pre>
-One check before retuning equalizers or bias tables (§4.8, §7.11).
+One check before retuning equalizers or bias tables (§4.8, Appendix C.1).
 
 ## Scope and population
 
-<pre class="dectree" aria-label="Initial symptom"><code>Initial symptom
+<pre class="dectree" aria-label="Scope and population"><code>Scope and population
+  |
+Initial symptom
   |
 Scope analysis (how large?)
-  |-- unit / lane / rack / site / PN / vendor / lot / fleet
+  |-- lane / module / host / rack / site
+  |-- PN / firmware / lot / vendor / fleet
   |
 Technical isolation
   |
@@ -112,9 +147,11 @@ Bisect domains before opening packages (§7.10, §10.2).
 
 ## Supplier qualification
 
-<pre class="dectree" aria-label="Requirements (customer-visible)"><code>Requirements (customer-visible)
+<pre class="dectree" aria-label="Supplier qualification"><code>Supplier qualification
   |
-Characterization (distributions, not samples)
+Requirements (customer-visible)
+  |
+Characterization (multi-lot distributions, not hero units)
   |
 Margin under stress
   |
@@ -125,30 +162,30 @@ Production readiness (FAIR, ATP, SPC)
 Fleet monitoring (RMA, telemetry)</code></pre>
 Customer view measures external behavior. Vendor view owns internals (Appendix A.6.7, §8.10).
 
-## Supplier escape and containment
+## Supplier escape containment flow
 
-<pre class="dectree" aria-label="Escape detected"><code>Escape detected
+<pre class="dectree" aria-label="Supplier escape containment flow"><code>Supplier escape containment flow
   |
-Contain scoped population
+Escape detected
   |
-Scope (unit / lot / vendor / site)
+Provisional containment
   |
-Evidence (plane, corner, telemetry)
+Scope analysis
   |
-Root cause class
+Refine contained population
   |
-Supplier / FA path
+Investigate / confirm mechanism
   |
-ATP or screen update
+Corrective action
   |
-SPC / reaction plan
-  |
-Fleet monitoring</code></pre>
-Contain first when the population can grow. The system owner keeps responsibility for evidence quality and verifying corrective action (§8.7, §7.12).
+Recurrence control</code></pre>
+Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (§8.7, §7.12, Appendix C.16).
 
-## Margin-budget flow
+## Margin-consumption flow
 
-<pre class="dectree" aria-label="Nominal system margin"><code>Nominal system margin
+<pre class="dectree" aria-label="Margin-consumption flow"><code>Margin-consumption flow
+  |
+Nominal system margin
   |
 Temperature debit
   |
@@ -167,7 +204,7 @@ Remaining margin
 Above deployment requirement?
   |-- YES --&gt; proceed
   |-- NO  --&gt; redesign / restrict / recalibrate / reject</code></pre>
-Design allocates budgets. Validation often measures the net externally visible result. Do not double-count internal penalties the test cannot separate (§5.19, §7.7).
+This is a conceptual margin flow. Measure net margin at a defined reference plane and avoid double-counting overlapping penalties (§5.19, §7.7).
 
 ## Black-box versus engineering access
 
@@ -252,21 +289,74 @@ Decision with today's confidence
 Continue measuring?
   |-- YES --&gt; next measurement
   |-- NO  --&gt; control + owner + residual risk</code></pre>
-Unknown mechanism is not a freeze. Decide with weighted evidence (Appendix A.4, Appendix C.13).
+Unknown mechanism is not a freeze. Decide with weighted evidence (Appendix A.4, Appendix C.14).
+
+## Evidence block
+
+Use this block for validation reports, qualification plans, supplier reviews, fleet incidents, and interview answers:
+
+<pre class="dectree" aria-label="Evidence block"><code>Evidence block
+  |
+Claim: what are we trying to establish?
+  |
+Population: units, lots, hosts, environments
+  |
+Measurement: metric + reference plane
+  |
+Access: black-box / engineering / destructive FA
+  |
+Condition: T, V, pattern, ORL, traffic, dwell
+  |
+Evidence strength: n, repeatability, confidence
+  |
+Decision: what action is justified?
+  |
+Control: how recurrence or drift is detected</code></pre>
+Chapter 7, Chapter 8, Chapter 10, Appendix B point here rather than restating the list.
 
 ## Before you start: three checklists
 
 > **Before debugging**
 >
-> Scope $\cdot$ unit/rack/lot/vendor/fleet $\cdot$ sudden or gradual $\cdot$ power changed? $\cdot$ signal-quality uncertainty $\cdot$ highest-value measurement $\cdot$ decision unlocked $\cdot$ containment now $\cdot$ recurrence control.
+> - Scope (lane / module / host / rack / site / lot / vendor / fleet)
+>
+> - Time behavior (sudden or gradual)
+>
+> - Stable average received power? (power vs signal-quality path)
+>
+> - Highest-value isolate chosen
+>
+> - Leading mechanism stated (not yet confirmed RC)
+>
+> - Decision unlocked and recurrence control named
 
 > **Before qualification**
 >
-> Nominal function $\cdot$ operating margin $\cdot$ environmental stresses $\cdot$ interoperability $\cdot$ aging/reliability $\cdot$ manufacturing variation $\cdot$ ATP escape detection $\cdot$ controlled pilot $\cdot$ fleet telemetry.
+> - Nominal function demonstrated
+>
+> - Operating margin known
+>
+> - Environmental and reliability stresses mapped to mechanisms
+>
+> - Interoperability headroom retained on supported combos
+>
+> - Manufacturing variation and ATP escape detection covered
+>
+> - Controlled pilot exit criteria and fleet telemetry owners set
 
 > **Before production**
 >
-> Requirements met $\cdot$ margin demonstrated $\cdot$ environment covered $\cdot$ interop verified $\cdot$ reliability risk addressed $\cdot$ lot variation characterized $\cdot$ ATP defined $\cdot$ supplier controls reviewed $\cdot$ pilot exit criteria $\cdot$ fleet monitoring ready.
+> - Requirements and margin demonstrated
+>
+> - Environment and interop verified
+>
+> - Reliability risk addressed with named confidence
+>
+> - Lot / site / date-code variation characterized
+>
+> - ATP / sample / SPC controls classified
+>
+> - Supplier controls reviewed; pilot exit and fleet monitor ready
 
 **Key idea.** These trees are the book's reusable method. Chapters supply the physics and the numbers. This appendix supplies the order of thought.
 

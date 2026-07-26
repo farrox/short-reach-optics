@@ -14,15 +14,29 @@ systems demand.
 \label{sec:fit-dppm}
 
 Fleet arguments need two different numbers. One is about life in the field; the
-other is about quality at the factory door.
+other is about quality at the factory door. A rate without population
+definition, observation time, and confidence is not a fleet claim
+(\Cref{sec:tree-evidence-block}).
 
 \begin{description}
-\item[FIT (failures in time)]\firstterm{FIT} failures per $10^{9}$ device-hours. Multiply a
-      per-laser FIT by the number of lasers in a fleet and by hours to estimate
-      failures per day.
-\item[DPPM (defective parts per million)] the manufacturing-quality counterpart,
-      measured at incoming or outgoing inspection.
+\item[FIT (failures in time)]\firstterm{FIT} failures per $10^{9}$ device-hours.
+      State the population unit (laser die, module, or link), observed versus
+      predicted FIT, confidence interval, useful-life / constant-hazard
+      assumption, and whether the system is treated as repairable. Multiply a
+      per-unit FIT by population and hours only after those definitions are
+      fixed.
+\item[DPPM (defective parts per million)] Distinguish incoming defects, outgoing
+      defects, and escaped field defects. Always state the denominator, time
+      window, and whether rework and retest are included.
 \end{description}
+
+\keyidea{Zero failures do not prove a zero failure rate.
+0 failures in 20 units is not the same evidence as 0 failures in 1{,}000 units.
+0 failures after $10^{3}$ device-hours is not the same evidence as 0 failures
+after $10^{6}$ device-hours. Evidence strength depends on sample-hours,
+one-sided upper confidence bounds, censoring, and whether lots and sites are
+representative. Qualification and production SPC complement each other; neither
+alone is a fleet claim.}
 
 \aside{An order-of-magnitude exercise: a
 $100{,}000$-GPU cluster with several optical links per GPU has on the order of
@@ -77,29 +91,52 @@ Optoelectronics inherited a common qualification language from telecom:
 on every laser and module program:
 
 \begin{itemize}
-\item HTOL (high-temperature operating life) and burn-in.
+\item HTOL (high-temperature operating life) for life or mechanism evidence.
+\item Burn-in as a production infant-mortality screen when justified.
 \item Temperature cycling and damp heat.
 \item Electrostatic-discharge and mechanical stress.
 \end{itemize}
 
-\term{Arrhenius} acceleration underpins life projection: raising temperature
-accelerates wear-out by a factor set by the activation energy, so a bounded
-high-temperature test projects years of field life. Screening (burn-in) removes
-infant-mortality parts before deployment.
+Keep the jobs distinct: \textbf{burn-in} screens infant mortality from a
+production population; \textbf{qualification HTOL} gathers life or mechanism
+evidence under accelerated operation; a production burn-in is a manufacturing
+screen only when separation, cycle time, and cost justify it. Do not imply that
+every GR-468-style HTOL is a per-unit screen.
+
+\term{Arrhenius} acceleration underpins life projection only when the named
+failure mechanism is temperature-accelerated in the assumed regime: raising
+temperature accelerates wear-out by a factor set by the activation energy for
+that mechanism. Do not apply one $E_a$ to mixed mechanisms.
 
 \paragraph{GR-468 in practice.}
 \label{sec:gr468}
 
 Telcordia GR-468-CORE is the common qualification language for optoelectronic
-modules and discrete lasers. For optical engineers the actionable pieces are
-test-plan alignment (map your ATP to GR-468 stress sequences such as HTOL,
-temperature cycle, damp heat, and ESD so supplier and customer agree on
-pass/fail), activation energy (FIT projections use Arrhenius acceleration;
-document $E_a$ and confidence bounds when converting 1000-hour HTOL to field
-years), sample-size humility (qualification lots are small; production SPC catches
-drift that qual missed, \Cref{tab:npi}), and boundary clarity: qualify the laser
-die, the hermetic package, and the module assembly separately when failures split
-across those boundaries
+modules and discrete lasers. Map evidence with
+\Cref{sec:tree-qual-evidence}:
+
+\begin{center}
+\begin{minipage}{0.92\linewidth}
+\begin{verbatim}
+Requirement
+        |
+Failure mechanism
+        |
+Qualification stress
+        |
+Observed signature
+        |
+Cost-effective production proxy or process control
+\end{verbatim}
+\end{minipage}
+\end{center}
+
+A 1{,}000-hour life test may justify a 100\% room-temperature proxy, a sampled
+hot audit, a process monitor, or no direct production screen at all. Do not map
+every GR-468 stress sequence into 100\% ATP. Document $E_a$ and confidence
+bounds when converting HTOL hours to field years, keep sample-size humility
+(\Cref{sec:fit-dppm,tab:npi}), and qualify the laser die, hermetic package, and
+module assembly separately when failures split across those boundaries
 (\Cref{sec:photonic-packaging,sec:laser-aging,sec:elsfp}).
 
 \paragraph{GR-1221: the passive-component companion.}
@@ -655,23 +692,29 @@ corrective action until the measurement system is cleared (\Cref{sec:hvm-test}).
 \label{sec:escaped-defects}
 
 \begin{dectree}
-Escape
+Supplier escape containment flow
   |
-Contain scoped population
+Escape detected
   |
-Investigate mechanism
+Provisional containment
   |
-Prevent recurrence (ATP / SPC / process)
+Scope analysis
   |
-Verify next lot + fleet watch
+Refine contained population
+  |
+Investigate / confirm mechanism
+  |
+Corrective action
+  |
+Recurrence control
 \end{dectree}
 
-Containment, root-cause investigation, and recurrence control are three
-different actions. Apply the supplier-escape and recurrence trees in
-\Cref{sec:tree-escape,sec:tree-recurrence} to separate immediate hold from
-FA and from the ATP or SPC change that closes the loop. Organize the spent
-margin with the five ledgers before naming a component
-(\Cref{sec:laser-margin-erosion,sec:debug-fork}).
+Provisional containment, scope refinement, mechanism confirmation, and
+recurrence control are different actions. Apply
+\Cref{sec:tree-escape,sec:tree-recurrence,sec:tree-evidence-block} to separate
+immediate hold from FA and from the ATP, sample, SPC, or telemetry change that
+closes the loop. Organize the spent margin with the five ledgers before naming
+a component (\Cref{sec:laser-margin-erosion,sec:debug-fork}).
 
 An escaped defect is a unit that passed every production screen and failed in the
 field. Post-screen field failures split into two categories with different
@@ -800,15 +843,17 @@ RMA-to-ATP feedback
 \subsection{Test time is a cost, coverage is a risk}
 
 Every second in the acceptance test plan (ATP) times millions of units is line
-capacity and real money. Every skipped measurement is escaped DPPM in the field
-(\Cref{sec:fit-dppm}). The core tension in high-volume manufacturing is not
-``test or don't test'' but how much coverage you buy per second. The expensive
-optical steps are thermal soak and corner runs, TDECQ on a sampling scope, BER
-dwell long enough to trust a low pre-FEC target, laser burn-in, and mate-cycle
-stress on ELSFP connectors. Some screens are statistical (sample burn-in from a
-lot, audit TDECQ on a subset). Others must be 100\%: CMIS state machine sanity,
-basic LIV/SMSR pass, and any test that catches a safety or enable-sequence fault
-(\Cref{sec:cmis,sec:laser-safety}).
+capacity and real money. Every skipped measurement creates uncontrolled escape
+risk; it is not automatically a field DPPM event (\Cref{sec:fit-dppm}). The core
+tension in high-volume manufacturing is how much coverage you buy per second. The
+expensive optical steps are thermal soak and corner runs, TDECQ on a sampling
+scope, BER dwell long enough to trust a low pre-FEC target, laser burn-in, and
+mate-cycle stress on ELSFP connectors. Some screens are statistical (sample
+burn-in from a lot, audit TDECQ on a subset). Safety and enable-sequence faults
+usually require 100\% coverage. For source-level production where LIV or SMSR
+are directly available and correlated to escape risk, they may be 100\% screens.
+For closed modules, use the validated module-level proxy or a documented sampling
+plan (\Cref{sec:cmis,sec:laser-safety,tab:atp-laser}).
 
 \subsection{Where the test happens: wafer, die, module, system}
 
@@ -823,22 +868,32 @@ catches interop: media type, firmware rev, equalizer defaults, and the corners i
 epoxy creep, or connector wear. Those failures must survive to module ATP and,
 for some signatures, to fleet telemetry (\Cref{sec:fleet-triage}).
 
-\subsection{ATE-to-bench correlation}
+\subsection{ATE-to-bench correlation and gauge R\&R}
+\label{sec:gauge-rr}
 
-Production testers are built for speed and cost, not lab fidelity. The number that
-matters is correlation: does the ATE TDECQ, OMA, or sensitivity track the DCA/BERT
-reference within a known offset and spread? Set ATP limits with guardbands derived
-from that spread. A drifting tester or a stale golden unit shows up as a yield
-cliff or a DPPM escape. Keep a golden module (and golden laser subassembly for
-ELS), run gauge R\&R across testers and shifts, and correlate CMIS monitors to
-bench instruments the same way you correlate TDECQ (\Cref{sec:cmis}). If the ATE
-and the DCA disagree, fix the correlation before you argue with the supplier about
-spec.
+Production testers are built for speed and cost, not lab fidelity. Correlation
+asks whether ATE TDECQ, OMA, or sensitivity tracks the DCA/BERT reference within
+a known offset and spread. Teach the measurement system explicitly:
+
+\begin{description}
+\item[Repeatability] Same station, operator, and unit.
+\item[Reproducibility] Across stations, shifts, and operators.
+\item[Bias] Production station versus reference lab.
+\item[False reject / false accept] Guardband from measurement uncertainty.
+\item[Golden-unit stability and station drift] Catch a stale golden or drifting
+      ATE before it becomes a yield cliff or DPPM escape.
+\end{description}
+
+Keep a golden module (and golden laser subassembly for ELS), run gauge R\&R
+across testers and shifts, and correlate CMIS monitors to bench instruments the
+same way you correlate TDECQ (\Cref{sec:cmis}). If the ATE and the DCA disagree,
+fix the correlation before you argue with the supplier about spec.
 
 \subsection{Screens, guardbanding, and SPC}
 
-Burn-in and HTOL screens trade infant-mortality escape rate against test time and
-cost (\Cref{sec:wearout-modes,sec:gr468}). Test limits are usually guardbanded
+Burn-in (infant-mortality screen) and HTOL (life/mechanism evidence) trade
+different risks against test time and cost
+(\Cref{sec:wearout-modes,sec:gr468}). Test limits are usually guardbanded
 tighter than the customer spec so field DPPM stays inside target under drift.
 SPC control charts on LIV, SMSR, RIN, TDECQ, and mate-cycle yield by lot, site,
 and date code catch a process shift before it becomes an 8D (\Cref{sec:supplier-exec}).
@@ -886,22 +941,27 @@ names, not a calendar; dates and sample sizes belong in the program plan.
 \setlength{\tabcolsep}{4pt}%
 \footnotesize
 \renewcommand{\arraystretch}{1.25}%
-\begin{tabular}{@{}p{0.10\linewidth}p{0.24\linewidth}p{0.34\linewidth}p{0.26\linewidth}@{}}
+\begin{tabular}{@{}p{0.10\linewidth}p{0.22\linewidth}p{0.36\linewidth}p{0.26\linewidth}@{}}
 \toprule
 Gate & Main question & Evidence required & Decision unlocked \\
 \midrule
 EVT & Does it operate at all? & First light; CMIS bring-up; basic LIV/SMSR/RIN; one link closes BER & Continue / redesign integration \\
-\addlinespace[1.35em]
-DVT & Does it meet spec across corners? & Full ATP at $T$/$V$; prod-rep corners; stress plan + FIT model frozen & Enter PVT / hold / redesign \\
-\addlinespace[1.35em]
-PVT & Is it buildable at yield? & Multi-lot yield; SPC; burn-in escape; FAIR; production-host bring-up & Open volume / hold \\
-\addlinespace[1.35em]
-MP & Is quality sustained? & Steady DPPM; owned RMA Pareto; ECO control & Keep shipping / CAPA / restrict \\
+\addlinespace[1.25em]
+DVT & Does it meet spec across corners? & Full ATP at $T$/$V$; prod-rep corners; stress plan + FIT model frozen & Enter qual / PVT / hold \\
+\addlinespace[1.25em]
+Qual & Env / reliability evidence ready? & Named mechanisms; sample plan; confidence (\Cref{sec:tree-qual-evidence}) & Enter PVT / hold \\
+\addlinespace[1.25em]
+PVT & Is it buildable at yield? & Multi-lot yield; SPC; burn-in escape; FAIR; production-host bring-up & Enter pilot / hold \\
+\addlinespace[1.25em]
+Pilot & Do assumptions hold in a bounded field trial? & Known serials/lots; enhanced telemetry; exit/rollback criteria & Open MP / restrict \\
+\addlinespace[1.25em]
+MP & Is quality sustained? & Steady DPPM; owned RMA Pareto; ECO control; fleet feedback & Keep shipping / CAPA / restrict \\
 \bottomrule
 \end{tabular}
 \par\medskip
 {\raggedright\footnotesize\textbf{Table~\thetable.} NPI gates as a decision map.
-Detailed exit examples and owners follow below.\par}
+Pilot sits between PVT and MP; MP is sustained production plus fleet feedback,
+not ``fleet monitoring'' alone.\par}
 \end{table*}
 
 \paragraph{EVT (engineering validation test).}
@@ -934,6 +994,13 @@ volume. \textbf{Decision:} open MP volume or hold for process CAPA.
 \textbf{Risk if skipped:} shipping PVT material without frozen ATP limits
 seeds field NFF and dishonest FIT arguments (\Cref{sec:fleet-triage}).
 
+\paragraph{Pilot (controlled field confirmation).}
+\textbf{Purpose:} confirm qual assumptions on a bounded field population before
+open volume. \textbf{Evidence:} known serials and lots, representative hosts and
+environments, enhanced telemetry, success and rollback criteria, defined
+observation duration (\Cref{sec:ladder-fleet}). \textbf{Exit:} pilot criteria
+met or restrict/reject. \textbf{Decision:} open MP or hold.
+
 \paragraph{MP (mass production).}
 \textbf{Purpose:} sustain quality after ramp. \textbf{Uncertainty removed:}
 whether DPPM, RMA ownership, and ECO control remain stable.
@@ -944,8 +1011,11 @@ skipped:} silent process drifts until the fleet trips.
 
 \paragraph{Why NPI order matches the ladder.}
 EVT is bring-up. DVT is characterization plus margin/interop plus frozen
-stress intent. PVT is production readiness. MP is fleet monitoring with
-manufacturing ownership. Do not use an EVT hero sample as PVT evidence.
+stress intent. Qualification owns environmental and reliability evidence.
+PVT is production readiness. Controlled pilot is bounded field confirmation.
+MP is sustained production with fleet feedback. Do not use an EVT hero sample
+as PVT evidence, and do not treat MP as ``fleet monitoring'' alone
+(\Cref{sec:ladder-fleet,sec:ladder-fleet-monitor}).
 
 Hold a gate if the exit data are missing.
 
@@ -969,40 +1039,49 @@ numbers in the ATP itself.
 \begin{table*}[ht]
 \refstepcounter{table}\label{tab:atp-laser}%
 \centering
-\setlength{\tabcolsep}{3.5pt}%
+\setlength{\tabcolsep}{2.5pt}%
 \footnotesize
-\renewcommand{\arraystretch}{1.25}%
-\begin{tabular}{@{}p{0.20\linewidth}p{0.22\linewidth}p{0.28\linewidth}p{0.24\linewidth}@{}}
+\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{@{}p{0.18\linewidth}p{0.16\linewidth}p{0.14\linewidth}p{0.22\linewidth}p{0.22\linewidth}@{}}
 \toprule
-ATP item & Instrument / method & Pass intent & Ties to \\
+Item & Method & Control class & Pass intent & Ties to \\
 \midrule
-LIV ($I_\mathrm{th}$, slope, kink) & SMU + power meter & kink-free bias window at rated $T$ & wear-out, derate (\Cref{sec:laser-params}) \\
-\addlinespace[1.5em]
-SMSR & OSA & single-mode vs.\ spec floor & modal noise, aging \\
-\addlinespace[1.5em]
-RIN (intrinsic + stressed ORL) & PD + ESA & $\mathrm{RIN}_x\mathrm{OMA}$ / quiet floor & BER floor (\Cref{sec:rin-values}) \\
-\addlinespace[1.5em]
-Wavelength / grid & OSA / wavemeter & channel ID; $d\lambda/dT$ & WDM lock (\Cref{ch:wdm}) \\
-\addlinespace[1.5em]
-Optical power class & power meter & ELSFP / MSA class met & link budget \\
-\addlinespace[1.5em]
-EAM bias / chirp (EML) & bias sweep + DCA & ER, RLM, TDECQ at baud & Tx quality (\Cref{sec:tdecq}) \\
-\addlinespace[1.5em]
-CMIS / TWI bring-up & host or CMIS tool & registers, alarms, state machine & field telemetry \\
-\addlinespace[1.5em]
-Connector / ORL & mate cycles + ORL meter & cycles + endface grade vs IEC~61300 limits & packaging (\Cref{sec:connector-reliability,sec:elsfp}) \\
-\addlinespace[1.5em]
-Burn-in screen & HTOL sample or 100\% screen & infant mortality culled & GR-468 (\Cref{sec:gr468}) \\
-\addlinespace[1.5em]
-Driver/TIA ESD, latch-up & supplier JESD47/HBM/CDM report; sample audit & rating on file; no latch-up under current injection & IC reliability (\Cref{sec:ic-reliability}) \\
-\addlinespace[1.5em]
-Thermal class & chamber at case $T$ & LIV/RIN/CMIS still pass & derate policy \\
+LIV ($I_\mathrm{th}$, slope, kink) & SMU + power meter & 100\% ATP (source) / module proxy & kink-free bias window & wear-out, derate \\
+\addlinespace[1.1em]
+SMSR & OSA & 100\% ATP (source) / lot sample & single-mode vs.\ floor & modal noise \\
+\addlinespace[1.1em]
+Intrinsic RIN & PD + ESA & Lot sample / FA & quiet source floor & BER floor budget \\
+\addlinespace[1.1em]
+Stressed $\mathrm{RIN}_x\mathrm{OMA}$ & PD + ESA @ ORL & Lot sample / 100\% if escape & stressed Tx metric & named PMD \\
+\addlinespace[1.1em]
+Wavelength / grid & OSA / wavemeter & 100\% ATP or sample & channel ID & WDM lock \\
+\addlinespace[1.1em]
+Optical power class & power meter & 100\% ATP & class met & link budget \\
+\addlinespace[1.1em]
+EAM / TDECQ (EML) & bias + DCA & Lot sample / audit & ER, RLM, TDECQ & Tx quality \\
+\addlinespace[1.1em]
+CMIS / TWI bring-up & host / CMIS tool & 100\% ATP & state machine & telemetry \\
+\addlinespace[1.1em]
+Connector / ORL & mate + ORL meter & Periodic audit / sample & cycles + endface & packaging \\
+\addlinespace[1.1em]
+Burn-in (infant) & production screen & 100\% or lot sample & infant culled & not HTOL life \\
+\addlinespace[1.1em]
+HTOL life evidence & accelerated life & Qualification only & mechanism + FIT claim & GR-468 \\
+\addlinespace[1.1em]
+Driver/TIA ESD & JESD47 report & Qualification / audit & rating on file & IC reliability \\
+\addlinespace[1.1em]
+Thermal class & chamber & Lot sample / SPC & LIV/RIN/CMIS pass & derate \\
+\addlinespace[1.1em]
+Process monitors & SPC charts & SPC / process & drift detection & escape prevention \\
+\addlinespace[1.1em]
+Fleet cohort metrics & telemetry & Fleet telemetry & trend / alarm & recurrence \\
 \bottomrule
 \end{tabular}
 \par\medskip
-{\raggedright\footnotesize\textbf{Table~\thetable.} Acceptance checklist for laser-bearing
-modules (EML or ELSFP). Limits are program-specific; the structure is what you
-negotiate with the supplier.\par}
+{\raggedright\footnotesize\textbf{Table~\thetable.} Control checklist for laser-bearing
+modules (EML or ELSFP). Control class separates 100\% ATP, lot sample, audit,
+qualification-only, SPC, and fleet telemetry. Intrinsic RIN and stressed
+$\mathrm{RIN}_x\mathrm{OMA}$ are different metrics.\par}
 \end{table*}
 \FloatBarrier
 
@@ -1107,14 +1186,18 @@ bucket (\Cref{sec:fleet-triage}), run structured corrective action:
 \item \textbf{8D / CAPA}\firstterm{eightD}: root cause with the supplier (process step,
       material lot, firmware), corrective action, and preventive control (ATP tighten,
       SPC limit, poke-yoke).
-\item \textbf{Verify:} re-run FAIR on the corrected process; watch field RMA codes
-      for that date-code family for a defined burn-in window.
+\item \textbf{Verify closure:} containment proved effective; root cause reproduced
+      or physically confirmed; corrective action removes the failure; no
+      unacceptable regression introduced; production control detects recurrence;
+      next lots remain stable; field cohort trend improves. Re-run FAIR alone is
+      not enough for environmental, intermittent, or fleet-specific escapes
+      (\Cref{sec:tree-evidence-block}).
 \end{enumerate}
 
 Do not close 8D on ``operator error'' without a control that would have caught it
-at ATP. If FA shows laser wear-out on a young unit, it may be a reliability screen
-gap, not a supplier process bug; reclassify with \Cref{sec:fleet-triage} before you
-argue FIT.
+at ATP or in process. If FA shows laser wear-out on a young unit, it may be a
+reliability screen gap, not a supplier process bug; reclassify with
+\Cref{sec:fleet-triage} before you argue FIT.
 
 \paragraph{Milestone hygiene with partners.}
 Align the partner calendar to gates, not slideware:

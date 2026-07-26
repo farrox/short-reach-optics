@@ -496,6 +496,116 @@ def replace_debugstory(content: str) -> str:
     return "".join(result)
 
 
+def _split_tex_row(row: str) -> list[str]:
+    """Split a tabular row on un-nested &."""
+    cells: list[str] = []
+    buf: list[str] = []
+    depth = 0
+    for ch in row:
+        if ch == "{":
+            depth += 1
+            buf.append(ch)
+        elif ch == "}":
+            depth = max(0, depth - 1)
+            buf.append(ch)
+        elif ch == "&" and depth == 0:
+            cells.append("".join(buf).strip())
+            buf = []
+        else:
+            buf.append(ch)
+    cells.append("".join(buf).strip())
+    return cells
+
+
+def _tex_cell_to_html(cell: str) -> str:
+    """Lightweight TeX cell cleanup for HTML tables."""
+    s = cell.strip()
+    s = re.sub(r"\\(?:addlinespace|midrule|toprule|bottomrule)\b[^\n\\]*", "", s)
+    for _ in range(3):
+        s = re.sub(
+            r"\\(?:textbf|emph|textit|texttt|mathrm|text)\*{0,1}\{([^{}]*)\}",
+            r"\1",
+            s,
+        )
+    s = s.replace("\\&", "&").replace("~", " ")
+    s = re.sub(r"\$([^$]+)\$", r"\1", s)
+    s = re.sub(r"\\[a-zA-Z]+\*?(?:\[[^\]]*\])?", "", s)
+    s = s.replace("{", "").replace("}", "")
+    s = re.sub(r"\s+", " ", s).strip()
+    return (
+        s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    )
+
+
+def replace_tabular_html(content: str) -> str:
+    """
+    Convert tabular environments to HTML-table markers for post-pandoc promotion.
+
+    Wide p{\\linewidth} specs and \\addlinespace often make pandoc emit
+    indented ASCII grids that Markdown treats as code blocks.
+    """
+    out: list[str] = []
+    i = 0
+    begin = "\\begin{tabular}"
+    end = "\\end{tabular}"
+    while True:
+        idx = content.find(begin, i)
+        if idx < 0:
+            out.append(content[i:])
+            break
+        out.append(content[i:idx])
+        # Skip column-spec braced arg (allow whitespace before '{')
+        spec_pos = idx + len(begin)
+        while spec_pos < len(content) and content[spec_pos].isspace():
+            spec_pos += 1
+        _spec, after_spec = extract_braced_arg(content, spec_pos)
+        if not _spec and content[spec_pos:spec_pos + 1] != "{":
+            out.append(content[idx : idx + len(begin)])
+            i = idx + len(begin)
+            continue
+        end_idx = content.find(end, after_spec)
+        if end_idx < 0:
+            out.append(content[idx:])
+            break
+        body = content[after_spec:end_idx]
+        body = re.sub(r"\\addlinespace(?:\[[^\]]*\])?", r"\\\\", body)
+        for rule in ("toprule", "midrule", "bottomrule", "hline"):
+            body = re.sub(rf"\\{rule}\b", r"\\\\", body)
+        parts = re.split(r"\\\\", body)
+        rows: list[list[str]] = []
+        for part in parts:
+            part = part.strip()
+            if not part:
+                continue
+            cells = _split_tex_row(part)
+            if all(not c.strip() for c in cells):
+                continue
+            rows.append([_tex_cell_to_html(c) for c in cells])
+        if not rows:
+            out.append(content[idx : end_idx + len(end)])
+            i = end_idx + len(end)
+            continue
+        width = max(len(r) for r in rows)
+        for r in rows:
+            while len(r) < width:
+                r.append("")
+        html_rows = []
+        for ri, r in enumerate(rows):
+            tag = "th" if ri == 0 else "td"
+            cells = "".join(f"<{tag}>{c}</{tag}>" for c in r)
+            html_rows.append(f"<tr>{cells}</tr>")
+        table_html = '<table class="book-table">' + "".join(html_rows) + "</table>"
+        out.append(
+            "\n\n\\begin{verbatim}\n"
+            "<<<TABLE>>>\n"
+            f"{table_html}\n"
+            "<<<ENDTABLE>>>\n"
+            "\\end{verbatim}\n\n"
+        )
+        i = end_idx + len(end)
+    return "".join(out)
+
+
 def apply_transforms(content: str) -> str:
     """Apply all regex transformations."""
     # Handle nested-brace commands first
@@ -506,6 +616,7 @@ def apply_transforms(content: str) -> str:
     content = replace_dectree(content)
     content = replace_fw_macro(content, "fwquestion", "Interview question.")
     content = replace_fw_macro(content, "fwtesting", "What the interviewer is testing.")
+    content = replace_fw_macro(content, "fwassumptions", "Assumptions to state.")
     content = replace_fw_macro(content, "fwwhy", "Engineering reasoning.")
     content = replace_fw_macro(content, "fwmeas", "Measurements.")
     content = replace_fw_macro(content, "fwfollow", "Typical follow-ups.")
@@ -515,6 +626,8 @@ def apply_transforms(content: str) -> str:
     content = replace_fillme(content)
     content = replace_failuremode(content)
     content = replace_debugstory(content)
+    # Convert tabulars before pandoc so wide tables do not become code blocks
+    content = replace_tabular_html(content)
 
     # Then handle citehref (needs the URL map)
     content = replace_citehref(content)

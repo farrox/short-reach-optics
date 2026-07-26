@@ -86,22 +86,7 @@ A RIN number in dB/Hz is, by itself, incomplete: because RIN is *relative*, it o
   \qquad
   S_{\text{RIN}} = \mathrm{RIN}_{\text{lin}}\,I^2 \quad[\text{A}^2/\text{Hz}],$$ so it scales linearly with received power. Table 4.1 therefore lists both the RIN and the current density it produces at a common reference operating point ($\mathcal{R}=0.8$ A/W, $P_{\text{rx}}=0$ dBm, i.e. $I=0.8$ mA), the units a receiver designer actually compares against.
 
-  --------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Source                                RIN (dB/Hz)        $i_{\text{RIN}}$ @ 0 dBm   Metric                                  Note
-  ------------------------------------- ------------------ -------------------------- --------------------------------------- ----------------------------------
-  400G-FR4 / 100G Lambda class limit    $\le -136$         $\ge 127$                  stressed $\mathrm{RIN}_x\mathrm{OMA}$   named ORL (e.g. 17.1 dB)
-
-  Datacom VCSEL, 850 nm (MMF)           $-135$ to $-145$   $45$ to $142$              intrinsic                               quiet parts $\le\!-145$
-
-  Good datacom DFB / EML                $-145$ to $-155$   $14$ to $45$               intrinsic                               CPO ELS often target $\le\!-145$
-
-  Quantum-dot laser on Si               $-140$ to $-150$   $25$ to $80$               intrinsic                               feedback-tolerant class
-
-  Heterogeneous / injection-locked Si   $-155$ to $-165$   $4.5$ to $14$              intrinsic                               high-$Q$ feedback
-
-  Lab record (QD + injection lock)      $\sim\!-168$       $\sim 3.2$                 intrinsic                               research
-  --------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Source</th><th>RIN (dB/Hz)</th><th>i_RIN @ 0 dBm</th><th>Metric</th><th>Note</th></tr><tr><td>400G-FR4 / 100G Lambda class limit</td><td>-136</td><td>127</td><td>stressed RIN_xOMA</td><td>named ORL (e.g.\ 17.1 dB)</td></tr><tr><td>Datacom VCSEL, 850 nm (MMF)</td><td>-135 to -145</td><td>45 to 142</td><td>intrinsic</td><td>quiet parts \!-145</td></tr><tr><td>Good datacom DFB / EML</td><td>-145 to -155</td><td>14 to 45</td><td>intrinsic</td><td>CPO ELS often target \!-145</td></tr><tr><td>Quantum-dot laser on Si</td><td>-140 to -150</td><td>25 to 80</td><td>intrinsic</td><td>feedback-tolerant class</td></tr><tr><td>Heterogeneous / injection-locked Si</td><td>-155 to -165</td><td>4.5 to 14</td><td>intrinsic</td><td>high-Q feedback</td></tr><tr><td>Lab record (QD + injection lock)</td><td>\!-168</td><td>3.2</td><td>intrinsic</td><td>research</td></tr></table>
 **Table 4.1.** Representative RIN by source (c. 2026) at $\mathcal{R}=0.8$ A/W, $P_{\text{rx}}=0$ dBm ($I=0.8$ mA). Intrinsic RIN and stressed $\mathrm{RIN}_x\mathrm{OMA}$ are different metrics; do not convert them through one equation unless the definitions align. Density $i_{\text{RIN}}=\sqrt{\mathrm{RIN}_{\text{lin}}}\,I$.
 
 For scale, at that same $0.8$ mA the *shot*-noise density is $\sqrt{2qI}=16$ pA/$\sqrt{\text{Hz}}$ ($S=2.6\times10^{-22}$ A$^2$/Hz) and a good high-speed TIA adds roughly $25$ pA/$\sqrt{\text{Hz}}$ of thermal noise. So a VCSEL at $-140$ dB/Hz ($80$ pA/$\sqrt{\text{Hz}}$) already dominates both, while a heterogeneous source at $-160$ dB/Hz ($8$ pA/$\sqrt{\text{Hz}}$) is a minor term. The key asymmetry: thermal noise is fixed and shot grows only as $\sqrt{I}$, but RIN grows as $I$, so at low received power thermal wins and RIN is irrelevant, and only above a break-in power (Table 4.4) does RIN take over. That is why quoting a RIN figure without an operating power says little.
@@ -211,18 +196,7 @@ The TIA is the receive twin of the modulator driver (§3.14.3). At 224 GBd PAM4
 
 Table 4.2 puts the model numbers next to published front-ends. Shot noise at 0 dBm into $\mathcal{R}=0.8$ A/W is $\sqrt{2qI}\approx16$ pA$/\sqrt{\mathrm{Hz}}$; a good TIA sits near that floor. Worse $i_n$ or higher $C$ burns sensitivity linearly via $P_{\mathrm{sens}}=Q\,i_n/\mathcal{R}$ (§4.4).
 
-  --------------------------------------------------------------------------------------------------------------------------------------------------
-  Front-end                                               $i_n$ (pA$/\sqrt{\mathrm{Hz}}$)   BW / rate            Sensitivity note
-  ------------------------------------------------------- --------------------------------- -------------------- -----------------------------------
-  Typical "good" short-reach TIA (book model)             $\sim$25         ---                  older rule-of-thumb floor
-
-  -nm CMOS + co-pkg PD                                    16.9                              32 GHz / 112G PAM4   $-8.2$ dBm class
-
-  -nm SiGe $4\times$112 GBd linear TIA   13.2                              65 GHz / 224G        $\sim$1.2 pJ/bit
-
-  Shot noise @ 0 dBm, $\mathcal{R}=0.8$ A/W               $\approx$16      ---                  physics floor at that power
-  --------------------------------------------------------------------------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Front-end</th><th>i_n (pA/Hz)</th><th>BW / rate</th><th>Sensitivity note</th></tr><tr><td>Typical ``good'' short-reach TIA (book model)</td><td>25</td><td>---</td><td>older rule-of-thumb floor</td></tr><tr><td>16-nm CMOS + co-pkg PD</td><td>16.9</td><td>32 GHz / 112G PAM4</td><td>-8.2 dBm class</td></tr><tr><td>55-nm SiGe 4112 GBd linear TIA</td><td>13.2</td><td>65 GHz / 224G</td><td>1.2 pJ/bit</td></tr><tr><td>Shot noise @ 0 dBm, R=0.8 A/W</td><td>16</td><td>---</td><td>physics floor at that power</td></tr></table>
 **Table 4.2.** Input-referred TIA noise densities used in link budgets (c. 2023--26 published front-ends). Integrate $i_n\sqrt{\mathrm{BW}}$ for rms noise before applying $Q$ (§4.4). Sources in text.
 
 2026 linear PAM4 front-ends land around $10$--$17$ pA$/\sqrt{\text{Hz}}$: e.g. $16.9$ pA$/\sqrt{\text{Hz}}$ at 112G in 16-nm CMOS ($-8.2$ dBm sensitivity)  and $13.2$ pA$/\sqrt{\text{Hz}}$ at 224G in 55-nm SiGe BiCMOS (65 GHz BW, 1.2 pJ/bit) . Put these in the model: $i_n\approx13$ pA$/\sqrt{\text{Hz}}$ integrated over $\sim\!60$ GHz is $\approx3.2~\mu$A rms, giving an NRZ average sensitivity near $-15$ dBm; the PAM4 level penalty lands OMA sensitivities in the $-8$ to $-10$ dBm range these front-ends report.
@@ -231,48 +205,14 @@ Table 4.2 puts the model numbers next to published front-ends. Shot noise at 0�
 
 Table 4.3 pairs detectors and TIAs with maturity labels. Commercial linear-optics TIAs (Semtech GN1834L/DL, GN1838DL) target LPO/LRO/CPO at 224G/lane with on-chip EQ (production / sampling class). Semtech has also shown 448G-class PMD ICs (TN14740 TIA) at OFC 2026 demos (vendor demonstration; not a volume datasheet claim) . On the detector side, recessed Ge/Si PINs at 106 GHz / 0.93 A/W , Ge/Si UMC-APDs at 105 GHz with a published $\sim$9 dB sensitivity gain over PIN at 224/260G PAM4 under that paper's conditions , waveguide Ge/Si APDs toward 100 GHz at 2 A/W , and OFC 2026 Ge-on-Si APDs at 180 GBd PAM4  mark the research edge. UTC/MUTC PDs remain the high-saturation / $>\!200$ GHz niche .
 
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Part / paper                                 Type      BW / $i_n$ or $\mathcal{R}$                   Rate / sens.                    Note
-  -------------------------------------------- --------- --------------------------------------------- ------------------------------- --------------------------------------
-  Semtech GN1834L/DL / GN1838DL                TIA       224G-class; linear+EQ                         224 Gb/s/lane                   Commercial LPO/CPO family
-
-  Semtech TN14740 (demo)                       TIA       448G-class                                    448G/lane demo                  OFC 2026 booth; provisional
-
-  SiGe $4\times$112 GBd TIA   TIA       65 GHz; 13.2 pA$/\sqrt{\mathrm{Hz}}$          224G PAM4                       Research / product-class paper
-
-  -nm CMOS + co-pkg PD                         TIA+PD    16.9 pA$/\sqrt{\mathrm{Hz}}$                  112G; $-8.2$ dBm                Co-packaged win
-
-  Recessed Ge/Si PIN                           PD        106 GHz; 0.93 A/W                             200 GBd-class                   $<$10 nA dark
-
-  Ge/Si UMC-APD                                APD       105 GHz @ $M\!\approx\!7$                     224/260G; $-10.9$/$-10.1$ dBm   $\sim$9 dB over PIN
-
-  Ge/Si WG APD (300 mm)                        APD       $>$100 GHz; 2 A/W @ 70 GHz   400G/lane target                7 V bias class
-
-  OFC 2026 Ge-on-Si APD                        APD       70--100 GHz; 1.5--2 A/W                       180 GBd PAM4                    O- and C-band
-
-  UTC / MUTC-PD                                PD        $>\!110$--200 GHz                             high $I_{\mathrm{sat}}$         Linear / LPO niche
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Part / paper</th><th>Type</th><th>BW / i_n or R</th><th>Rate / sens.</th><th>Note</th></tr><tr><td>Semtech GN1834L/DL / GN1838DL</td><td>TIA</td><td>224G-class; linear+EQ</td><td>224 Gb/s/lane</td><td>Commercial LPO/CPO family</td></tr><tr><td>Semtech TN14740 (demo)</td><td>TIA</td><td>448G-class</td><td>448G/lane demo</td><td>OFC 2026 booth; provisional</td></tr><tr><td>SiGe 4112 GBd TIA</td><td>TIA</td><td>65 GHz; 13.2 pA/Hz</td><td>224G PAM4</td><td>Research / product-class paper</td></tr><tr><td>16-nm CMOS + co-pkg PD</td><td>TIA+PD</td><td>16.9 pA/Hz</td><td>112G; -8.2 dBm</td><td>Co-packaged win</td></tr><tr><td>Recessed Ge/Si PIN</td><td>PD</td><td>106 GHz; 0.93 A/W</td><td>200 GBd-class</td><td><10 nA dark</td></tr><tr><td>Ge/Si UMC-APD</td><td>APD</td><td>105 GHz @ M\!\!7</td><td>224/260G; -10.9/-10.1 dBm</td><td>9 dB over PIN</td></tr><tr><td>Ge/Si WG APD (300 mm)</td><td>APD</td><td>>100 GHz; 2 A/W @ 70 GHz</td><td>400G/lane target</td><td>7 V bias class</td></tr><tr><td>OFC 2026 Ge-on-Si APD</td><td>APD</td><td>70--100 GHz; 1.5--2 A/W</td><td>180 GBd PAM4</td><td>O- and C-band</td></tr><tr><td>UTC / MUTC-PD</td><td>PD</td><td>>\!110--200 GHz</td><td>high I_sat</td><td>Linear / LPO niche</td></tr></table>
 **Table 4.3.** Receiver snapshot (c. 2025--26). Commercial TIA rows are vendor announcements; APD/PIN rows mix production-intent SiPh with research demos. Sensitivities are as published (FEC threshold varies).
 
 ##### Reasonable alternatives to Ge PIN + quiet TIA.
 
 Table 4.4 lays the detector menu out. III-V InGaAs PINs (flip-chipped) trade monolithic integration for higher power handling and remain common in discrete modules. Avalanche photodiodes add internal gain that can improve sensitivity when gain, excess noise, bandwidth, and BER target cooperate (published short-reach results often land near 5--9 dB under specific conditions) at the cost of bias complexity and excess noise; device bandwidth above 100 GHz is no longer rare in research . Uni-traveling-carrier (UTC/MUTC) PDs use electron-only transport for very high saturation current, linearity, and bandwidth ($>\!200$ GHz) but modest responsivity, a fit for linear/LPO and $>\!200$ GBd analog optics more than for raw sensitivity . SOA-preamplified receivers bolt optical gain ahead of the PD for large effective responsivity and reach, but pay in ASE noise figure, power, and complexity.
 
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Detector                       $\mathcal{R}$ (A/W)           $-3$ dB BW               Integration          Where it fits
-  ------------------------------ ----------------------------- ------------------------ -------------------- -------------------------------------------------------
-  Ge-on-Si waveguide PIN         $0.8$--$1.0$                  $60$--$>\!100$ GHz       monolithic on SiPh   mainstream short-reach / CPO
-
-  III-V InGaAs PIN (flip-chip)   $0.6$--$0.9$                  $60$--$>\!100$ GHz       hybrid / flip-chip   discrete modules, high power
-
-  APD (Ge/Si, InP, UMC)          effective $\uparrow$ (gain)   up to $\sim\!100$ GHz+   hybrid / emerging    power-starved links; gain benefit condition-dependent
-
-  UTC / MUTC-PD                  $0.1$--$0.8$                  $>\!110$--$200$ GHz      III-V                linear/LPO, $>\!200$ GBd, high saturation
-
-  SOA-preamplified PD            effective $\gg\!1$            $\sim\!50$ GHz           III-V PIC            tight power budgets; adds ASE noise
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Detector</th><th>R (A/W)</th><th>-3 dB BW</th><th>Integration</th><th>Where it fits</th></tr><tr><td>Ge-on-Si waveguide PIN</td><td>0.8--1.0</td><td>60-->\!100 GHz</td><td>monolithic on SiPh</td><td>mainstream short-reach / CPO</td></tr><tr><td>III-V InGaAs PIN (flip-chip)</td><td>0.6--0.9</td><td>60-->\!100 GHz</td><td>hybrid / flip-chip</td><td>discrete modules, high power</td></tr><tr><td>APD (Ge/Si, InP, UMC)</td><td>effective (gain)</td><td>up to \!100 GHz+</td><td>hybrid / emerging</td><td>power-starved links; gain benefit condition-dependent</td></tr><tr><td>UTC / MUTC-PD</td><td>0.1--0.8</td><td>>\!110--200 GHz</td><td>III-V</td><td>linear/LPO, >\!200 GBd, high saturation</td></tr><tr><td>SOA-preamplified PD</td><td>effective \!1</td><td>\!50 GHz</td><td>III-V PIC</td><td>tight power budgets; adds ASE noise</td></tr></table>
 **Table 4.4.** Short-reach receiver detector options, c. 2026. Ranges span production to recent research; APD/UTC/SOA figures are effective (with gain) or device-record.
 
 ##### Outlook.

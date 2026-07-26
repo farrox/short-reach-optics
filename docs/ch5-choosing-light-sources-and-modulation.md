@@ -92,26 +92,7 @@ External laser source (ELS/ELSFP)
 
 : a pluggable laser module supplying CW light to a co-packaged switch, so a failed laser is field-replaceable (§5.14).
 
-  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Attribute            VCSEL direct                    DFB direct                     DFB + EAM                    CW DFB/DBR + MZM                   CW DFB/DBR + ring                     External cavity + modulator
-  -------------------- ------------------------------- ------------------------------ ---------------------------- ---------------------------------- ------------------------------------- -----------------------------------------
-  Wavelength / fiber   850--940 nm / MMF               1310 nm / SMF                  1310 nm / SMF                1310 or 1550 nm / SMF              WDM grid / SMF                        Tunable grid / SMF
-
-  Modulation fit       Direct only                     Direct                         Integrated EML               Si or TFLN MZM                     Resonant Si ring                      External MZM or ring
-
-  Bandwidth / reach    Short, modal limit              Chirp-limited                  High BW, low chirp           High BW, broad passband            High BW, lock-limited                 High BW, architecture-specific
-
-  RIN / linewidth      RIN and modal noise             RIN and chirp                  RIN plus EAM bias            RIN; linewidth usually secondary   RIN plus spectral alignment           Low linewidth; verify feedback response
-
-  Power / efficiency   Low Tx complexity               Low Tx complexity              Driver and EAM loss          Laser, driver, and MZM loss        Laser, heater, and lock power         Laser plus control overhead
-
-  Reliability          Junction and temperature wear   Facet and active-region wear   Laser plus EAM aging         Source, attach, and bias drift     Source, heater, and lock faults       Cavity, package, and lock faults
-
-  Manufacturing        Array-friendly, MMF plant       Simple Tx, SMF attach          Mature integrated Tx         Multi-die attach and RF match      Dense PIC, tight thermal control      Tight optical assembly and control
-
-  Validation burden    Modal, temperature, aging       Chirp, LIV, RIN                LIV, RIN, EAM sweep, TDECQ   Source plus bias and RF path       Source plus resonance and crosstalk   Spectrum, lock, feedback, environment
-  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Attribute</th><th>VCSEL direct</th><th>DFB direct</th><th>DFB + EAM</th><th>CW DFB/DBR + MZM</th><th>CW DFB/DBR + ring</th><th>External cavity + modulator</th></tr><tr><td>Wavelength / fiber</td><td>850--940 nm / MMF</td><td>1310 nm / SMF</td><td>1310 nm / SMF</td><td>1310 or 1550 nm / SMF</td><td>WDM grid / SMF</td><td>Tunable grid / SMF</td></tr><tr><td>Modulation fit</td><td>Direct only</td><td>Direct</td><td>Integrated EML</td><td>Si or TFLN MZM</td><td>Resonant Si ring</td><td>External MZM or ring</td></tr><tr><td>Bandwidth / reach</td><td>Short, modal limit</td><td>Chirp-limited</td><td>High BW, low chirp</td><td>High BW, broad passband</td><td>High BW, lock-limited</td><td>High BW, architecture-specific</td></tr><tr><td>RIN / linewidth</td><td>RIN and modal noise</td><td>RIN and chirp</td><td>RIN plus EAM bias</td><td>RIN; linewidth usually secondary</td><td>RIN plus spectral alignment</td><td>Low linewidth; verify feedback response</td></tr><tr><td>Power / efficiency</td><td>Low Tx complexity</td><td>Low Tx complexity</td><td>Driver and EAM loss</td><td>Laser, driver, and MZM loss</td><td>Laser, heater, and lock power</td><td>Laser plus control overhead</td></tr><tr><td>Reliability</td><td>Junction and temperature wear</td><td>Facet and active-region wear</td><td>Laser plus EAM aging</td><td>Source, attach, and bias drift</td><td>Source, heater, and lock faults</td><td>Cavity, package, and lock faults</td></tr><tr><td>Manufacturing</td><td>Array-friendly, MMF plant</td><td>Simple Tx, SMF attach</td><td>Mature integrated Tx</td><td>Multi-die attach and RF match</td><td>Dense PIC, tight thermal control</td><td>Tight optical assembly and control</td></tr><tr><td>Validation burden</td><td>Modal, temperature, aging</td><td>Chirp, LIV, RIN</td><td>LIV, RIN, EAM sweep, TDECQ</td><td>Source plus bias and RF path</td><td>Source plus resonance and crosstalk</td><td>Spectrum, lock, feedback, environment</td></tr></table>
 **Table 5.1.** Decision matrix for common source and modulation paths. Entries show the dominant engineering concern, not fixed rankings. Program limits come from Table 5.4.
 
 ### Reading the source and modulation matrix
@@ -242,24 +223,7 @@ An electro-absorption modulated laser integrates a DFB with an *EAM* on one chip
 
 Through 200G/lane DR, EML usually wins on cost and integration. A CW DFB (or ELSFP/CW-WDM bank) plus Si MZM, ring, or TFLN wins when the modulator must sit on silicon or needs $\gtrsim$100 GHz EO bandwidth (Table 3.12, §3.14.3). At CPO scale the laser often leaves the optical engine entirely so it can be replaced without pulling the ASIC package (§5.14). Looking forward, 400G/lane pluggables are pushing harder toward external CW plus TFLN or high-BW silicon modulators, while EMLs remain the workhorse of the installed 100--200G base.
 
-  -------------------------------------------------------------------------------------------
-  Source          Typical use                  Top risks
-  --------------- ---------------------------- ----------------------------------------------
-  DML             short reach, cost-driven     chirp/dispersion, extinction ratio
-
-  EML             $\le$DR, 100--200G/lane      EAM bias/aging, thermal
-
-  CW + TFLN MZM   400G/lane FR/DR, NPO         MZM bias drift, fiber attach, driver match
-
-  CW + Si MZM     DR/FR SiPh, 100--400G/lane   driver match, bias drift, fiber coupling
-
-  CW + Si ring    CPO, WDM transceivers        wavelength lock, thermal crosstalk, coupling
-
-  VCSEL           SR over MMF                  modal noise, reach, temperature
-
-  ELS / ELSFP     co-packaged optics           connectorization, fleet serviceability
-  -------------------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Source</th><th>Typical use</th><th>Top risks</th></tr><tr><td>DML</td><td>short reach, cost-driven</td><td>chirp/dispersion, extinction ratio</td></tr><tr><td>EML</td><td>, 100--200G/lane</td><td>EAM bias/aging, thermal</td></tr><tr><td>CW + TFLN MZM</td><td>400G/lane FR/DR, NPO</td><td>MZM bias drift, fiber attach, driver match</td></tr><tr><td>CW + Si MZM</td><td>DR/FR SiPh, 100--400G/lane</td><td>driver match, bias drift, fiber coupling</td></tr><tr><td>CW + Si ring</td><td>CPO, WDM transceivers</td><td>wavelength lock, thermal crosstalk, coupling</td></tr><tr><td>VCSEL</td><td>SR over MMF</td><td>modal noise, reach, temperature</td></tr><tr><td>ELS / ELSFP</td><td>co-packaged optics</td><td>connectorization, fleet serviceability</td></tr></table>
 **Table 5.2.** When each source is used, and its top validation risks.
 
 Use Table 5.2 as a short risk card once the path is roughly known. Use Table 5.1 when you still need to compare attribute rows across paths. Do not treat this card as a substitute for the full matrix or for Table 5.4.
@@ -278,22 +242,7 @@ Laser requirements only work when they are numbers a supplier can fail and a lin
 
 Each architecture decision forces a different requirements set (Table 5.3):
 
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Roadmap choice                      Laser implication                           Specs you must freeze early
-  ----------------------------------- ------------------------------------------- -------------------------------------------------------------------------------
-  Pluggable EML vs CW+Si/TFLN         Integrated EAM vs external CW + modulator   EAM bias/aging and TDECQ vs CW power class, RIN, and modulator $V_\pi$ match
-
-  On-package laser vs ELSFP/CW-WDM    Field replace vs FIT inside the package     Connector/ORL/mate cycles and hot-swap CMIS vs COD/aging inside ASIC thermal
-
-  Isolator vs isolator-free (CPO)     Feedback tolerance vs quiet RIN only        Stressed $\mathrm{RIN}_x\mathrm{OMA}$ at stated ORL; monitor PD / lock policy
-
-  Single-$\lambda$ vs CW-WDM / comb   One line vs $N$ lines into rings/filters    Per-line power flatness, SMSR, grid, crosstalk (§5.16)
-
-  Retimed vs LPO                      Module DSP hides Tx vs host sees raw eye    Laser+modulator TDECQ/RLM floor vs host COM budget (§9.5.2, §3.14.3)
-
-  Derate policy                       Operating $I$, $T$, power below abs-max     Bias window, thermal class, FIT/$E_a$ assumptions (§5.13)
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Roadmap choice</th><th>Laser implication</th><th>Specs you must freeze early</th></tr><tr><td>Pluggable EML vs CW+Si/TFLN</td><td>Integrated EAM vs external CW + modulator</td><td>EAM bias/aging and TDECQ vs CW power class, RIN, and modulator V_ match</td></tr><tr><td>On-package laser vs ELSFP/CW-WDM</td><td>Field replace vs FIT inside the package</td><td>Connector/ORL/mate cycles and hot-swap CMIS vs COD/aging inside ASIC thermal</td></tr><tr><td>Isolator vs isolator-free (CPO)</td><td>Feedback tolerance vs quiet RIN only</td><td>Stressed RIN_xOMA at stated ORL; monitor PD / lock policy</td></tr><tr><td>Single- vs CW-WDM / comb</td><td>One line vs N lines into rings/filters</td><td>Per-line power flatness, SMSR, grid, crosstalk (sec:cwwdm-laser)</td></tr><tr><td>Retimed vs LPO</td><td>Module DSP hides Tx vs host sees raw eye</td><td>Laser+modulator TDECQ/RLM floor vs host COM budget (sec:com,sec:drivers)</td></tr><tr><td>Derate policy</td><td>Operating I, T, power below abs-max</td><td>Bias window, thermal class, FIT/E_a assumptions (sec:laser-aging)</td></tr></table>
 **Table 5.3.** Architecture forks and the laser specs each one forces. Freeze these before DVT samples are built (§8.10).
 
 Each "Specs you must freeze early" cell is the exit criterion for that fork. **Exit when** every active fork has numbers (or explicit N/A) before DVT samples are built.
@@ -302,28 +251,7 @@ Each "Specs you must freeze early" cell is the exit criterion for that fork. **E
 
 Table 5.4 is the PRD-sized list. Fill every row with a number (or an explicit "N/A for this architecture") before you negotiate ATP limits. Do not leave RIN without an ORL, or power without a case-temperature class.
 
-  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Parameter                How to set the number                                      Measure / ATP              Reject if                            Derate / ops note
-  ------------------------ ---------------------------------------------------------- -------------------------- ------------------------------------ ---------------------------------
-  Launch power / class     Link budget + connector loss + aging margin (§7.7)         Power meter; ELSFP class   Below min at rated $T$               Cap max power for COD
-
-  Wavelength / grid        PMD or ring FSR plan; $d\lambda/dT$ headroom (Chapter 6)   OSA / wavemeter            Off-grid at case $T$                 TEC setpoints
-
-  SMSR floor               Datasheet + modal-noise budget                             OSA                        Below floor at $T$                   Watch aging
-
-  RIN (quiet + stressed)   BER floor vs BW (§4.3); ORL from plant                     PD+ESA; stated ORL         Above limit at ORL                   Bias-driver noise budget (§5.8)
-
-  Bias window              LIV kink-free range at max case $T$                        LIV                        Kink in window                       Run below abs-max $I$
-
-  EAM / MZM (if any)       ER, RLM, TDECQ at baud (§7.4)                              DCA + bias sweep           TDECQ/RLM fail                       Bias aging policy
-
-  ORL / isolator           Architecture: isolator-free needs tighter RIN              ORL meter; mate cycles     ORL out of range                     Cleaning / ELS mate life
-
-  CMIS monitors            What fleet triage will read (§7.12)                        CMIS dump                  Missing alarms / bad state machine   Enable sequence (§7.9)
-
-  FIT / life               Fleet failures/day target (§5.13)                          GR-468 + $E_a$             Screen escape                        Burn-in depth; ELS replace
-  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Parameter</th><th>How to set the number</th><th>Measure / ATP</th><th>Reject if</th><th>Derate / ops note</th></tr><tr><td>Launch power / class</td><td>Link budget + connector loss + aging margin (sec:link-budget)</td><td>Power meter; ELSFP class</td><td>Below min at rated T</td><td>Cap max power for COD</td></tr><tr><td>Wavelength / grid</td><td>PMD or ring FSR plan; d/dT headroom (ch:wdm)</td><td>OSA / wavemeter</td><td>Off-grid at case T</td><td>TEC setpoints</td></tr><tr><td>SMSR floor</td><td>Datasheet + modal-noise budget</td><td>OSA</td><td>Below floor at T</td><td>Watch aging</td></tr><tr><td>RIN (quiet + stressed)</td><td>BER floor vs BW (sec:rin); ORL from plant</td><td>PD+ESA; stated ORL</td><td>Above limit at ORL</td><td>Bias-driver noise budget (sec:laser-drivers)</td></tr><tr><td>Bias window</td><td>LIV kink-free range at max case T</td><td>LIV</td><td>Kink in window</td><td>Run below abs-max I</td></tr><tr><td>EAM / MZM (if any)</td><td>ER, RLM, TDECQ at baud (sec:tdecq)</td><td>DCA + bias sweep</td><td>TDECQ/RLM fail</td><td>Bias aging policy</td></tr><tr><td>ORL / isolator</td><td>Architecture: isolator-free needs tighter RIN</td><td>ORL meter; mate cycles</td><td>ORL out of range</td><td>Cleaning / ELS mate life</td></tr><tr><td>CMIS monitors</td><td>What fleet triage will read (sec:fleet-triage)</td><td>CMIS dump</td><td>Missing alarms / bad state machine</td><td>Enable sequence (sec:bringup)</td></tr><tr><td>FIT / life</td><td>Fleet failures/day target (sec:fit-example)</td><td>GR-468 + E_a</td><td>Screen escape</td><td>Burn-in depth; ELS replace</td></tr></table>
 **Table 5.4.** Laser requirements one-pager. Every cell needs a program number; this table is the structure, not the limits.
 
 ##### How to fill numbers (method, not invention).
@@ -367,22 +295,7 @@ SMSR is the power difference (dB) between the lasing mode and the strongest side
 
 Measure RIN with a calibrated photodetector and RF spectrum analyzer (or a dedicated RIN analyzer), under a controlled optical return loss. Distinguish *intrinsic* RIN (quiet bench, high ORL) from stressed $\mathrm{RIN}_x\mathrm{OMA}$ used in Ethernet/MSA specs. IEEE 802.3 / 100G Lambda class links cap $\mathrm{RIN}_{17.1}\mathrm{OMA}$ at $-136$ dB/Hz with 17.1 dB ORL . Quiet datacom DFB/EML parts typically sit well below that when feedback is controlled; CPO ELS designs care as much about feedback tolerance as about the quiet number (§4.3.1, §4.3).
 
-  -----------------------------------------------------------------------------------------------------------------------------------------------------------
-  Parameter           Instrument                               Pass/fail intent                                      Failure signature
-  ------------------- ---------------------------------------- ----------------------------------------------------- ----------------------------------------
-  LIV                 SMU + power meter / integrating sphere   $I_\mathrm{th}$, slope, kink-free bias window         high-temp rollover; kink in bias range
-
-  SMSR                OSA                                      single-mode purity vs. datasheet/ATP                  side modes rise with $T$ or age
-
-  RIN                 PD + ESA / RIN analyzer                  intrinsic and stressed $\mathrm{RIN}_x\mathrm{OMA}$   RIN rises with ORL; BER floor (§4.3)
-
-  Bias-driver noise   SMU vs. product bias board               $\mathrm{RIN}_{\mathrm{eq}}$ from $i_n$ (§5.8)        RIN rises with rails on, flat vs. ORL
-
-  Wavelength          OSA / wavemeter                          grid placement, $d\lambda/dT$, $d\lambda/dI$          walk off ring or MSA grid
-
-  EAM bias (EML)      bias sweep + DCA/TDECQ                   extinction, chirp, RLM                                aging shifts absorption curve
-  -----------------------------------------------------------------------------------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Parameter</th><th>Instrument</th><th>Pass/fail intent</th><th>Failure signature</th></tr><tr><td>LIV</td><td>SMU + power meter / integrating sphere</td><td>I_th, slope, kink-free bias window</td><td>high-temp rollover; kink in bias range</td></tr><tr><td>SMSR</td><td>OSA</td><td>single-mode purity vs.\ datasheet/ATP</td><td>side modes rise with T or age</td></tr><tr><td>RIN</td><td>PD + ESA / RIN analyzer</td><td>intrinsic and stressed RIN_xOMA</td><td>RIN rises with ORL; BER floor (sec:rin)</td></tr><tr><td>Bias-driver noise</td><td>SMU vs.\ product bias board</td><td>RIN_eq from i_n (sec:laser-drivers)</td><td>RIN rises with rails on, flat vs.\ ORL</td></tr><tr><td>Wavelength</td><td>OSA / wavemeter</td><td>grid placement, d/dT, d/dI</td><td>walk off ring or MSA grid</td></tr><tr><td>EAM bias (EML)</td><td>bias sweep + DCA/TDECQ</td><td>extinction, chirp, RLM</td><td>aging shifts absorption curve</td></tr></table>
 **Table 5.5.** Laser measurement playbook: what to measure, with what, and what failure looks like.
 
 Measure in order: LIV $\to$ SMSR $\to$ wavelength $\to$ RIN (quiet then stressed ORL) $\to$ EAM or bias-driver checks as the path requires. Stop when distributions across temperature and units support the bias window, grid, and RIN policy in Table 5.4 (see also Table 5.9). Do not keep measuring for its own sake once those exits close.
@@ -403,18 +316,7 @@ Above threshold, optical power tracks bias approximately as $P\propto(I-I_\mathr
 
 Worked numbers at $I-I_\mathrm{th}=50$ mA (typical CW DFB window): $i_n=500$ pA$/\sqrt{\mathrm{Hz}}$ maps to $\mathrm{RIN}_{\mathrm{eq}}\approx-160$ dB/Hz; $270$ pA$/\sqrt{\mathrm{Hz}}$ maps to about $-165$ dB/Hz. Commercial low-noise laser drivers quote roughly $50$--$500$ pA$/\sqrt{\mathrm{Hz}}$ at 1 kHz depending on current range (Table 5.6); the Koheron DRV200 family is a concrete example . Against a good datacom intrinsic RIN of $-145$ to $-155$ dB/Hz (§4.3.1), those 1 kHz densities look comfortable. The budget tightens when $(I-I_\mathrm{th})$ is small (near threshold, derated CW, or low-current VCSELs), when you integrate broadband switching noise rather than a 1 kHz spot, or when SerDes/DSP rails dump discrete tones onto the bias network.
 
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Driver class (example)             $i_n$ @ 1 kHz                                                   $\mathrm{RIN}_{\mathrm{eq}}$ @ 50 mA   What it means
-  ---------------------------------- --------------------------------------------------------------- -------------------------------------- ------------------------------
-  Ultra-low-noise CW (DRV200-A-40)   55 pA$/\sqrt{\mathrm{Hz}}$                                      $\approx-179$ dB/Hz                    Bench / metrology floor
-
-  Low-noise CW (DRV200-A-200)        270 pA$/\sqrt{\mathrm{Hz}}$                                     $\approx-165$ dB/Hz                    Typical quiet CW source
-
-  Higher-current CW (DRV200-A-400)   480 pA$/\sqrt{\mathrm{Hz}}$                                     $\approx-160$ dB/Hz                    Still below $-155$ intrinsic
-
-  Shared digital LDO, poor PSRR      often $\gg$1 nA$/\sqrt{\mathrm{Hz}}$ + tones   can exceed $-145$                      False "RIN" on ESA
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Driver class (example)</th><th>i_n @ 1 kHz</th><th>RIN_eq @ 50 mA</th><th>What it means</th></tr><tr><td>Ultra-low-noise CW (DRV200-A-40)</td><td>55 pA/Hz</td><td>-179 dB/Hz</td><td>Bench / metrology floor</td></tr><tr><td>Low-noise CW (DRV200-A-200)</td><td>270 pA/Hz</td><td>-165 dB/Hz</td><td>Typical quiet CW source</td></tr><tr><td>Higher-current CW (DRV200-A-400)</td><td>480 pA/Hz</td><td>-160 dB/Hz</td><td>Still below -155 intrinsic</td></tr><tr><td>Shared digital LDO, poor PSRR</td><td>often 1 nA/Hz + tones</td><td>can exceed -145</td><td>False ``RIN'' on ESA</td></tr></table>
 **Table 5.6.** Bias-driver current noise converted to equivalent RIN at $I-I_\mathrm{th}=50$ mA using $\mathrm{RIN}_{\mathrm{eq}}=20\log_{10}(i_n/(I-I_\mathrm{th}))$. Densities for the DRV200 rows are from the Koheron datasheet at 1 kHz; the last row is qualitative (board-dependent).
 
 ##### CW / ELSFP / CW-WDM paths.
@@ -578,42 +480,7 @@ ELSFP uses CMIS and the CMIS module state machine over TWI. On plug-in the modul
 
 Twenty-four contacts: multiple 3.3 V VCC and GND pins, module reset (`ResetL`), low-power mode (`LPModeL`), two-wire serial management (`SCL`/`SDA`), presence (`ModPrsL`), and interrupt (`IntL`), plus reserved pins for future power/ground . Table 5.7 summarizes the published map.
 
-  ---------------------------------------------------------------------------------------------------------------------
-  Pin    Function    Requirements               Notes
-  ------ ----------- -------------------------- -----------------------------------------------------------------------
-  1--3   VCC         1.5 A, 3.3 V               with noise filtering
-
-         TBD         reserved                   future power
-
-         ResetL      pull-up 10 k$\Omega$       reset module, LVTTL
-
-         LPModeL     MMC on only                low-power mode (low), LVTTL
-
-         TBD         reserved                   future ground
-
-  --10   GND         1.5 A, 3.3 V               with noise filtering
-
-         TBD         reserved                   ---
-
-         SCL         TWI clock                  host 4.7 k$\Omega$ pull-up; module $\ge$10 k$\Omega$
-
-         SDA         TWI data                   same pull-ups as SCL
-
-         TBD         reserved                   ---
-
-  --17   GND         1.5 A, 3.3 V               with noise filtering
-
-         TBD         reserved                   future ground
-
-         ModPrsL     shorted to GND in module   presence (low), LVTTL
-
-         IntL        pull-up 10 k$\Omega$       interrupt, LVTTL
-
-         TBD         reserved                   future power
-
-  --24   VCC         1.5 A, 3.3 V               with noise filtering
-  ---------------------------------------------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Pin</th><th>Function</th><th>Requirements</th><th>Notes</th></tr><tr><td>1--3</td><td>VCC</td><td>1.5 A, 3.3 V</td><td>with noise filtering</td></tr><tr><td>4</td><td>TBD</td><td>reserved</td><td>future power</td></tr><tr><td>5</td><td>ResetL</td><td>pull-up 10 k</td><td>reset module, LVTTL</td></tr><tr><td>6</td><td>LPModeL</td><td>MMC on only</td><td>low-power mode (low), LVTTL</td></tr><tr><td>7</td><td>TBD</td><td>reserved</td><td>future ground</td></tr><tr><td>8--10</td><td>GND</td><td>1.5 A, 3.3 V</td><td>with noise filtering</td></tr><tr><td>11</td><td>TBD</td><td>reserved</td><td>---</td></tr><tr><td>12</td><td>SCL</td><td>TWI clock</td><td>host 4.7 k pull-up; module 10 k</td></tr><tr><td>13</td><td>SDA</td><td>TWI data</td><td>same pull-ups as SCL</td></tr><tr><td>14</td><td>TBD</td><td>reserved</td><td>---</td></tr><tr><td>15--17</td><td>GND</td><td>1.5 A, 3.3 V</td><td>with noise filtering</td></tr><tr><td>18</td><td>TBD</td><td>reserved</td><td>future ground</td></tr><tr><td>19</td><td>ModPrsL</td><td>shorted to GND in module</td><td>presence (low), LVTTL</td></tr><tr><td>20</td><td>IntL</td><td>pull-up 10 k</td><td>interrupt, LVTTL</td></tr><tr><td>21</td><td>TBD</td><td>reserved</td><td>future power</td></tr><tr><td>22--24</td><td>VCC</td><td>1.5 A, 3.3 V</td><td>with noise filtering</td></tr></table>
 **Table 5.7.** ELSFP electrical pinout (adapted from OIF-ELSFP-02.0 Table 7). Lasers power only in ModuleReady after host command; default on plug-in is lasers off .
 
 ##### Qual hooks for suppliers.
@@ -678,18 +545,7 @@ Source integrated with the PIC
 
 : reduces optical interfaces and can improve density, but makes laser yield and wear-out part of package yield and service life.
 
-  ------------------------------------------------------------------------------------------------------
-  Approach                         Qualification ownership and risk
-  -------------------------------- ---------------------------------------------------------------------
-  Merchant DFB/EML/CW die          Integrator owns attach, driver match, screen, and module qual
-
-  External CW-WDM / ELSFP module   Supplier owns source module; system owns interface and service qual
-
-  Multi-wavelength source          Shared yield, power-flatness, and replacement risk across channels
-
-  Source integrated with PIC       Highest density; laser yield and life become package risks
-  ------------------------------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Approach</th><th>Qualification ownership and risk</th></tr><tr><td>Merchant DFB/EML/CW die</td><td>Integrator owns attach, driver match, screen, and module qual</td></tr><tr><td>External CW-WDM / ELSFP module</td><td>Supplier owns source module; system owns interface and service qual</td></tr><tr><td>Multi-wavelength source</td><td>Shared yield, power-flatness, and replacement risk across channels</td></tr><tr><td>Source integrated with PIC</td><td>Highest density; laser yield and life become package risks</td></tr></table>
 **Table 5.8.** Light-source sourcing paths and the qualification ownership each one creates.
 
 ### Reading the supplier ownership matrix
@@ -806,7 +662,7 @@ Control margin
 
 : headroom in APC, TEC, heaters, ring lock, bias DACs, and calibration tables. A railed loop can fail the link while the diode is still healthy.
 
-Recompute the link at combined production corners. A nominal part at nominal temperature says little about whether a slow loss in two ledgers will push a tail unit across the pre-FEC BER limit. §7.9, Table 7.6 carry the same ledgers into validation and fleet triage. The interview review compresses this checklist in Appendix A.6.4. The wall-chart form is Appendix C.9.
+Recompute the link at combined production corners. A nominal part at nominal temperature says little about whether a slow loss in two ledgers will push a tail unit across the pre-FEC BER limit. §7.9, Table 7.5 carry the same ledgers into validation and fleet triage. The interview review compresses this checklist in Appendix A.6.4. The wall-chart form is Appendix C.10.
 
 <pre class="dectree" aria-label="Nominal system margin"><code>Nominal system margin
   |
@@ -853,28 +709,7 @@ For power degradation, compare external optical power, monitor current, bias, an
 
 ## Engineering checklist
 
-  -----------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Decision or test   Question it answers                                                                Evidence to retain
-  ------------------ ---------------------------------------------------------------------------------- -----------------------------------------------------------
-  Architecture       Does the source and modulation path close reach, rate, power, cost, and service?   Requirement allocation and rejected alternatives
-
-  LIV                Is the operating window clear of threshold, kinks, and rollover?                   Curves by unit, lot, temperature, and age
-
-  Spectrum           Does wavelength and SMSR stay inside the assigned grid and filter passband?        OSA or wavemeter data across corners
-
-  RIN and ORL        Does noise margin survive the reflection environment?                              Quiet and stressed RIN with stated ORL and bandwidth
-
-  Modulation         Does bias, drive, chirp, and bandwidth close the eye?                              Bias sweeps, TDECQ or equivalent, and driver conditions
-
-  Thermal behavior   Are reversible shifts within control and actuator range?                           Temperature and heater sweeps, TEC current, recovery data
-
-  Long-term aging    Which parameters drift permanently, and at what rate?                              HTOL intervals, LIV, spectrum, and modulation trends
-
-  Manufacturing      Can the ATP catch bad units and lot drift at useful test cost?                     Limits, guard bands, GR&R, yield, and reaction plan
-
-  Fleet operation    Which monitors distinguish source, modulator, cooler, and optical path?            Telemetry map, alarm thresholds, and golden baselines
-  -----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Decision or test</th><th>Question it answers</th><th>Evidence to retain</th><th></th></tr><tr><td>Architecture</td><td>Does the source and modulation path close reach, rate, power, cost, and service?</td><td>Requirement allocation and rejected alternatives</td><td></td></tr><tr><td>LIV</td><td>Is the operating window clear of threshold, kinks, and rollover?</td><td>Curves by unit, lot, temperature, and age</td><td></td></tr><tr><td>Spectrum</td><td>Does wavelength and SMSR stay inside the assigned grid and filter passband?</td><td>OSA or wavemeter data across corners</td><td></td></tr><tr><td>RIN and ORL</td><td>Does noise margin survive the reflection environment?</td><td>Quiet and stressed RIN with stated ORL and bandwidth</td><td></td></tr><tr><td>Modulation</td><td>Does bias, drive, chirp, and bandwidth close the eye?</td><td>Bias sweeps, TDECQ or equivalent, and driver conditions</td><td></td></tr><tr><td>Thermal behavior</td><td>Are reversible shifts within control and actuator range?</td><td>Temperature and heater sweeps, TEC current, recovery data</td><td></td></tr><tr><td>Long-term aging</td><td>Which parameters drift permanently, and at what rate?</td><td>HTOL intervals, LIV, spectrum, and modulation trends</td><td></td></tr><tr><td>Manufacturing</td><td>Can the ATP catch bad units and lot drift at useful test cost?</td><td>Limits, guard bands, GR\</td><td>R, yield, and reaction plan</td></tr><tr><td>Fleet operation</td><td>Which monitors distinguish source, modulator, cooler, and optical path?</td><td>Telemetry map, alarm thresholds, and golden baselines</td><td></td></tr></table>
 **Table 5.9.** Source and modulation engineering checklist. Each row ties a decision to evidence, not only a test name.
 
 ### Reading the laser engineering checklist

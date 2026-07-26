@@ -5,7 +5,7 @@ title: "Ch 10: Failure analysis handbook"
 
 # 10 Failure analysis handbook
 
-This chapter is a symptom-first field guide. Start with what the bench, production line, or fleet reports. Preserve the failing state until its evidence has been captured, then use the same workflow for every incident. Distinguish observation, correlation, hypothesis, leading mechanism, and confirmed root cause. Do not call the last surviving hypothesis the root cause without controlled reproduction, swap testing, stress dependence, or physical evidence.
+This chapter is a symptom-first field guide. Start with what the bench, production line, or fleet reports. Preserve the failing state until its evidence has been captured, then use the same workflow for every incident. Distinguish observation, correlation, hypothesis, leading mechanism, and confirmed mechanism (after controlled confirmation). Do not call the last surviving hypothesis the root cause without controlled reproduction, swap testing, stress dependence, or physical evidence. For each symptom, state access (black-box versus engineering), the decision unlocked, and the earliest production or fleet control (Appendix C.16).
 
 <pre class="dectree" aria-label="Observe"><code>Observe
   |
@@ -41,7 +41,7 @@ Gradual?
   |-- aging / drift / margin erosion / contamination / cal movement
   |
 Prioritize measurements (priors, not conclusions)</code></pre>
-Choose each measurement for its ability to separate competing hypotheses. The debugging pyramid in §1.8, the power-versus-signal fork in §4.8, the fleet router in Table 7.6, and the wall-chart trees in Appendix C provide the same method at different scales.
+Choose each measurement for its ability to separate competing hypotheses. The debugging pyramid in §1.8, the power-versus-signal fork in §4.8, the fleet router in Table 7.5, and the wall-chart trees in Appendix C provide the same method at different scales.
 
 Power loss
 
@@ -98,13 +98,13 @@ Received power or OMA falls at one or more lanes. BER may remain stable at first
 
 Launch power can fall because the laser is disabled, thermally rolled over, or aged. Power can disappear after the source through modulator loss, coupling shift, MUX loss, fiber bend, connector contamination, or a wrong reference-plane calibration. A drifting monitor photodiode can report loss that does not exist.
 
-##### Measurements and root-cause isolation.
+##### Measurements, mechanism isolation, and confirmation.
 
 1.  Compare CMIS Tx and Rx power, external power at the faceplate, bias current, and case temperature. Disagreement identifies the first suspect plane.
 
 2.  Walk optical power plane by plane with a known source and calibrated meter. Do not change bias or equalization while locating the loss.
 
-3.  Rerun LIV at the failing temperature. Moved LIV points toward the source; stable LIV points toward the optical path or monitor.
+3.  Rerun LIV at the failing temperature. A moved LIV raises $P(\mathrm{source})$; a stable LIV raises $P(\mathrm{path\ or\ monitor})$ until confirmed. Do not treat either as root cause before controlled confirmation.
 
 4.  Preserve telemetry, then inspect connectors before cleaning (§10.10). Measure insertion loss and ORL. Use a golden fiber and module swap to separate field plant from module.
 
@@ -133,7 +133,7 @@ Pre-FEC BER rises, but the first task is to determine whether the whole BER wate
 
 A shifted waterfall points toward lost power, receiver sensitivity, eye closure, timing, or dispersion: the link still responds to more photons, but the power needed for a given BER has moved. A floor points toward signal-proportional noise, reflection, crosstalk, or bursty impairments: past a point, more power does not help because noise grows with the signal. The distinction prevents a power fix from being applied to a noise-limited link. FEC error timing further splits the floor and shift cases: randomly sprinkled errors fit Gaussian or steady RIN; clustered bursts fit MPI, connector intermittents, or shared supply and clock events.
 
-##### Measurements and root-cause isolation.
+##### Measurements, mechanism isolation, and confirmation.
 
 1.  Sweep received power and plot BER rather than recording one operating point. Confirm whether the curve shifted, floored, or both (a soft floor on top of a shift is common).
 
@@ -195,7 +195,7 @@ An idealized receiver OMA penalty for finite ER is $$\mathrm{PP}_\mathrm{dB}
 =
 10\log_{10}\!\left(\frac{\mathrm{ER}_\mathrm{lin}+1}{\mathrm{ER}_\mathrm{lin}-1}\right).$$ At 10 dB ER the penalty is $\sim$0.87 dB; at 6 dB ER it rises to $\sim$2.2 dB (§4.4). This is an idealized receiver-penalty model, not a measured compliance quantity such as TDECQ.
 
-##### Measurements and root-cause isolation.
+##### Measurements, mechanism isolation, and confirmation.
 
 1.  Measure ER on the DCA (outer OMA / average power, or directly from the histogram levels). Compare against the PMD limit.
 
@@ -221,7 +221,7 @@ In a multi-lane module (DR4, FR4, DR8), one or more lanes show significantly dif
 
 Multi-lane modules share a substrate, laser array (or CW-WDM source), and thermal environment. Lane-to-lane variation comes from: (1) die-level non-uniformity in the laser or modulator array (threshold, slope, $V_\pi$, coupling), (2) packaging variation in fiber-array alignment (one channel of the FAU slightly misaligned), (3) driver or TIA channel mismatch on the electronic IC, or (4) thermal gradient across the die (edge lanes hotter or cooler than center lanes).
 
-##### Measurements and root-cause isolation.
+##### Measurements, mechanism isolation, and confirmation.
 
 1.  Measure all lanes: OMA, ER, TDECQ, RIN, wavelength. Identify the outlier.
 
@@ -251,7 +251,7 @@ In a WDM system, one or more channels walk off the ITU grid or the ring/filter p
 
 Laser wavelength moves with temperature and bias current. If the TEC or wavelength-locker servo cannot track, the channel walks off its assigned slot. In microring systems, resonance also moves strongly with temperature, and neighbor heaters create thermal crosstalk that pushes adjacent channels (§6.4, §6.5).
 
-##### Measurements and root-cause isolation.
+##### Measurements, mechanism isolation, and confirmation.
 
 1.  Measure wavelength on an OSA or wavemeter. Compare to the target grid.
 
@@ -277,7 +277,7 @@ TDECQ exceeds the PMD limit even though average power and ER look acceptable. Th
 
 TDECQ measures how much noise the transmitter can tolerate before BER exceeds the FEC threshold, relative to an ideal transmitter (§7.4). High TDECQ means the equalized eye is poor. Common causes: (1) insufficient EO bandwidth (modulator or driver roll-off), (2) poor level linearity (RLM $<$ 0.95; driver or modulator compression), (3) pattern-dependent effects (ISI from bandwidth limit, reflections, or impedance mismatch), (4) chromatic dispersion on FR-class fiber eating into the margin.
 
-##### Measurements and root-cause isolation.
+##### Measurements, mechanism isolation, and confirmation.
 
 1.  Inspect the raw (unequalized) eye on the DCA. Is it bandwidth-limited (rounded transitions), compressed (uneven levels), or noisy (RIN/jitter)?
 
@@ -303,7 +303,7 @@ Module temperature rises continuously until shutdown (CMIS over-temperature alar
 
 In a faceplate pluggable, double-digit-watt module power must leave through the cage and heatsink . If airflow is blocked, the cage is overloaded, or the TEC inside the module is fighting a losing battle against junction temperature, the thermal loop runs away. In CPO, the optical engine sits on the switch substrate beside the ASIC; cooling-path faults concentrate heat on the source and ring controls . Both sources are vendor or research orientation, so the product thermal model remains authoritative.
 
-##### Measurements and root-cause isolation.
+##### Measurements, mechanism isolation, and confirmation.
 
 1.  Read CMIS module temperature and compare to the module's rated case $T$ range. If case $T$ exceeds the max, the system cooling is inadequate.
 
@@ -340,7 +340,7 @@ Links flap, lose lock, or show bursts of FEC errors while average power and a sh
 
 Intermittent faults come from contacts, reflections, weak optical or electrical attach, supply noise, wavelength-lock loss, firmware state, or environmental stress. Reseating can remove the evidence by cleaning a contact, changing fiber stress, or resetting a state machine.
 
-##### Measurements and root-cause isolation.
+##### Measurements, mechanism isolation, and confirmation.
 
 1.  Freeze CMIS state, FEC error timing, LOS or LOL history, temperatures, rails, lock error, and neighbor activity before touching hardware.
 
@@ -405,7 +405,7 @@ First-pass yield falls below its stable baseline. The loss may cluster on one AT
 
 Process drift, incoming material variation, fiber-array alignment, die-attach or solder change, tester or fixture drift, stale calibration, a software limit change, or a guardband that no longer matches measurement spread.
 
-##### Measurements and root-cause isolation.
+##### Measurements, mechanism isolation, and confirmation.
 
 1.  Contain suspect work in process and freeze tester software, limits, fixtures, and calibration records.
 
@@ -447,7 +447,7 @@ BER, TDECQ, optical power, or lock stability degrades during a case-temperature 
 
 Laser threshold and slope drift, wavelength movement, ring-resonance drift, TEC or heater saturation, EAM or MZM bias error, receiver-noise rise, package stress, or a thermal gradient that affects one lane.
 
-##### Measurements and root-cause isolation.
+##### Measurements, mechanism isolation, and confirmation.
 
 1.  Record case temperature, external optical power, wavelength, bias, TEC or heater current, lock error, OMA, ER, TDECQ, and pre-FEC BER on one time axis.
 
@@ -467,26 +467,7 @@ Restore thermal headroom, correct calibration and control limits, reduce couplin
 
 The checklist in Table 10.1 is a lifecycle, not a suggestion list. Each step removes a class of uncertainty before the next step spends lab time. Skip Preserve and you often destroy the only evidence that separated host, plant, and product.
 
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Step            Question                                                                       Required record
-  --------------- ------------------------------------------------------------------------------ ----------------------------------------------------------------------------
-  Preserve        What evidence will a reseat, reboot, clean, or retest destroy?                 CMIS, BER and FEC history, rails, temperature, firmware, fixture, and time
-
-  Scope           One unit, lane, lot, vendor, site, or fleet?                                   Population and correlation plot
-
-  Classify        Sudden or gradual, constant or intermittent, thermal or cumulative?            Timeline and recovery test
-
-  Locate margin   Did power, noise, timing, spectrum, or control move first?                     Golden comparison and margin ledger
-
-  Falsify         Which measurement best separates the leading hypotheses?                       Expected result for each hypothesis before the test
-
-  Confirm         Does the fault follow the suspected block under a controlled swap or stress?   Repeated failure and passing control
-
-  Correct         Does the fix restore the original failing condition with margin?               Before and after data at loaded corners
-
-  Prevent         Where can production or fleet monitoring catch recurrence earliest?            ATP change, control limit, alarm, owner, and due date
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Step</th><th>Question</th><th>Required record</th></tr><tr><td>Preserve</td><td>What evidence will a reseat, reboot, clean, or retest destroy?</td><td>CMIS, BER and FEC history, rails, temperature, firmware, fixture, and time</td></tr><tr><td>Scope</td><td>One unit, lane, lot, vendor, site, or fleet?</td><td>Population and correlation plot</td></tr><tr><td>Classify</td><td>Sudden or gradual, constant or intermittent, thermal or cumulative?</td><td>Timeline and recovery test</td></tr><tr><td>Locate margin</td><td>Did power, noise, timing, spectrum, or control move first?</td><td>Golden comparison and margin ledger</td></tr><tr><td>Falsify</td><td>Which measurement best separates the leading hypotheses?</td><td>Expected result for each hypothesis before the test</td></tr><tr><td>Confirm</td><td>Does the fault follow the suspected block under a controlled swap or stress?</td><td>Repeated failure and passing control</td></tr><tr><td>Correct</td><td>Does the fix restore the original failing condition with margin?</td><td>Before and after data at loaded corners</td></tr><tr><td>Prevent</td><td>Where can production or fleet monitoring catch recurrence earliest?</td><td>ATP change, control limit, alarm, owner, and due date</td></tr></table>
 **Table 10.1.** Failure-analysis checklist. The incident is not closed until the cause is reproduced, corrected, and covered by a recurrence control.
 
 ### Reading the failure-analysis checklist

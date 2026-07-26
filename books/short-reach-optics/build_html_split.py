@@ -243,9 +243,41 @@ def promote_dectrees(content: str) -> str:
     return content
 
 
+def promote_tables(content: str) -> str:
+    """Turn marked verbatim HTML tables into real <table> blocks."""
+    pattern = re.compile(
+        r"(?:^[ \t]*<<<TABLE>>>\s*\n)(.*?)(?:^[ \t]*<<<ENDTABLE>>>\s*\n?)",
+        re.MULTILINE | re.DOTALL,
+    )
+
+    def repl(m: re.Match) -> str:
+        body = m.group(1)
+        lines = body.splitlines()
+        cleaned = [re.sub(r"^[ \t]{0,4}", "", line) for line in lines]
+        while cleaned and not cleaned[0].strip():
+            cleaned.pop(0)
+        while cleaned and not cleaned[-1].strip():
+            cleaned.pop()
+        html = "\n".join(cleaned).strip()
+        # Pandoc may escape < > inside verbatim; unescape common tags.
+        html = (
+            html.replace("&lt;", "<")
+            .replace("&gt;", ">")
+            .replace("&amp;", "&")
+        )
+        if "<table" not in html:
+            return m.group(0)
+        return html + "\n"
+
+    content = pattern.sub(repl, content)
+    content = re.sub(r"(?m)^[ \t]*<<<(?:END)?TABLE>>>[ \t]*\n?", "", content)
+    return content
+
+
 def clean_pandoc_artifacts(content: str) -> str:
     """Post-process pandoc Markdown before splitting into pages."""
     content = promote_dectrees(content)
+    content = promote_tables(content)
     # Drop leftover pandoc fenced-div open/close lines (::: center, :::).
     # Use [ \t] not \s so newlines are not swallowed into the match.
     content = re.sub(r"(?m)^:::[ \t]*.*$", "", content)

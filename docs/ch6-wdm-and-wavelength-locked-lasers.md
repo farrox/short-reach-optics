@@ -13,18 +13,7 @@ At $100{,}000$+ accelerator scale, every extra fiber is another connector, anoth
 
 Historically the industry climbed a ladder of spacing. Coarse CWDM4 used $\approx$20 nm slots and uncooled lasers. LAN-WDM tightened that for 2 km-class FR4. Dense grids and then CW-WDM O-band combs for CPO pushed spacing into the 100--800 GHz class and made active locking mandatory. Those spacings are standardized grids, not vendor choices: the 20 nm CWDM slots follow the ITU-T G.694.2 wavelength grid (18 channels, 1271--1611 nm), and the 50/100/200 GHz datacom DWDM spacings follow the ITU-T G.694.1 frequency grid anchored at 193.1 THz . CWDM4 uses the four O-band lines of that CWDM grid; the CW-WDM combs in §6.6 define their own O-band grids for dense integration. Table 6.1 is that ladder as you will meet it in short-reach AI optics today.
 
-  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Grid family           Spacing (class)                                                                   Channels / fiber   Cooling / lock              Typical short-reach use
-  --------------------- --------------------------------------------------------------------------------- ------------------ --------------------------- -------------------------------------
-  CWDM4                 $\approx$20 nm                                                   4                  Uncooled; loose control     FR-class pluggables; faceplate WDM
-
-  LAN-WDM               $\approx$800 GHz ($\approx$4--5 nm @ 1310 nm)   4                  Cooled or tight open-loop   2 km-class FR4 (edge of book scope)
-
-  Datacom DWDM          200/100/50 GHz                                                                    many               Locked to grid              Discrete DFB/EML DWDM modules
-
-  CW-WDM / CPO O-band   100--800 GHz class (MSA spans)                                                    8 / 16 / 32        Locked; often ring-tuned    CPO engines, optical I/O chiplets
-  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Grid family</th><th>Spacing (class)</th><th>Channels / fiber</th><th>Cooling / lock</th><th>Typical short-reach use</th></tr><tr><td>CWDM4</td><td>20 nm</td><td>4</td><td>Uncooled; loose control</td><td>FR-class pluggables; faceplate WDM</td></tr><tr><td>LAN-WDM</td><td>800 GHz (4--5 nm @ 1310 nm)</td><td>4</td><td>Cooled or tight open-loop</td><td>2 km-class FR4 (edge of book scope)</td></tr><tr><td>Datacom DWDM</td><td>200/100/50 GHz</td><td>many</td><td>Locked to grid</td><td>Discrete DFB/EML DWDM modules</td></tr><tr><td>CW-WDM / CPO O-band</td><td>100--800 GHz class (MSA spans)</td><td>8 / 16 / 32</td><td>Locked; often ring-tuned</td><td>CPO engines, optical I/O chiplets</td></tr></table>
 **Table 6.1.** WDM grids for short-reach AI interconnects. CW-WDM MSA normative grids sit in O-band with 9/18/36 nm spans and 8/16/32-line sets (§6.6); spacing is set by the chosen span and channel count, not by Ethernet CWDM4.
 
 **Exit when** fiber count, lock burden, and cooling class pick one grid family for the product. **Decision unlocked:** accept uncooled CWDM4, or fund locked denser grids (LAN-WDM, DWDM, CW-WDM) with the control page they require.
@@ -65,20 +54,7 @@ Hybrid
 
 Table 6.2 maps common MUX faults to the measurement that catches them.
 
-  -------------------------------------------------------------------------------------------------------------
-  Fault                        Optical symptom                     Hits                 Catch with
-  ---------------------------- ----------------------------------- -------------------- -----------------------
-  Stage insertion loss         Lower launch OMA on all $\lambda$   Link budget OMA      Power meter / OMA
-
-  Passband ripple / tilt       Uneven OMA across bank              Weakest $\lambda$    Per-$\lambda$ OMA map
-
-  Adjacent-channel crosstalk   Closed eyes, RLM/TDECQ up           Tx quality / BER     Isolation sweep + DCA
-
-  MUX imbalance                One $\lambda$ weak, neighbors OK    Single-lane BER      Per-lane power + BER
-
-  Grid misalignment            Filter edge clipping                TDECQ, unlock risk   OSA + lock status
-  -------------------------------------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Fault</th><th>Optical symptom</th><th>Hits</th><th>Catch with</th></tr><tr><td>Stage insertion loss</td><td>Lower launch OMA on all</td><td>Link budget OMA</td><td>Power meter / OMA</td></tr><tr><td>Passband ripple / tilt</td><td>Uneven OMA across bank</td><td>Weakest</td><td>Per- OMA map</td></tr><tr><td>Adjacent-channel crosstalk</td><td>Closed eyes, RLM/TDECQ up</td><td>Tx quality / BER</td><td>Isolation sweep + DCA</td></tr><tr><td>MUX imbalance</td><td>One weak, neighbors OK</td><td>Single-lane BER</td><td>Per-lane power + BER</td></tr><tr><td>Grid misalignment</td><td>Filter edge clipping</td><td>TDECQ, unlock risk</td><td>OSA + lock status</td></tr></table>
 **Table 6.2.** MUX/demux defects and where they appear in validation. Isolation and imbalance tests belong in ATP for any dense WDM engine (§6.7, §5.16).
 
 Validation adds channel isolation sweeps, grid alignment across temperature, and MUX imbalance (uneven OMA per $\lambda$). Treat the weakest channel as the budget-limiting lane, not the average.
@@ -257,18 +233,7 @@ ATP: lock range, unlock, crosstalk
   |
 Fleet: unlock alarms, wavelength telemetry</code></pre>
 
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Implication                                                                                                                   Strength
-  ----------------------------------------------------------------------------------------------------------------------------- ---------------------------------------------------------------------------------------------------------------------------
-  Some form of WDM is in use                                                                                                    Near-certain: locking only matters with WDM.
-
-  Dense (D)WDM rather than coarse CWDM                                                                                          Likely: locking implies tight spacing.
-
-  Microring-based silicon photonics with external multi-wavelength (CW-WDM) sources, often trending toward co-packaged optics   Common in modern AI interconnects (e.g. Broadcom and NVIDIA Quantum-X programs), driven by fiber-count pressure at scale.
-
-  Discrete DFB/EML DWDM (no rings)                                                                                              Also possible; locking alone does not prove rings.
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+<table class="book-table"><tr><th>Implication</th><th>Strength</th></tr><tr><td>Some form of WDM is in use</td><td>Near-certain: locking only matters with WDM.</td></tr><tr><td>Dense (D)WDM rather than coarse CWDM</td><td>Likely: locking implies tight spacing.</td></tr><tr><td>Microring-based silicon photonics with external multi-wavelength (CW-WDM) sources, often trending toward co-packaged optics</td><td>Common in modern AI interconnects (e.g. Broadcom and NVIDIA Quantum-X programs), driven by fiber-count pressure at scale.</td></tr><tr><td>Discrete DFB/EML DWDM (no rings)</td><td>Also possible; locking alone does not prove rings.</td></tr></table>
 **Table 6.3.** What a wavelength-locking requirement implies.
 
 The solid conclusion is that **WDM is present and wavelength control is central**; whether the implementation is ring-based silicon photonics with external multi-wavelength sources or discrete DFB/EML DWDM depends on the specific system.

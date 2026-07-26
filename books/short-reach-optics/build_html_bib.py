@@ -78,8 +78,19 @@ def strip_tex(s: str) -> str:
     return s
 
 
+# Manual overrides run before keyword heuristics (bibkey -> (section_id, source_type)).
+# Keep Miller / Sackinger in books even when abstracts mention IEEE journals.
+CATEGORY_OVERRIDES: dict[str, tuple[str, str]] = {
+    "miller2009": ("books", "research"),
+    "miller2017": ("books", "research"),
+    "sackinger2018": ("books", "research"),
+}
+
+
 def classify(key: str, short: str, body: str) -> tuple[str, str]:
     """Return (section_id, source_type_label)."""
+    if key in CATEGORY_OVERRIDES:
+        return CATEGORY_OVERRIDES[key]
     blob = f"{key} {short} {body}".lower()
 
     if any(
@@ -121,7 +132,7 @@ def classify(key: str, short: str, body: str) -> tuple[str, str]:
     if any(
         x in blob
         for x in ("wiley", "cambridge", "springer", "oxford", "säckinger", "sackinger")
-    ) or key in {"sackinger2018", "miller2009", "miller2017"}:
+    ):
         return "books", "research"
 
     if any(

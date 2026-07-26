@@ -143,7 +143,7 @@ Use the debugging pyramid: start at the system symptom, narrow to signal quality
 
 ## The debugging pyramid
 
-When a link fails, work from the top down. Each layer narrows the search before you open a connector or reseat a module. This framework reappears in every chapter. Apply the power-versus-quality fork early (§4.8, Appendix C.3) and organize lost margin with the five ledgers (§5.19).
+When a link fails, work from the top down. Each layer narrows the search before you open a connector or reseat a module. This framework reappears in every chapter. Apply the power-versus-quality fork early (§4.8, Appendix C.4) and organize lost margin with the five ledgers (§5.19).
 
 <pre class="dectree" aria-label="System symptom"><code>System symptom
   |

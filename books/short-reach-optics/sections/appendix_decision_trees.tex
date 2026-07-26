@@ -12,36 +12,45 @@ Debugging asks which margin was exhausted. Qualification asks how much margin
 remains after the expected stresses. Both end on an engineering decision and a
 recurrence control.
 
-\section{Universal debugging tree}
+\section{Universal debugging decision tree}
 \label{sec:tree-debugging}
 
 \begin{dectree}
+Universal debugging decision tree
+  |
 Problem
   |
-Scope (unit -> lot -> vendor -> fleet)
+Scope and time behavior
   |
-Population / time behavior
+Stable average received power?
+  |-- NO  --> Power ledger / optical path
+  |-- YES --> Signal-quality path
+              Tx / channel / Rx / DSP
+              noise / timing / spectral / control
   |
-Power changed?
-  |-- YES --> Power ledger --> optical path
-  |-- NO  --> Quality / receiver
+Highest-value isolate
   |
-Isolation (highest-value measurement)
+Leading mechanism
   |
-Root cause (surviving hypothesis)
+Controlled confirmation
   |
-Decision (contain / retune / derate / RMA / monitor)
+Decision
   |
-Recurrence control (ATP / SPC / telemetry / FA)
+Recurrence control
 \end{dectree}
 
-Use when BER rises, a link flaps, a lane is weak, or a corner fails. Name the
-ledger before naming a component (\Cref{sec:debug-fork,sec:validation-fork}).
+Stable average power deprioritizes gross optical loss but does not eliminate
+fast power fluctuations, clipping, monitor averaging, or reflection-dependent
+effects. A surviving hypothesis is only the leading mechanism until confirmed by
+reproduction, controlled swap, stress dependence, rollback, or physical
+evidence (\Cref{sec:debug-fork,sec:validation-fork,sec:tree-evidence-block}).
 
-\section{Universal qualification tree}
+\section{Qualification lifecycle}
 \label{sec:tree-qualification}
 
 \begin{dectree}
+Qualification lifecycle
+  |
 Requirements
   |
 Bring-up
@@ -64,38 +73,73 @@ Ship / restrict / reject
 \end{dectree}
 
 Each gate removes a different uncertainty. Do not treat a bring-up pass as
-margin evidence, or an HTOL pass as production readiness. Shorter ladders in
-\Cref{tab:ladder,tab:ladder-gates} are grouped views of this same order
+margin evidence, or an HTOL pass as production readiness. The shorter ladder in
+\Cref{tab:ladder} is a grouped view of this same order
 (\Cref{sec:validation-workflow,sec:interview-validation-ladder,sec:gr468}).
 
-\section{Power-versus-quality fork}
+\section{Qualification evidence tree}
+\label{sec:tree-qual-evidence}
+
+\begin{dectree}
+Qualification evidence tree
+  |
+Requirement
+  |
+Named failure mechanism
+  |
+Stress that accelerates that mechanism
+  |
+Representative sample and confidence
+  |
+Observable before and after stress
+  |
+Acceptance criterion
+  |
+Production proxy
+  |
+Ship / restrict / reject
+\end{dectree}
+
+Use inside the reliability gate of \Cref{sec:tree-qualification}. The lifecycle
+says \emph{when}; this tree says \emph{what evidence} is defensible
+(\Cref{sec:tree-evidence-block,sec:gr468}).
+
+\section{Power-versus-quality diagnostic fork}
 \label{sec:tree-power-fork}
 
 \begin{dectree}
+Power-versus-quality diagnostic fork
+  |
 BER or link degrade
   |
-Received power changed?
-  |-- YES --> Power ledger
+Stable average received power?
+  |-- NO  --> Power ledger / optical path
   |           laser / coupling / connector / fiber / MUX / monitor
-  |-- NO  --> Signal quality
-              eye / noise / jitter / bias / EQ / RIN / Rx
+  |-- YES --> Signal-quality path
+              Tx / channel / Rx / DSP
+              noise / timing / spectral / control
   |
 Highest-value measurement
+  |
+Leading mechanism -> controlled confirmation
   |
 Decision + recurrence control
 \end{dectree}
 
 One check before retuning equalizers or bias tables
-(\Cref{sec:debug-fork,sec:validation-fork}).
+(\Cref{sec:debug-fork,sec:tree-debugging}).
 
 \section{Scope and population}
 \label{sec:tree-scope-population}
 
 \begin{dectree}
+Scope and population
+  |
 Initial symptom
   |
 Scope analysis (how large?)
-  |-- unit / lane / rack / site / PN / vendor / lot / fleet
+  |-- lane / module / host / rack / site
+  |-- PN / firmware / lot / vendor / fleet
   |
 Technical isolation
   |
@@ -148,9 +192,11 @@ Bisect domains before opening packages (\Cref{sec:debug,sec:fm-ber-increase}).
 \label{sec:tree-supplier}
 
 \begin{dectree}
+Supplier qualification
+  |
 Requirements (customer-visible)
   |
-Characterization (distributions, not samples)
+Characterization (multi-lot distributions, not hero units)
   |
 Margin under stress
   |
@@ -164,37 +210,38 @@ Fleet monitoring (RMA, telemetry)
 Customer view measures external behavior. Vendor view owns internals
 (\Cref{sec:interview-customer-vendor,sec:supplier-exec}).
 
-\section{Supplier escape and containment}
+\section{Supplier escape containment flow}
 \label{sec:tree-escape}
 
 \begin{dectree}
+Supplier escape containment flow
+  |
 Escape detected
   |
-Contain scoped population
+Provisional containment
   |
-Scope (unit / lot / vendor / site)
+Scope analysis
   |
-Evidence (plane, corner, telemetry)
+Refine contained population
   |
-Root cause class
+Investigate / confirm mechanism
   |
-Supplier / FA path
+Corrective action
   |
-ATP or screen update
-  |
-SPC / reaction plan
-  |
-Fleet monitoring
+Recurrence control
 \end{dectree}
 
-Contain first when the population can grow. The system owner keeps
-responsibility for evidence quality and verifying corrective action
-(\Cref{sec:escaped-defects,sec:fleet-triage}).
+Use provisional containment when the population can grow, then refine the hold
+after scope analysis. The system owner keeps responsibility for evidence quality
+and verifying corrective action
+(\Cref{sec:escaped-defects,sec:fleet-triage,sec:tree-evidence-block}).
 
-\section{Margin-budget flow}
+\section{Margin-consumption flow}
 \label{sec:tree-margin-budget}
 
 \begin{dectree}
+Margin-consumption flow
+  |
 Nominal system margin
   |
 Temperature debit
@@ -216,8 +263,8 @@ Above deployment requirement?
   |-- NO  --> redesign / restrict / recalibrate / reject
 \end{dectree}
 
-Design allocates budgets. Validation often measures the net externally visible
-result. Do not double-count internal penalties the test cannot separate
+This is a conceptual margin flow. Measure net margin at a defined reference
+plane and avoid double-counting overlapping penalties
 (\Cref{sec:laser-margin-erosion,sec:link-budget}).
 
 \section{Black-box versus engineering access}
@@ -331,42 +378,67 @@ Continue measuring?
 Unknown mechanism is not a freeze. Decide with weighted evidence
 (\Cref{sec:interview-under-uncertainty,sec:tree-measurement-loop}).
 
+\section{Evidence block}
+\label{sec:tree-evidence-block}
+
+Use this block for validation reports, qualification plans, supplier reviews,
+fleet incidents, and interview answers:
+
+\begin{dectree}
+Evidence block
+  |
+Claim: what are we trying to establish?
+  |
+Population: units, lots, hosts, environments
+  |
+Measurement: metric + reference plane
+  |
+Access: black-box / engineering / destructive FA
+  |
+Condition: T, V, pattern, ORL, traffic, dwell
+  |
+Evidence strength: n, repeatability, confidence
+  |
+Decision: what action is justified?
+  |
+Control: how recurrence or drift is detected
+\end{dectree}
+
+\Cref{ch:validation,ch:reliability,ch:failure-modes,app:interview-frameworks}
+point here rather than restating the list.
+
 \section{Before you start: three checklists}
 \label{sec:tree-checklists}
 
 \engcheck{Before debugging}{%
-Scope $\cdot$
-unit/rack/lot/vendor/fleet $\cdot$
-sudden or gradual $\cdot$
-power changed? $\cdot$
-signal-quality uncertainty $\cdot$
-highest-value measurement $\cdot$
-decision unlocked $\cdot$
-containment now $\cdot$
-recurrence control.}
+\begin{itemize}[noitemsep,topsep=0pt]
+\item[$\square$] Scope (lane / module / host / rack / site / lot / vendor / fleet)
+\item[$\square$] Time behavior (sudden or gradual)
+\item[$\square$] Stable average received power? (power vs signal-quality path)
+\item[$\square$] Highest-value isolate chosen
+\item[$\square$] Leading mechanism stated (not yet confirmed RC)
+\item[$\square$] Decision unlocked and recurrence control named
+\end{itemize}}
 
 \engcheck{Before qualification}{%
-Nominal function $\cdot$
-operating margin $\cdot$
-environmental stresses $\cdot$
-interoperability $\cdot$
-aging/reliability $\cdot$
-manufacturing variation $\cdot$
-ATP escape detection $\cdot$
-controlled pilot $\cdot$
-fleet telemetry.}
+\begin{itemize}[noitemsep,topsep=0pt]
+\item[$\square$] Nominal function demonstrated
+\item[$\square$] Operating margin known
+\item[$\square$] Environmental and reliability stresses mapped to mechanisms
+\item[$\square$] Interoperability headroom retained on supported combos
+\item[$\square$] Manufacturing variation and ATP escape detection covered
+\item[$\square$] Controlled pilot exit criteria and fleet telemetry owners set
+\end{itemize}}
 
 \engcheck{Before production}{%
-Requirements met $\cdot$
-margin demonstrated $\cdot$
-environment covered $\cdot$
-interop verified $\cdot$
-reliability risk addressed $\cdot$
-lot variation characterized $\cdot$
-ATP defined $\cdot$
-supplier controls reviewed $\cdot$
-pilot exit criteria $\cdot$
-fleet monitoring ready.}
+\begin{itemize}[noitemsep,topsep=0pt]
+\item[$\square$] Requirements and margin demonstrated
+\item[$\square$] Environment and interop verified
+\item[$\square$] Reliability risk addressed with named confidence
+\item[$\square$] Lot / site / date-code variation characterized
+\item[$\square$] ATP / sample / SPC controls classified
+\item[$\square$] Supplier controls reviewed; pilot exit and fleet monitor ready
+\end{itemize}}
 
 \keyidea{These trees are the book's reusable method. Chapters supply the
 physics and the numbers. This appendix supplies the order of thought.}

@@ -5,7 +5,7 @@ title: "Appendix B: Thirty-second interview frameworks"
 
 # Appendix B: Thirty-second interview frameworks
 
-This appendix is the operating manual for answering under time pressure. The philosophy lives in Appendix A; wall-chart trees live in Appendix C. Each playbook is a reusable template: question, what is tested, thirty-second answer, decision tree, measurements, traps, and thirty-second close. Memorize the green boxes. Expand only where the interview asks.
+This appendix is the operating manual for answering under time pressure. The philosophy lives in Appendix A; wall-chart trees live in Appendix C. Each playbook is a reusable template: question, what is tested, thirty-second answer, decision tree, measurements, traps, and thirty-second close. Memorize the callouts labeled "30-second answer." Expand only where the interview asks. Use Appendix C.16 when stating claim, population, plane, access, and decision.
 
 ## BER increased with stable power
 
@@ -13,7 +13,9 @@ This appendix is the operating manual for answering under time pressure. The phi
 
 **What the interviewer is testing.** Debugging discipline: scope before components, power-versus-quality fork, and ending on a decision with recurrence control.
 
-> **30-second answer (memorize).** Power held, so leave the power ledger. First scope the failure (unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ fleet). On the black-box surface, chase BER/FEC, sensitivity, injected loss, telemetry, and retrains. With engineering access, add Tx-only/Rx-only, breakout, PRBS, loopback, and external optical eye. Therefore I would isolate with a golden swap and a bias sweep, then decide contain, retune, or ATP change.
+**Assumptions to state.** Average received-power telemetry is trusted; the issue reproduces; the product is bookended; engineering access is unavailable unless requested.
+
+> **30-second answer (memorize).** Stable average received power deprioritizes gross optical-loss causes, so I move to the signal-quality path. I first scope population and time behavior, then use golden swap, attenuation sweep, FEC pattern comparison, or lane remap to isolate transmitter, channel, receiver, or DSP. With engineering access I add an optical eye or bias sweep. I end with contain, retune, repair, or a production-control action.
 
 <pre class="dectree" aria-label="Elevated BER, power stable"><code>Elevated BER, power stable
   |
@@ -30,7 +32,7 @@ Tx quality clean?
 Correlation analysis (which cohort?)
   |
 Decision + recurrence control</code></pre>
-**Engineering reasoning.** Stable power rules out average launch and connector loss as the primary cause. Scope sets severity first; correlation after isolation unlocks contain or lot action. Optical eye is external unless an internal eye-monitor is named (Appendix C.4, Appendix A.6.3, Appendix C.10).
+**Engineering reasoning.** Stable average power deprioritizes gross insertion loss but does not eliminate fast fluctuation, intermittent contact, monitor averaging, or reflection-dependent effects. Scope sets severity first; correlation after isolation unlocks contain or lot action. A bias sweep requires engineering access and is not universally first (Appendix C.1, Appendix C.11).
 
 **Measurements.** Power meter $\rightarrow$ power ledger intact? $\rightarrow$ optical path or SI.\
 Black-box BER/FEC $\rightarrow$ quality path? $\rightarrow$ next isolate.\
@@ -56,7 +58,7 @@ BER waterfall $\rightarrow$ shift or floor? $\rightarrow$ sensitivity vs noise.
 
 - Stopping before recurrence control.
 
-**Thirty-second close.** Power held, so I leave the power ledger, scope the population, chase signal quality on the black-box surface first, isolate Tx versus Rx, then close with the control that catches the next escape.
+**Thirty-second close.** Average power is stable, so I deprioritize gross loss, scope the population, chase signal quality on the black-box surface first, isolate Tx / channel / Rx / DSP, then close with the control that catches the next escape.
 
 **Deep dive.** Full prose: Appendix A.8.7, §10.2. Ledgers: Appendix A.6.4.
 
@@ -65,6 +67,8 @@ BER waterfall $\rightarrow$ shift or floor? $\rightarrow$ sensitivity vs noise.
 **Interview question.** Received optical power dropped and the link is failing. How do you debug it?
 
 **What the interviewer is testing.** Power-ledger triage: external reference planes, monitor honesty, and population-driven containment.
+
+**Assumptions to state.** The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.
 
 > **30-second answer (memorize).** Power moved, so stay on the power ledger. First scope the failure. Confirm with an external meter at a named plane, then bisect source enable, coupling, connectors, MUX loss, and monitor-PD / APC honesty. Therefore I would contain if lot-correlated, clean or replace the plant if local, and update ATP or hygiene rules so it does not recur.
 
@@ -112,6 +116,8 @@ Lot query $\rightarrow$ population? $\rightarrow$ contain vs unit fix.
 
 **What the interviewer is testing.** Lane isolation: sibling comparison, optical-versus-electrical bisect, and lot versus unit ownership.
 
+**Assumptions to state.** The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.
+
 > **30-second answer (memorize).** First scope: one lane, one unit, or a pattern across the lot? Compare sibling lanes, then optical-versus-electrical swap to split path from driver or TIA. Therefore I would fix assembly or the array element that owns the fault, and add the screen that would have caught it.
 
 <pre class="dectree" aria-label="One weak lane"><code>One weak lane
@@ -155,6 +161,8 @@ LIV on weak lane $\rightarrow$ device or coupling? $\rightarrow$ FAU vs die.
 
 **What the interviewer is testing.** Corner debugging: measure where it fails, separate reversible control/calibration from permanent damage.
 
+**Assumptions to state.** The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.
+
 > **30-second answer (memorize).** Power held, so leave the power ledger. First scope the failure and whether cool-down recovers. At the failing temperature, read externally visible remaining margin: BER/FEC, telemetry, retrains, and control headroom. With engineering access, add bias sweep, OSA, and external optical eye. Therefore I would fix the table or thermal design and put that loaded corner in the ATP.
 
 <pre class="dectree" aria-label="Hot BER, power stable"><code>Hot BER, power stable
@@ -171,7 +179,7 @@ Control ledger exhausted?
   |-- NO  --&gt; cal table / wavelength / Rx
   |
 Decision: retune + ATP corner</code></pre>
-**Engineering reasoning.** Temperature failures are often control or calibration, not a dead laser. The decision uses externally visible remaining margin; internal physics is optional (Appendix A.8.3, Appendix C.10).
+**Engineering reasoning.** Temperature failures are often control or calibration, not a dead laser. The decision uses externally visible remaining margin; internal physics is optional (Appendix A.8.3, Appendix C.11).
 
 **Measurements.** Cool-down test $\rightarrow$ reversible? $\rightarrow$ thermal vs aging.\
 Black-box BER/FEC at hot $\rightarrow$ remaining margin? $\rightarrow$ gate.\
@@ -201,6 +209,8 @@ OSA $\rightarrow$ spectral alignment? $\rightarrow$ lock / filter.
 
 **What the interviewer is testing.** Mechanism separation with external references and reversibility, not telemetry narrative alone.
 
+**Assumptions to state.** The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.
+
 > **30-second answer (memorize).** Physical aging often changes a baseline: LIV, power, spectrum, RIN, sensitivity, or drive. Calibration drift changes the operating point while the device remains substantially healthy. Start black-box: BER/FEC, telemetry, and whether recalibration recovers. Recalibration recovery updates probability; it is not proof. With engineering access, compare external LIV and other physical baselines to ship data. Therefore I would route aging to life/derate/replace and drift to table control plus an ATP loaded-corner check.
 
 <pre class="dectree" aria-label="Symptom (bias up / BER up)"><code>Symptom (bias up / BER up)
@@ -219,7 +229,7 @@ Need mechanism split?
 Physical baselines vs ship data
   |-- moved --&gt; aging --&gt; life / derate / replace
   |-- OK ----&gt; deeper FA or table owner</code></pre>
-**Engineering reasoning.** Telemetry can look identical for aging and drift. Recalibration recovery updates belief; external baselines confirm the owner (Appendix A.8.4, Appendix C.10).
+**Engineering reasoning.** Telemetry can look identical for aging and drift. Recalibration recovery updates belief; external baselines confirm the owner (Appendix A.8.4, Appendix C.11).
 
 **Measurements.** Recal trial $\rightarrow$ recovers? $\rightarrow$ updates P(drift).\
 External LIV / power / spectrum (if access) $\rightarrow$ baseline moved?\
@@ -242,15 +252,62 @@ Stress-hours plot $\rightarrow$ monotonic or step? $\rightarrow$ confirms.
 
 **Deep dive.** Appendix A.8.4, §5.11, §5.10.
 
-## Second-source qualification
+## Second component source
 
-**Interview question.** How would you qualify a second laser or PIC supplier?
+**Interview question.** How would you qualify a second laser, photodiode, driver, TIA, or PIC supplier?
 
-**What the interviewer is testing.** Second-source judgment: customer-visible margin across the envelope, not datasheet cloning.
+**What the interviewer is testing.** Component-boundary judgment: requirements at the component interface, wafer/lot distributions, integration compatibility, process-specific reliability, supplier ATP correlation, and module-level confirmation.
 
-> **30-second answer (memorize).** Freeze the requirements slice, not the incumbent datasheet. Walk the canonical lifecycle on the customer-visible surface: bring-up, nominal and margin characterization, interoperability, environmental and reliability qualification, manufacturing and ATP readiness, controlled pilot, then fleet monitoring. Request engineering access only when black-box evidence is insufficient. Therefore I would gate open volume on FAIR, ATP correlation, and split RMA codes, not on a hero sample.
+**Assumptions to state.** The component boundary and ownership are defined; module confirmation is still required before open volume; engineering access to source samples may be available.
 
-<pre class="dectree" aria-label="Second source"><code>Second source
+> **30-second answer (memorize).** Freeze requirements at the component boundary, not the incumbent datasheet. Characterize multi-lot distributions for LIV, SMSR, RIN, wavelength, and process corners. Prove integration compatibility in the host module, run mechanism-appropriate reliability, correlate supplier ATP to your proxy, then confirm on module samples. Therefore I would gate open volume on FAIR, ATP correlation, and split RMA codes, not on a hero die.
+
+<pre class="dectree" aria-label="Second component source"><code>Second component source
+  |
+Component requirements freeze
+  |
+Multi-lot distributions
+  |
+Integration in host module
+  |
+Mechanism-appropriate reliability
+  |
+Supplier ATP correlation
+  |
+Module confirmation + split RMA</code></pre>
+**Engineering reasoning.** Component and complete-product second sources have different access, interop burden, and owners (Appendix C.8, §8.10, Appendix C.16).
+
+**Measurements.** Wafer/lot distributions $\rightarrow$ process spread? $\rightarrow$ risk.\
+Module confirmation $\rightarrow$ integration OK? $\rightarrow$ continue.\
+Supplier ATP vs your proxy $\rightarrow$ escape risk? $\rightarrow$ ship gate.
+
+**Typical follow-ups.**
+
+- What is measured at the component boundary versus the module connector?
+
+- What changes if the second source is only a laser die?
+
+**Common mistakes.**
+
+- Treating a hero sample as a distribution.
+
+- Skipping module confirmation after die-level pass.
+
+**Thirty-second close.** I qualify at the component boundary with multi-lot distributions, then confirm in-module with FAIR, ATP correlation, and split RMA.
+
+**Deep dive.** Appendix A.8.5, §8.10.
+
+## Second module or cable source
+
+**Interview question.** How would you qualify a second transceiver, AOC, or cable-assembly supplier?
+
+**What the interviewer is testing.** Complete-product second source: black-box nominal behavior, margin, host/peer interop, environmental and reliability evidence, manufacturing readiness, controlled pilot, and fleet RMA separation.
+
+**Assumptions to state.** The product is bookended unless engineering samples are contracted; customer-visible metrics dominate; open volume waits on pilot exit.
+
+> **30-second answer (memorize).** Freeze the customer-visible requirements slice. Walk bring-up, nominal and margin characterization, interoperability, environmental and reliability qualification, manufacturing and ATP readiness, controlled pilot, then fleet monitoring. Request engineering access only when black-box evidence is insufficient. Therefore I would gate open volume on FAIR, ATP correlation, pilot exit, and split RMA codes.
+
+<pre class="dectree" aria-label="Second module / cable source"><code>Second module / cable source
   |
 Requirements freeze
   |
@@ -260,33 +317,28 @@ Interop + env/reliability
   |
 Manufacturing + ATP readiness
   |
-Black-box enough?
-  |-- YES --&gt; controlled pilot
-  |-- NO  --&gt; Tx-only / Rx-only / breakout / external eye
+Controlled pilot
   |
-Fleet deployment + monitoring
-  |
-Ship / hold / reject</code></pre>
-**Engineering reasoning.** The objective is acceptable system behavior and remaining margin across the deployment envelope, not nominal equivalence to the incumbent (Appendix C.10, Appendix A.8.5, Appendix A.6.5).
+Fleet monitoring + split RMA</code></pre>
+**Engineering reasoning.** Module second-source burden is interop and black-box margin across the envelope, not die physics first (Appendix C.11, Appendix A.6.5).
 
 **Measurements.** Multi-lot black-box margin $\rightarrow$ process spread? $\rightarrow$ risk.\
-HTOL $\rightarrow$ life hypothesis? $\rightarrow$ FIT / derate.\
-ATP on both sources $\rightarrow$ escape risk? $\rightarrow$ ship gate.\
-RMA split $\rightarrow$ field falsifies qual? $\rightarrow$ reopen.
+Host/peer matrix $\rightarrow$ interop cliffs? $\rightarrow$ restrict.\
+Pilot cohort $\rightarrow$ assumptions hold? $\rightarrow$ open MP.
 
 **Typical follow-ups.**
 
-- Why not just match the incumbent datasheet?
+- Why not clone the incumbent datasheet?
 
-- What customer measurements matter if the part is a black box?
+- What changes between a pluggable and an AOC second source?
 
 **Common mistakes.**
 
-- Qualifying a hero sample.
+- Qualifying a hero module.
 
 - Merging supplier RMA codes.
 
-**Thirty-second close.** I walk the canonical lifecycle on the customer-visible surface, request engineering access only when needed, then gate volume on FAIR, ATP correlation, controlled pilot, and split RMA.
+**Thirty-second close.** I walk the product lifecycle on the customer-visible surface, then gate volume on FAIR, ATP correlation, pilot exit, and split RMA.
 
 **Deep dive.** Appendix A.8.5, §8.10.
 
@@ -294,9 +346,11 @@ RMA split $\rightarrow$ field falsifies qual? $\rightarrow$ reopen.
 
 **Interview question.** How would you validate a new optical transmitter from bring-up through production?
 
-**What the interviewer is testing.** Staged uncertainty reduction and margin budgeting from bring-up through fleet.
+**What the interviewer is testing.** Validation-program judgment: sequencing, ownership, stage gates, dependencies, exit criteria, schedule and resource judgment.
 
-> **30-second answer (memorize).** Validation is staged uncertainty reduction. Walk requirements, bring-up, nominal characterization, margin characterization, interop, environmental and reliability qualification, manufacturing and ATP readiness, controlled pilot, then fleet monitoring. Each stage answers a question the previous could not. Therefore I would refuse any test that answers no new question and watch the ledgers margin budgeting says will be spent first.
+**Assumptions to state.** Requirements and owners exist; stage exits are binary enough to fail; engineering access is requested only when a gate cannot decide.
+
+> **30-second answer (memorize).** A validation program is sequenced uncertainty reduction with named owners. Walk requirements, bring-up, nominal characterization, margin characterization, interop, environmental and reliability qualification, manufacturing and ATP readiness, controlled pilot, then fleet monitoring. Each stage has an exit criterion and a dependency on the previous. Therefore I would refuse any test that answers no new question and staff the gates that unlock schedule.
 
 <pre class="dectree" aria-label="Requirements"><code>Requirements
   |
@@ -311,7 +365,7 @@ Manufacturing / ATP -&gt; Controlled pilot
 Fleet monitoring
   |
 Ship / restrict / reject</code></pre>
-**Engineering reasoning.** The ladder is the canonical qualification tree. Margin budgeting says stresses consume margin; stages exist to measure remaining margin from the customer-visible surface first (Appendix A.6.5, Appendix C.2).
+**Engineering reasoning.** This answer is about program sequencing and ownership. Qualification *evidence* construction lives in Appendix B.15, Appendix C.3. The ladder stages are the gates (Appendix A.6.5, Appendix C.2).
 
 **Measurements.** Each ladder stage $\rightarrow$ named uncertainty removed $\rightarrow$ continue / redesign / tighten ATP / stop ship.\
 Margin sweeps $\rightarrow$ which ledger dies first? $\rightarrow$ telemetry alarms.
@@ -337,6 +391,8 @@ Margin sweeps $\rightarrow$ which ledger dies first? $\rightarrow$ telemetry ala
 **Interview question.** Field telemetry shows rising pre-FEC BER on a subset of racks. How do you triage?
 
 **What the interviewer is testing.** Fleet ownership: scope, trend, bucket, and contain-versus-monitor under incomplete evidence.
+
+**Assumptions to state.** The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.
 
 > **30-second answer (memorize).** First scope: unit, lot, vendor, rack, datacenter, or fleet? Ask trend and change history. Classify performance versus reliability versus manufacturability before pulling hardware. Therefore I would contain if growing and supplier-specific, or monitor-only if tiny, flat, and no customer impact, with an owner on the next control.
 
@@ -371,13 +427,15 @@ Golden host in rack $\rightarrow$ environment vs module? $\rightarrow$ owner.
 
 **Thirty-second close.** I scope first, pick the bucket, contain if growing and supplier-specific, and name the owner of the next control.
 
-**Deep dive.** Appendix A.4, Table 7.6.
+**Deep dive.** Appendix A.4, Table 7.5.
 
 ## Supplier escape
 
 **Interview question.** A new date code from Supplier B fails the hot corner at about 3%. What do you do?
 
 **What the interviewer is testing.** Staff judgment under uncertainty: contain today, keep FA open, own recurrence control.
+
+**Assumptions to state.** The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.
 
 > **30-second answer (memorize).** Contain first, then own the loop. Stop shipment of Supplier B affected lots, scope the deployed population, compare failing versus healthy units, open joint FA with the supplier, drive corrective action, expand ATP or process control, verify the next lot, and keep fleet monitoring. The customer keeps ownership of evidence quality and the ship decision. Therefore I would contain today rather than wait for SEM before acting.
 
@@ -398,7 +456,7 @@ ATP / process-control update
 Verify next lot
   |
 Fleet monitoring (customer owns ship gate)</code></pre>
-**Engineering reasoning.** Containment, suspected mechanism, confirmed mechanism class, and recurrence control are separate steps. The system owner keeps responsibility for evidence quality and verifying the fix (Appendix C.8, Appendix A.4).
+**Engineering reasoning.** Containment, suspected mechanism, confirmed mechanism class, and recurrence control are separate steps. The system owner keeps responsibility for evidence quality and verifying the fix (Appendix C.9, Appendix A.4).
 
 **Measurements.** Lot genealogy $\rightarrow$ exposure? $\rightarrow$ quarantine list.\
 ATP hot corner $\rightarrow$ escape path? $\rightarrow$ production gate.\
@@ -425,6 +483,8 @@ DPA sample $\rightarrow$ mechanism class? $\rightarrow$ permanent fix.
 **Interview question.** Why can a link show a BER floor that more launch power does not fix?
 
 **What the interviewer is testing.** Separating waterfall shift from floor, then choosing measurements for the leading non-power-limited impairment.
+
+**Assumptions to state.** The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.
 
 > **30-second answer (memorize).** A floor means additional received power no longer removes the dominant impairment. Confirm floor versus shift on a waterfall, then test for signal-dependent noise, reflections or MPI, pattern dependence, crosstalk, timing or CDR limits, and DSP or equalization limits. Therefore I would fix the limiting mechanism rather than raise OMA.
 
@@ -469,6 +529,8 @@ Supply noise / FEC histogram $\rightarrow$ PSRR or burst? $\rightarrow$ owner.
 
 **What the interviewer is testing.** Evidence preservation, reproduction strategy, and refusing premature NFF closure.
 
+**Assumptions to state.** The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.
+
 > **30-second answer (memorize).** Preserve the failing state and telemetry before you reseat, clean, or reboot. Scope time and change: dwell, temperature, vibration, firmware, connector. Prefer burst/FEC histograms and long dwell over a single golden retest. Therefore I would contain if lot-correlated, tighten dwell/ATP if escape, and refuse to close an NFF without a reproduction plan.
 
 <pre class="dectree" aria-label="Intermittent"><code>Intermittent
@@ -485,7 +547,9 @@ Decision: contain / ATP dwell / monitor</code></pre>
 **Engineering reasoning.** Intermittents die when the evidence is destroyed. NFF is often a triage failure, not a healthy part (§7.12).
 
 **Measurements.** FEC histogram $\rightarrow$ burst vs Gaussian? $\rightarrow$ MPI / intermittent.\
-Dwell BER $\rightarrow$ reproduces? $\rightarrow$ ATP change.\
+Time sync + event capture $\rightarrow$ state preserved? $\rightarrow$ FA.\
+Fixture / firmware identity $\rightarrow$ shared cause? $\rightarrow$ scope.\
+Dwell BER $\rightarrow$ reproduces? $\rightarrow$ control choice.\
 Mate/demate $\rightarrow$ connector? $\rightarrow$ hygiene / replace.
 
 **Typical follow-ups.**
@@ -504,13 +568,15 @@ Mate/demate $\rightarrow$ connector? $\rightarrow$ hygiene / replace.
 
 **Deep dive.** §7.12, Table 10.1.
 
-## Production ATP update
+## Production recurrence-control update
 
-**Interview question.** A failure escaped to the field that ATP did not catch. How do you update production test?
+**Interview question.** A failure escaped to the field that production controls did not catch. How do you update recurrence control?
 
-**What the interviewer is testing.** Recurrence control as an ATP change with guardband, correlation, and a reaction plan.
+**What the interviewer is testing.** Choosing among ATP, sampling, SPC, supplier process, design, firmware, and telemetry controls; not assuming a new 100% screen.
 
-> **30-second answer (memorize).** Name the escape path and the measurement that would have caught it at a named plane and corner. Size the new limit from characterization and repeatability, correlate stations, and set a reaction plan. Therefore I would ship the ATP change with an owner and a metric, not a hope that operators will be careful.
+**Assumptions to state.** The escape path can be named; a failing unit or equivalent can be replayed; measurement capability is known.
+
+> **30-second answer (memorize).** Name the escape path and the measurement that would have caught it at a named plane and corner. Choose the most economical control: new ATP item, tighter limit, sampled audit, SPC variable, supplier process correction, design or firmware guard, or telemetry alarm. Only select a 100% screen when separation, cycle time, measurement capability, and cost justify it. Therefore I would ship the chosen control with an owner and a metric.
 
 <pre class="dectree" aria-label="Escape"><code>Escape
   |
@@ -525,7 +591,7 @@ Station correlation
 Reaction plan + owner
   |
 Ship ATP change</code></pre>
-**Engineering reasoning.** Recurrence control is usually an ATP or telemetry change. A limit nobody can trace gets waived under ship pressure (Appendix A.8.2).
+**Engineering reasoning.** Recurrence control is not always an ATP change. A limit nobody can trace gets waived under ship pressure (Appendix A.8.2, Appendix C.9).
 
 **Measurements.** Escape unit replay $\rightarrow$ missed corner? $\rightarrow$ new test.\
 Gage R&R $\rightarrow$ repeatability? $\rightarrow$ guard band.\
@@ -543,7 +609,7 @@ Golden units across stations $\rightarrow$ correlation? $\rightarrow$ ship.
 
 - Limits from one hero unit.
 
-**Thirty-second close.** I name the missed uncertainty, size the limit from repeatability, correlate stations, and ship the ATP change with an owner.
+**Thirty-second close.** I name the missed uncertainty, choose ATP / sample / SPC / supplier / design / firmware / telemetry, prove separation, and ship the control with an owner.
 
 **Deep dive.** Production readiness stage in Appendix A.6.5.
 
@@ -553,7 +619,9 @@ Golden units across stations $\rightarrow$ correlation? $\rightarrow$ ship.
 
 **What the interviewer is testing.** Instrumenting ledgers that unlock triage decisions, not logging every register.
 
-> **30-second answer (memorize).** Log what discriminates hypotheses: per-lane power, bias, pre-FEC BER and FEC histograms; module temperature and actuator drive; LOS/LOL and firmware with context. Alarm on trends and disagreements, not only hard thresholds. Therefore I would instrument the ledgers margin testing said die first.
+**Assumptions to state.** Schema and firmware versions are known; retention and owners exist; missing-data behavior is defined; alarms have a decision owner.
+
+> **30-second answer (memorize).** Log what discriminates hypotheses: per-lane power, bias, pre-FEC BER and FEC histograms; module temperature and actuator drive; LOS/LOL with context. Require timestamp accuracy, sampling cadence, aggregation window, units, calibration/scaling, missing-data behavior, firmware/schema version, serial/lot/platform, event trigger, retention, and a decision owner. Alarm on trends and disagreements, not only hard thresholds. Therefore I would instrument the ledgers margin testing said die first.
 
 <pre class="dectree" aria-label="Telemetry purpose: early margin erosion"><code>Telemetry purpose: early margin erosion
   |
@@ -590,9 +658,11 @@ Actuator near rail $\rightarrow$ control margin? $\rightarrow$ thermal design.
 
 **Interview question.** How do you plan qualification for a new IM/DD module?
 
-**What the interviewer is testing.** Qualification as remaining-margin verification with named mechanisms and customer view.
+**What the interviewer is testing.** Qualification-evidence judgment: mechanism coverage, stress selection, sample strategy, acceptance criteria, confidence, production correlation, release evidence.
 
-> **30-second answer (memorize).** Start from customer-visible requirements and a margin budget: which stresses will spend which ledgers. Walk nominal function, remaining margin, environment and interop, reliability and manufacturing, ATP readiness, then a controlled pilot. Therefore I would gate ship on remaining margin after those stresses, not on a checklist of rituals.
+**Assumptions to state.** Requirements name mechanisms; sample strategy and confidence are stated; production proxies are cheaper than full GR-468 replay; release is a ship / restrict / reject decision.
+
+> **30-second answer (memorize).** Start from requirement to named failure mechanism to stress and sample plan to pre/post-stress observable to acceptance criterion to confidence to production proxy (Appendix C.3). Walk those evidence steps across the lifecycle gates. Therefore I would gate ship on remaining margin after named stresses with stated confidence, not on a checklist of rituals.
 
 <pre class="dectree" aria-label="Requirements + margin budget"><code>Requirements + margin budget
   |
@@ -634,6 +704,8 @@ ATP correlation $\rightarrow$ factory control? $\rightarrow$ volume.
 **Interview question.** You must make a ship decision this week, but the physical mechanism is still unknown. What do you do?
 
 **What the interviewer is testing.** Deciding with today's evidence: contain, owner, control, and residual risk before mechanism certainty.
+
+**Assumptions to state.** The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.
 
 > **30-second answer (memorize).** State evidence, confidence weights, and residual risk. Decide with today's evidence: contain the scoped population, keep a healthy path shipping, open FA, and add the ATP or telemetry control that would catch the next escape. Therefore I would not wait for certainty before ownership actions.
 
