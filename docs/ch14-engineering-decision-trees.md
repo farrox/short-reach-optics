@@ -40,33 +40,31 @@ Stable average power deprioritizes gross optical loss but does not eliminate fas
 
 > **Engineering heuristic.** If two explanations fit equally well, prefer the one that requires the fewest independent failures.
 
-## Validation stage order
+## Validation flow (Steps 1--11)
 
-<pre class="dectree" aria-label="Validation stage order (same as tab:ladder)"><code>Validation stage order (same as tab:ladder)
+<pre class="dectree" aria-label="Validation flow (same as tab:ladder)"><code>Validation flow (same as tab:ladder)
   |
-Requirements definition
+Step 1: Define requirements
   |
-Architecture review
+Step 2: Review architecture
   |
-Engineering bring-up
+Step 3: Bring up hardware
   |
-Characterization
+Step 4: Characterize behavior
   |
-Margin validation
+Step 5: Validate margin and interoperability
   |
-Interoperability validation
+Step 6: Qualify reliability
   |
-Reliability qualification
+Step 7: Validate manufacturing
   |
-Manufacturing validation
+Step 8: Controlled pilot
   |
-Controlled pilot
+Step 9: Ramp mass production
   |
-Mass production
+Step 10: Monitor the fleet
   |
-Fleet monitoring
-  |
-Feedback / next revision</code></pre>
+Step 11: Feed learning / next revision</code></pre>
 Same order as Table 7.2, not a second Staff loop. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness (§7.1, Appendix A.8.5, §8.2).
 
 ## Qualification evidence tree

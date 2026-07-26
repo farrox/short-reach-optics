@@ -17,7 +17,7 @@ Preserve the failing state before reseat, reboot, or clean. Those actions often 
 
 ##### Recurrence-control closure.
 
-An incident is not closed when the unit recovers. Close only when a production or fleet control catches the same signature next time: requirement, qualification plan, ATP, SPC, telemetry, or supplier process (Appendix D.3, §7.1.13). Each symptom section ends with a short *Recurrence control* line for that signature. Name the FA output category when you file the case (§10.13).
+An incident is not closed when the unit recovers. Close only when a production or fleet control catches the same signature next time: requirement, qualification plan, ATP, SPC, telemetry, or supplier process (Appendix D.3, §7.1.12). Each symptom section ends with a short *Recurrence control* line for that signature. Name the FA output category when you file the case (§10.13).
 
 > **Why experienced engineers preserve state before reseating?**
 >

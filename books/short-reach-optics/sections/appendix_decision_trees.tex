@@ -52,35 +52,33 @@ point at different owners and different next measurements.}
 \heuristic{If two explanations fit equally well, prefer the one that requires
 the fewest independent failures.}
 
-\section{Validation stage order}
+\section{Validation flow (Steps 1--11)}
 \label{sec:tree-qualification}
 
 \begin{dectree}
-Validation stage order (same as tab:ladder)
+Validation flow (same as tab:ladder)
   |
-Requirements definition
+Step 1: Define requirements
   |
-Architecture review
+Step 2: Review architecture
   |
-Engineering bring-up
+Step 3: Bring up hardware
   |
-Characterization
+Step 4: Characterize behavior
   |
-Margin validation
+Step 5: Validate margin and interoperability
   |
-Interoperability validation
+Step 6: Qualify reliability
   |
-Reliability qualification
+Step 7: Validate manufacturing
   |
-Manufacturing validation
+Step 8: Controlled pilot
   |
-Controlled pilot
+Step 9: Ramp mass production
   |
-Mass production
+Step 10: Monitor the fleet
   |
-Fleet monitoring
-  |
-Feedback / next revision
+Step 11: Feed learning / next revision
 \end{dectree}
 
 Same order as \Cref{tab:ladder}, not a second Staff loop. Do not treat a

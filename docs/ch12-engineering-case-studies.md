@@ -136,7 +136,7 @@ Add or tighten the production proxy that would have caught the signature; review
 
 ##### Fleet prevention.
 
-Burn down the installed cohort; keep the control owner until rates fall; feed the lesson into §7.1.13.
+Burn down the installed cohort; keep the control owner until rates fall; feed the lesson into §7.1.12.
 
 ##### Score yourself.
 
@@ -377,7 +377,7 @@ Add the stress or observable that would have caught it; widen sample strategy; a
 
 ##### Fleet prevention.
 
-Keep cohort burn-down and a decision owner until rates fall; feed §7.1.13.
+Keep cohort burn-down and a decision owner until rates fall; feed §7.1.12.
 
 ##### Score yourself.
 

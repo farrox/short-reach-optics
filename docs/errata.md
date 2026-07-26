@@ -73,6 +73,13 @@ No new frameworks or chapters.
   architecture before MSA reference, SOA/polarization interview takeaways.
   Interview reading-path blurbs (Read first / Deep dive / Reference) at chapter
   tops. Net PDF pages 369 to 361.
+- **Validation flow (Ch7 numbered spine):** Replaced the overlapping lifecycle
+  prose, Stage/Question/Evidence/Decision table, ``New product uncertainty''
+  evidence dectree, and stage-order/learning-summary restatements with one
+  numbered 11-step flow: shaded Steps 1--11 overview (`tab:ladder`), causal
+  ``One lifecycle'' prose, Step subsections (margin + interoperability merged
+  as Step~5), ``Choosing evidence within a step,'' and a Staff takeaway. App~C
+  wall chart updated to the same 11 Steps (`ch05`, `app:decision-trees`).
 
 ## Typographical fixes
 

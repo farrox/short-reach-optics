@@ -396,7 +396,7 @@ New product introduction (*NPI*) gates are the manufacturing face of the validat
 
 ##### Why program maturity changes the question.
 
-EVT asks whether the architecture can be made to work. DVT asks whether its behavior and margin are understood across intended corners. Qualification asks whether named failure mechanisms threaten life. PVT asks whether production tooling and suppliers reproduce the qualified result. A pilot asks whether laboratory and factory assumptions survive deployment. MP is not another validation experiment; it is sustained control with SPC, ECO, and RMA ownership (§7.1.11, §7.1.12).
+EVT asks whether the architecture can be made to work. DVT asks whether its behavior and margin are understood across intended corners. Qualification asks whether named failure mechanisms threaten life. PVT asks whether production tooling and suppliers reproduce the qualified result. A pilot asks whether laboratory and factory assumptions survive deployment. MP is not another validation experiment; it is sustained control with SPC, ECO, and RMA ownership (§7.1.10, §7.1.11).
 
 Do not use an EVT hero sample as PVT evidence, and do not treat MP as fleet monitoring alone. Hold a gate if the exit data are missing (Table 8.5, §7.1).
 
