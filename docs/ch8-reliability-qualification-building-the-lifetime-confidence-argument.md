@@ -150,7 +150,7 @@ GR-468 covers active optoelectronics. Its companion, *Telcordia GR-1221-CORE* (G
 
 ##### Handoff to manufacturing.
 
-Qualification bounds life risk for representative hardware. Whether production can reproduce that result, screen escapes, and hold SPC is developed in Chapter 9. Failures that pass qual but fail field usually sit in derating policy, connector contamination, or a manufacturing coverage gap (§5.13, §7.12, §9.5).
+Qualification bounds life risk for representative hardware. Whether production can reproduce that result, screen escapes, and hold SPC is developed in Chapter 9. Failures that pass qual but fail field usually sit in derating policy, connector contamination, or a manufacturing coverage gap (§5.13, §7.12, §9.6).
 
 ## Electronics reliability: driver, TIA, and DSP silicon
 

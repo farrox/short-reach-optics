@@ -333,7 +333,7 @@ HTOL (high-temperature operating life)
 
 Burn-in
 
-: A shorter, sometimes 100%-screen stress that removes infant-mortality units before ship, rather than projecting life. Burn-in trades test time for escape rate (§9.4).
+: A shorter, sometimes 100%-screen stress that removes infant-mortality units before ship, rather than projecting life. Burn-in trades test time for escape rate (§9.5).
 
 Environmental stress
 

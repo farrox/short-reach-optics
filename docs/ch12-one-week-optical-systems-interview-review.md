@@ -1006,7 +1006,7 @@ Assume seven days, with the interview near the end of Day 7. Protect sleep. Eac
 
 ##### Day 5: Manufacturing.
 
-*Learn:* measurement systems, ATP, yield, SPC, and scale-up (Chapter 9, Appendix C.13, §9.4.3, Table 9.2).\
+*Learn:* measurement systems, ATP, yield, SPC, and scale-up (Chapter 9, Appendix C.13, §9.5.3, Table 9.2).\
 *Output:* Discuss how you would take a link to volume production.
 
 ##### Day 6: Architecture and failure analysis.

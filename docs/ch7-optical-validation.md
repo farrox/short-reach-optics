@@ -182,9 +182,9 @@ Once life risk is bounded for representative hardware, the next question is whet
 
 The factory is part of the design. Qualification proves the design. Manufacturing validation proves the process: build it repeatedly, measure it repeatedly, and detect bad units. Engineering samples often receive unusual attention; volume readiness requires manufacturing distributions, not only the best units.
 
-This is the PVT question: whether yield, process control, and ATP coverage survive lot-to-lot variation (§9.4, §9.2, Table 9.2). DVT belongs earlier; do not park it inside this step. Prove ATP/sample/SPC coverage against known escapes with replay, separation, and production repeatability.
+This is the PVT question: whether yield, process control, and ATP coverage survive lot-to-lot variation (§9.5, §9.2, Table 9.2). DVT belongs earlier; do not park it inside this step. Prove ATP/sample/SPC coverage against known escapes with replay, separation, and production repeatability.
 
-**Representative evidence:** Multi-lot yield; classified ATP/sample/SPC coverage; measurement capability; FAIR; escape-detection proof (Appendix D.16, §9.4).\
+**Representative evidence:** Multi-lot yield; classified ATP/sample/SPC coverage; measurement capability; FAIR; escape-detection proof (Appendix D.16, §9.5).\
 **Exit:** Multi-lot yield, screen coverage, SPC stability, and FAIR evidence support opening volume, or shipment is held for process control.\
 **Decision:** Open volume toward pilot, hold shipment, or demand corrective action before ramp.\
 **Interview trap:** Calling two hand-selected lots "multi-lot" evidence.

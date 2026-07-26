@@ -813,7 +813,7 @@ Staff follow-ups often stop asking "what test?" and start asking "given constrai
 
 *Benefit:* escape detection earlier in the flow.\
 *Downside:* cycle time, cost, false rejects.\
-*Criteria:* cheapest control that reliably detects the named mechanism: 100%, sample, SPC, or supplier process (§9.4).
+*Criteria:* cheapest control that reliably detects the named mechanism: 100%, sample, SPC, or supplier process (§9.5).
 
 **Key idea.** Open the matching framework, deliver the thirty-second box, walk the tree, end on the decision and the control. When the interviewer asks a tradeoff question, name benefit, downside, and criteria. Philosophy is in Appendix A; this appendix is how you speak it under pressure.
 

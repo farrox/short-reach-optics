@@ -203,7 +203,7 @@ Recurrence control
 Decision closure: owner / timeline / reversibility / follow-up</code></pre>
 > **Engineering heuristic.** Contain first when the population can grow. Perfect mechanism stories do not unship yesterday's lot.
 
-Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (§9.5, §7.12, Appendix D.16).
+Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (§9.6, §7.12, Appendix D.16).
 
 ## Margin-consumption flow
 
@@ -261,7 +261,7 @@ Update screening or ATP
 Verify next lot
   |
 Monitor fleet</code></pre>
-Containment, confirmed mechanism, and prevention are three different actions (§9.5).
+Containment, confirmed mechanism, and prevention are three different actions (§9.6).
 
 ## Production feedback loop
 
@@ -280,7 +280,7 @@ Failure analysis
 Updated limits or screens
   |
 Next production cycle</code></pre>
-Production validation is replayable and decision-oriented (§9.2, §9.4).
+Production validation is replayable and decision-oriented (§9.2, §9.5).
 
 ## Measurement-selection loop
 

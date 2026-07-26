@@ -122,6 +122,15 @@ No new frameworks. Structural relocation of existing material is allowed.
   qualification HTOL as a routine infant-mortality screen and ESD/latch-up as
   generic 100\%-screen items; deleted the competing Requirement→Budget
   dectree; marked fabric availability as a deep dive. PDF about 383 pages.
+- **Ch9 Interview Q\&A and manufacturing controls:** Replaced the eight-item
+  concise-answer list with 12 compact Spoken/Pressure/Trap questions
+  (`sec:manufacturing-interview-qa`). Added process capability ($C_p$/$C_{pk}$),
+  specification vs control vs ATP limits (`sec:process-capability`). Softened
+  lot/station correlations to hypotheses; redefined potential vs confirmed
+  manufacturing escapes; broadened recurrence controls beyond ATP-only;
+  corrected requirements/ATP contract language; clarified golden units, ATP
+  fault-injection validation, and source vs closed-module access. PDF about
+  389 pages.
 
 ## Typographical fixes
 
