@@ -114,6 +114,14 @@ No new frameworks. Structural relocation of existing material is allowed.
   temperature characterization case (conditions; non-causal). HTOL and
   laser-aging distinguish engineering-access vs bookended proxies. PDF about
   381 pages.
+- **Ch8 Interview Q\&A coverage revision:** Replaced the 12 compact questions
+  so the set tests the full qualification chain (FIT/DPPM and zero-fail
+  bounds, bathtub timing, cycling/shock/vibration, damp heat and connector
+  durability, GR-468/GR-1221/JESD47 ownership, acceptance/sufficiency,
+  restricted release, burn-in versus qual HTOL). Corrected prose that treated
+  qualification HTOL as a routine infant-mortality screen and ESD/latch-up as
+  generic 100\%-screen items; deleted the competing Requirement→Budget
+  dectree; marked fabric availability as a deep dive. PDF about 383 pages.
 
 ## Typographical fixes
 

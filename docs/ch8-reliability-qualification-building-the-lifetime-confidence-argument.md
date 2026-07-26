@@ -7,7 +7,7 @@ title: "Ch 8: Reliability Qualification: Building the Lifetime Confidence Argume
 
 *Read first:* FIT versus DPPM; qualification argument; sample confidence; burn-in versus HTOL; wear-out families.
 
-*Deep dive:* Arrhenius life projection; GR-468 stress detail; connector mate-cycle physics.
+*Deep dive:* Arrhenius life projection; GR-468 stress detail; connector mate-cycle physics; how component reliability becomes system availability (§8.8).
 
 *Reference:* qualification planning matrix; wear-out map.
 
@@ -91,15 +91,6 @@ Qualification is a life and variation argument, not a list of stresses. A requir
 
 Debugging is what you do when remaining margin hits zero. Qualification asks how much margin remains after the expected stresses. Place this work in §7.1 Step 6; manufacturing validation and ATP live in Chapter 9. Keep the customer view and the vendor view distinct: the vendor designs internals; the customer characterizes externally visible behavior and decides deployment (Appendix A.8.6, Appendix A.8.7).
 
-<pre class="dectree" aria-label="Requirement"><code>Requirement
-  |
-Budget (life / FIT / DPPM / power)
-  |
-Allocation (die / package / module / host)
-  |
-Verification (GR-468 / GR-1221 / JESD47 / ATP)
-  |
-Production + field monitoring</code></pre>
 > **Margin budgeting**
 >
 > Every stress spends margin: temperature, voltage, ripple, contamination, insertion loss, connector wear, vibration, aging, process variation. Qual verifies what remains, not only that the part still links.
@@ -181,7 +172,7 @@ Latch-up
 
 : a parasitic thyristor structure in CMOS turns on under an overvoltage or current-injection event and holds a low-impedance path until power is cycled. *JESD78* defines the overvoltage and $\pm100$ mA current-injection test that classifies susceptibility by supply and signal pin . A latched driver IC can look like a dead laser on the bench (no light, no LIV signature) until you check the supply current instead of the optical path.
 
-Both mechanisms are 100%-screen or design-margin items, not something you project with an activation energy. If a driver fails ESD or latch-up in the field, that is a manufacturability or design-margin bucket item (§7.12), not a wear-out FIT argument.
+ESD and latch-up are primarily design-qualification and process-control concerns. Targeted production measurements or screens may be used when their detection capability is validated, but many latent ESD conditions cannot be economically detected on every finished unit. Do not project either mechanism with an activation energy. If a driver fails ESD or latch-up in the field, that is a manufacturability or design-margin bucket item (§7.12), not a wear-out FIT argument.
 
 ##### AEC-Q100: a borrowed grade, not a requirement.
 
@@ -197,11 +188,11 @@ Arrhenius math, derating, and the worked FIT example live in §5.13. This sectio
 
 ##### Infant mortality versus wear-out versus packaging.
 
-Field failures come in three clocks, and mixing them up wastes CAPA. Infant mortality is early fails from latent defects; burn-in and HTOL screens remove them before ship (§8.3). Wear-out is gradual or sudden end-of-life in the laser or EAM under temperature, current, and optical power, projected with Arrhenius and derating (§5.13). Packaging and assembly faults (FAU align, epoxy creep, solder voids, connector wear) often dominate field returns once lasers are screened (§8.7). Destructive physical analysis (facet cross-section, EDX, FAU section) is required when the signature is ambiguous or when you need evidence for supplier 8D (§9.2).
+Field failures come in three clocks, and mixing them up wastes CAPA. Infant mortality is early fails from latent defects; a production burn-in may cull a demonstrated early-life population when justified, but qualification HTOL is representative-sample evidence for powered degradation, not a per-unit ship screen (§8.3). Wear-out is gradual or sudden end-of-life in the laser or EAM under temperature, current, and optical power, projected with Arrhenius and derating (§5.13). Packaging and assembly faults (FAU align, epoxy creep, solder voids, connector wear) often dominate field returns once lasers are screened (§8.7). Destructive physical analysis (facet cross-section, EDX, FAU section) is required when the signature is ambiguous or when you need evidence for supplier 8D (§9.2).
 
 ##### Mechanism map.
 
-Table 8.2 is the working list for laser-bearing modules and CPO/ELS paths. Customize limits in the ATP; keep the classification discipline.
+Table 8.2 is the working list for laser-bearing modules and CPO/ELS paths. Qualification plans should be organized around mechanisms. ATP may detect a validated observable proxy, while mechanisms without a useful proxy must be controlled through design, supplier evidence, process control, sampled audit, or fleet monitoring. Customize limits in the ATP; keep the classification discipline.
 
 <table class="book-table"><tr><th>Mechanism</th><th>Observable</th><th>ATP / telemetry</th><th>Triage bucket</th></tr><tr><td>COD (facet)</td><td>Sudden dark or hard fail; was healthy</td><td>Dark LIV; DPA facet; date-code cluster?</td><td>Reliability (COD) or mfg (ESD)</td></tr><tr><td>Gradual facet / active region</td><td>I_th up, slope down over life</td><td>LIV trend vs ship ATP; HTOL lot history</td><td>Reliability (wear-out)</td></tr><tr><td>SMSR collapse</td><td>Side modes rise; modal noise / BER</td><td>OSA SMSR vs floor at T</td><td>Reliability; watch aging</td></tr><tr><td>EAM aging (EML)</td><td>TDECQ/RLM creep at fixed bias</td><td>EAM bias sweep + DCA; bias creep log</td><td>Reliability (EAM)</td></tr><tr><td>RIN rise</td><td>BER floor up; feedback sensitive</td><td>RIN @ ORL; isolator / connector check</td><td>Perf if ORL; reliability if isolator</td></tr><tr><td>TEC / thermal control</td><td>Unlock or walk; LIV may look fine</td><td>TEC current, case T, lock status</td><td>Perf (lock) or reliability (TEC)</td></tr><tr><td>Coupling / FAU / solder</td><td>Loss step, intermittent LOS, shock-related</td><td>ORL, mate cycles, DPA FAU/solder</td><td>Manufacturability / packaging</td></tr><tr><td>Driver/TIA latch-up (ESD)</td><td>Sudden hard fail; no light, no LIV signature; supply current spikes</td><td>Supply current vs bias; JESD78 rating; date-code cluster?</td><td>Mfg (ESD) or design margin</td></tr><tr><td>Connector wear / contamination</td><td>ORL creep after repeated mate cycles; RIN floor rise</td><td>Mate-cycle count vs IEC 61300-2-2 rating; endface grade (IEC 61300-3-35)</td><td>Manufacturability / packaging</td></tr></table>
 **Table 8.2.** Wear-out and packaging mechanisms versus observables. Arrhenius projection and derating for the laser rows: §5.13. Electronics stress qualification: §8.4. Connector reliability: §8.7. Field classification workflow: §7.12.
@@ -256,7 +247,9 @@ ELSFP cycling adds connector wear and contamination that raise ORL (§7.2.2, §5
 
 Destructive physical analysis (cross-section, EDX) and structured 8D/CAPA with suppliers close the loop from RMA to design rule (§9.2, §7.12). Without that loop, packaging FIT gets mis-attributed to laser Arrhenius models and the wrong part gets redesigned.
 
-## From component FIT to fabric availability
+## Deep dive: from component FIT to fabric availability
+
+The core interview takeaway remains mechanism, evidence, confidence, and decision. This section shows how a component rate becomes system availability; it should not interrupt the qualification path above.
 
 The FIT arithmetic in §5.13 gives a rate: about $0.6$ laser failures per day for a fleet of $5\times10^5$ lasers at 50 FIT. That number sizes the RMA pipeline and the ELS spares bin (§5.14), but it does not say what a failure costs or how a running job survives one. Two facts turn a per-component rate into a fabric problem.
 
@@ -310,139 +303,141 @@ Junior mistake: treat zero fails in a small HTOL lot as a FIT claim, or treat a 
 
 ### Interview Q&A: Reliability Qualification
 
-Practice speaking these answers aloud. Prefer first-person reasoning over stress inventories. Detail lives in §8.3, Table 8.1, §8.1. Score your answer using the chapter-end spoken-answer rubric (Appendix A.12.1).
+Practice speaking these answers aloud. Prefer first-person reasoning over stress inventories. Detail lives in §8.3, Table 8.1, §8.1, §8.2.
 
-##### Question 1. What is reliability qualification, and how does it differ from validation?
+##### Question 1. What is reliability qualification, and how does it differ from validation, manufacturing validation, and production screening?
 
-*Tests:* life claim versus system suitability.
+*Tests:* terminology and ownership boundaries.
 
-*Spoken answer.* "Qualification is a bounded confidence argument that the design continues to meet requirements through intended life and environment. Validation asks whether the product is suitable for system use now. A temperature sweep can validate hot operation; HTOL or cycling asks whether exposure causes permanent degradation. Same gear, different question and acceptance rule" (Chapter 7, §8.1).
+*Spoken answer.* "Reliability qualification is a bounded confidence argument that a design will continue meeting named requirements through its intended life and environmental exposure. Validation establishes suitability for intended system use across the supported envelope, including margin and interoperability. Manufacturing validation asks whether the production process can reproduce and control the qualified design. Production screening asks whether individual units or sampled production output show detectable defects. Some measurements may appear in several activities, but the question, population, acceptance criterion, and decision are different" (Chapter 7, Chapter 9, §8.1).
 
-*Pressure follow-up.* "Does passing a standard qualify the product?"\
-*Answer pivot.* "Only if each stress maps to a named mechanism, observable, sample plan, and decision. A green checklist alone is not the argument."
+*Pressure follow-up.* "Can the same temperature test support both characterization and qualification?"\
+*Answer pivot.* "Yes, but only if the analysis separates reversible operation from permanent exposure-driven change. A sweep of a healthy unit characterizes hot behavior; cycling or extended biased exposure can support qualification when it targets a named degradation mechanism."
 
-*Trap:* listing HTOL, humidity, cycling, and vibration.
+*Trap:* "Qualification is validation with harsher tests."
 
-##### Question 2. How do you design a qualification plan?
+##### Question 2. How do you build a mechanism-driven qualification plan?
 
-*Tests:* mechanism-driven planning.
+*Tests:* planning from risk rather than standards inventory.
 
-*Spoken answer.* "I start with the life and environment claim. Then I list credible mechanisms, pick stresses that accelerate those mechanisms, define observables and acceptance before stress, and choose representative lots and sites. Each result must map to release, derating, redesign, production control, or more evidence" (Table 8.1).
+*Spoken answer.* "I start with the lifetime, environmental, handling, and performance claims. Then I identify credible physical or electrical mechanisms that could violate each claim. For every important mechanism, I choose a stress that accelerates it without introducing unrelated failure physics, define the observable degradation and acceptance criterion before stress, and select representative samples across lots, suppliers, sites, and process corners. I also define what each possible result means: release, restricted release, derating, redesign, supplier action, or additional evidence. Standards give me a common test language, but they do not replace this mechanism argument" (Table 8.1).
 
-*Pressure follow-up.* "The standard requires a low-risk test. What do you do?"\
-*Answer pivot.* "I run or waive it with a written mechanism rationale and owner, not silently. Customer or regulatory gates may still force the row."
+*Pressure follow-up.* "The standard contains a test you believe is low risk. Do you omit it?"\
+*Answer pivot.* "I either run it or document a formal waiver based on mechanism relevance, customer requirements, prior evidence, and an accountable risk owner. I would not silently delete the row."
 
-*Trap:* "follow GR-468 and run the matrix."
+*Trap:* "I follow GR-468 and run every required test."
 
-##### Question 3. What is the difference between a failure mode and a failure mechanism?
+##### Question 3. What is the difference between a failure mode and a failure mechanism, and why does failure timing matter?
 
-*Tests:* symptom versus physics.
+*Tests:* symptom versus physics, plus bathtub-regime reasoning.
 
-*Spoken answer.* "Mode is the symptom: low power, high BER, dead lane. Mechanism is the physical process: active-region wear, solder fatigue, corrosion, contamination. Several mechanisms can share one mode, so qual and ATP must target mechanisms" (Table 8.2).
+*Spoken answer.* "The failure mode is what I observe, such as low optical power, high BER, or a dead lane. The mechanism is the physical or electrical process that produced it, such as active-region wear, coupling movement, corrosion, solder fatigue, contamination, or ESD damage. Timing adds another discriminator. An early date-code cluster suggests infant mortality or a manufacturing escape. A roughly steady random rate during useful life suggests a different control strategy. A rate that rises with install age suggests wear-out. I need both the symptom and the failure clock before choosing qualification, process CAPA, or replacement planning" (Table 8.2, §8.6).
 
-*Pressure follow-up.* "Name two mechanisms for low optical power."\
-*Answer pivot.* "Laser wear reducing slope, or coupling or connector loss. Different stresses and screens."
+*Pressure follow-up.* "Two mechanisms that can cause low optical power?"\
+*Answer pivot.* "Laser degradation can reduce slope efficiency, while coupling movement or connector loss can reduce delivered power without changing the laser physics. They require different evidence and controls."
 
-*Trap:* swapping mode and mechanism.
+*Trap:* "Low power means the laser is aging."
 
-##### Question 4. Why can accelerated testing support a field-life claim?
+##### Question 4. When can accelerated testing support a field-life claim?
 
-*Tests:* same-mechanism acceleration.
+*Tests:* mechanism-specific acceleration and model limits.
 
-*Spoken answer.* "Only when the stress accelerates the same mechanism expected in use. For temperature-activated wear, Arrhenius may translate hours to field years if $E_a$ and assumptions fit that mechanism. A severe unrelated fail is not a life prediction. I state physics, model, observables, and uncertainty" (§8.3, §5.13).
+*Spoken answer.* "Accelerated testing supports a field-life claim only when the stress accelerates the same mechanism expected in use. For a temperature-activated wear mechanism, an Arrhenius model may translate stress exposure into use-condition exposure, but the activation energy and operating regime must apply to that mechanism. I would verify that the stress does not create a new failure mode, define the measured degradation signature, and report model and parameter uncertainty. A severe test is not automatically a predictive test" (§8.3, §5.13).
 
-*Pressure follow-up.* "How do you know the activation energy?"\
-*Answer pivot.* "Mechanism-specific supplier data, literature, or fitted degradation on this process. I do not borrow one $E_a$ across mixed failure mechanisms."
+*Pressure follow-up.* "How do you choose the activation energy?"\
+*Answer pivot.* "I use mechanism-specific supplier data, credible literature, or degradation data fitted to the actual process. I would not reuse one activation energy across laser wear, corrosion, solder fatigue, and unrelated mechanisms."
 
-*Trap:* "hotter means faster; convert hours to years."
+*Trap:* "Hotter means faster, so I convert the test hours directly into field years."
 
-##### Question 5. Explain HTOL and what you would monitor.
+##### Question 5. Walk me through HTOL for a laser-bearing optical module.
 
-*Tests:* access-aware observables.
+*Tests:* powered aging, access-aware observables, and acceptance.
 
-*Spoken answer.* "HTOL biases the part at elevated temperature to accelerate wear tied to powered operation. I need trusted baselines and intermediate reads, because units can stay functional while drifting. On engineering-access units I measure LIV, threshold, slope, SMSR, and sampled RIN. On bookended production modules I use external proxies: optical power, OMA, wavelength, BER, module current, telemetry, and control headroom. Supplier reports may carry die LIV when the customer only sees the module."
+*Spoken answer.* "HTOL biases the device at elevated temperature to accelerate mechanisms associated with powered operation. I begin with trusted baselines and determine the relevant junction or active-region temperature rather than relying only on chamber air. On engineering-access samples I would monitor LIV, threshold current, slope efficiency, wavelength, SMSR, and sampled RIN. On a bookended module I may only have launch power, OMA, wavelength, BER, supply current, telemetry, and control-loop headroom, supplemented by supplier die-level data. I include intermediate reads because a unit can remain functional while steadily consuming margin. Acceptance is based on bounded drift tied to the life and system-margin claim, not merely whether the module still links at the end."
 
-*Pressure follow-up.* "Why is chamber temperature not enough?"\
-*Answer pivot.* "Junction or active-region temperature drives many mechanisms. Chamber air without bias or thermal path context can mis-rank stress."
+*Pressure follow-up.* "You have no internal LIV access. Is the test useless?"\
+*Answer pivot.* "No. I use the strongest external proxies available, preserve correlation to engineering-access or supplier data, and narrow the claim accordingly. I do not pretend a bookended BER result uniquely identifies laser wear."
 
-*Trap:* "run hot for a thousand hours and see if it still works."
+*Trap:* "Run the module hot for 1,000 hours and check whether it still works."
 
-##### Question 6. What does temperature cycling qualify?
+##### Question 6. What do temperature cycling, mechanical shock, and vibration each try to reveal?
 
-*Tests:* package mechanics.
+*Tests:* package and mechanical failure physics.
 
-*Spoken answer.* "Repeated expansion mismatch: solder, bonds, adhesives, fiber attach, alignment. I watch continuity, intermittent lanes, power, sensitivity, BER, and permanent post-cycle shift versus reversible temperature behavior."
+*Spoken answer.* "Temperature cycling targets repeated expansion mismatch among solder, bonds, adhesives, fiber attach, package materials, and optical alignment. Mechanical shock targets discrete acceleration events such as handling, shipping, or installation. Vibration targets repeated mechanical excitation and intermittent interfaces. I would choose powered, unpowered, or in-situ monitoring based on the mechanism. Useful observables include continuity, intermittent lane faults, optical-power movement, sensitivity, BER, alignment change, and physical evidence. A final functional pass alone may miss temporary opens or alignment movement that occurred during stress."
 
-*Pressure follow-up.* "Measure in situ or only after cycling?"\
-*Answer pivot.* "Periodic or in-situ catches intermittents that a final functional check can miss."
+*Pressure follow-up.* "Would you measure only before and after cycling?"\
+*Answer pivot.* "Not when intermittent behavior is credible. Periodic or in-situ monitoring can reveal opens and lane drops that disappear once the unit returns to room temperature."
 
-*Trap:* treating cycling as hot/cold operation check.
+*Trap:* "Those tests confirm that the module operates when it is hot, cold, or shaken."
 
-##### Question 7. What is damp-heat testing trying to reveal?
+##### Question 7. What do damp heat and connector mate cycling qualify?
 
-*Tests:* moisture mechanisms.
+*Tests:* moisture, corrosion, contamination, and optical-interface durability.
 
-*Spoken answer.* "Corrosion, leakage, material or interface degradation, contamination movement. Biased or unbiased depending on mechanism. I look at leakage, loss, ORL, power, BER, and selected DPA, not only a post-test link pass."
+*Spoken answer.* "Damp heat targets moisture-related mechanisms such as corrosion, leakage, material degradation, contamination movement, and loss of sealing or interface integrity. Bias may be required when electrochemical mechanisms are credible. Connector mate cycling targets wear, debris, ferrule damage, alignment repeatability, insertion-loss growth, and return-loss degradation. I would track leakage, insertion loss, ORL, power, BER, endface condition, and selected destructive evidence. These mechanisms may create a BER floor through reflections even when average power remains reasonably stable" (§8.7).
 
-*Pressure follow-up.* "Why might bias matter?"\
-*Answer pivot.* "Bias can drive electrochemical paths that unbiased storage never sees."
+*Pressure follow-up.* "BER worsens after repeated connector mating, but average power barely moves. What do you check?"\
+*Answer pivot.* "I would inspect the endface and measure ORL, then test whether the BER or RIN floor tracks reflection condition. Stable average power does not clear the connector."
 
-*Trap:* "checks if the package is waterproof."
+*Trap:* "Humidity tests whether the package is waterproof, and mate cycling tests whether the latch still works."
 
-##### Question 8. Why do ESD qualification if units already pass functional test?
+##### Question 8. How do GR-468, GR-1221, and JESD47 divide the qualification problem?
 
-*Tests:* latent damage.
+*Tests:* standards boundaries and subsystem ownership.
 
-*Spoken answer.* "ESD can kill, leave latent damage, or burn margin while the unit still links. Qual checks the protection network against the handling claim. Production controls cover handling. Final function alone can miss latent damage" (§8.4).
+*Spoken answer.* "I use GR-468 as a common qualification language for active optoelectronics such as lasers, photodiodes, and their optical packages. GR-1221 addresses passive optical components such as connectors, couplers, and WDM filters. JESD47 and related JEDEC methods apply to driver, TIA, retimer, DSP, and other semiconductor ICs. The standards help define established stresses and supplier evidence, but the product-level qualification argument still has to connect the claimed use, mechanism, observable, sample population, and acceptance decision" (§8.3, §8.4).
 
-*Pressure follow-up.* "Can ATP screen latent ESD reliably?"\
-*Answer pivot.* "Often no. Leakage or sensitivity shifts may need targeted screens; many latent cases need process control, not 100% detection."
+*Pressure follow-up.* "Where do ESD and latch-up fit?"\
+*Answer pivot.* "They are mainly design-qualification and process-control concerns for the electronic path. Latent ESD may not have a reliable 100% production screen, so handling controls and validated targeted measurements matter. I would not project ESD or latch-up using an Arrhenius wear-out model."
 
-*Trap:* "operators might touch the board."
+*Trap:* "AEC-Q100 is required for every datacenter optical module."
 
-##### Question 9. How do you choose sample size for qualification?
+##### Question 9. Explain FIT, DPPM, sample size, and what zero failures actually mean.
 
-*Tests:* confidence, not folklore.
+*Tests:* reliability statistics, denominator discipline, and fleet scaling.
 
-*Spoken answer.* "No universal count. I size to the rate or degradation claim, confidence, hours, acceleration, and lot diversity. Zero fails in twenty units is an upper bound, not zero field rate. I report bound, sample-hours, censoring, model assumptions, and remaining risk. Sufficiency means the release decision is supported, not that uncertainty is gone" (§8.2, §8.3).
+*Spoken answer.* "FIT is a field-reliability rate expressed per billion device-hours, so I must state what the device is, the observation period, whether the rate is predicted or observed, and the confidence and hazard assumptions. DPPM is a manufacturing-quality measure, so I must state whether it refers to incoming, outgoing, or escaped defects and how retest and rework are handled. Qualification sample size depends on the claimed rate or degradation, stress hours, acceleration, confidence, and population diversity. Zero failures do not establish a zero failure rate; they establish an upper bound under the stated assumptions" (§8.2, §8.3).
 
-*Pressure follow-up.* "Is lot diversity worth more than more units from one lot?"\
-*Answer pivot.* "Usually yes for process and supplier risk. Identical twins inflate false confidence."
+*Pressure follow-up.* "How does component FIT become a fabric-level risk?"\
+*Answer pivot.* "I first fix the population unit and multiply by the deployed population and exposure time. Then I account for redundancy, detection, reroute, replacement time, and the operational cost of each failure. Component rate and system consequence are separate parts of the availability argument" (§8.8).
 
-*Trap:* "we always use twenty or thirty units."
+*Trap:* "Twenty units passed, so the field failure rate is effectively zero."
 
-##### Question 10. What should you do when a qualification test fails?
+##### Question 10. How do you define acceptance criteria, and when is qualification evidence sufficient?
 
-*Tests:* contain, confirm, scoped requal.
+*Tests:* predefined limits, trend interpretation, and decision-scaled evidence.
 
-*Spoken answer.* "Verify setup, preserve state, scope the population, separate mode from mechanism, and confirm with discriminating evidence. Contain, decide design, process, supplier, derating, or more data, then repeat enough qual to show the mechanism is addressed. I do not blindly restart the whole matrix."
+*Spoken answer.* "I define acceptance before stress. The criterion may include no catastrophic failure, bounded parameter drift, no new BER floor, no unacceptable sensitivity or power loss, preserved control headroom, and no physical degradation associated with the mechanism. I tie those limits to the remaining system margin and lifetime claim. Evidence is sufficient when mechanism coverage, sample representation, degradation trends, confidence, and model uncertainty support the intended decision. A limited and reversible pilot may tolerate more residual uncertainty than unrestricted deployment. I state the supported claim and remaining risk rather than saying qualification proved the product reliable."
 
-*Pressure follow-up.* "Failure is outside intended use. Still a fail?"\
-*Answer pivot.* "I still investigate relevance. If the stress is unrepresentative, I document that. I do not hide a real mechanism behind a claim of overstress."
+*Pressure follow-up.* "All units pass the final limit, but one parameter is trending steadily toward it. Pass or fail?"\
+*Answer pivot.* "I would not ignore the trajectory. I would assess whether projected use-life drift still closes the requirement, whether the trend is accelerating, and whether additional read points or a restricted release are needed."
 
-*Trap:* "FA the unit and rerun the test."
+*Trap:* "Qualification is complete when every sample passes every standard test."
 
-##### Question 11. What is the difference between qualification, burn-in, and production screening?
+##### Question 11. What do you do when a qualification test fails?
 
-*Tests:* life evidence versus screens.
+*Tests:* evidence preservation, containment, confirmation, and scoped requalification.
 
-*Spoken answer.* "Qualification supports design-life claims on representative samples. Burn-in is an optional production screen for specific early-life defects. Broader screening is every-unit or sample ATP and process control. Burn-in does not replace qual; qual does not prove every shipped unit was built correctly" (§8.1, Chapter 9).
+*Spoken answer.* "I first verify the setup and preserve the stressed state, baselines, read history, configuration, and sample genealogy. Then I scope whether the failure is isolated, lot-correlated, stress-dependent, or systematic. I distinguish the observed mode from the suspected mechanism and confirm it using discriminating measurements, reproduction, controlled swaps, or physical analysis. I contain the affected population and decide whether the response is design change, process change, supplier action, derating, restricted use, or additional evidence. After corrective action, I repeat the qualification needed to demonstrate that mechanism has been addressed; I do not automatically restart every unrelated row."
 
-*Pressure follow-up.* "When is burn-in justified?"\
-*Answer pivot.* "When escape data and mechanism show it separates infant fails cheaper than alternatives, and the stress does not damage healthy units."
+*Pressure follow-up.* "The failure occurred beyond the intended use condition. Can you dismiss it?"\
+*Answer pivot.* "I can document that the stress is outside the claim, but I still determine whether it exposed a mechanism that can occur inside the intended range. Overstress is not a license to ignore relevant physics."
 
-*Trap:* "burn-in is qualification on every unit."
+*Trap:* "Send the unit to failure analysis and rerun the failed test."
 
-##### Question 12. Give me a 60-second answer for qualifying a new optical transceiver.
+##### Question 12. Give me a 60-second qualification plan for a new optical transceiver.
 
-*Tests:* time-boxed qual argument.
+*Tests:* complete, time-boxed Staff-level answer.
 
-*Spoken answer.* "Start from life, environment, handling, and performance claims. Name credible mechanisms, pick accelerations, define observables and acceptance, and sample across lots and sites. Monitor trends, interpret with confidence and model limits, confirm fails to a mechanism, and translate into release, derating, redesign, supplier control, or manufacturing monitors. State the supported claim and remaining risk."
+*Spoken answer.* "I start with the lifetime, environmental, handling, and performance claims. I identify the credible mechanisms that could violate them across the laser, electronics, package, passive optics, and connectors. For each mechanism I select a relevant acceleration, define the observable degradation and acceptance criterion before stress, and sample representative lots, suppliers, sites, and process corners. I monitor drift as well as hard failures and interpret the result using explicit confidence and model limits. Failures are confirmed to a mechanism before corrective action. The outputs are a supported claim, remaining risk, and decisions such as release, restriction, derating, redesign, supplier control, or manufacturing monitoring."
 
-*Pressure follow-up.* "Walk a laser-aging argument."\
-*Answer pivot.* "Illustrative five-year continuous claim. Threat: active-region wear raising threshold and cutting slope or OMA. On engineering-access samples I baseline LIV, SMSR, and sampled RIN; on bookended modules I use power, OMA, wavelength, BER, current, and headroom. Biased high-temperature stress with a justified acceleration model, intermediate reads, and drift limits tied to remaining system margin. Result supports release, derating, supplier limit, or redesign; production may sample LIV or bias SPC afterward, but that does not replace the qual argument."
+*Pressure follow-up.* "Apply that to laser aging, and tell me whether production burn-in replaces HTOL."\
+*Answer pivot.* "For an illustrative five-year claim, I would target active-region wear using justified biased high-temperature exposure, baseline and intermediate LIV or external module proxies, and drift limits tied to remaining margin. Production burn-in may cull a validated infant-mortality population, but it does not replace the life-projection argument from representative qualification samples."
 
-*Trap:* "run the standard stress list."
+*Trap:* "I would run the standard stress list and release if everything passes."
+
+Score each answer using the shared chapter-interview rubric in Appendix A.12.1; repeat any answer that does not state a requirement, mechanism, evidence, confidence, and decision.
 
 
 <div class="nav-links">
