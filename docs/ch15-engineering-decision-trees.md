@@ -355,6 +355,78 @@ Example (supplier defect): stop shipment of the scoped lot; owner Operations plu
 
 Chapter 7, Chapter 8, Chapter 9, Chapter 11, Appendix C point here rather than restating the list.
 
+##### Boundaries (trees are not proof).
+
+Decision trees prioritize the next measurement. They do not convert a symptom into a confirmed mechanism. A controlled swap localizes ownership only to the extent that other variables remain unchanged. A passing retest is not closure: restore the original failing condition with margin and implement a recurrence control (Chapter 11, Chapter 9, Appendix A.12).
+
+## Decision-Tree Interview Drills
+
+Compact navigation drills. Enter the correct route quickly. Do not invent a second lifecycle; re-enter Appendix D.2, Table 7.2 when the decision requires it. Score spoken answers with Appendix A.12.1 if useful; use Appendix A.12 for full case practice.
+
+##### Scenario 1. BER rises while average power remains stable.
+
+*First action.* Preserve lane-resolved BER and FEC history and identify the receive reference plane.\
+*Route.* BER shift-versus-floor (§4.8, Appendix D.4).\
+*Evidence needed.* BER waterfall, OMA or transmitter-quality evidence, receiver sensitivity, ORL or reflection evidence, timing and equalizer behavior.\
+*Decision point.* Which ledger limits first: power, noise, timing, spectrum, or control.\
+*Common trap.* Stable average power clears the optical path.
+
+##### Scenario 2. One station disagrees with the laboratory reference.
+
+*First action.* Hold suspect production output and preserve software, limits, calibration, and fixture state.\
+*Route.* Measurement-system and station-correlation (Chapter 9, Appendix D.14).\
+*Evidence needed.* Golden and range-spanning units, repeatability, cross-station bias, and trusted reference-bench measurements.\
+*Decision point.* Separate station bias from product variation before changing limits or supplier ownership.\
+*Common trap.* Correct the station by changing its acceptance limit.
+
+##### Scenario 3. Qualification sample fails after temperature cycling.
+
+*First action.* Preserve the stressed state and compare with the pre-stress baseline.\
+*Route.* Package-fatigue and intermittent-mechanism (Chapter 8, Appendix D.3).\
+*Evidence needed.* Continuity, intermittent monitoring, optical alignment, BER, physical inspection, lot genealogy, and cycle chronology.\
+*Decision point.* Isolated, lot-correlated, process-related, or design-wide.\
+*Common trap.* One failure automatically invalidates the entire qualification matrix.
+
+##### Scenario 4. Failures cluster by date code after 90 days.
+
+*First action.* Scope by installation age, supplier lot, production history, host, site, and firmware.\
+*Route.* Manufacturing-escape versus reliability-gap (Chapter 9, Chapter 8, Appendix D.9).\
+*Evidence needed.* ATP first-pass data, rework history, degradation signature, physical evidence, and qualification coverage.\
+*Decision point.* Manufacturing, qualification, system, or mixed ownership.\
+*Common trap.* Date-code correlation proves supplier root cause.
+
+##### Scenario 5. One wavelength reports locked but has poor BER.
+
+*First action.* Verify absolute wavelength, channel assignment, actuator headroom, and transmitter quality.\
+*Route.* Source-versus-ring/filter alignment (Chapter 6, §6.4).\
+*Evidence needed.* OSA or wavemeter, heater or TEC code, lock error, OMA, filter alignment, and BER during controlled source and filter sweeps.\
+*Decision point.* Locked state correct, marginal, or on the wrong resonance.\
+*Common trap.* A locked-status bit proves correct grid placement.
+
+##### Scenario 6. A module swap clears the failure.
+
+*First action.* Record every variable changed by the swap and preserve the original module, fiber, and port.\
+*Route.* Controlled-swap ownership (Chapter 11, Appendix D.5).\
+*Evidence needed.* Reverse swap, original-condition reproduction, connector inspection, firmware state, thermal contact, and path comparison.\
+*Decision point.* Symptom follows module, port, fiber, contact disturbance, or reset state.\
+*Common trap.* The swapped module is the confirmed root cause.
+
+##### Scenario 7. Link flaps disappear after power cycling.
+
+*First action.* Preserve remaining event history and identify which states were reset.\
+*Route.* Intermittent and state-transition (Chapter 10, Appendix D.6).\
+*Evidence needed.* Retrains, FEC bursts, CMIS transitions, host events, thermal state, rail behavior, and firmware logs.\
+*Decision point.* Software or control recovery versus electrical, optical, thermal, or contact mechanisms.\
+*Common trap.* Power-cycle recovery proves firmware ownership.
+
+##### Scenario 8. One lane degrades under neighbor loading.
+
+*First action.* Capture lane and neighbor state, thermal telemetry, control codes, and error timing.\
+*Route.* Local thermal-crosstalk or shared-resource (Chapter 6, §6.5, Appendix D.5).\
+*Evidence needed.* Neighbor on/off experiment, temperature mapping, wavelength or lock state, electrical crosstalk evidence, and lane remap where supported.\
+*Decision point.* Symptom follows optical channel, electrical lane, local thermal path, or shared supply.\
+*Common trap.* One-lane behavior proves a defective source.
+
 ## Before you start: three checklists
 
 > **Before debugging**

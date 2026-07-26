@@ -980,6 +980,27 @@ Communication
 
 Interpretation: 0--4, review the chapter concepts; 5--7, technically competent but needs stronger structure; 8--9, strong interview response; 10, Strong Staff-style answer structure (a rehearsed perfect score is not proof of Staff-level performance on the job).
 
+##### What this rubric scores.
+
+Score the engineering quality of a spoken answer: the requirement or decision, the mechanism or uncertainty, the evidence, the confidence or limitations, the engineering action, and communication clarity. Do not score accent, memorized vocabulary, or answer length. Not every answer needs identical wording.
+
+##### Worked scoring example.
+
+Question: "BER is rising, but average optical power is stable. What would you do?"
+
+*Weak response.* "I would replace the receiver, or raise launch power until BER recovers."
+
+*Competent response.* "I would run a BER waterfall, check transmitter quality such as OMA or TDECQ, and compare receiver sensitivity at a named plane before changing parts."
+
+*Staff-level response.* "I would name the receive reference plane, preserve lane-resolved BER and FEC history, and ask whether the waterfall shifted or hit a floor. Stable average power does not clear the optical path. I would pick discriminating evidence (OMA or Tx quality, ORL or RIN if a floor is present, timing or EQ behavior) and state containment plus the decision criterion before FA" (Chapter 7, §4.8, Chapter 11).
+
+<table class="book-table"><tr><th>Dimension (0--2)</th><th>Weak</th><th>Competent</th><th>Staff</th></tr><tr><td>Scope and assumptions</td><td>0</td><td>1</td><td>2</td></tr><tr><td>Technical or causal reasoning</td><td>0</td><td>1</td><td>2</td></tr><tr><td>Evidence selection</td><td>0</td><td>1</td><td>2</td></tr><tr><td>Decision and remaining risk</td><td>0</td><td>1</td><td>2</td></tr><tr><td>Communication</td><td>1</td><td>2</td><td>2</td></tr><tr><td>Total / 10</td><td>1</td><td>6</td><td>10</td></tr></table>
+**Table A.2.** Example scores on Appendix A.12.1. The Staff answer earns the maximum because it names plane, waterfall shape, discriminating evidence, and a decision, not because it lists every instrument.
+
+##### Interview-use guidance.
+
+Answer the question directly first. State assumptions. Do not list every test. Explain why the selected evidence changes the decision. Distinguish a hypothesis from a confirmed mechanism. Stop when the answer is complete.
+
 ## One-week interview preparation plan
 
 Assume seven days, with the interview near the end of Day 7. Protect sleep. Each day has a Learn list (pointers only) and one speakable Output. If a day slips, cut new reading first, not stories or the mock. Prefer the measurement with the highest information gain per cost (Appendix B.1, Appendix A.2).

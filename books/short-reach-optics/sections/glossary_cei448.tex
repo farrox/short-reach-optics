@@ -257,3 +257,80 @@ Higher ORL means less reflected power and is generally better. Low ORL can raise
 \item[LPO / LRO / TRO / RTLR] LPO is linear both directions; LRO/RTLR retimes Tx only (linear Rx); TRO retimes Tx (linear Rx) under that naming. Draw the host electrical Tx/Rx path rather than expanding acronyms alone (\Cref{ch:networking}).
 \item[RS sublayer / RS-FEC] RS sublayer is Reconciliation; RS-FEC is Reed--Solomon forward error correction in the PCS.
 \end{description}
+
+\section{Rapid Interview Checks}
+\label{sec:glossary-rapid-checks}
+
+Short prompts for interview recall. Answer in one or two sentences, then check
+yourself. Detail lives in the owning chapter, not here. Score spoken chapter
+answers with \Cref{sec:chapter-interview-rubric}.
+
+\paragraph{Prompt.} What must accompany a receiver-sensitivity number?\\
+\textit{Check.} Optical reference plane, BER or FEC condition, modulation
+format, pattern, wavelength, temperature, and measurement method
+(\Cref{ch:validation}).\\
+\textit{Common confusion.} Treating ``$-15$~dBm sensitivity'' as a complete
+system requirement.
+
+\paragraph{Prompt.} What does average optical power establish that OMA does
+not?\\
+\textit{Check.} Mean launched energy. OMA describes modulation amplitude; neither
+alone proves eye quality or receiver margin (\Cref{ch:lasers}).\\
+\textit{Common confusion.} Using a passing average-power reading to clear a BER
+failure.
+
+\paragraph{Prompt.} Does a bad TDECQ identify a unique root cause?\\
+\textit{Check.} No. TDECQ is a composite transmitter-quality metric relative to
+a reference receiver; it does not by itself name laser noise, modulator bias,
+driver bandwidth, or reflections (\Cref{ch:lasers,ch:validation}).\\
+\textit{Common confusion.} Treating TDECQ as a mechanism.
+
+\paragraph{Prompt.} How do characterization, verification, validation,
+qualification, and ATP differ?\\
+\textit{Check.} Characterization maps behavior; verification checks a frozen
+requirement; validation asks whether the product works for intended use;
+qualification bounds life and environment risk; ATP detects unacceptable units
+in production (\Cref{ch:validation,ch:reliability,ch:manufacturing}).\\
+\textit{Common confusion.} Calling them ``levels of testing.''
+
+\paragraph{Prompt.} What is the difference between FIT and DPPM?\\
+\textit{Check.} FIT is a failure rate per $10^9$ device-hours; DPPM is a
+fraction of defective units in a population and window
+(\Cref{ch:reliability,ch:manufacturing}).\\
+\textit{Common confusion.} Using FIT and DPPM as interchangeable quality scores.
+
+\paragraph{Prompt.} What do $C_p$ and $C_{pk}$ tell you?\\
+\textit{Check.} Process capability versus specification width; $C_{pk}$ also
+accounts for centering. They do not replace ATP limits or prove field life
+(\Cref{ch:manufacturing}).\\
+\textit{Common confusion.} High $C_{pk}$ as proof that the product will not fail
+in the fleet.
+
+\paragraph{Prompt.} Capture versus hold in wavelength control?\\
+\textit{Check.} Capture acquires the intended wavelength or resonance from an
+unlocked state; hold rejects disturbances after lock
+(\Cref{ch:wdm}).\\
+\textit{Common confusion.} Cold-start capture as proof of operational hold.
+
+\paragraph{Prompt.} Failure mode versus mechanism; observation versus
+correlation?\\
+\textit{Check.} A mode is how the product fails externally; a mechanism is the
+physics or process that produces it. Observation is what you measured;
+correlation is association without ownership confirmation
+(\Cref{ch:failure-modes}).\\
+\textit{Common confusion.} Treating a surviving hypothesis as confirmed root
+cause.
+
+\paragraph{Prompt.} Containment versus corrective action versus recurrence
+control?\\
+\textit{Check.} Containment limits blast radius now; corrective action fixes the
+enabling condition; recurrence control is the lasting detection or process
+change (\Cref{ch:failure-modes,ch:manufacturing}).\\
+\textit{Common confusion.} Closing an incident after a retest pass alone.
+
+\paragraph{Prompt.} Retrain versus link flap; reliability versus availability?\\
+\textit{Check.} A retrain is a recovery sequence; a flap is repeated
+loss-of-service. Reliability is failure rate over time; availability also
+depends on detection and repair time (\Cref{ch:networking,ch:reliability}).\\
+\textit{Common confusion.} Counting every retrain as a hard optical failure, or
+equating low FIT with high availability.

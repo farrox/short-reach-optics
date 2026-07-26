@@ -240,7 +240,7 @@ $C_p$ measures potential spread if the process were centered. $C_{pk}$ also refl
 
 > **Before production**
 >
-> ATP $\cdot$ SPC $\cdot$ telemetry $\cdot$ supplier gates $\cdot$ monitoring owners $\cdot$ RMA-to-ATP feedback (Appendix D.17).
+> ATP $\cdot$ SPC $\cdot$ telemetry $\cdot$ supplier gates $\cdot$ monitoring owners $\cdot$ RMA-to-ATP feedback (Appendix D.18).
 
 ### Test time is a cost, coverage is a risk
 

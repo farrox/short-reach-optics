@@ -1560,6 +1560,63 @@ but needs stronger structure; 8--9, strong interview response; 10, Strong
 Staff-style answer structure (a rehearsed perfect score is not proof of
 Staff-level performance on the job).
 
+\paragraph{What this rubric scores.}
+Score the engineering quality of a spoken answer: the requirement or decision,
+the mechanism or uncertainty, the evidence, the confidence or limitations, the
+engineering action, and communication clarity. Do not score accent, memorized
+vocabulary, or answer length. Not every answer needs identical wording.
+
+\paragraph{Worked scoring example.}
+\label{sec:chapter-rubric-example}
+Question: ``BER is rising, but average optical power is stable. What would you
+do?''
+
+\textit{Weak response.}
+``I would replace the receiver, or raise launch power until BER recovers.''
+
+\textit{Competent response.}
+``I would run a BER waterfall, check transmitter quality such as OMA or TDECQ,
+and compare receiver sensitivity at a named plane before changing parts.''
+
+\textit{Staff-level response.}
+``I would name the receive reference plane, preserve lane-resolved BER and FEC
+history, and ask whether the waterfall shifted or hit a floor. Stable average
+power does not clear the optical path. I would pick discriminating evidence
+(OMA or Tx quality, ORL or RIN if a floor is present, timing or EQ behavior)
+and state containment plus the decision criterion before FA''
+(\Cref{ch:validation,sec:debug-fork,ch:failure-modes}).
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:chapter-rubric-example}%
+\centering
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{@{}p{0.22\linewidth}ccc@{}}
+\toprule
+Dimension (0--2) & Weak & Competent & Staff \\
+\midrule
+Scope and assumptions & 0 & 1 & 2 \\
+Technical or causal reasoning & 0 & 1 & 2 \\
+Evidence selection & 0 & 1 & 2 \\
+Decision and remaining risk & 0 & 1 & 2 \\
+Communication & 1 & 2 & 2 \\
+\midrule
+Total / 10 & 1 & 6 & 10 \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Example scores on
+\Cref{sec:chapter-interview-rubric}. The Staff answer earns the maximum because
+it names plane, waterfall shape, discriminating evidence, and a decision, not
+because it lists every instrument.\par}
+\end{table*}
+
+\paragraph{Interview-use guidance.}
+Answer the question directly first. State assumptions. Do not list every test.
+Explain why the selected evidence changes the decision. Distinguish a hypothesis
+from a confirmed mechanism. Stop when the answer is complete.
+
 \section{One-week interview preparation plan}
 \label{sec:interview-week-plan}
 

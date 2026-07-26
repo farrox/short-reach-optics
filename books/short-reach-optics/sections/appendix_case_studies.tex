@@ -55,38 +55,12 @@ can eliminate.}
 \section{How interviewers evaluate answers}
 \label{sec:case-grading}
 
-Use this interview-facing summary. Full detail remains in
-\Cref{sec:interview-scoring-rubric} (plane/access, causal discipline, and
-recurrence are scored there too).
-
-\begin{center}
-\small
-\begin{tabular}{@{}llp{0.55\linewidth}@{}}
-\toprule
-Axis & Score & Meaning \\
-\midrule
-Scope & 0 & Jumps to a solution. \\
- & 1 & Asks some questions. \\
- & 2 & Defines population, timeline, and ownership. \\
-\addlinespace[0.5em]
-Hypothesis quality & 0 & One explanation. \\
- & 1 & Several guesses. \\
- & 2 & Mechanism-based hypothesis tree. \\
-\addlinespace[0.5em]
-Measurement choice & 0 & Lists tests. \\
- & 1 & Lists useful measurements. \\
- & 2 & Chooses by information value and access level. \\
-\addlinespace[0.5em]
-Decision quality & 0 & No action. \\
- & 1 & Technical fix only. \\
- & 2 & Containment + correction + prevention. \\
-\addlinespace[0.5em]
-Communication & 0 & Rambling. \\
- & 1 & Technically correct but unstructured. \\
- & 2 & Clear executive frame plus engineering depth. \\
-\bottomrule
-\end{tabular}
-\end{center}
+Score App~B cases and staged mocks with the shared case-and-debug rubric in
+\Cref{sec:interview-scoring-rubric}: Scope, Hypotheses, Measurement, Plane /
+access, Causal discipline, Decision, Recurrence, and Communication. That is not
+a second framework; it is the App~A scorecard for incomplete-information
+practice. Chapter-end spoken Interview Q\&A uses
+\Cref{sec:chapter-interview-rubric} instead.
 
 \section{Executive communication}
 \label{sec:case-exec-summary}
@@ -468,4 +442,128 @@ hold. Next decision: updated qual proxy and ATP/SPC owner.
 
 \paragraph{Deep dive.}
 \Cref{sec:tree-qual-evidence,sec:qual-sample-strategy,sec:fa-output-categories,fw:atp-update,sec:fit-dppm}.
-)
+
+%----------------------------------------------------------------------
+\section{Staged mock interviews}
+\label{sec:case-staged-mocks}
+
+These three cases release evidence only after you ask for the next useful
+measurement. Do not peek ahead. Cover later stages when practicing alone.
+Score with \Cref{sec:interview-scoring-rubric}. Chapter spoken Q\&A still uses
+\Cref{sec:chapter-interview-rubric}.
+
+\subsection{Staged case 1: Fleet BER bursts and collective slowdown}
+\label{sec:case-staged-fleet-ber}
+
+\paragraph{Stage 1. Initial symptom.}
+Collective tail latency rises on an AI training job. Average fabric utilization
+is normal. One rail shows bursty corrected FEC. Average optical power telemetry
+is stable. Affected population is a few dozen links on one fabric slice.
+\textit{Ask:} What would you do first?
+
+\paragraph{Stage 2. First evidence release (only after Stage~1 ask).}
+Lane-resolved FEC shows one optical lane dominates corrected bursts. Host
+CPU and memory look healthy. A misleading correlation: the weak lane shares a
+firmware build with many healthy lanes. Waterfall not yet measured.
+\textit{Ask:} What hypotheses remain, and what would you measure next?
+
+\paragraph{Scenario note.}
+Do not open Stage~3 until you have named a discriminating measurement.
+
+\paragraph{Stage 3. Controlled experiment.}
+Attenuation sweep: BER waterfall is shifted, not floored. Faceplate OMA is
+low on the weak lane; average power remains in band. Neighbor lanes look
+normal. Connector reseat improves OMA briefly, then the signature returns under
+traffic. Reverse module swap moves the symptom with the module.
+\textit{Ask:} What has been localized, and what is still unconfirmed?
+
+\paragraph{Stage 4. Mechanism evidence.}
+External eye / Tx-quality metric is marginal at the module faceplate. Plant
+ORL is within the stated budget. FA finds a degraded Tx coupling path on that
+lane; monitor PD calibration had been masking the drop
+(\Cref{ch:networking,ch:lasers,ch:failure-modes}).
+\textit{Ask:} What is the mechanism and enabling condition?
+
+\paragraph{Stage 5. Decision.}
+State containment, release or hold, corrective action, recurrence control, and
+fleet or production monitor. Example skeleton: contain the rail and cohort;
+hold the lot if genealogy supports it; correct coupling or calibration as
+owned; add OMA or headroom telemetry and an ATP/proxy that would have caught
+the mask; keep FEC-burst monitors until rates fall.
+
+\subsection{Staged case 2: Production yield loss after a supplier change}
+\label{sec:case-staged-yield}
+
+\paragraph{Stage 1. Initial symptom.}
+First-pass yield drops after a second-source laser change. Final yield remains
+high after retest. Failures correlate with one supplier lot. One station
+processed most of that lot.
+\textit{Ask:} What would you do first?
+
+\paragraph{Stage 2. First evidence release.}
+Suspect units pass on the lab reference bench after cool-down. Station A reads
+low OMA relative to Station B on golden units. Misleading correlation: the
+supplier lot also arrived the same week as a fixture cleaning change.
+\textit{Ask:} What hypotheses remain, and what would you measure next?
+
+\paragraph{Stage 3. Controlled experiment.}
+Golden and range-spanning units show a station bias after the cleaning change.
+Rework history shows most first-fail units were retested on Station B and
+passed. Supplier lot samples on a correlated Station B still meet the written
+spec, but tails sit closer to the guardband than the previous source
+(\Cref{ch:manufacturing}).
+\textit{Ask:} What has been localized, and what is still unconfirmed?
+
+\paragraph{Stage 4. Mechanism evidence.}
+GR\&R and cross-station bias confirm Station A optical-power path drifted after
+cleaning. Supplier change also reduced OMA margin on the weak tail. Neither
+alone explains every escape; both matter.
+\textit{Ask:} What is the mechanism and enabling condition?
+
+\paragraph{Stage 5. Decision.}
+Contain Station A output and the suspect lot; do not change ATP limits to hide
+bias. Correct station calibration and fixture process; decide second-source
+release only after distributions and package interaction close the budget;
+add sampled audit and SPC on the power/OMA proxy; name supplier, station,
+process, and ATP owners without claiming a single root cause too early.
+
+\subsection{Staged case 3: High-temperature WDM unlock}
+\label{sec:case-staged-wdm-unlock}
+
+\paragraph{Stage 1. Initial symptom.}
+One wavelength unlocks only under full neighbor activity at high case
+temperature. The locked flag later recovers. Heater demand is near its rail.
+Room-temperature BER passes.
+\textit{Ask:} What would you do first?
+
+\paragraph{Stage 2. First evidence release.}
+Absolute wavelength on the OSA is still near the assigned grid when unlocked
+BER is high. Lock error grows when neighbors turn on. Misleading correlation:
+the unlock event also coincides with a host traffic spike.
+\textit{Ask:} What hypotheses remain, and what would you measure next?
+
+\paragraph{Stage 3. Controlled experiment.}
+With source fixed, neighbor heaters on/off move the suspect ring resonance and
+rail the heater code. With neighbors off, a case-$T$ ramp alone does not unlock
+at the same bias. Source TEC sweep with ring fixed does not reproduce the
+unlock (\Cref{ch:wdm,sec:thermal-xtalk}).
+\textit{Ask:} What has been localized, and what is still unconfirmed?
+
+\paragraph{Stage 4. Mechanism evidence.}
+Thermal coupling matrix shows strong nearest-neighbor terms. Calibration park
+left little headroom. Loop is stable but saturates under combined neighbor load
+and case $T$. Mechanism: insufficient control headroom under thermal crosstalk,
+not a failed laser die.
+\textit{Ask:} What is the mechanism and enabling condition?
+
+\paragraph{Stage 5. Decision.}
+Contain high-$T$ neighbor-loaded operation or derate until fixed. Correct heater
+map / feed-forward / thermal design as owned. Recurrence control may be a
+qualification corner, sampled production audit, ATP proxy on heater headroom,
+or SPC on the affected process (\Cref{ch:manufacturing}). Fleet: alarm on
+heater rail and unlock under neighbor load.
+
+\paragraph{Score the staged mocks.}
+Fail any case that treats a swap, locked flag, date-code correlation, or
+passing retest as confirmed mechanism without discriminating evidence and a
+recurrence control.

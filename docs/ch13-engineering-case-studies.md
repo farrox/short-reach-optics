@@ -24,9 +24,8 @@ Bad next step: "Run full optical characterization." Better: "Compare failing and
 
 ## How interviewers evaluate answers
 
-Use this interview-facing summary. Full detail remains in Appendix A.12 (plane/access, causal discipline, and recurrence are scored there too).
+Score App B cases and staged mocks with the shared case-and-debug rubric in Appendix A.12: Scope, Hypotheses, Measurement, Plane / access, Causal discipline, Decision, Recurrence, and Communication. That is not a second framework; it is the App A scorecard for incomplete-information practice. Chapter-end spoken Interview Q&A uses Appendix A.12.1 instead.
 
-<table class="book-table"><tr><th>Axis</th><th>Score</th><th>Meaning</th></tr><tr><td>Scope</td><td>0</td><td>Jumps to a solution.</td></tr><tr><td></td><td>1</td><td>Asks some questions.</td></tr><tr><td></td><td>2</td><td>Defines population, timeline, and ownership.</td></tr><tr><td>Hypothesis quality</td><td>0</td><td>One explanation.</td></tr><tr><td></td><td>1</td><td>Several guesses.</td></tr><tr><td></td><td>2</td><td>Mechanism-based hypothesis tree.</td></tr><tr><td>Measurement choice</td><td>0</td><td>Lists tests.</td></tr><tr><td></td><td>1</td><td>Lists useful measurements.</td></tr><tr><td></td><td>2</td><td>Chooses by information value and access level.</td></tr><tr><td>Decision quality</td><td>0</td><td>No action.</td></tr><tr><td></td><td>1</td><td>Technical fix only.</td></tr><tr><td></td><td>2</td><td>Containment + correction + prevention.</td></tr><tr><td>Communication</td><td>0</td><td>Rambling.</td></tr><tr><td></td><td>1</td><td>Technically correct but unstructured.</td></tr><tr><td></td><td>2</td><td>Clear executive frame plus engineering depth.</td></tr></table>
 ## Executive communication
 
 Staff answers must travel upward. Use this frame:
@@ -389,7 +388,85 @@ Problem: field fails after passed qual. Impact: (rate / cohort). Evidence: (miss
 
 ##### Deep dive.
 
-Appendix D.3, §8.3, §11.13, Appendix C.13, §8.2. )
+Appendix D.3, §8.3, §11.13, Appendix C.13, §8.2.
+
+## Staged mock interviews
+
+These three cases release evidence only after you ask for the next useful measurement. Do not peek ahead. Cover later stages when practicing alone. Score with Appendix A.12. Chapter spoken Q&A still uses Appendix A.12.1.
+
+### Staged case 1: Fleet BER bursts and collective slowdown
+
+##### Stage 1. Initial symptom.
+
+Collective tail latency rises on an AI training job. Average fabric utilization is normal. One rail shows bursty corrected FEC. Average optical power telemetry is stable. Affected population is a few dozen links on one fabric slice. *Ask:* What would you do first?
+
+##### Stage 2. First evidence release (only after Stage 1 ask).
+
+Lane-resolved FEC shows one optical lane dominates corrected bursts. Host CPU and memory look healthy. A misleading correlation: the weak lane shares a firmware build with many healthy lanes. Waterfall not yet measured. *Ask:* What hypotheses remain, and what would you measure next?
+
+##### Scenario note.
+
+Do not open Stage 3 until you have named a discriminating measurement.
+
+##### Stage 3. Controlled experiment.
+
+Attenuation sweep: BER waterfall is shifted, not floored. Faceplate OMA is low on the weak lane; average power remains in band. Neighbor lanes look normal. Connector reseat improves OMA briefly, then the signature returns under traffic. Reverse module swap moves the symptom with the module. *Ask:* What has been localized, and what is still unconfirmed?
+
+##### Stage 4. Mechanism evidence.
+
+External eye / Tx-quality metric is marginal at the module faceplate. Plant ORL is within the stated budget. FA finds a degraded Tx coupling path on that lane; monitor PD calibration had been masking the drop (Chapter 10, Chapter 5, Chapter 11). *Ask:* What is the mechanism and enabling condition?
+
+##### Stage 5. Decision.
+
+State containment, release or hold, corrective action, recurrence control, and fleet or production monitor. Example skeleton: contain the rail and cohort; hold the lot if genealogy supports it; correct coupling or calibration as owned; add OMA or headroom telemetry and an ATP/proxy that would have caught the mask; keep FEC-burst monitors until rates fall.
+
+### Staged case 2: Production yield loss after a supplier change
+
+##### Stage 1. Initial symptom.
+
+First-pass yield drops after a second-source laser change. Final yield remains high after retest. Failures correlate with one supplier lot. One station processed most of that lot. *Ask:* What would you do first?
+
+##### Stage 2. First evidence release.
+
+Suspect units pass on the lab reference bench after cool-down. Station A reads low OMA relative to Station B on golden units. Misleading correlation: the supplier lot also arrived the same week as a fixture cleaning change. *Ask:* What hypotheses remain, and what would you measure next?
+
+##### Stage 3. Controlled experiment.
+
+Golden and range-spanning units show a station bias after the cleaning change. Rework history shows most first-fail units were retested on Station B and passed. Supplier lot samples on a correlated Station B still meet the written spec, but tails sit closer to the guardband than the previous source (Chapter 9). *Ask:* What has been localized, and what is still unconfirmed?
+
+##### Stage 4. Mechanism evidence.
+
+GR&R and cross-station bias confirm Station A optical-power path drifted after cleaning. Supplier change also reduced OMA margin on the weak tail. Neither alone explains every escape; both matter. *Ask:* What is the mechanism and enabling condition?
+
+##### Stage 5. Decision.
+
+Contain Station A output and the suspect lot; do not change ATP limits to hide bias. Correct station calibration and fixture process; decide second-source release only after distributions and package interaction close the budget; add sampled audit and SPC on the power/OMA proxy; name supplier, station, process, and ATP owners without claiming a single root cause too early.
+
+### Staged case 3: High-temperature WDM unlock
+
+##### Stage 1. Initial symptom.
+
+One wavelength unlocks only under full neighbor activity at high case temperature. The locked flag later recovers. Heater demand is near its rail. Room-temperature BER passes. *Ask:* What would you do first?
+
+##### Stage 2. First evidence release.
+
+Absolute wavelength on the OSA is still near the assigned grid when unlocked BER is high. Lock error grows when neighbors turn on. Misleading correlation: the unlock event also coincides with a host traffic spike. *Ask:* What hypotheses remain, and what would you measure next?
+
+##### Stage 3. Controlled experiment.
+
+With source fixed, neighbor heaters on/off move the suspect ring resonance and rail the heater code. With neighbors off, a case-$T$ ramp alone does not unlock at the same bias. Source TEC sweep with ring fixed does not reproduce the unlock (Chapter 6, §6.5). *Ask:* What has been localized, and what is still unconfirmed?
+
+##### Stage 4. Mechanism evidence.
+
+Thermal coupling matrix shows strong nearest-neighbor terms. Calibration park left little headroom. Loop is stable but saturates under combined neighbor load and case $T$. Mechanism: insufficient control headroom under thermal crosstalk, not a failed laser die. *Ask:* What is the mechanism and enabling condition?
+
+##### Stage 5. Decision.
+
+Contain high-$T$ neighbor-loaded operation or derate until fixed. Correct heater map / feed-forward / thermal design as owned. Recurrence control may be a qualification corner, sampled production audit, ATP proxy on heater headroom, or SPC on the affected process (Chapter 9). Fleet: alarm on heater rail and unlock under neighbor load.
+
+##### Score the staged mocks.
+
+Fail any case that treats a swap, locked flag, date-code correlation, or passing retest as confirmed mechanism without discriminating evidence and a recurrence control.
 
 
 <div class="nav-links">

@@ -257,7 +257,7 @@ The evidence source does not determine the lifecycle step. The engineering quest
 
 > **Before open volume**
 >
-> Step 1 requirements $\cdot$ Step 2 architecture $\cdot$ Step 3 bring-up $\cdot$ Step 4 characterization $\cdot$ Step 5 margin/interop $\cdot$ Step 6 qualification $\cdot$ Step 7 manufacturing/ATP $\cdot$ Step 8 pilot $\cdot$ Step 9--10 fleet control (Appendix D.17, Table 7.2).
+> Step 1 requirements $\cdot$ Step 2 architecture $\cdot$ Step 3 bring-up $\cdot$ Step 4 characterization $\cdot$ Step 5 margin/interop $\cdot$ Step 6 qualification $\cdot$ Step 7 manufacturing/ATP $\cdot$ Step 8 pilot $\cdot$ Step 9--10 fleet control (Appendix D.18, Table 7.2).
 
 For every metric at every step, state measurement, reference plane, condition, access level, and the decision unlocked (§3.9, Appendix A.2, Appendix D.16). Bad: "receiver sensitivity is $-15$ dBm." Good: sensitivity at the module optical input under the named BER target, temperature, wavelength, and FEC assumptions. A number without a plane and a method is not a measurement.
 
@@ -642,7 +642,7 @@ Decision
 Recurrence control</code></pre>
 > **Before debugging**
 >
-> Scope $\cdot$ time behavior $\cdot$ population $\cdot$ power or quality $\cdot$ highest-value measurement $\cdot$ decision $\cdot$ recurrence control (Appendix D.17).
+> Scope $\cdot$ time behavior $\cdot$ population $\cdot$ power or quality $\cdot$ highest-value measurement $\cdot$ decision $\cdot$ recurrence control (Appendix D.18).
 
 > **Engineering heuristic.** A passing BER on a golden host is not production readiness. Interop, margin, and manufacturing control still have their own questions.
 

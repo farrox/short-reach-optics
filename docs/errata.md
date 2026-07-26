@@ -159,6 +159,15 @@ No new frameworks. Structural relocation of existing material is allowed.
   claims and external-laser FIT wording; corrected neighbor-load recurrence
   control (not automatic ATP). Replaced three self-test questions with 12 compact
   Spoken/Pressure/Trap questions (`sec:wdm-interview-qa`). PDF about 421 pages.
+- **Appendix interview-practice update:** App~A gains a Weak/Competent/Staff
+  worked scoring example on the shared chapter spoken rubric
+  (`sec:chapter-rubric-example`). Glossary Rapid Interview Checks
+  (`sec:glossary-rapid-checks`). App~D Decision-Tree Interview Drills (8 scenarios)
+  plus tree/swap/retest boundary language (`sec:tree-interview-drills`). App~B
+  staged mock interviews (fleet BER bursts, yield after supplier change, hot WDM
+  unlock) scored with the case rubric; slimmed `sec:case-grading` to an App~A
+  pointer. No second lifecycle or appendix 12-question Interview Q\&A. PDF about
+  427 pages.
 
 ## Typographical fixes
 

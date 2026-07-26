@@ -945,6 +945,70 @@ RS sublayer / RS-FEC
 
 : RS sublayer is Reconciliation; RS-FEC is Reed--Solomon forward error correction in the PCS.
 
+## Rapid Interview Checks
+
+Short prompts for interview recall. Answer in one or two sentences, then check yourself. Detail lives in the owning chapter, not here. Score spoken chapter answers with Appendix A.12.1.
+
+##### Prompt.
+
+What must accompany a receiver-sensitivity number?\
+*Check.* Optical reference plane, BER or FEC condition, modulation format, pattern, wavelength, temperature, and measurement method (Chapter 7).\
+*Common confusion.* Treating "$-15$ dBm sensitivity" as a complete system requirement.
+
+##### Prompt.
+
+What does average optical power establish that OMA does not?\
+*Check.* Mean launched energy. OMA describes modulation amplitude; neither alone proves eye quality or receiver margin (Chapter 5).\
+*Common confusion.* Using a passing average-power reading to clear a BER failure.
+
+##### Prompt.
+
+Does a bad TDECQ identify a unique root cause?\
+*Check.* No. TDECQ is a composite transmitter-quality metric relative to a reference receiver; it does not by itself name laser noise, modulator bias, driver bandwidth, or reflections (Chapter 5, Chapter 7).\
+*Common confusion.* Treating TDECQ as a mechanism.
+
+##### Prompt.
+
+How do characterization, verification, validation, qualification, and ATP differ?\
+*Check.* Characterization maps behavior; verification checks a frozen requirement; validation asks whether the product works for intended use; qualification bounds life and environment risk; ATP detects unacceptable units in production (Chapter 7, Chapter 8, Chapter 9).\
+*Common confusion.* Calling them "levels of testing."
+
+##### Prompt.
+
+What is the difference between FIT and DPPM?\
+*Check.* FIT is a failure rate per $10^9$ device-hours; DPPM is a fraction of defective units in a population and window (Chapter 8, Chapter 9).\
+*Common confusion.* Using FIT and DPPM as interchangeable quality scores.
+
+##### Prompt.
+
+What do $C_p$ and $C_{pk}$ tell you?\
+*Check.* Process capability versus specification width; $C_{pk}$ also accounts for centering. They do not replace ATP limits or prove field life (Chapter 9).\
+*Common confusion.* High $C_{pk}$ as proof that the product will not fail in the fleet.
+
+##### Prompt.
+
+Capture versus hold in wavelength control?\
+*Check.* Capture acquires the intended wavelength or resonance from an unlocked state; hold rejects disturbances after lock (Chapter 6).\
+*Common confusion.* Cold-start capture as proof of operational hold.
+
+##### Prompt.
+
+Failure mode versus mechanism; observation versus correlation?\
+*Check.* A mode is how the product fails externally; a mechanism is the physics or process that produces it. Observation is what you measured; correlation is association without ownership confirmation (Chapter 11).\
+*Common confusion.* Treating a surviving hypothesis as confirmed root cause.
+
+##### Prompt.
+
+Containment versus corrective action versus recurrence control?\
+*Check.* Containment limits blast radius now; corrective action fixes the enabling condition; recurrence control is the lasting detection or process change (Chapter 11, Chapter 9).\
+*Common confusion.* Closing an incident after a retest pass alone.
+
+##### Prompt.
+
+Retrain versus link flap; reliability versus availability?\
+*Check.* A retrain is a recovery sequence; a flap is repeated loss-of-service. Reliability is failure rate over time; availability also depends on detection and repair time (Chapter 10, Chapter 8).\
+*Common confusion.* Counting every retrain as a hard optical failure, or equating low FIT with high availability.
+
 
 <div class="nav-links">
   <a href="ch17-how-staff-engineers-think">&larr; Previous</a>
