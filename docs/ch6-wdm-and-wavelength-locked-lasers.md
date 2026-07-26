@@ -7,6 +7,16 @@ title: "Ch 6: WDM and wavelength-locked lasers"
 
 Early datacenter optics mostly ran one wavelength per fiber. That worked while port counts were modest. At AI scale, fiber count itself becomes a first-order cost and cable-plant problem, so the industry packed more channels onto each strand. The price of that packing is control: once channel spacing tightens, or once the modulator is a wavelength-selective ring, someone must keep laser and filter locked together. Few phrases carry as much architectural information as "wavelength-locked laser," because locking only appears under those interconnect choices. Ring and MZM device physics stay in §3.14.3; per-$\lambda$ laser ATP and aging stay in Chapter 5. This chapter covers grids, lock loops, thermal crosstalk, MUX budget, and CW-WDM architecture.
 
+> **Tradeoff.** Dense WDM vs lock complexity
+>
+> *Improves:* Fiber count, faceplate density, and bandwidth per strand
+>
+> *Worsens:* Heaters, TEC, lock firmware, thermal crosstalk, and ATP unlock corners
+>
+> *When acceptable:* When fiber plant or connector count is the binding constraint
+>
+> *Experienced decision:* Pay for locking only when multiplexing is worth the control burden.
+
 ## Why multiplex wavelengths at all
 
 At $100{,}000$+ accelerator scale, every extra fiber is another connector, another patch, and another failure mode. *Wavelength-division multiplexing* (WDM) puts many independent channels on a single fiber, each on its own wavelength, so bandwidth per fiber rises without adding fiber. Each wavelength can still be an ordinary IM/DD channel. WDM and IM/DD are orthogonal; you simply run IM/DD *per wavelength*.

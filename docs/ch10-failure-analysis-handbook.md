@@ -13,6 +13,36 @@ This chapter is a symptom-first field guide. Start with what the bench, producti
 
 > **Engineering heuristic.** If two explanations fit equally well, prefer the one that requires the fewest independent failures.
 
+> **Tradeoff.** Contain now vs wait for FA
+>
+> *Improves:* Stops a growing population and limits fleet damage
+>
+> *Worsens:* May pause good material and spend political capital
+>
+> *When acceptable:* When cohort evidence shows growth and impact is material
+>
+> *Experienced decision:* Contain first when the population can grow. Perfect mechanism stories do not unship yesterday's lot.
+
+> **Tradeoff.** Customer realism vs diagnostic visibility
+>
+> *Improves:* Bookended evidence matches field ownership
+>
+> *Worsens:* Slower root-cause isolation without breakout samples
+>
+> *When acceptable:* When the next decision is contain, derate, or supplier hold, not die-level physics
+>
+> *Experienced decision:* Stay black-box until deeper access changes the decision (Appendix A.8.7, Appendix D.11).
+
+> **Tradeoff.** Deep FA vs ship with a control
+>
+> *Improves:* Physical confirmation and supplier leverage
+>
+> *Worsens:* Calendar cost and delayed learning if the control already catches the signature
+>
+> *When acceptable:* When the ATP or telemetry control already bounds escape risk
+>
+> *Experienced decision:* Do not block every ship on teardown. Close with a control when confidence is enough for the decision.
+
 ##### Failure-analysis output categories.
 
 Every FA result should land in one bucket before the case closes:
@@ -490,6 +520,16 @@ Use time scale and recovery to route the incident. A reversible shift during a t
 4.  Update the power, noise, timing, spectral, and control ledgers (§5.19). Several small shifts can explain a BER failure even when each component remains inside its stand-alone limit.
 
 5.  Route reversible thermal loss to cooling, control, calibration, or derating. Route cumulative change to HTOL and life-model review. Route lot-clustered permanent steps to manufacturing failure analysis.
+
+> **Tradeoff.** More optical margin vs cost and power
+>
+> *Improves:* Survives temperature, aging, and plant loss without redesign
+>
+> *Worsens:* Watts, heat, and sometimes lifetime (§5.19)
+>
+> *When acceptable:* When the spent ledger is still uncertain after isolation
+>
+> *Experienced decision:* Add margin only on the ledger that is actually empty; do not raise launch power by habit.
 
 The corrective action must restore margin at combined corners. A room-temperature retest does not close a high-temperature incident, and one clean HTOL readout does not explain a reversible lock failure.
 

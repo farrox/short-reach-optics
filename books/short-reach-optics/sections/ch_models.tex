@@ -276,6 +276,12 @@ conditions, not a complete description of whether the link closes. A link that
 equalizer is saturated. Always close the full link budget
 (\Cref{sec:link-budget}), not just the power line.
 
+\tradeoff{Better receiver sensitivity vs receiver complexity}{APD gain, stronger
+DSP, deeper equalization, or quieter optics can close a tight budget}{Power,
+latency, calibration burden, and reliability of the more complex path}{When the
+sensitivity line is the true limiting ledger after Tx and plant are sound}{Improve
+the weakest link, not the most visible datasheet metric.}
+
 \subsection{OMA versus average power}
 
 Two links may have identical average optical power but different BER. The reason

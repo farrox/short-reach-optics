@@ -438,6 +438,12 @@ Each ``Specs you must freeze early'' cell is the exit criterion for that fork.
 \textbf{Exit when} every active fork has numbers (or explicit N/A) before DVT
 samples are built.
 
+\tradeoff{On-package laser vs field-replaceable ELS}{Integration density and
+fewer optical connectors}{Package FIT, service downtime, and thermal risk next
+to the ASIC}{When laser FIT times link count exceeds the service model}{Choose
+replaceability when fleet repair time dominates; choose on-package when
+connectors and mate cycles dominate.}
+
 \paragraph{One-page requirements slice.}
 \Cref{tab:laser-prd} is the PRD-sized list. Fill every row with a number (or an
 explicit ``N/A for this architecture'') before you negotiate ATP limits. Do not
@@ -475,6 +481,12 @@ FIT / life & Fleet failures/day target (\Cref{sec:fit-example}) & GR-468 + $E_a$
 \par\medskip
 {\raggedright\footnotesize\textbf{Table~\thetable.} Laser requirements one-pager. Every
 cell needs a program number; this table is the structure, not the limits.\par}
+
+\tradeoff{Higher optical power vs lifetime}{Link margin and reach under loss and
+aging}{Thermal stress, COD risk, wall-plug efficiency, and cooling load}{When
+power is the only remaining debit and the life model still closes at the new
+setpoint}{Do not solve every BER problem with more launch. Often noise, alignment,
+DSP, or coupling is the cheaper fix.}
 \end{table*}
 
 \paragraph{How to fill numbers (method, not invention).}
@@ -827,6 +839,11 @@ Each signature should appear in the ATP and in field telemetry triage
 
 Lasers wear out. At fleet scale that is not a footnote; it sets architecture
 (ELSFP vs.\ integrated laser) and operating policy (derating, burn-in).
+
+\tradeoff{FIT claim vs sample humility}{A crisp fleet failure-rate story for
+planning}{Overconfidence when sample-hours, lots, and sites are thin}{When the
+bound, observation time, and population are stated with the claim}{Publish an
+upper bound with assumptions, or do not claim a FIT number.}
 
 \paragraph{Arrhenius life projection.}
 \firstterm{Arrhenius} Telcordia GR-468-CORE qualifies optoelectronic parts with
@@ -1279,6 +1296,13 @@ ledger is nearly empty.}
 
 \heuristic{A railed heater, TEC, or bias DAC is often the failure before the
 diode is. Check control margin before you write a wear-out FIT story.}
+
+\tradeoff{More optical margin vs cost and power}{Reach, temperature tolerance,
+aging headroom, and contamination tolerance}{Laser power, thermal load, wall-plug
+efficiency, and sometimes component lifetime}{When a named uncertainty (aging,
+ORL, lot spread) still dominates the remaining risk}{Do not maximize margin.
+Allocate margin where uncertainty is highest. A predictable 1~dB connector loss
+often needs less attention than an unknown aging mechanism.}
 
 \begin{dectree}
 Nominal system margin

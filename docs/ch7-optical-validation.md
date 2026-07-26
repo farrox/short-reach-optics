@@ -230,6 +230,16 @@ Continue into characterization, or stop and debug integration.
 
 Deep failure analysis before basic operation. Treating loaded chassis corners as bring-up exit evidence. Spending weeks optimizing TDECQ on a part that never reliably links in a real chassis.
 
+> **Tradeoff.** Bring-up speed vs characterization depth
+>
+> *Improves:* Faster path into margin work
+>
+> *Worsens:* Missing baselines that make later BER tickets uninterpretable
+>
+> *When acceptable:* When the unit already links and emits in class on the target host
+>
+> *Experienced decision:* Do not skip characterization to "save time." Without a baseline, margin and FA burn calendar later.
+
 ### Characterization
 
 ##### Purpose.
@@ -348,6 +358,16 @@ Manufacturing
 > $-$ manufacturing variation\
 > $=$ remaining field margin
 
+> **Tradeoff.** More optical margin vs cost and power
+>
+> *Improves:* Reach and corner tolerance under temperature, aging, and plant loss
+>
+> *Worsens:* Laser power, thermal load, and efficiency (§5.19)
+>
+> *When acceptable:* When a named uncertainty still dominates the remaining risk
+>
+> *Experienced decision:* Allocate margin where uncertainty is highest; do not maximize every ledger equally.
+
 Do not subtract the same physical effect twice under two names. If ORL stress is already in the loaded corner, do not also invent a second reflection tax without new evidence.
 
 ##### Exit criteria.
@@ -371,6 +391,16 @@ A component can pass validation and still fail as a system. Prove supported host
 ##### What uncertainty remains?
 
 Margin on a golden host does not prove the supported ecosystem.
+
+> **Tradeoff.** Golden-host speed vs interop risk
+>
+> *Improves:* Fast bring-up and clean debug on a known good station
+>
+> *Worsens:* Hidden host, firmware, or plant sensitivity until volume
+>
+> *When acceptable:* When golden-host data are a stage gate, not the exit criteria for the ecosystem
+>
+> *Experienced decision:* Use golden hosts for speed; require representative hosts before calling interop done.
 
 ##### Inputs.
 
@@ -1115,6 +1145,16 @@ Each corner
 
 ##### System bring-up.
 
+> **Tradeoff.** Best laboratory performance vs production yield
+>
+> *Improves:* Hero samples that win bench demos
+>
+> *Worsens:* Tighter tolerances, harder calibration, and escapes in volume
+>
+> *When acceptable:* When the manufacturable design still meets the system requirement with guardband
+>
+> *Experienced decision:* Optimize the system and the yield story, not the best component on a quiet bench.
+
 A module that passes on a golden host can still fail in a real chassis:
 
 - **Host path:** run the same sequence on the target NIC/switch ASIC SerDes, not only the lab BERT. LPO and half-retimed modules expose host FIR/CTLE mistakes that a retimed module hid (§9.5.1, §9.3).
@@ -1191,6 +1231,16 @@ Lab debug asks: *what is broken on this unit?* Fleet triage asks: *which bucket 
 > *Usually:* thermal margin, wavelength or lock drift, bias tables, receiver noise rise, or mechanics that move with case temperature
 >
 > *Not:* a permanent wear-out mechanism already proven by ship LIV alone
+
+> **Tradeoff.** More telemetry vs operational complexity
+>
+> *Improves:* Faster fleet debug, better cohort plots, earlier prediction
+>
+> *Worsens:* Firmware cost, storage, and interpretation burden
+>
+> *When acceptable:* When each new field answers a named decision
+>
+> *Experienced decision:* Every telemetry field needs an owner and a decision it enables. Otherwise it is noise.
 
 ##### Three buckets.
 

@@ -111,6 +111,46 @@ A good engineer does not immediately request destructive analysis. Maximize info
 
 > **Engineering heuristic.** Pick the next measurement by information value per cost, not by instrument prestige (Appendix B.1).
 
+### Deciding under uncertainty
+
+Experienced engineers often decide before certainty exists. That is not recklessness. It is matching evidence strength to impact, reversibility, delay cost, and confidence. Use the same Staff loop (Appendix A.1); do not invent a second process.
+
+Ask four questions before you act:
+
+- What is the impact if we are wrong?
+
+- How reversible is the action?
+
+- What does delay cost (escapes, schedule, learning)?
+
+- How strong is the evidence now (observation, correlation, hypothesis, confirmation)?
+
+Stopping shipment is high impact and hard to reverse, so it needs stronger evidence. Adding a telemetry field or a dwell is low impact and easy to reverse, so weaker evidence can still justify it. Practice narratives live in Appendix B.
+
+> **Decision example.** Should we stop deployment of a suspect lot?
+>
+> *Evidence:* One manufacturing lot shows rising pre-FEC BER; average power is stable; sibling lots on the same hosts look healthy; the cohort is growing
+>
+> *Decision:* Pause shipment and field install of the affected lot; keep good lots moving
+>
+> *Why:* Containment is reversible. Waiting for perfect FA while the population grows is not.
+
+> **Decision example.** Should we redesign the module?
+>
+> *Evidence:* One corner failure; mechanism still unknown; no lot or host correlation yet
+>
+> *Decision:* Do not redesign yet. Increase evidence: scope, power-versus-quality fork, and the cheapest separating measurement
+>
+> *Why:* A redesign is expensive and slow. Unknown mechanism plus one unit is not enough to move the architecture.
+
+> **Decision example.** Should we add more telemetry before the next pilot?
+>
+> *Evidence:* Fleet triage is slow; lot and actuator fields are missing; storage budget is available
+>
+> *Decision:* Add the minimum fields that unlock contain versus monitor decisions, with owners
+>
+> *Why:* The action is reversible and cheap compared with another week of blind RMAs (Appendix C.14).
+
 ## Four principles
 
 **Principle 1: Engineering reduces uncertainty.**
@@ -485,6 +525,16 @@ Every environmental or use stress consumes part of the system margin: temperatur
 ### Customer view versus vendor view
 
 The vendor designs internals. The customer characterizes externally observable behavior. As a customer you often do not need laser threshold, driver architecture, or TIA topology. You measure BER, sensitivity, FEC statistics, launch and receive power, telemetry, and environmental response; eye metrics when engineering access exists. If the product is a black box, qualification focuses on that external surface. If engineering samples are available, request transmitter-only, receiver-only, breakout, or diagnostic hardware to isolate Tx and Rx margins independently. Keep the view explicit in second-source and qualification answers (Appendix D.11, Appendix A.10.5).
+
+> **Tradeoff.** Customer realism vs diagnostic visibility
+>
+> *Improves:* Bookended tests match the deployed product and ownership model
+>
+> *Worsens:* Limited root-cause visibility without engineering samples
+>
+> *When acceptable:* When black-box evidence already unlocks contain, derate, or supplier action
+>
+> *Experienced decision:* Use black-box evidence first. Request deeper access only when it changes the decision.
 
 ### Know what each instrument answers
 

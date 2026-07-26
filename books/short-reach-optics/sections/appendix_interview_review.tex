@@ -114,6 +114,47 @@ know what question the tear-down must answer.}
 \heuristic{Pick the next measurement by information value per cost, not by
 instrument prestige (\Cref{sec:case-info-value}).}
 
+\subsection{Deciding under uncertainty}
+\label{sec:interview-decide-uncertainty}
+
+Experienced engineers often decide before certainty exists. That is not
+recklessness. It is matching evidence strength to impact, reversibility, delay
+cost, and confidence. Use the same Staff loop
+(\Cref{sec:interview-staff-pattern}); do not invent a second process.
+
+Ask four questions before you act:
+
+\begin{itemize}
+\item What is the impact if we are wrong?
+\item How reversible is the action?
+\item What does delay cost (escapes, schedule, learning)?
+\item How strong is the evidence now (observation, correlation, hypothesis,
+      confirmation)?
+\end{itemize}
+
+Stopping shipment is high impact and hard to reverse, so it needs stronger
+evidence. Adding a telemetry field or a dwell is low impact and easy to reverse,
+so weaker evidence can still justify it. Practice narratives live in
+\Cref{app:case-studies}.
+
+\decisionex{Should we stop deployment of a suspect lot?}{One manufacturing lot
+shows rising pre-FEC BER; average power is stable; sibling lots on the same hosts
+look healthy; the cohort is growing}{Pause shipment and field install of the
+affected lot; keep good lots moving}{Containment is reversible. Waiting for
+perfect FA while the population grows is not.}
+
+\decisionex{Should we redesign the module?}{One corner failure; mechanism still
+unknown; no lot or host correlation yet}{Do not redesign yet. Increase evidence:
+scope, power-versus-quality fork, and the cheapest separating measurement}{A
+redesign is expensive and slow. Unknown mechanism plus one unit is not enough to
+move the architecture.}
+
+\decisionex{Should we add more telemetry before the next pilot?}{Fleet triage is
+slow; lot and actuator fields are missing; storage budget is available}{Add the
+minimum fields that unlock contain versus monitor decisions, with owners}{The
+action is reversible and cheap compared with another week of blind RMAs
+(\Cref{fw:telemetry}).}
+
 \section{Four principles}
 \label{sec:interview-philosophy}
 
@@ -761,6 +802,12 @@ available, request transmitter-only, receiver-only, breakout, or diagnostic
 hardware to isolate Tx and Rx margins independently. Keep the view explicit
 in second-source and qualification answers
 (\Cref{sec:tree-blackbox-access,sec:interview-worked-second-source}).
+
+\tradeoff{Customer realism vs diagnostic visibility}{Bookended tests match the
+deployed product and ownership model}{Limited root-cause visibility without
+engineering samples}{When black-box evidence already unlocks contain, derate, or
+supplier action}{Use black-box evidence first. Request deeper access only when it
+changes the decision.}
 
 \subsection{Know what each instrument answers}
 

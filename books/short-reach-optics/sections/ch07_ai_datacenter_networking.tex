@@ -376,6 +376,12 @@ hardware specs (QSFP-DD, OSFP cages) set the mechanical envelope. The MSA's job
 is to define what must pass at each interface between those blocks so modules
 from different vendors close on the same host.
 
+\tradeoff{Retimed module vs LPO host burden}{Module watts and faceplate density
+when DSP leaves the module}{Host SerDes margin, equalization depth, and interop
+risk on every platform}{When host channels and thermal budgets are proven for
+the linear path}{Pay for retimers when host margin is the scarce resource; delete
+them when watts dominate and the host can own EQ and FEC.}
+
 \paragraph{The test-point ladder.}
 LPO MSA normative compliance is organized around six electrical/optical test
 points (\Cref{tab:lpo-tp}), the concrete instance of the general TP0-to-TP5 planes
@@ -862,6 +868,11 @@ while one optical lane sets the job tail.}
 
 \heuristic{Judge the fabric by delivered step time and collective tail, not by
 aggregate port rate on a clean bench.}
+
+\tradeoff{More telemetry vs operational complexity}{Faster isolation of weak
+rails and lot-scoped escapes}{Storage, firmware, and false-alarm load}{When each
+field maps to a triage decision and an owner}{Instrument ledgers that unlock
+contain or repair; skip vanity counters (\Cref{fw:telemetry}).}
 
 \section{Fabric options}
 \label{sec:fabric-protocols}

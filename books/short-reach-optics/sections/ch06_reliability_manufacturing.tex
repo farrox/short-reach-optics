@@ -103,6 +103,11 @@ evidence under accelerated operation; a production burn-in is a manufacturing
 screen only when separation, cycle time, and cost justify it. Do not imply that
 every GR-468-style HTOL is a per-unit screen.
 
+\tradeoff{More qualification stress vs schedule}{Mechanism coverage and life
+confidence}{Calendar delay and engineering bandwidth}{When the open risk is a
+named mechanism without a production proxy}{Buy the next stress that removes the
+largest remaining uncertainty, then stop.}
+
 \term{Arrhenius} acceleration underpins life projection only when the named
 failure mechanism is temperature-accelerated in the assumed regime: raising
 temperature accelerates wear-out by a factor set by the activation energy for
@@ -170,6 +175,11 @@ observation time, and confidence is not a fleet claim.
 
 \heuristic{A small sample that saw zero failures does not prove field life. It
 sets an upper bound. State that bound, or do not make the claim.}
+
+\tradeoff{More qualification vs faster release}{Confidence and fewer late
+escapes}{Schedule, cost, and delayed learning in the field}{When remaining risk
+is high and reversible controls cannot cover it}{Prioritize tests by risk
+$\times$ uncertainty $\times$ impact. Do not test everything equally.}
 
 \paragraph{GR-1221: the passive-component companion.}
 GR-468 covers active optoelectronics. Its companion, \term{Telcordia GR-1221-CORE}
@@ -902,6 +912,17 @@ are directly available and correlated to escape risk, they may be 100\% screens.
 For closed modules, use the validated module-level proxy or a documented sampling
 plan (\Cref{sec:cmis,sec:laser-safety,tab:atp-laser}).
 
+\tradeoff{More production screening vs cost}{Escape detection and earlier
+catch}{Cycle time, tester cost, and false rejects that burn good units}{When a
+named mechanism has a cheap, reliable detection signature}{Choose the cheapest
+control that reliably detects the failure mode: 100\% ATP, sample audit, SPC,
+or supplier process control.}
+
+\tradeoff{Burn-in vs cycle time}{Infant-mortality removal when the screen
+separates}{Line capacity, cost, and stress on healthy units}{When escape data
+and mechanism justify the screen on this population}{Keep burn-in only while it
+buys escapes you cannot catch cheaper elsewhere.}
+
 \subsection{Where the test happens: wafer, die, module, system}
 
 Push defect detection as far upstream as correlation allows. Wafer-level or PIC
@@ -961,6 +982,16 @@ beat another night on one returned unit.}
 
 \heuristic{Ask for the process change list before you invent new physics. Most
 lot escapes sit next to a real change record.}
+
+\tradeoff{Second source vs qualification burden}{Supply resilience and pricing
+leverage}{Validation, interop matrix, and manufacturing differences}{When supply
+or concentration risk exceeds the qual cost}{Qualify second sources based on
+risk and evidence, not ideology.}
+
+\tradeoff{Best laboratory performance vs production yield}{Peak component
+metrics on engineering lots}{Lower yield, harder calibration, and field
+escapes}{When a slightly softer design still meets system requirements with
+process control}{Optimize the manufacturable system, not the hero sample.}
 
 \begin{dectree}
 Design requirements

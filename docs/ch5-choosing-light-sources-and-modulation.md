@@ -247,12 +247,32 @@ Each architecture decision forces a different requirements set (Table 5.3):
 
 Each "Specs you must freeze early" cell is the exit criterion for that fork. **Exit when** every active fork has numbers (or explicit N/A) before DVT samples are built.
 
+> **Tradeoff.** On-package laser vs field-replaceable ELS
+>
+> *Improves:* Integration density and fewer optical connectors
+>
+> *Worsens:* Package FIT, service downtime, and thermal risk next to the ASIC
+>
+> *When acceptable:* When laser FIT times link count exceeds the service model
+>
+> *Experienced decision:* Choose replaceability when fleet repair time dominates; choose on-package when connectors and mate cycles dominate.
+
 ##### One-page requirements slice.
 
 Table 5.4 is the PRD-sized list. Fill every row with a number (or an explicit "N/A for this architecture") before you negotiate ATP limits. Do not leave RIN without an ORL, or power without a case-temperature class.
 
 <table class="book-table"><tr><th>Parameter</th><th>How to set the number</th><th>Measure / ATP</th><th>Reject if</th><th>Derate / ops note</th></tr><tr><td>Launch power / class</td><td>Link budget + connector loss + aging margin (sec:link-budget)</td><td>Power meter; ELSFP class</td><td>Below min at rated T</td><td>Cap max power for COD</td></tr><tr><td>Wavelength / grid</td><td>PMD or ring FSR plan; d/dT headroom (ch:wdm)</td><td>OSA / wavemeter</td><td>Off-grid at case T</td><td>TEC setpoints</td></tr><tr><td>SMSR floor</td><td>Datasheet + modal-noise budget</td><td>OSA</td><td>Below floor at T</td><td>Watch aging</td></tr><tr><td>RIN (quiet + stressed)</td><td>BER floor vs BW (sec:rin); ORL from plant</td><td>PD+ESA; stated ORL</td><td>Above limit at ORL</td><td>Bias-driver noise budget (sec:laser-drivers)</td></tr><tr><td>Bias window</td><td>LIV kink-free range at max case T</td><td>LIV</td><td>Kink in window</td><td>Run below abs-max I</td></tr><tr><td>EAM / MZM (if any)</td><td>ER, RLM, TDECQ at baud (sec:tdecq)</td><td>DCA + bias sweep</td><td>TDECQ/RLM fail</td><td>Bias aging policy</td></tr><tr><td>ORL / isolator</td><td>Architecture: isolator-free needs tighter RIN</td><td>ORL meter; mate cycles</td><td>ORL out of range</td><td>Cleaning / ELS mate life</td></tr><tr><td>CMIS monitors</td><td>What fleet triage will read (sec:fleet-triage)</td><td>CMIS dump</td><td>Missing alarms / bad state machine</td><td>Enable sequence (sec:bringup)</td></tr><tr><td>FIT / life</td><td>Fleet failures/day target (sec:fit-example)</td><td>GR-468 + E_a</td><td>Screen escape</td><td>Burn-in depth; ELS replace</td></tr></table>
 **Table 5.4.** Laser requirements one-pager. Every cell needs a program number; this table is the structure, not the limits.
+
+> **Tradeoff.** Higher optical power vs lifetime
+>
+> *Improves:* Link margin and reach under loss and aging
+>
+> *Worsens:* Thermal stress, COD risk, wall-plug efficiency, and cooling load
+>
+> *When acceptable:* When power is the only remaining debit and the life model still closes at the new setpoint
+>
+> *Experienced decision:* Do not solve every BER problem with more launch. Often noise, alignment, DSP, or coupling is the cheaper fix.
 
 ##### How to fill numbers (method, not invention).
 
@@ -438,6 +458,16 @@ Each signature should appear in the ATP and in field telemetry triage (§7.12, �
 ## Aging curves, derating, and fleet FIT
 
 Lasers wear out. At fleet scale that is not a footnote; it sets architecture (ELSFP vs. integrated laser) and operating policy (derating, burn-in).
+
+> **Tradeoff.** FIT claim vs sample humility
+>
+> *Improves:* A crisp fleet failure-rate story for planning
+>
+> *Worsens:* Overconfidence when sample-hours, lots, and sites are thin
+>
+> *When acceptable:* When the bound, observation time, and population are stated with the claim
+>
+> *Experienced decision:* Publish an upper bound with assumptions, or do not claim a FIT number.
 
 ##### Arrhenius life projection.
 
@@ -669,6 +699,16 @@ Recompute the link at combined production corners. A nominal part at nominal tem
 > Because links usually fail when several small spends add up. One room-temperature pass/fail hides which ledger is nearly empty.
 
 > **Engineering heuristic.** A railed heater, TEC, or bias DAC is often the failure before the diode is. Check control margin before you write a wear-out FIT story.
+
+> **Tradeoff.** More optical margin vs cost and power
+>
+> *Improves:* Reach, temperature tolerance, aging headroom, and contamination tolerance
+>
+> *Worsens:* Laser power, thermal load, wall-plug efficiency, and sometimes component lifetime
+>
+> *When acceptable:* When a named uncertainty (aging, ORL, lot spread) still dominates the remaining risk
+>
+> *Experienced decision:* Do not maximize margin. Allocate margin where uncertainty is highest. A predictable 1 dB connector loss often needs less attention than an unknown aging mechanism.
 
 <pre class="dectree" aria-label="Nominal system margin"><code>Nominal system margin
   |

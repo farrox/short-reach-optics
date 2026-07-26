@@ -60,6 +60,16 @@ Optoelectronics inherited a common qualification language from telecom: *Telcord
 
 Keep the jobs distinct: **burn-in** screens infant mortality from a production population; **qualification HTOL** gathers life or mechanism evidence under accelerated operation; a production burn-in is a manufacturing screen only when separation, cycle time, and cost justify it. Do not imply that every GR-468-style HTOL is a per-unit screen.
 
+> **Tradeoff.** More qualification stress vs schedule
+>
+> *Improves:* Mechanism coverage and life confidence
+>
+> *Worsens:* Calendar delay and engineering bandwidth
+>
+> *When acceptable:* When the open risk is a named mechanism without a production proxy
+>
+> *Experienced decision:* Buy the next stress that removes the largest remaining uncertainty, then stop.
+
 *Arrhenius* acceleration underpins life projection only when the named failure mechanism is temperature-accelerated in the assumed regime: raising temperature accelerates wear-out by a factor set by the activation energy for that mechanism. Do not apply one $E_a$ to mixed mechanisms.
 
 ##### GR-468 in practice.
@@ -82,6 +92,16 @@ Interview and wall-chart form of the same path: Appendix C.15, Appendix D.3.
 Weak answer: "We test 20 units." Strong answer: the sample strategy depends on the failure-rate target, the confidence requirement, cost, and population variation. State lots, date codes, suppliers, manufacturing sites or lines, process corners, and whether the claim is zero-failure upper-bound or observed rate (§8.1, Appendix D.16). A rate without population, observation time, and confidence is not a fleet claim.
 
 > **Engineering heuristic.** A small sample that saw zero failures does not prove field life. It sets an upper bound. State that bound, or do not make the claim.
+
+> **Tradeoff.** More qualification vs faster release
+>
+> *Improves:* Confidence and fewer late escapes
+>
+> *Worsens:* Schedule, cost, and delayed learning in the field
+>
+> *When acceptable:* When remaining risk is high and reversible controls cannot cover it
+>
+> *Experienced decision:* Prioritize tests by risk $\times$ uncertainty $\times$ impact. Do not test everything equally.
 
 ##### GR-1221: the passive-component companion.
 
@@ -435,6 +455,26 @@ Destructive physical analysis (cross-section, EDX) and structured 8D/CAPA with s
 
 Every second in the acceptance test plan (ATP) times millions of units is line capacity and real money. Every skipped measurement creates uncontrolled escape risk; it is not automatically a field DPPM event (§8.1). The core tension in high-volume manufacturing is how much coverage you buy per second. The expensive optical steps are thermal soak and corner runs, TDECQ on a sampling scope, BER dwell long enough to trust a low pre-FEC target, laser burn-in, and mate-cycle stress on ELSFP connectors. Some screens are statistical (sample burn-in from a lot, audit TDECQ on a subset). Safety and enable-sequence faults usually require 100% coverage. For source-level production where LIV or SMSR are directly available and correlated to escape risk, they may be 100% screens. For closed modules, use the validated module-level proxy or a documented sampling plan (§7.8, §5.15, Table 8.6).
 
+> **Tradeoff.** More production screening vs cost
+>
+> *Improves:* Escape detection and earlier catch
+>
+> *Worsens:* Cycle time, tester cost, and false rejects that burn good units
+>
+> *When acceptable:* When a named mechanism has a cheap, reliable detection signature
+>
+> *Experienced decision:* Choose the cheapest control that reliably detects the failure mode: 100% ATP, sample audit, SPC, or supplier process control.
+
+> **Tradeoff.** Burn-in vs cycle time
+>
+> *Improves:* Infant-mortality removal when the screen separates
+>
+> *Worsens:* Line capacity, cost, and stress on healthy units
+>
+> *When acceptable:* When escape data and mechanism justify the screen on this population
+>
+> *Experienced decision:* Keep burn-in only while it buys escapes you cannot catch cheaper elsewhere.
+
 ### Where the test happens: wafer, die, module, system
 
 Push defect detection as far upstream as correlation allows. Wafer-level or PIC probe catches process shifts (waveguide loss, ring resonance drift, bad heaters) before fiber attach and packaging spend. Killing a bad die at probe is orders of magnitude cheaper than an RMA (§8.8). Module ATP is the full functional test: optical power class, TDECQ or proxy, sensitivity spot-check, CMIS bring-up, and connector/ORL on ELS parts. System or golden-host bring-up catches interop: media type, firmware rev, equalizer defaults, and the corners in §7.9. Wafer test cannot catch fiber attach, FAU alignment, epoxy creep, or connector wear. Those failures must survive to module ATP and, for some signatures, to fleet telemetry (§7.12).
@@ -478,6 +518,26 @@ The supplier path is milestones, performance targets, quality, and manufacturabi
 > Because manufacturing escapes almost always correlate with process history. Lot, date code, site, and firmware tags often beat another night on one returned unit.
 
 > **Engineering heuristic.** Ask for the process change list before you invent new physics. Most lot escapes sit next to a real change record.
+
+> **Tradeoff.** Second source vs qualification burden
+>
+> *Improves:* Supply resilience and pricing leverage
+>
+> *Worsens:* Validation, interop matrix, and manufacturing differences
+>
+> *When acceptable:* When supply or concentration risk exceeds the qual cost
+>
+> *Experienced decision:* Qualify second sources based on risk and evidence, not ideology.
+
+> **Tradeoff.** Best laboratory performance vs production yield
+>
+> *Improves:* Peak component metrics on engineering lots
+>
+> *Worsens:* Lower yield, harder calibration, and field escapes
+>
+> *When acceptable:* When a slightly softer design still meets system requirements with process control
+>
+> *Experienced decision:* Optimize the manufacturable system, not the hero sample.
 
 <pre class="dectree" aria-label="Design requirements"><code>Design requirements
   |

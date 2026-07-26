@@ -780,6 +780,11 @@ Golden units across stations $\rightarrow$ correlation? $\rightarrow$ ship.}
 
 \execanswer{Log what discriminates hypotheses: per-lane power, bias, pre-FEC BER and FEC histograms; module temperature and actuator drive; LOS/LOL with context. Require timestamp accuracy, sampling cadence, aggregation window, units, calibration/scaling, missing-data behavior, firmware/schema version, serial/lot/platform, event trigger, retention, and a decision owner. Alarm on trends and disagreements, not only hard thresholds. Therefore I would instrument the ledgers margin testing said die first.}
 
+\tradeoff{More telemetry vs operational complexity}{Earlier margin erosion
+detection and fleet triage without pulling hardware}{Firmware, storage, and
+alarm fatigue}{When a field has a decision owner and a reaction plan}{Add a
+register only if it changes contain, derate, RMA, or FA ownership.}
+
 \begin{dectree}
 Telemetry purpose: early margin erosion
   |
@@ -925,6 +930,45 @@ DPA later $\rightarrow$ mechanism class? $\rightarrow$ permanent fix.}
 
 \fwdeep{\Cref{sec:interview-under-uncertainty,sec:interview-decision-trees,tab:interview-decisions}.}
 
+\section{Tradeoff interview questions}
+\label{sec:interview-tradeoff-qs}
+
+Staff follow-ups often stop asking ``what test?'' and start asking ``given
+constraints, what do you choose?'' Answer each with benefit, downside, and
+decision criteria. Point at the matching tradeoff homes; do not invent a new
+framework.
+
+\paragraph{Would you choose more margin or lower power?}
+\textit{Benefit of margin:} reach, temperature, aging, contamination tolerance.\\
+\textit{Downside:} laser power, heat, efficiency, sometimes lifetime.\\
+\textit{Criteria:} allocate margin where uncertainty is highest; do not maximize
+every ledger (\Cref{sec:laser-margin-erosion,ch:validation}).
+
+\paragraph{Would you add more telemetry?}
+\textit{Benefit:} faster fleet triage and earlier margin erosion detection.\\
+\textit{Downside:} firmware, storage, alarm fatigue.\\
+\textit{Criteria:} each field needs a decision owner and a reaction plan
+(\Cref{fw:telemetry,sec:fleet-triage}).
+
+\paragraph{Would you run more qualification?}
+\textit{Benefit:} confidence and fewer late escapes.\\
+\textit{Downside:} schedule, cost, delayed learning.\\
+\textit{Criteria:} prioritize by risk $\times$ uncertainty $\times$ impact; stop
+when remaining risk has a production control (\Cref{sec:qual-sample-strategy}).
+
+\paragraph{Would you add a second supplier?}
+\textit{Benefit:} supply resilience and pricing leverage.\\
+\textit{Downside:} validation, interop, and manufacturing differences.\\
+\textit{Criteria:} qualify on concentration risk and evidence, not ideology
+(\Cref{sec:supplier-exec,fw:second-module}).
+
+\paragraph{Would you increase ATP coverage?}
+\textit{Benefit:} escape detection earlier in the flow.\\
+\textit{Downside:} cycle time, cost, false rejects.\\
+\textit{Criteria:} cheapest control that reliably detects the named mechanism:
+100\%, sample, SPC, or supplier process (\Cref{sec:hvm-test}).
+
 \keyidea{Open the matching framework, deliver the thirty-second box, walk the
-tree, end on the decision and the control. Philosophy is in
+tree, end on the decision and the control. When the interviewer asks a tradeoff
+question, name benefit, downside, and criteria. Philosophy is in
 \Cref{app:interview-review}; this appendix is how you speak it under pressure.}

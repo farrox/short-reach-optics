@@ -273,6 +273,11 @@ Deep failure analysis before basic operation. Treating loaded chassis corners
 as bring-up exit evidence. Spending weeks optimizing TDECQ on a part that never
 reliably links in a real chassis.
 
+\tradeoff{Bring-up speed vs characterization depth}{Faster path into margin work}{Missing
+baselines that make later BER tickets uninterpretable}{When the unit already
+links and emits in class on the target host}{Do not skip characterization to
+``save time.'' Without a baseline, margin and FA burn calendar later.}
+
 \subsection{Characterization}
 \label{sec:ladder-characterization}
 
@@ -385,6 +390,12 @@ $-$ contamination / ORL penalty\\
 $-$ manufacturing variation\\
 $=$ remaining field margin
 \end{quote}
+\tradeoff{More optical margin vs cost and power}{Reach and corner tolerance under
+temperature, aging, and plant loss}{Laser power, thermal load, and efficiency
+(\Cref{sec:laser-margin-erosion})}{When a named uncertainty still dominates the
+remaining risk}{Allocate margin where uncertainty is highest; do not maximize
+every ledger equally.}
+
 Do not subtract the same physical effect twice under two names. If ORL stress
 is already in the loaded corner, do not also invent a second reflection tax
 without new evidence.
@@ -411,6 +422,11 @@ host, peer, firmware, and channel combinations retain required headroom.
 
 \paragraph{What uncertainty remains?}
 Margin on a golden host does not prove the supported ecosystem.
+
+\tradeoff{Golden-host speed vs interop risk}{Fast bring-up and clean debug on a
+known good station}{Hidden host, firmware, or plant sensitivity until volume}{When
+golden-host data are a stage gate, not the exit criteria for the ecosystem}{Use
+golden hosts for speed; require representative hosts before calling interop done.}
 
 \paragraph{Inputs.}
 Margin baselines; claimed host and peer matrix; firmware revisions; cable and
@@ -1470,6 +1486,11 @@ corners never ran.
 \end{description}
 
 \paragraph{System bring-up.}
+\tradeoff{Best laboratory performance vs production yield}{Hero samples that win
+bench demos}{Tighter tolerances, harder calibration, and escapes in volume}{When
+the manufacturable design still meets the system requirement with guardband}{Optimize
+the system and the yield story, not the best component on a quiet bench.}
+
 A module that passes on a golden host can still fail in a real chassis:
 
 \begin{itemize}
@@ -1601,6 +1622,11 @@ open supplier FA. A wrong ticket burns calendar time you cannot get back.}
 wavelength or lock drift, bias tables, receiver noise rise, or mechanics that
 move with case temperature}{a permanent wear-out mechanism already proven by
 ship LIV alone}
+
+\tradeoff{More telemetry vs operational complexity}{Faster fleet debug, better
+cohort plots, earlier prediction}{Firmware cost, storage, and interpretation
+burden}{When each new field answers a named decision}{Every telemetry field needs
+an owner and a decision it enables. Otherwise it is noise.}
 
 \paragraph{Three buckets.}
 Classify every field issue before deep root-cause work:

@@ -402,6 +402,62 @@ def replace_usuallymeans(content: str) -> str:
     return "".join(result)
 
 
+def replace_tradeoff(content: str) -> str:
+    """Replace \\tradeoff{title}{improves}{worsens}{when}{decision}."""
+    result = []
+    i = 0
+    tag = "\\tradeoff{"
+    while i < len(content):
+        idx = content.find("\\tradeoff{", i)
+        if idx == -1:
+            result.append(content[i:])
+            break
+        result.append(content[i:idx])
+        pos = idx + len(tag) - 1
+        title, pos = extract_braced_arg(content, pos)
+        improves, pos = extract_braced_arg(content, pos)
+        worsens, pos = extract_braced_arg(content, pos)
+        when, pos = extract_braced_arg(content, pos)
+        decision, pos = extract_braced_arg(content, pos)
+        result.append(
+            f"\n\n\\begin{{quote}}\\textbf{{Tradeoff.}} {title}"
+            f"\\par\\textit{{Improves:}} {improves}"
+            f"\\par\\textit{{Worsens:}} {worsens}"
+            f"\\par\\textit{{When acceptable:}} {when}"
+            f"\\par\\textit{{Experienced decision:}} {decision}"
+            f"\\end{{quote}}\n\n"
+        )
+        i = pos
+    return "".join(result)
+
+
+def replace_decisionex(content: str) -> str:
+    """Replace \\decisionex{question}{evidence}{decision}{why}."""
+    result = []
+    i = 0
+    tag = "\\decisionex{"
+    while i < len(content):
+        idx = content.find("\\decisionex{", i)
+        if idx == -1:
+            result.append(content[i:])
+            break
+        result.append(content[i:idx])
+        pos = idx + len(tag) - 1
+        question, pos = extract_braced_arg(content, pos)
+        evidence, pos = extract_braced_arg(content, pos)
+        decision, pos = extract_braced_arg(content, pos)
+        why, pos = extract_braced_arg(content, pos)
+        result.append(
+            f"\n\n\\begin{{quote}}\\textbf{{Decision example.}} {question}"
+            f"\\par\\textit{{Evidence:}} {evidence}"
+            f"\\par\\textit{{Decision:}} {decision}"
+            f"\\par\\textit{{Why:}} {why}"
+            f"\\end{{quote}}\n\n"
+        )
+        i = pos
+    return "".join(result)
+
+
 def replace_execanswer(content: str) -> str:
     """Replace \\execanswer{...} handling nested braces."""
     result = []
@@ -680,6 +736,8 @@ def apply_transforms(content: str) -> str:
     content = replace_heuristic(content)
     content = replace_whyexp(content)
     content = replace_usuallymeans(content)
+    content = replace_tradeoff(content)
+    content = replace_decisionex(content)
     content = replace_execanswer(content)
     content = replace_framework(content)
     content = replace_dectree(content)

@@ -370,6 +370,36 @@
   \endgraf\medskip
 }
 
+% Staff-level constraint boxes (Tradeoff Engineering Pass). Distinct from
+% heuristics (priors) and engcheck (procedure).
+\definecolor{tradeoffbg}{HTML}{EDE8F0}
+\definecolor{tradeoffrule}{HTML}{5A4E6B}
+\newcommand{\tradeoff}[5]{%
+  \endgraf\medskip\noindent
+  \fcolorbox{tradeoffrule}{tradeoffbg}{%
+    \begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}
+      \textbf{Tradeoff.~}#1\par\smallskip
+      \textit{Improves:} #2\par\smallskip
+      \textit{Worsens:} #3\par\smallskip
+      \textit{When acceptable:} #4\par\smallskip
+      \textit{Experienced decision:} #5
+    \end{minipage}%
+  }%
+  \endgraf\medskip
+}
+\newcommand{\decisionex}[4]{%
+  \endgraf\medskip\noindent
+  \fcolorbox{tradeoffrule}{tradeoffbg}{%
+    \begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}
+      \textbf{Decision example.~}#1\par\smallskip
+      \textit{Evidence:} #2\par\smallskip
+      \textit{Decision:} #3\par\smallskip
+      \textit{Why:} #4
+    \end{minipage}%
+  }%
+  \endgraf\medskip
+}
+
 % Fixed skeleton for Appendix B playbooks (tree is a separate dectree env).
 % Use \section so frameworks number as B.1, B.2, ... (not B.0.x).
 \newcommand{\framework}[1]{%

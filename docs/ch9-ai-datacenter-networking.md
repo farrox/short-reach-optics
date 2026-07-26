@@ -166,6 +166,16 @@ The first published revision, *100G-DR-LPO* (v1.0, March 2025), targets 100 Gb/
 
 In an LPO link the host is not a passive cable driver. It runs KP4 FEC (§3.12), full SerDes equalization (CTLE, FFE, DFE, CDR; §3.6, §3.7), and optional nonlinear compensation (NLC) and startup protocol functions. The module is analog: linear driver, modulator or laser, photodiode, TIA, and at most a fixed CTLE. No retiming, no FEC, no heavy DSP. CMIS (§7.8) is the management contract. SFF hardware specs (QSFP-DD, OSFP cages) set the mechanical envelope. The MSA's job is to define what must pass at each interface between those blocks so modules from different vendors close on the same host.
 
+> **Tradeoff.** Retimed module vs LPO host burden
+>
+> *Improves:* Module watts and faceplate density when DSP leaves the module
+>
+> *Worsens:* Host SerDes margin, equalization depth, and interop risk on every platform
+>
+> *When acceptable:* When host channels and thermal budgets are proven for the linear path
+>
+> *Experienced decision:* Pay for retimers when host margin is the scarce resource; delete them when watts dominate and the host can own EQ and FEC.
+
 ##### The test-point ladder.
 
 LPO MSA normative compliance is organized around six electrical/optical test points (§9.3), the concrete instance of the general TP0-to-TP5 planes in §3.9. Think of them as the validation script: host TX at TP1a, module optical TX at TP2, stressed optical RX at TP3, module electrical RX at TP4, and stressed host RX at TP4a. Section 10 of the MSA adds a host-to-host end-to-end BER test with FEC-encoded traffic, which is how you prove interop after the point tests pass.
@@ -361,6 +371,16 @@ Optical engineering maps to these patterns indirectly. More rails and higher per
 > Because synchronous collectives amplify a single straggler. Average utilization can look healthy while one optical lane sets the job tail.
 
 > **Engineering heuristic.** Judge the fabric by delivered step time and collective tail, not by aggregate port rate on a clean bench.
+
+> **Tradeoff.** More telemetry vs operational complexity
+>
+> *Improves:* Faster isolation of weak rails and lot-scoped escapes
+>
+> *Worsens:* Storage, firmware, and false-alarm load
+>
+> *When acceptable:* When each field maps to a triage decision and an owner
+>
+> *Experienced decision:* Instrument ledgers that unlock contain or repair; skip vanity counters (Appendix C.14).
 
 ## Fabric options
 

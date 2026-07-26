@@ -124,6 +124,16 @@ Received power exceeding the datasheet sensitivity number does not guarantee low
 
 Sensitivity is therefore a shorthand for receiver noise performance under reference conditions, not a complete description of whether the link closes. A link that "has enough power" can still fail if ER is poor, RIN is elevated, or the equalizer is saturated. Always close the full link budget (§7.7), not just the power line.
 
+> **Tradeoff.** Better receiver sensitivity vs receiver complexity
+>
+> *Improves:* APD gain, stronger DSP, deeper equalization, or quieter optics can close a tight budget
+>
+> *Worsens:* Power, latency, calibration burden, and reliability of the more complex path
+>
+> *When acceptable:* When the sensitivity line is the true limiting ledger after Tx and plant are sound
+>
+> *Experienced decision:* Improve the weakest link, not the most visible datasheet metric.
+
 ### OMA versus average power
 
 Two links may have identical average optical power but different BER. The reason is OMA and extinction ratio. At fixed average power $P_\mathrm{avg}$, the OMA depends on ER through $$\frac{\mathrm{OMA}}{P_\mathrm{avg}}
