@@ -194,7 +194,7 @@ The photodiode converts photons to photocurrent; the *TIA* (transimpedance ampli
 
 - **UTC/MUTC:** electron-only transport for $>\!200$ GHz BW and high saturation; used when linearity and speed beat raw sensitivity .
 
-The TIA often embeds *CTLE* for LPO (§3.6, §9.5.1): a fixed high-frequency boost before the host SerDes ADC. Co-packaging PD and TIA (sub-mm interconnect) is the noise win repeated throughout this book (Chapter 2).
+The TIA often embeds *CTLE* for LPO (§3.6, §10.5.1): a fixed high-frequency boost before the host SerDes ADC. Co-packaging PD and TIA (sub-mm interconnect) is the noise win repeated throughout this book (Chapter 2).
 
 ##### Why Ge-on-Si wins the mainstream.
 
@@ -202,7 +202,7 @@ Germanium grown on silicon absorbs the O- and C-bands, is fully CMOS-process-com
 
 ##### What the TIA must deliver.
 
-The TIA is the receive twin of the modulator driver (§3.14.3). At 224 GBd PAM4 you need bandwidth $\gtrsim$50--70 GHz for a 112 GBd Nyquist-class front-end (often less than the Tx driver BW because the optical channel and reference receiver already band-limit; LPO pushes for flatter, more linear TIAs), input-referred noise in the low teens of pA$/\sqrt{\mathrm{Hz}}$ once co-packaged with a low-$C$ PD, linearity / overload so large OMA and reflections do not crush PAM4 levels (RLM) or trip AGC into a bad corner, and optional CTLE for LPO/LRO so the host SerDes sees a usable eye without module DSP (§3.6, §9.5.1). Noise scales with input capacitance: $i_n \propto C\,f^{3/2}$ in the front-end limit. That is why co-packaging (or monolithic PD+TIA) is not optional at 200G+: every millimetre of bondwire is noise and BW you cannot recover with FEC.
+The TIA is the receive twin of the modulator driver (§3.14.3). At 224 GBd PAM4 you need bandwidth $\gtrsim$50--70 GHz for a 112 GBd Nyquist-class front-end (often less than the Tx driver BW because the optical channel and reference receiver already band-limit; LPO pushes for flatter, more linear TIAs), input-referred noise in the low teens of pA$/\sqrt{\mathrm{Hz}}$ once co-packaged with a low-$C$ PD, linearity / overload so large OMA and reflections do not crush PAM4 levels (RLM) or trip AGC into a bad corner, and optional CTLE for LPO/LRO so the host SerDes sees a usable eye without module DSP (§3.6, §10.5.1). Noise scales with input capacitance: $i_n \propto C\,f^{3/2}$ in the front-end limit. That is why co-packaging (or monolithic PD+TIA) is not optional at 200G+: every millimetre of bondwire is noise and BW you cannot recover with FEC.
 
 ##### Noise levels you actually budget.
 

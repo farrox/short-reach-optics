@@ -167,12 +167,14 @@ Once the present-day shipping envelope is understood, qualification can ask whet
 
 Build mechanism-based evidence that the design survives expected variation and life. Temperature sweeps during characterization show how a healthy product behaves while it is hot or cold. Reliability stresses ask whether exposure causes permanent degradation. Keep operational environment test (works while exposed), reliability stress (exposure causes unacceptable permanent change), and life projection (justified field-life claim) distinct.
 
-Do not run stresses only because a checklist names them. Follow failure mechanism $\rightarrow$ acceleration method $\rightarrow$ stress $\rightarrow$ pre/post observable $\rightarrow$ acceptance criterion $\rightarrow$ confidence (§8.2, §8.3, Appendix D.3). A stress without a failure mechanism is only exposure. Deep FIT/DPPM math lives in Chapter 8.
+Do not run stresses only because a checklist names them. Follow failure mechanism $\rightarrow$ acceleration method $\rightarrow$ stress $\rightarrow$ pre/post observable $\rightarrow$ acceptance criterion $\rightarrow$ confidence (§8.3, §8.4, Appendix D.3). A stress without a failure mechanism is only exposure. Deep FIT/DPPM math lives in Chapter 8.
 
 **Representative evidence:** Pre/post stress margins; mechanism notes; sample and confidence statement; production-proxy candidates.\
 **Exit:** Sample plan, mechanism, and projected life support the requirements slice, or ship is explicitly held for life risk.\
 **Decision:** Accept life risk for the envelope, derate life or use conditions, or hold.\
 **Interview trap:** Treating HTOL as host interoperability or as production readiness.
+
+Reliability qualification is developed in Chapter 8, including mechanism selection, accelerated stress, observables, sample confidence, and acceptance decisions.
 
 Once life risk is bounded for representative hardware, the next question is whether production can reproduce that result.
 
@@ -180,12 +182,14 @@ Once life risk is bounded for representative hardware, the next question is whet
 
 The factory is part of the design. Qualification proves the design. Manufacturing validation proves the process: build it repeatedly, measure it repeatedly, and detect bad units. Engineering samples often receive unusual attention; volume readiness requires manufacturing distributions, not only the best units.
 
-This is the PVT question: whether yield, process control, and ATP coverage survive lot-to-lot variation (§8.9, §8.10, Table 8.5). DVT belongs earlier; do not park it inside this step. Prove ATP/sample/SPC coverage against known escapes with replay, separation, and production repeatability.
+This is the PVT question: whether yield, process control, and ATP coverage survive lot-to-lot variation (§9.4, §9.2, Table 9.2). DVT belongs earlier; do not park it inside this step. Prove ATP/sample/SPC coverage against known escapes with replay, separation, and production repeatability.
 
-**Representative evidence:** Multi-lot yield; classified ATP/sample/SPC coverage; measurement capability; FAIR; escape-detection proof (Appendix D.16, §8.9).\
+**Representative evidence:** Multi-lot yield; classified ATP/sample/SPC coverage; measurement capability; FAIR; escape-detection proof (Appendix D.16, §9.4).\
 **Exit:** Multi-lot yield, screen coverage, SPC stability, and FAIR evidence support opening volume, or shipment is held for process control.\
 **Decision:** Open volume toward pilot, hold shipment, or demand corrective action before ramp.\
 **Interview trap:** Calling two hand-selected lots "multi-lot" evidence.
+
+Manufacturing validation is developed in Chapter 9, including production-intent builds, traceability, measurement-system analysis, yield, ATP, SPC, supplier control, and staged ramp.
 
 Once the process and its screens are controlled, a bounded deployment can test the remaining assumptions.
 
@@ -204,7 +208,7 @@ Once pilot evidence matches the release model, production can expand under susta
 
 ### Step 9: Ramp mass production
 
-Sustain volume with process control after pilot exit. Depth lives in Table 8.5, Chapter 8. Pilot success does not prove ECO discipline, SPC stability, and RMA burn-down at volume. Hold or open volume based on control, not on hope that pilot luck continues.
+Sustain volume with process control after pilot exit. Depth lives in Table 9.2, Chapter 9. Pilot success does not prove ECO discipline, SPC stability, and RMA burn-down at volume. Hold or open volume based on control, not on hope that pilot luck continues.
 
 **Representative evidence:** SPC trends; yield; RMA rates by code; ECO impact checks.\
 **Exit:** SPC, ECO, and RMA loops support sustained volume, or volume is held.\
@@ -273,7 +277,7 @@ What else you add depends on the transmitter style. Laser-bearing modules need L
 
 ### Channel
 
-If the transmitter looks clean into a golden receiver and the link still fails, the channel is next. Insertion loss from fiber, connectors, MUX/de-MUX (§6.3), and on-chip coupling (§3.14.3) is the first ledger line. Use the specified maximum loss for the exact connector class, number of interfaces, cleanliness condition, and reference plane; do not treat "1--3 dB per mated pair" as a universal normal loss. Chromatic dispersion (§3.11) matters more on FR-class SMF sweeps than on short DR links. Optical return loss (ORL) is the quiet killer: reflections can create optical feedback noise, multipath interference, deterministic distortion, and power-independent error floors. That is why many DR/FR modules still carry isolators while some CPO engines rely on design margin and monitor photodiodes instead (§4.3.1, Chapter 5). Fiber attach (MPO/MTP, FAU, grating couplers) shows up as both yield and reliability (§8.8).
+If the transmitter looks clean into a golden receiver and the link still fails, the channel is next. Insertion loss from fiber, connectors, MUX/de-MUX (§6.3), and on-chip coupling (§3.14.3) is the first ledger line. Use the specified maximum loss for the exact connector class, number of interfaces, cleanliness condition, and reference plane; do not treat "1--3 dB per mated pair" as a universal normal loss. Chromatic dispersion (§3.11) matters more on FR-class SMF sweeps than on short DR links. Optical return loss (ORL) is the quiet killer: reflections can create optical feedback noise, multipath interference, deterministic distortion, and power-independent error floors. That is why many DR/FR modules still carry isolators while some CPO engines rely on design margin and monitor photodiodes instead (§4.3.1, Chapter 5). Fiber attach (MPO/MTP, FAU, grating couplers) shows up as both yield and reliability (§8.7).
 
 ### Receiver
 
@@ -328,7 +332,7 @@ Average BER alone does not classify the failure. Two links can share the same pr
 
 - **Bursty / clustered:** long quiet stretches, then clumps of many errors in a short window (several bad symbols or consecutive bad codewords). Fits time-local events: MPI or reflections, connector intermittents, unlock, supply or clock glitches, vibration.
 
-KP4 can correct up to 15 symbol errors per codeword. Sparse errors usually stay correctable. A burst can dump many errors into one codeword, so you see uncorrectables or flapping even when the long-run BER still looks acceptable. Shape separates sparse Gaussian-like errors from clustered bursts; a bursty histogram alone is not proof of MPI. Confirm with ORL, timing, swaps, and plant disturbance (§10.2, Appendix A.8.9). **Exit when** BER and histogram support the claimed mechanism class. **Decision:** contain, clean, retune, or open FA. **Risk if skipped:** average BER hides a bursty escape that ATP never stressed.
+KP4 can correct up to 15 symbol errors per codeword. Sparse errors usually stay correctable. A burst can dump many errors into one codeword, so you see uncorrectables or flapping even when the long-run BER still looks acceptable. Shape separates sparse Gaussian-like errors from clustered bursts; a bursty histogram alone is not proof of MPI. Confirm with ORL, timing, swaps, and plant disturbance (§11.2, Appendix A.8.9). **Exit when** BER and histogram support the claimed mechanism class. **Decision:** contain, clean, retune, or open FA. **Risk if skipped:** average BER hides a bursty escape that ATP never stressed.
 
 > **What this usually means.** BER waterfall floor that more launch power does not fix
 >
@@ -379,7 +383,7 @@ Because TDECQ folds several impairments into one number, the way it fails is dia
 
 *SECQ* (stressed eye closure quaternary) mirrors TDECQ on the *receiver* for a named PMD and clause: instead of scoring transmitter quality with a reference equalizer, the test applies a calibrated optical stressor (attenuation, ISI template, optional RIN) and asks how much margin remains before the receiver hits that clause's target pre-FEC metric.
 
-Stressed-receiver sensitivity and overload tests (§4.4) use the same philosophy but are not automatically the same procedure as SECQ. Bracket the operating OMA range with impairments the link will see in the field, and name the PMD, FEC architecture, error model, metric, and test duration. For LPO, where the module DSP is gone, stressed Rx margin on the host-side receiver (§3.6, §9.5.1) is as important as TDECQ on the transmitter.
+Stressed-receiver sensitivity and overload tests (§4.4) use the same philosophy but are not automatically the same procedure as SECQ. Bracket the operating OMA range with impairments the link will see in the field, and name the PMD, FEC architecture, error model, metric, and test duration. For LPO, where the module DSP is gone, stressed Rx margin on the host-side receiver (§3.6, §10.5.1) is as important as TDECQ on the transmitter.
 
 ## Instruments
 
@@ -467,7 +471,7 @@ Method B: Engineering decomposition
 
 ##### Illustrative ledger (single-mode DR-class sketch).
 
-Start from Tx OMA on the DCA (or from average power and ER) at a named plane. Subtract connector/coupling loss using the specified maximum for the connector class, interface count, and cleanliness (an illustrative poor or multi-interface allocation can land near 1--3 dB per mated pair; that is not a universal normal loss). Subtract fiber loss ($\sim$0.3--0.4 dB/km at 1310 nm; often negligible at 500 m) and MUX/de-MUX if WDM (2--5 dB per stage, §6.3). Apply penalties with Method A or Method B above; add dispersion (§3.11) and reflection/MPI terms (§7.2.2, §4.3.1) only when not already absorbed. Compare the remainder to stressed sensitivity at the *named* PMD's pre-FEC objective (for a KP4-class optical PMD under its random-error model, often near $2.4\times10^{-4}$; state FEC, metric, and test duration). Keep production margin appropriate to fleet corners. Numbers here are an illustrative DR-class sketch, not universal limits. Electrical budgets parallel this for the host-to-module path: COM and pre-FEC BER (§9.5.2, §3.6). LPO requires *both* ledgers to close without module DSP help.
+Start from Tx OMA on the DCA (or from average power and ER) at a named plane. Subtract connector/coupling loss using the specified maximum for the connector class, interface count, and cleanliness (an illustrative poor or multi-interface allocation can land near 1--3 dB per mated pair; that is not a universal normal loss). Subtract fiber loss ($\sim$0.3--0.4 dB/km at 1310 nm; often negligible at 500 m) and MUX/de-MUX if WDM (2--5 dB per stage, §6.3). Apply penalties with Method A or Method B above; add dispersion (§3.11) and reflection/MPI terms (§7.2.2, §4.3.1) only when not already absorbed. Compare the remainder to stressed sensitivity at the *named* PMD's pre-FEC objective (for a KP4-class optical PMD under its random-error model, often near $2.4\times10^{-4}$; state FEC, metric, and test duration). Keep production margin appropriate to fleet corners. Numbers here are an illustrative DR-class sketch, not universal limits. Electrical budgets parallel this for the host-to-module path: COM and pre-FEC BER (§10.5.2, §3.6). LPO requires *both* ledgers to close without module DSP help.
 
 ## Module management: CMIS
 
@@ -507,7 +511,7 @@ The lower memory map holds module identity, status, interrupt flags, and alarm t
 
 ### CMIS as a validation deliverable
 
-CMIS correctness is part of production readiness, not a firmware afterthought. ATP should prove the state machine reaches ModuleReady across voltage and thermal corners; DDM monitors track bench truth (CMIS Tx power versus DCA, module temperature versus case $T$); alarms fire at the right thresholds; and firmware revision is ECO-controlled like laser die revision (§8.10). Multi-source interop failures are often CMIS, media-type, or firmware mismatches, not marginal TDECQ (§7.9). At fleet scale the register map is the only eyes you have on a module in the rack. If CMIS is wrong, triage starts blind.
+CMIS correctness is part of production readiness, not a firmware afterthought. ATP should prove the state machine reaches ModuleReady across voltage and thermal corners; DDM monitors track bench truth (CMIS Tx power versus DCA, module temperature versus case $T$); alarms fire at the right thresholds; and firmware revision is ECO-controlled like laser die revision (§9.2). Multi-source interop failures are often CMIS, media-type, or firmware mismatches, not marginal TDECQ (§7.9). At fleet scale the register map is the only eyes you have on a module in the rack. If CMIS is wrong, triage starts blind.
 
 ## Module and system bring-up
 
@@ -525,7 +529,7 @@ Run this order on every new module (pluggable, ELSFP, or CPO engine with CMIS). 
 
 4.  **Optical path.** Mate fiber (clean first). Check Rx power and LOS. Optical loopback first if the host path is unproven.
 
-5.  **Electrical lock.** Bring host SerDes / module CDR. Confirm LOL clear, equalizer taps not pegged (§3.6). For LPO, this is the host eye and COM path (§9.5.2, §3.14.3).
+5.  **Electrical lock.** Bring host SerDes / module CDR. Confirm LOL clear, equalizer taps not pegged (§3.6). For LPO, this is the host eye and COM path (§10.5.2, §3.14.3).
 
 6.  **Traffic.** PRBS or live FEC traffic. Pre-FEC BER vs. KP4 threshold (§3.12); glance at FEC symbol-error histogram shape.
 
@@ -538,7 +542,7 @@ The numbered sequence above is primary. Table 7.4 is a wall-chart quick referen
 
 ##### Production-representative corners.
 
-Bench corners ($T$, $V$) are necessary and not sufficient. Chassis thermal, host rails, and ORL belong before Design Validation Test (DVT) exit on a representative unit. The full set in Table 7.5 belongs before Production Validation Test (PVT) exit (Table 8.5).
+Bench corners ($T$, $V$) are necessary and not sufficient. Chassis thermal, host rails, and ORL belong before Design Validation Test (DVT) exit on a representative unit. The full set in Table 7.5 belongs before Production Validation Test (PVT) exit (Table 9.2).
 
 <table class="book-table"><tr><th>Corner</th><th>What to run</th><th>Why it catches</th><th>Points to</th></tr><tr><td>Chassis thermal</td><td>Module in target rack/sled at airflow and power load; not only a quiet chamber on a bench fixture</td><td>Faceplate T and TEC load differ from chamber setpoints</td><td>derate, TEC, ring unlock</td></tr><tr><td>Host rails live</td><td>Bias / CMIS powered from host supplies with SerDes traffic on</td><td>Switching noise into laser bias looks like RIN (sec:laser-drivers)</td><td>PSRR, ground, APC</td></tr><tr><td>Dirty fiber / ORL</td><td>Controlled contamination or ORL stress on MT/FAU; clean vs dirty BER</td><td>Field installs are not lab-clean; ORL raises RIN and bursts</td><td>connector, isolator, feedback</td></tr><tr><td>Cable plant</td><td>Production fiber length, MPO count, and bend radius</td><td>Extra loss and reflections eat margin the ledger assumed</td><td>link budget (sec:link-budget)</td></tr><tr><td>ELS hot-swap</td><td>Pull/replace ELSFP under traffic (or under controlled traffic stop per CMIS)</td><td>Service action the architecture promised (sec:elsfp)</td><td>state machine, mate cycles</td></tr><tr><td>Neighbor load</td><td>Adjacent modules/lanes at full traffic and max case T</td><td>Crosstalk, shared supply droop, thermal crosstalk on rings</td><td>WDM lock, SI, PSU</td></tr><tr><td>LPO / linear path</td><td>Host COM and pre-FEC BER without module DSP crutch</td><td>LPO fails here first (sec:224g-deploy,sec:com,sec:drivers)</td><td>host FIR, module linearity</td></tr><tr><td>Voltage corners</td><td>Host Vcc min/max with traffic</td><td>Brown-out and CMIS glitches</td><td>power design, ATP</td></tr></table>
 **Table 7.5.** Production-representative corners. A quiet BERT at 25 $^\circ$C with pristine fiber is characterization, not production readiness.
@@ -563,7 +567,7 @@ Dirty fiber / ORL and cable plant ask whether production MPO count, bends, and f
 
 ELS hot-swap asks whether the replaceability story survives a live maintenance window: CMIS state, mate cycles, and recovery under the traffic policy you claim.
 
-Chassis thermal, host rails, and ORL are the minimum before DVT exit on a representative unit. The full set belongs before PVT exit (Table 8.5). Later fleet monitoring must not invent coverage these corners never ran.
+Chassis thermal, host rails, and ORL are the minimum before DVT exit on a representative unit. The full set belongs before PVT exit (Table 9.2). Later fleet monitoring must not invent coverage these corners never ran.
 
 ##### System bring-up.
 
@@ -579,7 +583,7 @@ Chassis thermal, host rails, and ORL are the minimum before DVT exit on a repres
 
 A module that passes on a golden host can still fail in a real chassis:
 
-- **Host path:** run the same sequence on the target NIC/switch ASIC SerDes, not only the lab BERT. LPO and half-retimed modules expose host FIR/CTLE mistakes that a retimed module hid (§9.5.1, §9.3).
+- **Host path:** run the same sequence on the target NIC/switch ASIC SerDes, not only the lab BERT. LPO and half-retimed modules expose host FIR/CTLE mistakes that a retimed module hid (§10.5.1, §10.3).
 
 - **Multi-lane / multi-module:** bring all lanes on a port, then neighbors in the same cage or tray. Watch thermal rise, supply droop, and CMIS temp alarms when the tray is loaded.
 
@@ -587,11 +591,11 @@ A module that passes on a golden host can still fail in a real chassis:
 
 - **Interop:** at least one other vendor host or module if the program claims multi-source. Interop failures are usually CMIS, media type, or electrical eye, not laser physics.
 
-- **ELS / CPO:** external laser modules add a second bring-up: ELSFP state machine and optical mate to the engine, then engine bring-up with light present (§5.14, §9.10). A dark engine with a healthy ELS is an optical connector or FAU problem until proven otherwise.
+- **ELS / CPO:** external laser modules add a second bring-up: ELSFP state machine and optical mate to the engine, then engine bring-up with light present (§5.14, §10.10). A dark engine with a healthy ELS is an optical connector or FAU problem until proven otherwise.
 
 ##### Exit criteria before "bring-up done."
 
-Call *bench bring-up* done when CMIS state machine and enable sequence are correct, the unit emits and receives light in class, CDR locks, pre-FEC BER is usable on a trusted setup at a named plane, and a CMIS+BER+$T$ snapshot is filed. Call *system integration bring-up* done when the same sequence closes on the target host, golden-swap has split host vs. module issues, and multi-lane / neighbor load has not opened a new basic failure mode. Do *not* require loaded chassis-thermal / host-rail / ORL margin closure to declare bring-up done; that is Stage 3 margin and interop evidence (§7.1.6, Table 7.5). Everything after bring-up is characterization depth, margin/interop, supplier gates (§8.10), or fleet triage (§7.12).
+Call *bench bring-up* done when CMIS state machine and enable sequence are correct, the unit emits and receives light in class, CDR locks, pre-FEC BER is usable on a trusted setup at a named plane, and a CMIS+BER+$T$ snapshot is filed. Call *system integration bring-up* done when the same sequence closes on the target host, golden-swap has split host vs. module issues, and multi-lane / neighbor load has not opened a new basic failure mode. Do *not* require loaded chassis-thermal / host-rail / ORL margin closure to declare bring-up done; that is Stage 3 margin and interop evidence (§7.1.6, Table 7.5). Everything after bring-up is characterization depth, margin/interop, supplier gates (§9.2), or fleet triage (§7.12).
 
 **Key idea.** Bring-up is a sequence (presence $\to$ CMIS $\to$ light $\to$ lock $\to$ BER $\to$ snapshot), then a system proof on the real host. Production-representative corners prove remaining headroom; they do not redefine bench bring-up. A quiet bench pass is not DVT.
 
@@ -670,17 +674,17 @@ Classify every field issue before deep root-cause work:
 
 Performance
 
-: the design or operating point does not close the budget under the conditions seen in the fleet. Examples: TDECQ/RLM marginal at case temperature, host COM tight on LPO, ring unlock under thermal crosstalk, ORL-driven RIN that the architecture assumed away. Fix is usually retune, derate, firmware, or a design/spec change (§7.4, §9.5.2, §3.14.3).
+: the design or operating point does not close the budget under the conditions seen in the fleet. Examples: TDECQ/RLM marginal at case temperature, host COM tight on LPO, ring unlock under thermal crosstalk, ORL-driven RIN that the architecture assumed away. Fix is usually retune, derate, firmware, or a design/spec change (§7.4, §10.5.2, §3.14.3).
 
 Reliability
 
-: the unit met spec at ship and later degraded. Examples: LIV threshold rise, SMSR collapse, EAM bias creep, COD, TEC wear, epoxy creep on fiber attach. Fix is Arrhenius-backed life projection, burn-in/screen, derating, or field-replaceable lasers (§8.4, §5.13, §8.2, §5.14).
+: the unit met spec at ship and later degraded. Examples: LIV threshold rise, SMSR collapse, EAM bias creep, COD, TEC wear, epoxy creep on fiber attach. Fix is Arrhenius-backed life projection, burn-in/screen, derating, or field-replaceable lasers (§8.5, §5.13, §8.3, §5.14).
 
 Manufacturability
 
-: a subpopulation fails early or never met the ATP; the issue tracks lot, date code, supplier site, or assembly step. Examples: FAU misalign yield cliff, solder void on a driver die attach, incoming DPPM spike, CMIS register map mismatch on one firmware rev. Fix is SPC, ATP tighten, first-article, DPA, and 8D/CAPA with the supplier (§8.10, §8.8).
+: a subpopulation fails early or never met the ATP; the issue tracks lot, date code, supplier site, or assembly step. Examples: FAU misalign yield cliff, solder void on a driver die attach, incoming DPPM spike, CMIS register map mismatch on one firmware rev. Fix is SPC, ATP tighten, first-article, DPA, and 8D/CAPA with the supplier (§9.2, §8.7).
 
-A single symptom can sit in more than one bucket until you bisect. The tree below forces the split with telemetry first, then a short bench confirm, then an RMA label. Chapter 10 expands the same method into symptom-led bench and fleet procedures.
+A single symptom can sit in more than one bucket until you bisect. The tree below forces the split with telemetry first, then a short bench confirm, then an RMA label. Chapter 11 expands the same method into symptom-led bench and fleet procedures.
 
 ##### Telemetry you actually read.
 
@@ -774,7 +778,7 @@ Scope before mechanism. Telemetry before destructive FA. Bucket before owner. Co
 
     - Reliability: replace (ELSFP hot-swap when available), update FIT burn-down, tighten burn-in or derate (§5.13).
 
-    - Manufacturability: quarantine lot, incoming hold, supplier 8D with DPA photos and ATP deltas (§8.10).
+    - Manufacturability: quarantine lot, incoming hold, supplier 8D with DPA photos and ATP deltas (§9.2).
 
 6.  **Close the loop.** Feed the signature back into ATP and CMIS alarm thresholds so the next incident trips earlier.
 
@@ -784,7 +788,7 @@ Scope before mechanism. Telemetry before destructive FA. Bucket before owner. Co
 
 *"Random burst errors, average power fine."* Check FEC histogram for clustered errors and CMIS for Rx power dropouts. Clean and measure ORL. If RIN rises with ORL, treat feedback/ORL as the leading performance hypothesis until confirmed. If ORL is fine and bursts track a date code, treat intermittent fiber attach as the leading manufacturing hypothesis. If bursts grow over months at fixed ORL, suspect laser or driver aging (§5.8, §5.13).
 
-*"ELSFP replace fixed it; returned module looks alive on the bench."* Alive LIV with high ORL sensitivity or a dirty MT face supports connector/ORL over laser wear-out; confirm with IL/ORL and recurrence. Dead or kinked LIV supports a reliability path. Split those RMA codes or FIT math blames the wrong mode (§5.14, §8.8).
+*"ELSFP replace fixed it; returned module looks alive on the bench."* Alive LIV with high ORL sensitivity or a dirty MT face supports connector/ORL over laser wear-out; confirm with IL/ORL and recurrence. Dead or kinked LIV supports a reliability path. Split those RMA codes or FIT math blames the wrong mode (§5.14, §8.7).
 
 ##### RMA labels that keep FIT honest.
 
@@ -832,7 +836,7 @@ Preserve the failing state and record software, firmware, calibration, fixture, 
 
 **Key idea.** Validation is a chain of evidence. Start with calibrated power and management state, move through spectrum and waveform, then trust BER only after the blocks and reference planes are known. Run the target host, chassis, fiber, and neighbor corners before calling the product ready.
 
-Junior mistake: call a golden-host BER pass "production ready," or open supplier FA before clearing the tester (Table 7.2, Chapter 8, Appendix D).
+Junior mistake: call a golden-host BER pass "production ready," or open supplier FA before clearing the tester (Table 7.2, Chapter 9, Appendix D).
 
 ##### Three questions to test yourself.
 
@@ -846,5 +850,5 @@ Junior mistake: call a golden-host BER pass "production ready," or open supplier
 <div class="nav-links">
   <a href="ch6-wdm-and-wavelength-locked-lasers">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch8-reliability-and-manufacturing-at-scale">Next &rarr;</a>
+  <a href="ch8-reliability-qualification-building-the-lifetime-confidence-argument">Next &rarr;</a>
 </div>

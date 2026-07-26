@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Ch 12: Engineering case studies"
+title: "Ch 13: Engineering case studies"
 ---
 
-# 12 Engineering case studies
+# 13 Engineering case studies
 
 This appendix is practice under incomplete information. The frameworks already live in Appendix A, Appendix C, Appendix D and Table 7.2. Here you apply them. Do not jump to the mechanism. Score yourself with Appendix A.12 after each case.
 
@@ -55,11 +55,11 @@ Next decision
 
 : What unlocks the next ship or hold call?
 
-Illustrative executive line (Case [12.5](#sec:case-fleet-ber) style): "About three percent of modules from lot X show rising pre-FEC BER after roughly 90 days. Average received power is stable. Evidence points toward analog-supply degradation correlated with that lot. Shipment from the lot is paused while supplier FA proceeds."
+Illustrative executive line (Case [13.5](#sec:case-fleet-ber) style): "About three percent of modules from lot X show rising pre-FEC BER after roughly 90 days. Average received power is stable. Evidence points toward analog-supply degradation correlated with that lot. Shipment from the lot is paused while supplier FA proceeds."
 
 ## Supplier conversation
 
-Structure supplier calls the same way you structure debug (§8.10, Appendix C.10, Appendix D.9):
+Structure supplier calls the same way you structure debug (§9.2, Appendix C.10, Appendix D.9):
 
 <pre class="dectree" aria-label="Supplier conversation framework"><code>Supplier conversation framework
   |
@@ -148,7 +148,7 @@ Problem: gradual BER rise. Impact: one manufacturing lot in fleet. Evidence: sta
 
 ##### Deep dive.
 
-Appendix C.1, Appendix C.9, Appendix C.10, Appendix D.9, §10.2.
+Appendix C.1, Appendix C.9, Appendix C.10, Appendix D.9, §11.2.
 
 ## Case 2: New optical module supplier qualification
 
@@ -174,7 +174,7 @@ Freeze requirements first (Table 7.2). Then walk bring-up through margin, inter
 
 ##### Measurements selected.
 
-Black-box: BER, throughput, interop on claimed hosts, margin corners, power and sensitivity distributions across lots. Engineering access only when black-box evidence cannot decide. Reliability: stresses tied to named mechanisms (§8.2).
+Black-box: BER, throughput, interop on claimed hosts, margin corners, power and sensitivity distributions across lots. Engineering access only when black-box evidence cannot decide. Reliability: stresses tied to named mechanisms (§8.3).
 
 ##### Results (staged).
 
@@ -198,7 +198,7 @@ Require multi-lot data, closed interop matrix, and FAIR before PVT/MP language i
 
 ##### Qualification / ATP / telemetry update.
 
-Correlate supplier ATP to your proxy; split field RMA codes by vendor from day one; define pilot exit before broader ship (§8.2).
+Correlate supplier ATP to your proxy; split field RMA codes by vendor from day one; define pilot exit before broader ship (§8.3).
 
 ##### Fleet prevention.
 
@@ -214,7 +214,7 @@ Problem: second-source equivalence claim. Impact: single-vendor risk reduction v
 
 ##### Deep dive.
 
-Appendix C.7, Appendix C.15, §8.2, Table 7.2, §8.10.
+Appendix C.7, Appendix C.15, §8.3, Table 7.2, §9.2.
 
 ## Case 3: Temperature-dependent BER failure
 
@@ -303,7 +303,7 @@ Problem: BER fail at high temperature, power stable. Impact: envelope risk. Evid
 
 ##### Deep dive.
 
-Appendix C.4, §7.1.6, Appendix A.10.3, §10.12.
+Appendix C.4, §7.1.6, Appendix A.10.3, §11.12.
 
 ## Case 4: Qualification escape
 
@@ -329,7 +329,7 @@ Wrong failure mechanism
 
 Insufficient sample diversity
 
-: Wrong lots, sites, or corners (§8.2).
+: Wrong lots, sites, or corners (§8.3).
 
 Measurement gap
 
@@ -345,7 +345,7 @@ Fleet condition
 
 ##### Decision tree.
 
-Appendix D.3, §10.13, Appendix C.13: name the missed uncertainty; choose containment; update the evidence path and production proxy.
+Appendix D.3, §11.13, Appendix C.13: name the missed uncertainty; choose containment; update the evidence path and production proxy.
 
 ##### Measurements selected.
 
@@ -389,11 +389,11 @@ Problem: field fails after passed qual. Impact: (rate / cohort). Evidence: (miss
 
 ##### Deep dive.
 
-Appendix D.3, §8.2, §10.13, Appendix C.13, §8.1. )
+Appendix D.3, §8.3, §11.13, Appendix C.13, §8.2. )
 
 
 <div class="nav-links">
-  <a href="ch11-one-week-optical-systems-interview-review">&larr; Previous</a>
+  <a href="ch12-one-week-optical-systems-interview-review">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch13-thirty-second-interview-frameworks">Next &rarr;</a>
+  <a href="ch14-thirty-second-interview-frameworks">Next &rarr;</a>
 </div>

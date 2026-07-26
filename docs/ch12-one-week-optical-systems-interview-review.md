@@ -49,7 +49,7 @@ Decision
 Control
   |
 Learning</code></pre>
-Do not invent a second framework. Use this loop inside the validation lifecycle (Table 7.2), the qualification evidence path (Appendix D.3), and the failure-analysis handbook (Chapter 10).
+Do not invent a second framework. Use this loop inside the validation lifecycle (Table 7.2), the qualification evidence path (Appendix D.3), and the failure-analysis handbook (Chapter 11).
 
 > **Why experienced engineers force this loop before naming a part?**
 >
@@ -211,7 +211,7 @@ Interpret evidence (observation / correlation / hypothesis / confirmation)
 Decision + owner
   |
 Recurrence control</code></pre>
-The diagram is a memory aid, not the answer. Speak one clear paragraph per phase under time pressure, and expand a node only when asked. Do not jump from a symptom to a component. End every debug answer with the decision (Table A.1). The systems loop in §1.6, the debugging pyramid in §1.8, and the failure-analysis method in Chapter 10 are the full versions of this spine.
+The diagram is a memory aid, not the answer. Speak one clear paragraph per phase under time pressure, and expand a node only when asked. Do not jump from a symptom to a component. End every debug answer with the decision (Table A.1). The systems loop in §1.6, the debugging pyramid in §1.8, and the failure-analysis method in Chapter 11 are the full versions of this spine.
 
 ##### Requirements.
 
@@ -328,7 +328,7 @@ Derate / second source
 
 RMA / FA / DPA
 
-: Climb only as far as the decision requires; preserve first (§10.13).
+: Climb only as far as the decision requires; preserve first (§11.13).
 
 Firmware / calibration
 
@@ -453,7 +453,7 @@ A good answer explains why each choice constrains the next one. A VCSEL path poi
 
 Before you open an instrument, walk the failure up the scope ladder (unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ site $\rightarrow$ fleet). Each rung changes the owner and the next action (Appendix D.5, Appendix D.9). Also ask time and change: sudden versus gradual, intermittent versus constant, and what changed just before the symptom. Scope often removes more hypotheses than the first bench measurement. A fleet-wide gradual drift cannot be a single dirty connector. A vendor-lot signature points to supplier containment before you redesign the module.
 
-Preserve the failing state and its telemetry before you reseat, clean, reboot, or change calibration. Capture CMIS monitors, pre-FEC BER, bias currents, temperatures, LOS and LOL flags, and firmware versions. An intermittent that disappears under debugging is still a real failure; you destroyed the evidence (§7.12, Table 10.1).
+Preserve the failing state and its telemetry before you reseat, clean, reboot, or change calibration. Capture CMIS monitors, pre-FEC BER, bias currents, temperatures, LOS and LOL flags, and firmware versions. An intermittent that disappears under debugging is still a real failure; you destroyed the evidence (§7.12, Table 11.1).
 
 > **Why experienced engineers ask about scope first?**
 >
@@ -542,7 +542,7 @@ Do not recite instrument names. Use Measurement $\rightarrow$ uncertainty remo
 
 ### Read a BER waterfall: shift, floor, and burst pattern
 
-These three words show up in almost every debug answer. Know what each one looks like on the bench, what it rules in, and what it rules out. The operational procedures are in §10.2, §10.2.1.
+These three words show up in almost every debug answer. Know what each one looks like on the bench, what it rules in, and what it rules out. The operational procedures are in §11.2, §11.2.1.
 
 ##### What a BER waterfall is.
 
@@ -558,7 +558,7 @@ A floor is a horizontal asymptote: as you raise received power, BER improves for
 
 ##### What a burst pattern means.
 
-Average BER alone hides how errors arrive in time. A burst pattern means errors cluster: many errored symbols in a short window, then quiet intervals, rather than a steady sprinkle of random bit flips. FEC histograms and pre-FEC error counters with timestamps make this visible. Gaussian thermal noise and well-behaved RIN tend to spread errors. MPI from a pair of reflective interfaces, connector intermittents, ESD events, supply glitches, and unlocked CDR intervals tend to cluster them. Lane- correlated bursts across a module point at a shared supply, clock, or thermal event. A single-lane burst pattern points at that lane's optical path or connector. In the fleet, bursty pre-FEC counters with stable average power are often intermittents: preserve the counters and CMIS event log before you reseat anything, or the evidence disappears (§10.8).
+Average BER alone hides how errors arrive in time. A burst pattern means errors cluster: many errored symbols in a short window, then quiet intervals, rather than a steady sprinkle of random bit flips. FEC histograms and pre-FEC error counters with timestamps make this visible. Gaussian thermal noise and well-behaved RIN tend to spread errors. MPI from a pair of reflective interfaces, connector intermittents, ESD events, supply glitches, and unlocked CDR intervals tend to cluster them. Lane- correlated bursts across a module point at a shared supply, clock, or thermal event. A single-lane burst pattern points at that lane's optical path or connector. In the fleet, bursty pre-FEC counters with stable average power are often intermittents: preserve the counters and CMIS event log before you reseat anything, or the evidence disappears (§11.8).
 
 ##### How to say the three together.
 
@@ -650,7 +650,7 @@ Open Appendix C.8 for the thirty-second playbook. Expand only the stage the inte
 
 ### BER worsens at high temperature but average power is stable. What do you do?
 
-Classic fork question (§10.12, Appendix A.8.3).
+Classic fork question (§11.12, Appendix A.8.3).
 
 > **30-second answer (memorize).** See Appendix C.4 for the canonical 30-second answer. Deliver that first; expand below only if asked.
 
@@ -684,7 +684,7 @@ Playbook: Appendix C.5. Monitor-PD corruption is the silent drift mode: APC hold
 
 ### How would you qualify a second laser or photonic-integrated-circuit supplier?
 
-This question tests supplier judgment, not vendor names. Night-before playbook: Appendix C.6. The frame: the first supplier's failure distribution does not transfer. Qualify against the requirements slice, not against the incumbent's datasheet (Table 5.4, §8.10). Prefer customer-visible remaining margin; request engineering access only when black-box evidence is insufficient (Appendix D.11).
+This question tests supplier judgment, not vendor names. Night-before playbook: Appendix C.6. The frame: the first supplier's failure distribution does not transfer. Qualify against the requirements slice, not against the incumbent's datasheet (Table 5.4, §9.2). Prefer customer-visible remaining margin; request engineering access only when black-box evidence is insufficient (Appendix D.11).
 
 > **30-second answer (memorize).** See Appendix C.6 for the canonical 30-second answer (component / PIC path). For a finished module or cable second source, use Appendix C.7. Deliver that first; expand below only if asked.
 
@@ -712,7 +712,7 @@ Run the same units on the supplier's line and yours so an ATP limit means the sa
 
 ### A single lane is weak in a multi-lane module. How do you isolate optical, electrical, thermal, and assembly causes?
 
-Multi-lane modules give you a free control group: the sibling lanes. The frame is pattern recognition across lanes before any single-lane deep dive (§10.4).
+Multi-lane modules give you a free control group: the sibling lanes. The frame is pattern recognition across lanes before any single-lane deep dive (§11.4).
 
 ##### Step 1: confirm one outlier, not a gradient.
 
@@ -736,7 +736,7 @@ Across lanes, units, and lots, the pattern chooses the fix: a rework instruction
 
 ### Received power is unchanged but required receiver power increased. What hypotheses remain?
 
-Apply the power-versus-quality fork (Appendix A.8.3): power ledger intact, so eye quality or the receiver (§10.2).
+Apply the power-versus-quality fork (Appendix A.8.3): power ledger intact, so eye quality or the receiver (§11.2).
 
 > **30-second answer (memorize).** See Appendix C.1 for the canonical 30-second answer. Deliver that first; expand below only if asked.
 
@@ -746,7 +746,7 @@ List location-tagged hypotheses (Tx ER/RIN/jitter, channel MPI or filter walk, R
 
 ### Why can a link show a BER floor that more launch power does not fix?
 
-This question has a short physics answer and a longer debug answer. Give both (§10.2.1, §4.3).
+This question has a short physics answer and a longer debug answer. Give both (§11.2.1, §4.3).
 
 ##### Step 1: state the pattern in one sentence.
 
@@ -892,15 +892,19 @@ Definitions live in Appendix G. Do not maintain a second glossary here. Drill th
 
 ATP, APC, BER/BERT, CMIS, DCA, EML, ER, FEC/KP4, FIT, HTOL, LIV, LOS/LOL, MPI, OMA, ORL, RIN, RLM, SECQ, TDECQ, TEC, TIA, VOA.
 
-##### Reliability / manufacturing core.
+##### Reliability core.
 
-Arrhenius/$E_a$, bathtub, burn-in, DPA, ESD, FAIR, golden unit, GR-468, HAST, HTSL, JESD47, MTBF, NFF/RMA, SPC, 8D/CAPA.
+Arrhenius/$E_a$, bathtub, burn-in versus HTOL, DPA, ESD, GR-468, HAST, HTSL, JESD47, MTBF, FIT/DPPM.
+
+##### Manufacturing core.
+
+FAIR, golden unit, gauge R&R, NPI/PVT, first-pass yield, SPC, ATP, NFF/RMA, 8D/CAPA.
 
 ##### Form-factor and architecture hooks.
 
 DFB, DML, DR/FR, EAM, ELSFP, MZM, MRM, OSFP/QSFP-DD, PIC/SOI, VCSEL, WDM.
 
-Drill abbreviations. Give me ten random terms mixing optical debug and reliability/manufacturing. For each, I must expand it in one sentence and give one measurement, stress, or failure mode it connects to. Fail me if I only expand the letters or confuse burn-in with HTOL.
+Drill abbreviations. Give me ten random terms mixing optical debug, reliability, and manufacturing. For each, I must expand it in one sentence and give one measurement, stress, or failure mode it connects to. Fail me if I only expand the letters or confuse burn-in with HTOL.
 
 ## Scoring rubric (0--2)
 
@@ -954,23 +958,23 @@ Assume seven days, with the interview near the end of Day 7. Protect sleep. Eac
 
 ##### Day 3: Validation.
 
-*Learn:* characterization, margin, interoperability, qualification (Appendix A.8.5, Appendix C.8).\
+*Learn:* characterization, margin, interoperability, and where qualification and manufacturing sit in the lifecycle (Appendix A.8.5, Appendix C.8, Table 7.2).\
 *Output:* Design a validation plan for a new optical module in two minutes.
 
-##### Day 4: Failure analysis.
+##### Day 4: Reliability qualification.
 
-*Learn:* decision trees, fleet scope, supplier escapes (Appendix D, Appendix C.9, Appendix C.10). Work Appendix B.5, Appendix B.7 aloud; score with Appendix A.12.\
-*Output:* Debug an ambiguous failure without naming a component first.
+*Learn:* mechanism-driven qualification, HTOL versus burn-in, sample confidence (Chapter 8, Appendix C.15, Appendix D.3).\
+*Output:* Walk a laser-degradation qualification argument aloud.
 
 ##### Day 5: Manufacturing.
 
-*Learn:* ATP, SPC, qualification, reliability (Chapter 8, Appendix C.15, Appendix C.13).\
+*Learn:* measurement systems, ATP, yield, SPC, and scale-up (Chapter 9, Appendix C.13, §9.4.3, Table 9.2).\
 *Output:* Discuss how you would take a link to volume production.
 
-##### Day 6: Architecture.
+##### Day 6: Architecture and failure analysis.
 
-*Learn:* IM/DD, WDM, AI networking, optical roadmap (Chapter 3, Chapter 6, Chapter 9, Chapter 1). Rehearse two true stories (Appendix A.9).\
-*Output:* Defend an architecture tradeoff with requirements first.
+*Learn:* IM/DD, WDM, AI networking (Chapter 3, Chapter 6, Chapter 10, Chapter 1); fleet trees and cases (Appendix D, Appendix C.9, Appendix B.5). Rehearse two true stories (Appendix A.9).\
+*Output:* Defend an architecture tradeoff; debug one fleet case without naming a component first.
 
 ##### Day 7: Mock interviews.
 
@@ -979,7 +983,7 @@ Assume seven days, with the interview near the end of Day 7. Protect sleep. Eac
 
 ##### If you have less than seven days.
 
-Compress: Day 1, Day 4 cases, Day 3 validation, Day 5 manufacturing, Day 7 mock. Keep the cheat sheets and Top 25. Cut new chapter reading first.
+Compress: Day 1, Day 3 validation, Day 4 reliability, Day 5 manufacturing, Day 7 mock. Keep the cheat sheets and Top 25. Cut new chapter reading first.
 
 ## Staff interview cheat sheets
 
@@ -1006,7 +1010,7 @@ Issue / Impact / Population / Evidence / Confidence / Containment / Mechanism st
 ### Cheat Sheet C: Qualification flow
 
 <table class="book-table"><tr><th>Mechanism Stress Observable</th></tr><tr><td>[0.4em]</td></tr><tr><td>[0.2em] Acceptance Confidence Production control</td></tr></table>
-Evidence path and planning matrix: Appendix D.3, §8.2.
+Evidence path and planning matrix: Appendix D.3, §8.3.
 
 **Key idea.** I first want to understand the scope of the problem, then determine which margin ledger is being spent, choose the measurement that eliminates the largest number of hypotheses, make the product decision, and finally add the control that prevents the next escape.
 
@@ -1031,7 +1035,7 @@ Three pairs only. Grade yourself against the strong column, then open the matchi
 
 
 <div class="nav-links">
-  <a href="ch10-failure-analysis-handbook">&larr; Previous</a>
+  <a href="ch11-failure-analysis-handbook">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch12-engineering-case-studies">Next &rarr;</a>
+  <a href="ch13-engineering-case-studies">Next &rarr;</a>
 </div>

@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Ch 15: Optical Systems Staff Engineer Interview Questions"
+title: "Ch 16: Optical Systems Staff Engineer Interview Questions"
 ---
 
-# 15 Optical Systems Staff Engineer Interview Questions
+# 16 Optical Systems Staff Engineer Interview Questions
 
 Index only. Each item is one speakable question plus a pointer to the worked answer, playbook, or chapter home. Do not invent new topics here; expand in those homes.
 
@@ -33,33 +33,33 @@ Index only. Each item is one speakable question plus a pointer to the worked ans
 
 ## Qualification
 
-11. How do you build a qualification plan that maps mechanisms to stress? Appendix C.15, Appendix D.3, §8.2
+11. How would you qualify reliability? Chapter 8, Appendix C.15, Appendix D.3
 
-12. What makes an HTOL projection credible? Appendix A.10.9, Chapter 8
+12. How do you build a qualification plan that maps mechanisms to stress? Appendix C.15, Appendix D.3, §8.3
 
-13. How do you distinguish laser aging from calibration drift? Appendix C.5, Appendix A.10.4
+13. What makes an HTOL projection credible? Appendix A.10.9, Chapter 8
 
-14. A field escape passed qual. How do you classify the miss? Appendix C.10, Appendix D.9
+14. How do you distinguish laser aging from calibration drift? Appendix C.5, Appendix A.10.4
 
 15. What evidence closes a qualification decision? Appendix D.3, Appendix D.16
 
 ## Manufacturing
 
-16. When would you update ATP after a field or lab escape? Appendix C.13, Appendix D.13
+16. How would you validate manufacturing? Chapter 9, Table 9.1, Table 9.2
 
-17. Which data must an automated test save so a failure can be replayed? Appendix A.10.10
+17. How would you respond to a yield drop? Chapter 9, §9.6, Chapter 11
 
-18. How do you decide whether a field issue is performance, reliability, or manufacturability? Appendix A.10.12
+18. When would you update ATP after a field or lab escape? Appendix C.13, Appendix D.13, §9.5
 
-19. What would you put in fleet telemetry, and why? Appendix C.14, Appendix A.10.13, Appendix C.9
+19. Which data must an automated test save so a failure can be replayed? Appendix A.10.10, Chapter 9
 
-20. You do not know the mechanism yet. What do you decide anyway? Appendix C.16, Appendix D.15
+20. How do you decide whether a field issue is performance, reliability, or manufacturability? Appendix A.10.12, Table 9.1
 
 ## Supplier
 
-21. How would you qualify a second laser or PIC supplier? Appendix C.6, Appendix A.10.5
+21. How would you qualify a second laser or PIC supplier? Appendix C.6, Appendix A.10.5, Chapter 9, Chapter 8
 
-22. How would you qualify a second transceiver or cable-assembly supplier? Appendix C.7, Appendix D.8
+22. How would you qualify a second transceiver or cable-assembly supplier? Appendix C.7, Appendix D.8, Chapter 9
 
 23. A supplier lot looks correlated with a fleet cohort. What do you do? Appendix C.9, Appendix B.5, Appendix D.5
 
@@ -67,13 +67,13 @@ Index only. Each item is one speakable question plus a pointer to the worked ans
 
 24. When would you choose an EML, silicon MZM, or ring modulator? Appendix A.10.11, Chapter 3
 
-25. How do optics choices constrain AI datacenter networking cost and power? Chapter 9, Chapter 1
+25. How do optics choices constrain AI datacenter networking cost and power? Chapter 10, Chapter 1
 
 **Key idea.** Speak the question home first: scope, ledger, measurement, decision, control. Then open the matching playbook only if the interviewer asks for depth.
 
 
 <div class="nav-links">
-  <a href="ch14-engineering-decision-trees">&larr; Previous</a>
+  <a href="ch15-engineering-decision-trees">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch16-how-staff-engineers-think">Next &rarr;</a>
+  <a href="ch17-how-staff-engineers-think">Next &rarr;</a>
 </div>

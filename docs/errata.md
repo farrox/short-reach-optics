@@ -2,7 +2,7 @@
 
 Release-candidate audit against freeze baseline `d12cc0f` (373 pages). Later
 clarifications (including the validation-ladder prose rewrite) are logged below.
-No new frameworks or chapters.
+No new frameworks. Structural relocation of existing material is allowed.
 
 ## Technical corrections
 
@@ -86,6 +86,15 @@ No new frameworks or chapters.
   reference; demoted GR-468 inventory after the matrix. Rewrote NPI as one
   EVT→…→MP maturity narrative with the gate table as retrieve
   (`ch06`).
+- **Split reliability from manufacturing:** Former combined Ch8
+  (`ch06_reliability_manufacturing`) is now Ch8 reliability qualification
+  (`ch06_reliability.tex`, `\label{ch:reliability}`) and Ch9 manufacturing
+  validation (`ch07_manufacturing.tex`, `\label{ch:manufacturing}`). Later
+  chapters renumber (+1). Ch7 Steps 6--7 hand off to those chapters; App~C
+  wall chart annotates the same split. HTML routes shifted; stubs remain at
+  old `ch8-reliability-and-manufacturing-at-scale`,
+  `ch9-ai-datacenter-networking`, and `ch10-failure-analysis-handbook`.
+  PDF about 365 pages (near length-neutral versus prior ~359).
 
 ## Typographical fixes
 

@@ -1480,9 +1480,13 @@ each term unlocks.
 ATP, APC, BER/BERT, CMIS, DCA, EML, ER, FEC/KP4, FIT, HTOL, LIV, LOS/LOL, MPI,
 OMA, ORL, RIN, RLM, SECQ, TDECQ, TEC, TIA, VOA.
 
-\paragraph{Reliability / manufacturing core.}
-Arrhenius/$E_a$, bathtub, burn-in, DPA, ESD, FAIR, golden unit, GR-468, HAST,
-HTSL, JESD47, MTBF, NFF/RMA, SPC, 8D/CAPA.
+\paragraph{Reliability core.}
+Arrhenius/$E_a$, bathtub, burn-in versus HTOL, DPA, ESD, GR-468, HAST, HTSL,
+JESD47, MTBF, FIT/DPPM.
+
+\paragraph{Manufacturing core.}
+FAIR, golden unit, gauge R\&R, NPI/PVT, first-pass yield, SPC, ATP, NFF/RMA,
+8D/CAPA.
 
 \paragraph{Form-factor and architecture hooks.}
 DFB, DML, DR/FR, EAM, ELSFP, MZM, MRM, OSFP/QSFP-DD, PIC/SOI, VCSEL, WDM.
@@ -1490,9 +1494,9 @@ DFB, DML, DR/FR, EAM, ELSFP, MZM, MRM, OSFP/QSFP-DD, PIC/SOI, VCSEL, WDM.
 \llmpractice{Know the drill list cold. Expand the term, then say why it
 matters in a debug or ship decision. Prefer \Cref{app:abbreviations} if the
 definition is fuzzy.}
-{Drill abbreviations. Give me ten random terms mixing optical debug and
-reliability/manufacturing. For each, I must expand it in one sentence and give
-one measurement, stress, or failure mode it connects to. Fail me if I only
+{Drill abbreviations. Give me ten random terms mixing optical debug,
+reliability, and manufacturing. For each, I must expand it in one sentence and
+give one measurement, stress, or failure mode it connects to. Fail me if I only
 expand the letters or confuse burn-in with HTOL.}
 
 \section{Scoring rubric (0--2)}
@@ -1538,28 +1542,29 @@ lifecycle (\Cref{tab:ladder}), margin thinking, reference planes, Staff pattern
 \textit{Output:} Explain aloud, ``Why does power not equal quality?''
 
 \paragraph{Day 3: Validation.}
-\textit{Learn:} characterization, margin, interoperability, qualification
-(\Cref{sec:interview-validation-ladder,fw:validation-plan}).\\
+\textit{Learn:} characterization, margin, interoperability, and where
+qualification and manufacturing sit in the lifecycle
+(\Cref{sec:interview-validation-ladder,fw:validation-plan,tab:ladder}).\\
 \textit{Output:} Design a validation plan for a new optical module in two
 minutes.
 
-\paragraph{Day 4: Failure analysis.}
-\textit{Learn:} decision trees, fleet scope, supplier escapes
-(\Cref{app:decision-trees,fw:fleet,fw:supplier-escape}). Work
-\Cref{sec:case-fleet-ber,sec:case-hot-ber} aloud; score with
-\Cref{sec:interview-scoring-rubric}.\\
-\textit{Output:} Debug an ambiguous failure without naming a component first.
+\paragraph{Day 4: Reliability qualification.}
+\textit{Learn:} mechanism-driven qualification, HTOL versus burn-in, sample
+confidence (\Cref{ch:reliability,fw:qual-plan,sec:tree-qual-evidence}).\\
+\textit{Output:} Walk a laser-degradation qualification argument aloud.
 
 \paragraph{Day 5: Manufacturing.}
-\textit{Learn:} ATP, SPC, qualification, reliability
-(\Cref{ch:reliability,fw:qual-plan,fw:atp-update}).\\
+\textit{Learn:} measurement systems, ATP, yield, SPC, and scale-up
+(\Cref{ch:manufacturing,fw:atp-update,sec:gauge-rr,tab:npi}).\\
 \textit{Output:} Discuss how you would take a link to volume production.
 
-\paragraph{Day 6: Architecture.}
-\textit{Learn:} IM/DD, WDM, AI networking, optical roadmap
-(\Cref{ch:imdd,ch:wdm,ch:networking,ch:role}). Rehearse two true stories
-(\Cref{sec:interview-story-template}).\\
-\textit{Output:} Defend an architecture tradeoff with requirements first.
+\paragraph{Day 6: Architecture and failure analysis.}
+\textit{Learn:} IM/DD, WDM, AI networking
+(\Cref{ch:imdd,ch:wdm,ch:networking,ch:role}); fleet trees and cases
+(\Cref{app:decision-trees,fw:fleet,sec:case-fleet-ber}). Rehearse two true
+stories (\Cref{sec:interview-story-template}).\\
+\textit{Output:} Defend an architecture tradeoff; debug one fleet case without
+naming a component first.
 
 \paragraph{Day 7: Mock interviews.}
 \textit{Learn:} three cheat sheets below; Top~25 index (\Cref{app:top25});
@@ -1569,8 +1574,8 @@ thirty-second callouts (\Cref{app:interview-frameworks}); whiteboard trees
 before the call. Sleep.
 
 \paragraph{If you have less than seven days.}
-Compress: Day~1, Day~4 cases, Day~3 validation, Day~5 manufacturing, Day~7
-mock. Keep the cheat sheets and Top~25. Cut new chapter reading first.
+Compress: Day~1, Day~3 validation, Day~4 reliability, Day~5 manufacturing,
+Day~7 mock. Keep the cheat sheets and Top~25. Cut new chapter reading first.
 
 \clearpage
 \section{Staff interview cheat sheets}

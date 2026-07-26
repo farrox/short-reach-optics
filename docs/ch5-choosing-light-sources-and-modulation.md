@@ -144,14 +144,14 @@ Table 5.1 compares the system consequences. The device operation, bandwidth, in
 
 ## Laser requirements: from roadmap to specs
 
-Laser requirements only work when they are numbers a supplier can fail and a link budget can close. Start from the interconnect roadmap choice, then fill a short requirements slice; the ATP in §8.10 is how that slice is enforced on every lot.
+Laser requirements only work when they are numbers a supplier can fail and a link budget can close. Start from the interconnect roadmap choice, then fill a short requirements slice; the ATP in §9.2 is how that slice is enforced on every lot.
 
 ##### Roadmap forks that set the laser.
 
 Each architecture decision forces a different requirements set (Table 5.3):
 
 <table class="book-table"><tr><th>Roadmap choice</th><th>Laser implication</th><th>Specs you must freeze early</th></tr><tr><td>Pluggable EML vs CW+Si/TFLN</td><td>Integrated EAM vs external CW + modulator</td><td>EAM bias/aging and TDECQ vs CW power class, RIN, and modulator V_ match</td></tr><tr><td>On-package laser vs ELSFP/CW-WDM</td><td>Field replace vs FIT inside the package</td><td>Connector/ORL/mate cycles and hot-swap CMIS vs COD/aging inside ASIC thermal</td></tr><tr><td>Isolator vs isolator-free (CPO)</td><td>Feedback tolerance vs quiet RIN only</td><td>Stressed RIN_xOMA at stated ORL; monitor PD / lock policy</td></tr><tr><td>Single- vs CW-WDM / comb</td><td>One line vs N lines into rings/filters</td><td>Per-line power flatness, SMSR, grid, crosstalk (sec:cwwdm-laser)</td></tr><tr><td>Retimed vs LPO</td><td>Module DSP hides Tx vs host sees raw eye</td><td>Laser+modulator TDECQ/RLM floor vs host COM budget (sec:com,sec:drivers)</td></tr><tr><td>Derate policy</td><td>Operating I, T, power below abs-max</td><td>Bias window, thermal class, FIT/E_a assumptions (sec:laser-aging)</td></tr></table>
-**Table 5.3.** Architecture forks and the laser specs each one forces. Freeze these before DVT samples are built (§8.10).
+**Table 5.3.** Architecture forks and the laser specs each one forces. Freeze these before DVT samples are built (§9.2).
 
 Each "Specs you must freeze early" cell is the exit criterion for that fork. **Exit when** every active fork has numbers (or explicit N/A) before DVT samples are built.
 
@@ -194,11 +194,11 @@ Work backward from the link, not forward from a marketing slide. The four steps 
 
 4.  From service model, choose ELSFP mate-cycle / hot-swap requirements or accept on-package FIT and write COD/aging screens accordingly (§5.14).
 
-Hand the filled slice to the supplier with the ATP checklist (Table 8.6). If a roadmap slide cannot point to a row in Table 5.4, the requirement is not real yet.
+Hand the filled slice to the supplier with the ATP checklist (Table 9.3). If a roadmap slide cannot point to a row in Table 5.4, the requirement is not real yet.
 
 **Exit when** every cell in Table 5.4 is a program number or explicit N/A, with ORL stated wherever RIN appears and case-$T$ class stated wherever power or bias appears. **Decision unlocked:** negotiate ATP limits, or reopen the architecture fork that left a cell empty.
 
-**Key idea.** Laser leadership is a requirements sheet: architecture forks force specific specs (power, grid, RIN@ORL, SMSR, bias window, CMIS, FIT). Fill Table 5.4 from the link budget and fleet model, then enforce it with the ATP (§8.10).
+**Key idea.** Laser leadership is a requirements sheet: architecture forks force specific specs (power, grid, RIN@ORL, SMSR, bias window, CMIS, FIT). Fill Table 5.4 from the link budget and fleet model, then enforce it with the ATP (§9.2).
 
 ## LIV, SMSR, and RIN: the measurement playbook
 
@@ -283,7 +283,7 @@ Aging (SMSR collapse, mode hopping)
 
 Thermal runaway
 
-: A positive feedback loop where higher junction temperature raises threshold current and cuts slope efficiency, so more drive power turns to heat for the same optical output, raising temperature further until the TEC saturates and the laser rolls over. Triggered by a failed or saturated TEC, a blocked heat path, or operation above the rated thermal class. Distinct from ordinary wear-out because it is fast (minutes, not months) once it starts; the failure-analysis handbook has the full symptom-to-cause breakdown (§10.7).
+: A positive feedback loop where higher junction temperature raises threshold current and cuts slope efficiency, so more drive power turns to heat for the same optical output, raising temperature further until the TEC saturates and the laser rolls over. Triggered by a failed or saturated TEC, a blocked heat path, or operation above the rated thermal class. Distinct from ordinary wear-out because it is fast (minutes, not months) once it starts; the failure-analysis handbook has the full symptom-to-cause breakdown (§11.7).
 
 Monitor photodiode failure
 
@@ -333,11 +333,11 @@ HTOL (high-temperature operating life)
 
 Burn-in
 
-: A shorter, sometimes 100%-screen stress that removes infant-mortality units before ship, rather than projecting life. Burn-in trades test time for escape rate (§8.9).
+: A shorter, sometimes 100%-screen stress that removes infant-mortality units before ship, rather than projecting life. Burn-in trades test time for escape rate (§9.4).
 
 Environmental stress
 
-: Temperature cycling, damp heat, vibration, and shock catch packaging, attach, and mechanical failure modes that HTOL does not. They qualify different risks and should not be treated as substitutes for long-term aging data (§8.2).
+: Temperature cycling, damp heat, vibration, and shock catch packaging, attach, and mechanical failure modes that HTOL does not. They qualify different risks and should not be treated as substitutes for long-term aging data (§8.3).
 
 Together with the Arrhenius acceleration factor, these three stresses turn a qualification lot into a defensible FIT number.
 
@@ -355,7 +355,7 @@ Watch LIV and spectrum over HTOL or field life:
 
 - COD (catastrophic optical damage) at the facet under overstress.
 
-Each signature should appear in the ATP and in field telemetry triage (§7.12, §8.2).
+Each signature should appear in the ATP and in field telemetry triage (§7.12, §8.3).
 
 ## Aging curves, derating, and fleet FIT
 
@@ -417,7 +417,7 @@ extitDeep dive / pin map. Skip unless you are wiring the host connector. Twenty-
 
 ##### Qual hooks for suppliers.
 
-Acceptance test plans should cover the checklist in Table 8.6, §8.10: laser LIV/SMSR/RIN inside the module; optical power-class compliance; connector mating cycles and contamination/ORL; burn-in before ship; CMIS register sanity; and thermal class at rated case temperature. Module bring-up must also prove the CMIS enable sequence and ModuleReady laser policy (§7.9). Field returns split between laser wear-out and connector/fiber-attach faults; keep both in the triage tree (§7.12).
+Acceptance test plans should cover the checklist in Table 9.3, §9.2: laser LIV/SMSR/RIN inside the module; optical power-class compliance; connector mating cycles and contamination/ORL; burn-in before ship; CMIS register sanity; and thermal class at rated case temperature. Module bring-up must also prove the CMIS enable sequence and ModuleReady laser policy (§7.9). Field returns split between laser wear-out and connector/fiber-attach faults; keep both in the triage tree (§7.12).
 
 ## Optical safety and laser classes
 
@@ -459,7 +459,7 @@ Multi-wavelength CW sources (CW-WDM MSA) feed dense ring or filter banks on a PI
 
 - RIN and ORL sensitivity for each line (§5.7, §4.3.1).
 
-Examples: Ayar Labs SuperNova (CW-WDM MSA-compliant, feeds TeraPHY)  ; Broadcom ELSFP banks on Tomahawk CPO (§9.10, §5.14); quantum-dot comb lasers (Ranovus, Quintessent) aimed at many $\lambda$ from one chip. Source tests live here; locking and on-chip MUX live in Chapter 6.
+Examples: Ayar Labs SuperNova (CW-WDM MSA-compliant, feeds TeraPHY)  ; Broadcom ELSFP banks on Tomahawk CPO (§10.10, §5.14); quantum-dot comb lasers (Ranovus, Quintessent) aimed at many $\lambda$ from one chip. Source tests live here; locking and on-chip MUX live in Chapter 6.
 
 ## Light-source supply strategy
 
@@ -502,7 +502,7 @@ At the scale of a large optical fleet the laser is usually the reliability-limit
 
 - EAM aging in EMLs; coupling and solder drift in packaged assemblies.
 
-Because failures scale with the number of lasers, a fleet of $100{,}000$+ links turns a modest per-laser FIT rate into a steady stream of field failures (§5.13, §8.2). The mitigations shape architecture: field-replaceable external laser sources (ELSFP, CW-WDM), redundancy, burn-in screening to weed out infant mortality, and derating (running lasers below their maximum to extend life).
+Because failures scale with the number of lasers, a fleet of $100{,}000$+ links turns a modest per-laser FIT rate into a steady stream of field failures (§5.13, §8.3). The mitigations shape architecture: field-replaceable external laser sources (ELSFP, CW-WDM), redundancy, burn-in screening to weed out infant mortality, and derating (running lasers below their maximum to extend life).
 
 ## Margin erosion over temperature, lot, and life
 
@@ -577,7 +577,7 @@ A laser is an active device with wear-out physics, which makes it both the first
 
 ### How it is measured
 
-Qualify the laser as a set of curves across temperature, bias, ORL, and age, not a room-temperature data-sheet point. The measurement playbook (LIV, SMSR, RIN, wavelength, and EAM checks with their instruments and pass/fail intent) is in §5.7, Table 5.5; the stress classes that project field life are in §5.12, §5.13, §8.2 .
+Qualify the laser as a set of curves across temperature, bias, ORL, and age, not a room-temperature data-sheet point. The measurement playbook (LIV, SMSR, RIN, wavelength, and EAM checks with their instruments and pass/fail intent) is in §5.7, Table 5.5; the stress classes that project field life are in §5.12, §5.13, §8.3 .
 
 ### How it fails
 
@@ -674,7 +674,7 @@ Table 5.9 is the decision sequence for a laser program. Measurement methods for
 
 ##### Manufacturing.
 
-**Purpose.** Can the ATP catch bad units and lot drift at useful test cost (Table 8.6)?
+**Purpose.** Can the ATP catch bad units and lot drift at useful test cost (Table 9.3)?
 
 **Exit criteria.** **Exit when** limits, guardbands, GR&R, yield, and a reaction plan exist for the ship screens.
 

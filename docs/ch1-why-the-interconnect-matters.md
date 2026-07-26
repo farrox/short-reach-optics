@@ -27,7 +27,7 @@ That last point is the hook for this book. Purpose-built inference silicon does 
 
 ## Why inference makes the interconnect matter
 
-Inference is not training. Once a model is trained, serving it is dominated by two phases with very different bottlenecks (developed fully in Chapter 9):
+Inference is not training. Once a model is trained, serving it is dominated by two phases with very different bottlenecks (developed fully in Chapter 10):
 
 Prefill
 
@@ -55,11 +55,11 @@ Memory-limited
 
 Network-limited
 
-: Sharded frontier models (2020--present). Tensor, pipeline, and expert parallelism put collectives on the critical path; fabric bandwidth and tail latency now limit realized compute use (§9.7, §9.6).
+: Sharded frontier models (2020--present). Tensor, pipeline, and expert parallelism put collectives on the critical path; fabric bandwidth and tail latency now limit realized compute use (§10.7, §10.6).
 
 Power-limited
 
-: Gigawatt-class deployments (emerging). Site megawatts cap total capacity; every pJ/bit the interconnect saves is a watt returned to compute (§9.13).
+: Gigawatt-class deployments (emerging). Site megawatts cap total capacity; every pJ/bit the interconnect saves is a watt returned to compute (§10.13).
 
 The bottleneck did not replace the previous one; it stacked on top. A modern cluster is simultaneously memory-bandwidth-bound in decode, network-bound in collectives, and power-bound at the site. The interconnect sits at the intersection of the last two, which is why this book treats optics as infrastructure rather than as a module datasheet exercise.
 
@@ -69,7 +69,7 @@ An accelerator does useful work only while its operands arrive on time. Model pa
 
 All-reduce
 
-: combines partial results across a group and returns the result to every member. The slowest path can hold the whole group at the synchronization point (§9.7).
+: combines partial results across a group and returns the result to every member. The slowest path can hold the whole group at the synchronization point (§10.7).
 
 All-to-all
 
@@ -121,7 +121,7 @@ Power, noise, timing, and spectral margins usually move a little at a time. A co
 
 ##### Debug by eliminating hypotheses.
 
-First scope the failure: one unit, one lot, one vendor, one site, or the fleet. Then classify its pattern: sudden or gradual, constant or temperature-dependent, power-related or signal-quality-related. Choose the next measurement for its ability to separate competing causes. The debugging pyramid below gives the order; the failure-analysis handbook in Chapter 10 gives the symptom-led procedures.
+First scope the failure: one unit, one lot, one vendor, one site, or the fleet. Then classify its pattern: sudden or gradual, constant or temperature-dependent, power-related or signal-quality-related. Choose the next measurement for its ability to separate competing causes. The debugging pyramid below gives the order; the failure-analysis handbook in Chapter 11 gives the symptom-led procedures.
 
 > **Engineering heuristic.** Scope before mechanism. A fleet-wide sudden event is almost never solved by staring at one connector.
 
@@ -143,7 +143,7 @@ Fabric capacity can fall behind injected traffic. A single marginal link can sta
 
 ### How it is debugged
 
-Use the debugging pyramid: start at the system symptom, narrow to signal quality, walk the link budget, bisect the subsystem, then confirm a mechanism with evidence. Do not skip layers. Junior mistake: open a connector or blame a laser before the workload symptom and population are named (§4.8, Chapter 10).
+Use the debugging pyramid: start at the system symptom, narrow to signal quality, walk the link budget, bisect the subsystem, then confirm a mechanism with evidence. Do not skip layers. Junior mistake: open a connector or blame a laser before the workload symptom and population are named (§4.8, Chapter 11).
 
 ## The debugging pyramid
 
@@ -190,7 +190,7 @@ Layer 4: Subsystem
 
 Layer 5: Confirmed mechanism
 
-: What mechanism explains the failure after evidence reorders belief? Until confirmation, speak of a leading hypothesis. Open FA or 8D here (§8.10).
+: What mechanism explains the failure after evidence reorders belief? Until confirmation, speak of a leading hypothesis. Open FA or 8D here (§9.2).
 
 Do not skip layers. Jumping to a named mechanism before confirming the system symptom and localizing the subsystem wastes weeks on the wrong part.
 
@@ -218,13 +218,13 @@ The chapters build from requirements to fleet operation:
 
 4.  Chapter 6: wavelength locking, thermal crosstalk, CW-WDM, on-chip MUX.
 
-5.  Chapter 7, Chapter 8: measurement ladder, link budgets, qual, packaging.
+5.  Chapter 7, Chapter 8, Chapter 9: measurement ladder, link budgets, qual, packaging, and production readiness.
 
-6.  Chapter 9: scale-up/out, pluggables, CPO/XPO, inference collectives.
+6.  Chapter 10: scale-up/out, pluggables, CPO/XPO, inference collectives.
 
-7.  Chapter 10: symptom-led mechanism isolation and corrective action.
+7.  Chapter 11: symptom-led mechanism isolation and corrective action.
 
-To use the book as a design drill, pick one link style (retimed 800G DR, LPO, or CPO WDM) and trace it end to end through §3.2, §9.3, §9.10.
+To use the book as a design drill, pick one link style (retimed 800G DR, LPO, or CPO WDM) and trace it end to end through §3.2, §10.3, §10.10.
 
 
 <div class="nav-links">

@@ -65,7 +65,11 @@ Step 9: Ramp mass production
 Step 10: Monitor the fleet
   |
 Step 11: Feed learning / next revision</code></pre>
-Same order as Table 7.2, not a second Staff loop. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness (§7.1, Appendix A.8.5, §8.2).
+Same order as Table 7.2, not a second Staff loop. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness (§7.1, Appendix A.8.5, §8.3).
+
+Step 6 (qualify reliability): mechanism $\rightarrow$ stress $\rightarrow$ observable $\rightarrow$ acceptance $\rightarrow$ confidence. See Chapter 8.
+
+Step 7 (validate manufacturing): production reference $\rightarrow$ representative builds $\rightarrow$ trusted measurement $\rightarrow$ yield/ATP/SPC $\rightarrow$ ramp. See Chapter 9.
 
 ## Qualification evidence tree
 
@@ -86,7 +90,7 @@ Acceptance criterion
 Production proxy
   |
 Ship / restrict / reject</code></pre>
-Use inside the reliability gate of Appendix D.2. The lifecycle says *when*; this tree says *what evidence* is defensible (Appendix D.16, §8.2).
+Use inside the reliability gate of Appendix D.2. The lifecycle says *when*; this tree says *what evidence* is defensible (Appendix D.16, §8.3).
 
 > **Why experienced engineers insist on mechanism $\rightarrow$ stress $\rightarrow$ observable?**
 >
@@ -130,7 +134,7 @@ Correlation analysis (which cohort?)
   |-- lot / date code / FW / cal / platform / location
   |
 Containment and corrective action</code></pre>
-Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (§7.12, §8.6).
+Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (§7.12, §9.3).
 
 > **Engineering heuristic.** Population behavior is usually more informative than one failing unit. A cohort plot often beats another hour on the same sample.
 
@@ -145,7 +149,7 @@ Gradual?
   |-- aging / drift / margin erosion / contamination / cal movement
   |
 Prioritize measurements (priors, not conclusions)</code></pre>
-Sudden and gradual are priors that reorder the bench, not confirmed-mechanism claims (Chapter 10).
+Sudden and gradual are priors that reorder the bench, not confirmed-mechanism claims (Chapter 11).
 
 ## Transmitter, channel, or receiver
 
@@ -159,7 +163,7 @@ Golden swap / loopback
 Evidence
   |
 Owner + decision</code></pre>
-Bisect domains before opening packages (§7.10, §10.2).
+Bisect domains before opening packages (§7.10, §11.2).
 
 ## Supplier qualification
 
@@ -176,7 +180,7 @@ Qualification (named mechanisms)
 Production readiness (FAIR, ATP, SPC)
   |
 Fleet monitoring (RMA, telemetry)</code></pre>
-Customer view measures external behavior. Vendor view owns internals (Appendix A.8.7, §8.10).
+Customer view measures external behavior. Vendor view owns internals (Appendix A.8.7, §9.2).
 
 ## Supplier escape containment flow
 
@@ -199,7 +203,7 @@ Recurrence control
 Decision closure: owner / timeline / reversibility / follow-up</code></pre>
 > **Engineering heuristic.** Contain first when the population can grow. Perfect mechanism stories do not unship yesterday's lot.
 
-Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (§8.7, §7.12, Appendix D.16).
+Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (§9.5, §7.12, Appendix D.16).
 
 ## Margin-consumption flow
 
@@ -257,7 +261,7 @@ Update screening or ATP
 Verify next lot
   |
 Monitor fleet</code></pre>
-Containment, confirmed mechanism, and prevention are three different actions (§8.7).
+Containment, confirmed mechanism, and prevention are three different actions (§9.5).
 
 ## Production feedback loop
 
@@ -276,7 +280,7 @@ Failure analysis
 Updated limits or screens
   |
 Next production cycle</code></pre>
-Production validation is replayable and decision-oriented (§8.10, §8.9).
+Production validation is replayable and decision-oriented (§9.2, §9.4).
 
 ## Measurement-selection loop
 
@@ -349,7 +353,7 @@ Reversibility: how hard to undo?
 Follow-up control: ATP / SPC / telemetry / supplier CA</code></pre>
 Example (supplier defect): stop shipment of the scoped lot; owner Operations plus Quality; follow-up is supplier corrective action and the production or fleet control that would catch the next escape.
 
-Chapter 7, Chapter 8, Chapter 10, Appendix C point here rather than restating the list.
+Chapter 7, Chapter 8, Chapter 9, Chapter 11, Appendix C point here rather than restating the list.
 
 ## Before you start: three checklists
 
@@ -399,7 +403,7 @@ Chapter 7, Chapter 8, Chapter 10, Appendix C point here rather than restating
 
 
 <div class="nav-links">
-  <a href="ch13-thirty-second-interview-frameworks">&larr; Previous</a>
+  <a href="ch14-thirty-second-interview-frameworks">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch15-optical-systems-staff-engineer-interview-questions">Next &rarr;</a>
+  <a href="ch16-optical-systems-staff-engineer-interview-questions">Next &rarr;</a>
 </div>

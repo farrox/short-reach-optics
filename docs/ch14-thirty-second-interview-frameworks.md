@@ -62,7 +62,7 @@ BER waterfall $\rightarrow$ shift or floor? $\rightarrow$ sensitivity vs noise.
 
 **Thirty-second close.** Average power is stable, so I deprioritize gross loss, scope the population, chase signal quality on the black-box surface first, isolate Tx / channel / Rx / DSP, then close with the control that catches the next escape.
 
-**Deep dive.** Full prose: Appendix A.10.7, §10.2. Ledgers: Appendix A.8.4. Pattern: Appendix A.1.
+**Deep dive.** Full prose: Appendix A.10.7, §11.2. Ledgers: Appendix A.8.4. Pattern: Appendix A.1.
 
 ## Received power decreased
 
@@ -159,7 +159,7 @@ LIV on weak lane $\rightarrow$ device or coupling? $\rightarrow$ FAU vs die.
 
 **Thirty-second close.** I compare siblings, swap optical versus electrical, then own the assembly or array element and the ATP row that would have caught it.
 
-**Deep dive.** Worked answer: Appendix A.10.6. FAU and parallel optics appear throughout Chapter 10.
+**Deep dive.** Worked answer: Appendix A.10.6. FAU and parallel optics appear throughout Chapter 11.
 
 ## High-temperature failures
 
@@ -209,7 +209,7 @@ OSA $\rightarrow$ spectral alignment? $\rightarrow$ lock / filter.
 
 **Thirty-second close.** I measure externally visible remaining margin at the failing temperature, ask whether cool-down recovers, fix table or thermal design, and put that loaded corner in ATP.
 
-**Deep dive.** Appendix A.10.3, §10.12. Control ledger: Appendix A.8.4.
+**Deep dive.** Appendix A.10.3, §11.12. Control ledger: Appendix A.8.4.
 
 ## Laser aging versus calibration drift
 
@@ -287,7 +287,7 @@ Mechanism-appropriate reliability
 Supplier ATP correlation
   |
 Module confirmation + split RMA</code></pre>
-**Key concepts.** Component and complete-product second sources have different access, interop burden, and owners (Appendix D.8, §8.10, Appendix D.16).
+**Key concepts.** Component and complete-product second sources have different access, interop burden, and owners (Appendix D.8, §9.2, Appendix D.16).
 
 **Measurements.** Wafer/lot distributions $\rightarrow$ process spread? $\rightarrow$ risk.\
 Module confirmation $\rightarrow$ integration OK? $\rightarrow$ continue.\
@@ -307,7 +307,7 @@ Supplier ATP vs your proxy $\rightarrow$ escape risk? $\rightarrow$ ship gate.
 
 **Thirty-second close.** I qualify at the component boundary with multi-lot distributions, then confirm in-module with FAIR, ATP correlation, and split RMA.
 
-**Deep dive.** Appendix A.10.5, §8.10.
+**Deep dive.** Appendix A.10.5, §9.2.
 
 ## Second module or cable source
 
@@ -354,7 +354,7 @@ Pilot cohort $\rightarrow$ assumptions hold? $\rightarrow$ open MP.
 
 **Thirty-second close.** I walk the product lifecycle on the customer-visible surface, then gate volume on FAIR, ATP correlation, pilot exit, and split RMA.
 
-**Deep dive.** Appendix A.10.5, §8.10.
+**Deep dive.** Appendix A.10.5, §9.2.
 
 ## Validation plan for a new transceiver
 
@@ -547,7 +547,7 @@ Supply noise / FEC histogram $\rightarrow$ PSRR or burst? $\rightarrow$ owner.
 
 **Thirty-second close.** I confirm floor versus shift on a waterfall, then remove the non-power-limited impairment rather than raise launch power.
 
-**Deep dive.** Appendix A.10.8, §10.2.1, §4.3.
+**Deep dive.** Appendix A.10.8, §11.2.1, §4.3.
 
 ## Intermittent failures
 
@@ -594,7 +594,7 @@ Mate/demate $\rightarrow$ connector? $\rightarrow$ hygiene / replace.
 
 **Thirty-second close.** I preserve state before reseating, reproduce with dwell, and refuse NFF without a reproduction and control plan.
 
-**Deep dive.** §7.12, Table 10.1.
+**Deep dive.** §7.12, Table 11.1.
 
 ## Production recurrence-control update
 
@@ -698,7 +698,7 @@ Actuator near rail $\rightarrow$ control margin? $\rightarrow$ thermal design.
 
 **First thing I would check.** Freeze the requirements slice and named mechanisms before listing stresses.
 
-> **30-second answer (memorize).** I qualify from requirements to mechanisms, not from a ritual list. What does the system require? What can fail? How do we accelerate those mechanisms? What observable changes? What defines pass/fail? How much evidence is enough? How does production control maintain quality? Therefore I would gate ship on remaining margin after named stresses with a stated sample strategy and confidence, plus a production proxy (Appendix D.3, §8.2).
+> **30-second answer (memorize).** I qualify from requirements to mechanisms, not from a ritual list. What does the system require? What can fail? How do we accelerate those mechanisms? What observable changes? What defines pass/fail? How much evidence is enough? How does production control maintain quality? Therefore I would gate ship on remaining margin after named stresses with a stated sample strategy and confidence, plus a production proxy (Appendix D.3, §8.3).
 
 <pre class="dectree" aria-label="Qualification interview framework"><code>Qualification interview framework
   |
@@ -735,7 +735,7 @@ ATP correlation $\rightarrow$ factory control? $\rightarrow$ volume.
 
 **Thirty-second close.** I budget which stresses spend which ledgers, run HTOL only with a named mechanism, and gate ship on remaining margin.
 
-**Deep dive.** Appendix A.8.5, §8.2, §5.13.
+**Deep dive.** Appendix A.8.5, §8.3, §5.13.
 
 ## Unknown failure
 
@@ -801,25 +801,25 @@ Staff follow-ups often stop asking "what test?" and start asking "given constrai
 
 *Benefit:* confidence and fewer late escapes.\
 *Downside:* schedule, cost, delayed learning.\
-*Criteria:* prioritize by risk $\times$ uncertainty $\times$ impact; stop when remaining risk has a production control (§8.2).
+*Criteria:* prioritize by risk $\times$ uncertainty $\times$ impact; stop when remaining risk has a production control (§8.3).
 
 ##### Would you add a second supplier?
 
 *Benefit:* supply resilience and pricing leverage.\
 *Downside:* validation, interop, and manufacturing differences.\
-*Criteria:* qualify on concentration risk and evidence, not ideology (§8.10, Appendix C.7).
+*Criteria:* qualify on concentration risk and evidence, not ideology (§9.2, Appendix C.7).
 
 ##### Would you increase ATP coverage?
 
 *Benefit:* escape detection earlier in the flow.\
 *Downside:* cycle time, cost, false rejects.\
-*Criteria:* cheapest control that reliably detects the named mechanism: 100%, sample, SPC, or supplier process (§8.9).
+*Criteria:* cheapest control that reliably detects the named mechanism: 100%, sample, SPC, or supplier process (§9.4).
 
 **Key idea.** Open the matching framework, deliver the thirty-second box, walk the tree, end on the decision and the control. When the interviewer asks a tradeoff question, name benefit, downside, and criteria. Philosophy is in Appendix A; this appendix is how you speak it under pressure.
 
 
 <div class="nav-links">
-  <a href="ch12-engineering-case-studies">&larr; Previous</a>
+  <a href="ch13-engineering-case-studies">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch14-engineering-decision-trees">Next &rarr;</a>
+  <a href="ch15-engineering-decision-trees">Next &rarr;</a>
 </div>

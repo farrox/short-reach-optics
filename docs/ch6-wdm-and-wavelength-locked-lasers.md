@@ -68,7 +68,7 @@ Hybrid
 
 : some engines use a coarse AWG plus fine ring filters; count every stage in the ledger.
 
-**MZMs trade area for calm wavelength behavior.** When each lane carries its own laser (DR/FR SiPh modules), silicon Mach--Zehnder modulators sidestep ring locking (§3.14.3). Rings remain the default when many $\lambda$ share one PIC and area dominates (§3.14.3, Chapter 9).
+**MZMs trade area for calm wavelength behavior.** When each lane carries its own laser (DR/FR SiPh modules), silicon Mach--Zehnder modulators sidestep ring locking (§3.14.3). Rings remain the default when many $\lambda$ share one PIC and area dominates (§3.14.3, Chapter 10).
 
 ##### Where MUX defects land.
 
@@ -107,7 +107,7 @@ Athermal design
 
 Digital supervisory loop
 
-: CMIS-exposed monitors and firmware on modern modules; link training at 224G/448G may iterate EQ and wavelength trim together (§9.3).
+: CMIS-exposed monitors and firmware on modern modules; link training at 224G/448G may iterate EQ and wavelength trim together (§10.3).
 
 ##### Capture versus hold.
 
@@ -245,7 +245,7 @@ If one $\lambda$ unlocks or walks, change one actuator at a time:
 
 ##### Fleet telltales.
 
-Slow BER creep with rising bias on one line is often laser wear-out (§8.4). Sudden unlock under neighbor load with healthy LIV is thermal crosstalk or lock firmware. One dark lane with neighbors up is COD, FAU, or a single ring/heater fail; classify with §7.12 before you open an 8D on the wrong supplier.
+Slow BER creep with rising bias on one line is often laser wear-out (§8.5). Sudden unlock under neighbor load with healthy LIV is thermal crosstalk or lock firmware. One dark lane with neighbors up is COD, FAU, or a single ring/heater fail; classify with §7.12 before you open an 8D on the wrong supplier.
 
 > **What this usually means.** All lanes unlock after a temperature step
 >
@@ -322,7 +322,7 @@ First decide whether the fault affects one lane or all lanes. Apply the power-ve
 
 **Key idea.** Wavelength locking is a control-system problem wrapped around an optical link. Measure the grid, capture, hold, shared thermal paths, and per-lane margin. Then use one-lane versus all-lane behavior to split the source, ring bank, MUX, thermal controller, and common supplies.
 
-Junior mistake: blame every unlock on the laser, or debug lock from final register values without neighbor-load and time-aligned traces (§4.8, Chapter 7, Chapter 10).
+Junior mistake: blame every unlock on the laser, or debug lock from final register values without neighbor-load and time-aligned traces (§4.8, Chapter 7, Chapter 11).
 
 ##### Three questions to test yourself.
 

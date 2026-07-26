@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "Ch 16: How Staff Engineers Think"
+title: "Ch 17: How Staff Engineers Think"
 ---
 
-# 16 How Staff Engineers Think
+# 17 How Staff Engineers Think
 
-This appendix is judgment, not physics. The machinery lives elsewhere: validation and fleet work (Chapter 7, Chapter 8), networking constraints (Chapter 9), the failure handbook (Chapter 10), the Staff loop and access levels (Appendix A.1, Appendix A.2), cases and tradeoff drills (Appendix B, Appendix C.17), and the wall-chart trees (Appendix D). Read this when you need the habits that turn that machinery into decisions under pressure.
+This appendix is judgment, not physics. The machinery lives elsewhere: validation, qualification, and manufacturing (Chapter 7, Chapter 8, Chapter 9), networking constraints (Chapter 10), the failure handbook (Chapter 11), the Staff loop and access levels (Appendix A.1, Appendix A.2), cases and tradeoff drills (Appendix B, Appendix C.17), and the wall-chart trees (Appendix D). Read this when you need the habits that turn that machinery into decisions under pressure.
 
 ## Engineering under uncertainty
 
@@ -57,7 +57,7 @@ Do not soften numbers to protect feelings. Do not bury the hold recommendation i
 
 ## Supplier interactions
 
-Treat supplier conversations like debug with a second party across the table (Appendix B.4, §8.10, Appendix C.10). Scope first: lot, site, date code, plane, condition. Ask for evidence that would change your ship call. Offer the measurements you will accept as closure.
+Treat supplier conversations like debug with a second party across the table (Appendix B.4, §9.2, Appendix C.10). Scope first: lot, site, date code, plane, condition. Ask for evidence that would change your ship call. Offer the measurements you will accept as closure.
 
 Second sources are not ideology. Qualify them when concentration risk exceeds fleet tolerance, and only on evidence you would trust for the first source (Appendix C.7, Appendix C.17).
 
@@ -91,7 +91,7 @@ Learning is incomplete until the factory or fleet can catch the mechanism withou
 
 
 <div class="nav-links">
-  <a href="ch15-optical-systems-staff-engineer-interview-questions">&larr; Previous</a>
+  <a href="ch16-optical-systems-staff-engineer-interview-questions">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch17-abbreviations-and-terminology">Next &rarr;</a>
+  <a href="ch18-abbreviations-and-terminology">Next &rarr;</a>
 </div>

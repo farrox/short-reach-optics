@@ -396,6 +396,10 @@ conditions, or hold.\\
 \textbf{Interview trap:} Treating HTOL as host interoperability or as
 production readiness.
 
+Reliability qualification is developed in \Cref{ch:reliability}, including
+mechanism selection, accelerated stress, observables, sample confidence, and
+acceptance decisions.
+
 Once life risk is bounded for representative hardware, the next question is
 whether production can reproduce that result.
 
@@ -422,6 +426,10 @@ evidence support opening volume, or shipment is held for process control.\\
 \textbf{Decision:} Open volume toward pilot, hold shipment, or demand corrective
 action before ramp.\\
 \textbf{Interview trap:} Calling two hand-selected lots ``multi-lot'' evidence.
+
+Manufacturing validation is developed in \Cref{ch:manufacturing}, including
+production-intent builds, traceability, measurement-system analysis, yield,
+ATP, SPC, supplier control, and staged ramp.
 
 Once the process and its screens are controlled, a bounded deployment can test
 the remaining assumptions.
@@ -455,7 +463,7 @@ sustained controls.
 \label{sec:ladder-mp}
 
 Sustain volume with process control after pilot exit. Depth lives in
-\Cref{tab:npi,ch:reliability}. Pilot success does not prove ECO discipline, SPC
+\Cref{tab:npi,ch:manufacturing}. Pilot success does not prove ECO discipline, SPC
 stability, and RMA burn-down at volume. Hold or open volume based on control,
 not on hope that pilot luck continues.
 
@@ -1671,7 +1679,8 @@ the blocks and reference planes are known. Run the target host, chassis, fiber,
 and neighbor corners before calling the product ready.}
 
 Junior mistake: call a golden-host BER pass ``production ready,'' or open
-supplier FA before clearing the tester (\Cref{tab:ladder,ch:reliability,app:decision-trees}).
+supplier FA before clearing the tester
+(\Cref{tab:ladder,ch:manufacturing,app:decision-trees}).
 
 \paragraph{Three questions to test yourself.}
 \begin{enumerate}

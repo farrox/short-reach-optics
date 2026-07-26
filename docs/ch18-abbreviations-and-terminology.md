@@ -227,7 +227,7 @@ DSP
 
 DVT
 
-: Design Validation Test. Proves the design meets requirements across corners, margin, and a frozen life plan before volume tooling (Table 8.5).
+: Design Validation Test. Proves the design meets requirements across corners, margin, and a frozen life plan before volume tooling (Table 9.2).
 
 DWDM
 
@@ -275,7 +275,7 @@ ESD
 
 EVT
 
-: Engineering Validation Test. Early bring-up on engineering samples: first light, CMIS, basic LIV/SMSR/RIN, one closing BER (Table 8.5).
+: Engineering Validation Test. Early bring-up on engineering samples: first light, CMIS, basic LIV/SMSR/RIN, one closing BER (Table 9.2).
 
 Faceplate
 
@@ -479,7 +479,7 @@ MoE
 
 MP
 
-: Mass production. Sustained volume after PVT: DPPM, RMA ownership, ECO control (Table 8.5).
+: Mass production. Sustained volume after PVT: DPPM, RMA ownership, ECO control (Table 9.2).
 
 MPI
 
@@ -527,7 +527,7 @@ NPC
 
 NPI
 
-: New product introduction. Gate sequence EVT $\to$ DVT $\to$ Qual $\to$ PVT $\to$ Pilot $\to$ MP that maps onto the validation ladder (Table 8.5, Table 7.2).
+: New product introduction. Gate sequence EVT $\to$ DVT $\to$ Qual $\to$ PVT $\to$ Pilot $\to$ MP that maps onto the validation ladder (Table 9.2, Table 7.2).
 
 NPO
 
@@ -631,7 +631,7 @@ PUE
 
 PVT
 
-: Production Validation Test. Proves the factory can build the qualified design repeatedly at yield with ATP and SPC (Table 8.5).
+: Production Validation Test. Proves the factory can build the qualified design repeatedly at yield with ATP and SPC (Table 9.2).
 
 QSFP-DD
 
@@ -927,7 +927,7 @@ TDECQ / SECQ / EECQ
 
 DVT / PVT / EVT
 
-: EVT is early engineering validation; DVT proves the design; PVT proves the factory can build it (Table 8.5).
+: EVT is early engineering validation; DVT proves the design; PVT proves the factory can build it (Table 9.2).
 
 FIT / DPPM
 
@@ -939,7 +939,7 @@ CPO / NPO / OBO
 
 LPO / LRO / TRO / RTLR
 
-: LPO is linear both directions; LRO/RTLR retimes Tx only (linear Rx); TRO retimes Tx (linear Rx) under that naming. Draw the host electrical Tx/Rx path rather than expanding acronyms alone (Chapter 9).
+: LPO is linear both directions; LRO/RTLR retimes Tx only (linear Rx); TRO retimes Tx (linear Rx) under that naming. Draw the host electrical Tx/Rx path rather than expanding acronyms alone (Chapter 10).
 
 RS sublayer / RS-FEC
 
@@ -947,7 +947,7 @@ RS sublayer / RS-FEC
 
 
 <div class="nav-links">
-  <a href="ch16-how-staff-engineers-think">&larr; Previous</a>
+  <a href="ch17-how-staff-engineers-think">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch18-references">Next &rarr;</a>
+  <a href="ch19-references">Next &rarr;</a>
 </div>
