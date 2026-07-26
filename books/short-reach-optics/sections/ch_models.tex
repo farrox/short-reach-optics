@@ -703,47 +703,19 @@ a meter; signal-quality failures need FEC timing, DCA, BERT, or spectrum analysi
 depending on access. Apply it before opening the package, changing settings, or
 blaming a supplier (\Cref{sec:fleet-triage}).
 
-\section{Interview and design review questions}
+\section{Interview takeaway}
 \label{sec:models-design-review}
-
-\paragraph{Concept.}
-\begin{itemize}
-\item Why does RIN impose a BER floor that no amount of optical power can overcome?
-\item What is the physical difference between thermal noise, shot noise, and RIN?
-\item Why is OMA a better receiver metric than average power?
-\end{itemize}
-
-\paragraph{Design.}
-\begin{itemize}
-\item Which measured curve supports each noise term in the model?
-\item Over what power range does the Gaussian assumption fit the data?
-\item What evidence separates thermal noise, shot noise, RIN, jitter, and
-      crosstalk?
-\item Which corner would create a floor that a room-temperature sensitivity point
-      misses?
-\end{itemize}
-
-\paragraph{Debug.}
-\begin{itemize}
-\item Optical power is unchanged but BER worsened from $10^{-12}$ to $10^{-6}$.
-      Where do you start? (\Cref{sec:debug-fork})
-\item The BER curve flattens at high power. What mechanisms produce a floor?
-\item A bench supply is replaced with the product board and RIN rises. What
-      changed?
-\item What result would disprove the current root-cause hypothesis?
-\end{itemize}
-
-\paragraph{Manufacturing and operations.}
-\begin{itemize}
-\item How do you screen a laser whose quiet RIN passes but stressed RIN fails?
-\item What ATP row catches a bias-driver noise contribution that only appears with
-      host rails active?
-\item At what received power does RIN begin to dominate over thermal noise for
-      this receiver?
-\end{itemize}
 
 \keyidea{Four relations carry most of short-reach link design: the Gaussian
 $\mathrm{BER}(Q)$, the quadrature noise budget (thermal + shot + RIN), the RIN
 floor $Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$, and the sensitivity
 $P_{\text{sens}}=Q\,i_n/\mathcal{R}$. Close each relation with a measured curve,
 then use the curve shape to debug the link.}
+
+\paragraph{Three questions to test yourself.}
+\begin{enumerate}
+\item Why does RIN impose a BER floor that no amount of optical power can overcome?
+\item Optical power is unchanged but BER worsened from $10^{-12}$ to $10^{-6}$.
+      Where do you start? (\Cref{sec:debug-fork})
+\item The BER curve flattens at high power. What mechanisms produce a floor?
+\end{enumerate}

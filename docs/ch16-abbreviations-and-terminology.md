@@ -947,7 +947,7 @@ RS sublayer / RS-FEC
 
 
 <div class="nav-links">
-  <a href="ch14-engineering-decision-trees">&larr; Previous</a>
+  <a href="ch15-optical-systems-staff-engineer-interview-questions">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch16-references">Next &rarr;</a>
+  <a href="ch17-references">Next &rarr;</a>
 </div>

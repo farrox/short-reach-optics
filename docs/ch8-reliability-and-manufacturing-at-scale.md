@@ -64,17 +64,7 @@ Keep the jobs distinct: **burn-in** screens infant mortality from a production p
 
 ##### GR-468 in practice.
 
-Telcordia GR-468-CORE is the common qualification language for optoelectronic modules and discrete lasers. Map evidence with Appendix D.3:
-
-    Requirement
-            |
-    Failure mechanism
-            |
-    Qualification stress
-            |
-    Observed signature
-            |
-    Cost-effective production proxy or process control
+Telcordia GR-468-CORE is the common qualification language for optoelectronic modules and discrete lasers. Map each stress onto the qualification evidence path in Appendix D.3; do not invent a second sequence here.
 
 A 1,000-hour life test may justify a 100% room-temperature proxy, a sampled hot audit, a process monitor, or no direct production screen at all. Do not map every GR-468 stress sequence into 100% ATP. Document $E_a$ and confidence bounds when converting HTOL hours to field years, keep sample-size humility (§8.1, Table 8.5), and qualify the laser die, hermetic package, and module assembly separately when failures split across those boundaries (§8.8, §5.13, §5.14).
 
@@ -85,21 +75,8 @@ Qualification engineering starts from mechanisms, not from a museum of tests. Th
 <table class="book-table"><tr><th>Failure mechanism</th><th>Stress</th><th>Observable</th><th>Acceptance</th><th>Production control</th></tr><tr><td>Laser degradation</td><td>Temperature / lifetime (HTOL)</td><td>Power, wavelength, BER</td><td>Named limit vs life claim</td><td>ATP / SPC / burn-in proxy</td></tr><tr><td>Solder fatigue</td><td>Temperature cycling</td><td>Resistance, BER, opens</td><td>Post-stress continuity / BER</td><td>Process control, FAIR</td></tr><tr><td>Contamination / corrosion</td><td>Humidity / damp heat</td><td>Loss, ORL, leakage</td><td>IL/ORL / functional limits</td><td>Handling, sealing, audit</td></tr><tr><td>Connector wear</td><td>Mate cycling</td><td>Insertion loss, ORL</td><td>Cycle-count IL budget</td><td>Supplier / hygiene control</td></tr></table>
 **Table 8.1.** Qualification planning matrix. Each row is mechanism $\rightarrow$ stress $\rightarrow$ observable $\rightarrow$ acceptance $\rightarrow$ production control (Appendix D.3; interview form Appendix C.15).
 
-<pre class="dectree" aria-label="Qualification decision tree"><code>Qualification decision tree
-  |
-New requirement
-  |
-What failure mechanisms threaten it?
-  |
-Which mechanisms are accelerated?
-  |
-What stress reproduces them?
-  |
-What metric detects degradation?
-  |
-What confidence is required?
-  |
-What production control prevents escape?</code></pre>
+Interview and wall-chart form of the same path: Appendix C.15, Appendix D.3.
+
 ##### Sample strategy and confidence.
 
 Weak answer: "We test 20 units." Strong answer: the sample strategy depends on the failure-rate target, the confidence requirement, cost, and population variation. State lots, date codes, suppliers, manufacturing sites or lines, process corners, and whether the claim is zero-failure upper-bound or observed rate (§8.1, Appendix D.16). A rate without population, observation time, and confidence is not a fleet claim.
@@ -709,45 +686,17 @@ For a yield fall, freeze software, limits, and suspect material. Split by tester
 
 \> \*\*Debug story\*\* \> \> \*\*Observed.\*\* Module yield fell sharply after a supplier lot change. \> \> \*\*Investigation.\*\* The failure Pareto pointed to one-lane TDECQ. Golden units passed all stations, and failed units kept the bad lane on the reference bench. Cross-sections showed a shifted fiber-array attach. \> \> \*\*Finding.\*\* The electrical path and testers were stable. \> \> \*\*Root cause.\*\* An assembly fixture change moved one fiber row outside its coupling window. \> \> \*\*Resolution.\*\* The lot was held, the fixture was restored, first-article coupling checks were tightened, and the supplier control plan was revised.
 
-## Interview and design review questions
-
-##### Concept.
-
-- What distinguishes infant mortality, useful-life random, and wear-out failures?
-
-- Why does qualification on a small sample not guarantee field reliability?
-
-- What does FIT mean, and how does fleet size amplify it?
-
-##### Design.
-
-- Which failure mechanisms are accelerated by each qualification stress, and which mechanisms are not covered?
-
-- What is tested on every unit, what is sampled, and why is that escape risk acceptable?
-
-- Can yield and field returns be sliced by wafer, lot, supplier site, assembly line, tester, firmware, and date code?
-
-- What spare, repair, and reroute plan limits the fleet cost of a failure that still escapes?
-
-##### Debug.
-
-- Yield dropped from 95% to 70% on one ATP row. What are your first three actions?
-
-- A field return looks alive on the bench. What does a high NFF rate tell you?
-
-- What measurement-system check runs before a supplier or process excursion is declared?
-
-##### Manufacturing and operations.
-
-- Which corrective action changes a control so the same defect cannot escape again?
-
-- What data must a supplier provide at each NPI gate to pass?
-
-- How do you set guardband limits that balance yield loss against DPPM escape?
-
-- What is the cost of a wrong RMA classification (laser wear-out versus connector contamination)?
+## Interview takeaway
 
 **Key idea.** Production readiness joins mechanism-based qualification, a stable measurement system, controlled supplier changes, and field data that preserve lot history. When yield or fleet health moves, contain the population, clear the test system, find the first changed input, and verify the corrective control with new data.
+
+##### Three questions to test yourself.
+
+1.  Why does qualification on a small sample not guarantee field reliability?
+
+2.  Yield dropped from 95% to 70% on one ATP row. What are your first three actions?
+
+3.  Which corrective action changes a control so the same defect cannot escape again?
 
 
 <div class="nav-links">

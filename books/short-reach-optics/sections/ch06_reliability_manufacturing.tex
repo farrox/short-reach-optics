@@ -112,24 +112,8 @@ that mechanism. Do not apply one $E_a$ to mixed mechanisms.
 \label{sec:gr468}
 
 Telcordia GR-468-CORE is the common qualification language for optoelectronic
-modules and discrete lasers. Map evidence with
-\Cref{sec:tree-qual-evidence}:
-
-\begin{center}
-\begin{minipage}{0.92\linewidth}
-\begin{verbatim}
-Requirement
-        |
-Failure mechanism
-        |
-Qualification stress
-        |
-Observed signature
-        |
-Cost-effective production proxy or process control
-\end{verbatim}
-\end{minipage}
-\end{center}
+modules and discrete lasers. Map each stress onto the qualification evidence
+path in \Cref{sec:tree-qual-evidence}; do not invent a second sequence here.
 
 A 1{,}000-hour life test may justify a 100\% room-temperature proxy, a sampled
 hot audit, a process monitor, or no direct production screen at all. Do not map
@@ -171,23 +155,8 @@ $\rightarrow$ acceptance $\rightarrow$ production control
 (\Cref{sec:tree-qual-evidence}; interview form \Cref{fw:qual-plan}).\par}
 \end{table*}
 
-\begin{dectree}
-Qualification decision tree
-  |
-New requirement
-  |
-What failure mechanisms threaten it?
-  |
-Which mechanisms are accelerated?
-  |
-What stress reproduces them?
-  |
-What metric detects degradation?
-  |
-What confidence is required?
-  |
-What production control prevents escape?
-\end{dectree}
+Interview and wall-chart form of the same path:
+\Cref{fw:qual-plan,sec:tree-qual-evidence}.
 
 \paragraph{Sample strategy and confidence.}
 \label{sec:qual-sample-strategy}
@@ -1407,50 +1376,20 @@ fixture change moved one fiber row outside its coupling window.}{The lot was hel
 the fixture was restored, first-article coupling checks were tightened, and the
 supplier control plan was revised.}
 
-\section{Interview and design review questions}
+\section{Interview takeaway}
 \label{sec:reliability-design-review}
-
-\paragraph{Concept.}
-\begin{itemize}
-\item What distinguishes infant mortality, useful-life random, and wear-out
-      failures?
-\item Why does qualification on a small sample not guarantee field reliability?
-\item What does FIT mean, and how does fleet size amplify it?
-\end{itemize}
-
-\paragraph{Design.}
-\begin{itemize}
-\item Which failure mechanisms are accelerated by each qualification stress, and
-      which mechanisms are not covered?
-\item What is tested on every unit, what is sampled, and why is that escape risk
-      acceptable?
-\item Can yield and field returns be sliced by wafer, lot, supplier site, assembly
-      line, tester, firmware, and date code?
-\item What spare, repair, and reroute plan limits the fleet cost of a failure that
-      still escapes?
-\end{itemize}
-
-\paragraph{Debug.}
-\begin{itemize}
-\item Yield dropped from 95\% to 70\% on one ATP row. What are your first three
-      actions?
-\item A field return looks alive on the bench. What does a high NFF rate tell you?
-\item What measurement-system check runs before a supplier or process excursion is
-      declared?
-\end{itemize}
-
-\paragraph{Manufacturing and operations.}
-\begin{itemize}
-\item Which corrective action changes a control so the same defect cannot escape
-      again?
-\item What data must a supplier provide at each NPI gate to pass?
-\item How do you set guardband limits that balance yield loss against DPPM escape?
-\item What is the cost of a wrong RMA classification (laser wear-out versus
-      connector contamination)?
-\end{itemize}
 
 \keyidea{Production readiness joins mechanism-based qualification, a stable
 measurement system, controlled supplier changes, and field data that preserve lot
 history. When yield or fleet health moves, contain the population, clear the test
 system, find the first changed input, and verify the corrective control with new
 data.}
+
+\paragraph{Three questions to test yourself.}
+\begin{enumerate}
+\item Why does qualification on a small sample not guarantee field reliability?
+\item Yield dropped from 95\% to 70\% on one ATP row. What are your first three
+      actions?
+\item Which corrective action changes a control so the same defect cannot escape
+      again?
+\end{enumerate}

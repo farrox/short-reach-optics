@@ -217,39 +217,22 @@ total exceeds the target, identify which block moved: SerDes, driver, laser bias
 TEC, or DSP. Correlate power anomalies with BER, temperature, and equalizer state.
 A link that draws more power than expected is often also running at reduced margin.
 
-\section{Interview and design review questions}
+\section{Interview takeaway}
+\label{sec:firstprinciples-design-review}
 
-\paragraph{Concept.}
-\begin{itemize}
+\keyidea{Short-reach optics is, at bottom, an energy-per-bit optimization. Optical
+energy is spent at the endpoints and is flat with distance; electrical energy grows
+with distance and rate; so rising data rates push optics ever closer to the chip.
+Miller's framework is the lens the rest of this book looks through.}
+
+\paragraph{Three questions to test yourself.}
+\begin{enumerate}
 \item Why does electrical energy per bit grow with distance while optical does not?
-\item What physical quantity sets the receiver's minimum detectable energy?
-\item Why does co-packaging reduce energy per bit even without changing the laser?
-\end{itemize}
-
-\paragraph{Design.}
-\begin{itemize}
 \item At what reach does the optical crossover occur for your target lane rate,
       and what assumptions drive that number?
-\item How does doubling the lane rate change the crossover distance?
-\item Which rung of the energy ladder dominates total system power for this
-      workload?
-\end{itemize}
-
-\paragraph{Debug.}
-\begin{itemize}
 \item More accelerators were added but training throughput fell. Where on the
       energy ladder is the bottleneck?
-\item A link's power consumption rose after a firmware update. What changed:
-      equalization depth, retransmits, or thermal control?
-\end{itemize}
-
-\paragraph{Manufacturing and operations.}
-\begin{itemize}
-\item What determines the power budget at the faceplate: module watts, cooling
-      capacity, or rack-level allocation?
-\item How do you verify that a deployed link actually achieves the energy per bit
-      the design predicted?
-\end{itemize}
+\end{enumerate}
 
 \section{Why this framework anchors the book}
 
@@ -262,8 +245,3 @@ many wavelengths. Receiver noise and sensitivity
 enough. Co-packaging and energy-per-bit trends (\Cref{sec:power}) show the same
 first principle playing out as copper reach collapses and optics move onto the
 interposer.
-
-\keyidea{Short-reach optics is, at bottom, an energy-per-bit optimization. Optical
-energy is spent at the endpoints and is flat with distance; electrical energy grows
-with distance and rate; so rising data rates push optics ever closer to the chip.
-Miller's framework is the lens the rest of this book looks through.}

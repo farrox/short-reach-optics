@@ -1660,44 +1660,17 @@ level was too high.}{A laser-bias calibration table selected the wrong temperatu
 bin.}{The calibration was corrected, limits were added across temperature, and the
 escaped firmware revision was quarantined.}
 
-\section{Interview and design review questions}
+\section{Interview takeaway}
 \label{sec:imdd-design-review}
-
-\paragraph{Concept.}
-\begin{itemize}
-\item Why is PAM4 preferred over NRZ at 200G/lane despite its SNR penalty?
-\item What does KP4 FEC buy, and what does it cost in overhead and latency?
-\item Why does IM/DD dominate short reach while coherent wins at longer distances?
-\end{itemize}
-
-\paragraph{Design.}
-\begin{itemize}
-\item Which plane owns each limit, and can production reach that plane without a
-      lab-only fixture?
-\item Which margin dominates: OMA, TDECQ, ORL, receiver sensitivity, or host
-      channel operating margin?
-\item What prevents saturation at maximum launch power and minimum channel loss?
-\item Which bias or equalizer settings are calibrated, and how are bad tables
-      detected before ship?
-\end{itemize}
-
-\paragraph{Debug.}
-\begin{itemize}
-\item Average power is in spec but BER fails. What do you measure next?
-\item The equalizer taps are saturated. What does that tell you about the channel?
-\item FEC errors are clustered rather than random. What failure mechanisms produce
-      bursts?
-\item What production escape leaves power in range while BER fails?
-\end{itemize}
-
-\paragraph{Manufacturing and operations.}
-\begin{itemize}
-\item What is the fastest production test that catches a bad bias calibration?
-\item How do you correlate ATE TDECQ to a reference DCA?
-\item What changes in the ATP when you move from retimed to LPO modules?
-\end{itemize}
 
 \keyidea{IM/DD is intensity in, power out, with FEC and DSP closing the gap that
 PAM4's SNR penalty opens. Know OMA, ER, chirp and dispersion, pre-FEC BER, and the
 reference plane for every number. Then measure, bisect, and correct the failing
 block.}
+
+\paragraph{Three questions to test yourself.}
+\begin{enumerate}
+\item Why is PAM4 preferred over NRZ at 200G/lane despite its SNR penalty?
+\item Average power is in spec but BER fails. What do you measure next?
+\item What production escape leaves power in range while BER fails?
+\end{enumerate}

@@ -798,38 +798,21 @@ wrong scope.
       or telemetry.
 \end{description}
 
-\section{Interview and design review questions}
+\section{Interview takeaway}
 \label{sec:failure-analysis-design-review}
-
-\paragraph{Scoping and evidence.}
-\begin{itemize}
-\item BER rose on one rack after a software rollout. What data do you preserve
-      before reseating modules?
-\item How would you decide whether a symptom belongs to one unit, one lot, one
-      vendor, one site, or the fleet?
-\end{itemize}
-
-\paragraph{Root-cause isolation.}
-\begin{itemize}
-\item Received power is unchanged but BER worsened. Which measurement do you make
-      next, and which hypotheses does it separate?
-\item How do you distinguish a BER waterfall shift from a BER floor?
-\item BER degrades after thermal cycling. How do you separate reversible thermal
-      response, calibration error, assembly damage, and long-term aging?
-\end{itemize}
-
-\paragraph{Production and fleet action.}
-\begin{itemize}
-\item A golden unit fails only on one production station. What must be cleared
-      before opening supplier failure analysis?
-\item Which recurrence control belongs in ATP, and which belongs in fleet
-      telemetry?
-\item When is a no-fault-found return evidence of weak triage rather than a good
-      unit?
-\end{itemize}
 
 \keyidea{A useful failure analysis starts with a symptom and ends with a new
 control. Preserve the failing state, split shared from local behavior, clear the
 measurement system, and choose one measurement that can falsify the leading
 hypothesis. The corrective action is incomplete until production or fleet data
 show that the same signature no longer escapes.}
+
+\paragraph{Three questions to test yourself.}
+\begin{enumerate}
+\item BER rose on one rack after a software rollout. What data do you preserve
+      before reseating modules?
+\item Received power is unchanged but BER worsened. Which measurement do you make
+      next, and which hypotheses does it separate?
+\item A golden unit fails only on one production station. What must be cleared
+      before opening supplier failure analysis?
+\end{enumerate}

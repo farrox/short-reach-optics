@@ -544,31 +544,17 @@ Correct / prevent
 
 : Restore the corner; catch the next escape in ATP or telemetry.
 
-## Interview and design review questions
-
-##### Scoping and evidence.
-
-- BER rose on one rack after a software rollout. What data do you preserve before reseating modules?
-
-- How would you decide whether a symptom belongs to one unit, one lot, one vendor, one site, or the fleet?
-
-##### Root-cause isolation.
-
-- Received power is unchanged but BER worsened. Which measurement do you make next, and which hypotheses does it separate?
-
-- How do you distinguish a BER waterfall shift from a BER floor?
-
-- BER degrades after thermal cycling. How do you separate reversible thermal response, calibration error, assembly damage, and long-term aging?
-
-##### Production and fleet action.
-
-- A golden unit fails only on one production station. What must be cleared before opening supplier failure analysis?
-
-- Which recurrence control belongs in ATP, and which belongs in fleet telemetry?
-
-- When is a no-fault-found return evidence of weak triage rather than a good unit?
+## Interview takeaway
 
 **Key idea.** A useful failure analysis starts with a symptom and ends with a new control. Preserve the failing state, split shared from local behavior, clear the measurement system, and choose one measurement that can falsify the leading hypothesis. The corrective action is incomplete until production or fleet data show that the same signature no longer escapes.
+
+##### Three questions to test yourself.
+
+1.  BER rose on one rack after a software rollout. What data do you preserve before reseating modules?
+
+2.  Received power is unchanged but BER worsened. Which measurement do you make next, and which hypotheses does it separate?
+
+3.  A golden unit fails only on one production station. What must be cleared before opening supplier failure analysis?
 
 
 <div class="nav-links">

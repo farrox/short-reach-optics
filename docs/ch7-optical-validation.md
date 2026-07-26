@@ -11,7 +11,7 @@ Debugging asks which margin ledger was exhausted. Qualification asks how much ma
 
 ##### Operating definitions used in this book.
 
-Companies may use EVT, DVT, PVT, verification, and qualification differently. Unless noted otherwise, this book uses the questions below. Abbreviations are collected in Appendix E.
+Companies may use EVT, DVT, PVT, verification, and qualification differently. Unless noted otherwise, this book uses the questions below. Abbreviations are collected in Appendix F.
 
 Characterization
 
@@ -1322,45 +1322,17 @@ Preserve the failing state and record software, firmware, calibration, fixture, 
 
 \> \*\*Debug story\*\* \> \> \*\*Observed.\*\* A new module lot showed low optical power on one station. \> \> \*\*Investigation.\*\* The same units passed on a second station. A known source exposed an offset in the first power-meter path. \> \> \*\*Finding.\*\* The lot was good, and the station was reading low. \> \> \*\*Root cause.\*\* A reference jumper had been replaced without updating the path-loss calibration. \> \> \*\*Resolution.\*\* The station was recalibrated, jumper identity was placed under change control, and a start-of- shift source check was added.
 
-## Interview and design review questions
-
-##### Concept.
-
-- Why is a passing BER on a golden bench not sufficient for production readiness?
-
-- What is the difference between characterization and validation?
-
-- Why does LPO raise the stakes on transmitter TDECQ?
-
-##### Design.
-
-- What requirement does each test prove, at which plane, and with which uncertainty and guardband?
-
-- Which corner is represented only by a lab fixture rather than the target host or chassis?
-
-- What is the fastest measurement that can falsify each top risk?
-
-- Which setup error can make a bad unit pass or a good unit fail?
-
-##### Debug.
-
-- A new module passes on the bench but fails on the production host. What is your first measurement?
-
-- BER is high but optical power looks fine. Apply the debugging fork (§7.11): what do you check next?
-
-- A module works on host A but fails on host B. How do you determine ownership?
-
-- Are raw data, calibration state, firmware, and sample identity stored well enough to replay a failure months later?
-
-##### Manufacturing and operations.
-
-- What is the minimum set of corners that proves production readiness?
-
-- How do you detect tester drift before it becomes a yield cliff or a field escape?
-
-- What exit criteria distinguish DVT from PVT?
+## Interview takeaway
 
 **Key idea.** Validation is a chain of evidence. Start with calibrated power and management state, move through spectrum and waveform, then trust BER only after the blocks and reference planes are known. Run the target host, chassis, fiber, and neighbor corners before calling the product ready.
+
+##### Three questions to test yourself.
+
+1.  Why is a passing BER on a golden bench not sufficient for production readiness?
+
+2.  BER is high but optical power looks fine. Apply the debugging fork (§7.11): what do you check next?
+
+3.  How do you detect tester drift before it becomes a yield cliff or a field escape?
 
 
 <div class="nav-links">

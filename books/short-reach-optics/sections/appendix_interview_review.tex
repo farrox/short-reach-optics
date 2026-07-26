@@ -700,26 +700,11 @@ making; decision making is uncertainty reduction; measurements reduce
 uncertainty; therefore measurements exist to improve decisions.}
 
 For every stage, name the question the stage answers and the uncertainty it
-removes. A test that answers no question is cost, not confidence. Full exit
-criteria, activities, and decisions live in
-\Cref{sec:validation-workflow,tab:ladder}. Memorize this same order:
+removes. A test that answers no question is cost, not confidence. Do not re-list
+the lifecycle here; memorize the order in \Cref{tab:ladder} and the exit criteria
+in \Cref{sec:validation-workflow}.
 
-\begin{description}
-\item[Requirements] What must be true?
-\item[Architecture] Can this design meet requirements?
-\item[Bring-up] Does the hardware fundamentally work?
-\item[Characterization] How does it behave?
-\item[Margin] How close are the limits?
-\item[Interoperability] Does it work in real systems?
-\item[Qualification] Will it survive expected life?
-\item[Manufacturing] Can we build and screen it repeatedly?
-\item[Controlled pilot] Do lab assumptions hold in a bounded cohort?
-\item[Mass production] Can we sustain volume with control?
-\item[Fleet monitoring] Does it remain healthy in operations?
-\item[Feedback] What must change next?
-\end{description}
-
-Night-before path: Framework~7 in \Cref{app:interview-frameworks}.
+Night-before path: validation playbook in \Cref{fw:validation-plan}.
 Practice prose: \Cref{sec:interview-worked-validation}.
 
 \subsection{Margin budgeting}
@@ -900,7 +885,8 @@ concept, in random order. Push for a named reference plane, a next measurement
 that kills hypotheses, and a recurrence control. Grade me on process, not on
 jargon volume.}
 
-\section{Two stories to prepare}
+\section{How to present a technical experience}
+\label{sec:interview-story-template}
 
 Each story is a spoken version of the answer spine. Prepare one component or
 bench story and one system, production, or fleet story. Use only work you
@@ -908,20 +894,22 @@ personally performed, and separate your contribution from the team's. Walk
 the same eight beats every time:
 
 \begin{enumerate}
-\item Requirement and system context: what the link or product had to do.
-\item Observed symptom and scope: what failed, how wide, sudden or gradual.
-\item Competing hypotheses: the short list after the power fork.
-\item Measurements chosen and why: which instrument, which uncertainty.
-\item Evidence that eliminated each hypothesis.
-\item Confirmed mechanism: the mechanism that survived, with evidence.
-\item Corrective action: the fix, verified under the failing condition.
-\item Recurrence control and measured result: the test, alarm, or process
-      change, and the metric that confirmed it worked.
+\item \textbf{Situation.} What failed or needed improvement?
+\item \textbf{Scope.} How large was the impact (unit / lot / fleet)?
+\item \textbf{Responsibility.} What did you own versus the team?
+\item \textbf{Hypotheses.} What possibilities did you consider after the
+      power-versus-quality fork?
+\item \textbf{Measurements.} What evidence did you collect, at what plane and
+      access level?
+\item \textbf{Decision.} What action did you recommend?
+\item \textbf{Impact.} What changed after the action?
+\item \textbf{Prevention.} How did you stop recurrence, and what metric
+      confirmed the control?
 \end{enumerate}
 
 \llmpractice{Prepare two true stories, one bench or component and one system,
-production, or fleet. Each story must hit the eight beats of the answer spine
-and end on a measured recurrence control. Separate your work from the team's.}
+production, or fleet. Each story must hit the eight beats and end on a measured
+recurrence control. Separate your work from the team's.}
 {I will tell you my two story titles only. Interview me on each for five
 minutes. Force the eight beats in order. Cut me off if I invent metrics, skip
 scope, or end without a control that would catch the next escape.}
@@ -1452,109 +1440,155 @@ decision, and recurrence.
       soup.
 \end{description}
 
-\section{One-week study plan}
+\section{One-week interview preparation plan}
 \label{sec:interview-week-plan}
 
 Assume seven days, with the interview near the end of Day~7. Protect sleep.
-Each day has one primary drill and one LLM practice box. If a day slips, cut
-new reading first, not story rehearsal or the mock interview.
+Each day has a Learn list (pointers only) and one speakable Output. If a day
+slips, cut new reading first, not stories or the mock. Prefer the measurement
+with the highest information gain per cost
+(\Cref{sec:case-info-value,sec:interview-access-levels}).
 
-\paragraph{Day 1: principles, decision trees, spine, traps, Staff judgment.}
-Read the four principles, \Cref{sec:interview-decision-trees}, the answer
-spine, the traps, and \Cref{sec:interview-under-uncertainty}. Memorize: every
-answer ends with a decision; measurements characterize margin; debugging is
-Bayesian inference in the lab. Memorize the two universal trees, the four
-phases, the six-question checklist, the decision table, and the five ledgers.
-Speak one paragraph per phase. Use the answer-spine LLM practice box. Write
-ownership language: stop ship, notify supplier, request FA, update ATP,
-monitor RMA.
+\paragraph{Day 1: Mental models.}
+\textit{Learn:} five ledgers (\Cref{sec:interview-margin-ledgers}), validation
+lifecycle (\Cref{tab:ladder}), margin thinking, reference planes, Staff pattern
+(\Cref{sec:interview-staff-pattern}).\\
+\textit{Output:} Explain aloud, ``How would you debug a BER failure?''
 
-\paragraph{Day 2: requirements and validation ladder.}
-Rehearse \Cref{sec:interview-worked-laser-reqs} and
-\Cref{sec:interview-worked-validation} aloud until the structure is automatic.
-Name a reference plane in every measurement sentence. Skim
-\Cref{tab:ladder,tab:laser-prd,tab:source-mod-matrix} for numbers you already
-believe; do not hunt new optics.
+\paragraph{Day 2: Optical fundamentals.}
+\textit{Learn:} power, OMA, ER, RIN, BER, sensitivity
+(\Cref{ch:imdd,sec:interview-waterfall}).\\
+\textit{Output:} Explain aloud, ``Why does power not equal quality?''
 
-\paragraph{Day 3: two real stories.}
-Draft and rehearse one bench or component story and one system, production, or
-fleet story. Use only work you did. Hit all eight beats and end on a measured
-recurrence control. Use the stories LLM practice box. Record yourself once and
-cut invented metrics.
+\paragraph{Day 3: Validation.}
+\textit{Learn:} characterization, margin, interoperability, qualification
+(\Cref{sec:interview-validation-ladder,fw:validation-plan}).\\
+\textit{Output:} Design a validation plan for a new optical module in two
+minutes.
 
-\paragraph{Day 4: instruments, waterfall, debug forks, and case practice.}
-Review what each instrument removes as uncertainty. Drill waterfall shift
-versus floor versus burst pattern
-(\Cref{sec:interview-waterfall,sec:fm-ber-increase,sec:fm-ber-floor}). Rehearse
-hot BER with stable power, aging versus calibration, and weak-lane isolation.
-Work \Cref{sec:case-fleet-ber,sec:case-hot-ber} aloud under time pressure and
-score with \Cref{sec:interview-scoring-rubric}. Use the ten-concepts LLM practice box.
+\paragraph{Day 4: Failure analysis.}
+\textit{Learn:} decision trees, fleet scope, supplier escapes
+(\Cref{app:decision-trees,fw:fleet,fw:supplier-escape}). Work
+\Cref{sec:case-fleet-ber,sec:case-hot-ber} aloud; score with
+\Cref{sec:interview-scoring-rubric}.\\
+\textit{Output:} Debug an ambiguous failure without naming a component first.
 
-\paragraph{Day 5: reliability, manufacturing, and suppliers.}
-Drill HTOL credibility, Arrhenius/$E_a$, bathtub (burn-in versus wear-out),
-second-source qualification, FAIR, DPA, ESD versus wear-out, and field triage
-buckets (performance / reliability / manufacturability). Rehearse the HTOL,
-second-source, and triage worked answers. Skim \Cref{ch:reliability} only where
-a story needs a fact.
+\paragraph{Day 5: Manufacturing.}
+\textit{Learn:} ATP, SPC, qualification, reliability
+(\Cref{ch:reliability,fw:qual-plan,fw:atp-update}).\\
+\textit{Output:} Discuss how you would take a link to volume production.
 
-\paragraph{Day 6: abbreviations, telemetry, and modulator choice.}
-Run the abbreviations LLM practice box until expansions are fast. Rehearse
-fleet telemetry, modulator choice (EML / Si MZM / ring), replayable test data,
-and BER-floor physics. Do one short mixed quiz: three debug questions and three
-reliability questions.
+\paragraph{Day 6: Architecture.}
+\textit{Learn:} IM/DD, WDM, AI networking, optical roadmap
+(\Cref{ch:imdd,ch:wdm,ch:networking,ch:role}). Rehearse two true stories
+(\Cref{sec:interview-story-template}).\\
+\textit{Output:} Defend an architecture tradeoff with requirements first.
 
-\paragraph{Day 7: cheat sheet, Appendix~B frameworks, mock, and stop.}
-Read \Cref{sec:interview-cheat-sheet} once aloud. Drill the ``30-second answer''
-callouts in \Cref{app:interview-frameworks} for the topics you
-expect. Use the 45-minute mock-interview LLM practice box. No new chapters
-beyond that drill. Light review of your two stories only. Stop two to three
-hours before the call. Sleep.
+\paragraph{Day 7: Mock interviews.}
+\textit{Learn:} three cheat sheets below; Top~25 index (\Cref{app:top25});
+thirty-second callouts (\Cref{app:interview-frameworks}); whiteboard trees
+(\Cref{app:decision-trees}).\\
+\textit{Output:} Full mock. Light story review only. Stop two to three hours
+before the call. Sleep.
 
 \paragraph{If you have less than seven days.}
-Compress in this order: Day~1 spine, Day~3 stories, Day~2 requirements and
-validation, Day~5 HTOL and triage, Day~7 mock. Cut Day~6 reading; keep only the
-abbreviation drill. Always keep the cheat sheet below.
+Compress: Day~1, Day~4 cases, Day~3 validation, Day~5 manufacturing, Day~7
+mock. Keep the cheat sheets and Top~25. Cut new chapter reading first.
 
 \clearpage
-\section{Staff interview cheat sheet}
+\section{Staff interview cheat sheets}
 \label{sec:interview-cheat-sheet}
 
-\subsection{The five questions behind every interview problem}
-\label{sec:interview-five-questions}
+Interview-simple flows only. Full trees stay in \Cref{app:decision-trees}.
 
-\begin{enumerate}
-\item What is the requirement?
-\item What is the failure scope?
-\item What mechanisms could explain it?
-\item What measurement separates them (at which access level and plane)?
-\item What decision does the evidence enable, and what control prevents recurrence?
-\end{enumerate}
+\subsection{Cheat Sheet A: Debugging flow}
+\label{sec:cheat-debug}
 
-{\small\setlength{\parskip}{0.3em}%
-\noindent\textit{Central loop.} Requirement $\rightarrow$ risk $\rightarrow$
-mechanism $\rightarrow$ measurement $\rightarrow$ evidence $\rightarrow$
-decision $\rightarrow$ control $\rightarrow$ learning.\par
-\noindent\textit{Access levels.} Telemetry $\rightarrow$ system experiments
-$\rightarrow$ external module $\rightarrow$ engineering breakout $\rightarrow$
-destructive FA (\Cref{sec:interview-access-levels}).\par
-\noindent\textit{Evidence language.} Observation / correlation / hypothesis /
-confirmation / decision. Do not say ``data proves'' until confirmation exists.
-\par
-\noindent\textit{Lifecycle.} Requirements $\rightarrow$ architecture
-$\rightarrow$ bring-up $\rightarrow$ characterization $\rightarrow$ margin
-$\rightarrow$ interop $\rightarrow$ qualification $\rightarrow$ manufacturing
-$\rightarrow$ pilot $\rightarrow$ MP $\rightarrow$ fleet $\rightarrow$ feedback
-(\Cref{tab:ladder}).\par
-\noindent\textit{Night before.} Open the matching playbook in
-\Cref{app:interview-frameworks}. Memorize ``30-second answer'' callouts only.
-\par
-\noindent\textit{Decisions.} Ship / don't ship, continue validation, escalate
-supplier, derate, second source, contain lot, modify ATP, open RMA, FA/DPA,
-firmware, retune calibration, monitor only (\Cref{tab:interview-decisions}).
-\par
-}
+\paragraph{Five questions (eyebrow).}
+Requirement? Scope? Mechanisms? Separating measurement (plane and access
+level)? Decision and recurrence control?
+
+\begin{center}
+\small
+\begin{tabular}{@{}c@{}}
+\textbf{Problem} $\rightarrow$ \textbf{Scope} $\rightarrow$ \textbf{Power?} \\[0.4em]
+$\downarrow$ \\[0.2em]
+\textbf{Path} (power ledger vs quality ledger) \\[0.4em]
+$\downarrow$ \\[0.2em]
+\textbf{Contain} $\rightarrow$ \textbf{Confirm} $\rightarrow$ \textbf{Prevent}
+\end{tabular}
+\end{center}
+
+Full trees: \Cref{sec:tree-debugging,sec:tree-power-fork}. Pick the next
+measurement by information value, not habit
+(\Cref{sec:case-info-value,tab:case-info-value}).
+
+\clearpage
+\subsection{Cheat Sheet B: Validation / decision loop}
+\label{sec:cheat-validation}
+
+\begin{center}
+\small
+\begin{tabular}{@{}c@{}}
+\textbf{Requirement} $\rightarrow$ \textbf{Risk} $\rightarrow$ \textbf{Mechanism} \\[0.4em]
+$\downarrow$ \\[0.2em]
+\textbf{Measurement} $\rightarrow$ \textbf{Evidence} $\rightarrow$
+\textbf{Decision} $\rightarrow$ \textbf{Control}
+\end{tabular}
+\end{center}
+
+Staff pattern and lifecycle: \Cref{sec:interview-staff-pattern,tab:ladder}.
+
+\paragraph{Executive frame (one breath).}
+Issue / Impact / Population / Evidence / Confidence / Containment /
+Mechanism status / Next decision.
+Details: \Cref{sec:case-exec-summary}.
+
+\clearpage
+\subsection{Cheat Sheet C: Qualification flow}
+\label{sec:cheat-qual}
+
+\begin{center}
+\small
+\begin{tabular}{@{}c@{}}
+\textbf{Mechanism} $\rightarrow$ \textbf{Stress} $\rightarrow$
+\textbf{Observable} \\[0.4em]
+$\downarrow$ \\[0.2em]
+\textbf{Acceptance} $\rightarrow$ \textbf{Confidence} $\rightarrow$
+\textbf{Production control}
+\end{tabular}
+\end{center}
+
+Evidence path and planning matrix:
+\Cref{sec:tree-qual-evidence,sec:qual-planning-matrix}.
 
 \keyidea{I first want to understand the scope of the problem, then determine
 which margin ledger is being spent, choose the measurement that eliminates the
 largest number of hypotheses, make the product decision, and finally add the
 control that prevents the next escape.}
+
+\clearpage
+\section{Bad answer / good answer}
+\label{sec:interview-bad-good}
+
+Three pairs only. Grade yourself against the strong column, then open the
+matching playbook.
+
+\paragraph{1. Debug a bad optical link.}
+\textit{Weak:} ``I would check the cable, swap the module, and look at the
+eye.''\\
+\textit{Strong:} Scope first (one lane / one host / fleet). Run the
+power-versus-quality fork. Name the ledger, the separating measurement, the
+decision, and the control (\Cref{fw:ber-stable-power,sec:tree-power-fork}).
+
+\paragraph{2. Validate a new module.}
+\textit{Weak:} ``I would use a DCA, a power meter, and a temperature chamber.''\\
+\textit{Strong:} Walk the lifecycle stage that matches the risk: requirements,
+characterization, margin, interop, qual, manufacturing control
+(\Cref{fw:validation-plan,tab:ladder}). Instruments are means, not the plan.
+
+\paragraph{3. Qual escape in the field.}
+\textit{Weak:} ``Qual was insufficient.''\\
+\textit{Strong:} Classify the miss: wrong mechanism, wrong stress, wrong
+observable, wrong acceptance, or missing production control. Then name the
+fix to the evidence path (\Cref{fw:supplier-escape,sec:tree-qual-evidence}).

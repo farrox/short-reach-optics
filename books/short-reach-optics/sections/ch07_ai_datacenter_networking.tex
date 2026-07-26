@@ -1517,9 +1517,9 @@ next scale point on delivered workload performance.}
 Start with the workload symptom and identify the slow collective, rail, or time
 window. Compare topology and route data with link counters. A single lane with
 rising FEC points to the optical path; many clean links with full queues point to
-fabric capacity or scheduling. On the optical path, apply the power-versus-quality
-fork and the five ledgers
-(\Cref{sec:debug-fork,sec:laser-margin-erosion,app:decision-trees}). Remove one
+fabric capacity or scheduling. On the optical path, use the power-versus-quality
+fork and five ledgers
+(\Cref{sec:debug-fork,sec:laser-margin-erosion,sec:tree-power-fork}). Remove one
 rail, reroute one group, or replace one suspect module to test causality. Keep
 optics, switch, and workload timestamps aligned. Otherwise a link flap and a
 collective stall cannot be ordered reliably.
@@ -1532,53 +1532,20 @@ connector raised ORL and produced burst errors without a large average-power
 change.}{The connector was replaced, inspection was added to the expansion
 runbook, and collective-tail alarms were tied to link-level error bursts.}
 
-\section{Interview and design review questions}
+\section{Interview takeaway}
 \label{sec:networking-design-review}
-
-\paragraph{Concept.}
-\begin{itemize}
-\item Why does inference (not only training) put the optical link on the critical
-      path?
-\item What is the difference between scale-up and scale-out, and why do they use
-      different optics?
-\item Why does an optical circuit switch complement rather than compete with
-      co-packaged optics?
-\end{itemize}
-
-\paragraph{Design.}
-\begin{itemize}
-\item Which workload and collective set the latency, bandwidth, and tail targets?
-\item Where is the scale-up to scale-out boundary, and what measured reach or power
-      limit places it there?
-\item How do pluggable, linear pluggable, and co-packaged choices trade host margin,
-      power, cooling, fiber count, repair time, and supplier concentration?
-\item What happens to a running job when one lane, module, external laser, or
-      switch fails?
-\end{itemize}
-
-\paragraph{Debug.}
-\begin{itemize}
-\item Collective tail latency rose after a rack expansion. Average link utilization
-      looks normal. Where do you look?
-\item A single lane has rising FEC errors but its Rx power is stable. Apply the
-      debugging fork: is this a power problem or a signal-quality problem?
-\item Which telemetry reaches fleet software, and can it identify a weak link
-      before the workload stalls?
-\item What data would show that the proposed optical architecture is not the
-      cluster bottleneck?
-\end{itemize}
-
-\paragraph{Manufacturing and operations.}
-\begin{itemize}
-\item How do laser choices, WDM architecture, and validation methodology from
-      earlier chapters influence cluster-scale outcomes?
-\item What is the service-time budget for replacing a failed module before the
-      scheduler must reroute?
-\item How does connector mating-cycle budget change with a weekly hot-swap
-      maintenance schedule?
-\end{itemize}
 
 \keyidea{An AI fabric is judged by delivered workload time, not aggregate port
 rate. Connect collective traces to queue, route, FEC, optical, thermal, and service
 data. Choose pluggables, linear optics, or co-packaging by the measured system
 constraint and by how the fleet detects, contains, and repairs each failure.}
+
+\paragraph{Three questions to test yourself.}
+\begin{enumerate}
+\item What is the difference between scale-up and scale-out, and why do they use
+      different optics?
+\item A single lane has rising FEC errors but its Rx power is stable. Is this a
+      power problem or a signal-quality problem?
+\item How do pluggable, linear pluggable, and co-packaged choices trade host margin,
+      power, cooling, fiber count, and repair time?
+\end{enumerate}

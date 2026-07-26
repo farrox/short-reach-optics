@@ -284,44 +284,21 @@ symptom and localizing the subsystem wastes weeks on the wrong part. The pyramid
 a discipline, not a checklist: each layer produces a measurement that either
 confirms or falsifies the hypothesis before you descend.
 
-\section{Interview and design review questions}
+\section{Interview takeaway}
 \label{sec:role-design-review}
 
-\paragraph{Concept.}
-\begin{itemize}
-\item Why does optics become favorable over copper at higher data rates?
-\item What distinguishes a communication-limited system from a compute-limited one?
+\keyidea{Start from the system requirement and work downward. Validate to reduce
+uncertainty, track how several small losses consume margin, and debug by choosing
+measurements that eliminate hypotheses.}
+
+\paragraph{Three questions to test yourself.}
+\begin{enumerate}
 \item Why does a synchronous collective amplify single-link failures?
-\end{itemize}
-
-\paragraph{Design.}
-\begin{itemize}
-\item What traffic pattern sets the requirement: all-reduce, all-to-all, or a
-      latency-sensitive point-to-point path?
-\item What is the measured bottleneck: SerDes reach, switch radix, fiber count,
-      module power, cooling, or collective efficiency?
-\item Why does passive copper, a direct-attach cable, or an active electrical cable
-      not close the required reach and rate?
-\item Does a pluggable, linear pluggable, or co-packaged engine move risk into a
-      domain the team can test and service?
-\end{itemize}
-
-\paragraph{Debug.}
-\begin{itemize}
 \item Training throughput dropped after scaling. Where in the debugging pyramid
       (\Cref{sec:debug-pyramid}) do you start?
-\item How do you distinguish a network bottleneck from a compute or memory
-      bottleneck using only host-visible telemetry?
-\item What data would show that added optical bandwidth does not improve job time?
-\end{itemize}
-
-\paragraph{Manufacturing and operations.}
-\begin{itemize}
-\item What failure rate per link is acceptable given the total link count and the
-      target job uptime?
-\item How does the service model (hot-swap vs board pull) change the architecture?
-\item What is the fleet cost of a wrong triage classification?
-\end{itemize}
+\item What failure rate per link is acceptable given total link count and target
+      job uptime?
+\end{enumerate}
 
 \section{How to read this book}
 
@@ -341,7 +318,3 @@ The chapters build from requirements to fleet operation:
 
 To use the book as a design drill, pick one link style (retimed 800G DR, LPO, or
 CPO WDM) and trace it end to end through \Cref{sec:txrx-chain,sec:pluggables,sec:cpo-status}.
-
-\keyidea{Start from the system requirement and work downward. Validate to reduce
-uncertainty, track how several small losses consume margin, and debug by choosing
-measurements that eliminate hypotheses.}

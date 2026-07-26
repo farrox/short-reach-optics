@@ -612,47 +612,20 @@ being pushed out of hold range.}{Thermal coupling from the adjacent heater excee
 the control-loop budget.}{The heater map and feed-forward terms were corrected,
 and neighbor-load hold testing became an ATP corner.}
 
-\section{Interview and design review questions}
+\section{Interview takeaway}
 \label{sec:wdm-design-review}
-
-\paragraph{Concept.}
-\begin{itemize}
-\item Why is WDM preferable to adding fibers at scale?
-\item Why does a microring modulator require wavelength locking while a
-      Mach--Zehnder does not?
-\item What happens if laser wavelength drifts by 2~nm in a 200~GHz-spaced WDM
-      system?
-\end{itemize}
-
-\paragraph{Design.}
-\begin{itemize}
-\item What are capture and hold ranges across process, voltage, temperature, and
-      source-power spread?
-\item Which resource is shared across lanes, and what does its failure signature
-      look like?
-\item How much heater and TEC headroom remains at the worst thermal corner?
-\item Can telemetry distinguish laser drift, ring drift, MUX loss, and monitor-PD
-      error without opening the package?
-\end{itemize}
-
-\paragraph{Debug.}
-\begin{itemize}
-\item One WDM lane fails while neighbors are healthy. How do you determine whether
-      the cause is the laser, ring, filter, heater, or connector?
-\item All lanes unlock after a temperature step. What shared resource do you check
-      first?
-\item Which calibration or startup error can escape production and fail only after
-      a field restart?
-\end{itemize}
-
-\paragraph{Manufacturing and operations.}
-\begin{itemize}
-\item What production test proves lock hold under worst-case neighbor heat?
-\item How do you qualify a new CW-WDM source lot against the ATP?
-\item What field telemetry distinguishes a source failure from a ring-bank failure?
-\end{itemize}
 
 \keyidea{Wavelength locking is a control-system problem wrapped around an optical
 link. Measure the grid, capture, hold, shared thermal paths, and per-lane margin.
 Then use one-lane versus all-lane behavior to split the source, ring bank, MUX,
 thermal controller, and common supplies.}
+
+\paragraph{Three questions to test yourself.}
+\begin{enumerate}
+\item Why does a microring modulator require wavelength locking while a
+      Mach--Zehnder does not?
+\item One WDM lane fails while neighbors are healthy. How do you determine whether
+      the cause is the laser, ring, filter, heater, or connector?
+\item All lanes unlock after a temperature step. What shared resource do you check
+      first?
+\end{enumerate}

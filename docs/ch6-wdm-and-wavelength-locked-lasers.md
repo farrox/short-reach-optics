@@ -282,43 +282,17 @@ First decide whether the fault affects one lane or all lanes. Apply the power-ve
 
 \> \*\*Debug story\*\* \> \> \*\*Observed.\*\* One lane failed only after adjacent lanes began traffic. \> \> \*\*Investigation.\*\* The source line stayed on grid, while the suspect ring heater railed and lock error grew with neighbor temperature. \> \> \*\*Finding.\*\* The optical source and receiver passed; the resonance was being pushed out of hold range. \> \> \*\*Root cause.\*\* Thermal coupling from the adjacent heater exceeded the control-loop budget. \> \> \*\*Resolution.\*\* The heater map and feed-forward terms were corrected, and neighbor-load hold testing became an ATP corner.
 
-## Interview and design review questions
-
-##### Concept.
-
-- Why is WDM preferable to adding fibers at scale?
-
-- Why does a microring modulator require wavelength locking while a Mach--Zehnder does not?
-
-- What happens if laser wavelength drifts by 2 nm in a 200 GHz-spaced WDM system?
-
-##### Design.
-
-- What are capture and hold ranges across process, voltage, temperature, and source-power spread?
-
-- Which resource is shared across lanes, and what does its failure signature look like?
-
-- How much heater and TEC headroom remains at the worst thermal corner?
-
-- Can telemetry distinguish laser drift, ring drift, MUX loss, and monitor-PD error without opening the package?
-
-##### Debug.
-
-- One WDM lane fails while neighbors are healthy. How do you determine whether the cause is the laser, ring, filter, heater, or connector?
-
-- All lanes unlock after a temperature step. What shared resource do you check first?
-
-- Which calibration or startup error can escape production and fail only after a field restart?
-
-##### Manufacturing and operations.
-
-- What production test proves lock hold under worst-case neighbor heat?
-
-- How do you qualify a new CW-WDM source lot against the ATP?
-
-- What field telemetry distinguishes a source failure from a ring-bank failure?
+## Interview takeaway
 
 **Key idea.** Wavelength locking is a control-system problem wrapped around an optical link. Measure the grid, capture, hold, shared thermal paths, and per-lane margin. Then use one-lane versus all-lane behavior to split the source, ring bank, MUX, thermal controller, and common supplies.
+
+##### Three questions to test yourself.
+
+1.  Why does a microring modulator require wavelength locking while a Mach--Zehnder does not?
+
+2.  One WDM lane fails while neighbors are healthy. How do you determine whether the cause is the laser, ring, filter, heater, or connector?
+
+3.  All lanes unlock after a temperature step. What shared resource do you check first?
 
 
 <div class="nav-links">

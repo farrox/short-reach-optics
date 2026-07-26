@@ -99,41 +99,21 @@ A link that meets its energy target on a quiet bench can exceed it in the field 
 
 Compare measured link power against the design budget, split by block. If the total exceeds the target, identify which block moved: SerDes, driver, laser bias, TEC, or DSP. Correlate power anomalies with BER, temperature, and equalizer state. A link that draws more power than expected is often also running at reduced margin.
 
-## Interview and design review questions
+## Interview takeaway
 
-##### Concept.
+**Key idea.** Short-reach optics is, at bottom, an energy-per-bit optimization. Optical energy is spent at the endpoints and is flat with distance; electrical energy grows with distance and rate; so rising data rates push optics ever closer to the chip. Miller's framework is the lens the rest of this book looks through.
 
-- Why does electrical energy per bit grow with distance while optical does not?
+##### Three questions to test yourself.
 
-- What physical quantity sets the receiver's minimum detectable energy?
+1.  Why does electrical energy per bit grow with distance while optical does not?
 
-- Why does co-packaging reduce energy per bit even without changing the laser?
+2.  At what reach does the optical crossover occur for your target lane rate, and what assumptions drive that number?
 
-##### Design.
-
-- At what reach does the optical crossover occur for your target lane rate, and what assumptions drive that number?
-
-- How does doubling the lane rate change the crossover distance?
-
-- Which rung of the energy ladder dominates total system power for this workload?
-
-##### Debug.
-
-- More accelerators were added but training throughput fell. Where on the energy ladder is the bottleneck?
-
-- A link's power consumption rose after a firmware update. What changed: equalization depth, retransmits, or thermal control?
-
-##### Manufacturing and operations.
-
-- What determines the power budget at the faceplate: module watts, cooling capacity, or rack-level allocation?
-
-- How do you verify that a deployed link actually achieves the energy per bit the design predicted?
+3.  More accelerators were added but training throughput fell. Where on the energy ladder is the bottleneck?
 
 ## Why this framework anchors the book
 
 Everything that follows is an effort to approach these floors at the required data rate and reliability. Laser wall-plug efficiency (Chapter 5) sets how much optical power you can afford. Modulation and FEC (Chapter 3, §3.12, §3.6) trade SNR for reach and rate. WDM (Chapter 6) amortizes one laser source across many wavelengths. Receiver noise and sensitivity (Chapter 4, §4.4.3, §7.7) decide whether that power is enough. Co-packaging and energy-per-bit trends (§9.13) show the same first principle playing out as copper reach collapses and optics move onto the interposer.
-
-**Key idea.** Short-reach optics is, at bottom, an energy-per-bit optimization. Optical energy is spent at the endpoints and is flat with distance; electrical energy grows with distance and rate; so rising data rates push optics ever closer to the chip. Miller's framework is the lens the rest of this book looks through.
 
 
 <div class="nav-links">

@@ -1568,55 +1568,20 @@ architecture or ship baseline.
 \item[Manufacturing / fleet] Can you screen it and triage it at volume?
 \end{description}
 
-\section{Interview and design review questions}
+\section{Interview takeaway}
 \label{sec:lasers-design-review}
-
-\paragraph{Concept.}
-\begin{itemize}
-\item Why is the laser typically the reliability-limiting component in an optical
-      link?
-\item What physical mechanism causes a DFB laser's threshold current to rise with
-      age?
-\item Why does an isolator-free design tighten the RIN requirement?
-\end{itemize}
-
-\paragraph{Design.}
-\begin{itemize}
-\item Why would you choose an EML over direct modulation for this reach and lane rate?
-\item When does a ring's density justify its heater and wavelength-control burden?
-\item Which aging model and activation energy match the observed failure mechanism?
-\item What are the distributions of threshold, slope, wavelength, SMSR, and RIN
-      across wafer, lot, assembly site, and temperature?
-\item Which screens remove infant mortality, and what good units do those screens
-      consume?
-\item Does the architecture make the laser field-replaceable, and what failure
-      rate justifies that choice?
-\end{itemize}
-
-\paragraph{Debug.}
-\begin{itemize}
-\item Optical power fell but the monitor photodiode reports no change. What do
-      you check?
-\item BER worsened after thermal cycling while average power stayed in range.
-      Which measurement would separate source aging, EAM bias, wavelength, and
-      connector hypotheses?
-\item Which telemetry distinguishes laser wear from monitor, TEC, connector, and
-      bias-driver faults in the fleet?
-\end{itemize}
-
-\paragraph{Manufacturing and operations.}
-\begin{itemize}
-\item How would you qualify a second laser supplier without assuming the first
-      supplier's failure distribution?
-\item What are the process control limits and the supplier's reaction plan when a
-      trend crosses them?
-\item How many HTOL hours at what temperature project 10 years of field life at
-      your operating conditions?
-\item What lot-level data must the supplier provide at each NPI gate?
-\item What is the expected laser replacement rate for this fleet size and FIT?
-\end{itemize}
 
 \keyidea{Measure LIV, SMSR, wavelength, and RIN as distributions across
 temperature, lot, and age. Tie each requirement to an ATP row, each life claim to
 a physical mechanism, and each field alarm to a measurement that separates the
 laser from its driver, monitor, cooler, and optical path.}
+
+\paragraph{Three questions to test yourself.}
+\begin{enumerate}
+\item Why is the laser typically the reliability-limiting component in an optical
+      link?
+\item Optical power fell but the monitor photodiode reports no change. What do
+      you check?
+\item How would you qualify a second laser supplier without assuming the first
+      supplier's failure distribution?
+\end{enumerate}

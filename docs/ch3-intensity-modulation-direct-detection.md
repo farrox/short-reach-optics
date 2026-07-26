@@ -377,7 +377,7 @@ Co-packaged engines shipping in 2025--26 typically run *200 Gb/s per optical ch
 
 ### 448G is where the modulation debate lives
 
-The next step, *CEI-448G* (framework published in late 2025, targeting 3.2 Tb/s systems from 2026 onward), is where the long PAM4 consensus finally comes under pressure . A full CEI-448G glossary of terms is in Appendix E. The debate is not whether 448 Gb/s *per lane* is useful (eight lanes make a 3.2 Tb/s OSFP-class port), but what *symbol rate* and *modulation order* each part of the link must run at to get there.
+The next step, *CEI-448G* (framework published in late 2025, targeting 3.2 Tb/s systems from 2026 onward), is where the long PAM4 consensus finally comes under pressure . A full CEI-448G glossary of terms is in Appendix F. The debate is not whether 448 Gb/s *per lane* is useful (eight lanes make a 3.2 Tb/s OSFP-class port), but what *symbol rate* and *modulation order* each part of the link must run at to get there.
 
 ##### Line rate, symbol rate, and where each applies.
 
@@ -579,45 +579,17 @@ For degraded receiver sensitivity, first verify the power meter and reference pl
 
 \> \*\*Debug story\*\* \> \> \*\*Observed.\*\* Receiver sensitivity was several dB worse than the qualification baseline. \> \> \*\*Investigation.\*\* Average power passed, but the DCA showed low ER. A bias sweep restored both ER and the BER waterfall. \> \> \*\*Finding.\*\* The receiver was healthy; the transmitted zero level was too high. \> \> \*\*Root cause.\*\* A laser-bias calibration table selected the wrong temperature bin. \> \> \*\*Resolution.\*\* The calibration was corrected, limits were added across temperature, and the escaped firmware revision was quarantined.
 
-## Interview and design review questions
-
-##### Concept.
-
-- Why is PAM4 preferred over NRZ at 200G/lane despite its SNR penalty?
-
-- What does KP4 FEC buy, and what does it cost in overhead and latency?
-
-- Why does IM/DD dominate short reach while coherent wins at longer distances?
-
-##### Design.
-
-- Which plane owns each limit, and can production reach that plane without a lab-only fixture?
-
-- Which margin dominates: OMA, TDECQ, ORL, receiver sensitivity, or host channel operating margin?
-
-- What prevents saturation at maximum launch power and minimum channel loss?
-
-- Which bias or equalizer settings are calibrated, and how are bad tables detected before ship?
-
-##### Debug.
-
-- Average power is in spec but BER fails. What do you measure next?
-
-- The equalizer taps are saturated. What does that tell you about the channel?
-
-- FEC errors are clustered rather than random. What failure mechanisms produce bursts?
-
-- What production escape leaves power in range while BER fails?
-
-##### Manufacturing and operations.
-
-- What is the fastest production test that catches a bad bias calibration?
-
-- How do you correlate ATE TDECQ to a reference DCA?
-
-- What changes in the ATP when you move from retimed to LPO modules?
+## Interview takeaway
 
 **Key idea.** IM/DD is intensity in, power out, with FEC and DSP closing the gap that PAM4's SNR penalty opens. Know OMA, ER, chirp and dispersion, pre-FEC BER, and the reference plane for every number. Then measure, bisect, and correct the failing block.
+
+##### Three questions to test yourself.
+
+1.  Why is PAM4 preferred over NRZ at 200G/lane despite its SNR penalty?
+
+2.  Average power is in spec but BER fails. What do you measure next?
+
+3.  What production escape leaves power in range while BER fails?
 
 
 <div class="nav-links">

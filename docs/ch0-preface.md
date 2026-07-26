@@ -9,9 +9,21 @@ Artificial intelligence has become an infrastructure problem. Training and servi
 
 This book is a concise technical overview of that layer: the short-reach optical interconnects that stitch together AI datacenters, from in-package optical I/O out to intra-rack links, deliberately setting aside the 2--10 km campus links that belong to coherent optics (§3.3). It concentrates on the subjects that decide whether these links work at scale: IM/DD physics and vocabulary; lasers and external light sources; WDM and wavelength locking; quantitative noise and sensitivity models; validation from bench to fleet; and reliability and manufacturing at volume. Two chapters bracket those fundamentals: why inference-scale computing puts the interconnect on the critical path (Chapter 1), and how AI datacenter networks are built where optics dominate cost and power (Chapter 9).
 
-**How to use this handbook.** Start from the requirement, not the component. Move downward from system requirements to architecture, subsystem, component, and only then to the physics needed to make or test the decision. A choice at one layer constrains the next. A VCSEL points toward 850 nm, multimode fiber, and direct modulation. A DFB at 1310 nm points toward single-mode fiber and leaves a choice among direct modulation, an EML, or an external modulator. Neither path is best in isolation. Each closes a different reach, power, cost, manufacturing, and service model.
+**How to use this handbook.** The book supports three modes. Pick one and stay in it until you switch deliberately.
 
-Every major chapter asks four questions: How does it work? How is it measured, and what uncertainty does the measurement remove? How does it fail? How is it debugged? The aim is operational judgment. The purpose of engineering is not to find certainty. It is to reduce uncertainty enough to make the next decision. Validation, measurement, debugging, qualification, supplier choices, and production are all that same work under different names. Debugging asks which margin was exhausted. Qualification asks how much margin remains after stress. Both end on a decision and a recurrence control. ASCII trees and checklists throughout the chapters, plus the wall chart in Appendix D, are there so you can recover that method in minutes. Interview drill lives in Appendix A, Appendix C.
+Deep learning
+
+: Read the body chapters from requirements downward (Chapter 1 through Chapter 9), then the failure-analysis handbook (Chapter 10). Every major chapter asks: How does it work? How is it measured, and what uncertainty does the measurement remove? How does it fail? How is it debugged?
+
+Interview preparation
+
+: Follow the one-week plan (Appendix A.13), practice cases (Appendix B), drill thirty-second answers (Appendix C), and review the Top 25 question index (Appendix E).
+
+Incident / problem solving
+
+: Open the wall-chart trees (Appendix D), the failure handbook (Chapter 10), and a matching case (Appendix B). Recover the method in minutes, not hours.
+
+Start from the requirement, not the component. Move downward from system requirements to architecture, subsystem, component, and only then to the physics needed to make the decision. A choice at one layer constrains the next. The aim is operational judgment: reduce uncertainty enough to make the next decision, then name the control that prevents recurrence.
 
 **On sources.** The industry moves quickly. Where the text cites specific products or figures (co-packaged-optics programs, per-lane roadmaps, energy-per-bit trends) it draws on public disclosures current as of early 2026, cited in the references. Where a claim is an inference rather than an established fact, the text says so. History and trend notes are included where they help explain why today's defaults exist, not as a full chronology of the field.
 

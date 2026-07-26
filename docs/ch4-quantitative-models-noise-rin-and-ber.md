@@ -298,45 +298,17 @@ If average received power is stable but BER worsened, isolate transmitter, chann
 
 This fork often narrows an investigation in minutes. Power-path failures show up on a meter; signal-quality failures need FEC timing, DCA, BERT, or spectrum analysis, depending on access. Apply it before opening the package, changing settings, or blaming a supplier (§7.12).
 
-## Interview and design review questions
-
-##### Concept.
-
-- Why does RIN impose a BER floor that no amount of optical power can overcome?
-
-- What is the physical difference between thermal noise, shot noise, and RIN?
-
-- Why is OMA a better receiver metric than average power?
-
-##### Design.
-
-- Which measured curve supports each noise term in the model?
-
-- Over what power range does the Gaussian assumption fit the data?
-
-- What evidence separates thermal noise, shot noise, RIN, jitter, and crosstalk?
-
-- Which corner would create a floor that a room-temperature sensitivity point misses?
-
-##### Debug.
-
-- Optical power is unchanged but BER worsened from $10^{-12}$ to $10^{-6}$. Where do you start? (§4.8)
-
-- The BER curve flattens at high power. What mechanisms produce a floor?
-
-- A bench supply is replaced with the product board and RIN rises. What changed?
-
-- What result would disprove the current root-cause hypothesis?
-
-##### Manufacturing and operations.
-
-- How do you screen a laser whose quiet RIN passes but stressed RIN fails?
-
-- What ATP row catches a bias-driver noise contribution that only appears with host rails active?
-
-- At what received power does RIN begin to dominate over thermal noise for this receiver?
+## Interview takeaway
 
 **Key idea.** Four relations carry most of short-reach link design: the Gaussian $\mathrm{BER}(Q)$, the quadrature noise budget (thermal + shot + RIN), the RIN floor $Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$, and the sensitivity $P_{\text{sens}}=Q\,i_n/\mathcal{R}$. Close each relation with a measured curve, then use the curve shape to debug the link.
+
+##### Three questions to test yourself.
+
+1.  Why does RIN impose a BER floor that no amount of optical power can overcome?
+
+2.  Optical power is unchanged but BER worsened from $10^{-12}$ to $10^{-6}$. Where do you start? (§4.8)
+
+3.  The BER curve flattens at high power. What mechanisms produce a floor?
 
 
 <div class="nav-links">

@@ -178,41 +178,17 @@ Layer 5: Physical root cause
 
 Do not skip layers. A direct jump to root cause without first confirming the system symptom and localizing the subsystem wastes weeks on the wrong part. The pyramid is a discipline, not a checklist: each layer produces a measurement that either confirms or falsifies the hypothesis before you descend.
 
-## Interview and design review questions
+## Interview takeaway
 
-##### Concept.
+**Key idea.** Start from the system requirement and work downward. Validate to reduce uncertainty, track how several small losses consume margin, and debug by choosing measurements that eliminate hypotheses.
 
-- Why does optics become favorable over copper at higher data rates?
+##### Three questions to test yourself.
 
-- What distinguishes a communication-limited system from a compute-limited one?
+1.  Why does a synchronous collective amplify single-link failures?
 
-- Why does a synchronous collective amplify single-link failures?
+2.  Training throughput dropped after scaling. Where in the debugging pyramid (§1.8) do you start?
 
-##### Design.
-
-- What traffic pattern sets the requirement: all-reduce, all-to-all, or a latency-sensitive point-to-point path?
-
-- What is the measured bottleneck: SerDes reach, switch radix, fiber count, module power, cooling, or collective efficiency?
-
-- Why does passive copper, a direct-attach cable, or an active electrical cable not close the required reach and rate?
-
-- Does a pluggable, linear pluggable, or co-packaged engine move risk into a domain the team can test and service?
-
-##### Debug.
-
-- Training throughput dropped after scaling. Where in the debugging pyramid (§1.8) do you start?
-
-- How do you distinguish a network bottleneck from a compute or memory bottleneck using only host-visible telemetry?
-
-- What data would show that added optical bandwidth does not improve job time?
-
-##### Manufacturing and operations.
-
-- What failure rate per link is acceptable given the total link count and the target job uptime?
-
-- How does the service model (hot-swap vs board pull) change the architecture?
-
-- What is the fleet cost of a wrong triage classification?
+3.  What failure rate per link is acceptable given total link count and target job uptime?
 
 ## How to read this book
 
@@ -233,8 +209,6 @@ The chapters build from requirements to fleet operation:
 7.  Chapter 10: symptom-led root-cause isolation and corrective action.
 
 To use the book as a design drill, pick one link style (retimed 800G DR, LPO, or CPO WDM) and trace it end to end through §3.2, §9.3, §9.10.
-
-**Key idea.** Start from the system requirement and work downward. Validate to reduce uncertainty, track how several small losses consume margin, and debug by choosing measurements that eliminate hypotheses.
 
 
 <div class="nav-links">

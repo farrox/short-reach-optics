@@ -446,57 +446,9 @@ Name the spent ledger before naming a laser, TIA, or connector. The ledger picks
 
 **Key idea.** Validation is staged uncertainty reduction. Engineering is decision making; decision making is uncertainty reduction; measurements reduce uncertainty; therefore measurements exist to improve decisions.
 
-For every stage, name the question the stage answers and the uncertainty it removes. A test that answers no question is cost, not confidence. Full exit criteria, activities, and decisions live in §7.1, Table 7.1. Memorize this same order:
+For every stage, name the question the stage answers and the uncertainty it removes. A test that answers no question is cost, not confidence. Do not re-list the lifecycle here; memorize the order in Table 7.1 and the exit criteria in §7.1.
 
-Requirements
-
-: What must be true?
-
-Architecture
-
-: Can this design meet requirements?
-
-Bring-up
-
-: Does the hardware fundamentally work?
-
-Characterization
-
-: How does it behave?
-
-Margin
-
-: How close are the limits?
-
-Interoperability
-
-: Does it work in real systems?
-
-Qualification
-
-: Will it survive expected life?
-
-Manufacturing
-
-: Can we build and screen it repeatedly?
-
-Controlled pilot
-
-: Do lab assumptions hold in a bounded cohort?
-
-Mass production
-
-: Can we sustain volume with control?
-
-Fleet monitoring
-
-: Does it remain healthy in operations?
-
-Feedback
-
-: What must change next?
-
-Night-before path: Framework 7 in Appendix C. Practice prose: Appendix A.10.2.
+Night-before path: validation playbook in Appendix C.8. Practice prose: Appendix A.10.2.
 
 ### Margin budgeting
 
@@ -558,25 +510,25 @@ A confirmed mechanism is not the end of the answer. Close with immediate contain
 
 Act as my interviewer for optical systems. Ask me one question from each cold concept, in random order. Push for a named reference plane, a next measurement that kills hypotheses, and a recurrence control. Grade me on process, not on jargon volume.
 
-## Two stories to prepare
+## How to present a technical experience
 
 Each story is a spoken version of the answer spine. Prepare one component or bench story and one system, production, or fleet story. Use only work you personally performed, and separate your contribution from the team's. Walk the same eight beats every time:
 
-1.  Requirement and system context: what the link or product had to do.
+1.  **Situation.** What failed or needed improvement?
 
-2.  Observed symptom and scope: what failed, how wide, sudden or gradual.
+2.  **Scope.** How large was the impact (unit / lot / fleet)?
 
-3.  Competing hypotheses: the short list after the power fork.
+3.  **Responsibility.** What did you own versus the team?
 
-4.  Measurements chosen and why: which instrument, which uncertainty.
+4.  **Hypotheses.** What possibilities did you consider after the power-versus-quality fork?
 
-5.  Evidence that eliminated each hypothesis.
+5.  **Measurements.** What evidence did you collect, at what plane and access level?
 
-6.  Confirmed mechanism: the mechanism that survived, with evidence.
+6.  **Decision.** What action did you recommend?
 
-7.  Corrective action: the fix, verified under the failing condition.
+7.  **Impact.** What changed after the action?
 
-8.  Recurrence control and measured result: the test, alarm, or process change, and the metric that confirmed it worked.
+8.  **Prevention.** How did you stop recurrence, and what metric confirmed the control?
 
 I will tell you my two story titles only. Interview me on each for five minutes. Force the eight beats in order. Cut me off if I invent metrics, skip scope, or end without a control that would catch the next escape.
 
@@ -856,7 +808,7 @@ Run a 45-minute mock interview. Pick six of the rehearsal questions at random. A
 
 ## Must-know abbreviations (drill list)
 
-Definitions live in Appendix E. Do not maintain a second glossary here. Drill the expansions cold, then say one measurement, stress, or decision each term unlocks.
+Definitions live in Appendix F. Do not maintain a second glossary here. Drill the expansions cold, then say one measurement, stress, or decision each term unlocks.
 
 ##### Optical / debug core.
 
@@ -908,69 +860,96 @@ Communication
 
 : Short frame first; numbers and planes without buzzword soup.
 
-## One-week study plan
+## One-week interview preparation plan
 
-Assume seven days, with the interview near the end of Day 7. Protect sleep. Each day has one primary drill and one LLM practice box. If a day slips, cut new reading first, not story rehearsal or the mock interview.
+Assume seven days, with the interview near the end of Day 7. Protect sleep. Each day has a Learn list (pointers only) and one speakable Output. If a day slips, cut new reading first, not stories or the mock. Prefer the measurement with the highest information gain per cost (Appendix B.1, Appendix A.2).
 
-##### Day 1: principles, decision trees, spine, traps, Staff judgment.
+##### Day 1: Mental models.
 
-Read the four principles, Appendix A.4, the answer spine, the traps, and Appendix A.6. Memorize: every answer ends with a decision; measurements characterize margin; debugging is Bayesian inference in the lab. Memorize the two universal trees, the four phases, the six-question checklist, the decision table, and the five ledgers. Speak one paragraph per phase. Use the answer-spine LLM practice box. Write ownership language: stop ship, notify supplier, request FA, update ATP, monitor RMA.
+*Learn:* five ledgers (Appendix A.8.4), validation lifecycle (Table 7.1), margin thinking, reference planes, Staff pattern (Appendix A.1).\
+*Output:* Explain aloud, "How would you debug a BER failure?"
 
-##### Day 2: requirements and validation ladder.
+##### Day 2: Optical fundamentals.
 
-Rehearse Appendix A.10.1 and Appendix A.10.2 aloud until the structure is automatic. Name a reference plane in every measurement sentence. Skim Table 7.1, Table 5.4, Table 5.1 for numbers you already believe; do not hunt new optics.
+*Learn:* power, OMA, ER, RIN, BER, sensitivity (Chapter 3, Appendix A.8.9).\
+*Output:* Explain aloud, "Why does power not equal quality?"
 
-##### Day 3: two real stories.
+##### Day 3: Validation.
 
-Draft and rehearse one bench or component story and one system, production, or fleet story. Use only work you did. Hit all eight beats and end on a measured recurrence control. Use the stories LLM practice box. Record yourself once and cut invented metrics.
+*Learn:* characterization, margin, interoperability, qualification (Appendix A.8.5, Appendix C.8).\
+*Output:* Design a validation plan for a new optical module in two minutes.
 
-##### Day 4: instruments, waterfall, debug forks, and case practice.
+##### Day 4: Failure analysis.
 
-Review what each instrument removes as uncertainty. Drill waterfall shift versus floor versus burst pattern (Appendix A.8.9, §10.2, §10.3). Rehearse hot BER with stable power, aging versus calibration, and weak-lane isolation. Work Appendix B.5, Appendix B.7 aloud under time pressure and score with Appendix A.12. Use the ten-concepts LLM practice box.
+*Learn:* decision trees, fleet scope, supplier escapes (Appendix D, Appendix C.9, Appendix C.10). Work Appendix B.5, Appendix B.7 aloud; score with Appendix A.12.\
+*Output:* Debug an ambiguous failure without naming a component first.
 
-##### Day 5: reliability, manufacturing, and suppliers.
+##### Day 5: Manufacturing.
 
-Drill HTOL credibility, Arrhenius/$E_a$, bathtub (burn-in versus wear-out), second-source qualification, FAIR, DPA, ESD versus wear-out, and field triage buckets (performance / reliability / manufacturability). Rehearse the HTOL, second-source, and triage worked answers. Skim Chapter 8 only where a story needs a fact.
+*Learn:* ATP, SPC, qualification, reliability (Chapter 8, Appendix C.15, Appendix C.13).\
+*Output:* Discuss how you would take a link to volume production.
 
-##### Day 6: abbreviations, telemetry, and modulator choice.
+##### Day 6: Architecture.
 
-Run the abbreviations LLM practice box until expansions are fast. Rehearse fleet telemetry, modulator choice (EML / Si MZM / ring), replayable test data, and BER-floor physics. Do one short mixed quiz: three debug questions and three reliability questions.
+*Learn:* IM/DD, WDM, AI networking, optical roadmap (Chapter 3, Chapter 6, Chapter 9, Chapter 1). Rehearse two true stories (Appendix A.9).\
+*Output:* Defend an architecture tradeoff with requirements first.
 
-##### Day 7: cheat sheet, Appendix B frameworks, mock, and stop.
+##### Day 7: Mock interviews.
 
-Read Appendix A.14 once aloud. Drill the "30-second answer" callouts in Appendix C for the topics you expect. Use the 45-minute mock-interview LLM practice box. No new chapters beyond that drill. Light review of your two stories only. Stop two to three hours before the call. Sleep.
+*Learn:* three cheat sheets below; Top 25 index (Appendix E); thirty-second callouts (Appendix C); whiteboard trees (Appendix D).\
+*Output:* Full mock. Light story review only. Stop two to three hours before the call. Sleep.
 
 ##### If you have less than seven days.
 
-Compress in this order: Day 1 spine, Day 3 stories, Day 2 requirements and validation, Day 5 HTOL and triage, Day 7 mock. Cut Day 6 reading; keep only the abbreviation drill. Always keep the cheat sheet below.
+Compress: Day 1, Day 4 cases, Day 3 validation, Day 5 manufacturing, Day 7 mock. Keep the cheat sheets and Top 25. Cut new chapter reading first.
 
-## Staff interview cheat sheet
+## Staff interview cheat sheets
 
-### The five questions behind every interview problem
+Interview-simple flows only. Full trees stay in Appendix D.
 
-1.  What is the requirement?
+### Cheat Sheet A: Debugging flow
 
-2.  What is the failure scope?
+##### Five questions (eyebrow).
 
-3.  What mechanisms could explain it?
+Requirement? Scope? Mechanisms? Separating measurement (plane and access level)? Decision and recurrence control?
 
-4.  What measurement separates them (at which access level and plane)?
+<table class="book-table"><tr><th>Problem Scope Power?</th></tr><tr><td>[0.4em]</td></tr><tr><td>[0.2em] Path (power ledger vs quality ledger)</td></tr><tr><td>[0.4em]</td></tr><tr><td>[0.2em] Contain Confirm Prevent</td></tr></table>
+Full trees: Appendix D.1, Appendix D.4. Pick the next measurement by information value, not habit (Appendix B.1, Table B.1).
 
-5.  What decision does the evidence enable, and what control prevents recurrence?
+### Cheat Sheet B: Validation / decision loop
 
-*Central loop.* Requirement $\rightarrow$ risk $\rightarrow$ mechanism $\rightarrow$ measurement $\rightarrow$ evidence $\rightarrow$ decision $\rightarrow$ control $\rightarrow$ learning.
+<table class="book-table"><tr><th>Requirement Risk Mechanism</th></tr><tr><td>[0.4em]</td></tr><tr><td>[0.2em] Measurement Evidence Decision Control</td></tr></table>
+Staff pattern and lifecycle: Appendix A.1, Table 7.1.
 
-*Access levels.* Telemetry $\rightarrow$ system experiments $\rightarrow$ external module $\rightarrow$ engineering breakout $\rightarrow$ destructive FA (Appendix A.2).
+##### Executive frame (one breath).
 
-*Evidence language.* Observation / correlation / hypothesis / confirmation / decision. Do not say "data proves" until confirmation exists.
+Issue / Impact / Population / Evidence / Confidence / Containment / Mechanism status / Next decision. Details: Appendix B.3.
 
-*Lifecycle.* Requirements $\rightarrow$ architecture $\rightarrow$ bring-up $\rightarrow$ characterization $\rightarrow$ margin $\rightarrow$ interop $\rightarrow$ qualification $\rightarrow$ manufacturing $\rightarrow$ pilot $\rightarrow$ MP $\rightarrow$ fleet $\rightarrow$ feedback (Table 7.1).
+### Cheat Sheet C: Qualification flow
 
-*Night before.* Open the matching playbook in Appendix C. Memorize "30-second answer" callouts only.
-
-*Decisions.* Ship / don't ship, continue validation, escalate supplier, derate, second source, contain lot, modify ATP, open RMA, FA/DPA, firmware, retune calibration, monitor only (Table A.1).
+<table class="book-table"><tr><th>Mechanism Stress Observable</th></tr><tr><td>[0.4em]</td></tr><tr><td>[0.2em] Acceptance Confidence Production control</td></tr></table>
+Evidence path and planning matrix: Appendix D.3, §8.2.
 
 **Key idea.** I first want to understand the scope of the problem, then determine which margin ledger is being spent, choose the measurement that eliminates the largest number of hypotheses, make the product decision, and finally add the control that prevents the next escape.
+
+## Bad answer / good answer
+
+Three pairs only. Grade yourself against the strong column, then open the matching playbook.
+
+##### 1. Debug a bad optical link.
+
+*Weak:* "I would check the cable, swap the module, and look at the eye."\
+*Strong:* Scope first (one lane / one host / fleet). Run the power-versus-quality fork. Name the ledger, the separating measurement, the decision, and the control (Appendix C.1, Appendix D.4).
+
+##### 2. Validate a new module.
+
+*Weak:* "I would use a DCA, a power meter, and a temperature chamber."\
+*Strong:* Walk the lifecycle stage that matches the risk: requirements, characterization, margin, interop, qual, manufacturing control (Appendix C.8, Table 7.1). Instruments are means, not the plan.
+
+##### 3. Qual escape in the field.
+
+*Weak:* "Qual was insufficient."\
+*Strong:* Classify the miss: wrong mechanism, wrong stress, wrong observable, wrong acceptance, or missing production control. Then name the fix to the evidence path (Appendix C.10, Appendix D.3).
 
 
 <div class="nav-links">

@@ -588,49 +588,21 @@ Scaling can fail through oversubscription, poor route balance, head-of-line bloc
 
 ### How it is debugged
 
-Start with the workload symptom and identify the slow collective, rail, or time window. Compare topology and route data with link counters. A single lane with rising FEC points to the optical path; many clean links with full queues point to fabric capacity or scheduling. On the optical path, apply the power-versus-quality fork and the five ledgers (§4.8, §5.19, Appendix D). Remove one rail, reroute one group, or replace one suspect module to test causality. Keep optics, switch, and workload timestamps aligned. Otherwise a link flap and a collective stall cannot be ordered reliably.
+Start with the workload symptom and identify the slow collective, rail, or time window. Compare topology and route data with link counters. A single lane with rising FEC points to the optical path; many clean links with full queues point to fabric capacity or scheduling. On the optical path, use the power-versus-quality fork and five ledgers (§4.8, §5.19, Appendix D.4). Remove one rail, reroute one group, or replace one suspect module to test causality. Keep optics, switch, and workload timestamps aligned. Otherwise a link flap and a collective stall cannot be ordered reliably.
 
 \> \*\*Debug story\*\* \> \> \*\*Observed.\*\* All-reduce tail latency rose after a rack expansion, while average link utilization looked normal. \> \> \*\*Investigation.\*\* Per-rail traces showed one path with FEC bursts and retries. A module swap moved the symptom with the module. \> \> \*\*Finding.\*\* The fabric had capacity, but one marginal optical lane set the collective tail. \> \> \*\*Root cause.\*\* A contaminated connector raised ORL and produced burst errors without a large average-power change. \> \> \*\*Resolution.\*\* The connector was replaced, inspection was added to the expansion runbook, and collective-tail alarms were tied to link-level error bursts.
 
-## Interview and design review questions
-
-##### Concept.
-
-- Why does inference (not only training) put the optical link on the critical path?
-
-- What is the difference between scale-up and scale-out, and why do they use different optics?
-
-- Why does an optical circuit switch complement rather than compete with co-packaged optics?
-
-##### Design.
-
-- Which workload and collective set the latency, bandwidth, and tail targets?
-
-- Where is the scale-up to scale-out boundary, and what measured reach or power limit places it there?
-
-- How do pluggable, linear pluggable, and co-packaged choices trade host margin, power, cooling, fiber count, repair time, and supplier concentration?
-
-- What happens to a running job when one lane, module, external laser, or switch fails?
-
-##### Debug.
-
-- Collective tail latency rose after a rack expansion. Average link utilization looks normal. Where do you look?
-
-- A single lane has rising FEC errors but its Rx power is stable. Apply the debugging fork: is this a power problem or a signal-quality problem?
-
-- Which telemetry reaches fleet software, and can it identify a weak link before the workload stalls?
-
-- What data would show that the proposed optical architecture is not the cluster bottleneck?
-
-##### Manufacturing and operations.
-
-- How do laser choices, WDM architecture, and validation methodology from earlier chapters influence cluster-scale outcomes?
-
-- What is the service-time budget for replacing a failed module before the scheduler must reroute?
-
-- How does connector mating-cycle budget change with a weekly hot-swap maintenance schedule?
+## Interview takeaway
 
 **Key idea.** An AI fabric is judged by delivered workload time, not aggregate port rate. Connect collective traces to queue, route, FEC, optical, thermal, and service data. Choose pluggables, linear optics, or co-packaging by the measured system constraint and by how the fleet detects, contains, and repairs each failure.
+
+##### Three questions to test yourself.
+
+1.  What is the difference between scale-up and scale-out, and why do they use different optics?
+
+2.  A single lane has rising FEC errors but its Rx power is stable. Is this a power problem or a signal-quality problem?
+
+3.  How do pluggable, linear pluggable, and co-packaged choices trade host margin, power, cooling, fiber count, and repair time?
 
 
 <div class="nav-links">

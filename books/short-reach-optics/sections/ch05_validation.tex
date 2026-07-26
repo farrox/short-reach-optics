@@ -1863,48 +1863,20 @@ jumper had been replaced without updating the path-loss calibration.}{The statio
 was recalibrated, jumper identity was placed under change control, and a start-of-
 shift source check was added.}
 
-\section{Interview and design review questions}
+\section{Interview takeaway}
 \label{sec:validation-design-review}
-
-\paragraph{Concept.}
-\begin{itemize}
-\item Why is a passing BER on a golden bench not sufficient for production
-      readiness?
-\item What is the difference between characterization and validation?
-\item Why does LPO raise the stakes on transmitter TDECQ?
-\end{itemize}
-
-\paragraph{Design.}
-\begin{itemize}
-\item What requirement does each test prove, at which plane, and with which
-      uncertainty and guardband?
-\item Which corner is represented only by a lab fixture rather than the target
-      host or chassis?
-\item What is the fastest measurement that can falsify each top risk?
-\item Which setup error can make a bad unit pass or a good unit fail?
-\end{itemize}
-
-\paragraph{Debug.}
-\begin{itemize}
-\item A new module passes on the bench but fails on the production host. What is
-      your first measurement?
-\item BER is high but optical power looks fine. Apply the debugging fork
-      (\Cref{sec:validation-fork}): what do you check next?
-\item A module works on host A but fails on host B. How do you determine
-      ownership?
-\item Are raw data, calibration state, firmware, and sample identity stored well
-      enough to replay a failure months later?
-\end{itemize}
-
-\paragraph{Manufacturing and operations.}
-\begin{itemize}
-\item What is the minimum set of corners that proves production readiness?
-\item How do you detect tester drift before it becomes a yield cliff or a field
-      escape?
-\item What exit criteria distinguish DVT from PVT?
-\end{itemize}
 
 \keyidea{Validation is a chain of evidence. Start with calibrated power and
 management state, move through spectrum and waveform, then trust BER only after
 the blocks and reference planes are known. Run the target host, chassis, fiber,
 and neighbor corners before calling the product ready.}
+
+\paragraph{Three questions to test yourself.}
+\begin{enumerate}
+\item Why is a passing BER on a golden bench not sufficient for production
+      readiness?
+\item BER is high but optical power looks fine. Apply the debugging fork
+      (\Cref{sec:validation-fork}): what do you check next?
+\item How do you detect tester drift before it becomes a yield cliff or a field
+      escape?
+\end{enumerate}

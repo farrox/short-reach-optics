@@ -834,51 +834,17 @@ Manufacturing / fleet
 
 : Can you screen it and triage it at volume?
 
-## Interview and design review questions
-
-##### Concept.
-
-- Why is the laser typically the reliability-limiting component in an optical link?
-
-- What physical mechanism causes a DFB laser's threshold current to rise with age?
-
-- Why does an isolator-free design tighten the RIN requirement?
-
-##### Design.
-
-- Why would you choose an EML over direct modulation for this reach and lane rate?
-
-- When does a ring's density justify its heater and wavelength-control burden?
-
-- Which aging model and activation energy match the observed failure mechanism?
-
-- What are the distributions of threshold, slope, wavelength, SMSR, and RIN across wafer, lot, assembly site, and temperature?
-
-- Which screens remove infant mortality, and what good units do those screens consume?
-
-- Does the architecture make the laser field-replaceable, and what failure rate justifies that choice?
-
-##### Debug.
-
-- Optical power fell but the monitor photodiode reports no change. What do you check?
-
-- BER worsened after thermal cycling while average power stayed in range. Which measurement would separate source aging, EAM bias, wavelength, and connector hypotheses?
-
-- Which telemetry distinguishes laser wear from monitor, TEC, connector, and bias-driver faults in the fleet?
-
-##### Manufacturing and operations.
-
-- How would you qualify a second laser supplier without assuming the first supplier's failure distribution?
-
-- What are the process control limits and the supplier's reaction plan when a trend crosses them?
-
-- How many HTOL hours at what temperature project 10 years of field life at your operating conditions?
-
-- What lot-level data must the supplier provide at each NPI gate?
-
-- What is the expected laser replacement rate for this fleet size and FIT?
+## Interview takeaway
 
 **Key idea.** Measure LIV, SMSR, wavelength, and RIN as distributions across temperature, lot, and age. Tie each requirement to an ATP row, each life claim to a physical mechanism, and each field alarm to a measurement that separates the laser from its driver, monitor, cooler, and optical path.
+
+##### Three questions to test yourself.
+
+1.  Why is the laser typically the reliability-limiting component in an optical link?
+
+2.  Optical power fell but the monitor photodiode reports no change. What do you check?
+
+3.  How would you qualify a second laser supplier without assuming the first supplier's failure distribution?
 
 
 <div class="nav-links">
