@@ -11,7 +11,7 @@ Debugging asks which margin ledger was exhausted. Qualification asks how much ma
 
 ##### Operating definitions used in this book.
 
-Companies may use EVT, DVT, PVT, verification, and qualification differently. Unless noted otherwise, this book uses the questions below. Abbreviations are collected in Appendix F.
+Companies may use EVT, DVT, PVT, verification, and qualification differently. Unless noted otherwise, this book uses the questions below. Abbreviations are collected in Appendix G.
 
 Characterization
 

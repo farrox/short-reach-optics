@@ -17,17 +17,19 @@ Deep learning
 
 Interview preparation
 
-: Follow the one-week plan (Appendix A.13), practice cases (Appendix B), drill thirty-second answers and tradeoff questions (Appendix C), and review the Top 25 index (Appendix E).
+: Follow the one-week plan (Appendix A.13), practice cases (Appendix B), drill thirty-second answers and tradeoff questions (Appendix C), review the Top 25 index (Appendix E), and read how Staff judgment works (Appendix F).
 
 Incident / problem solving
 
-: Open the wall-chart trees (Appendix D), the failure handbook (Chapter 10), and a matching case (Appendix B). Recover the method in minutes, not hours.
+: Open the wall-chart trees (Appendix D), the failure handbook (Chapter 10), a matching case (Appendix B), and the Staff judgment appendix (Appendix F). Recover the method in minutes, not hours.
 
 Start from the requirement, not the component. Move downward from system requirements to architecture, subsystem, component, and only then to the physics needed to make the decision. A choice at one layer constrains the next. The aim is operational judgment: reduce uncertainty enough to make the next decision, then name the control that prevents recurrence.
 
 **On sources.** The industry moves quickly. Where the text cites specific products or figures (co-packaged-optics programs, per-lane roadmaps, energy-per-bit trends) it draws on public disclosures current as of early 2026, cited in the references. Where a claim is an inference rather than an established fact, the text says so. History and trend notes are included where they help explain why today's defaults exist, not as a full chronology of the field.
 
 **Key idea.** The goal of an optical systems engineer is not to know every component. It is to make good engineering decisions under uncertainty using measurements, physics, and evidence. At gigawatt, multi-generation scale, the optical interconnect and its lasers are a first-order lever on power, cost, and reliability. Everything here serves that argument.
+
+Content freeze: this handbook is frozen for expansion. Prefer cuts, cross-refs, and errata over new frameworks or chapters.
 
 
 <div class="nav-links">

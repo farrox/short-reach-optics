@@ -29,8 +29,9 @@ title: "Table of Contents"
 - [**Appendix B.** Thirty-second interview frameworks](ch13-thirty-second-interview-frameworks)
 - [**Appendix C.** Engineering decision trees](ch14-engineering-decision-trees)
 - [**15.** Optical Systems Staff Engineer Interview Questions](ch15-optical-systems-staff-engineer-interview-questions)
-- [**Appendix D.** Abbreviations and terminology](ch16-abbreviations-and-terminology)
-- [**17.** References](ch17-references)
+- [**16.** How Staff Engineers Think](ch16-how-staff-engineers-think)
+- [**Appendix D.** Abbreviations and terminology](ch17-abbreviations-and-terminology)
+- [**18.** References](ch18-references)
 
 ---
 

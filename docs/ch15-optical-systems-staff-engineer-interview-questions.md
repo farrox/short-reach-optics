@@ -75,5 +75,5 @@ Index only. Each item is one speakable question plus a pointer to the worked ans
 <div class="nav-links">
   <a href="ch14-engineering-decision-trees">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch16-abbreviations-and-terminology">Next &rarr;</a>
+  <a href="ch16-how-staff-engineers-think">Next &rarr;</a>
 </div>

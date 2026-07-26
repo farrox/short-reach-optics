@@ -886,7 +886,7 @@ Run a 45-minute mock interview. Pick six of the rehearsal questions at random. A
 
 ## Must-know abbreviations (drill list)
 
-Definitions live in Appendix F. Do not maintain a second glossary here. Drill the expansions cold, then say one measurement, stress, or decision each term unlocks.
+Definitions live in Appendix G. Do not maintain a second glossary here. Drill the expansions cold, then say one measurement, stress, or decision each term unlocks.
 
 ##### Optical / debug core.
 
