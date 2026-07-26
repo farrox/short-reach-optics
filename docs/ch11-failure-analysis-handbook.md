@@ -15,9 +15,13 @@ This chapter is a symptom-first field guide. Start with what the bench, producti
 
 Preserve the failing state before reseat, reboot, or clean. Those actions often destroy the only evidence that separates contact, firmware, and true wear (Appendix D.16). Next name the population: unit, lane, lot, vendor, site, or fleet. Contain when the population can grow; a perfect mechanism story does not unship yesterday's lot. Classify time behavior (sudden, gradual, intermittent) and which margin ledger moved first (power, noise, timing, spectrum, or control). Choose one measurement that can kill or promote the leading hypotheses at the access you have (black-box versus engineering; Appendix A.2, Appendix D.11). Confirm ownership with a controlled swap, stress, or physical evidence before you call a mechanism confirmed. Do not say "data proves" for the last surviving hypothesis alone.
 
+##### Correction versus recurrence control.
+
+A corrective action repairs the current mechanism. A recurrence control prevents or detects the next occurrence. Cleaning a connector is a correction; inspect-before-connect is a recurrence control. Repairing a station fixture is a correction; a golden-unit drift alarm is a recurrence control. Recalibrating wavelength is a correction; a control-headroom telemetry alarm is a recurrence control.
+
 ##### Recurrence-control closure.
 
-An incident is not closed when the unit recovers. Close only when a production or fleet control catches the same signature next time: requirement, qualification plan, ATP, SPC, telemetry, or supplier process (Appendix D.3, §7.1.12). Each symptom section ends with a short *Recurrence control* line for that signature. Name the FA output category when you file the case (§11.13).
+An incident is not closed when the unit recovers. Close only when a production or fleet control catches the same signature next time. The best control may be design, supplier process, incoming inspection, ATP, sampled audit, SPC, telemetry, service procedure, or qualification (Appendix D.3, §7.1.12). Each symptom section ends with a short *Recurrence control* line for that signature. Name the FA output category when you file the case (§11.13).
 
 > **Why experienced engineers preserve state before reseating?**
 >
@@ -25,18 +29,22 @@ An incident is not closed when the unit recovers. Close only when a production o
 
 > **Engineering heuristic.** If two explanations fit equally well, prefer the one that requires the fewest independent failures.
 
-<pre class="dectree" aria-label="Preserve failing state"><code>Preserve failing state
+<pre class="dectree" aria-label="Preserve"><code>Preserve
   |
-Scope (unit / lot / vendor / site / fleet)
+Scope
   |
-Time behavior + first-moving ledger
+Classify
   |
-Measure / isolate (name access)
+Locate margin
   |
-Contain / confirm
+Falsify
   |
-Recurrence control + FA output category</code></pre>
-The debugging pyramid in §1.16, the power-versus-signal fork in §4.8, the fleet router in Table 7.6, and the wall-chart trees in Appendix D are the same method at different scales. Earlier chapters own mechanism physics. This chapter owns order of operations. Symptom routes:
+Confirm
+  |
+Correct
+  |
+Prevent</code></pre>
+This is the only general incident sequence. Symptom-specific trees later in the chapter are local routes inside it. The debugging pyramid in §1.16, the power-versus-signal fork in §4.8, the fleet router in Table 7.6, and the wall-chart trees in Appendix D are the same method at different scales. Earlier chapters own mechanism physics. This chapter owns order of operations. Symptom routes:
 
 Power loss
 
@@ -125,9 +133,35 @@ Decision + ATP / telemetry control</code></pre>
 
 Pre-FEC BER rises. A waterfall is BER versus received power from a VOA sweep at a named reference plane. The curve either moves to higher power (shift), stops improving at a horizontal asymptote (floor), or shows both (soft floor on a shift).
 
-##### Likely hypotheses.
+##### Likely hypotheses by ownership.
 
-A shifted waterfall points toward lost power, receiver sensitivity, eye closure, timing, or dispersion: the link still responds to more photons, but the power needed for a given BER has moved. A floor points toward signal-proportional noise, reflection, crosstalk, or bursty impairments: past a point, more power does not help. The distinction prevents a power fix on a noise-limited link. FEC error timing further splits the cases: randomly sprinkled errors fit Gaussian or steady RIN; clustered bursts fit MPI, connector intermittents, or shared supply and clock events.
+Group candidates before instrumenting:
+
+Source / transmitter
+
+: Lost OMA, eye closure, RIN, pattern dependence.
+
+Optical path
+
+: Insertion loss, connector/ORL or MPI, MUX or fiber plant.
+
+Receiver / host
+
+: Sensitivity, equalization limits, timing, host SerDes.
+
+Power and timing
+
+: Rails, clocks, shared disturbances across lanes.
+
+Control and software
+
+: Bias, lock, firmware state transitions.
+
+Environment and assembly
+
+: Temperature, vibration, attach, contamination.
+
+A shifted waterfall supports lost power, sensitivity, eye, timing, or dispersion: the link still responds to more photons, but the power needed for a given BER has moved. A floor supports signal-proportional noise, reflection, crosstalk, or bursty impairments: past a point, more power does not help. FEC error timing further splits the cases: randomly sprinkled errors fit Gaussian or steady RIN; clustered bursts fit MPI, connector intermittents, or shared supply and clock events.
 
 ##### Measurements, mechanism isolation, and confirmation.
 
@@ -141,7 +175,7 @@ A shifted waterfall points toward lost power, receiver sensitivity, eye closure,
 
 ##### Corrective action and recurrence control.
 
-Restore the margin ledger that moved, then repeat the full BER sweep at loaded corners. Store waterfall shape, not only pass/fail BER, so later fleet changes can be classified without guessing. Interview study treatment: Appendix A.8.9. *Recurrence control:* waterfall or sensitivity sample in ATP/telemetry, not pass/fail BER alone.
+Restore the margin ledger that moved, then repeat the full BER sweep at loaded corners. Store waterfall shape, not only pass/fail BER, so later fleet changes can be classified without guessing. Interview study treatment: Appendix A.8.9. *Recurrence control:* earliest reliable control for the confirmed ledger (ATP or sensitivity sample, SPC, telemetry, or qualification), not pass/fail BER alone.
 
 ### BER floor
 
@@ -241,7 +275,7 @@ Black-box path: per-lane power/BER/FEC, host lane remap, sibling comparison, tem
 
 ##### Corrective action and recurrence control.
 
-FAU misalignment is a manufacturing escape; tighten incoming inspection or first-article coupling specs. Thermal gradient: redesign TEC zoning or derate the hot lane. Confirmed source wear-out: flag the lot and check burn-in screening effectiveness. Driver mismatch: work with the IC supplier on channel-to-channel gain flatness. *Recurrence control:* per-lane coupling or TDECQ first-article / SPC.
+Confirmed FAU misalignment supports a manufacturing or process control change (incoming inspection or first-article coupling). A thermal gradient supports TEC zoning redesign or derating of the hot lane. Confirmed source wear-out supports lot action and a review of burn-in or life screening effectiveness. Driver mismatch supports IC supplier channel-flatness work. Call each mechanism only after the discriminating evidence above closes. *Recurrence control:* per-lane coupling or TDECQ first-article / SPC, or the earliest reliable control for the confirmed owner.
 
 ## Wavelength drift
 
@@ -263,7 +297,7 @@ Laser wavelength moves with temperature and bias current. If the TEC or waveleng
 
 4.  **Ring CPO:** Check the ring thermal tuner DAC code. If it has railed (max heater power), the ring cannot reach the target wavelength. Check for neighbor heating (all adjacent lanes at full traffic and max case $T$).
 
-5.  **Aging:** If drift is progressive over weeks/months, suspect laser mode hop or gradual TEC degradation (reduced $\Delta T$ capacity).
+5.  **Aging:** Progressive drift over weeks or months raises leading hypotheses of source mode hop, locker/TEC capacity loss, or control recalibration drift. Confirm with wavelength history, TEC or heater headroom, and lock-error trend before naming the mechanism.
 
 ##### Corrective action and recurrence control.
 
@@ -331,9 +365,9 @@ Scope time + change history
   |
 ORL / connector / supply / lock / attach
   |
-Decision: contain / clean / redesign / ATP dwell
+Decision: contain / clean / redesign / earliest control
   |
-Recurrence: dwell + FEC histograms</code></pre>
+Recurrence: dwell + FEC histograms / service / telemetry</code></pre>
 ##### Observed behavior.
 
 Links flap, lose lock, or show bursts of FEC errors while average power and a short bench BER test look normal. The symptom may clear after reseating, cooling, or restarting firmware.
@@ -344,9 +378,33 @@ Links flap, lose lock, or show bursts of FEC errors while average power and a sh
 >
 > *Not:* a confirmed wear-out FIT story from a short room-temperature BER pass
 
-##### Likely hypotheses.
+##### Likely hypotheses by ownership.
 
-Intermittent faults come from contacts, reflections, weak optical or electrical attach, supply noise, wavelength-lock loss, firmware state, or environmental stress. Reseating can remove the evidence by cleaning a contact, changing fiber stress, or resetting a state machine.
+Optical path
+
+: Connector contamination, mate stress, ORL or MPI, weak fiber attach.
+
+Source / transmitter
+
+: Lock loss, bias or wavelength control excursions.
+
+Receiver / host
+
+: Electrical contact, SerDes recovery, host reset paths.
+
+Power and timing
+
+: Supply noise, shared rail or clock bursts.
+
+Control and software
+
+: Firmware state, CMIS transitions, recalibration.
+
+Environment and assembly
+
+: Thermal cycling, vibration, package stress.
+
+Reseating can remove the evidence by cleaning a contact, changing fiber stress, and resetting a state machine at the same time, so it is not a discriminating experiment unless those effects are separated.
 
 > **Engineering heuristic.** Treat cool-down recovery as a clue, not a fix. Capture the failing corner before the unit returns to room temperature forever.
 
@@ -491,11 +549,11 @@ Restore thermal headroom, correct calibration and control limits, reduce couplin
 
 Every FA result should land in one bucket before the case closes:
 
-Design issue
+Design or architecture issue
 
 : Fix architecture or derate.
 
-Process issue
+Manufacturing or process issue
 
 : Fix manufacturing or assembly.
 
@@ -503,17 +561,25 @@ Supplier issue
 
 : Fix incoming quality or supplier process.
 
-Test escape
+Test or monitoring escape
 
 : Improve detection (ATP, sample, SPC, telemetry).
 
-Unknown mechanism
+System or integration issue
 
-: Continue investigation with an owner and interim control.
+: Fix host, plant, topology, or deployment interaction.
+
+Software or control issue
+
+: Fix firmware, calibration, or control-loop behavior.
+
+No confirmed mechanism
+
+: Investigation remains open. Keep an owner, containment, next experiment, and review date. Do not treat unknown mechanism as a completed outcome.
 
 The checklist in Table 11.1 is a lifecycle, not a suggestion list. Each step removes a class of uncertainty before the next step spends lab time. Skip Preserve and you often destroy the only evidence that separated host, plant, and product.
 
-<table class="book-table"><tr><th>Step</th><th>Question</th><th>Required record</th></tr><tr><td>Preserve</td><td>What evidence will a reseat, reboot, clean, or retest destroy?</td><td>CMIS, BER and FEC history, rails, temperature, firmware, fixture, and time</td></tr><tr><td>Scope</td><td>One unit, lane, lot, vendor, site, or fleet?</td><td>Population and correlation plot</td></tr><tr><td>Classify</td><td>Sudden or gradual, constant or intermittent, thermal or cumulative?</td><td>Timeline and recovery test</td></tr><tr><td>Locate margin</td><td>Did power, noise, timing, spectrum, or control move first?</td><td>Golden comparison and margin ledger</td></tr><tr><td>Falsify</td><td>Which measurement best separates the leading hypotheses?</td><td>Expected result for each hypothesis before the test</td></tr><tr><td>Confirm</td><td>Does the fault follow the suspected block under a controlled swap or stress?</td><td>Repeated failure and passing control</td></tr><tr><td>Correct</td><td>Does the fix restore the original failing condition with margin?</td><td>Before and after data at loaded corners</td></tr><tr><td>Prevent</td><td>Where can production or fleet monitoring catch recurrence earliest?</td><td>ATP change, control limit, alarm, owner, and due date</td></tr></table>
+<table class="book-table"><tr><th>Step</th><th>Question</th><th>Required record</th></tr><tr><td>Preserve</td><td>What evidence will a reseat, reboot, clean, or retest destroy?</td><td>CMIS, BER and FEC history, rails, temperature, firmware, fixture, and time</td></tr><tr><td>Scope</td><td>One unit, lane, lot, vendor, site, or fleet?</td><td>Population and correlation plot</td></tr><tr><td>Classify</td><td>Sudden or gradual, constant or intermittent, thermal or cumulative?</td><td>Timeline and recovery test</td></tr><tr><td>Locate margin</td><td>Did power, noise, timing, spectrum, or control move first?</td><td>Golden comparison and margin ledger</td></tr><tr><td>Falsify</td><td>Which measurement best separates the leading hypotheses?</td><td>Expected result for each hypothesis before the test</td></tr><tr><td>Confirm</td><td>Does the fault follow the suspected block under a controlled swap or stress?</td><td>Repeated failure and passing control</td></tr><tr><td>Correct</td><td>Does the fix restore the original failing condition with margin?</td><td>Before and after data at loaded corners</td></tr><tr><td>Prevent</td><td>Where can production or fleet monitoring catch recurrence earliest?</td><td>Earliest reliable control, owner, and due date</td></tr></table>
 **Table 11.1.** Failure-analysis checklist. The incident is not closed until the cause is reproduced, corrected, and covered by a recurrence control.
 
 ### Reading the failure-analysis checklist
@@ -534,9 +600,101 @@ Which single measurement best separates the leading hypotheses? Write expected r
 
 Confirm the fault follows the suspected block under swap or stress, then show before/after margin at the original failing corner. **Exit when** ownership is assigned and the fix restores that corner. **Risk if skipped:** you "fix" the wrong block or ship a lab-only cure.
 
+A swap is an ownership experiment, not automatically a root-cause experiment. A module swap may also disturb connectors, reset firmware, alter thermal contact, and change calibration state. Record every condition that changes and, where possible, reverse the swap to verify that the symptom follows the intended variable.
+
 ##### Prevent.
 
-Where can production or fleet monitoring catch recurrence earliest? Version an ATP row, SPC limit, or alarm with owner and due date. **Exit when** recurrence control is owned and the cohort is under watch. **Decision:** close the incident, or monitor-only if rate and impact justify it (Table A.1). **Risk if skipped:** you solve one RMA and train the factory to recreate it.
+Where can production or fleet monitoring catch recurrence earliest? Choose the earliest reliable and economical control: design, supplier process, incoming inspection, ATP, sampled audit, SPC, telemetry, service procedure, or qualification. Version the chosen control with owner and due date. **Exit when** recurrence control is owned and the cohort is under watch. **Decision:** close the incident, or monitor-only if rate and impact justify it (Table A.1). **Risk if skipped:** you solve one RMA and train the factory to recreate it.
+
+### Evidence states
+
+> **Evidence states**\
+>
+> Observation
+>
+> : A directly measured fact (example: pre-FEC errors rose at $72$°C).
+>
+> Correlation
+>
+> : Two observations move together (example: failures concentrate in lot A).
+>
+> Leading hypothesis
+>
+> : The mechanism that currently best explains the evidence.
+>
+> Ownership localization
+>
+> : The symptom follows a block, path, station, or population under controlled change.
+>
+> Mechanism confirmation
+>
+> : The physical or electrical mechanism is reproduced or supported by discriminating and, where appropriate, physical evidence.
+>
+> Confirmed root cause
+>
+> : The mechanism, enabling condition, and control gap are understood well enough that the corrective action prevents recurrence.
+>
+> A surviving hypothesis and a localized block are not automatically a confirmed root cause.
+
+### Incident record template
+
+The checklist produces one compact record. Do not invent a second lifecycle; fill these fields as you walk the steps:
+
+Observed symptom
+
+: What the fleet, line, or bench reported.
+
+Affected population
+
+: Lane, module, lot, site, supplier, firmware, fleet.
+
+First occurrence and frequency
+
+: When it started and how often it returns.
+
+Operating condition
+
+: Temperature, traffic, host, plant, dwell.
+
+Reference plane
+
+: Named optical or electrical plane for the measurement.
+
+Volatile telemetry preserved
+
+: CMIS, FEC, rails, EQ, route, workload time.
+
+Recent changes
+
+: Firmware, lots, fixtures, routes, maintenance.
+
+Containment
+
+: What was held, drained, or watched, and why.
+
+Leading hypotheses
+
+: Ranked survivors after falsify.
+
+Next discriminating measurement
+
+: Expected result for each survivor.
+
+Confirmed mechanism status
+
+: Observation / localization / confirmed / open.
+
+Corrective action
+
+: What repaired the current mechanism.
+
+Recurrence control
+
+: What prevents or detects the next occurrence.
+
+Owner and due date
+
+: Who owns the open work and when it is reviewed.
 
 ### Why the steps occur in this order
 
@@ -546,15 +704,145 @@ Preserve first because reseat and reboot destroy state. Scope next so containmen
 
 **Key idea.** A useful failure analysis starts with a symptom and ends with a new control. Preserve the failing state, split shared from local behavior, clear the measurement system, and choose one measurement that can falsify the leading hypothesis. The corrective action is incomplete until production or fleet data show that the same signature no longer escapes.
 
-Junior mistake: reseat first, or close without a recurrence control in ATP or telemetry (§7.12, Appendix B, Appendix C, Appendix F).
+Junior mistake: reseat first, or close without a recurrence control (§7.12, Appendix B, Appendix C, Appendix F).
 
-##### Three questions to test yourself.
+### Interview Q&A: Failure Analysis
 
-1.  BER rose on one rack after a software rollout. What data do you preserve before reseating modules?
+Practice speaking these answers aloud. Prefer first-person incident reasoning over instrument inventories. Detail lives in §11.13, §11.13.2, §4.8, §7.12.
 
-2.  Received power is unchanged but BER worsened. Which measurement do you make next, and which hypotheses does it separate?
+##### Question 1. Walk me through your failure-analysis process.
 
-3.  A golden unit fails only on one production station. What must be cleared before opening supplier failure analysis?
+*Tests:* complete incident structure and disciplined ordering.
+
+*Spoken answer.* "I begin by preserving the failing state because a reboot, reseat, clean, or retest may erase the evidence. Then I scope the population: lane, module, host, lot, supplier, site, firmware, or fleet. I classify the time behavior as sudden, gradual, or intermittent and identify whether power, noise, timing, spectrum, or control moved first. I choose the lowest-cost measurement that separates the leading hypotheses, while containing the affected population if exposure can grow. I call a mechanism confirmed only after controlled reproduction, a swap that follows the suspected block, or physical evidence. The case closes when the original failing condition is restored with margin and a recurrence control changes" (§11.13).
+
+*Pressure follow-up.* "Which step do engineers most commonly skip?"\
+*Answer pivot.* "Preserving state and scoping the population. Teams often reseat the unit, lose the evidence, and then spend days trying to recreate a failure they already had."
+
+*Trap:* "I reproduce the problem, identify the bad component, replace it, and retest."
+
+##### Question 2. What evidence do you preserve before reseating, rebooting, cleaning, or power cycling?
+
+*Tests:* evidence preservation and incident metadata.
+
+*Spoken answer.* "I would capture volatile evidence before changing the system: module and host state, CMIS pages, alarms, transmit and receive power, lane-resolved BER and FEC history, retrains, loss-of-lock events, temperature, supply rails, firmware and configuration, equalizer state where available, route and workload timing, and the exact failure chronology. If contamination is plausible, I photograph and inspect the endface before cleaning. I also record the physical topology, serial numbers, lots, host ports, peer modules, fibers, and recent changes. The goal is to preserve enough state to distinguish contact, software, thermal, optical, and wear mechanisms later."
+
+*Pressure follow-up.* "Operations already reseated the module and the problem disappeared. What do you do?"\
+*Answer pivot.* "I treat the recovery as evidence, not resolution. I preserve what remains, identify exactly what changed during the reseat, inspect the original path, and reproduce under controlled connector, thermal, firmware, and mechanical conditions."
+
+*Trap:* "I reseat first because that quickly tells me whether the module is bad."
+
+##### Question 3. How do you scope a failure and decide containment?
+
+*Tests:* population reasoning, exposure, and reversible action.
+
+*Spoken answer.* "I first determine whether the symptom is isolated to one lane, one module, one host port, one fiber path, one lot, one site, one firmware revision, or a broader fleet cohort. I use serial genealogy, installation age, topology, supplier and date code, and event timing to find where good and bad populations separate. Containment should match that evidence. I may drain one link, hold a lot, pause one supplier revision, or increase telemetry while the mechanism remains open. I do not wait for perfect root-cause certainty when the affected population can continue growing, but I also avoid stopping an unrelated fleet without evidence."
+
+*Pressure follow-up.* "The failure correlates with one date code. Do you stop the entire lot?"\
+*Answer pivot.* "I would provisionally contain the affected cohort if impact justifies it, while checking whether date code is confounded with site, host, firmware, station, or installation age. Correlation guides containment width; it does not confirm mechanism" (§11.13.2).
+
+*Trap:* "I contain only the failed units until root cause is proven."
+
+##### Question 4. BER is rising, but average received power is stable. What do you do next?
+
+*Tests:* power versus signal quality and BER-waterfall reasoning.
+
+*Spoken answer.* "Stable average power makes gross loss less likely, but it does not clear the optical path. I would name the receive reference plane and run a BER-versus-power waterfall. If the curve shifts, I investigate receiver sensitivity, OMA, eye quality, timing, dispersion, and insertion loss. If it forms a floor, I investigate signal-proportional noise, RIN, reflections or MPI, crosstalk, rail noise, pattern dependence, timing, and equalization limits. I also inspect the lane-resolved FEC timing because steady random errors and short bursts suggest different mechanisms. I would not increase launch power until I know which margin ledger is empty" (§11.2, §4.8).
+
+*Pressure follow-up.* "What if attenuation improves BER initially, but the curve then flattens?"\
+*Answer pivot.* "That is a shifted curve with a floor. More power repairs one impairment until another becomes dominant. I need to explain both before declaring the link healthy."
+
+*Trap:* "Power is stable, so I would replace the receiver."
+
+##### Question 5. One lane is weak while the sibling lanes are healthy. How do you isolate it?
+
+*Tests:* shared versus local ownership and lane-remap evidence.
+
+*Spoken answer.* "One weak lane strongly raises local hypotheses: source or modulator variation, one driver or TIA channel, fiber-array alignment, one MUX path, local receiver behavior, or a thermal gradient. I compare per-lane power, OMA, wavelength, TDECQ, BER, FEC timing, bias or control headroom, and temperature. If supported, I remap the electrical lane or use a known-good electrical channel to see whether the symptom follows the optical path or the electrical channel. I compare coupling and sibling-lane behavior before blaming shared firmware or the common thermal system" (§11.4).
+
+*Pressure follow-up.* "The failure follows the module after a host-port swap. Is the module root cause confirmed?"\
+*Answer pivot.* "It localizes ownership toward the module, but it does not confirm the internal mechanism. I still have to separate its source, modulation, coupling, filtering, receiver, firmware, and connector interfaces."
+
+*Trap:* "One lane failed, so the laser array contains a bad emitter."
+
+##### Question 6. The link fails intermittently and recovers after reseating or power cycling. How do you investigate it?
+
+*Tests:* intermittent evidence, triggered capture, and state-reset ambiguity.
+
+*Spoken answer.* "I would avoid treating recovery as a fix. Before disturbance I want event-triggered FEC, retrain and lock history, CMIS state, power, temperature, rail and clock behavior, wavelength-control state, and neighbor activity. I scope whether bursts share time across lanes or modules. Then I apply one controlled disturbance at a time: connector motion, thermal ramp, neighbor loading, rail loading, firmware transition, or vibration. A reseat can clean contamination, change fiber stress, restore a contact, and reset firmware simultaneously, so it is not a discriminating experiment unless those effects are separated" (§11.8).
+
+*Pressure follow-up.* "The supplier cannot reproduce the failure during a short room-temperature bench test."\
+*Answer pivot.* "That is a no-fault-found result, not evidence that the field was healthy. I would reproduce the original temperature, dwell, traffic, connector, firmware, and state-transition conditions and provide the original event history."
+
+*Trap:* "If power cycling clears the failure, it is probably firmware."
+
+##### Question 7. A module fails only at high temperature. How do you separate thermal response from aging or permanent damage?
+
+*Tests:* reversibility, chronology, and margin-ledger comparison.
+
+*Spoken answer.* "I return the unit to its original temperature and operating point and record whether power, wavelength, bias, control headroom, TDECQ, sensitivity, and BER recover. A repeatable reversible shift suggests operating-point or thermal-margin behavior. A baseline that has moved relative to ship or pre-stress data suggests aging or damage. I then isolate source, wavelength-selective element, receiver, neighbors, and cooling path to identify which ledger moves first. A sudden permanent step after cycling suggests damage or assembly failure rather than ordinary aging" (§11.12).
+
+*Pressure follow-up.* "The unit recovers fully after cooling. Can it ship?"\
+*Answer pivot.* "Not automatically. If the intended envelope includes the failing temperature or loaded-neighbor condition, the design lacks required margin even though the change is reversible."
+
+*Trap:* "If the unit recovers at room temperature, there is no reliability issue."
+
+##### Question 8. How do you investigate wavelength drift or loss of wavelength lock?
+
+*Tests:* source versus filter/control ownership.
+
+*Spoken answer.* "I measure actual wavelength and align it in time with case temperature, laser bias, TEC current, ring or heater code, lock error, neighbor activity, and BER. I ask whether the source moved, the filter or ring moved, or the control loop exhausted its authority. A railed TEC or heater indicates lost control headroom, not necessarily a bad laser. I repeat with neighbors off and on, and where possible I hold the source fixed while moving the wavelength-selective element, then reverse the experiment. The corrective action depends on whether the limitation is thermal design, calibration, source stability, crosstalk, or loop behavior" (§11.5).
+
+*Pressure follow-up.* "The error disappears after recalibration. Is recalibration the final corrective action?"\
+*Answer pivot.* "Only if the required setpoint remains stable with adequate control headroom. If the calibration keeps moving or the actuator rails, recalibration is masking physical drift rather than correcting the mechanism."
+
+*Trap:* "Wavelength drift means the laser wavelength specification is too loose."
+
+##### Question 9. A module passed ATP but begins failing after 90 days, and failures cluster by one lot. Is this a manufacturing escape or reliability failure?
+
+*Tests:* classification across manufacturing, qualification, and field aging.
+
+*Spoken answer.* "I would not classify it from those facts alone. The ninety-day clock and lot clustering raise both an early-life reliability mechanism and a process or material escape. I would compare installation-age distributions, first-pass ATP data, rework history, supplier genealogy, thermal exposure, host and site mix, and the physical failure signature. If evidence connects the mechanism to an uncontrolled process or a detectable condition that production controls missed, it is a manufacturing escape. If representative hardware passed production correctly but a life mechanism was inadequately covered, it is a qualification gap. It may also be both" (Chapter 9, Chapter 8, §9.6).
+
+*Pressure follow-up.* "Should ATP be tightened immediately?"\
+*Answer pivot.* "I may add temporary containment, but a permanent ATP change requires a validated observable correlated to the mechanism. Some aging mechanisms are better controlled by design, supplier process, qualification, or sampled audit."
+
+*Trap:* "It passed ATP, so the factory is cleared and qualification must be wrong."
+
+##### Question 10. Yield drops suddenly, or two production stations disagree. What is your first move?
+
+*Tests:* measurement clearing before product or supplier ownership.
+
+*Spoken answer.* "I contain suspect work in process and freeze test software, limits, calibration, fixtures, firmware, and recent changes. Before blaming product or supplier material, I run golden and range-spanning units across the stations and compare failed units on the trusted reference bench. Then I stratify first-pass failures and parameter distributions by test row, station, fixture, shift, operator, material lot, assembly site, firmware, and build order. The first point where good and bad populations separate determines the next experiment. I do not relax limits or open supplier corrective action until measurement-system effects and confounding are addressed" (§11.10, Chapter 9).
+
+*Pressure follow-up.* "One station reads 0.4 dB lower, but all units still pass specification. Is that acceptable?"\
+*Answer pivot.* "Not without understanding the offset. It may consume guardband, distort yield comparisons, and hide future drift. I would correct or formally account for the station bias before relying on its data."
+
+*Trap:* "The lower-yield station should use a corrected acceptance limit."
+
+##### Question 11. The supplier returns "no fault found." How do you respond?
+
+*Tests:* supplier evidence package and reproducibility.
+
+*Spoken answer.* "I would first compare their test conditions with the original failure conditions: temperature, traffic, host, firmware, fiber plant, connector state, dwell, reference plane, and event timing. I provide the failing-state pack, population data, expected symptom, and the conditions required to reproduce it. I ask them to preserve the returned unit and avoid automatic cleaning, firmware reset, or recalibration before inspection. If the mechanism remains unconfirmed, the case stays open with an interim containment and explicit next experiment. No-fault-found is an investigation state, not a root-cause category."
+
+*Pressure follow-up.* "The unit passes every supplier test. Do you return it to service?"\
+*Answer pivot.* "Only if the original risk is bounded and the service decision is explicit. For an intermittent high-impact failure, I may keep it out of service while using it for controlled reproduction."
+
+*Trap:* "If the supplier cannot reproduce it, the issue belongs to the customer environment."
+
+##### Question 12. Give me a 60-second failure-analysis plan for an optical fleet incident.
+
+*Tests:* complete Staff-level incident answer.
+
+*Spoken answer.* "I begin by preserving the failing state and aligning module, host, link, topology, and workload timestamps. Then I scope the affected population by lane, module, lot, supplier, firmware, site, and install age and apply reversible containment where exposure can grow. I classify the symptom by time behavior and identify whether power, noise, timing, spectrum, or control moved first. I choose the lowest-cost measurement that separates the leading hypotheses, such as a BER waterfall, controlled swap, loaded thermal sweep, ORL test, or station correlation. I call the mechanism confirmed only after reproduction, controlled ownership evidence, or physical analysis. I verify the corrective action at the original failing corner and close only after a requirement, qualification, ATP, SPC, supplier, telemetry, or service control changes."
+
+*Pressure follow-up.* "What would make you stop deployment before mechanism confirmation?"\
+*Answer pivot.* "A growing or correlated population, high workload impact, weak ability to bound exposure, or a potentially destructive mechanism. Containment can be reversible; the cost of waiting may not be."
+
+*Trap:* "I would reproduce the failure, replace the suspected module, and monitor the fleet."
+
+Score each answer using the shared chapter-interview rubric in Appendix A.12.1. Repeat any answer that does not preserve evidence, scope the population, select a discriminating measurement, and identify both containment and recurrence control.
 
 
 <div class="nav-links">

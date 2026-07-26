@@ -136,6 +136,13 @@ No new frameworks. Structural relocation of existing material is allowed.
   MTBF/MTTR availability starter (`sec:networking-ops`). Replaced three self-test
   questions with 12 compact Spoken/Pressure/Trap questions
   (`sec:networking-interview-qa`). PDF about 397 pages.
+- **Ch11 Interview Q\&A and FA discipline:** Added evidence-state vocabulary,
+  expanded FA output categories, incident-record template, swap-evidence and
+  correction-versus-recurrence prose; softened premature mechanism and
+  ATP-default recurrence language; aligned the opening incident dectree with the
+  eight-step checklist. Replaced three self-test questions with 12 compact
+  Spoken/Pressure/Trap questions (`sec:failure-analysis-interview-qa`). PDF about
+  405 pages.
 
 ## Typographical fixes
 
