@@ -25,7 +25,7 @@ DPPM (defective parts per million)
 
 ## Qualification flows
 
-Qualification measures remaining margin after stress. Debugging is what you do when that remaining margin hits zero. Use the same canonical validation lifecycle as Appendix A.6.5, Appendix C.2 (requirements through controlled pilot and fleet monitoring); this chapter owns the environmental, reliability, manufacturing, and ATP gates. Keep the customer view and the vendor view distinct: the vendor designs internals; the customer characterizes externally visible behavior and decides deployment (Appendix A.6.6, Appendix A.6.7, Appendix C).
+Qualification measures remaining margin after stress. Debugging is what you do when that remaining margin hits zero. Use the same canonical validation lifecycle as Appendix A.8.5, Appendix C.2 (requirements through controlled pilot and fleet monitoring); this chapter owns the environmental, reliability, manufacturing, and ATP gates. Keep the customer view and the vendor view distinct: the vendor designs internals; the customer characterizes externally visible behavior and decides deployment (Appendix A.8.6, Appendix A.8.7, Appendix C).
 
 <pre class="dectree" aria-label="Requirement"><code>Requirement
   |
@@ -46,7 +46,7 @@ Production + fleet monitoring</code></pre>
 > Customer: BER, sensitivity, FEC, telemetry, environmental sweeps, interop.\
 > Engineering samples (Tx-only, Rx-only, breakout, PRBS) open isolation; otherwise stay on the external surface.
 
-The vendor designs the internals. The customer characterizes externally observable behavior and owns the deployment decision. For a bookended product, begin with BER, FEC, sensitivity, telemetry, environment, and interop. Request engineering access (Tx-only, Rx-only, breakout, external eye or TDECQ) only when that surface cannot decide. Do not assume a module reports a conventional optical eye (Appendix C.11, Appendix A.6.7).
+The vendor designs the internals. The customer characterizes externally observable behavior and owns the deployment decision. For a bookended product, begin with BER, FEC, sensitivity, telemetry, environment, and interop. Request engineering access (Tx-only, Rx-only, breakout, external eye or TDECQ) only when that surface cannot decide. Do not assume a module reports a conventional optical eye (Appendix C.11, Appendix A.8.7).
 
 Optoelectronics inherited a common qualification language from telecom: *Telcordia GR-468-CORE*. The core stress tests still show up on every laser and module program:
 
@@ -76,7 +76,33 @@ Telcordia GR-468-CORE is the common qualification language for optoelectronic mo
             |
     Cost-effective production proxy or process control
 
-A 1,000-hour life test may justify a 100% room-temperature proxy, a sampled hot audit, a process monitor, or no direct production screen at all. Do not map every GR-468 stress sequence into 100% ATP. Document $E_a$ and confidence bounds when converting HTOL hours to field years, keep sample-size humility (§8.1, Table 8.4), and qualify the laser die, hermetic package, and module assembly separately when failures split across those boundaries (§8.8, §5.13, §5.14).
+A 1,000-hour life test may justify a 100% room-temperature proxy, a sampled hot audit, a process monitor, or no direct production screen at all. Do not map every GR-468 stress sequence into 100% ATP. Document $E_a$ and confidence bounds when converting HTOL hours to field years, keep sample-size humility (§8.1, Table 8.5), and qualify the laser die, hermetic package, and module assembly separately when failures split across those boundaries (§8.8, §5.13, §5.14).
+
+##### Qualification planning matrix.
+
+Qualification engineering starts from mechanisms, not from a museum of tests. The matrix is illustrative: fill cells for the product class and claimed life.
+
+<table class="book-table"><tr><th>Failure mechanism</th><th>Stress</th><th>Observable</th><th>Acceptance</th><th>Production control</th></tr><tr><td>Laser degradation</td><td>Temperature / lifetime (HTOL)</td><td>Power, wavelength, BER</td><td>Named limit vs life claim</td><td>ATP / SPC / burn-in proxy</td></tr><tr><td>Solder fatigue</td><td>Temperature cycling</td><td>Resistance, BER, opens</td><td>Post-stress continuity / BER</td><td>Process control, FAIR</td></tr><tr><td>Contamination / corrosion</td><td>Humidity / damp heat</td><td>Loss, ORL, leakage</td><td>IL/ORL / functional limits</td><td>Handling, sealing, audit</td></tr><tr><td>Connector wear</td><td>Mate cycling</td><td>Insertion loss, ORL</td><td>Cycle-count IL budget</td><td>Supplier / hygiene control</td></tr></table>
+**Table 8.1.** Qualification planning matrix. Each row is mechanism $\rightarrow$ stress $\rightarrow$ observable $\rightarrow$ acceptance $\rightarrow$ production control (Appendix C.3; interview form Appendix B.15).
+
+<pre class="dectree" aria-label="Qualification decision tree"><code>Qualification decision tree
+  |
+New requirement
+  |
+What failure mechanisms threaten it?
+  |
+Which mechanisms are accelerated?
+  |
+What stress reproduces them?
+  |
+What metric detects degradation?
+  |
+What confidence is required?
+  |
+What production control prevents escape?</code></pre>
+##### Sample strategy and confidence.
+
+Weak answer: "We test 20 units." Strong answer: the sample strategy depends on the failure-rate target, the confidence requirement, cost, and population variation. State lots, date codes, suppliers, manufacturing sites or lines, process corners, and whether the claim is zero-failure upper-bound or observed rate (§8.1, Appendix C.16). A rate without population, observation time, and confidence is not a fleet claim.
 
 ##### GR-1221: the passive-component companion.
 
@@ -96,7 +122,7 @@ JEDEC JESD47 is the baseline stress-test-driven qualification flow for a new IC,
 
 ##### ESD and latch-up: failure modes GR-468 does not test.
 
-Two mechanisms are specific to ICs and absent from the laser-side wear-out map in Table 8.1:
+Two mechanisms are specific to ICs and absent from the laser-side wear-out map in Table 8.2:
 
 ESD
 
@@ -114,7 +140,7 @@ Both mechanisms are 100%-screen or design-margin items, not something you projec
 
 ##### Where this lands in the ATP.
 
-Fold IC-level qual into the same acceptance and SPC structure used for the laser (Table 8.5, §8.10): require the supplier's JESD47 qual report and HBM/CDM/latch-up ratings for driver and TIA die at DVT, add an ESD handling audit to the incoming-QC checklist alongside laser LIV/SMSR sampling, and treat a driver/TIA silicon revision the same way you treat a laser die revision or a CMIS firmware rev: an ECO that needs first-article requalification, not a silent BOM swap.
+Fold IC-level qual into the same acceptance and SPC structure used for the laser (Table 8.6, §8.10): require the supplier's JESD47 qual report and HBM/CDM/latch-up ratings for driver and TIA die at DVT, add an ESD handling audit to the incoming-QC checklist alongside laser LIV/SMSR sampling, and treat a driver/TIA silicon revision the same way you treat a laser die revision or a CMIS firmware rev: an ECO that needs first-article requalification, not a silent BOM swap.
 
 ## Wear-out modes to know
 
@@ -126,14 +152,14 @@ Field failures come in three clocks, and mixing them up wastes CAPA. Infant mort
 
 ##### Mechanism map.
 
-Table 8.1 is the working list for laser-bearing modules and CPO/ELS paths. Customize limits in the ATP; keep the classification discipline.
+Table 8.2 is the working list for laser-bearing modules and CPO/ELS paths. Customize limits in the ATP; keep the classification discipline.
 
 <table class="book-table"><tr><th>Mechanism</th><th>Observable</th><th>ATP / telemetry</th><th>Triage bucket</th></tr><tr><td>COD (facet)</td><td>Sudden dark or hard fail; was healthy</td><td>Dark LIV; DPA facet; date-code cluster?</td><td>Reliability (COD) or mfg (ESD)</td></tr><tr><td>Gradual facet / active region</td><td>I_th up, slope down over life</td><td>LIV trend vs ship ATP; HTOL lot history</td><td>Reliability (wear-out)</td></tr><tr><td>SMSR collapse</td><td>Side modes rise; modal noise / BER</td><td>OSA SMSR vs floor at T</td><td>Reliability; watch aging</td></tr><tr><td>EAM aging (EML)</td><td>TDECQ/RLM creep at fixed bias</td><td>EAM bias sweep + DCA; bias creep log</td><td>Reliability (EAM)</td></tr><tr><td>RIN rise</td><td>BER floor up; feedback sensitive</td><td>RIN @ ORL; isolator / connector check</td><td>Perf if ORL; reliability if isolator</td></tr><tr><td>TEC / thermal control</td><td>Unlock or walk; LIV may look fine</td><td>TEC current, case T, lock status</td><td>Perf (lock) or reliability (TEC)</td></tr><tr><td>Coupling / FAU / solder</td><td>Loss step, intermittent LOS, shock-related</td><td>ORL, mate cycles, DPA FAU/solder</td><td>Manufacturability / packaging</td></tr><tr><td>Driver/TIA latch-up (ESD)</td><td>Sudden hard fail; no light, no LIV signature; supply current spikes</td><td>Supply current vs bias; JESD78 rating; date-code cluster?</td><td>Mfg (ESD) or design margin</td></tr><tr><td>Connector wear / contamination</td><td>ORL creep after repeated mate cycles; RIN floor rise</td><td>Mate-cycle count vs IEC 61300-2-2 rating; endface grade (IEC 61300-3-35)</td><td>Manufacturability / packaging</td></tr></table>
-**Table 8.1.** Wear-out and packaging mechanisms versus observables. Arrhenius projection and derating for the laser rows: §5.13. Electronics stress qualification: §8.3. Connector reliability: §8.8. Field classification workflow: §7.12.
+**Table 8.2.** Wear-out and packaging mechanisms versus observables. Arrhenius projection and derating for the laser rows: §5.13. Electronics stress qualification: §8.3. Connector reliability: §8.8. Field classification workflow: §7.12.
 
 ### Reading the wear-out map
 
-Table 8.1 is a triage map, not a life calculator. Each row asks which mechanism fits the observable, which ATP or telemetry line can confirm it, and which owner should act. Arrhenius projection and derating live in §5.13; this section teaches how to classify before you CAPA.
+Table 8.2 is a triage map, not a life calculator. Each row asks which mechanism fits the observable, which ATP or telemetry line can confirm it, and which owner should act. Arrhenius projection and derating live in §5.13; this section teaches how to classify before you CAPA.
 
 ##### COD (facet).
 
@@ -346,7 +372,7 @@ Escaped DPPM (post-screen field failures)
 : Units that passed all screens but fail in the fleet. Each escape is either a preventable coverage gap (the screen exists but missed the defect) or a residual latent failure that no cost-effective screen separates from good units. Owner: quality and reliability engineering.
 
 <table class="book-table"><tr><th>Yield stage</th><th>Main limit</th><th>First catch</th><th>Owner</th><th></th></tr><tr><td>Wafer / die</td><td>Waveguide, resonance, heater, PD dark</td><td>Wafer probe</td><td>Foundry SPC</td><td></td></tr><tr><td>Assembly</td><td>FAU align, solder, wirebond, epoxy</td><td>Module ATP</td><td>Assembly supplier</td><td></td></tr><tr><td>Test (first-pass)</td><td>ATP fails; may include false rejects</td><td>ATP station + GR\</td><td>R</td><td>Test engineering</td></tr><tr><td>Escaped DPPM</td><td>Passed screens; failed in fleet</td><td>Field RMA / triage</td><td>Quality / reliability</td><td></td></tr></table>
-**Table 8.2.** Yield stages, first catch, and owner. Split escapes further in Table 8.3.
+**Table 8.3.** Yield stages, first catch, and owner. Split escapes further in Table 8.4.
 
 Track yield by ATP row, lot, supplier site, tester, and date code. A yield drop that correlates with one tester is likely a measurement problem. A yield drop that correlates with one supplier lot is likely a process problem. A yield drop with no observed correlation requires further investigation: verify gauge repeatability, expand stratification (shift, fixture, material lot, firmware), and test guardband or specification mismatch as hypotheses before concluding. Do not open supplier corrective action until the measurement system is cleared (§8.9).
 
@@ -372,7 +398,7 @@ Provisional containment, scope refinement, mechanism confirmation, and recurrenc
 An escaped defect is a unit that passed every production screen and failed in the field. Post-screen field failures split into two categories with different corrective actions:
 
 <table class="book-table"><tr><th>Class</th><th>Meaning</th><th>Typical action</th><th>Lands in</th></tr><tr><td>Preventable coverage</td><td>Screen could have caught it</td><td>Add/tighten ATP or SPC</td><td>Escape DPPM, CAPA</td></tr><tr><td>Residual latent</td><td>No cost-effective screen</td><td>FIT / redundancy / replace</td><td>Residual FIT model</td></tr></table>
-**Table 8.3.** Escape classes. Preventable rows change production; residual rows change the life model.
+**Table 8.4.** Escape classes. Preventable rows change production; residual rows change the life model.
 
 ##### Preventable coverage escapes.
 
@@ -402,7 +428,7 @@ Fleet FIT is not only laser wear-out. Once lasers are screened and derated, modu
 
 Multi-fiber connectors are the highest-touch mechanical interface in the fleet: every ELSFP swap, every fiber-attach unit (FAU) rework, and every cable-plant install mates and unmates an MPO. The MPO/MT ferrule family (rectangular, 6.4 mm $\times$ 2.5 mm, guide-pin aligned, 8/12/16/24 fibers per row) is standardized in *IEC 61754-7*, split into one-fibre-row and two-fibre-row parts . That standard fixes geometry, not lifetime; lifetime comes from two companion test methods. *IEC 61300-2-2* specifies the mate/unmate cycling test connector datasheets are rated against, and *IEC 61300-3-35* grades endface scratches, pits, and debris into pass/fail zones on the fiber core and cladding . TIA-568.3 sets 500 cycles as the structured-cabling mating-durability floor; MPO/MTP-class connectors in practice are commonly rated well above 1000 cycles, but that headroom erodes fast with the wrong cleaning discipline (§7.2.2).
 
-Three practical consequences follow for an ELSFP or CPO fiber-attach program. First, ORL creep is a mating-cycle and cleaning problem before it is a laser problem: a rising RIN floor after repeated ELS swaps (Table 8.1) is diagnosed with an IEC 61300-3-35-style endface inspection, not a laser FA request. Second, mate-cycle count belongs in the same telemetry you already read for CMIS and DDM (§7.8); track it per connector, not per module, since a connector can outlive several module swaps or vice versa. Third, write the mating-cycle and endface-grade limits into the ATP explicitly (Table 8.5) rather than inheriting a generic MPO datasheet number: an ELS bank that hot-swaps weekly reaches a 500-cycle floor in under ten years, and a CPO fiber array that is field-serviced more aggressively reaches it faster still.
+Three practical consequences follow for an ELSFP or CPO fiber-attach program. First, ORL creep is a mating-cycle and cleaning problem before it is a laser problem: a rising RIN floor after repeated ELS swaps (Table 8.2) is diagnosed with an IEC 61300-3-35-style endface inspection, not a laser FA request. Second, mate-cycle count belongs in the same telemetry you already read for CMIS and DDM (§7.8); track it per connector, not per module, since a connector can outlive several module swaps or vice versa. Third, write the mating-cycle and endface-grade limits into the ATP explicitly (Table 8.6) rather than inheriting a generic MPO datasheet number: an ELS bank that hot-swaps weekly reaches a 500-cycle floor in under ten years, and a CPO fiber array that is field-serviced more aggressively reaches it faster still.
 
 ELSFP cycling adds connector wear and contamination that raise ORL (§7.2.2, §5.14); the mating-cycle and endface-grade limits above are exactly the numbers that turn "the connector feels loose" into an ATP line item instead of a guess.
 
@@ -416,7 +442,7 @@ Destructive physical analysis (cross-section, EDX) and structured 8D/CAPA with s
 
 ### Test time is a cost, coverage is a risk
 
-Every second in the acceptance test plan (ATP) times millions of units is line capacity and real money. Every skipped measurement creates uncontrolled escape risk; it is not automatically a field DPPM event (§8.1). The core tension in high-volume manufacturing is how much coverage you buy per second. The expensive optical steps are thermal soak and corner runs, TDECQ on a sampling scope, BER dwell long enough to trust a low pre-FEC target, laser burn-in, and mate-cycle stress on ELSFP connectors. Some screens are statistical (sample burn-in from a lot, audit TDECQ on a subset). Safety and enable-sequence faults usually require 100% coverage. For source-level production where LIV or SMSR are directly available and correlated to escape risk, they may be 100% screens. For closed modules, use the validated module-level proxy or a documented sampling plan (§7.8, §5.15, Table 8.5).
+Every second in the acceptance test plan (ATP) times millions of units is line capacity and real money. Every skipped measurement creates uncontrolled escape risk; it is not automatically a field DPPM event (§8.1). The core tension in high-volume manufacturing is how much coverage you buy per second. The expensive optical steps are thermal soak and corner runs, TDECQ on a sampling scope, BER dwell long enough to trust a low pre-FEC target, laser burn-in, and mate-cycle stress on ELSFP connectors. Some screens are statistical (sample burn-in from a lot, audit TDECQ on a subset). Safety and enable-sequence faults usually require 100% coverage. For source-level production where LIV or SMSR are directly available and correlated to escape risk, they may be 100% screens. For closed modules, use the validated module-level proxy or a documented sampling plan (§7.8, §5.15, Table 8.6).
 
 ### Where the test happens: wafer, die, module, system
 
@@ -475,10 +501,10 @@ Production validation is replayable and decision-oriented (Appendix C.13).
 
 ##### NPI gates and exit criteria.
 
-New product introduction (*NPI*) gates are the manufacturing face of the validation ladder. Table 8.4 is the usual stage map. Write exit criteria a supplier can fail clearly, not slogans. EVT/DVT/PVT/MP are stage names, not a calendar; dates and sample sizes belong in the program plan.
+New product introduction (*NPI*) gates are the manufacturing face of the validation ladder. Table 8.5 is the usual stage map. Write exit criteria a supplier can fail clearly, not slogans. EVT/DVT/PVT/MP are stage names, not a calendar; dates and sample sizes belong in the program plan.
 
 <table class="book-table"><tr><th>Gate</th><th>Main question</th><th>Evidence required</th><th>Decision unlocked</th></tr><tr><td>EVT</td><td>Does it operate at all?</td><td>First light; CMIS bring-up; basic LIV/SMSR/RIN; one link closes BER</td><td>Continue / redesign integration</td></tr><tr><td>DVT</td><td>Does it meet spec across corners?</td><td>Full ATP at T/V; prod-rep corners; stress plan + FIT model frozen</td><td>Enter qual / PVT / hold</td></tr><tr><td>Qual</td><td>Env / reliability evidence ready?</td><td>Named mechanisms; sample plan; confidence (sec:tree-qual-evidence)</td><td>Enter PVT / hold</td></tr><tr><td>PVT</td><td>Is it buildable at yield?</td><td>Multi-lot yield; SPC; burn-in escape; FAIR; production-host bring-up</td><td>Enter pilot / hold</td></tr><tr><td>Pilot</td><td>Do assumptions hold in a bounded field trial?</td><td>Known serials/lots; enhanced telemetry; exit/rollback criteria</td><td>Open MP / restrict</td></tr><tr><td>MP</td><td>Is quality sustained?</td><td>Steady DPPM; owned RMA Pareto; ECO control; fleet feedback</td><td>Keep shipping / CAPA / restrict</td></tr></table>
-**Table 8.4.** NPI gates as a decision map. Pilot sits between PVT and MP; MP is sustained production plus fleet feedback, not "fleet monitoring" alone.
+**Table 8.5.** NPI gates as a decision map. Pilot sits between PVT and MP; MP is sustained production plus fleet feedback, not "fleet monitoring" alone.
 
 ##### EVT (engineering validation test).
 
@@ -514,14 +540,14 @@ ATP and the requirements doc are the contract. Write both and keep them versione
 
 2.  **Acceptance test plan (ATP):** the measurable tests that prove those requirements on every ship lot (or on a defined sample). Map each ATP line to a GR-468 or design-validation stress where life is claimed (§8.2).
 
-Table 8.5 is a working ATP checklist for an EML pluggable or an ELSFP CW module. Customize limits from the datasheet and the link budget; do not invent numbers in the ATP itself.
+Table 8.6 is a working ATP checklist for an EML pluggable or an ELSFP CW module. Customize limits from the datasheet and the link budget; do not invent numbers in the ATP itself.
 
 <table class="book-table"><tr><th>Item</th><th>Method</th><th>Control class</th><th>Pass intent</th><th>Ties to</th></tr><tr><td>LIV (I_th, slope, kink)</td><td>SMU + power meter</td><td>100\% ATP (source) / module proxy</td><td>kink-free bias window</td><td>wear-out, derate</td></tr><tr><td>SMSR</td><td>OSA</td><td>100\% ATP (source) / lot sample</td><td>single-mode vs.\ floor</td><td>modal noise</td></tr><tr><td>Intrinsic RIN</td><td>PD + ESA</td><td>Lot sample / FA</td><td>quiet source floor</td><td>BER floor budget</td></tr><tr><td>Stressed RIN_xOMA</td><td>PD + ESA @ ORL</td><td>Lot sample / 100\% if escape</td><td>stressed Tx metric</td><td>named PMD</td></tr><tr><td>Wavelength / grid</td><td>OSA / wavemeter</td><td>100\% ATP or sample</td><td>channel ID</td><td>WDM lock</td></tr><tr><td>Optical power class</td><td>power meter</td><td>100\% ATP</td><td>class met</td><td>link budget</td></tr><tr><td>EAM / TDECQ (EML)</td><td>bias + DCA</td><td>Lot sample / audit</td><td>ER, RLM, TDECQ</td><td>Tx quality</td></tr><tr><td>CMIS / TWI bring-up</td><td>host / CMIS tool</td><td>100\% ATP</td><td>state machine</td><td>telemetry</td></tr><tr><td>Connector / ORL</td><td>mate + ORL meter</td><td>Periodic audit / sample</td><td>cycles + endface</td><td>packaging</td></tr><tr><td>Burn-in (infant)</td><td>production screen</td><td>100\% or lot sample</td><td>infant culled</td><td>not HTOL life</td></tr><tr><td>HTOL life evidence</td><td>accelerated life</td><td>Qualification only</td><td>mechanism + FIT claim</td><td>GR-468</td></tr><tr><td>Driver/TIA ESD</td><td>JESD47 report</td><td>Qualification / audit</td><td>rating on file</td><td>IC reliability</td></tr><tr><td>Thermal class</td><td>chamber</td><td>Lot sample / SPC</td><td>LIV/RIN/CMIS pass</td><td>derate</td></tr><tr><td>Process monitors</td><td>SPC charts</td><td>SPC / process</td><td>drift detection</td><td>escape prevention</td></tr><tr><td>Fleet cohort metrics</td><td>telemetry</td><td>Fleet telemetry</td><td>trend / alarm</td><td>recurrence</td></tr></table>
-**Table 8.5.** Control checklist for laser-bearing modules (EML or ELSFP). Control class separates 100% ATP, lot sample, audit, qualification-only, SPC, and fleet telemetry. Intrinsic RIN and stressed $\mathrm{RIN}_x\mathrm{OMA}$ are different metrics.
+**Table 8.6.** Control checklist for laser-bearing modules (EML or ELSFP). Control class separates 100% ATP, lot sample, audit, qualification-only, SPC, and fleet telemetry. Intrinsic RIN and stressed $\mathrm{RIN}_x\mathrm{OMA}$ are different metrics.
 
 ### Reading the ATP checklist
 
-Each ATP line is a screen with a purpose, not a museum of instruments (Table 8.5). Limits come from the requirements slice. The notes below teach the rows that most often mis-classify escapes; the rest are Risk-if-omitted only.
+Each ATP line is a screen with a purpose, not a museum of instruments (Table 8.6). Limits come from the requirements slice. The notes below teach the rows that most often mis-classify escapes; the rest are Risk-if-omitted only.
 
 ##### LIV ($I_\mathrm{th}$, slope, kink).
 
@@ -631,7 +657,7 @@ Align the partner calendar to gates, not slideware:
 
 Your job in those meetings is to name the measurement that would kill the gate. If nobody can point to an ATP row or a corner, the milestone is not real.
 
-**Key idea.** Reliability at scale is mechanism discipline plus supplier gates. Classify failures with the wear-out map (Table 8.1) before you argue FIT or open 8D. Laser wear-out gets Arrhenius and GR-468; driver and TIA silicon gets JESD47, HBM/CDM ESD, and latch-up ratings (§8.3); MPO connectors get mating-cycle and endface-grade limits (§8.8). Supplier execution is a gated contract: requirements and ATP at DVT, multi-lot SPC and FAIR at PVT, then 8D with evidence when a lot or field Pareto says manufacturability. Do not run process CAPA on a wear-out failure, and do not burn FIT math on a dirty or worn connector.
+**Key idea.** Reliability at scale is mechanism discipline plus supplier gates. Classify failures with the wear-out map (Table 8.2) before you argue FIT or open 8D. Laser wear-out gets Arrhenius and GR-468; driver and TIA silicon gets JESD47, HBM/CDM ESD, and latch-up ratings (§8.3); MPO connectors get mating-cycle and endface-grade limits (§8.8). Supplier execution is a gated contract: requirements and ATP at DVT, multi-lot SPC and FAIR at PVT, then 8D with evidence when a lot or field Pareto says manufacturability. Do not run process CAPA on a wear-out failure, and do not burn FIT math on a dirty or worn connector.
 
 ## From component FIT to fabric availability
 

@@ -7,9 +7,27 @@ has been captured, then use the same workflow for every incident. Distinguish
 observation, correlation, hypothesis, leading mechanism, and confirmed mechanism
 (after controlled confirmation). Do not call the last surviving hypothesis the root
 cause without controlled reproduction, swap testing, stress dependence, or
-physical evidence. For each symptom, state access (black-box versus
-engineering), the decision unlocked, and the earliest production or fleet
-control (\Cref{sec:tree-evidence-block}).
+physical evidence. Do not say ``data proves'' until confirmation exists. For
+each symptom, state access (black-box versus engineering), the decision
+unlocked, and the earliest production or fleet control
+(\Cref{sec:tree-evidence-block,sec:interview-access-levels}).
+
+\paragraph{Failure-analysis output categories.}
+\label{sec:fa-output-categories}
+Every FA result should land in one bucket before the case closes:
+
+\begin{description}
+\item[Design issue] Fix architecture or derate.
+\item[Process issue] Fix manufacturing or assembly.
+\item[Supplier issue] Fix incoming quality or supplier process.
+\item[Test escape] Improve detection (ATP, sample, SPC, telemetry).
+\item[Unknown mechanism] Continue investigation with an owner and interim
+      control.
+\end{description}
+
+Connect FA back into qualification. After corrective action, name what changed:
+requirement, qualification plan, ATP, SPC, telemetry, or supplier process
+(\Cref{sec:tree-qual-evidence,sec:ladder-feedback}).
 
 \begin{dectree}
 Observe
@@ -20,11 +38,11 @@ Time behavior (sudden / gradual / intermittent)
   |
 Changing margin ledger
   |
-Measure / isolate
+Measure / isolate (name access level)
   |
 Correct
   |
-Recurrence control
+Recurrence control + FA output category
 \end{dectree}
 
 \begin{dectree}
@@ -135,6 +153,7 @@ Repair the first plane where power diverges. Correct calibration or monitor
 coefficients before changing source bias. Add a power check at the earliest
 production plane that can catch the signature and retain golden-path baselines
 for fleet comparison.
+What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
 
 \section{BER increase: waterfall shift or floor}
 \label{sec:fm-ber-increase}
@@ -189,6 +208,7 @@ Restore the margin ledger that moved, then repeat the full BER sweep at loaded
 corners. Store waterfall shape, not only pass/fail BER, so later fleet changes
 can be classified without guessing. The interview study treatment of these
 shapes is in \Cref{sec:interview-waterfall}.
+What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
 
 \section{BER floor}
 \label{sec:fm-ber-floor}
@@ -251,6 +271,7 @@ RIN, fix the bias supply. If ORL-driven, clean or replace connectors and verify
 isolator function. If MPI is confirmed from multiple reflections, reduce mated
 interfaces or improve their ORL. Update the earliest economical control (ATP,
 sampled audit, SPC, or telemetry), not every deep FA measurement.
+What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
 
 \section{Low extinction ratio}
 \label{sec:fm-low-er}
@@ -301,6 +322,7 @@ setpoint in firmware or flag the module for replacement if the absorption curve 
 shifted beyond the correctable range. For MZM drift, verify the bias controller and
 its monitor PD. For rings, retune or check for neighbor thermal crosstalk
 (\Cref{sec:thermal-xtalk}).
+What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
 
 \section{Lane imbalance}
 \label{sec:fm-lane-imbalance}
@@ -350,6 +372,7 @@ first-article coupling specs. Thermal gradient: redesign TEC zoning or derate th
 hot lane. Confirmed source wear-out: flag the lot and check burn-in screening
 effectiveness. Driver mismatch: work with the IC supplier on channel-to-channel
 gain flatness.
+What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
 
 \section{Wavelength drift}
 \label{sec:fm-wavelength-drift}
@@ -388,6 +411,7 @@ derate the laser operating current. Ring unlock: increase heater headroom in the
 design, reduce thermal crosstalk with layout changes, or shift the CW-WDM source
 grid to re-center the ring tuning range. Aging: schedule preventive replacement
 (ELSFP hot-swap, \Cref{sec:elsfp}).
+What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
 
 \section{Eye closure (high TDECQ)}
 \label{sec:fm-eye-closure}
@@ -429,6 +453,7 @@ Bandwidth: upgrade driver or modulator (higher-BW die or peaking network). RLM:
 tune driver pre-emphasis (DAC levels for each PAM4 symbol). Reflections: fix
 wirebond, impedance discontinuity, or connector. Dispersion: tighten wavelength
 tolerance or shorten the fiber (re-route).
+What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
 
 \section{Thermal runaway}
 \label{sec:fm-thermal-runaway}
@@ -472,6 +497,7 @@ to a lower-power module style (LPO instead of retimed, \Cref{sec:conditioning}).
 CPO: ensure the cold-plate thermal interface material (TIM) is intact and the
 liquid loop meets flow-rate spec. Long-term: specify a tighter thermal class in the
 laser requirements (\Cref{sec:laser-reqs}).
+What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
 
 \section{Intermittent failures}
 \label{sec:fm-intermittent}
@@ -521,6 +547,7 @@ stress, or resetting a state machine.
 Fix the confirmed contact, attach, supply, lock, or firmware cause. Add
 event-triggered telemetry and a production stress that reproduces the fault.
 Keep intermittent and no-fault-found RMA codes separate from laser wear-out.
+What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
 
 \section{Connector contamination}
 \label{sec:fm-contamination}
@@ -576,6 +603,7 @@ runbook, sealed cassettes or trunk cables that minimize open-ferrule exposure. F
 high-power paths (ELSFP, CW-WDM), burn damage requires replacement, not
 re-cleaning. Track contamination RMAs as a distinct failure code (not ``laser
 failure'') so FIT accounting stays honest (\Cref{sec:fleet-triage}).
+What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
 
 \section{Yield drop}
 \label{sec:fm-yield-drop}
@@ -607,6 +635,7 @@ or a guardband that no longer matches measurement spread.
 Restore the changed process or measurement input, add a statistical control at the
 first observable point, revise ATP only with correlation data, and require a new
 first-article check before releasing volume (\Cref{sec:supplier-exec}).
+What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
 
 \section{Aging, thermal response, and margin erosion}
 \label{sec:fm-aging-thermal-router}
@@ -666,6 +695,7 @@ thermal gradient that affects one lane.
 Restore thermal headroom, correct calibration and control limits, reduce coupling,
 or derate the operating point. Add the loaded-neighbor temperature ramp to the ATP
 or design-validation plan that missed it.
+What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
 
 \section{Failure-analysis checklist}
 \label{sec:failure-analysis-checklist}

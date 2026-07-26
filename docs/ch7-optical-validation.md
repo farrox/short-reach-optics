@@ -54,7 +54,7 @@ Optical programs fail in the same places again and again: a part that looks good
 The core principle is uncertainty reduction. At every stage ask: what do we know before this stage, what uncertainty remains, what evidence removes it, what decision that evidence unlocks, and what risk remains afterward (Appendix C.16).
 
 <table class="book-table"><tr><th>Phase</th><th>Main question</th><th>Evidence</th><th>Exit decision</th></tr><tr><td>Requirements</td><td>What must be true?</td><td>System requirements, constraints</td><td>Architecture target</td></tr><tr><td>Architecture</td><td>Can this design meet requirements?</td><td>Budgets, simulations, tradeoffs</td><td>Proceed or redesign</td></tr><tr><td>Bring-up</td><td>Does the hardware fundamentally work?</td><td>Init, traffic, basic BER</td><td>Usable hardware</td></tr><tr><td>Characterization</td><td>How does it behave?</td><td>Sweeps, distributions, trends</td><td>Behavior understood</td></tr><tr><td>Margin</td><td>How close are the limits?</td><td>T, V, loss, ORL, stress headroom</td><td>Sufficient headroom</td></tr><tr><td>Interoperability</td><td>Does it work in real systems?</td><td>Host/peer/FW/channel matrix</td><td>Supported ecosystem</td></tr><tr><td>Qualification</td><td>Will it survive expected life?</td><td>Mechanism-based stress evidence</td><td>Release confidence</td></tr><tr><td>Manufacturing</td><td>Can we build it repeatedly?</td><td>Yield, ATP, SPC, FAIR</td><td>Production readiness</td></tr><tr><td>Pilot</td><td>Does reality match lab assumptions?</td><td>Bounded deployment</td><td>Expand / restrict / reject</td></tr><tr><td>Mass production</td><td>Can we sustain volume with control?</td><td>SPC, ECO, RMA loop</td><td>Open / hold volume</td></tr><tr><td>Fleet</td><td>Does it remain healthy?</td><td>Telemetry, cohorts, escapes</td><td>Operational control</td></tr><tr><td>Feedback</td><td>What must change next?</td><td>FA, escapes, revision inputs</td><td>Next-revision targets</td></tr></table>
-**Table 7.1.** Canonical validation lifecycle. One source of truth for this book. The wall-chart tree is Appendix C.2; interview names are Appendix A.6.5. Manufacturing aliases EVT/DVT/PVT/MP map onto these stages in Table 8.4.
+**Table 7.1.** Canonical validation lifecycle. One source of truth for this book. The wall-chart tree is Appendix C.2; interview names are Appendix A.8.5. Manufacturing aliases EVT/DVT/PVT/MP map onto these stages in Table 8.5.
 
 This is the single lifecycle. Later sections deepen measurements, bring-up checklists, and fleet triage; they do not define a competing stage order.
 
@@ -482,7 +482,7 @@ The factory is part of the design. Prove you can build it repeatedly, measure it
 
 ##### What uncertainty remains?
 
-A few carefully built engineering samples cannot establish volume readiness. This is the Production Validation Test (*PVT*) question: whether yield, process control, and ATP coverage survive lot-to-lot variation (§8.9, §8.10, Table 8.4). Design Validation Test (*DVT*) belongs earlier: it freezes corners, margin, and the life plan before volume tooling. Do not park DVT inside this stage.
+A few carefully built engineering samples cannot establish volume readiness. This is the Production Validation Test (*PVT*) question: whether yield, process control, and ATP coverage survive lot-to-lot variation (§8.9, §8.10, Table 8.5). Design Validation Test (*DVT*) belongs earlier: it freezes corners, margin, and the life plan before volume tooling. Do not park DVT inside this stage.
 
 ##### Inputs.
 
@@ -576,7 +576,7 @@ Calling open volume a pilot. Learning the escape mechanism from customer outage 
 
 ##### Purpose.
 
-Sustain volume with process control after pilot exit. Thin gate here; depth lives in Table 8.4, Chapter 8.
+Sustain volume with process control after pilot exit. Thin gate here; depth lives in Table 8.5, Chapter 8.
 
 ##### What uncertainty remains?
 
@@ -775,7 +775,7 @@ Feedback
 >
 > Requirements $\cdot$ architecture $\cdot$ bring-up $\cdot$ characterization $\cdot$ margin $\cdot$ interop $\cdot$ qualification $\cdot$ manufacturing/ATP $\cdot$ pilot $\cdot$ fleet feedback (Appendix C.17, Table 7.1).
 
-For every metric at every stage, name the instrument, the reference plane (§3.9), the pass criterion, and the failure signature. A number without a plane and a method is not a measurement.
+For every metric at every stage, state measurement, reference plane, condition, access level, and the decision unlocked (§3.9, Appendix A.2, Appendix C.16). Bad: "receiver sensitivity is $-15$ dBm." Good: sensitivity at the module optical input under the named BER target, temperature, wavelength, and FEC assumptions. A number without a plane and a method is not a measurement.
 
 ## The core IM/DD measurements
 
@@ -824,7 +824,7 @@ Wavelength placement and side-mode suppression ask whether the spectral ledger s
 
 ##### RIN.
 
-Relative intensity noise sets how far $Q$ can rise with power. Measure with a quiet bias path and under controlled ORL so you separate intrinsic laser noise from feedback. **Exit when** RIN at the stated ORL meets the budget. **Decision:** fix reflections/supply, replace the laser, or stop raising launch into a floor. **Risk if skipped:** you keep adding photons to a non-power-limited impairment (Appendix A.6.9).
+Relative intensity noise sets how far $Q$ can rise with power. Measure with a quiet bias path and under controlled ORL so you separate intrinsic laser noise from feedback. **Exit when** RIN at the stated ORL meets the budget. **Decision:** fix reflections/supply, replace the laser, or stop raising launch into a floor. **Risk if skipped:** you keep adding photons to a non-power-limited impairment (Appendix A.8.9).
 
 ##### Insertion loss / ORL.
 
@@ -1040,7 +1040,7 @@ Table 7.3 is the short form you can put on a lab wall.
 
 ##### Production-representative corners.
 
-Bench corners ($T$, $V$) are necessary and not sufficient. Chassis thermal, host rails, and ORL belong before Design Validation Test (DVT) exit on a representative unit. The full set in Table 7.4 belongs before Production Validation Test (PVT) exit (Table 8.4).
+Bench corners ($T$, $V$) are necessary and not sufficient. Chassis thermal, host rails, and ORL belong before Design Validation Test (DVT) exit on a representative unit. The full set in Table 7.4 belongs before Production Validation Test (PVT) exit (Table 8.5).
 
 <table class="book-table"><tr><th>Corner</th><th>What to run</th><th>Why it catches</th><th>Points to</th></tr><tr><td>Chassis thermal</td><td>Module in target rack/sled at airflow and power load; not only a quiet chamber on a bench fixture</td><td>Faceplate T and TEC load differ from chamber setpoints</td><td>derate, TEC, ring unlock</td></tr><tr><td>Host rails live</td><td>Bias / CMIS powered from host supplies with SerDes traffic on</td><td>Switching noise into laser bias looks like RIN (sec:laser-drivers)</td><td>PSRR, ground, APC</td></tr><tr><td>Dirty fiber / ORL</td><td>Controlled contamination or ORL stress on MT/FAU; clean vs dirty BER</td><td>Field installs are not lab-clean; ORL raises RIN and bursts</td><td>connector, isolator, feedback</td></tr><tr><td>Cable plant</td><td>Production fiber length, MPO count, and bend radius</td><td>Extra loss and reflections eat margin the ledger assumed</td><td>link budget (sec:link-budget)</td></tr><tr><td>ELS hot-swap</td><td>Pull/replace ELSFP under traffic (or under controlled traffic stop per CMIS)</td><td>Service action the architecture promised (sec:elsfp)</td><td>state machine, mate cycles</td></tr><tr><td>Neighbor load</td><td>Adjacent modules/lanes at full traffic and max case T</td><td>Crosstalk, shared supply droop, thermal crosstalk on rings</td><td>WDM lock, SI, PSU</td></tr><tr><td>LPO / linear path</td><td>Host COM and pre-FEC BER without module DSP crutch</td><td>LPO fails here first (sec:224g-deploy,sec:com,sec:drivers)</td><td>host FIR, module linearity</td></tr><tr><td>Voltage corners</td><td>Host Vcc min/max with traffic</td><td>Brown-out and CMIS glitches</td><td>power design, ATP</td></tr></table>
 **Table 7.4.** Production-representative corners. A quiet BERT at 25 $^\circ$C with pristine fiber is characterization, not production readiness.
@@ -1085,7 +1085,7 @@ Voltage corners
 
 ### Why these corners come after quiet characterization
 
-Chassis thermal, host rails, and ORL are the minimum before DVT exit on a representative unit. The full set belongs before PVT exit (Table 8.4). Later fleet monitoring must not invent coverage these corners never ran.
+Chassis thermal, host rails, and ORL are the minimum before DVT exit on a representative unit. The full set belongs before PVT exit (Table 8.5). Later fleet monitoring must not invent coverage these corners never ran.
 
 ### Learning summary
 

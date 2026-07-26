@@ -1,13 +1,13 @@
 \chapter{Thirty-second interview frameworks}
 \label{app:interview-frameworks}
 
-This appendix is the operating manual for answering under time pressure. The
-philosophy lives in \Cref{app:interview-review}; wall-chart trees live in
-\Cref{app:decision-trees}. Each playbook is a reusable template: question,
-what is tested, thirty-second answer, decision tree, measurements, traps, and
-thirty-second close. Memorize the callouts labeled ``30-second answer.''
-Expand only where the interview asks. Use \Cref{sec:tree-evidence-block}
-when stating claim, population, plane, access, and decision.
+This appendix is the interview quick-reference. Deep technical explanations live
+in the body chapters and \Cref{app:interview-review}. Each playbook uses one
+format: question, assumptions, 30-second answer, key concepts, common mistakes,
+and deep-dive reference. Memorize the callouts labeled ``30-second answer.''
+Expand only where the interview asks. Name access level
+(\Cref{sec:interview-access-levels}) and use \Cref{sec:tree-evidence-block}
+for claim, population, plane, and decision.
 
 \framework{BER increased with stable power}
 \label{fw:ber-stable-power}
@@ -19,7 +19,7 @@ you debug it?}
 
 \fwassumptions{Average received-power telemetry is trusted; the issue reproduces; the product is bookended; engineering access is unavailable unless requested.}
 
-\execanswer{Stable average received power deprioritizes gross optical-loss causes, so I move to the signal-quality path. I first scope population and time behavior, then use golden swap, attenuation sweep, FEC pattern comparison, or lane remap to isolate transmitter, channel, receiver, or DSP. With engineering access I add an optical eye or bias sweep. I end with contain, retune, repair, or a production-control action.}
+\execanswer{Stable average power reduces the likelihood of gross optical-loss problems, so I move into signal quality. I first scope the population and timing behavior, then separate transmitter, channel, receiver, and DSP hypotheses using the highest-value measurement available at the lowest access level. If engineering access exists I add deeper measurements such as eyes or bias behavior. The final action depends on whether the issue requires containment, repair, supplier correction, or qualification updates.}
 
 \begin{dectree}
 Elevated BER, power stable
@@ -60,10 +60,11 @@ BER waterfall $\rightarrow$ shift or floor? $\rightarrow$ sensitivity vs noise.}
 \end{itemize}}
 
 \fwmistakes{\begin{itemize}
+\item ``The receiver is bad because optical power is fine.'' Power does not
+      represent noise, timing, distortion, or control behavior.
 \item Naming the laser first.
 \item Calling ``bad eye'' a root cause.
-\item Listing instruments without a decision.
-\item Stopping before recurrence control.
+\item Listing instruments without a decision or recurrence control.
 \end{itemize}}
 
 \fwclose{Average power is stable, so I deprioritize gross loss, scope the
@@ -71,7 +72,8 @@ population, chase signal quality on the black-box surface first, isolate Tx /
 channel / Rx / DSP, then close with the control that catches the next escape.}
 
 \fwdeep{Full prose: \Cref{sec:interview-worked-sensitivity,sec:fm-ber-increase}.
-Ledgers: \Cref{sec:interview-margin-ledgers}.}
+Ledgers: \Cref{sec:interview-margin-ledgers}. Pattern:
+\Cref{sec:interview-staff-pattern}.}
 
 \framework{Received power decreased}
 \label{fw:power-down}
@@ -791,27 +793,32 @@ design.}
 
 \fwassumptions{Requirements name mechanisms; sample strategy and confidence are stated; production proxies are cheaper than full GR-468 replay; release is a ship / restrict / reject decision.}
 
-\execanswer{Start from requirement to named failure mechanism to stress and sample plan to pre/post-stress observable to acceptance criterion to confidence to production proxy (\Cref{sec:tree-qual-evidence}). Walk those evidence steps across the lifecycle gates. Therefore I would gate ship on remaining margin after named stresses with stated confidence, not on a checklist of rituals.}
+\execanswer{I qualify from requirements to mechanisms, not from a ritual list. What does the system require? What can fail? How do we accelerate those mechanisms? What observable changes? What defines pass/fail? How much evidence is enough? How does production control maintain quality? Therefore I would gate ship on remaining margin after named stresses with a stated sample strategy and confidence, plus a production proxy (\Cref{sec:tree-qual-evidence,sec:qual-planning-matrix}).}
 
 \begin{dectree}
-Requirements + margin budget
+Qualification interview framework
   |
-Nominal function
+Requirements: what does the system require?
   |
-Remaining margin
+Failure mechanisms: what can fail?
   |
-Environment + interop
+Acceleration: how do we stress those mechanisms?
   |
-Reliability + manufacturing / ATP
+Measurement: what observable changes?
   |
-Controlled pilot
+Acceptance: what defines pass/fail?
   |
-Ship / restrict / reject
+Confidence: how much evidence is enough?
+  |
+Production control: how do we maintain quality?
 \end{dectree}
 
-\fwwhy{Margin budgeting and customer view keep qual from becoming museum of
-tests. Stress consumes margin; qual measures what remains
-(\Cref{sec:interview-margin-budget,sec:interview-customer-vendor}).}
+\fwwhy{This is a scoped evidence path inside the lifecycle, not a second
+lifecycle (\Cref{fw:validation-plan,sec:tree-qualification}). Stress consumes
+margin; qual measures what remains
+(\Cref{sec:interview-margin-budget,sec:interview-customer-vendor}). Sample
+strategy depends on failure-rate target, confidence, cost, and population
+variation, not a fixed ``we test 20 units.''}
 
 \fwmeas{Margin sweeps $\rightarrow$ cliff distance? $\rightarrow$ derate or
 redesign.\\

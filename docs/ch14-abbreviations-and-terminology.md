@@ -227,7 +227,7 @@ DSP
 
 DVT
 
-: Design Validation Test. Proves the design meets requirements across corners, margin, and a frozen life plan before volume tooling (Table 8.4).
+: Design Validation Test. Proves the design meets requirements across corners, margin, and a frozen life plan before volume tooling (Table 8.5).
 
 DWDM
 
@@ -275,7 +275,7 @@ ESD
 
 EVT
 
-: Engineering Validation Test. Early bring-up on engineering samples: first light, CMIS, basic LIV/SMSR/RIN, one closing BER (Table 8.4).
+: Engineering Validation Test. Early bring-up on engineering samples: first light, CMIS, basic LIV/SMSR/RIN, one closing BER (Table 8.5).
 
 Faceplate
 
@@ -479,7 +479,7 @@ MoE
 
 MP
 
-: Mass production. Sustained volume after PVT: DPPM, RMA ownership, ECO control (Table 8.4).
+: Mass production. Sustained volume after PVT: DPPM, RMA ownership, ECO control (Table 8.5).
 
 MPI
 
@@ -527,7 +527,7 @@ NPC
 
 NPI
 
-: New product introduction. Gate sequence EVT $\to$ DVT $\to$ Qual $\to$ PVT $\to$ Pilot $\to$ MP that maps onto the validation ladder (Table 8.4, Table 7.1).
+: New product introduction. Gate sequence EVT $\to$ DVT $\to$ Qual $\to$ PVT $\to$ Pilot $\to$ MP that maps onto the validation ladder (Table 8.5, Table 7.1).
 
 NPO
 
@@ -631,7 +631,7 @@ PUE
 
 PVT
 
-: Production Validation Test. Proves the factory can build the qualified design repeatedly at yield with ATP and SPC (Table 8.4).
+: Production Validation Test. Proves the factory can build the qualified design repeatedly at yield with ATP and SPC (Table 8.5).
 
 QSFP-DD
 
@@ -927,7 +927,7 @@ TDECQ / SECQ / EECQ
 
 DVT / PVT / EVT
 
-: EVT is early engineering validation; DVT proves the design; PVT proves the factory can build it (Table 8.4).
+: EVT is early engineering validation; DVT proves the design; PVT proves the factory can build it (Table 8.5).
 
 FIT / DPPM
 

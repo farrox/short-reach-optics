@@ -2,8 +2,9 @@
 \label{app:interview-review}
 
 Use this appendix as a standalone drill for about a week of focused prep. Its
-purpose is not to cover the most optics. Its purpose is to make your engineering
-process automatic under time pressure.
+purpose is not to cover the most optics, and it is not a memorization guide.
+It teaches how a Staff engineer approaches ambiguous problems until the process
+is automatic under time pressure.
 
 Read order when time is short: the four principles and answer spine here, then
 the ``30-second answer'' callouts in \Cref{app:interview-frameworks}, then the wall-chart trees in
@@ -14,6 +15,90 @@ weak. Compression is the point: recover the method in minutes, not hours. When a
 remember decisions more than measurements. Close with ``Therefore I would
 continue validation,'' ``stop shipment,'' ``contain Supplier~B,'' or ``update
 the ATP.''}
+
+
+\section{Staff engineer answer pattern}
+\label{sec:interview-staff-pattern}
+
+Strong engineering answers follow this sequence:
+
+\begin{dectree}
+Staff answer pattern
+  |
+Define success
+  |
+Scope the problem
+  |
+Identify possible mechanisms
+  |
+Choose highest-value measurement
+  |
+Interpret evidence
+  |
+Make a decision
+  |
+Prevent recurrence
+\end{dectree}
+
+A senior engineer is not expected to know the failure immediately. They are
+expected to know how to reduce uncertainty. The same loop drives validation,
+qualification, failure analysis, and supplier decisions:
+
+\begin{dectree}
+Central engineering loop
+  |
+Requirement
+  |
+Risk
+  |
+Failure mechanism
+  |
+Measurement
+  |
+Evidence
+  |
+Decision
+  |
+Control
+  |
+Learning
+\end{dectree}
+
+Do not invent a second framework. Use this loop inside the validation lifecycle
+(\Cref{tab:ladder}), the qualification evidence path
+(\Cref{sec:tree-qual-evidence}), and the failure-analysis handbook
+(\Cref{ch:failure-modes}).
+
+\paragraph{Answer anatomy under time pressure.}
+\begin{description}
+\item[Situation] What is observed, at what plane and condition?
+\item[Initial hypothesis space] Transmitter, channel, receiver, DSP, control
+      loop, environment. Do not jump to one cause.
+\item[Highest-value next measurement] The test that separates the largest
+      number of hypotheses at the lowest cost and access level.
+\item[Decision] Continue, contain, request FA, update qual, change ATP, derate,
+      or monitor-only.
+\item[Recurrence prevention] What prevents this from happening again?
+\end{description}
+
+\section{Measurement access hierarchy}
+\label{sec:interview-access-levels}
+
+Every diagnostic answer should name the access level before asking for deeper
+hardware:
+
+\begin{description}
+\item[Level 0] Existing telemetry and logs.
+\item[Level 1] System experiments (swaps, attenuate, remap, dwell, reload).
+\item[Level 2] External module measurements at a named faceplate or optical
+      plane.
+\item[Level 3] Engineering samples, breakout, or internal monitors.
+\item[Level 4] Destructive FA / DPA.
+\end{description}
+
+A good engineer does not immediately request destructive analysis. Maximize
+information gained per cost. Prefer Level~0--2 until they stop reordering
+beliefs (\Cref{sec:tree-blackbox-access,sec:tree-evidence-block}).
 
 \section{Four principles}
 \label{sec:interview-philosophy}
@@ -97,8 +182,8 @@ margin-budget variants, live as a wall chart in \Cref{app:decision-trees}.
 
 Memorize the two shapes, not the ASCII: Debugging =
 scope~$\rightarrow$~power/quality~$\rightarrow$~isolation~$\rightarrow$~decision~$\rightarrow$~control.
-Qualification =
-bring-up~$\rightarrow$~characterization~$\rightarrow$~margin/interop~$\rightarrow$~reliability~$\rightarrow$~manufacturing/ATP~$\rightarrow$~pilot~$\rightarrow$~fleet.
+Lifecycle =
+requirements~$\rightarrow$~architecture~$\rightarrow$~bring-up~$\rightarrow$~characterization~$\rightarrow$~margin~$\rightarrow$~interop~$\rightarrow$~qualification~$\rightarrow$~manufacturing~$\rightarrow$~pilot~$\rightarrow$~MP~$\rightarrow$~fleet~$\rightarrow$~feedback.
 Full wall charts, including power fork, scope versus correlation, black-box
 access, and measurement selection, are in \Cref{app:decision-trees}. Night-before
 drill opens the matching playbook in \Cref{app:interview-frameworks}.
@@ -108,10 +193,19 @@ drill opens the matching playbook in \Cref{app:interview-frameworks}.
 Move every answer through the same sequence. Memorize four phases, not nine
 nodes:
 \begin{dectree}
-Understand:   requirements -> architecture
-Investigate:  measure -> observe -> hypothesize -> isolate
-Resolve:      ownership + action (mechanism may still be open)
-Prevent:      recurrence control -> decision
+Answer spine
+  |
+Define success / scope
+  |
+Hypothesis space
+  |
+Highest-value measurement (name access level)
+  |
+Interpret evidence (observation / correlation / hypothesis / confirmation)
+  |
+Decision + owner
+  |
+Recurrence control
 \end{dectree}
 The diagram is a memory aid, not the answer. Speak one clear paragraph per
 phase under time pressure, and expand a node only when asked. Do not jump from
@@ -908,15 +1002,16 @@ Classic fork question (\Cref{sec:fm-temperature,sec:interview-power-fork}).
 \execanswer{See \Cref{fw:hot-fail} for the canonical 30-second answer. Deliver that first; expand below only if asked.}
 
 \paragraph{3-minute answer (practice).}
-First scope the failure. Apply the power-versus-quality fork: APC is hitting
-setpoint, so candidates are ER\termnote{ER} collapse, wrong modulator bias,
-wavelength walk, exhausted control ledger (TEC\termnote{TEC} or heater at
-rail), or hotter receiver noise. Measure remaining margin at the failing
-temperature first. With engineering access, use a DCA\termnote{DCA} (ER,
-OMA, TDECQ), bias-sweep the EAM\termnote{EAM} or MZM, check OSA wavelength,
-and read actuator codes. If a bias sweep restores the external optical eye,
-retune the table; if the actuator is railed, fix thermal design. Close with
-the new ATP corner.
+\textbf{Situation:} BER worsens at high temperature while average received
+power is stable.\\
+\textbf{Hypothesis space:} ER collapse, wrong modulator bias, wavelength walk,
+railed TEC/heater, hotter receiver noise; not gross optical loss.\\
+\textbf{Highest-value measurement:} remaining margin at the failing temperature
+(Level~0--1), then Level~2 external eye / Level~3 bias and OSA if access
+exists.\\
+\textbf{Decision:} retune table, fix thermal design, or restrict the corner.\\
+\textbf{Recurrence:} put the loaded corner in ATP and watch the control ledger
+in telemetry.
 
 \paragraph{10-minute reference (read only).}
 Playbook: \Cref{fw:hot-fail}. Offer the calibration-table segment-boundary
@@ -1414,36 +1509,39 @@ abbreviation drill. Always keep the cheat sheet below.
 \section{Staff interview cheat sheet}
 \label{sec:interview-cheat-sheet}
 
-Internalize this one page. The rest of the appendix is supporting detail.
+\subsection{The five questions behind every interview problem}
+\label{sec:interview-five-questions}
+
+\begin{enumerate}
+\item What is the requirement?
+\item What is the failure scope?
+\item What mechanisms could explain it?
+\item What measurement separates them (at which access level and plane)?
+\item What decision does the evidence enable, and what control prevents recurrence?
+\end{enumerate}
 
 {\small\setlength{\parskip}{0.3em}%
-\noindent\textit{Close.} Every answer ends with the engineering decision.\par
-\noindent\textit{Philosophy.} Engineering reduces uncertainty. Measurements
-unlock decisions. Every measurement updates beliefs. Measurements
-characterize margin. The job is a responsible, appropriately reversible decision with today's evidence.\par
-\noindent\textit{Trees.} Debug: scope $\rightarrow$ power fork $\rightarrow$
-isolation $\rightarrow$ decision $\rightarrow$ control. Lifecycle: requirements
-$\rightarrow$ architecture $\rightarrow$ bring-up $\rightarrow$ characterization
-$\rightarrow$ margin $\rightarrow$ interop $\rightarrow$ qualification
-$\rightarrow$ manufacturing $\rightarrow$ pilot $\rightarrow$ MP $\rightarrow$ fleet
-$\rightarrow$ feedback (\Cref{sec:interview-validation-ladder,tab:ladder}).\par
-\noindent\textit{Spine (4 phases).} Understand $\rightarrow$ Investigate
-$\rightarrow$ Resolve $\rightarrow$ Prevent.\par
-\noindent\textit{Checklist.} Scope? Ledger? Power or quality? Fastest
-measurement? Decision? Control?\par
-\noindent\textit{Night before.} Open the matching framework in
-\Cref{app:interview-frameworks}. Memorize ``30-second answer'' callouts only.\par
-\noindent\textit{Five ledgers.} Power $\cdot$ Noise $\cdot$ Timing $\cdot$
-Spectral $\cdot$ Control.\par
-\noindent\textit{Margin budget.} Stress consumes margin; qual measures what
-remains (\Cref{sec:interview-margin-budget}).\par
-\noindent\textit{Customer vs vendor.} Customer measures external behavior;
-vendor owns internals (\Cref{sec:interview-customer-vendor}).\par
+\noindent\textit{Central loop.} Requirement $\rightarrow$ risk $\rightarrow$
+mechanism $\rightarrow$ measurement $\rightarrow$ evidence $\rightarrow$
+decision $\rightarrow$ control $\rightarrow$ learning.\par
+\noindent\textit{Access levels.} Telemetry $\rightarrow$ system experiments
+$\rightarrow$ external module $\rightarrow$ engineering breakout $\rightarrow$
+destructive FA (\Cref{sec:interview-access-levels}).\par
+\noindent\textit{Evidence language.} Observation / correlation / hypothesis /
+confirmation / decision. Do not say ``data proves'' until confirmation exists.
+\par
+\noindent\textit{Lifecycle.} Requirements $\rightarrow$ architecture
+$\rightarrow$ bring-up $\rightarrow$ characterization $\rightarrow$ margin
+$\rightarrow$ interop $\rightarrow$ qualification $\rightarrow$ manufacturing
+$\rightarrow$ pilot $\rightarrow$ MP $\rightarrow$ fleet $\rightarrow$ feedback
+(\Cref{tab:ladder}).\par
+\noindent\textit{Night before.} Open the matching playbook in
+\Cref{app:interview-frameworks}. Memorize ``30-second answer'' callouts only.
+\par
 \noindent\textit{Decisions.} Ship / don't ship, continue validation, escalate
 supplier, derate, second source, contain lot, modify ATP, open RMA, FA/DPA,
-firmware, retune calibration, monitor only (\Cref{tab:interview-decisions}).\par
-\noindent\textit{Traps / ownership.} No component-first; no stop after fix.
-Contain, notify, FA, ATP, monitor RMA.\par
+firmware, retune calibration, monitor only (\Cref{tab:interview-decisions}).
+\par
 }
 
 \keyidea{I first want to understand the scope of the problem, then determine

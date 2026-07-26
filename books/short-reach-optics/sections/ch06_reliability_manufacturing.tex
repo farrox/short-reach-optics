@@ -139,6 +139,66 @@ bounds when converting HTOL hours to field years, keep sample-size humility
 module assembly separately when failures split across those boundaries
 (\Cref{sec:photonic-packaging,sec:laser-aging,sec:elsfp}).
 
+\paragraph{Qualification planning matrix.}
+\label{sec:qual-planning-matrix}
+
+Qualification engineering starts from mechanisms, not from a museum of tests.
+The matrix is illustrative: fill cells for the product class and claimed life.
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:qual-planning-matrix}%
+\centering
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.15}%
+\begin{tabular}{@{}p{0.18\linewidth}p{0.18\linewidth}p{0.18\linewidth}p{0.18\linewidth}p{0.20\linewidth}@{}}
+\toprule
+Failure mechanism & Stress & Observable & Acceptance & Production control \\
+\midrule
+Laser degradation & Temperature / lifetime (HTOL) & Power, wavelength, BER & Named limit vs life claim & ATP / SPC / burn-in proxy \\
+\addlinespace[0.7em]
+Solder fatigue & Temperature cycling & Resistance, BER, opens & Post-stress continuity / BER & Process control, FAIR \\
+\addlinespace[0.7em]
+Contamination / corrosion & Humidity / damp heat & Loss, ORL, leakage & IL/ORL / functional limits & Handling, sealing, audit \\
+\addlinespace[0.7em]
+Connector wear & Mate cycling & Insertion loss, ORL & Cycle-count IL budget & Supplier / hygiene control \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Qualification planning
+matrix. Each row is mechanism $\rightarrow$ stress $\rightarrow$ observable
+$\rightarrow$ acceptance $\rightarrow$ production control
+(\Cref{sec:tree-qual-evidence}; interview form \Cref{fw:qual-plan}).\par}
+\end{table*}
+
+\begin{dectree}
+Qualification decision tree
+  |
+New requirement
+  |
+What failure mechanisms threaten it?
+  |
+Which mechanisms are accelerated?
+  |
+What stress reproduces them?
+  |
+What metric detects degradation?
+  |
+What confidence is required?
+  |
+What production control prevents escape?
+\end{dectree}
+
+\paragraph{Sample strategy and confidence.}
+\label{sec:qual-sample-strategy}
+
+Weak answer: ``We test 20 units.'' Strong answer: the sample strategy depends
+on the failure-rate target, the confidence requirement, cost, and population
+variation. State lots, date codes, suppliers, manufacturing sites or lines,
+process corners, and whether the claim is zero-failure upper-bound or observed
+rate (\Cref{sec:fit-dppm,sec:tree-evidence-block}). A rate without population,
+observation time, and confidence is not a fleet claim.
+
 \paragraph{GR-1221: the passive-component companion.}
 GR-468 covers active optoelectronics. Its companion, \term{Telcordia GR-1221-CORE}
 (Generic Reliability Assurance Requirements for Passive Optical Components), covers

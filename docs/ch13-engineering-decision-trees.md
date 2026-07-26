@@ -29,9 +29,9 @@ Leading mechanism
   |
 Controlled confirmation
   |
-Decision
+Decision + owner + timeline + reversibility
   |
-Recurrence control</code></pre>
+Follow-up control (ATP / SPC / telemetry / supplier)</code></pre>
 Stable average power deprioritizes gross optical loss but does not eliminate fast power fluctuations, clipping, monitor averaging, or reflection-dependent effects. A surviving hypothesis is only the leading mechanism until confirmed by reproduction, controlled swap, stress dependence, rollback, or physical evidence (§4.8, §7.11, Appendix C.16).
 
 ## Qualification lifecycle
@@ -61,7 +61,7 @@ Mass production
 Fleet monitoring
   |
 Feedback / next revision</code></pre>
-Each gate removes a different uncertainty. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness. Table 7.1 is the same order in table form (§7.1, Appendix A.6.5, §8.2).
+Each gate removes a different uncertainty. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness. Table 7.1 is the same order in table form (§7.1, Appendix A.8.5, §8.2).
 
 ## Qualification evidence tree
 
@@ -164,7 +164,7 @@ Qualification (named mechanisms)
 Production readiness (FAIR, ATP, SPC)
   |
 Fleet monitoring (RMA, telemetry)</code></pre>
-Customer view measures external behavior. Vendor view owns internals (Appendix A.6.7, §8.10).
+Customer view measures external behavior. Vendor view owns internals (Appendix A.8.7, §8.10).
 
 ## Supplier escape containment flow
 
@@ -182,7 +182,9 @@ Investigate / confirm mechanism
   |
 Corrective action
   |
-Recurrence control</code></pre>
+Recurrence control
+  |
+Decision closure: owner / timeline / reversibility / follow-up</code></pre>
 Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (§8.7, §7.12, Appendix C.16).
 
 ## Margin-consumption flow
@@ -224,7 +226,7 @@ Enough confidence to decide?
               Tx-only / Rx-only / breakout / diagnostics
               |
               Isolate margin</code></pre>
-An optical eye is measured externally with suitable access. Do not assume the module reports a conventional eye unless that capability exists (Appendix A.6.7).
+An optical eye is measured externally with suitable access. Do not assume the module reports a conventional eye unless that capability exists (Appendix A.8.7).
 
 ## Recurrence-control loop
 
@@ -293,11 +295,11 @@ Decision with today's confidence
 Continue measuring?
   |-- YES --&gt; next measurement
   |-- NO  --&gt; control + owner + residual risk</code></pre>
-Unknown mechanism is not a freeze. Decide with weighted evidence (Appendix A.4, Appendix C.14).
+Unknown mechanism is not a freeze. Decide with weighted evidence (Appendix A.6, Appendix C.14).
 
 ## Evidence block
 
-Use this block for validation reports, qualification plans, supplier reviews, fleet incidents, and interview answers:
+Use this block for validation reports, qualification plans, supplier reviews, fleet incidents, and interview answers. Speak evidence language in order: observation ("I measured..."), correlation ("these units share..."), hypothesis ("this suggests..."), confirmation ("I reproduced..."), decision ("I will..."). Do not say "data proves" until confirmation exists.
 
 <pre class="dectree" aria-label="Evidence block"><code>Evidence block
   |
@@ -305,9 +307,9 @@ Claim: what are we trying to establish?
   |
 Population: units, lots, hosts, environments
   |
-Measurement: metric + reference plane
+Measurement: metric + reference plane + condition
   |
-Access: black-box / engineering / destructive FA
+Access: Level 0--4 (Appendix A.2)
   |
 Condition: T, V, pattern, ORL, traffic, dwell
   |
@@ -316,6 +318,23 @@ Evidence strength: n, repeatability, confidence
 Decision: what action is justified?
   |
 Control: how recurrence or drift is detected</code></pre>
+##### Decision closure.
+
+Every tree that ends in an action should close with:
+
+<pre class="dectree" aria-label="Decision closure"><code>Decision closure
+  |
+Decision: what action now?
+  |
+Owner: who is accountable?
+  |
+Timeline: when must it complete?
+  |
+Reversibility: how hard to undo?
+  |
+Follow-up control: ATP / SPC / telemetry / supplier CA</code></pre>
+Example (supplier defect): stop shipment of the scoped lot; owner Operations plus Quality; follow-up is supplier corrective action and the production or fleet control that would catch the next escape.
+
 Chapter 7, Chapter 8, Chapter 10, Appendix B point here rather than restating the list.
 
 ## Before you start: three checklists
@@ -332,7 +351,7 @@ Chapter 7, Chapter 8, Chapter 10, Appendix B point here rather than restating
 >
 > - Leading mechanism stated (not yet confirmed RC)
 >
-> - Decision unlocked and recurrence control named
+> - Decision unlocked with owner, timeline, and recurrence control
 
 > **Before qualification**
 >

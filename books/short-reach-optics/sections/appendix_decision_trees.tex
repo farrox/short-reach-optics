@@ -34,9 +34,9 @@ Leading mechanism
   |
 Controlled confirmation
   |
-Decision
+Decision + owner + timeline + reversibility
   |
-Recurrence control
+Follow-up control (ATP / SPC / telemetry / supplier)
 \end{dectree}
 
 Stable average power deprioritizes gross optical loss but does not eliminate
@@ -233,12 +233,14 @@ Investigate / confirm mechanism
 Corrective action
   |
 Recurrence control
+  |
+Decision closure: owner / timeline / reversibility / follow-up
 \end{dectree}
 
 Use provisional containment when the population can grow, then refine the hold
 after scope analysis. The system owner keeps responsibility for evidence quality
 and verifying corrective action
-(\Cref{sec:escaped-defects,sec:fleet-triage,sec:tree-evidence-block}).
+(\Cref{sec:escaped-defects,sec:fleet-triage,sec:tree-evidence-block,sec:tree-decision-closure}).
 
 \section{Margin-consumption flow}
 \label{sec:tree-margin-budget}
@@ -386,7 +388,11 @@ Unknown mechanism is not a freeze. Decide with weighted evidence
 \label{sec:tree-evidence-block}
 
 Use this block for validation reports, qualification plans, supplier reviews,
-fleet incidents, and interview answers:
+fleet incidents, and interview answers. Speak evidence language in order:
+observation (``I measured\ldots''), correlation (``these units share\ldots''),
+hypothesis (``this suggests\ldots''), confirmation (``I reproduced\ldots''),
+decision (``I will\ldots''). Do not say ``data proves'' until confirmation
+exists.
 
 \begin{dectree}
 Evidence block
@@ -395,9 +401,9 @@ Claim: what are we trying to establish?
   |
 Population: units, lots, hosts, environments
   |
-Measurement: metric + reference plane
+Measurement: metric + reference plane + condition
   |
-Access: black-box / engineering / destructive FA
+Access: Level 0--4 (\Cref{sec:interview-access-levels})
   |
 Condition: T, V, pattern, ORL, traffic, dwell
   |
@@ -407,6 +413,28 @@ Decision: what action is justified?
   |
 Control: how recurrence or drift is detected
 \end{dectree}
+
+\paragraph{Decision closure.}
+\label{sec:tree-decision-closure}
+Every tree that ends in an action should close with:
+
+\begin{dectree}
+Decision closure
+  |
+Decision: what action now?
+  |
+Owner: who is accountable?
+  |
+Timeline: when must it complete?
+  |
+Reversibility: how hard to undo?
+  |
+Follow-up control: ATP / SPC / telemetry / supplier CA
+\end{dectree}
+
+Example (supplier defect): stop shipment of the scoped lot; owner Operations
+plus Quality; follow-up is supplier corrective action and the production or
+fleet control that would catch the next escape.
 
 \Cref{ch:validation,ch:reliability,ch:failure-modes,app:interview-frameworks}
 point here rather than restating the list.
@@ -421,7 +449,7 @@ point here rather than restating the list.
 \item[$\square$] Stable average received power? (power vs signal-quality path)
 \item[$\square$] Highest-value isolate chosen
 \item[$\square$] Leading mechanism stated (not yet confirmed RC)
-\item[$\square$] Decision unlocked and recurrence control named
+\item[$\square$] Decision unlocked with owner, timeline, and recurrence control
 \end{itemize}}
 
 \engcheck{Before qualification}{%

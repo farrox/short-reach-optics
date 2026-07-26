@@ -266,7 +266,7 @@ Work backward from the link, not forward from a marketing slide. The four steps 
 
 4.  From service model, choose ELSFP mate-cycle / hot-swap requirements or accept on-package FIT and write COD/aging screens accordingly (§5.14).
 
-Hand the filled slice to the supplier with the ATP checklist (Table 8.5). If a roadmap slide cannot point to a row in Table 5.4, the requirement is not real yet.
+Hand the filled slice to the supplier with the ATP checklist (Table 8.6). If a roadmap slide cannot point to a row in Table 5.4, the requirement is not real yet.
 
 **Exit when** every cell in Table 5.4 is a program number or explicit N/A, with ORL stated wherever RIN appears and case-$T$ class stated wherever power or bias appears. **Decision unlocked:** negotiate ATP limits, or reopen the architecture fork that left a cell empty.
 
@@ -485,7 +485,7 @@ Twenty-four contacts: multiple 3.3 V VCC and GND pins, module reset (`ResetL`),
 
 ##### Qual hooks for suppliers.
 
-Acceptance test plans should cover the checklist in Table 8.5, §8.10: laser LIV/SMSR/RIN inside the module; optical power-class compliance; connector mating cycles and contamination/ORL; burn-in before ship; CMIS register sanity; and thermal class at rated case temperature. Module bring-up must also prove the CMIS enable sequence and ModuleReady laser policy (§7.9). Field returns split between laser wear-out and connector/fiber-attach faults; keep both in the triage tree (§7.12).
+Acceptance test plans should cover the checklist in Table 8.6, §8.10: laser LIV/SMSR/RIN inside the module; optical power-class compliance; connector mating cycles and contamination/ORL; burn-in before ship; CMIS register sanity; and thermal class at rated case temperature. Module bring-up must also prove the CMIS enable sequence and ModuleReady laser policy (§7.9). Field returns split between laser wear-out and connector/fiber-attach faults; keep both in the triage tree (§7.12).
 
 ## Optical safety and laser classes
 
@@ -662,7 +662,7 @@ Control margin
 
 : headroom in APC, TEC, heaters, ring lock, bias DACs, and calibration tables. A railed loop can fail the link while the diode is still healthy.
 
-Recompute the link at combined production corners. A nominal part at nominal temperature says little about whether a slow loss in two ledgers will push a tail unit across the pre-FEC BER limit. §7.9, Table 7.5 carry the same ledgers into validation and fleet triage. The interview review compresses this checklist in Appendix A.6.4. The wall-chart form is Appendix C.10.
+Recompute the link at combined production corners. A nominal part at nominal temperature says little about whether a slow loss in two ledgers will push a tail unit across the pre-FEC BER limit. §7.9, Table 7.5 carry the same ledgers into validation and fleet triage. The interview review compresses this checklist in Appendix A.8.4. The wall-chart form is Appendix C.10.
 
 <pre class="dectree" aria-label="Nominal system margin"><code>Nominal system margin
   |
@@ -790,7 +790,7 @@ Table 5.9 is the decision sequence for a laser program. Measurement methods for
 
 ##### Manufacturing.
 
-**Purpose.** Can the ATP catch bad units and lot drift at useful test cost (Table 8.5)?
+**Purpose.** Can the ATP catch bad units and lot drift at useful test cost (Table 8.6)?
 
 **Exit criteria.** **Exit when** limits, guardbands, GR&R, yield, and a reaction plan exist for the ship screens.
 
