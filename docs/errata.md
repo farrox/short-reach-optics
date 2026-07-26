@@ -106,6 +106,14 @@ No new frameworks. Structural relocation of existing material is allowed.
   interviewer intent, weak answer) plus a shared 0--10 self-assessment rubric
   (`sec:validation-interview-qa`, `sec:reliability-interview-qa`). PDF about
   387 pages.
+- **Ch7/Ch8 Interview Q\&A compression:** Cut each chapter to 12 compact
+  questions (Spoken answer / Pressure follow-up + Answer pivot / Trap). Dropped
+  long interviewer-intent and weak-answer essays. Moved the chapter-end
+  spoken-answer rubric to App~A (`sec:chapter-interview-rubric`); kept the
+  case/debug rubric at `sec:interview-scoring-rubric`. Corrected the
+  temperature characterization case (conditions; non-causal). HTOL and
+  laser-aging distinguish engineering-access vs bookended proxies. PDF about
+  381 pages.
 
 ## Typographical fixes
 

@@ -942,6 +942,44 @@ Communication
 
 : Short frame first; numbers and planes without buzzword soup.
 
+Use this case-and-debug rubric for App B cases and fleet drills. For chapter-end spoken Interview Q&A, use the five-dimension rubric below.
+
+### Chapter-end spoken answers
+
+Score each spoken answer from 0 to 2 on every dimension. Maximum score is 10.
+
+Scope and assumptions
+
+: 0: no requirement, plane, or context.\
+  1: mentions the requirement.\
+  2: states requirement, conditions or access, and the release decision.
+
+Technical or causal reasoning
+
+: 0: assertion or test list.\
+  1: gives relevant technical reasoning.\
+  2: connects risks, mechanisms, or dependencies without premature causality.
+
+Evidence selection
+
+: 0: lists instruments.\
+  1: chooses a useful measurement.\
+  2: explains why the measurement separates hypotheses or supports the decision.
+
+Decision and remaining risk
+
+: 0: no decision.\
+  1: technical conclusion only.\
+  2: includes release, containment, restriction, redesign, or control, and names remaining risk when relevant.
+
+Communication
+
+: 0: rambling or jargon-heavy.\
+  1: correct but difficult to follow.\
+  2: direct, structured, and appropriately qualified.
+
+Interpretation: 0--4, review the chapter concepts; 5--7, technically competent but needs stronger structure; 8--9, strong interview response; 10, Strong Staff-style answer structure (a rehearsed perfect score is not proof of Staff-level performance on the job).
+
 ## One-week interview preparation plan
 
 Assume seven days, with the interview near the end of Day 7. Protect sleep. Each day has a Learn list (pointers only) and one speakable Output. If a day slips, cut new reading first, not stories or the mock. Prefer the measurement with the highest information gain per cost (Appendix B.1, Appendix A.2).
