@@ -7,11 +7,11 @@ title: "Ch 7: Optical validation"
 
 A datasheet that closes on a quiet bench is not a product. *Validation* reduces uncertainty about whether a link meets its requirements across the temperatures, hosts, connectors, production spread, and lifetime the fleet will actually see. Passing tests is an output, not the purpose. This chapter walks the ladder from a single device to a deployed fleet, the engineering question at each stage, module and system bring-up under production-like corners, and the hypothesis-driven debug method the work demands.
 
-Debugging asks which margin ledger was exhausted. Qualification asks how much margin remains after the expected stresses. Both are uncertainty reduction that ends in a decision (Appendix C, Appendix C.16).
+Debugging asks which margin ledger was exhausted. Qualification asks how much margin remains after the expected stresses. Both are uncertainty reduction that ends in a decision (Appendix D, Appendix D.16).
 
 ##### Operating definitions used in this book.
 
-Companies may use EVT, DVT, PVT, verification, and qualification differently. Unless noted otherwise, this book uses the questions below. Abbreviations are collected in Appendix D.
+Companies may use EVT, DVT, PVT, verification, and qualification differently. Unless noted otherwise, this book uses the questions below. Abbreviations are collected in Appendix E.
 
 Characterization
 
@@ -51,10 +51,10 @@ ATP (acceptance test)
 
 Optical programs fail in the same places again and again: a part that looks good in characterization but cannot bring up on a production host, or a module that passes acceptance test plan (*ATP*) and then unlocks under neighbor heat. The ladder below is a decision framework, not a test menu. Each stage answers one question the previous stage could not answer. Skipping a rung does not save time. It moves the escape into a later, more expensive stage.
 
-The core principle is uncertainty reduction. At every stage ask: what do we know before this stage, what uncertainty remains, what evidence removes it, what decision that evidence unlocks, and what risk remains afterward (Appendix C.16).
+The core principle is uncertainty reduction. At every stage ask: what do we know before this stage, what uncertainty remains, what evidence removes it, what decision that evidence unlocks, and what risk remains afterward (Appendix D.16).
 
 <table class="book-table"><tr><th>Phase</th><th>Main question</th><th>Evidence</th><th>Exit decision</th></tr><tr><td>Requirements</td><td>What must be true?</td><td>System requirements, constraints</td><td>Architecture target</td></tr><tr><td>Architecture</td><td>Can this design meet requirements?</td><td>Budgets, simulations, tradeoffs</td><td>Proceed or redesign</td></tr><tr><td>Bring-up</td><td>Does the hardware fundamentally work?</td><td>Init, traffic, basic BER</td><td>Usable hardware</td></tr><tr><td>Characterization</td><td>How does it behave?</td><td>Sweeps, distributions, trends</td><td>Behavior understood</td></tr><tr><td>Margin</td><td>How close are the limits?</td><td>T, V, loss, ORL, stress headroom</td><td>Sufficient headroom</td></tr><tr><td>Interoperability</td><td>Does it work in real systems?</td><td>Host/peer/FW/channel matrix</td><td>Supported ecosystem</td></tr><tr><td>Qualification</td><td>Will it survive expected life?</td><td>Mechanism-based stress evidence</td><td>Release confidence</td></tr><tr><td>Manufacturing</td><td>Can we build it repeatedly?</td><td>Yield, ATP, SPC, FAIR</td><td>Production readiness</td></tr><tr><td>Pilot</td><td>Does reality match lab assumptions?</td><td>Bounded deployment</td><td>Expand / restrict / reject</td></tr><tr><td>Mass production</td><td>Can we sustain volume with control?</td><td>SPC, ECO, RMA loop</td><td>Open / hold volume</td></tr><tr><td>Fleet</td><td>Does it remain healthy?</td><td>Telemetry, cohorts, escapes</td><td>Operational control</td></tr><tr><td>Feedback</td><td>What must change next?</td><td>FA, escapes, revision inputs</td><td>Next-revision targets</td></tr></table>
-**Table 7.1.** Canonical validation lifecycle. One source of truth for this book. The wall-chart tree is Appendix C.2; interview names are Appendix A.8.5. Manufacturing aliases EVT/DVT/PVT/MP map onto these stages in Table 8.5.
+**Table 7.1.** Canonical validation lifecycle. One source of truth for this book. The wall-chart tree is Appendix D.2; interview names are Appendix A.8.5. Manufacturing aliases EVT/DVT/PVT/MP map onto these stages in Table 8.5.
 
 This is the single lifecycle. Later sections deepen measurements, bring-up checklists, and fleet triage; they do not define a competing stage order.
 
@@ -204,7 +204,7 @@ Control
 
 ##### Required access level.
 
-Black-box host and management access first. Engineering access only when basic operation cannot be established (Appendix C.11).
+Black-box host and management access first. Engineering access only when basic operation cannot be established (Appendix D.11).
 
 ##### Data collected.
 
@@ -304,7 +304,7 @@ Loaded corners: target sled airflow, host rails with SerDes traffic, controlled 
 
 ##### Required access level.
 
-Black-box remaining-margin metrics first. External optical eye only when access exists and the corner needs it (Appendix C.11).
+Black-box remaining-margin metrics first. External optical eye only when access exists and the corner needs it (Appendix D.11).
 
 ##### Data collected.
 
@@ -422,7 +422,7 @@ Life projection
 
 ##### What uncertainty remains?
 
-Functional and margin stages do not answer lifetime (§8.2, §8.3, Appendix C.3).
+Functional and margin stages do not answer lifetime (§8.2, §8.3, Appendix D.3).
 
 ##### Inputs.
 
@@ -460,7 +460,7 @@ Pre/post stress margins, mechanism notes, sample and confidence statement, produ
 
 ##### Analysis.
 
-Justify $E_a$ and stress relevance for the named mechanism. A life claim without a mechanism is a narrative, not evidence (Appendix C.3, Appendix C.16).
+Justify $E_a$ and stress relevance for the named mechanism. A life claim without a mechanism is a narrative, not evidence (Appendix D.3, Appendix D.16).
 
 ##### Exit criteria.
 
@@ -512,7 +512,7 @@ Production data systems, golden units, and supplier lot genealogy. Engineering l
 
 ##### Data collected.
 
-Lots, date codes, sites/lines, process corners, measurement capability, yield confidence, guardband justification, escape-detection proof (Appendix C.16, §8.9).
+Lots, date codes, sites/lines, process corners, measurement capability, yield confidence, guardband justification, escape-detection proof (Appendix D.16, §8.9).
 
 ##### Analysis.
 
@@ -719,7 +719,7 @@ Do not use this fork as a second lifecycle. Use it inside a stage when choosing 
 
 Requirements and architecture prevent measuring the wrong product. Bring-up makes later data interpretable. Characterization builds the behavioral model. Margin measures remaining headroom; interoperability proves that headroom in real systems. Reliability qualification answers life. Manufacturing validation answers repeatability. Controlled pilot checks lab assumptions in a bounded cohort; mass production sustains volume; fleet monitoring keeps escapes visible; feedback writes the next revision.
 
-Later stages must not compensate for incomplete earlier stages. A large interoperability matrix cannot fix unstable bring-up. Reliability testing cannot establish manufacturing consistency from one engineering lot. An HTOL pass does not prove bring-up on the target host. Treat each exit as evidence only for its own question (Table 7.1, Appendix C.2).
+Later stages must not compensate for incomplete earlier stages. A large interoperability matrix cannot fix unstable bring-up. Reliability testing cannot establish manufacturing consistency from one engineering lot. An HTOL pass does not prove bring-up on the target host. Treat each exit as evidence only for its own question (Table 7.1, Appendix D.2).
 
 ### Learning summary
 
@@ -773,9 +773,9 @@ Feedback
 
 > **Before open volume**
 >
-> Requirements $\cdot$ architecture $\cdot$ bring-up $\cdot$ characterization $\cdot$ margin $\cdot$ interop $\cdot$ qualification $\cdot$ manufacturing/ATP $\cdot$ pilot $\cdot$ fleet feedback (Appendix C.17, Table 7.1).
+> Requirements $\cdot$ architecture $\cdot$ bring-up $\cdot$ characterization $\cdot$ margin $\cdot$ interop $\cdot$ qualification $\cdot$ manufacturing/ATP $\cdot$ pilot $\cdot$ fleet feedback (Appendix D.17, Table 7.1).
 
-For every metric at every stage, state measurement, reference plane, condition, access level, and the decision unlocked (§3.9, Appendix A.2, Appendix C.16). Bad: "receiver sensitivity is $-15$ dBm." Good: sensitivity at the module optical input under the named BER target, temperature, wavelength, and FEC assumptions. A number without a plane and a method is not a measurement.
+For every metric at every stage, state measurement, reference plane, condition, access level, and the decision unlocked (§3.9, Appendix A.2, Appendix D.16). Bad: "receiver sensitivity is $-15$ dBm." Good: sensitivity at the module optical input under the named BER target, temperature, wavelength, and FEC assumptions. A number without a plane and a method is not a measurement.
 
 ## The core IM/DD measurements
 
@@ -936,7 +936,7 @@ Receiver input
 Sensitivity requirement
   |
 Remaining margin</code></pre>
-Keep power budget, signal-quality penalties, timing, thermal, and control authority as separate ledgers when the impairment is not a pure optical-power number (§5.19, Appendix C.10).
+Keep power budget, signal-quality penalties, timing, thermal, and control authority as separate ledgers when the impairment is not a pure optical-power number (§5.19, Appendix D.10).
 
 ##### Design allocation versus validation measurement.
 
@@ -1152,7 +1152,7 @@ Decision
 Recurrence control</code></pre>
 > **Before debugging**
 >
-> Scope $\cdot$ time behavior $\cdot$ population $\cdot$ power or quality $\cdot$ highest-value measurement $\cdot$ decision $\cdot$ recurrence control (Appendix C.17).
+> Scope $\cdot$ time behavior $\cdot$ population $\cdot$ power or quality $\cdot$ highest-value measurement $\cdot$ decision $\cdot$ recurrence control (Appendix D.17).
 
 ## Fleet and field triage
 
@@ -1203,7 +1203,7 @@ Bucket: performance / reliability / manufacturability
 Contain / FA / ATP / telemetry
   |
 Fleet monitoring</code></pre>
-Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (Appendix C.5).
+Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (Appendix D.5).
 
 <table class="book-table"><tr><th>Symptom</th><th>First telemetry check</th><th>Bucket</th><th>Confirm on bench / FA</th><th>Typical fix owner</th></tr><tr><td>Link never comes up (fresh install)</td><td>CMIS presence, Vcc, Tx power flatline, LOS</td><td>Mfg or install</td><td>Visual fiber/connector; golden module swap; CMIS dump</td><td>Ops install; supplier ATP if lot-correlated</td></tr><tr><td>Intermittent LOS / burst errors</td><td>Rx power dropouts; FEC bursts; ORL events</td><td>Perf (ORL) or mfg (contam.)</td><td>Clean/inspect MT; ORL meter; RIN vs ORL (sec:laser-drivers,sec:rin-values)</td><td>Ops cleaning; packaging if repeat RMA</td></tr><tr><td>Pre-FEC BER high, power OK</td><td>Tap saturation; RLM/TDECQ if logged; case T</td><td>Perf</td><td>DCA TDECQ/RLM; host COM; LPO vs retimed path (sec:tdecq,sec:com)</td><td>Host SI / module Tx design</td></tr><tr><td>BER rises only at high case T</td><td>Module temp alarm; Tx power drop; walk</td><td>Perf or reliability</td><td>LIV at T; OSA grid; TEC current; EAM bias (sec:laser-aging)</td><td>Derate / TEC / laser supplier</td></tr><tr><td>Slow BER creep over weeks/months</td><td>Bias current up for same Tx power; SMSR if monitored</td><td>Reliability</td><td>LIV/SMSR vs ship ATP; Arrhenius lot history</td><td>Laser wear-out; ELS replace</td></tr><tr><td>Sudden hard fail, was healthy</td><td>Last good CMIS snapshot; neighbor links OK</td><td>Reliability (COD) or mfg (ESD)</td><td>Dark LIV; DPA on facet/solder; date-code cluster?</td><td>FA + supplier 8D</td></tr><tr><td>One date code / site fails early</td><td>Lot Pareto; burn-in escape rate</td><td>Mfg</td><td>Incoming SPC vs ATP; FA on sample of lot</td><td>Supplier CAPA; hold shipment</td></tr><tr><td>WDM / ring unlock, power OK</td><td>Channel ID; thermal of neighbors; lock-loop status</td><td>Perf</td><td>Resonance tune; crosstalk; CW-WDM line power (sec:lock-validation,sec:thermal-xtalk,sec:cwwdm-laser)</td><td>Lock firmware / thermal design</td></tr><tr><td>ELSFP swap restores link</td><td>Old module CMIS vs new; connector cycles</td><td>Reliability or mfg (connector)</td><td>Inspect MT; mating-cycle count; laser LIV in returned module (sec:elsfp)</td><td>Laser vs connector split in FA</td></tr></table>
 **Table 7.5.** Fleet triage map: symptom to provisional bucket to confirm measurement. Perf $=$ performance (design/operating point); reliability $=$ time-dependent wear; mfg $=$ lot/process/install excursion. Row notes follow.

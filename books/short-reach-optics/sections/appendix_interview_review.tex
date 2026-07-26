@@ -6,8 +6,9 @@ purpose is not to cover the most optics, and it is not a memorization guide.
 It teaches how a Staff engineer approaches ambiguous problems until the process
 is automatic under time pressure.
 
-Read order when time is short: the four principles and answer spine here, then
-the ``30-second answer'' callouts in \Cref{app:interview-frameworks}, then the wall-chart trees in
+Read order when time is short: the Staff answer pattern here, then one or two
+cases in \Cref{app:case-studies}, then the ``30-second answer'' callouts in
+\Cref{app:interview-frameworks}, then the wall-chart trees in
 \Cref{app:decision-trees}. Do not re-read every worked answer unless a topic is
 weak. Compression is the point: recover the method in minutes, not hours. When a claim needs a release or ship decision, use the shared evidence block in \Cref{sec:tree-evidence-block}.
 
@@ -69,6 +70,8 @@ Do not invent a second framework. Use this loop inside the validation lifecycle
 (\Cref{sec:tree-qual-evidence}), and the failure-analysis handbook
 (\Cref{ch:failure-modes}).
 
+Practice the same loop on full narratives in \Cref{app:case-studies}.
+
 \paragraph{Answer anatomy under time pressure.}
 \begin{description}
 \item[Situation] What is observed, at what plane and condition?
@@ -110,7 +113,7 @@ uncertainty enough to make the next decision.}
 responsible and appropriately reversible decision.}
 Validation, measurement, debugging, qualification, supplier choices, and
 production are the same work under different names. Ask the scale of the
-problem (device, module, rack, fleet) before you chase a root cause: scale
+problem (device, module, rack, fleet) before you chase a confirmed mechanism: scale
 picks the owner.
 
 \noindent\textbf{Principle 2: Measurements unlock decisions.}\\
@@ -299,16 +302,16 @@ LIV\termnote{LIV} compared with ship data asks whether the device aged or only
 the setpoint drifted. A BER-versus-power waterfall asks whether the curve
 shifted or floored.
 
-\paragraph{Root cause.}
+\paragraph{Confirmed mechanism.}
 State the mechanism that survived isolation, with the evidence that killed
 the alternatives. ``EAM\termnote{EAM} bias table segment wrong above
-$60^\circ$C'' is a root cause. ``Bad eye at high temperature'' is still a
+$60^\circ$C'' is a confirmed mechanism. ``Bad eye at high temperature'' is still a
 symptom. Name the physical or process mechanism when you can: facet wear,
 monitor-PD corruption, FAU\termnote{FAU} misalignment, MPI\termnote{MPI}
 from a dirty connector pair, control ledger exhausted (TEC\termnote{TEC} or
 heater at rail), supplier lot with high threshold. If the evidence only
 reaches ``calibration drift'' and not a deeper mechanism, say so.
-Overclaiming the root cause is worse than stopping one layer early with
+Overclaiming a confirmed mechanism is worse than stopping one layer early with
 honesty. Sometimes the product decision is due before the mechanism is known;
 that case is \Cref{sec:interview-under-uncertainty}.
 
@@ -329,7 +332,7 @@ test, an SPC\termnote{SPC} chart, a telemetry alarm, a process-control limit,
 a supplier screen, or a firmware guard that refuses to boot with a railed
 actuator. Name the owner and the measurable closure criterion. Then say the
 action: continue validation, stop shipment, contain the lot, update ATP,
-escalate the supplier, or monitor only. Root cause without recurrence control
+escalate the supplier, or monitor only. A confirmed mechanism without recurrence control
 is a story. Recurrence control without a decision is incomplete. In the
 interview, ending on the decision is what separates a debug narrative from a
 product-engineering answer.
@@ -493,7 +496,7 @@ demands containment the same day.
 \item[Contain immediately] Failure rate $\sim$2\%, growing, supplier-specific.
       Stop ship, quarantine lots, notify the partner, open FA, tighten ATP.
 \end{description}
-Intentionally not fixing a root cause is sometimes correct. Leaving a growing
+Intentionally not fixing a confirmed mechanism is sometimes correct. Leaving a growing
 escape unowned is never correct.
 
 \subsection{Ownership language}
@@ -513,7 +516,7 @@ climb the measurement hierarchy only as far as needed; apply fleet economics;
 speak as the owner.}
 {Give me three incomplete-evidence scenarios. For each I must state evidence,
 confidence weights, the action I take today, residual risk, and the FA path.
-Fail me if I wait for a perfect root cause before containing a growing lot.}
+Fail me if I wait for a perfect confirmed mechanism before containing a growing lot.}
 
 \section{Common interview traps}
 \label{sec:interview-traps}
@@ -522,8 +525,8 @@ Interviewers listen for these mistakes. Avoid them on purpose.
 
 \begin{description}
 \item[Trap 1: Naming a component first.] Start with scope, not a part number.
-\item[Trap 2: Calling symptoms root causes.] ``Bad eye'' is a symptom.
-      ``EAM bias table wrong above $60^\circ$C'' is a root cause.
+\item[Trap 2: Calling symptoms confirmed mechanisms.] ``Bad eye'' is a symptom.
+      ``EAM bias table wrong above $60^\circ$C'' is a confirmed mechanism.
 \item[Trap 3: Stopping after the fix.] Always end with recurrence control and
       the product decision.
 \item[Trap 4: Listing instruments.] Name the decision each measurement unlocks,
@@ -587,7 +590,7 @@ silicon-photonic modulator. Neither path is ``better.'' Each closes a
 different reach, power, cost, and manufacturing problem. The decision matrix
 is in \Cref{tab:source-mod-matrix}.
 
-\subsection{Scope before root cause}
+\subsection{Scope before mechanism chase}
 
 Before you open an instrument, walk the failure up the scope ladder
 (unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ site $\rightarrow$
@@ -878,7 +881,7 @@ station ambient (\Cref{sec:laser-calibration}).
 
 \subsection{Corrective action must prevent recurrence}
 
-Root cause is not the end of the answer. Close with immediate containment;
+A confirmed mechanism is not the end of the answer. Close with immediate containment;
 the design, process, calibration, firmware, or supplier correction;
 verification under the original failing condition; an acceptance test,
 process control, alarm, or telemetry control that catches recurrence; and an
@@ -887,7 +890,7 @@ owner with a measurable closure criterion. An interview answer that stops at
 ATP\termnote{ATP} corner or the new telemetry alarm sounds like product
 engineering.
 
-\llmpractice{Ten cold concepts: start at the system; scope before root cause;
+\llmpractice{Ten cold concepts: start at the system; scope before mechanism chase;
 power versus signal-quality fork; five margin ledgers; validation ladder;
 instruments named by uncertainty removed; waterfall shift versus floor versus
 burst; thermal response versus aging; HTOL needs a mechanism; calibration is
@@ -910,10 +913,10 @@ the same eight beats every time:
 \item Competing hypotheses: the short list after the power fork.
 \item Measurements chosen and why: which instrument, which uncertainty.
 \item Evidence that eliminated each hypothesis.
-\item Root cause: the mechanism that survived, with evidence.
+\item Confirmed mechanism: the mechanism that survived, with evidence.
 \item Corrective action: the fix, verified under the failing condition.
 \item Recurrence control and measured result: the test, alarm, or process
-      change, and the metric that proved it worked.
+      change, and the metric that confirmed it worked.
 \end{enumerate}
 
 \llmpractice{Prepare two true stories, one bench or component and one system,
@@ -1018,6 +1021,8 @@ Playbook: \Cref{fw:hot-fail}. Offer the calibration-table segment-boundary
 story or the railed-heater story if asked. Aging does not reverse on cool-down;
 recoverable failures are operating-point problems.
 
+
+\noindent\textit{Practice case: \Cref{sec:case-hot-ber}.}
 \subsection{How do you distinguish laser aging from calibration drift?}
 \label{sec:interview-worked-aging-vs-cal}
 
@@ -1037,7 +1042,7 @@ Do not mix owners (\Cref{sec:tree-blackbox-access}).
 \paragraph{10-minute reference (read only).}
 Playbook: \Cref{fw:aging-vs-cal}. Monitor-PD corruption is the silent drift
 mode: APC holds the wrong launch while telemetry looks fine. Recalibration
-recovery raises $P(\mathrm{drift})$; it does not prove the device is
+recovery raises $P(\mathrm{drift})$; it does not confirm the device is
 unchanged. Confirm with external baselines when access exists.
 
 \subsection{How would you qualify a second laser or photonic-integrated-circuit
@@ -1067,7 +1072,7 @@ datasheet but fails the link-budget corners is not qualified.
 units.}
 Measure threshold, slope, wavelength, SMSR\termnote{SMSR}, and RIN across
 wafers, lots, and temperature. Compare spreads against the incumbent, not
-only means. A hero sample from a new supplier proves nothing about the
+only means. A hero sample from a new supplier demonstrates nothing about the
 process. Ask for wafer maps and lot genealogy so edge-of-wafer outliers are
 visible before they enter your module line. Record the same reference planes
 and fixtures you use on the incumbent, or the comparison is fiction.
@@ -1095,6 +1100,8 @@ blind risk.
 correlation and split field codes fourth.'' Offer to go deep on HTOL validity
 or on what you would put in the reaction plan.
 
+
+\noindent\textit{Practice case: \Cref{sec:case-second-source}.}
 \subsection{A single lane is weak in a multi-lane module. How do you isolate
 optical, electrical, thermal, and assembly causes?}
 \label{sec:interview-worked-lane}
@@ -1346,6 +1353,8 @@ Manufacturability issues need a supplier and process owner.
 questions pick the owner.'' Offer a one-line example of each bucket from
 your experience if you have one.
 
+
+\noindent\textit{Practice case: \Cref{sec:case-fleet-ber}.}
 \subsection{What would you put in fleet telemetry, and why?}
 \label{sec:interview-worked-telemetry}
 
@@ -1435,7 +1444,7 @@ decision, and recurrence.
 \item[Plane / access] Reference plane stated; black-box versus engineering
       access honored.
 \item[Causal discipline] Leading mechanism until controlled confirmation; no
-      surviving-hypothesis-as-root-cause.
+      surviving-hypothesis-as-confirmed-mechanism.
 \item[Decision] Ship / stop / contain / redesign / continue named explicitly.
 \item[Recurrence] ATP, sample, SPC, supplier, design, firmware, or telemetry
       control named.
@@ -1473,12 +1482,13 @@ fleet story. Use only work you did. Hit all eight beats and end on a measured
 recurrence control. Use the stories LLM practice box. Record yourself once and
 cut invented metrics.
 
-\paragraph{Day 4: instruments, waterfall, and debug forks.}
+\paragraph{Day 4: instruments, waterfall, debug forks, and case practice.}
 Review what each instrument removes as uncertainty. Drill waterfall shift
 versus floor versus burst pattern
 (\Cref{sec:interview-waterfall,sec:fm-ber-increase,sec:fm-ber-floor}). Rehearse
 hot BER with stable power, aging versus calibration, and weak-lane isolation.
-Use the ten-concepts LLM practice box.
+Work \Cref{sec:case-fleet-ber,sec:case-hot-ber} aloud under time pressure and
+score with \Cref{sec:interview-scoring-rubric}. Use the ten-concepts LLM practice box.
 
 \paragraph{Day 5: reliability, manufacturing, and suppliers.}
 Drill HTOL credibility, Arrhenius/$E_a$, bathtub (burn-in versus wear-out),

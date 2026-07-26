@@ -5,8 +5,8 @@ This chapter is a symptom-first field guide. Start with what the bench,
 production line, or fleet reports. Preserve the failing state until its evidence
 has been captured, then use the same workflow for every incident. Distinguish
 observation, correlation, hypothesis, leading mechanism, and confirmed mechanism
-(after controlled confirmation). Do not call the last surviving hypothesis the root
-cause without controlled reproduction, swap testing, stress dependence, or
+(after controlled confirmation). Do not call the last surviving hypothesis the confirmed
+mechanism without controlled reproduction, swap testing, stress dependence, or
 physical evidence. Do not say ``data proves'' until confirmation exists. For
 each symptom, state access (black-box versus engineering), the decision
 unlocked, and the earliest production or fleet control
@@ -140,7 +140,7 @@ calibration. A drifting monitor photodiode can report loss that does not exist.
       Do not change bias or equalization while locating the loss.
 \item Rerun LIV at the failing temperature. A moved LIV raises $P(\mathrm{source})$;
       a stable LIV raises $P(\mathrm{path\ or\ monitor})$ until confirmed. Do not treat
-      either as root cause before controlled confirmation.
+      either as a confirmed mechanism before controlled confirmation.
 \item Preserve telemetry, then inspect connectors before cleaning
       (\Cref{sec:fm-contamination}). Measure insertion loss and ORL. Use a golden
       fiber and module swap to separate field plant from module.
@@ -765,7 +765,7 @@ promotes the leading set. \textbf{Decision:} move survivors to Confirm, or
 reopen Locate margin. \textbf{Risk if skipped:} confirmation bias.
 
 \paragraph{Confirm / correct (short).}
-Prove the fault follows the suspected block under swap or stress, then show
+Confirm the fault follows the suspected block under swap or stress, then show
 before/after margin at the original failing corner. \textbf{Exit when}
 ownership is assigned and the fix restores that corner. \textbf{Risk if
 skipped:} you ``fix'' the wrong block or ship a lab-only cure.
@@ -793,7 +793,7 @@ wrong scope.
 \item[Preserve] Snapshot before you touch it.
 \item[Scope] One unit, lot, vendor, site, or fleet?
 \item[Classify / locate] Time class and which ledger moved first?
-\item[Falsify / confirm] Kill hypotheses; prove the block owns the fail.
+\item[Falsify / confirm] Kill hypotheses; confirm the block owns the fail.
 \item[Correct / prevent] Restore the corner; catch the next escape in ATP
       or telemetry.
 \end{description}
@@ -830,6 +830,6 @@ wrong scope.
 
 \keyidea{A useful failure analysis starts with a symptom and ends with a new
 control. Preserve the failing state, split shared from local behavior, clear the
-measurement system, and choose one measurement that can disprove the leading
+measurement system, and choose one measurement that can falsify the leading
 hypothesis. The corrective action is incomplete until production or fleet data
 show that the same signature no longer escapes.}

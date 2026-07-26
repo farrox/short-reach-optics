@@ -648,7 +648,7 @@ connector) need process, handling, and ATP screens. Mixing buckets wastes CAPA
 and teaches the wrong lesson to the next lot (\Cref{sec:fleet-triage}).
 
 Later evidence must not rewrite an earlier wrong bucket without new data. A
-clean facet DPA does not prove the connector was innocent if ORL was never
+clean facet DPA does not confirm the connector was innocent if ORL was never
 measured. An HTOL pass does not clear a date-code ESD cluster.
 
 \subsection{Learning summary}
@@ -1025,7 +1025,7 @@ not ``fleet monitoring'' alone.\par}
 \end{table*}
 
 \paragraph{EVT (engineering validation test).}
-\textbf{Purpose:} prove the design can operate, not that it is ready for
+\textbf{Purpose:} demonstrate the design can operate, not that it is ready for
 fleet corners. \textbf{Uncertainty removed:} basic integration and first-order
 laser health on engineering samples. \textbf{Activities:} CMIS bring-up
 sequence (\Cref{sec:bringup}), first light, LIV/SMSR/RIN on samples, one link
@@ -1035,7 +1035,7 @@ redesign. \textbf{Risk if skipped:} DVT matrices run on parts that never
 reliably link.
 
 \paragraph{DVT (design validation test).}
-\textbf{Purpose:} prove the requirements slice across temperature, voltage,
+\textbf{Purpose:} demonstrate the requirements slice across temperature, voltage,
 and production-representative corners, with a frozen life plan.
 \textbf{Uncertainty removed:} whether margin and named stress coverage close
 before volume tooling. \textbf{Activities:} full ATP at $T$/$V$, prod-rep
@@ -1045,7 +1045,7 @@ evidence plan. \textbf{Decision:} enter PVT, hold, or redesign.
 \textbf{Risk if skipped:} PVT yield work hides missing corner coverage.
 
 \paragraph{PVT (production validation test).}
-\textbf{Purpose:} prove the supplier can build the qualified result at yield
+\textbf{Purpose:} demonstrate the supplier can build the qualified result at yield
 on production tooling and hosts. \textbf{Uncertainty removed:} lot variation,
 process control, and ATP escape coverage. \textbf{Activities:} multi-lot yield
 versus ATP, live SPC, burn-in escape rate, FAIR on production tooling,
@@ -1245,10 +1245,10 @@ bucket (\Cref{sec:fleet-triage}), run structured corrective action:
       in the fleet.
 \item \textbf{Evidence pack:} failing ATP rows, CMIS dumps, LIV/SMSR/RIN plots, DPA
       photos (facet, solder, FAU cross-section) compared to a golden unit.
-\item \textbf{8D / CAPA}\firstterm{eightD}: root cause with the supplier (process step,
+\item \textbf{8D / CAPA}\firstterm{eightD}: confirmed mechanism with the supplier (process step,
       material lot, firmware), corrective action, and preventive control (ATP tighten,
       SPC limit, poke-yoke).
-\item \textbf{Verify closure:} containment proved effective; root cause reproduced
+\item \textbf{Verify closure:} containment confirmed effective; mechanism reproduced
       or physically confirmed; corrective action removes the failure; no
       unacceptable regression introduced; production control detects recurrence;
       next lots remain stable; field cohort trend improves. Re-run FAIR alone is
@@ -1397,7 +1397,7 @@ shift, lot, supplier site, and ATP row. Run a golden unit across stations and a
 failing unit on a reference bench. If the failure follows the station, repair the
 measurement system. If it follows the unit, inspect upstream process data and
 choose failure analysis that can distinguish the top mechanisms. Contain first,
-find root cause second, change the process third, and verify the fix on fresh data.
+confirm the mechanism second, change the process third, and verify the fix on fresh data.
 
 \debugstory{Module yield fell sharply after a supplier lot change.}{The failure
 Pareto pointed to one-lane TDECQ. Golden units passed all stations, and failed

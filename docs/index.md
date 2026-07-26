@@ -25,10 +25,11 @@ title: "Table of Contents"
 - [**9.** AI datacenter networking](ch9-ai-datacenter-networking)
 - [**10.** Failure analysis handbook](ch10-failure-analysis-handbook)
 - [**Appendix A.** One-week optical systems interview review](ch11-one-week-optical-systems-interview-review)
-- [**Appendix B.** Thirty-second interview frameworks](ch12-thirty-second-interview-frameworks)
-- [**Appendix C.** Engineering decision trees](ch13-engineering-decision-trees)
-- [**Appendix D.** Abbreviations and terminology](ch14-abbreviations-and-terminology)
-- [**15.** References](ch15-references)
+- [**12.** Engineering case studies](ch12-engineering-case-studies)
+- [**Appendix B.** Thirty-second interview frameworks](ch13-thirty-second-interview-frameworks)
+- [**Appendix C.** Engineering decision trees](ch14-engineering-decision-trees)
+- [**Appendix D.** Abbreviations and terminology](ch15-abbreviations-and-terminology)
+- [**16.** References](ch16-references)
 
 ---
 

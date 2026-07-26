@@ -617,6 +617,7 @@ def apply_transforms(content: str) -> str:
     content = replace_fw_macro(content, "fwquestion", "Interview question.")
     content = replace_fw_macro(content, "fwtesting", "What the interviewer is testing.")
     content = replace_fw_macro(content, "fwassumptions", "Assumptions to state.")
+    content = replace_fw_macro(content, "fwfirst", "First thing I would check.")
     content = replace_fw_macro(content, "fwwhy", "Key concepts.")
     content = replace_fw_macro(content, "fwmeas", "Measurements.")
     content = replace_fw_macro(content, "fwfollow", "Typical follow-ups.")

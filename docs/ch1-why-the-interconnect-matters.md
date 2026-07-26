@@ -83,7 +83,7 @@ More compute increases the amount of traffic the system can inject. It does not 
 
 ## The systems engineering loop
 
-Work from the system downward, then close the loop in the fleet. This chapter's loop is the outer product loop. Chapter 7 expands the Validation $\rightarrow$ Deployment $\rightarrow$ Fleet $\rightarrow$ Feedback segment into the full validation ladder (Table 7.1, Appendix C.2).
+Work from the system downward, then close the loop in the fleet. This chapter's loop is the outer product loop. Chapter 7 expands the Validation $\rightarrow$ Deployment $\rightarrow$ Fleet $\rightarrow$ Feedback segment into the full validation ladder (Table 7.1, Appendix D.2).
 
 <pre class="dectree" aria-label="Requirements"><code>Requirements
   |
@@ -143,7 +143,7 @@ Use the debugging pyramid: start at the system symptom, narrow to signal quality
 
 ## The debugging pyramid
 
-When a link fails, work from the top down. Each layer narrows the search before you open a connector or reseat a module. This framework reappears in every chapter. Apply the power-versus-quality fork early (§4.8, Appendix C.4) and organize lost margin with the five ledgers (§5.19).
+When a link fails, work from the top down. Each layer narrows the search before you open a connector or reseat a module. This framework reappears in every chapter. Apply the power-versus-quality fork early (§4.8, Appendix D.4) and organize lost margin with the five ledgers (§5.19).
 
 <pre class="dectree" aria-label="System symptom"><code>System symptom
   |

@@ -5,7 +5,7 @@ title: "Appendix C: Engineering decision trees"
 
 # Appendix C: Engineering decision trees
 
-This appendix is the wall chart. It collects the universal reasoning frameworks used throughout the book, independent of any interview question. Open it when you need the pattern without the surrounding prose. Interview pressure maps are in Appendix B; the drill philosophy is in Appendix A.
+This appendix is the wall chart. It collects the universal reasoning frameworks used throughout the book, independent of any interview question. Open it when you need the pattern without the surrounding prose. Interview pressure maps are in Appendix C; the drill philosophy is in Appendix A.
 
 Debugging and qualification are the same philosophy at different times. Debugging asks which margin was exhausted. Qualification asks how much margin remains after the expected stresses. Both end on an engineering decision and a recurrence control.
 
@@ -32,7 +32,7 @@ Controlled confirmation
 Decision + owner + timeline + reversibility
   |
 Follow-up control (ATP / SPC / telemetry / supplier)</code></pre>
-Stable average power deprioritizes gross optical loss but does not eliminate fast power fluctuations, clipping, monitor averaging, or reflection-dependent effects. A surviving hypothesis is only the leading mechanism until confirmed by reproduction, controlled swap, stress dependence, rollback, or physical evidence (§4.8, §7.11, Appendix C.16).
+Stable average power deprioritizes gross optical loss but does not eliminate fast power fluctuations, clipping, monitor averaging, or reflection-dependent effects. A surviving hypothesis is only the leading mechanism until confirmed by reproduction, controlled swap, stress dependence, rollback, or physical evidence (§4.8, §7.11, Appendix D.16).
 
 ## Qualification lifecycle
 
@@ -82,7 +82,7 @@ Acceptance criterion
 Production proxy
   |
 Ship / restrict / reject</code></pre>
-Use inside the reliability gate of Appendix C.2. The lifecycle says *when*; this tree says *what evidence* is defensible (Appendix C.16, §8.2).
+Use inside the reliability gate of Appendix D.2. The lifecycle says *when*; this tree says *what evidence* is defensible (Appendix D.16, §8.2).
 
 ## Power-versus-quality diagnostic fork
 
@@ -102,7 +102,7 @@ Highest-value measurement
 Leading mechanism -&gt; controlled confirmation
   |
 Decision + recurrence control</code></pre>
-One check before retuning equalizers or bias tables (§4.8, Appendix C.1).
+One check before retuning equalizers or bias tables (§4.8, Appendix D.1).
 
 ## Scope and population
 
@@ -185,7 +185,7 @@ Corrective action
 Recurrence control
   |
 Decision closure: owner / timeline / reversibility / follow-up</code></pre>
-Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (§8.7, §7.12, Appendix C.16).
+Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (§8.7, §7.12, Appendix D.16).
 
 ## Margin-consumption flow
 
@@ -295,7 +295,7 @@ Decision with today's confidence
 Continue measuring?
   |-- YES --&gt; next measurement
   |-- NO  --&gt; control + owner + residual risk</code></pre>
-Unknown mechanism is not a freeze. Decide with weighted evidence (Appendix A.6, Appendix C.14).
+Unknown mechanism is not a freeze. Decide with weighted evidence (Appendix A.6, Appendix D.14).
 
 ## Evidence block
 
@@ -335,7 +335,7 @@ Reversibility: how hard to undo?
 Follow-up control: ATP / SPC / telemetry / supplier CA</code></pre>
 Example (supplier defect): stop shipment of the scoped lot; owner Operations plus Quality; follow-up is supplier corrective action and the production or fleet control that would catch the next escape.
 
-Chapter 7, Chapter 8, Chapter 10, Appendix B point here rather than restating the list.
+Chapter 7, Chapter 8, Chapter 10, Appendix C point here rather than restating the list.
 
 ## Before you start: three checklists
 
@@ -385,7 +385,7 @@ Chapter 7, Chapter 8, Chapter 10, Appendix B point here rather than restating
 
 
 <div class="nav-links">
-  <a href="ch12-thirty-second-interview-frameworks">&larr; Previous</a>
+  <a href="ch13-thirty-second-interview-frameworks">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch14-abbreviations-and-terminology">Next &rarr;</a>
+  <a href="ch15-abbreviations-and-terminology">Next &rarr;</a>
 </div>

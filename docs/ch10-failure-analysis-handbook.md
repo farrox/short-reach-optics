@@ -5,7 +5,7 @@ title: "Ch 10: Failure analysis handbook"
 
 # 10 Failure analysis handbook
 
-This chapter is a symptom-first field guide. Start with what the bench, production line, or fleet reports. Preserve the failing state until its evidence has been captured, then use the same workflow for every incident. Distinguish observation, correlation, hypothesis, leading mechanism, and confirmed mechanism (after controlled confirmation). Do not call the last surviving hypothesis the root cause without controlled reproduction, swap testing, stress dependence, or physical evidence. Do not say "data proves" until confirmation exists. For each symptom, state access (black-box versus engineering), the decision unlocked, and the earliest production or fleet control (Appendix C.16, Appendix A.2).
+This chapter is a symptom-first field guide. Start with what the bench, production line, or fleet reports. Preserve the failing state until its evidence has been captured, then use the same workflow for every incident. Distinguish observation, correlation, hypothesis, leading mechanism, and confirmed mechanism (after controlled confirmation). Do not call the last surviving hypothesis the confirmed mechanism without controlled reproduction, swap testing, stress dependence, or physical evidence. Do not say "data proves" until confirmation exists. For each symptom, state access (black-box versus engineering), the decision unlocked, and the earliest production or fleet control (Appendix D.16, Appendix A.2).
 
 ##### Failure-analysis output categories.
 
@@ -31,7 +31,7 @@ Unknown mechanism
 
 : Continue investigation with an owner and interim control.
 
-Connect FA back into qualification. After corrective action, name what changed: requirement, qualification plan, ATP, SPC, telemetry, or supplier process (Appendix C.3, §7.1.12).
+Connect FA back into qualification. After corrective action, name what changed: requirement, qualification plan, ATP, SPC, telemetry, or supplier process (Appendix D.3, §7.1.12).
 
 <pre class="dectree" aria-label="Observe"><code>Observe
   |
@@ -67,7 +67,7 @@ Gradual?
   |-- aging / drift / margin erosion / contamination / cal movement
   |
 Prioritize measurements (priors, not conclusions)</code></pre>
-Choose each measurement for its ability to separate competing hypotheses. The debugging pyramid in §1.8, the power-versus-signal fork in §4.8, the fleet router in Table 7.5, and the wall-chart trees in Appendix C provide the same method at different scales.
+Choose each measurement for its ability to separate competing hypotheses. The debugging pyramid in §1.8, the power-versus-signal fork in §4.8, the fleet router in Table 7.5, and the wall-chart trees in Appendix D provide the same method at different scales.
 
 Power loss
 
@@ -130,7 +130,7 @@ Launch power can fall because the laser is disabled, thermally rolled over, or a
 
 2.  Walk optical power plane by plane with a known source and calibrated meter. Do not change bias or equalization while locating the loss.
 
-3.  Rerun LIV at the failing temperature. A moved LIV raises $P(\mathrm{source})$; a stable LIV raises $P(\mathrm{path\ or\ monitor})$ until confirmed. Do not treat either as root cause before controlled confirmation.
+3.  Rerun LIV at the failing temperature. A moved LIV raises $P(\mathrm{source})$; a stable LIV raises $P(\mathrm{path\ or\ monitor})$ until confirmed. Do not treat either as a confirmed mechanism before controlled confirmation.
 
 4.  Preserve telemetry, then inspect connectors before cleaning (§10.10). Measure insertion loss and ORL. Use a golden fiber and module swap to separate field plant from module.
 
@@ -512,7 +512,7 @@ Which single measurement best separates the leading hypotheses? Write expected r
 
 ##### Confirm / correct (short).
 
-Prove the fault follows the suspected block under swap or stress, then show before/after margin at the original failing corner. **Exit when** ownership is assigned and the fix restores that corner. **Risk if skipped:** you "fix" the wrong block or ship a lab-only cure.
+Confirm the fault follows the suspected block under swap or stress, then show before/after margin at the original failing corner. **Exit when** ownership is assigned and the fix restores that corner. **Risk if skipped:** you "fix" the wrong block or ship a lab-only cure.
 
 ##### Prevent.
 
@@ -538,7 +538,7 @@ Classify / locate
 
 Falsify / confirm
 
-: Kill hypotheses; prove the block owns the fail.
+: Kill hypotheses; confirm the block owns the fail.
 
 Correct / prevent
 
@@ -568,7 +568,7 @@ Correct / prevent
 
 - When is a no-fault-found return evidence of weak triage rather than a good unit?
 
-**Key idea.** A useful failure analysis starts with a symptom and ends with a new control. Preserve the failing state, split shared from local behavior, clear the measurement system, and choose one measurement that can disprove the leading hypothesis. The corrective action is incomplete until production or fleet data show that the same signature no longer escapes.
+**Key idea.** A useful failure analysis starts with a symptom and ends with a new control. Preserve the failing state, split shared from local behavior, clear the measurement system, and choose one measurement that can falsify the leading hypothesis. The corrective action is incomplete until production or fleet data show that the same signature no longer escapes.
 
 
 <div class="nav-links">

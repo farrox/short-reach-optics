@@ -9,7 +9,7 @@ A link that closes in the lab can still fail the business case if lasers die in 
 
 ## The language of scale: FIT and DPPM
 
-Fleet arguments need two different numbers. One is about life in the field; the other is about quality at the factory door. A rate without population definition, observation time, and confidence is not a fleet claim (Appendix C.16).
+Fleet arguments need two different numbers. One is about life in the field; the other is about quality at the factory door. A rate without population definition, observation time, and confidence is not a fleet claim (Appendix D.16).
 
 FIT (failures in time)
 
@@ -25,7 +25,7 @@ DPPM (defective parts per million)
 
 ## Qualification flows
 
-Qualification measures remaining margin after stress. Debugging is what you do when that remaining margin hits zero. Use the same canonical validation lifecycle as Appendix A.8.5, Appendix C.2 (requirements through controlled pilot and fleet monitoring); this chapter owns the environmental, reliability, manufacturing, and ATP gates. Keep the customer view and the vendor view distinct: the vendor designs internals; the customer characterizes externally visible behavior and decides deployment (Appendix A.8.6, Appendix A.8.7, Appendix C).
+Qualification measures remaining margin after stress. Debugging is what you do when that remaining margin hits zero. Use the same canonical validation lifecycle as Appendix A.8.5, Appendix D.2 (requirements through controlled pilot and fleet monitoring); this chapter owns the environmental, reliability, manufacturing, and ATP gates. Keep the customer view and the vendor view distinct: the vendor designs internals; the customer characterizes externally visible behavior and decides deployment (Appendix A.8.6, Appendix A.8.7, Appendix D).
 
 <pre class="dectree" aria-label="Requirement"><code>Requirement
   |
@@ -46,7 +46,7 @@ Production + fleet monitoring</code></pre>
 > Customer: BER, sensitivity, FEC, telemetry, environmental sweeps, interop.\
 > Engineering samples (Tx-only, Rx-only, breakout, PRBS) open isolation; otherwise stay on the external surface.
 
-The vendor designs the internals. The customer characterizes externally observable behavior and owns the deployment decision. For a bookended product, begin with BER, FEC, sensitivity, telemetry, environment, and interop. Request engineering access (Tx-only, Rx-only, breakout, external eye or TDECQ) only when that surface cannot decide. Do not assume a module reports a conventional optical eye (Appendix C.11, Appendix A.8.7).
+The vendor designs the internals. The customer characterizes externally observable behavior and owns the deployment decision. For a bookended product, begin with BER, FEC, sensitivity, telemetry, environment, and interop. Request engineering access (Tx-only, Rx-only, breakout, external eye or TDECQ) only when that surface cannot decide. Do not assume a module reports a conventional optical eye (Appendix D.11, Appendix A.8.7).
 
 Optoelectronics inherited a common qualification language from telecom: *Telcordia GR-468-CORE*. The core stress tests still show up on every laser and module program:
 
@@ -64,7 +64,7 @@ Keep the jobs distinct: **burn-in** screens infant mortality from a production p
 
 ##### GR-468 in practice.
 
-Telcordia GR-468-CORE is the common qualification language for optoelectronic modules and discrete lasers. Map evidence with Appendix C.3:
+Telcordia GR-468-CORE is the common qualification language for optoelectronic modules and discrete lasers. Map evidence with Appendix D.3:
 
     Requirement
             |
@@ -83,7 +83,7 @@ A 1,000-hour life test may justify a 100% room-temperature proxy, a sampled hot 
 Qualification engineering starts from mechanisms, not from a museum of tests. The matrix is illustrative: fill cells for the product class and claimed life.
 
 <table class="book-table"><tr><th>Failure mechanism</th><th>Stress</th><th>Observable</th><th>Acceptance</th><th>Production control</th></tr><tr><td>Laser degradation</td><td>Temperature / lifetime (HTOL)</td><td>Power, wavelength, BER</td><td>Named limit vs life claim</td><td>ATP / SPC / burn-in proxy</td></tr><tr><td>Solder fatigue</td><td>Temperature cycling</td><td>Resistance, BER, opens</td><td>Post-stress continuity / BER</td><td>Process control, FAIR</td></tr><tr><td>Contamination / corrosion</td><td>Humidity / damp heat</td><td>Loss, ORL, leakage</td><td>IL/ORL / functional limits</td><td>Handling, sealing, audit</td></tr><tr><td>Connector wear</td><td>Mate cycling</td><td>Insertion loss, ORL</td><td>Cycle-count IL budget</td><td>Supplier / hygiene control</td></tr></table>
-**Table 8.1.** Qualification planning matrix. Each row is mechanism $\rightarrow$ stress $\rightarrow$ observable $\rightarrow$ acceptance $\rightarrow$ production control (Appendix C.3; interview form Appendix B.15).
+**Table 8.1.** Qualification planning matrix. Each row is mechanism $\rightarrow$ stress $\rightarrow$ observable $\rightarrow$ acceptance $\rightarrow$ production control (Appendix D.3; interview form Appendix C.15).
 
 <pre class="dectree" aria-label="Qualification decision tree"><code>Qualification decision tree
   |
@@ -102,7 +102,7 @@ What confidence is required?
 What production control prevents escape?</code></pre>
 ##### Sample strategy and confidence.
 
-Weak answer: "We test 20 units." Strong answer: the sample strategy depends on the failure-rate target, the confidence requirement, cost, and population variation. State lots, date codes, suppliers, manufacturing sites or lines, process corners, and whether the claim is zero-failure upper-bound or observed rate (§8.1, Appendix C.16). A rate without population, observation time, and confidence is not a fleet claim.
+Weak answer: "We test 20 units." Strong answer: the sample strategy depends on the failure-rate target, the confidence requirement, cost, and population variation. State lots, date codes, suppliers, manufacturing sites or lines, process corners, and whether the claim is zero-failure upper-bound or observed rate (§8.1, Appendix D.16). A rate without population, observation time, and confidence is not a fleet claim.
 
 ##### GR-1221: the passive-component companion.
 
@@ -309,7 +309,7 @@ Table 8.2 is a triage map, not a life calculator. Each row asks which mechanism
 
 Classify before corrective action. Reliability rows (COD, gradual wear, SMSR, EAM, true isolator/source RIN) need life models, derate, and supplier physics work. Performance rows (ORL-driven RIN, lock/thermal control) need plant, bias, and control fixes. Manufacturing and packaging rows (ESD, FAU, solder, connector) need process, handling, and ATP screens. Mixing buckets wastes CAPA and teaches the wrong lesson to the next lot (§7.12).
 
-Later evidence must not rewrite an earlier wrong bucket without new data. A clean facet DPA does not prove the connector was innocent if ORL was never measured. An HTOL pass does not clear a date-code ESD cluster.
+Later evidence must not rewrite an earlier wrong bucket without new data. A clean facet DPA does not confirm the connector was innocent if ORL was never measured. An HTOL pass does not clear a date-code ESD cluster.
 
 ### Learning summary
 
@@ -393,7 +393,7 @@ Investigate / confirm mechanism
 Corrective action
   |
 Recurrence control</code></pre>
-Provisional containment, scope refinement, mechanism confirmation, and recurrence control are different actions. Apply Appendix C.9, Appendix C.12, Appendix C.16 to separate immediate hold from FA and from the ATP, sample, SPC, or telemetry change that closes the loop. Organize the spent margin with the five ledgers before naming a component (§5.19, §4.8).
+Provisional containment, scope refinement, mechanism confirmation, and recurrence control are different actions. Apply Appendix D.9, Appendix D.12, Appendix D.16 to separate immediate hold from FA and from the ATP, sample, SPC, or telemetry change that closes the loop. Organize the spent margin with the five ledgers before naming a component (§5.19, §4.8).
 
 An escaped defect is a unit that passed every production screen and failed in the field. Post-screen field failures split into two categories with different corrective actions:
 
@@ -438,7 +438,7 @@ Destructive physical analysis (cross-section, EDX) and structured 8D/CAPA with s
 
 > **Before production**
 >
-> ATP $\cdot$ SPC $\cdot$ telemetry $\cdot$ supplier gates $\cdot$ monitoring owners $\cdot$ RMA-to-ATP feedback (Appendix C.17).
+> ATP $\cdot$ SPC $\cdot$ telemetry $\cdot$ supplier gates $\cdot$ monitoring owners $\cdot$ RMA-to-ATP feedback (Appendix D.17).
 
 ### Test time is a cost, coverage is a risk
 
@@ -497,7 +497,7 @@ Failure analysis
 Updated limits or screens
   |
 Next production cycle</code></pre>
-Production validation is replayable and decision-oriented (Appendix C.13).
+Production validation is replayable and decision-oriented (Appendix D.13).
 
 ##### NPI gates and exit criteria.
 
@@ -508,15 +508,15 @@ New product introduction (*NPI*) gates are the manufacturing face of the validat
 
 ##### EVT (engineering validation test).
 
-**Purpose:** prove the design can operate, not that it is ready for fleet corners. **Uncertainty removed:** basic integration and first-order laser health on engineering samples. **Activities:** CMIS bring-up sequence (§7.9), first light, LIV/SMSR/RIN on samples, one link to a usable BER. **Exit:** ready state, light, and a closing BER on a known-good path. **Decision:** continue to DVT, or debug integration / redesign. **Risk if skipped:** DVT matrices run on parts that never reliably link.
+**Purpose:** demonstrate the design can operate, not that it is ready for fleet corners. **Uncertainty removed:** basic integration and first-order laser health on engineering samples. **Activities:** CMIS bring-up sequence (§7.9), first light, LIV/SMSR/RIN on samples, one link to a usable BER. **Exit:** ready state, light, and a closing BER on a known-good path. **Decision:** continue to DVT, or debug integration / redesign. **Risk if skipped:** DVT matrices run on parts that never reliably link.
 
 ##### DVT (design validation test).
 
-**Purpose:** prove the requirements slice across temperature, voltage, and production-representative corners, with a frozen life plan. **Uncertainty removed:** whether margin and named stress coverage close before volume tooling. **Activities:** full ATP at $T$/$V$, prod-rep corners (§7.9), TDECQ/OMA/sensitivity, freeze GR-468-class stress plan and FIT model. **Exit:** corner closures plus agreed life evidence plan. **Decision:** enter PVT, hold, or redesign. **Risk if skipped:** PVT yield work hides missing corner coverage.
+**Purpose:** demonstrate the requirements slice across temperature, voltage, and production-representative corners, with a frozen life plan. **Uncertainty removed:** whether margin and named stress coverage close before volume tooling. **Activities:** full ATP at $T$/$V$, prod-rep corners (§7.9), TDECQ/OMA/sensitivity, freeze GR-468-class stress plan and FIT model. **Exit:** corner closures plus agreed life evidence plan. **Decision:** enter PVT, hold, or redesign. **Risk if skipped:** PVT yield work hides missing corner coverage.
 
 ##### PVT (production validation test).
 
-**Purpose:** prove the supplier can build the qualified result at yield on production tooling and hosts. **Uncertainty removed:** lot variation, process control, and ATP escape coverage. **Activities:** multi-lot yield versus ATP, live SPC, burn-in escape rate, FAIR on production tooling, bring-up on the production host. **Exit:** yield and SPC support open volume. **Decision:** open MP volume or hold for process CAPA. **Risk if skipped:** shipping PVT material without frozen ATP limits seeds field NFF and dishonest FIT arguments (§7.12).
+**Purpose:** demonstrate the supplier can build the qualified result at yield on production tooling and hosts. **Uncertainty removed:** lot variation, process control, and ATP escape coverage. **Activities:** multi-lot yield versus ATP, live SPC, burn-in escape rate, FAIR on production tooling, bring-up on the production host. **Exit:** yield and SPC support open volume. **Decision:** open MP volume or hold for process CAPA. **Risk if skipped:** shipping PVT material without frozen ATP limits seeds field NFF and dishonest FIT arguments (§7.12).
 
 ##### Pilot (controlled field confirmation).
 
@@ -637,9 +637,9 @@ When a lot fails ATP, incoming, or field triage lands in the manufacturability b
 
 2.  **Evidence pack:** failing ATP rows, CMIS dumps, LIV/SMSR/RIN plots, DPA photos (facet, solder, FAU cross-section) compared to a golden unit.
 
-3.  **8D / CAPA**: root cause with the supplier (process step, material lot, firmware), corrective action, and preventive control (ATP tighten, SPC limit, poke-yoke).
+3.  **8D / CAPA**: confirmed mechanism with the supplier (process step, material lot, firmware), corrective action, and preventive control (ATP tighten, SPC limit, poke-yoke).
 
-4.  **Verify closure:** containment proved effective; root cause reproduced or physically confirmed; corrective action removes the failure; no unacceptable regression introduced; production control detects recurrence; next lots remain stable; field cohort trend improves. Re-run FAIR alone is not enough for environmental, intermittent, or fleet-specific escapes (Appendix C.16).
+4.  **Verify closure:** containment confirmed effective; mechanism reproduced or physically confirmed; corrective action removes the failure; no unacceptable regression introduced; production control detects recurrence; next lots remain stable; field cohort trend improves. Re-run FAIR alone is not enough for environmental, intermittent, or fleet-specific escapes (Appendix D.16).
 
 Do not close 8D on "operator error" without a control that would have caught it at ATP or in process. If FA shows laser wear-out on a young unit, it may be a reliability screen gap, not a supplier process bug; reclassify with §7.12 before you argue FIT.
 
@@ -705,7 +705,7 @@ Programs fail at scale through wear, variation, and escapes. Wear shifts a unit 
 
 ### How it is debugged
 
-For a yield fall, freeze software, limits, and suspect material. Split by tester, shift, lot, supplier site, and ATP row. Run a golden unit across stations and a failing unit on a reference bench. If the failure follows the station, repair the measurement system. If it follows the unit, inspect upstream process data and choose failure analysis that can distinguish the top mechanisms. Contain first, find root cause second, change the process third, and verify the fix on fresh data.
+For a yield fall, freeze software, limits, and suspect material. Split by tester, shift, lot, supplier site, and ATP row. Run a golden unit across stations and a failing unit on a reference bench. If the failure follows the station, repair the measurement system. If it follows the unit, inspect upstream process data and choose failure analysis that can distinguish the top mechanisms. Contain first, confirm the mechanism second, change the process third, and verify the fix on fresh data.
 
 \> \*\*Debug story\*\* \> \> \*\*Observed.\*\* Module yield fell sharply after a supplier lot change. \> \> \*\*Investigation.\*\* The failure Pareto pointed to one-lane TDECQ. Golden units passed all stations, and failed units kept the bad lane on the reference bench. Cross-sections showed a shifted fiber-array attach. \> \> \*\*Finding.\*\* The electrical path and testers were stable. \> \> \*\*Root cause.\*\* An assembly fixture change moved one fiber row outside its coupling window. \> \> \*\*Resolution.\*\* The lot was held, the fixture was restored, first-article coupling checks were tightened, and the supplier control plan was revised.
 

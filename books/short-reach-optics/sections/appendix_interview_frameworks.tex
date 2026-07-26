@@ -19,6 +19,8 @@ you debug it?}
 
 \fwassumptions{Average received-power telemetry is trusted; the issue reproduces; the product is bookended; engineering access is unavailable unless requested.}
 
+\fwfirst{Confirm scope, time behavior, and that average-power telemetry is trusted at a named plane.}
+
 \execanswer{Stable average power reduces the likelihood of gross optical-loss problems, so I move into signal quality. I first scope the population and timing behavior, then separate transmitter, channel, receiver, and DSP hypotheses using the highest-value measurement available at the lowest access level. If engineering access exists I add deeper measurements such as eyes or bias behavior. The final action depends on whether the issue requires containment, repair, supplier correction, or qualification updates.}
 
 \begin{dectree}
@@ -63,7 +65,7 @@ BER waterfall $\rightarrow$ shift or floor? $\rightarrow$ sensitivity vs noise.}
 \item ``The receiver is bad because optical power is fine.'' Power does not
       represent noise, timing, distortion, or control behavior.
 \item Naming the laser first.
-\item Calling ``bad eye'' a root cause.
+\item Calling ``bad eye'' a confirmed mechanism.
 \item Listing instruments without a decision or recurrence control.
 \end{itemize}}
 
@@ -84,6 +86,8 @@ debug it?}
 \fwtesting{Power-ledger triage: external reference planes, monitor honesty, and population-driven containment.}
 
 \fwassumptions{The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.}
+
+\fwfirst{Confirm the power drop with an external meter at a named plane before trusting module monitors.}
 
 \execanswer{Power moved, so stay on the power ledger. First scope the failure.
 Confirm with an external meter at a named plane, then bisect source enable,
@@ -145,6 +149,8 @@ received power on that lane looks normal. How would you isolate it?}
 
 \fwassumptions{The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.}
 
+\fwfirst{Confirm whether one lane is an outlier versus a multi-lane gradient or pattern.}
+
 \execanswer{First scope: one lane, one unit, or a pattern across the lot?
 Compare sibling lanes, then optical-versus-electrical swap to split path from
 driver or TIA. Therefore I would fix assembly or the array element that owns
@@ -198,6 +204,8 @@ do you do?}
 \fwtesting{Corner debugging: measure where it fails, separate reversible control/calibration from permanent damage.}
 
 \fwassumptions{The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.}
+
+\fwfirst{Confirm scope and whether cool-down recovers before blaming the laser.}
 
 \execanswer{Power held, so leave the power ledger. First scope the failure and
 whether cool-down recovers. At the failing temperature, read externally
@@ -259,6 +267,8 @@ ledger: \Cref{sec:interview-margin-ledgers}.}
 \fwtesting{Mechanism separation with external references and reversibility, not telemetry narrative alone.}
 
 \fwassumptions{The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.}
+
+\fwfirst{Confirm whether recalibration recovers the symptom (black-box) before opening LIV.}
 
 \execanswer{Physical aging often changes a baseline: LIV, power, spectrum, RIN,
 sensitivity, or drive. Calibration drift changes the operating point while
@@ -323,7 +333,9 @@ drift to table control plus a loaded-corner screen.}
 
 \fwassumptions{The component boundary and ownership are defined; module confirmation is still required before open volume; engineering access to source samples may be available.}
 
-\execanswer{Freeze requirements at the component boundary, not the incumbent datasheet. Characterize multi-lot distributions for LIV, SMSR, RIN, wavelength, and process corners. Prove integration compatibility in the host module, run mechanism-appropriate reliability, correlate supplier ATP to your proxy, then confirm on module samples. Therefore I would gate open volume on FAIR, ATP correlation, and split RMA codes, not on a hero die.}
+\fwfirst{Freeze the component-boundary requirements slice, not the incumbent datasheet.}
+
+\execanswer{Freeze requirements at the component boundary, not the incumbent datasheet. Characterize multi-lot distributions for LIV, SMSR, RIN, wavelength, and process corners. Demonstrate integration compatibility in the host module, run mechanism-appropriate reliability, correlate supplier ATP to your proxy, then confirm on module samples. Therefore I would gate open volume on FAIR, ATP correlation, and split RMA codes, not on a hero die.}
 
 \begin{dectree}
 Second component source
@@ -370,6 +382,8 @@ Supplier ATP vs your proxy $\rightarrow$ escape risk? $\rightarrow$ ship gate.}
 \fwtesting{Complete-product second source: black-box nominal behavior, margin, host/peer interop, environmental and reliability evidence, manufacturing readiness, controlled pilot, and fleet RMA separation.}
 
 \fwassumptions{The product is bookended unless engineering samples are contracted; customer-visible metrics dominate; open volume waits on pilot exit.}
+
+\fwfirst{Define what equivalence means for the customer-visible product before measuring a golden sample.}
 
 \execanswer{Freeze the customer-visible requirements slice. Walk architecture feasibility, bring-up, characterization, margin, interoperability, reliability qualification, manufacturing validation, controlled pilot, mass production readiness, then fleet monitoring with feedback. Request engineering access only when black-box evidence is insufficient. Therefore I would gate open volume on FAIR, ATP correlation, pilot exit, and split RMA codes.}
 
@@ -420,7 +434,9 @@ through production?}
 
 \fwassumptions{Requirements and owners exist; stage exits are binary enough to fail; engineering access is requested only when a gate cannot decide.}
 
-\execanswer{I start by defining the system requirements and failure risks. Then I build the validation plan around reducing uncertainty: architecture proves the budgets can close, bring-up proves basic operation, characterization builds the behavioral model, margin testing determines headroom, interoperability proves system compatibility, qualification proves reliability, manufacturing validation proves repeatability, and controlled deployment plus telemetry confirms field assumptions. Every stage has an exit criterion tied to a decision.}
+\fwfirst{Freeze the requirements slice and named risks before listing instruments.}
+
+\execanswer{I start by defining the system requirements and failure risks. Then I build the validation plan around reducing uncertainty: architecture demonstrates the budgets can close, bring-up demonstrates basic operation, characterization builds the behavioral model, margin testing determines headroom, interoperability demonstrates system compatibility, qualification demonstrates reliability, manufacturing validation demonstrates repeatability, and controlled deployment plus telemetry confirms field assumptions. Every stage has an exit criterion tied to a decision.}
 
 \begin{dectree}
 Requirements definition
@@ -473,6 +489,8 @@ How do you triage?}
 \fwtesting{Fleet ownership: scope, trend, bucket, and contain-versus-monitor under incomplete evidence.}
 
 \fwassumptions{The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.}
+
+\fwfirst{Scope population and trend (unit / lot / vendor / rack / fleet) before pulling hardware.}
 
 \execanswer{First scope: unit, lot, vendor, rack, datacenter, or fleet? Ask
 trend and change history. Classify performance versus reliability versus
@@ -527,6 +545,8 @@ What do you do?}
 
 \fwassumptions{The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.}
 
+\fwfirst{Provisionally contain the growing population, then refine scope.}
+
 \execanswer{Contain first, then own the loop. Stop shipment of Supplier~B
 affected lots, scope the deployed population, compare failing versus healthy
 units, open joint FA with the supplier, drive corrective action, expand ATP or
@@ -569,7 +589,7 @@ DPA sample $\rightarrow$ mechanism class? $\rightarrow$ permanent fix.}
 \end{itemize}}
 
 \fwmistakes{\begin{itemize}
-\item Waiting for root cause before stop-ship.
+\item Waiting for a confirmed mechanism before stop-ship.
 \item Blocking all vendors for one supplier's lot.
 \end{itemize}}
 
@@ -588,6 +608,8 @@ fix?}
 \fwtesting{Separating waterfall shift from floor, then choosing measurements for the leading non-power-limited impairment.}
 
 \fwassumptions{The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.}
+
+\fwfirst{Confirm floor versus waterfall shift with a VOA sweep at a named plane.}
 
 \execanswer{A floor means additional received power no longer removes the
 dominant impairment. Confirm floor versus shift on a waterfall, then test for
@@ -644,6 +666,8 @@ do you proceed?}
 
 \fwassumptions{The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.}
 
+\fwfirst{Preserve the failing state and telemetry before reseat, clean, or reboot.}
+
 \execanswer{Preserve the failing state and telemetry before you reseat, clean,
 or reboot. Scope time and change: dwell, temperature, vibration, firmware,
 connector. Prefer burst/FEC histograms and long dwell over a single golden
@@ -697,6 +721,8 @@ Mate/demate $\rightarrow$ connector? $\rightarrow$ hygiene / replace.}
 
 \fwassumptions{The escape path can be named; a failing unit or equivalent can be replayed; measurement capability is known.}
 
+\fwfirst{Name the escape path and the measurement that would have caught it.}
+
 \execanswer{Name the escape path and the measurement that would have caught it at a named plane and corner. Choose the most economical control: new ATP item, tighter limit, sampled audit, SPC variable, supplier process correction, design or firmware guard, or telemetry alarm. Only select a 100\% screen when separation, cycle time, measurement capability, and cost justify it. Therefore I would ship the chosen control with an owner and a metric.}
 
 \begin{dectree}
@@ -734,7 +760,7 @@ Golden units across stations $\rightarrow$ correlation? $\rightarrow$ ship.}
 \item Limits from one hero unit.
 \end{itemize}}
 
-\fwclose{I name the missed uncertainty, choose ATP / sample / SPC / supplier / design / firmware / telemetry, prove separation, and ship the control with an owner.}
+\fwclose{I name the missed uncertainty, choose ATP / sample / SPC / supplier / design / firmware / telemetry, demonstrate separation, and ship the control with an owner.}
 
 \fwdeep{Production readiness stage in \Cref{sec:interview-validation-ladder}.}
 
@@ -746,6 +772,8 @@ Golden units across stations $\rightarrow$ correlation? $\rightarrow$ ship.}
 \fwtesting{Instrumenting ledgers that unlock triage decisions, not logging every register.}
 
 \fwassumptions{Schema and firmware versions are known; retention and owners exist; missing-data behavior is defined; alarms have a decision owner.}
+
+\fwfirst{Name the decision each telemetry field must unlock before adding registers.}
 
 \execanswer{Log what discriminates hypotheses: per-lane power, bias, pre-FEC BER and FEC histograms; module temperature and actuator drive; LOS/LOL with context. Require timestamp accuracy, sampling cadence, aggregation window, units, calibration/scaling, missing-data behavior, firmware/schema version, serial/lot/platform, event trigger, retention, and a decision owner. Alarm on trends and disagreements, not only hard thresholds. Therefore I would instrument the ledgers margin testing said die first.}
 
@@ -792,6 +820,8 @@ design.}
 \fwtesting{Qualification-evidence judgment: mechanism coverage, stress selection, sample strategy, acceptance criteria, confidence, production correlation, release evidence. This playbook is a scoped evidence path, not a second full lifecycle; use \Cref{fw:validation-plan,sec:tree-qualification} for the stage order.}
 
 \fwassumptions{Requirements name mechanisms; sample strategy and confidence are stated; production proxies are cheaper than full GR-468 replay; release is a ship / restrict / reject decision.}
+
+\fwfirst{Freeze the requirements slice and named mechanisms before listing stresses.}
 
 \execanswer{I qualify from requirements to mechanisms, not from a ritual list. What does the system require? What can fail? How do we accelerate those mechanisms? What observable changes? What defines pass/fail? How much evidence is enough? How does production control maintain quality? Therefore I would gate ship on remaining margin after named stresses with a stated sample strategy and confidence, plus a production proxy (\Cref{sec:tree-qual-evidence,sec:qual-planning-matrix}).}
 
@@ -848,6 +878,8 @@ is still unknown. What do you do?}
 \fwtesting{Deciding with today's evidence: contain, owner, control, and residual risk before mechanism certainty.}
 
 \fwassumptions{The failure reproduces; telemetry is calibrated unless challenged; the product is bookended; engineering access is unavailable unless requested.}
+
+\fwfirst{State evidence, scope, and residual risk before waiting for a physical mechanism.}
 
 \execanswer{State evidence, confidence weights, and residual risk. Decide with
 today's evidence: contain the scoped population, keep a healthy path shipping,
