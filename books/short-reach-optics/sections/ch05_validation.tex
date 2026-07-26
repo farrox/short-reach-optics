@@ -49,6 +49,15 @@ at volume. Factory and incoming screens catch escapes; they do not prove life.
 accept/reject decision applied per unit, per lot, or by a documented sampling
 plan.
 
+\paragraph{One module, five jobs.}
+Take a temperature BER sweep on a new EML module. Mapping BER versus case
+temperature to find cliffs is characterization. Checking that BER stays below
+the frozen FEC objective at the named plane and method is verification. Running
+that check on the production host, cable plant, and install practice is
+validation. Running HTOL or humidity on a sample lot to bound life for a named
+mechanism is qualification. Running a fast lot screen for power, CMIS, and a
+sampled TDECQ row is production test. Same hardware, five different questions.
+
 The split matters because the classic program failures are category errors:
 treating characterization cliffs as automatic product failure, treating ATP as
 life proof, or treating HTOL as host interoperability. The rest of this chapter
@@ -922,31 +931,33 @@ transmitter.
 \section{Instruments}
 \label{sec:instruments}
 
-A failing PAM4 link rarely announces which block is wrong. The bench is how you
-force the answer: each instrument isolates one failure mode, and the loopback
-topology tells you which side of the optical connector owns it.
+A failing PAM4 link rarely announces which block is wrong. Ask the investigation
+question first, then pick the gear that can separate the leading hypotheses.
+Loopback topology tells you which side of the optical connector owns the fault
+(\Cref{sec:optical-channel}).
 
 \begin{description}
-\item[DCA] \firstterm{DCA} (digital communication analyzer): sampling scope for PAM4 eyes, TDECQ,
-      OMA, RLM (\Cref{sec:tdecq}). Needs a reference receiver filter matched to the
-      PHY under test.
-\item[BERT]\firstterm{BERT} bit-error ratio at pre- and post-FEC; FEC symbol histograms
-      (\Cref{sec:kp4}).
-\item[OSA / wavemeter]\firstterm{OSA} wavelength, spectrum, SMSR, side modes, and linewidth where
-      supported (\Cref{ch:lasers}).
-\item[PD + ESA or dedicated RIN analyzer] relative intensity-noise spectrum under a
-      defined condition (\Cref{sec:rin-values}).
-\item[VOA / stressor assembly]\firstterm{VOA} calibrated attenuation and optional ISI for SECQ and
-      sensitivity sweeps.
-\item[Power meter] average power; pair with DCA for OMA.
-\item[Thermal chamber + TEC controller] corner validation; essential for rings
-      (\Cref{sec:siring,ch:wdm}) and laser grids.
+\item[Where is the power?] Power meter for average power; DCA for OMA. Walk
+      planes before you change bias.
+\item[Did the eye or levels move?] \firstterm{DCA} (digital communication
+      analyzer) for PAM4 eyes, TDECQ, OMA, RLM (\Cref{sec:tdecq}). Needs a
+      reference receiver filter matched to the PHY under test.
+\item[Did BER shift or floor?] \firstterm{BERT} for pre- and post-FEC BER and
+      FEC symbol histograms (\Cref{sec:kp4}); \firstterm{VOA} / stressor for
+      calibrated attenuation and optional ISI on sensitivity sweeps.
+\item[Is the spectrum or grid wrong?] \firstterm{OSA} / wavemeter for
+      wavelength, SMSR, side modes, and linewidth where supported
+      (\Cref{ch:lasers}).
+\item[Is intensity noise the floor?] PD + ESA or a dedicated RIN analyzer under
+      a defined ORL (\Cref{sec:rin-values}).
+\item[Does temperature own it?] Thermal chamber + TEC controller for corners;
+      essential for rings and laser grids (\Cref{sec:siring,ch:wdm}).
 \end{description}
 
 Use electrical loopback (host SerDes), optical loopback (Tx$\to$Rx on module), and
-golden-host/golden-module interop to bisect faults (\Cref{sec:optical-channel}).
-If the fault follows the module under golden-host swap, stop blaming the SerDes;
-if it stays with the host, stop opening laser FA.
+golden-host/golden-module interop to bisect faults. If the fault follows the
+module under golden-host swap, stop blaming the SerDes; if it stays with the
+host, stop opening laser FA.
 
 \section{Building a link budget}
 \label{sec:link-budget}
@@ -978,6 +989,14 @@ Keep power budget, signal-quality penalties, timing, thermal, and control
 authority as separate ledgers when the impairment is not a pure optical-power
 number (\Cref{sec:laser-margin-erosion,sec:tree-margin-budget}).
 
+\paragraph{Walkthrough before Method A or B.}
+Name the reference plane (usually Tx faceplate OMA). Subtract each loss once:
+coupling, connectors, fiber or waveguide, and any plant allocation you have
+evidence for. Compare the remaining power to receiver sensitivity at the named
+BER / FEC objective. Choose Method~A or Method~B for transmitter quality; do
+not tax TDECQ twice by subtracting a compliance OMA/TDECQ limit and an
+independent TDECQ penalty.
+
 \paragraph{Design allocation versus validation measurement.}
 Distinguish margin allocation in design from margin verification in test.
 During design, engineers allocate transmitter output, receiver sensitivity,
@@ -1005,10 +1024,10 @@ Deployment decision
 
 \paragraph{TDECQ accounting: two methods.}
 \begin{description}
-\item[Method A --- Composite compliance] Use the PMD's specified OMA/TDECQ
+\item[Method A: Composite compliance] Use the PMD's specified OMA/TDECQ
       relationship. Do not subtract TDECQ again as an independent link-budget
       penalty.
-\item[Method B --- Engineering decomposition] Use a separate measured
+\item[Method B: Engineering decomposition] Use a separate measured
       transmitter-quality penalty only when the accounting method is defined and
       does not duplicate the compliance limit.
 \end{description}
@@ -1148,7 +1167,8 @@ ignored will fail the first host that enforces the state machine
       together so later triage has a baseline (\Cref{sec:fleet-triage}).
 \end{enumerate}
 
-\Cref{tab:bringup-checklist} is the short form you can put on a lab wall.
+The numbered sequence above is primary. \Cref{tab:bringup-checklist} is a
+wall-chart quick reference only; do not maintain a second conflicting procedure.
 
 \begin{table*}[ht]
 \refstepcounter{table}\label{tab:bringup-checklist}%
@@ -1227,68 +1247,31 @@ production readiness.\par}
 \subsection{Reading the production-corner map}
 \label{sec:prod-corners-read}
 
-Quiet $T$/$V$ characterization maps the part. \Cref{tab:prod-corners} asks
-whether that map survives rack, host, plant, and service abuse. Use the table
-for the full set. The notes below teach the two corners that most often fool
-a quiet bench; the rest are Exit/Decision only.
+Quiet $T$/$V$ characterization maps the part. \Cref{tab:prod-corners} is the
+checklist. Read it in four groups before you invent new corners.
 
-\paragraph{Chassis thermal (worked).}
-Chamber case-$T$ does not prove sled airflow or faceplate gradient. Run the
-module in the target rack at production load; log case $T$, TEC current,
-lock, and pre-FEC BER versus the chamber baseline. \textbf{Exit when} loaded
-thermal closes with margin or names a derate / TEC / unlock restriction.
-\textbf{Decision:} approve the envelope, restrict deployment, or redesign
-cooling. \textbf{Risk if skipped:} quiet-chamber passes unlock in the first
-dense tray.
+\paragraph{Thermal and loading.}
+Chassis thermal and neighbor load ask whether sled airflow, faceplate gradient,
+shared heat, and tray traffic leave TEC, lock, and BER with margin. Chamber
+case-$T$ alone does not answer that.
 
-\paragraph{LPO / linear path (worked).}
-Retimed modules hide host FIR and module linearity faults
-(\Cref{sec:224g-deploy,sec:com,sec:drivers}). Run host COM and pre-FEC BER on
-the linear path. \textbf{Exit when} BER and COM meet targets on the
-production host, or LPO is rejected for that host class. \textbf{Decision:}
-approve LPO, force retimed optics, or redesign host FIR / module linearity.
-\textbf{Risk if skipped:} LPO ships on hope and fails on the production ASIC
-SerDes.
+\paragraph{Electrical and host.}
+Host rails live, voltage corners, and LPO / linear path ask whether SerDes
+traffic, supply noise, brown-out, and host FIR/COM still close the link when
+the module cannot hide behind a retimer.
 
-\paragraph{Other corners (retrieve from the table).}
-\begin{description}
-\item[Host rails live] \textbf{Exit when} BER and bias telemetry stay clean
-      under host supplies with traffic. \textbf{Decision:} approve pairing or
-      demand PSRR/ground work. \textbf{Risk:} chasing optical RIN for host
-      noise.
-\item[Dirty fiber / ORL] \textbf{Exit when} stressed-ORL BER meets the plant
-      budget or forces isolator / cleaning rules. \textbf{Decision:} approve
-      plant practice or tighten service. \textbf{Risk:} lab heroes fail the
-      first dirty install.
-\item[Cable plant] \textbf{Exit when} production fiber/MPO/bend closes the
-      signed budget. \textbf{Decision:} approve plant or cut reach.
-      \textbf{Risk:} budget fiction on long MPO chains.
-\item[ELS hot-swap] \textbf{Exit when} swap recovers to ready and BER, or
-      service is restricted (\Cref{sec:elsfp}). \textbf{Decision:} approve
-      field replace or forbid hot-swap. \textbf{Risk:} service story fails
-      the first maintenance window.
-\item[Neighbor load] \textbf{Exit when} full-traffic neighbors close lock and
-      BER. \textbf{Decision:} approve dense packing or derate. \textbf{Risk:}
-      single-module DVT passes; tray bring-up fails.
-\item[Voltage corners] \textbf{Exit when} host Vcc min/max holds CMIS and BER.
-      \textbf{Decision:} approve envelope or tighten ATP. \textbf{Risk:}
-      brown-outs look like firmware bugs.
-\end{description}
+\paragraph{Optical plant.}
+Dirty fiber / ORL and cable plant ask whether production MPO count, bends, and
+field cleanliness match the signed loss and reflection assumptions.
 
-\subsection{Why these corners come after quiet characterization}
+\paragraph{Service and interaction.}
+ELS hot-swap asks whether the replaceability story survives a live maintenance
+window: CMIS state, mate cycles, and recovery under the traffic policy you
+claim.
 
 Chassis thermal, host rails, and ORL are the minimum before DVT exit on a
-representative unit. The full set belongs before PVT exit
-(\Cref{tab:npi}). Later fleet monitoring must not invent coverage these
-corners never ran.
-
-\subsection{Learning summary}
-
-\begin{description}
-\item[Before DVT] Chassis thermal, host rails, and ORL on a representative unit.
-\item[Before PVT] Full \Cref{tab:prod-corners} set, including LPO if claimed.
-\item[Each corner] Exit when the claim closes or a restriction is named.
-\end{description}
+representative unit. The full set belongs before PVT exit (\Cref{tab:npi}).
+Later fleet monitoring must not invent coverage these corners never ran.
 
 \paragraph{System bring-up.}
 \tradeoff{Best laboratory performance vs production yield}{Hero samples that win
