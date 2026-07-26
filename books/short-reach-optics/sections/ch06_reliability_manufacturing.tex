@@ -63,21 +63,12 @@ resulting evidence is sufficient for the claim
 (\Cref{sec:tree-qual-evidence,sec:interview-validation-ladder}).
 
 Debugging is what you do when remaining margin hits zero. Qualification asks
-how much margin remains after the expected stresses. Use the same canonical
-validation lifecycle as \Cref{sec:tree-qualification}; this chapter owns the
+how much margin remains after the expected stresses. Use the same Steps as
+\Cref{sec:validation-workflow,sec:tree-qualification}; this chapter owns the
 environmental, reliability, manufacturing, and ATP gates. Keep the customer view
 and the vendor view distinct: the vendor designs internals; the customer
 characterizes externally visible behavior and decides deployment
 (\Cref{sec:interview-margin-budget,sec:interview-customer-vendor}).
-
-\paragraph{One continuous example: gradual laser degradation.}
-Suppose the concern is gradual laser degradation. HTOL is useful only because
-elevated temperature and operation may accelerate the active-region mechanism.
-LIV measurements before and during stress reveal whether threshold current rises
-or slope efficiency falls. Sample size, lots, stress hours, and confidence
-determine the strength of the resulting life claim
-(\Cref{sec:qual-sample-strategy,sec:fit-dppm}). A production burn-in may later
-screen infant mortality, but it does not replace qualification.
 
 \begin{dectree}
 Requirement
@@ -106,48 +97,40 @@ For a bookended product, begin with BER, FEC, sensitivity, telemetry,
 environment, and interop. Request engineering access only when that surface
 cannot decide (\Cref{sec:tree-blackbox-access}).
 
-Optoelectronics inherited a common qualification language from telecom:
-\term{Telcordia GR-468-CORE}\firstcite{gr468}. The core stress tests still show up
-on every laser and module program:
+\paragraph{Worked story: gradual laser degradation.}
+Walk one mechanism end to end before opening the matrix. The requirement is a
+named life claim, for example five years at the use condition and thermal class
+in the PRD. The threat is gradual active-region wear: threshold rises and slope
+falls over life. That is not COD (sudden dark after a healthy ship LIV) and not
+ESD or latch-up (hard fail with supply signature and no optical aging trend).
 
-\begin{itemize}
-\item HTOL (high-temperature operating life) for life or mechanism evidence.
-\item Burn-in as a production infant-mortality screen when justified.
-\item Temperature cycling and damp heat.
-\item Electrostatic-discharge and mechanical stress.
-\end{itemize}
+The evidence strategy is representative lots and sites under justified HTOL:
+elevated temperature and bias chosen because they accelerate that mechanism,
+with sample size, stress hours, and confidence stated
+(\Cref{sec:qual-sample-strategy,sec:fit-dppm}). HTOL is useful only when that
+acceleration argument holds. Observables are LIV and system proxies versus the
+ship baseline: $I_\mathrm{th}$, slope efficiency, wavelength, launch power or
+BER drift, recorded before and during stress at named planes.
 
-Keep the jobs distinct: \textbf{burn-in} screens infant mortality from a
-production population; \textbf{qualification HTOL} gathers life or mechanism
-evidence under accelerated operation; a production burn-in is a manufacturing
-screen only when separation, cycle time, and cost justify it. Do not imply that
-every GR-468-style HTOL is a per-unit screen.
+Acceptance is a bounded change after projection that still supports the life
+claim. Document $E_a$ and confidence when converting HTOL hours to field years,
+and do not apply one $E_a$ to mixed mechanisms. Production control is decided
+last: a room-temperature LIV/power ATP proxy, a sampled hot audit, SPC on
+$I_\mathrm{th}$ and slope, or an explicit statement that no cost-effective 100\%
+screen separates the weak tail. A production burn-in may cull infant mortality;
+it does not replace this life argument.
 
-\term{Arrhenius} acceleration underpins life projection only when the named
-failure mechanism is temperature-accelerated in the assumed regime: raising
-temperature accelerates wear-out by a factor set by the activation energy for
-that mechanism. Do not apply one $E_a$ to mixed mechanisms.
-
-\paragraph{GR-468 in practice.}
-\label{sec:gr468}
-
-Telcordia GR-468-CORE is the common qualification language for optoelectronic
-modules and discrete lasers. Map each stress onto the qualification evidence
-path in \Cref{sec:tree-qual-evidence}; do not invent a second sequence here.
-
-A 1{,}000-hour life test may justify a 100\% room-temperature proxy, a sampled
-hot audit, a process monitor, or no direct production screen at all. Do not map
-every GR-468 stress sequence into 100\% ATP. Document $E_a$ and confidence
-bounds when converting HTOL hours to field years, keep sample-size humility
-(\Cref{sec:fit-dppm,tab:npi}), and qualify the laser die, hermetic package, and
-module assembly separately when failures split across those boundaries
-(\Cref{sec:photonic-packaging,sec:laser-aging,sec:elsfp}).
+Other mechanisms (solder fatigue, contamination, connector wear) follow the same
+template. \Cref{tab:qual-planning-matrix} is the reference fill-in, not the
+primary explanation.
 
 \paragraph{Qualification planning matrix.}
 \label{sec:qual-planning-matrix}
 
-Qualification engineering starts from mechanisms, not from a museum of tests.
-The matrix is illustrative: fill cells for the product class and claimed life.
+The matrix restates the laser story (and siblings) as
+mechanism $\rightarrow$ stress $\rightarrow$ observable $\rightarrow$
+acceptance $\rightarrow$ production control. Fill cells for the product class
+and claimed life; do not treat blank rows as covered.
 
 \begin{table*}[ht]
 \refstepcounter{table}\label{tab:qual-planning-matrix}%
@@ -159,7 +142,7 @@ The matrix is illustrative: fill cells for the product class and claimed life.
 \toprule
 Failure mechanism & Stress & Observable & Acceptance & Production control \\
 \midrule
-Laser degradation & Temperature / lifetime (HTOL) & Power, wavelength, BER & Named limit vs life claim & ATP / SPC / burn-in proxy \\
+Laser degradation & Temperature / lifetime (HTOL) & $I_\mathrm{th}$, slope, $\lambda$, BER & Named limit vs life claim & ATP / SPC / sampled audit / none \\
 \addlinespace[0.7em]
 Solder fatigue & Temperature cycling & Resistance, BER, opens & Post-stress continuity / BER & Process control, FAIR \\
 \addlinespace[0.7em]
@@ -170,15 +153,35 @@ Connector wear & Mate cycling & Insertion loss, ORL & Cycle-count IL budget & Su
 \end{tabular}
 \par\medskip
 {\raggedright\footnotesize\textbf{Table~\thetable.} Qualification planning
-matrix. Each row is mechanism $\rightarrow$ stress $\rightarrow$ observable
-$\rightarrow$ acceptance $\rightarrow$ production control
-(\Cref{sec:tree-qual-evidence}; interview form \Cref{fw:qual-plan}).
-Decision unlocked: which mechanism-stress-observable row is missing before you
-claim life.\par}
+matrix (reference). Same template as the laser-degradation story above.
+Interview form: \Cref{fw:qual-plan,sec:tree-qual-evidence}. Decision unlocked:
+which mechanism-stress-observable row is missing before you claim life.\par}
 \end{table*}
 
-Interview and wall-chart form of the same path:
-\Cref{fw:qual-plan,sec:tree-qual-evidence}.
+\paragraph{GR-468 in practice.}
+\label{sec:gr468}
+
+Optoelectronics inherited a common qualification language from telecom:
+\term{Telcordia GR-468-CORE}\firstcite{gr468}. Map each stress onto the
+qualification evidence path in \Cref{sec:tree-qual-evidence}; do not invent a
+second sequence. Core stresses that still show up on every laser and module
+program: HTOL for life or mechanism evidence; burn-in as a production
+infant-mortality screen when justified; temperature cycling and damp heat; ESD
+and mechanical stress.
+
+Keep the jobs distinct: \textbf{burn-in} screens infant mortality from a
+production population; \textbf{qualification HTOL} gathers life or mechanism
+evidence under accelerated operation. Do not imply that every GR-468-style HTOL
+is a per-unit screen. A 1{,}000-hour life test may justify a 100\%
+room-temperature proxy, a sampled hot audit, a process monitor, or no direct
+production screen at all. Document $E_a$ and confidence bounds when converting
+HTOL hours to field years, keep sample-size humility
+(\Cref{sec:fit-dppm,tab:npi}), and qualify the laser die, hermetic package, and
+module assembly separately when failures split across those boundaries
+(\Cref{sec:photonic-packaging,sec:laser-aging,sec:elsfp}).
+
+\term{Arrhenius} acceleration underpins life projection only when the named
+failure mechanism is temperature-accelerated in the assumed regime.
 
 \paragraph{Sample strategy and confidence.}
 \label{sec:qual-sample-strategy}
@@ -756,24 +759,28 @@ Next production cycle
 Production validation is replayable and decision-oriented
 (\Cref{sec:tree-production-loop}).
 
-\paragraph{NPI gates and exit criteria.}
-New product introduction (\term{NPI}\firstterm{NPI}) gates are the manufacturing
-face of the validation ladder. Write exit criteria a supplier can fail without
-ambiguity, not slogans. EVT/DVT/PVT/MP are stage names, not a calendar; dates and
-sample sizes belong in the program plan.
+\paragraph{NPI as program maturity.}
+New product introduction (\term{NPI}\firstterm{NPI}) is the manufacturing face of
+the validation Steps in \Cref{sec:validation-workflow}. Write exit criteria a
+supplier can fail without ambiguity, not slogans. EVT/DVT/PVT/MP are stage
+names, not a calendar; dates and sample sizes belong in the program plan.
 
 \paragraph{Why program maturity changes the question.}
-EVT asks whether the architecture can be made to work. DVT asks whether its
-behavior and margin are understood across intended corners. Qualification asks
-whether named failure mechanisms threaten life. PVT asks whether production
-tooling and suppliers reproduce the qualified result. A pilot asks whether
-laboratory and factory assumptions survive deployment. MP is not another
-validation experiment; it is sustained control with SPC, ECO, and RMA ownership
+Early in the program the question is whether the architecture can be made to
+work at all (EVT), then whether behavior and margin are understood across the
+intended corners (DVT). Once the part is characterized, the question shifts to
+whether named failure mechanisms threaten life (qualification), then whether
+production tooling and suppliers can reproduce that qualified result across lots
+(PVT). A pilot asks whether laboratory and factory assumptions survive a
+bounded, observable deployment. Mass production is not another validation
+experiment: it is sustained control with SPC, ECO, and RMA ownership
 (\Cref{sec:ladder-mp,sec:ladder-fleet-monitor}).
 
 Do not use an EVT hero sample as PVT evidence, and do not treat MP as fleet
-monitoring alone. Hold a gate if the exit data are missing
-(\Cref{tab:npi,sec:validation-workflow}).
+monitoring alone. Hold a gate if the exit data are missing.
+\Cref{tab:npi} retrieves the gate questions and release calls; it does not
+define a second lifecycle beside the Steps
+(\Cref{sec:validation-workflow,sec:tree-qualification}).
 
 \begin{table*}[ht]
 \refstepcounter{table}\label{tab:npi}%
@@ -799,9 +806,9 @@ MP & Is quality sustained? & Steady DPPM; owned RMA Pareto; ECO control; fleet f
 \bottomrule
 \end{tabular}
 \par\medskip
-{\raggedright\footnotesize\textbf{Table~\thetable.} NPI gates. Decision unlocked:
-which release call the gate evidence supports. Pilot sits between PVT and MP;
-MP is sustained control, not fleet monitoring alone.\par}
+{\raggedright\footnotesize\textbf{Table~\thetable.} NPI gates (reference).
+Decision unlocked: which release call the gate evidence supports. Pilot sits
+between PVT and MP; MP is sustained control, not fleet monitoring alone.\par}
 \end{table*}
 
 \paragraph{Requirements and ATP are the contract.}

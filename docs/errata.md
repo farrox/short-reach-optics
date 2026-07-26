@@ -80,6 +80,12 @@ No new frameworks or chapters.
   ``One lifecycle'' prose, Step subsections (margin + interoperability merged
   as Step~5), ``Choosing evidence within a step,'' and a Staff takeaway. App~C
   wall chart updated to the same 11 Steps (`ch05`, `app:decision-trees`).
+- **Ch8 qualification story + NPI maturity:** Expanded the laser-degradation
+  worked story (requirement → threat → HTOL strategy → observables →
+  acceptance → production control) to precede `tab:qual-planning-matrix` as
+  reference; demoted GR-468 inventory after the matrix. Rewrote NPI as one
+  EVT→…→MP maturity narrative with the gate table as retrieve
+  (`ch06`).
 
 ## Typographical fixes
 

@@ -625,9 +625,10 @@ input-referred noise (\Cref{sec:pd-tia,ch:models}).
 
 Only after Tx, channel, and Rx each look sane do you trust a full-link verdict:
 pre-FEC BER against the KP4 threshold (\Cref{sec:kp4}), post-FEC BER, FEC
-symbol-error histograms, and a signed link-budget ledger from transmitter OMA to
-receiver sensitivity with penalties and remaining margin. That ledger is the
-document you argue from in DVT; the BER alone is not.
+symbol-error histograms (\Cref{sec:fec-symbol-histogram}), and a signed
+link-budget ledger from transmitter OMA to receiver sensitivity with penalties
+and remaining margin. That ledger is the document you argue from in DVT; the
+BER alone is not.
 
 \section{Measurement mapping}
 \label{sec:measurement-mapping}
@@ -743,12 +744,34 @@ pattern and stress. \textbf{Decision:} golden-swap ownership, derate reach, or
 redesign Rx. \textbf{Risk if skipped:} Tx FA on an Rx-limited link.
 
 \paragraph{Pre-FEC BER / FEC histogram.}
-Pre-FEC BER is the system score every other metric feeds. The FEC histogram
-shape separates sparse Gaussian-like errors from clustered bursts (MPI,
-intermittents, unlocked intervals). \textbf{Exit when} BER and histogram
-support the claimed mechanism class. \textbf{Decision:} contain, clean,
-retune, or open FA. \textbf{Risk if skipped:} average BER hides a bursty
-escape that ATP never stressed.
+\label{sec:fec-symbol-histogram}
+Pre-FEC BER is the system score every other metric feeds. An FEC
+\emph{symbol-error histogram} is not a DCA eye histogram. KP4 is
+Reed--Solomon RS(544,514) on 10-bit symbols (\Cref{sec:kp4}). The decoder or
+host FEC counters report how many of those symbols were wrong before
+correction, usually as errors per codeword or as errors versus time /
+codeword index. That distribution is the histogram.
+
+Average BER alone does not classify the failure. Two links can share the same
+pre-FEC BER and fail for different reasons:
+\begin{itemize}
+\item \textbf{Sparse / Poisson-like:} most codewords have zero or one error;
+      rare twos and threes. Fits steady noise (thermal, steady RIN,
+      Gaussian-ish margin).
+\item \textbf{Bursty / clustered:} long quiet stretches, then clumps of many
+      errors in a short window (several bad symbols or consecutive bad
+      codewords). Fits time-local events: MPI or reflections, connector
+      intermittents, unlock, supply or clock glitches, vibration.
+\end{itemize}
+KP4 can correct up to 15 symbol errors per codeword. Sparse errors usually
+stay correctable. A burst can dump many errors into one codeword, so you see
+uncorrectables or flapping even when the long-run BER still looks acceptable.
+Shape separates sparse Gaussian-like errors from clustered bursts; a bursty
+histogram alone is not proof of MPI. Confirm with ORL, timing, swaps, and
+plant disturbance (\Cref{sec:fm-ber-increase,sec:interview-waterfall}).
+\textbf{Exit when} BER and histogram support the claimed mechanism class.
+\textbf{Decision:} contain, clean, retune, or open FA. \textbf{Risk if
+skipped:} average BER hides a bursty escape that ATP never stressed.
 
 \usuallymeans{BER waterfall floor that more launch power does not fix}{RIN,
 MPI, crosstalk, receiver saturation, or another non-power-limited impairment
