@@ -104,6 +104,16 @@ WDM is not only lasers and locking (\Cref{sec:cwwdm}): the PIC\firstterm{PIC} ne
 selective routing. The MUX/demux stage is a first-class link-budget line item
 (\Cref{sec:link-budget}), not a packaging footnote.
 
+\paragraph{Signal journey through the MUX.}
+Follow one wavelength from laser (or comb line) through the modulator, into the
+MUX, across the plant, and out the demux to the receiver. Stage insertion loss
+lowers OMA on every lane. Passband ripple and MUX imbalance make the weakest
+$\lambda$ the budget limit even when the average looks fine. Adjacent-channel
+crosstalk closes eyes and raises TDECQ before average power looks dead. Grid
+misalignment clips the filter edge and can unlock a ring before the power meter
+alarms. Treat those signatures as plant and filter problems until per-$\lambda$
+power and isolation prove otherwise.
+
 \paragraph{Hardware choices.}
 \begin{description}
 \item[AWG / echelle gratings] multiplex and demultiplex on silicon or glass.
@@ -157,12 +167,9 @@ MUX imbalance (uneven OMA per $\lambda$). Treat the weakest channel as the
 budget-limiting lane, not the average.
 
 \paragraph{How to read the MUX budget.}
-\Cref{tab:mux-budget} is an FA map, not a datasheet. Stage loss hits every
-lane; ripple and imbalance make the weakest $\lambda$ the limit; crosstalk and
-grid misalignment show up as Tx quality or unlock before average power looks
-dead. \textbf{Exit when} the weakest lane's OMA, isolation, and grid alignment
-close the budget, or a MUX stage is redesigned. \textbf{Decision unlocked:}
-approve the MUX for ATP, or open packaging / PIC FA on the failing row.
+\Cref{tab:mux-budget} is an FA map for the journey above. Approve the MUX for
+ATP when the weakest lane's OMA, isolation, and grid alignment close the budget;
+otherwise open packaging or PIC FA on the failing row.
 
 \section{Lock-loop mechanics}
 \label{sec:locking-techniques}
@@ -194,6 +201,24 @@ based on whether the laser, the ring, or both must be steered
       (\Cref{sec:pluggables}).
 \end{description}
 
+\paragraph{Capture versus hold.}
+Decide the control job before you inventory actuators. \emph{Capture} is
+acquiring lock from a cold or unlocked state: coarse scan of heater or TEC until
+the monitor error signal crosses zero, then close the loop. \emph{Hold} is
+rejecting thermal drift and neighbor crosstalk once locked. Loop bandwidth must
+be fast enough to track case-temperature ramps and adjacent-heater steps, but
+slow enough not to fight the data path or inject RIN through bias modulation.
+Silicon rings at $\sim$10~GHz/\textdegree C set the disturbance scale: a
+1~\textdegree C neighbor step is tens of GHz of resonance walk, which is a large
+fraction of a 100--200~GHz grid slot (\Cref{sec:siring}).
+
+\paragraph{Cold-start narrative.}
+Power the module, identify each assigned $\lambda$, park the coarse TEC or
+heater until the error signal crosses zero, close the loop at operating optical
+power (not dark), then prove hold under neighbor heat and case-$T$ ramp before
+you call lock validated (\Cref{sec:lock-validation}). Capture without hold is
+a demo, not a product.
+
 \paragraph{What you trim.}
 Three actuators show up repeatedly, and the bring-up order usually starts with the
 slowest, highest-authority knob. Laser TEC / temperature moves the whole comb or
@@ -202,16 +227,6 @@ a single DFB on the frequency axis. Laser bias current is the fine wavelength tr
 (\Cref{sec:laser-drivers}). Ring heaters park each microring onto its assigned
 $\lambda$ and are the per-channel control in dense banks
 (\Cref{sec:thermal-xtalk}).
-
-\paragraph{Capture versus hold.}
-\emph{Capture} is acquiring lock from a cold or unlocked state: coarse scan of
-heater or TEC until the monitor error signal crosses zero, then close the loop.
-\emph{Hold} is rejecting thermal drift and neighbor crosstalk once locked. Loop
-bandwidth must be fast enough to track case-temperature ramps and adjacent-heater
-steps, but slow enough not to fight the data path or inject RIN through bias
-modulation. Silicon rings at $\sim$10~GHz/\textdegree C set the disturbance scale:
-a 1~\textdegree C neighbor step is tens of GHz of resonance walk, which is a large
-fraction of a 100--200~GHz grid slot (\Cref{sec:siring}).
 
 \paragraph{Failure signatures.}
 When a loop loses lock, bisect laser versus ring by toggling the TEC setpoint and
@@ -257,11 +272,22 @@ optics~\firstcite{cwwdm}. Source-side measurement detail (per-channel power, SMS
 RIN, lock under neighbor heat) is in \Cref{sec:cwwdm-laser}; this section is the
 architecture contract.
 
-\paragraph{What the MSA specifies (and what it does not).}
-Rev~1.0 (June 2021) defines O-band wavelength grids, port configurations, and
-measurement methods. It does \emph{not} standardize mechanical form factors,
-management pins, or full link parameters; those stay application-specific or move
-to form-factor MSAs such as ELSFP~\firstcite{elsfp,cwwdm}.
+\paragraph{Architecture contract.}
+The PIC needs many clean, stable lines with per-line power flatness, grid
+placement and SMSR, RIN at the plant ORL, and absolute wavelength stable enough
+that ring heaters stay in range across temperature with all ports active
+(\Cref{sec:thermal-xtalk,sec:cwwdm-laser}). Miss any one and a single
+$\lambda$ looks like a modulator or lock failure when the source is the cause.
+External CW-WDM / ELSFP sources are field-replaceable: lasers dominate wear-out
+FIT (\Cref{ch:lasers,ch:reliability}), so keeping them off the ASIC package
+turns COD or facet failure into a hot-swap.
+
+\paragraph{Reference: CW-WDM MSA grid and measurement detail.}
+\textit{Reference.} Rev~1.0 (June 2021) defines O-band wavelength grids, port
+configurations, and measurement methods. It does \emph{not} standardize
+mechanical form factors, management pins, or full link parameters; those stay
+application-specific or move to form-factor MSAs such as
+ELSFP~\firstcite{elsfp,cwwdm}.
 
 Core normative content:
 \begin{itemize}
@@ -286,12 +312,6 @@ examples.
 Treat those as negotiation anchors; write the ATP to your link budget
 (\Cref{sec:cwwdm-laser,tab:laser-prd}).
 
-\paragraph{Why disaggregate the laser.}
-External CW-WDM / ELSFP sources are field-replaceable. Lasers dominate wear-out
-FIT (\Cref{ch:lasers,ch:reliability}); keeping them off the ASIC package turns a
-COD or facet failure into a hot-swap, not a board pull. The photonic engine still
-needs per-$\lambda$ lock to rings or filters.
-
 \paragraph{Exemplar: SuperNova + TeraPHY.}
 Ayar Labs' optical-I/O stack is aimed at \emph{scale-up} (XPU-to-XPU) rather than
 switch fabric~\firstcite{ayar}:
@@ -311,15 +331,6 @@ marketing numbers; use them as orientation, not as ATP limits.\sidenote{Source:
 \citehref{ayar}{Ayar Labs, SuperNova light source, ayarlabs.com}. Positioning:
 Ayar targets scale-up optical I/O between accelerators; Broadcom and NVIDIA CPO
 (\Cref{sec:cpo-status}) put the same building blocks on the \emph{switch}.}
-
-\paragraph{System requirements the source must meet.}
-For the PIC to close every lane, the comb must deliver, across temperature and
-with all ports active, a small set of properties at once: per-line power flatness
-(else MUX + modulator bank makes uneven OMA), grid placement and SMSR per line,
-RIN under the specified ORL, and absolute wavelength stable enough that ring
-heaters stay in range
-(\Cref{sec:thermal-xtalk,sec:cwwdm-laser}). Miss any one and a single $\lambda$
-will look like a modulator or lock-loop failure when the source is the real cause.
 
 \subsection{Comb sources: one device, many lines}
 \label{sec:comb-sources}
@@ -365,6 +376,12 @@ array of DFBs the PIC already knows how to drive.
 \subsection{Gain and power distribution across the bank}
 \label{sec:soa-distribution}
 
+\paragraph{Interview takeaway.}
+An SOA rescues launch power or line flatness and spends noise figure and
+polarization-dependent gain. Prefer a higher-power source that already meets the
+budget; if you add gain, name whether it is a comb booster, per-line trim, or
+receiver preamp, and keep per-line flatness as a system ATP row.
+
 Whatever generates the comb, the light still has to survive the trip to the
 modulators. One source feeds a multiplexer, a splitter tree, and per-line routing
 before it reaches a ring, and each stage takes its cut. When the source is a
@@ -397,6 +414,11 @@ the SOA entirely.
 
 \subsection{Polarization on the CW distribution path}
 \label{sec:polarization}
+
+\paragraph{Interview takeaway.}
+Receiver photodiodes do not need polarization control. The CW path into TFLN,
+grating couplers, and SOAs does. Hold that path on PM fiber to the preferred
+axis, or shorten it with co-packaging.
 
 IM/DD is forgiving about polarization where it counts most. The photodiode is a
 square-law detector, so the received state of polarization does not affect the
