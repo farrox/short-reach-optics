@@ -81,6 +81,8 @@ Interview and wall-chart form of the same path: Appendix C.15, Appendix D.3.
 
 Weak answer: "We test 20 units." Strong answer: the sample strategy depends on the failure-rate target, the confidence requirement, cost, and population variation. State lots, date codes, suppliers, manufacturing sites or lines, process corners, and whether the claim is zero-failure upper-bound or observed rate (§8.1, Appendix D.16). A rate without population, observation time, and confidence is not a fleet claim.
 
+> **Engineering heuristic.** A small sample that saw zero failures does not prove field life. It sets an upper bound. State that bound, or do not make the claim.
+
 ##### GR-1221: the passive-component companion.
 
 GR-468 covers active optoelectronics. Its companion, *Telcordia GR-1221-CORE* (Generic Reliability Assurance Requirements for Passive Optical Components), covers the parts GR-468 does not: connectors, fiber couplers, WDM filters and MUX/DEMUX, splitters, and isolators . It uses the same style of stress sequence (damp heat, temperature cycling, mechanical, and aging tests) but scores pass/fail on insertion loss and return loss rather than on LIV. A short-reach link that leans on an on-package or blind-mate MUX and on external multi-wavelength sources carries a passive reliability budget that lives in GR-1221, not GR-468 (§8.8, Chapter 6). Split the qual the same way you split the FIT: active laser die under GR-468, silicon under JESD47, passive optics under GR-1221.
@@ -161,6 +163,8 @@ Table 8.2 is a triage map, not a life calculator. Each row asks which mechanism
 **Uncertainty removed.** Before aging readouts you do not know whether a soft BER creep is bias drift, calibration, or real diode wear. After LIV trends versus ship ATP you know whether the device physics moved permanently.
 
 **Activities.** Trend $I_\mathrm{th}$ and slope against ship baselines across HTOL intervals and field returns. Compare lot history before blaming one unit.
+
+> **Engineering heuristic.** Compare ship ATP LIV to the return before you invent a new wear mechanism. Monitor and setpoint faults mimic diode aging until the curves disagree.
 
 **Measurements and evidence.** Rising threshold and falling slope at fixed temperature separate diode wear from a monitor or setpoint change. HTOL lot history ties the rate to the activation energy you claim in the life model (§5.13).
 
@@ -353,6 +357,14 @@ Escaped DPPM (post-screen field failures)
 
 Track yield by ATP row, lot, supplier site, tester, and date code. A yield drop that correlates with one tester is likely a measurement problem. A yield drop that correlates with one supplier lot is likely a process problem. A yield drop with no observed correlation requires further investigation: verify gauge repeatability, expand stratification (shift, fixture, material lot, firmware), and test guardband or specification mismatch as hypotheses before concluding. Do not open supplier corrective action until the measurement system is cleared (§8.9).
 
+> **Engineering heuristic.** Clear the tester with a golden unit before you escalate a supplier. Station drift masquerades as a process excursion more often than engineers admit.
+
+> **What this usually means.** A golden unit fails on only one production station
+>
+> *Usually:* fixture, calibration, cable, software limit, or operator path on that station
+>
+> *Not:* a sudden die-level failure of every good unit that station has ever seen
+
 ## Escaped defect analysis
 
 <pre class="dectree" aria-label="Supplier escape containment flow"><code>Supplier escape containment flow
@@ -392,6 +404,8 @@ A defect that a cost-effective screen could have caught but did not, because the
 - **Packaging stress:** residual mechanical stress from underfill cure or lid attach that relaxes over time, shifting alignment or birefringence.
 
 For each preventable escape, trace the failure signature back to the earliest point in the production flow where it could have been caught, and add or tighten the screen there.
+
+> **Engineering heuristic.** An escape without an ATP or SPC change is unfinished work. Containment stops the bleed; the control stops the next lot.
 
 ##### Residual latent failures.
 
@@ -459,6 +473,12 @@ Burn-in (infant-mortality screen) and HTOL (life/mechanism evidence) trade diffe
 
 The supplier path is milestones, performance targets, quality, and manufacturability triage. That is not a soft skill. It is a concrete contract: requirements, gates, acceptance tests, process control, and corrective action when a lot goes wrong.
 
+> **Why experienced engineers care about production lots?**
+>
+> Because manufacturing escapes almost always correlate with process history. Lot, date code, site, and firmware tags often beat another night on one returned unit.
+
+> **Engineering heuristic.** Ask for the process change list before you invent new physics. Most lot escapes sit next to a real change record.
+
 <pre class="dectree" aria-label="Design requirements"><code>Design requirements
   |
 Qualification
@@ -512,6 +532,8 @@ Hold a gate if the exit data are missing.
 ##### Requirements and ATP are the contract.
 
 ATP and the requirements doc are the contract. Write both and keep them versioned together:
+
+> **Engineering heuristic.** If a requirement has no ATP or sample line, it is a wish. If an ATP line has no requirement, it is cost without a decision.
 
 1.  **Requirements / PRD slice for the laser path:** fill Table 5.4, §5.6 (power class, grid, RIN@ORL, SMSR, derating, CMIS, FIT). Version it with the ATP.
 

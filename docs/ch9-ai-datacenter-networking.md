@@ -356,6 +356,12 @@ Point-to-point
 
 Optical engineering maps to these patterns indirectly. More rails and higher per-lane rate cut time spent in collectives; CPO/XPO raise faceplate bandwidth so fewer hops are needed (§9.10, §9.11, §9.2). Protocol choice (UEC vs IB) sets lossless delivery and congestion behavior (§9.8), but the PHY job remains the same: deliver pre-FEC BER below KP4 at the lowest pJ/bit (§9.13, §3.12). The next section names the fabric stacks that carry those collectives; the sections after that show where the optics physically sit.
 
+> **Why experienced engineers chase one slow rail before rewriting the fabric?**
+>
+> Because synchronous collectives amplify a single straggler. Average utilization can look healthy while one optical lane sets the job tail.
+
+> **Engineering heuristic.** Judge the fabric by delivered step time and collective tail, not by aggregate port rate on a clean bench.
+
 ## Fabric options
 
 InfiniBand, Ethernet, and the Ultra Ethernet Consortium's AI-tuned Ethernet are the scale-out contenders. Momentum in 2025--26 favors open Ethernet for AI; large vertical AI stacks commonly use Broadcom Tomahawk switch silicon (Chapter 1, §9.10).
@@ -589,6 +595,8 @@ Scaling can fail through oversubscription, poor route balance, head-of-line bloc
 ### How it is debugged
 
 Start with the workload symptom and identify the slow collective, rail, or time window. Compare topology and route data with link counters. A single lane with rising FEC points to the optical path; many clean links with full queues point to fabric capacity or scheduling. On the optical path, use the power-versus-quality fork and five ledgers (§4.8, §5.19, Appendix D.4). Remove one rail, reroute one group, or replace one suspect module to test causality. Keep optics, switch, and workload timestamps aligned. Otherwise a link flap and a collective stall cannot be ordered reliably.
+
+> **Engineering heuristic.** Align timestamps across optics, switch, and workload before arguing causality. Without a common clock story, every flap looks like every stall.
 
 \> \*\*Debug story\*\* \> \> \*\*Observed.\*\* All-reduce tail latency rose after a rack expansion, while average link utilization looked normal. \> \> \*\*Investigation.\*\* Per-rail traces showed one path with FEC bursts and retries. A module swap moved the symptom with the module. \> \> \*\*Finding.\*\* The fabric had capacity, but one marginal optical lane set the collective tail. \> \> \*\*Root cause.\*\* A contaminated connector raised ORL and produced burst errors without a large average-power change. \> \> \*\*Resolution.\*\* The connector was replaced, inspection was added to the expansion runbook, and collective-tail alarms were tied to link-level error bursts.
 

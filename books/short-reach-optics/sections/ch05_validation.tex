@@ -117,6 +117,10 @@ map onto these stages in \Cref{tab:npi}.\par}
 This is the single lifecycle. Later sections deepen measurements, bring-up
 checklists, and fleet triage; they do not define a competing stage order.
 
+\whyexp{walk stages in this order?}{Because each stage removes a different
+uncertainty. A late-stage pass cannot repair a missing requirement or unstable
+bring-up; treating HTOL as production readiness is the classic mix-up.}
+
 \subsection{Requirements definition}
 \label{sec:ladder-requirements}
 
@@ -802,6 +806,9 @@ Bad: ``receiver sensitivity is $-15$~dBm.'' Good: sensitivity at the module
 optical input under the named BER target, temperature, wavelength, and FEC
 assumptions. A number without a plane and a method is not a measurement.
 
+\heuristic{Name the reference plane before you name the instrument. A pretty
+eye at the wrong plane is a wrong answer.}
+
 \section{The core IM/DD measurements}
 
 Once the ladder is clear, the measurement list is organized around isolation:
@@ -985,6 +992,11 @@ intermittents, unlocked intervals). \textbf{Exit when} BER and histogram
 support the claimed mechanism class. \textbf{Decision:} contain, clean,
 retune, or open FA. \textbf{Risk if skipped:} average BER hides a bursty
 escape that ATP never stressed.
+
+\usuallymeans{BER waterfall floor that more launch power does not fix}{RIN,
+MPI, crosstalk, receiver saturation, or another non-power-limited impairment
+(\Cref{sec:interview-waterfall})}{simple insertion loss that more photons will
+buy out}
 
 \paragraph{CMIS state / DDM.}
 Management state and digital diagnostics confirm the control and monitor path
@@ -1535,6 +1547,17 @@ validation mistake: retuning an equalizer or laser bias when the real cause is a
 dirty connector. Then check which margin ledger moved
 (\Cref{sec:laser-margin-erosion}) before descending to component physics.
 
+\whyexp{separate power from quality first?}{Because average optical power is
+cheap to measure and rules out gross attenuation, but it says almost nothing
+about timing, noise, distortion, spectral alignment, or adaptation.}
+
+\usuallymeans{Stable average power with rising BER}{timing, adaptation, noise,
+spectral alignment, or intermittent control}{gross attenuation or a simple dirty
+connector as the whole story}
+
+\heuristic{Never spend an hour on a DCA or spectrum sweep when a five-minute
+golden swap or attenuator step can eliminate half the tree.}
+
 \begin{dectree}
 Observation
   |
@@ -1559,6 +1582,9 @@ decision $\cdot$
 recurrence control
 (\Cref{sec:tree-checklists}).}
 
+\heuristic{A passing BER on a golden host is not production readiness. Interop,
+margin, and manufacturing control still have their own questions.}
+
 \section{Fleet and field triage}
 \label{sec:fleet-triage}
 
@@ -1567,6 +1593,14 @@ Lab debug asks: \emph{what is broken on this unit?} Fleet triage asks:
 programs at fleet scale own that split across performance, reliability, and
 manufacturability. Wrong bucket wastes weeks (sending a contaminated connector to
 laser FA, or rewriting a SerDes FIR when the laser is rolling over).
+
+\heuristic{Contain the population and clear the measurement system before you
+open supplier FA. A wrong ticket burns calendar time you cannot get back.}
+
+\usuallymeans{Temperature-only failures that recover cool}{thermal margin,
+wavelength or lock drift, bias tables, receiver noise rise, or mechanics that
+move with case temperature}{a permanent wear-out mechanism already proven by
+ship LIV alone}
 
 \paragraph{Three buckets.}
 Classify every field issue before deep root-cause work:

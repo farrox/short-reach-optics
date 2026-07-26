@@ -217,6 +217,10 @@ total exceeds the target, identify which block moved: SerDes, driver, laser bias
 TEC, or DSP. Correlate power anomalies with BER, temperature, and equalizer state.
 A link that draws more power than expected is often also running at reduced margin.
 
+\heuristic{A power rise after a firmware update is often deeper equalization,
+retries, or thermal control, not a new laser physics. Check what the software
+asked the hardware to do.}
+
 \section{Interview takeaway}
 \label{sec:firstprinciples-design-review}
 

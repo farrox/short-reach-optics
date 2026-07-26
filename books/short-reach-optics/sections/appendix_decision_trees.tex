@@ -45,6 +45,13 @@ effects. A surviving hypothesis is only the leading mechanism until confirmed by
 reproduction, controlled swap, stress dependence, rollback, or physical
 evidence (\Cref{sec:debug-fork,sec:validation-fork,sec:tree-evidence-block}).
 
+\whyexp{ask about scope before touching the lab?}{Because scope eliminates
+enormous parts of the hypothesis space. Unit, lot, vendor, site, and fleet each
+point at different owners and different next measurements.}
+
+\heuristic{If two explanations fit equally well, prefer the one that requires
+the fewest independent failures.}
+
 \section{Qualification lifecycle}
 \label{sec:tree-qualification}
 
@@ -108,6 +115,10 @@ Use inside the reliability gate of \Cref{sec:tree-qualification}. The lifecycle
 says \emph{when}; this tree says \emph{what evidence} is defensible
 (\Cref{sec:tree-evidence-block,sec:gr468}).
 
+\whyexp{insist on mechanism $\rightarrow$ stress $\rightarrow$ observable?}{Because
+a stress without a named mechanism is theater, and an observable without an
+acceptance rule cannot support a ship decision.}
+
 \section{Power-versus-quality diagnostic fork}
 \label{sec:tree-power-fork}
 
@@ -133,6 +144,9 @@ Decision + recurrence control
 One check before retuning equalizers or bias tables
 (\Cref{sec:debug-fork,sec:tree-debugging}).
 
+\heuristic{Name the power-versus-quality branch before you name a laser, TIA,
+or connector. Parts without a branch are guesses.}
+
 \section{Scope and population}
 \label{sec:tree-scope-population}
 
@@ -155,6 +169,9 @@ Containment and corrective action
 
 Scope sets severity and priors. Correlation after isolation unlocks contain,
 pause, replace, or supplier escalate (\Cref{sec:fleet-triage,sec:yield-analysis}).
+
+\heuristic{Population behavior is usually more informative than one failing
+unit. A cohort plot often beats another hour on the same sample.}
 
 \section{Sudden versus gradual}
 \label{sec:tree-time-behavior}
@@ -236,6 +253,9 @@ Recurrence control
   |
 Decision closure: owner / timeline / reversibility / follow-up
 \end{dectree}
+
+\heuristic{Contain first when the population can grow. Perfect mechanism stories
+do not unship yesterday's lot.}
 
 Use provisional containment when the population can grow, then refine the hold
 after scope analysis. The system owner keeps responsibility for evidence quality

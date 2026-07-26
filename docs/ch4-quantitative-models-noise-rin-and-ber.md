@@ -66,6 +66,8 @@ Because shot and RIN noise are signal dependent, we evaluate $\sigma_1$ and $\si
 Here is the consequence that makes RIN worth its own section. Thermal noise is fixed, so pouring on more optical power raises $I_1-I_0$ while $\sigma_{\text{th}}$ stays put, so $Q$ improves without limit. But RIN noise scales *with the signal itself*: $\sigma_{\text{RIN}} \propto I$. Once RIN dominates, the signal and its noise grow together and $Q$ stops improving. Taking the high-power, high-extinction limit (thermal and shot negligible, $I_0\to0$): $$Q_{\max} \;=\; \frac{I_1}{\sigma_{\text{RIN},1}}
            \;=\; \frac{1}{\sqrt{\mathrm{RIN}_{\text{lin}}\,\mathrm{BW}}}.$$ This is a hard ceiling: no amount of transmit power or receiver sensitivity can push $Q$ past it, so there is a BER floor set entirely by the laser and the bandwidth. Equivalently, the power penalty to hold a target $Q$ is $$\mathrm{PP} = \frac{1}{\sqrt{1 - Q^2\,\mathrm{RIN}_{\text{lin}}\,\mathrm{BW}}},$$ which diverges as $Q\to Q_{\max}$.
 
+> **Engineering heuristic.** If the waterfall floors, stop raising launch power as the primary fix. You are buying photons against a non-power-limited impairment.
+
 <figure id="fig:berpower" data-latex-placement="ht">
 <embed src="figures/fig_ber_vs_power_rin.pdf" />
 <figcaption>With RIN present, the BER stops falling no matter how much power is added. The thermal/shot-only curve dives; each RIN level flattens into a floor. (RIN values here are deliberately high to make the floor visible in-frame; good DFBs at <span class="math inline"> &lt; −150</span> dB/Hz have no floor at these rates; see text.)<span id="fig:berpower" data-label="fig:berpower"></span></figcaption>
@@ -297,6 +299,16 @@ If average received power is stable but BER worsened, isolate transmitter, chann
 - control: bias, APC, TEC/heaters, calibration, EQ authority.
 
 This fork often narrows an investigation in minutes. Power-path failures show up on a meter; signal-quality failures need FEC timing, DCA, BERT, or spectrum analysis, depending on access. Apply it before opening the package, changing settings, or blaming a supplier (§7.12).
+
+> **Why experienced engineers separate power from quality?**
+>
+> Because average optical power is easy to measure but tells very little about timing, noise, distortion, or adaptation. One meter reading prunes an entire branch of the tree.
+
+> **What this usually means.** Stable average power with rising BER
+>
+> *Usually:* noise, timing, spectral alignment, control or calibration, intermittent contact
+>
+> *Not:* gross attenuation as the primary story
 
 ## Interview takeaway
 

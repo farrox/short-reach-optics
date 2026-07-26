@@ -70,6 +70,10 @@ Do not invent a second framework. Use this loop inside the validation lifecycle
 (\Cref{sec:tree-qual-evidence}), and the failure-analysis handbook
 (\Cref{ch:failure-modes}).
 
+\whyexp{force this loop before naming a part?}{Because the loop names the
+decision and the control. A part name without a measurement and a containment
+plan is a guess dressed as confidence.}
+
 Practice the same loop on full narratives in \Cref{app:case-studies}.
 
 \paragraph{Answer anatomy under time pressure.}
@@ -102,6 +106,13 @@ hardware:
 A good engineer does not immediately request destructive analysis. Maximize
 information gained per cost. Prefer Level~0--2 until they stop reordering
 beliefs (\Cref{sec:tree-blackbox-access,sec:tree-evidence-block}).
+
+\whyexp{climb access levels slowly?}{Because Level~0--2 often reorders beliefs
+at low cost. Destructive FA early spends the sample and the calendar before you
+know what question the tear-down must answer.}
+
+\heuristic{Pick the next measurement by information value per cost, not by
+instrument prestige (\Cref{sec:case-info-value}).}
 
 \section{Four principles}
 \label{sec:interview-philosophy}
@@ -610,6 +621,14 @@ intermittent that disappears under debugging is still a real failure; you
 just destroyed the evidence
 (\Cref{sec:fleet-triage,tab:failure-analysis-checklist}).
 
+\whyexp{ask about scope first?}{Because scope eliminates enormous parts of the
+hypothesis space before you touch the lab. Unit, lot, vendor, site, and fleet
+point at different owners.}
+
+\usuallymeans{Fleet-wide sudden failure after a rollout}{software,
+configuration, shared environment, or shared infrastructure}{independent
+wear-out of thousands of unrelated lasers in the same hour}
+
 \subsection{Use the power-versus-signal-quality fork}
 \label{sec:interview-power-fork}
 
@@ -625,6 +644,9 @@ If power held but BER worsened, leave the power ledger. Signal quality,
 receiver sensitivity, wavelength or lock, and calibration tables are next.
 A sensitivity shift can look like transmitter degradation until you
 golden-swap.
+
+\heuristic{Confirm power at a named external plane before you trust a monitor
+that may share the fault under investigation.}
 
 \subsection{Track five margin ledgers}
 \label{sec:interview-margin-ledgers}
@@ -691,6 +713,13 @@ Name the spent ledger before naming a laser, TIA, or connector. The ledger
 picks the measurement. The measurement updates belief. The belief unlocks
 contain, retune, derate, RMA, or monitor-only. Component names without a
 ledger are guesses.
+
+\whyexp{name the ledger before the part?}{Because the ledger picks the
+measurement and the owner. ``Bad laser'' without a spent ledger skips the
+cheap tests that would falsify it.}
+
+\heuristic{An actuator near its rail is often the story before the diode is
+dead. Check control authority before you declare wear-out.}
 
 \subsection{Use the validation ladder}
 \label{sec:interview-validation-ladder}

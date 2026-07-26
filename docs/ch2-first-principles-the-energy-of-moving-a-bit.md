@@ -99,6 +99,8 @@ A link that meets its energy target on a quiet bench can exceed it in the field 
 
 Compare measured link power against the design budget, split by block. If the total exceeds the target, identify which block moved: SerDes, driver, laser bias, TEC, or DSP. Correlate power anomalies with BER, temperature, and equalizer state. A link that draws more power than expected is often also running at reduced margin.
 
+> **Engineering heuristic.** A power rise after a firmware update is often deeper equalization, retries, or thermal control, not a new laser physics. Check what the software asked the hardware to do.
+
 ## Interview takeaway
 
 **Key idea.** Short-reach optics is, at bottom, an energy-per-bit optimization. Optical energy is spent at the endpoints and is flat with distance; electrical energy grows with distance and rate; so rising data rates push optics ever closer to the chip. Miller's framework is the lens the rest of this book looks through.

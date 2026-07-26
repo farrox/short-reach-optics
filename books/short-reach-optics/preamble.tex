@@ -335,6 +335,41 @@
   \endgraf\medskip
 }
 
+% Experience-driven judgment boxes (Technical Authority Pass). Distinct from
+% \engcheck (procedure) and \keyidea (chapter takeaway).
+\definecolor{heuristicbg}{HTML}{F0EDE6}
+\definecolor{heuristicrule}{HTML}{6B5E4E}
+\newcommand{\heuristic}[1]{%
+  \endgraf\medskip\noindent
+  \fcolorbox{heuristicrule}{heuristicbg}{%
+    \begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}
+      \textbf{Engineering heuristic.~}#1
+    \end{minipage}%
+  }%
+  \endgraf\medskip
+}
+\newcommand{\whyexp}[2]{%
+  \endgraf\medskip\noindent
+  \fcolorbox{heuristicrule}{heuristicbg}{%
+    \begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}
+      \textbf{Why experienced engineers #1}\par\smallskip
+      #2
+    \end{minipage}%
+  }%
+  \endgraf\medskip
+}
+\newcommand{\usuallymeans}[3]{%
+  \endgraf\medskip\noindent
+  \fcolorbox{heuristicrule}{heuristicbg}{%
+    \begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}
+      \textbf{What this usually means.~}#1\par\smallskip
+      \textit{Usually:} #2\par\smallskip
+      \textit{Not:} #3
+    \end{minipage}%
+  }%
+  \endgraf\medskip
+}
+
 % Fixed skeleton for Appendix B playbooks (tree is a separate dectree env).
 % Use \section so frameworks number as B.1, B.2, ... (not B.0.x).
 \newcommand{\framework}[1]{%

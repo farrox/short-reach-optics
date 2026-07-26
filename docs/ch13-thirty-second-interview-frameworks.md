@@ -416,6 +416,8 @@ Margin sweeps $\rightarrow$ which ledger dies first? $\rightarrow$ telemetry ala
 
 > **30-second answer (memorize).** First scope: unit, lot, vendor, rack, datacenter, or fleet? Ask trend and change history. Classify performance versus reliability versus manufacturability before pulling hardware. Therefore I would contain if growing and supplier-specific, or monitor-only if tiny, flat, and no customer impact, with an owner on the next control.
 
+> **Engineering heuristic.** Contain a growing lot-scoped escape before you finish the physics story. The next day of ship can cost more than the next day of FA.
+
 <pre class="dectree" aria-label="Fleet symptom"><code>Fleet symptom
   |
 Scope ladder

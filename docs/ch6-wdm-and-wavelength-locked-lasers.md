@@ -219,6 +219,14 @@ If one $\lambda$ unlocks or walks, change one actuator at a time:
 
 Slow BER creep with rising bias on one line is often laser wear-out (§8.4). Sudden unlock under neighbor load with healthy LIV is thermal crosstalk or lock firmware. One dark lane with neighbors up is COD, FAU, or a single ring/heater fail; classify with §7.12 before you open an 8D on the wrong supplier.
 
+> **What this usually means.** All lanes unlock after a temperature step
+>
+> *Usually:* shared TEC, supply, firmware, or thermal control
+>
+> *Not:* independent failures of every lane's laser in the same second
+
+> **Engineering heuristic.** One-lane unlock with healthy neighbors usually points at that lane's laser, ring, heater, or attach. All-lane unlock points at a shared resource first.
+
 ## What wavelength locking implies about an architecture
 
 Because locking is only worth its complexity under specific conditions, its presence narrows the design space considerably.

@@ -252,6 +252,8 @@ Receiver sensitivity
 
 [^11]
 
+> **Engineering heuristic.** Argue about one ledger term at a time. A fight that mixes OMA, ER, RIN, and TDECQ without naming which debit moved is not a debug.
+
 ## Chirp, dispersion, and the IM/DD penalty
 
 IM/DD detects power, not phase, but phase still matters on the fiber. Intensity modulation couples to frequency through the laser or modulator *chirp* parameter $\alpha$: a change in output power shifts the instantaneous optical frequency. Single-mode fiber then converts that frequency wander into intensity distortion via chromatic dispersion (different $\lambda$ travel at slightly different speeds).

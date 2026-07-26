@@ -124,6 +124,9 @@ bandwidth. Equivalently, the power penalty to hold a target $Q$ is
 \]
 which diverges as $Q\to Q_{\max}$.
 
+\heuristic{If the waterfall floors, stop raising launch power as the primary
+fix. You are buying photons against a non-power-limited impairment.}
+
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\linewidth]{figures/fig_ber_vs_power_rin.pdf}
@@ -702,6 +705,14 @@ This fork often narrows an investigation in minutes. Power-path failures show up
 a meter; signal-quality failures need FEC timing, DCA, BERT, or spectrum analysis,
 depending on access. Apply it before opening the package, changing settings, or
 blaming a supplier (\Cref{sec:fleet-triage}).
+
+\whyexp{separate power from quality?}{Because average optical power is easy to
+measure but tells very little about timing, noise, distortion, or adaptation.
+One meter reading prunes an entire branch of the tree.}
+
+\usuallymeans{Stable average power with rising BER}{noise, timing, spectral
+alignment, control or calibration, intermittent contact}{gross attenuation as
+the primary story}
 
 \section{Interview takeaway}
 \label{sec:models-design-review}

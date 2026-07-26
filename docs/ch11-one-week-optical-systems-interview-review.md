@@ -51,6 +51,10 @@ Control
 Learning</code></pre>
 Do not invent a second framework. Use this loop inside the validation lifecycle (Table 7.1), the qualification evidence path (Appendix D.3), and the failure-analysis handbook (Chapter 10).
 
+> **Why experienced engineers force this loop before naming a part?**
+>
+> Because the loop names the decision and the control. A part name without a measurement and a containment plan is a guess dressed as confidence.
+
 Practice the same loop on full narratives in Appendix B.
 
 ##### Answer anatomy under time pressure.
@@ -100,6 +104,12 @@ Level 4
 : Destructive FA / DPA.
 
 A good engineer does not immediately request destructive analysis. Maximize information gained per cost. Prefer Level 0--2 until they stop reordering beliefs (Appendix D.11, Appendix D.16).
+
+> **Why experienced engineers climb access levels slowly?**
+>
+> Because Level 0--2 often reorders beliefs at low cost. Destructive FA early spends the sample and the calendar before you know what question the tear-down must answer.
+
+> **Engineering heuristic.** Pick the next measurement by information value per cost, not by instrument prestige (Appendix B.1).
 
 ## Four principles
 
@@ -405,6 +415,16 @@ Before you open an instrument, walk the failure up the scope ladder (unit $\righ
 
 Preserve the failing state and its telemetry before you reseat, clean, reboot, or change calibration. Capture CMIS monitors, pre-FEC BER, bias currents, temperatures, LOS and LOL flags, and firmware versions. An intermittent that disappears under debugging is still a real failure; you just destroyed the evidence (§7.12, Table 10.1).
 
+> **Why experienced engineers ask about scope first?**
+>
+> Because scope eliminates enormous parts of the hypothesis space before you touch the lab. Unit, lot, vendor, site, and fleet point at different owners.
+
+> **What this usually means.** Fleet-wide sudden failure after a rollout
+>
+> *Usually:* software, configuration, shared environment, or shared infrastructure
+>
+> *Not:* independent wear-out of thousands of unrelated lasers in the same hour
+
 ### Use the power-versus-signal-quality fork
 
 First ask whether received optical power changed. That one question splits the debug tree. Full instrument paths and worked examples live in §4.8, §7.11.
@@ -412,6 +432,8 @@ First ask whether received optical power changed. That one question splits the d
 If power changed, stay on the power ledger: source enable, coupling, connectors, ORL, plant loss, and monitor calibration. Confirm with an external meter at a named plane before retuning eyes or equalizers.
 
 If power held but BER worsened, leave the power ledger. Signal quality, receiver sensitivity, wavelength or lock, and calibration tables are next. A sensitivity shift can look like transmitter degradation until you golden-swap.
+
+> **Engineering heuristic.** Confirm power at a named external plane before you trust a monitor that may share the fault under investigation.
 
 ### Track five margin ledgers
 
@@ -441,6 +463,12 @@ Links rarely fail from one dramatic excursion. They fail when several small shif
 ##### Why ledger language comes before component names.
 
 Name the spent ledger before naming a laser, TIA, or connector. The ledger picks the measurement. The measurement updates belief. The belief unlocks contain, retune, derate, RMA, or monitor-only. Component names without a ledger are guesses.
+
+> **Why experienced engineers name the ledger before the part?**
+>
+> Because the ledger picks the measurement and the owner. "Bad laser" without a spent ledger skips the cheap tests that would falsify it.
+
+> **Engineering heuristic.** An actuator near its rail is often the story before the diode is dead. Check control authority before you declare wear-out.
 
 ### Use the validation ladder
 

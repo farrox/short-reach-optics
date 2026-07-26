@@ -16,6 +16,12 @@ The best next measurement is not the most detailed measurement. It is the measur
 
 Bad next step: "Run full optical characterization." Better: "Compare failing and passing units from the same lot," because that separates population effects quickly.
 
+> **Why experienced engineers rank measurements by information value?**
+>
+> Because the best next test is the one that reorders beliefs the most per minute and per dollar, not the one that fills the most plot panels.
+
+> **Engineering heuristic.** Never spend an hour measuring something that a five-minute swap test can eliminate.
+
 ## How interviewers evaluate answers
 
 Use this interview-facing summary. Full detail remains in Appendix A.12 (plane/access, causal discipline, and recurrence are scored there too).
@@ -77,6 +83,12 @@ Avoid "the vendor caused this." Prefer: "The evidence indicates a supplier-proce
 ##### Problem statement.
 
 Thousands of optical modules are deployed. Pre-FEC BER rises gradually on a subset of links. Average received power is unchanged. Firmware and host platform are common. Failures correlate with one manufacturing lot. What do you do?
+
+> **What this usually means.** Lot-scoped gradual BER rise with flat average power
+>
+> *Usually:* process, calibration, component supplier, or attach change inside that lot
+>
+> *Not:* independent random wear of unrelated serials with no shared history
 
 ##### Available information.
 
@@ -209,6 +221,12 @@ Appendix C.7, Appendix C.15, §8.2, Table 7.1, §8.10.
 ##### Problem statement.
 
 A module works at room temperature and fails at high temperature. What do you investigate?
+
+> **What this usually means.** Fails hot, may recover cool, average power looks stable
+>
+> *Usually:* thermal margin, wavelength or lock, bias tables, receiver noise, mechanics
+>
+> *Not:* a closed wear-out FIT claim from room-temperature ship data alone
 
 ##### Available information.
 

@@ -123,6 +123,8 @@ Power, noise, timing, and spectral margins usually move a little at a time. A co
 
 First scope the failure: one unit, one lot, one vendor, one site, or the fleet. Then classify its pattern: sudden or gradual, constant or temperature-dependent, power-related or signal-quality-related. Choose the next measurement for its ability to separate competing causes. The debugging pyramid below gives the order; the failure-analysis handbook in Chapter 10 gives the symptom-led procedures.
 
+> **Engineering heuristic.** Scope before mechanism. A fleet-wide sudden event is almost never solved by staring at one connector.
+
 ## Engineering lens
 
 ### How it works
@@ -137,6 +139,8 @@ At the system level: step time, collective latency, accelerator idle fraction, a
 
 Fabric capacity can fall behind injected traffic. A single marginal link can stall a synchronous collective. Connector contamination, laser aging, thermal excursions, and firmware mismatches all reduce margin invisibly until the workload crosses the cliff. Service errors during expansion (polarity, cleaning, fiber routing) are a common source of day-one failures.
 
+> **Engineering heuristic.** Day-one failures after expansion are often polarity, cleaning, or routing, not a new laser wear-out mode. Check the install path before the die.
+
 ### How it is debugged
 
 Use the debugging pyramid: start at the system symptom, narrow to signal quality, walk the link budget, bisect the subsystem, then identify the physical root cause. Do not skip layers.
@@ -144,6 +148,16 @@ Use the debugging pyramid: start at the system symptom, narrow to signal quality
 ## The debugging pyramid
 
 When a link fails, work from the top down. Each layer narrows the search before you open a connector or reseat a module. This framework reappears in every chapter. Apply the power-versus-quality fork early (§4.8, Appendix D.4) and organize lost margin with the five ledgers (§5.19).
+
+> **Why experienced engineers start at the system symptom?**
+>
+> Because the workload symptom often rules out whole subsystems before you open a package. Skipping layers burns weeks on the wrong part.
+
+> **What this usually means.** Fleet-wide sudden failure
+>
+> *Usually:* software, configuration, shared environment, or shared infrastructure
+>
+> *Not:* thousands of independent laser wear-outs arriving in the same minute
 
 <pre class="dectree" aria-label="System symptom"><code>System symptom
   |
@@ -156,6 +170,8 @@ Subsystem bisect (Tx / channel / Rx)
 Physical root cause
   |
 Decision + recurrence control</code></pre>
+> **Engineering heuristic.** Do not skip pyramid layers. A root-cause story without a confirmed system symptom and a localized subsystem is a story, not a close.
+
 Layer 1: System
 
 : What is failing at the workload level? BER, throughput, latency, training instability, collective stall. Start here because the symptom often rules out entire subsystems.

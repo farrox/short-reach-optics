@@ -168,6 +168,9 @@ process corners, and whether the claim is zero-failure upper-bound or observed
 rate (\Cref{sec:fit-dppm,sec:tree-evidence-block}). A rate without population,
 observation time, and confidence is not a fleet claim.
 
+\heuristic{A small sample that saw zero failures does not prove field life. It
+sets an upper bound. State that bound, or do not make the claim.}
+
 \paragraph{GR-1221: the passive-component companion.}
 GR-468 covers active optoelectronics. Its companion, \term{Telcordia GR-1221-CORE}
 (Generic Reliability Assurance Requirements for Passive Optical Components), covers
@@ -371,6 +374,10 @@ whether the device physics moved permanently.
 \textbf{Activities.}
 Trend $I_\mathrm{th}$ and slope against ship baselines across HTOL intervals
 and field returns. Compare lot history before blaming one unit.
+
+\heuristic{Compare ship ATP LIV to the return before you invent a new wear
+mechanism. Monitor and setpoint faults mimic diode aging until the curves
+disagree.}
 
 \textbf{Measurements and evidence.}
 Rising threshold and falling slope at fixed temperature separate diode wear
@@ -717,6 +724,14 @@ expand stratification (shift, fixture, material lot, firmware), and test guardba
 or specification mismatch as hypotheses before concluding. Do not open supplier
 corrective action until the measurement system is cleared (\Cref{sec:hvm-test}).
 
+\heuristic{Clear the tester with a golden unit before you escalate a supplier.
+Station drift masquerades as a process excursion more often than engineers
+admit.}
+
+\usuallymeans{A golden unit fails on only one production station}{fixture,
+calibration, cable, software limit, or operator path on that station}{a sudden
+die-level failure of every good unit that station has ever seen}
+
 \section{Escaped defect analysis}
 \label{sec:escaped-defects}
 
@@ -793,6 +808,9 @@ ATP or process-control change. Common mechanisms in optical modules:
 For each preventable escape, trace the failure signature back to the earliest point
 in the production flow where it could have been caught, and add or tighten the
 screen there.
+
+\heuristic{An escape without an ATP or SPC change is unfinished work. Containment
+stops the bleed; the control stops the next lot.}
 
 \paragraph{Residual latent failures.}
 A defect that no cost-effective screen can separate from good units at the time of
@@ -937,6 +955,13 @@ manufacturability triage. That is not a soft skill. It is a concrete contract:
 requirements, gates, acceptance tests, process control, and corrective action when
 a lot goes wrong.
 
+\whyexp{care about production lots?}{Because manufacturing escapes almost always
+correlate with process history. Lot, date code, site, and firmware tags often
+beat another night on one returned unit.}
+
+\heuristic{Ask for the process change list before you invent new physics. Most
+lot escapes sit next to a real change record.}
+
 \begin{dectree}
 Design requirements
   |
@@ -1053,6 +1078,9 @@ Hold a gate if the exit data are missing.
 \paragraph{Requirements and ATP are the contract.}
 ATP\firstterm{ATP} and the requirements doc are the contract. Write both and keep
 them versioned together:
+
+\heuristic{If a requirement has no ATP or sample line, it is a wish. If an ATP
+line has no requirement, it is cost without a decision.}
 
 \begin{enumerate}
 \item \textbf{Requirements / PRD slice for the laser path:} fill

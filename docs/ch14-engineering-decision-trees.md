@@ -34,6 +34,12 @@ Decision + owner + timeline + reversibility
 Follow-up control (ATP / SPC / telemetry / supplier)</code></pre>
 Stable average power deprioritizes gross optical loss but does not eliminate fast power fluctuations, clipping, monitor averaging, or reflection-dependent effects. A surviving hypothesis is only the leading mechanism until confirmed by reproduction, controlled swap, stress dependence, rollback, or physical evidence (§4.8, §7.11, Appendix D.16).
 
+> **Why experienced engineers ask about scope before touching the lab?**
+>
+> Because scope eliminates enormous parts of the hypothesis space. Unit, lot, vendor, site, and fleet each point at different owners and different next measurements.
+
+> **Engineering heuristic.** If two explanations fit equally well, prefer the one that requires the fewest independent failures.
+
 ## Qualification lifecycle
 
 <pre class="dectree" aria-label="Qualification lifecycle"><code>Qualification lifecycle
@@ -84,6 +90,10 @@ Production proxy
 Ship / restrict / reject</code></pre>
 Use inside the reliability gate of Appendix D.2. The lifecycle says *when*; this tree says *what evidence* is defensible (Appendix D.16, §8.2).
 
+> **Why experienced engineers insist on mechanism $\rightarrow$ stress $\rightarrow$ observable?**
+>
+> Because a stress without a named mechanism is theater, and an observable without an acceptance rule cannot support a ship decision.
+
 ## Power-versus-quality diagnostic fork
 
 <pre class="dectree" aria-label="Power-versus-quality diagnostic fork"><code>Power-versus-quality diagnostic fork
@@ -104,6 +114,8 @@ Leading mechanism -&gt; controlled confirmation
 Decision + recurrence control</code></pre>
 One check before retuning equalizers or bias tables (§4.8, Appendix D.1).
 
+> **Engineering heuristic.** Name the power-versus-quality branch before you name a laser, TIA, or connector. Parts without a branch are guesses.
+
 ## Scope and population
 
 <pre class="dectree" aria-label="Scope and population"><code>Scope and population
@@ -121,6 +133,8 @@ Correlation analysis (which cohort?)
   |
 Containment and corrective action</code></pre>
 Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (§7.12, §8.6).
+
+> **Engineering heuristic.** Population behavior is usually more informative than one failing unit. A cohort plot often beats another hour on the same sample.
 
 ## Sudden versus gradual
 
@@ -185,6 +199,8 @@ Corrective action
 Recurrence control
   |
 Decision closure: owner / timeline / reversibility / follow-up</code></pre>
+> **Engineering heuristic.** Contain first when the population can grow. Perfect mechanism stories do not unship yesterday's lot.
+
 Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (§8.7, §7.12, Appendix D.16).
 
 ## Margin-consumption flow

@@ -7,6 +7,12 @@ title: "Ch 10: Failure analysis handbook"
 
 This chapter is a symptom-first field guide. Start with what the bench, production line, or fleet reports. Preserve the failing state until its evidence has been captured, then use the same workflow for every incident. Distinguish observation, correlation, hypothesis, leading mechanism, and confirmed mechanism (after controlled confirmation). Do not call the last surviving hypothesis the confirmed mechanism without controlled reproduction, swap testing, stress dependence, or physical evidence. Do not say "data proves" until confirmation exists. For each symptom, state access (black-box versus engineering), the decision unlocked, and the earliest production or fleet control (Appendix D.16, Appendix A.2).
 
+> **Why experienced engineers preserve state before reseating?**
+>
+> Because reseat, reboot, and clean often destroy the only evidence that separates contact, firmware, and true wear. Scope without a snapshot is theater.
+
+> **Engineering heuristic.** If two explanations fit equally well, prefer the one that requires the fewest independent failures.
+
 ##### Failure-analysis output categories.
 
 Every FA result should land in one bucket before the case closes:
@@ -243,6 +249,12 @@ Recalibrate the modulator operating point. For EML aging, update the EAM bias se
 
 In a multi-lane module (DR4, FR4, DR8), one or more lanes show significantly different OMA, TDECQ, or pre-FEC BER compared with siblings in the same module. The weak lane may be marginal or failing while others are healthy.
 
+> **What this usually means.** One lane only, siblings healthy
+>
+> *Usually:* lane-specific optics, attach, driver or TIA channel, or local thermal gradient
+>
+> *Not:* a shared firmware image bug as the first explanation, unless remapping proves otherwise
+
 ##### Likely hypotheses.
 
 Multi-lane modules share a substrate, laser array (or CW-WDM source), and thermal environment. Lane-to-lane variation comes from: (1) die-level non-uniformity in the laser or modulator array (threshold, slope, $V_\pi$, coupling), (2) packaging variation in fiber-array alignment (one channel of the FAU slightly misaligned), (3) driver or TIA channel mismatch on the electronic IC, or (4) thermal gradient across the die (edge lanes hotter or cooler than center lanes).
@@ -362,9 +374,17 @@ Recurrence: dwell + FEC histograms</code></pre>
 
 Links flap, lose lock, or show bursts of FEC errors while average power and a short bench BER test look normal. The symptom may clear after reseating, cooling, or restarting firmware.
 
+> **What this usually means.** Intermittent bursts that clear on reseat or cool-down
+>
+> *Usually:* connector or mate stress, ORL or MPI, supply noise, lock loss, weak attach, or firmware state
+>
+> *Not:* a confirmed wear-out FIT story from a short room-temperature BER pass
+
 ##### Likely hypotheses.
 
 Intermittent faults come from contacts, reflections, weak optical or electrical attach, supply noise, wavelength-lock loss, firmware state, or environmental stress. Reseating can remove the evidence by cleaning a contact, changing fiber stress, or resetting a state machine.
+
+> **Engineering heuristic.** Treat cool-down recovery as a clue, not a fix. Capture the failing corner before the unit returns to room temperature forever.
 
 ##### Measurements, mechanism isolation, and confirmation.
 
@@ -380,7 +400,11 @@ Intermittent faults come from contacts, reflections, weak optical or electrical 
 
 ##### Corrective action and recurrence control.
 
-Fix the confirmed contact, attach, supply, lock, or firmware cause. Add event-triggered telemetry and a production stress that reproduces the fault. Keep intermittent and no-fault-found RMA codes separate from laser wear-out. What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (§10).
+Fix the confirmed contact, attach, supply, lock, or firmware cause. Add event-triggered telemetry and a production stress that reproduces the fault. Keep intermittent and no-fault-found RMA codes separate from laser wear-out.
+
+> **Engineering heuristic.** A rising NFF rate is often a triage and evidence problem, not proof that the field is healthy. Separate intermittent codes from wear-out before you trust the FIT.
+
+What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (§10).
 
 ## Connector contamination
 
@@ -419,13 +443,19 @@ Retest BER and sensitivity</code></pre>
 
 ##### Corrective action and recurrence control.
 
-After evidence is preserved: clean, re-inspect, and verify IL/ORL and BER. Preventive: dust caps on unused ports, "inspect before connect" in the service runbook, sealed cassettes or trunk cables that minimize open-ferrule exposure. For high-power paths (ELSFP, CW-WDM), burn damage requires replacement, not re-cleaning. Track contamination RMAs as a distinct failure code (not "laser failure") so FIT accounting stays honest (§7.12). What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (§10).
+After evidence is preserved: clean, re-inspect, and verify IL/ORL and BER. Preventive: dust caps on unused ports, "inspect before connect" in the service runbook, sealed cassettes or trunk cables that minimize open-ferrule exposure. For high-power paths (ELSFP, CW-WDM), burn damage requires replacement, not re-cleaning. Track contamination RMAs as a distinct failure code (not "laser failure") so FIT accounting stays honest (§7.12).
+
+> **Engineering heuristic.** Inspect before you clean, and photograph before you disturb. Cleaning first can erase the only evidence that the mate was dirty.
+
+What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (§10).
 
 ## Yield drop
 
 ##### Observed behavior.
 
 First-pass yield falls below its stable baseline. The loss may cluster on one ATP row, lane, tester, shift, supplier lot, assembly site, or firmware revision.
+
+> **Engineering heuristic.** Calibration drift is usually more likely than simultaneous hardware failure across a previously healthy population.
 
 ##### Likely hypotheses.
 

@@ -472,6 +472,14 @@ thermal crosstalk or lock firmware. One dark lane with neighbors up is COD, FAU,
 or a single ring/heater fail; classify with \Cref{sec:fleet-triage} before you
 open an 8D on the wrong supplier.
 
+\usuallymeans{All lanes unlock after a temperature step}{shared TEC, supply,
+firmware, or thermal control}{independent failures of every lane's laser in the
+same second}
+
+\heuristic{One-lane unlock with healthy neighbors usually points at that lane's
+laser, ring, heater, or attach. All-lane unlock points at a shared resource
+first.}
+
 \section{What wavelength locking implies about an architecture}
 
 Because locking is only worth its complexity under specific conditions, its

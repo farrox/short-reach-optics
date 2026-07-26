@@ -336,6 +336,72 @@ def replace_engcheck(content: str) -> str:
     return "".join(result)
 
 
+def replace_heuristic(content: str) -> str:
+    """Replace \\heuristic{...} handling nested braces."""
+    result = []
+    i = 0
+    tag = "\\heuristic{"
+    while i < len(content):
+        idx = content.find("\\heuristic{", i)
+        if idx == -1:
+            result.append(content[i:])
+            break
+        result.append(content[i:idx])
+        arg, end = extract_braced_arg(content, idx + len(tag) - 1)
+        result.append(
+            f"\n\n\\begin{{quote}}\\textbf{{Engineering heuristic.}} {arg}"
+            f"\\end{{quote}}\n\n"
+        )
+        i = end
+    return "".join(result)
+
+
+def replace_whyexp(content: str) -> str:
+    """Replace \\whyexp{question fragment}{answer}."""
+    result = []
+    i = 0
+    tag = "\\whyexp{"
+    while i < len(content):
+        idx = content.find("\\whyexp{", i)
+        if idx == -1:
+            result.append(content[i:])
+            break
+        result.append(content[i:idx])
+        pos = idx + len(tag) - 1
+        question, pos = extract_braced_arg(content, pos)
+        answer, pos = extract_braced_arg(content, pos)
+        result.append(
+            f"\n\n\\begin{{quote}}\\textbf{{Why experienced engineers "
+            f"{question}}}\\par {answer}\\end{{quote}}\n\n"
+        )
+        i = pos
+    return "".join(result)
+
+
+def replace_usuallymeans(content: str) -> str:
+    """Replace \\usuallymeans{symptom}{usually}{not}."""
+    result = []
+    i = 0
+    tag = "\\usuallymeans{"
+    while i < len(content):
+        idx = content.find("\\usuallymeans{", i)
+        if idx == -1:
+            result.append(content[i:])
+            break
+        result.append(content[i:idx])
+        pos = idx + len(tag) - 1
+        symptom, pos = extract_braced_arg(content, pos)
+        usually, pos = extract_braced_arg(content, pos)
+        not_, pos = extract_braced_arg(content, pos)
+        result.append(
+            f"\n\n\\begin{{quote}}\\textbf{{What this usually means.}} {symptom}"
+            f"\\par\\textit{{Usually:}} {usually}"
+            f"\\par\\textit{{Not:}} {not_}\\end{{quote}}\n\n"
+        )
+        i = pos
+    return "".join(result)
+
+
 def replace_execanswer(content: str) -> str:
     """Replace \\execanswer{...} handling nested braces."""
     result = []
@@ -611,6 +677,9 @@ def apply_transforms(content: str) -> str:
     # Handle nested-brace commands first
     content = replace_keyidea(content)
     content = replace_engcheck(content)
+    content = replace_heuristic(content)
+    content = replace_whyexp(content)
+    content = replace_usuallymeans(content)
     content = replace_execanswer(content)
     content = replace_framework(content)
     content = replace_dectree(content)

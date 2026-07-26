@@ -856,6 +856,13 @@ BER below KP4 at the lowest pJ/bit (\Cref{sec:power,sec:kp4}). The next section
 names the fabric stacks that carry those collectives; the sections after that
 show where the optics physically sit.
 
+\whyexp{chase one slow rail before rewriting the fabric?}{Because synchronous
+collectives amplify a single straggler. Average utilization can look healthy
+while one optical lane sets the job tail.}
+
+\heuristic{Judge the fabric by delivered step time and collective tail, not by
+aggregate port rate on a clean bench.}
+
 \section{Fabric options}
 \label{sec:fabric-protocols}
 
@@ -1523,6 +1530,9 @@ fork and five ledgers
 rail, reroute one group, or replace one suspect module to test causality. Keep
 optics, switch, and workload timestamps aligned. Otherwise a link flap and a
 collective stall cannot be ordered reliably.
+
+\heuristic{Align timestamps across optics, switch, and workload before arguing
+causality. Without a common clock story, every flap looks like every stall.}
 
 \debugstory{All-reduce tail latency rose after a rack expansion, while average
 link utilization looked normal.}{Per-rail traces showed one path with FEC bursts

@@ -205,6 +205,9 @@ ability to separate competing causes. The debugging pyramid below gives the
 order; the failure-analysis handbook in \Cref{ch:failure-modes} gives the
 symptom-led procedures.
 
+\heuristic{Scope before mechanism. A fleet-wide sudden event is almost never
+solved by staring at one connector.}
+
 \section{Engineering lens}
 \label{sec:role-engineering-lens}
 
@@ -231,6 +234,9 @@ and firmware mismatches all reduce margin invisibly until the workload crosses t
 cliff. Service errors during expansion (polarity, cleaning, fiber routing) are a
 common source of day-one failures.
 
+\heuristic{Day-one failures after expansion are often polarity, cleaning, or
+routing, not a new laser wear-out mode. Check the install path before the die.}
+
 \subsection{How it is debugged}
 
 Use the debugging pyramid: start at the system symptom, narrow to signal quality,
@@ -246,6 +252,14 @@ Apply the power-versus-quality fork early
 (\Cref{sec:debug-fork,sec:tree-power-fork}) and organize lost margin with the
 five ledgers (\Cref{sec:laser-margin-erosion}).
 
+\whyexp{start at the system symptom?}{Because the workload symptom often rules
+out whole subsystems before you open a package. Skipping layers burns weeks on
+the wrong part.}
+
+\usuallymeans{Fleet-wide sudden failure}{software, configuration, shared
+environment, or shared infrastructure}{thousands of independent laser wear-outs
+arriving in the same minute}
+
 \begin{dectree}
 System symptom
   |
@@ -259,6 +273,9 @@ Physical root cause
   |
 Decision + recurrence control
 \end{dectree}
+
+\heuristic{Do not skip pyramid layers. A root-cause story without a confirmed
+system symptom and a localized subsystem is a story, not a close.}
 
 \begin{description}
 \item[Layer 1: System] What is failing at the workload level? BER, throughput,

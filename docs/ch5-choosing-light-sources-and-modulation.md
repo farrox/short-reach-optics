@@ -664,6 +664,12 @@ Control margin
 
 Recompute the link at combined production corners. A nominal part at nominal temperature says little about whether a slow loss in two ledgers will push a tail unit across the pre-FEC BER limit. §7.9, Table 7.5 carry the same ledgers into validation and fleet triage. The interview review compresses this checklist in Appendix A.8.4. The wall-chart form is Appendix D.10.
 
+> **Why experienced engineers track five ledgers instead of one margin number?**
+>
+> Because links usually fail when several small spends add up. One room-temperature pass/fail hides which ledger is nearly empty.
+
+> **Engineering heuristic.** A railed heater, TEC, or bias DAC is often the failure before the diode is. Check control margin before you write a wear-out FIT story.
+
 <pre class="dectree" aria-label="Nominal system margin"><code>Nominal system margin
   |
 Temperature debit

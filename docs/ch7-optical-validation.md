@@ -58,6 +58,10 @@ The core principle is uncertainty reduction. At every stage ask: what do we know
 
 This is the single lifecycle. Later sections deepen measurements, bring-up checklists, and fleet triage; they do not define a competing stage order.
 
+> **Why experienced engineers walk stages in this order?**
+>
+> Because each stage removes a different uncertainty. A late-stage pass cannot repair a missing requirement or unstable bring-up; treating HTOL as production readiness is the classic mix-up.
+
 ### Requirements definition
 
 ##### Purpose.
@@ -777,6 +781,8 @@ Feedback
 
 For every metric at every stage, state measurement, reference plane, condition, access level, and the decision unlocked (§3.9, Appendix A.2, Appendix D.16). Bad: "receiver sensitivity is $-15$ dBm." Good: sensitivity at the module optical input under the named BER target, temperature, wavelength, and FEC assumptions. A number without a plane and a method is not a measurement.
 
+> **Engineering heuristic.** Name the reference plane before you name the instrument. A pretty eye at the wrong plane is a wrong answer.
+
 ## The core IM/DD measurements
 
 Once the ladder is clear, the measurement list is organized around isolation: transmitter, channel, and receiver. That split is older than PAM4. Long before TDECQ, field engineers learned that a dark link can be a dead laser, a dirty connector, or a dead TIA, and that guessing which one burns hours. Bisecting those three domains is still how you keep debug from turning into simultaneous retunes of everything.
@@ -837,6 +843,12 @@ Sensitivity is the minimum OMA for the target BER, the budget's bottom line. A p
 ##### Pre-FEC BER / FEC histogram.
 
 Pre-FEC BER is the system score every other metric feeds. The FEC histogram shape separates sparse Gaussian-like errors from clustered bursts (MPI, intermittents, unlocked intervals). **Exit when** BER and histogram support the claimed mechanism class. **Decision:** contain, clean, retune, or open FA. **Risk if skipped:** average BER hides a bursty escape that ATP never stressed.
+
+> **What this usually means.** BER waterfall floor that more launch power does not fix
+>
+> *Usually:* RIN, MPI, crosstalk, receiver saturation, or another non-power-limited impairment (Appendix A.8.9)
+>
+> *Not:* simple insertion loss that more photons will buy out
 
 ##### CMIS state / DDM.
 
@@ -1139,6 +1151,18 @@ The third step is where modern PAM4 links differ from older eye-mask work. Tap s
 
 Apply the debugging fork (§4.8) before sweeping parameters or changing firmware: check the power meter or CMIS Rx power monitor first. If power moved, the fault is in the optical path (laser, coupling, connector, fiber, MUX); if power held but BER or TDECQ worsened, it is signal quality (bandwidth, noise, jitter, bias, equalization, reflection). This one check prevents the most common validation mistake: retuning an equalizer or laser bias when the real cause is a dirty connector. Then check which margin ledger moved (§5.19) before descending to component physics.
 
+> **Why experienced engineers separate power from quality first?**
+>
+> Because average optical power is cheap to measure and rules out gross attenuation, but it says almost nothing about timing, noise, distortion, spectral alignment, or adaptation.
+
+> **What this usually means.** Stable average power with rising BER
+>
+> *Usually:* timing, adaptation, noise, spectral alignment, or intermittent control
+>
+> *Not:* gross attenuation or a simple dirty connector as the whole story
+
+> **Engineering heuristic.** Never spend an hour on a DCA or spectrum sweep when a five-minute golden swap or attenuator step can eliminate half the tree.
+
 <pre class="dectree" aria-label="Observation"><code>Observation
   |
 Possible ledgers (power / noise / timing / spectrum / control)
@@ -1154,9 +1178,19 @@ Recurrence control</code></pre>
 >
 > Scope $\cdot$ time behavior $\cdot$ population $\cdot$ power or quality $\cdot$ highest-value measurement $\cdot$ decision $\cdot$ recurrence control (Appendix D.17).
 
+> **Engineering heuristic.** A passing BER on a golden host is not production readiness. Interop, margin, and manufacturing control still have their own questions.
+
 ## Fleet and field triage
 
 Lab debug asks: *what is broken on this unit?* Fleet triage asks: *which bucket does this failure belong in, and who owns the fix?* Optical programs at fleet scale own that split across performance, reliability, and manufacturability. Wrong bucket wastes weeks (sending a contaminated connector to laser FA, or rewriting a SerDes FIR when the laser is rolling over).
+
+> **Engineering heuristic.** Contain the population and clear the measurement system before you open supplier FA. A wrong ticket burns calendar time you cannot get back.
+
+> **What this usually means.** Temperature-only failures that recover cool
+>
+> *Usually:* thermal margin, wavelength or lock drift, bias tables, receiver noise rise, or mechanics that move with case temperature
+>
+> *Not:* a permanent wear-out mechanism already proven by ship LIV alone
 
 ##### Three buckets.
 

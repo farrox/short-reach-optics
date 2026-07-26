@@ -12,6 +12,13 @@ each symptom, state access (black-box versus engineering), the decision
 unlocked, and the earliest production or fleet control
 (\Cref{sec:tree-evidence-block,sec:interview-access-levels}).
 
+\whyexp{preserve state before reseating?}{Because reseat, reboot, and clean often
+destroy the only evidence that separates contact, firmware, and true wear. Scope
+without a snapshot is theater.}
+
+\heuristic{If two explanations fit equally well, prefer the one that requires
+the fewest independent failures.}
+
 \paragraph{Failure-analysis output categories.}
 \label{sec:fa-output-categories}
 Every FA result should land in one bucket before the case closes:
@@ -332,6 +339,10 @@ In a multi-lane module (DR4, FR4, DR8), one or more lanes show significantly
 different OMA, TDECQ, or pre-FEC BER compared with siblings in the same module.
 The weak lane may be marginal or failing while others are healthy.
 
+\usuallymeans{One lane only, siblings healthy}{lane-specific optics, attach,
+driver or TIA channel, or local thermal gradient}{a shared firmware image bug as
+the first explanation, unless remapping proves otherwise}
+
 \paragraph{Likely hypotheses.}
 Multi-lane modules share a substrate, laser array (or CW-WDM source), and thermal
 environment. Lane-to-lane variation comes from: (1)~die-level non-uniformity in the
@@ -522,11 +533,18 @@ Links flap, lose lock, or show bursts of FEC errors while average power and a
 short bench BER test look normal. The symptom may clear after reseating, cooling,
 or restarting firmware.
 
+\usuallymeans{Intermittent bursts that clear on reseat or cool-down}{connector
+or mate stress, ORL or MPI, supply noise, lock loss, weak attach, or firmware
+state}{a confirmed wear-out FIT story from a short room-temperature BER pass}
+
 \paragraph{Likely hypotheses.}
 Intermittent faults come from contacts, reflections, weak optical or electrical
 attach, supply noise, wavelength-lock loss, firmware state, or environmental
 stress. Reseating can remove the evidence by cleaning a contact, changing fiber
 stress, or resetting a state machine.
+
+\heuristic{Treat cool-down recovery as a clue, not a fix. Capture the failing
+corner before the unit returns to room temperature forever.}
 
 \paragraph{Measurements, mechanism isolation, and confirmation.}
 \begin{enumerate}
@@ -547,6 +565,11 @@ stress, or resetting a state machine.
 Fix the confirmed contact, attach, supply, lock, or firmware cause. Add
 event-triggered telemetry and a production stress that reproduces the fault.
 Keep intermittent and no-fault-found RMA codes separate from laser wear-out.
+
+\heuristic{A rising NFF rate is often a triage and evidence problem, not proof
+that the field is healthy. Separate intermittent codes from wear-out before you
+trust the FIT.}
+
 What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
 
 \section{Connector contamination}
@@ -603,6 +626,10 @@ runbook, sealed cassettes or trunk cables that minimize open-ferrule exposure. F
 high-power paths (ELSFP, CW-WDM), burn damage requires replacement, not
 re-cleaning. Track contamination RMAs as a distinct failure code (not ``laser
 failure'') so FIT accounting stays honest (\Cref{sec:fleet-triage}).
+
+\heuristic{Inspect before you clean, and photograph before you disturb. Cleaning
+first can erase the only evidence that the mate was dirty.}
+
 What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
 
 \section{Yield drop}
@@ -611,6 +638,9 @@ What changed afterward? Name the update among requirement, qualification, ATP, S
 \paragraph{Observed behavior.}
 First-pass yield falls below its stable baseline. The loss may cluster on one ATP
 row, lane, tester, shift, supplier lot, assembly site, or firmware revision.
+
+\heuristic{Calibration drift is usually more likely than simultaneous hardware
+failure across a previously healthy population.}
 
 \paragraph{Likely hypotheses.}
 Process drift, incoming material variation, fiber-array alignment, die-attach or
