@@ -1,8 +1,8 @@
 # Errata — Short-Reach Optics for AI Compute (v1.0.0)
 
-Release-candidate audit against freeze baseline `d12cc0f` (373 pages). Changes
-below are cuts, wording, cross-references, and corrections only. No new
-frameworks or chapters. Page count held at 373.
+Release-candidate audit against freeze baseline `d12cc0f` (373 pages). Later
+clarifications (including the validation-ladder prose rewrite) are logged below.
+No new frameworks or chapters.
 
 ## Technical corrections
 
@@ -47,6 +47,12 @@ frameworks or chapters. Page count held at 373.
   navigation spine.
 - **Interview frameworks:** Validation-plan close now ends on gate decision +
   control owner; “refuse any test” → “refuse any measurement.”
+- **Validation ladder prose:** Rewrote `sec:validation-workflow` as a causal
+  narrative (bring-up → characterization → margin/interop → qualification →
+  production → pilot/fleet) before a single Stage/Question/Evidence/Decision
+  reference table. Stage subsections are short prose plus Evidence/Exit/Decision
+  blocks; duplicate Purpose/Uncertainty field lists and Learning summary removed
+  (`ch05`).
 
 ## Typographical fixes
 

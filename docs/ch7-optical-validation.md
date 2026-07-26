@@ -49,14 +49,82 @@ ATP (acceptance test)
 
 ## The validation ladder
 
-Optical programs fail in the same places again and again: a part that looks good in characterization but cannot bring up on a production host, or a module that passes acceptance test plan (*ATP*) and then unlocks under neighbor heat. The ladder below is a decision framework, not a test menu. Each stage answers one question the previous stage could not answer. Skipping a rung does not save time. It moves the escape into a later, more expensive stage.
+Validation is staged uncertainty reduction. Optical programs fail in the same places again and again: a part that looks good in characterization but cannot bring up on a production host, or a module that passes ATP and then unlocks under neighbor heat. Skipping a rung does not save time. It moves the escape into a later, more expensive stage.
 
-The core principle is uncertainty reduction. At every stage ask: what do we know before this stage, what uncertainty remains, what evidence removes it, what decision that evidence unlocks, and what risk remains afterward (Appendix D.16).
+### The canonical validation lifecycle
 
-<table class="book-table"><tr><th>Phase</th><th>Main question</th><th>Evidence</th><th>Exit decision</th></tr><tr><td>Requirements</td><td>What must be true?</td><td>System requirements, constraints</td><td>Architecture target</td></tr><tr><td>Architecture</td><td>Can this design meet requirements?</td><td>Budgets, simulations, tradeoffs</td><td>Proceed or redesign</td></tr><tr><td>Bring-up</td><td>Does the hardware fundamentally work?</td><td>Init, traffic, basic BER</td><td>Usable hardware</td></tr><tr><td>Characterization</td><td>How does it behave?</td><td>Sweeps, distributions, trends</td><td>Behavior understood</td></tr><tr><td>Margin</td><td>How close are the limits?</td><td>T, V, loss, ORL, stress headroom</td><td>Sufficient headroom</td></tr><tr><td>Interoperability</td><td>Does it work in real systems?</td><td>Host/peer/FW/channel matrix</td><td>Supported ecosystem</td></tr><tr><td>Qualification</td><td>Will it survive expected life?</td><td>Mechanism-based stress evidence</td><td>Release confidence</td></tr><tr><td>Manufacturing</td><td>Can we build it repeatedly?</td><td>Yield, ATP, SPC, FAIR</td><td>Production readiness</td></tr><tr><td>Pilot</td><td>Does reality match lab assumptions?</td><td>Bounded deployment</td><td>Expand / restrict / reject</td></tr><tr><td>Mass production</td><td>Can we sustain volume with control?</td><td>SPC, ECO, RMA loop</td><td>Open / hold volume</td></tr><tr><td>Fleet</td><td>Does it remain healthy?</td><td>Telemetry, cohorts, escapes</td><td>Operational control</td></tr><tr><td>Feedback</td><td>What must change next?</td><td>FA, escapes, revision inputs</td><td>Next-revision targets</td></tr></table>
-**Table 7.1.** Canonical validation lifecycle. Decision unlocked: which stage exit you have evidence for, and which you do not. Wall-chart tree: Appendix D.2; interview names: Appendix A.8.5. EVT/DVT/PVT/MP map in Table 8.5.
+Validation is the process of building enough justified confidence to make a product decision. It is not a collection of measurements and it is not a synonym for qualification. A new optical product begins with several kinds of uncertainty at once. You may not know whether it integrates with the host, how its performance moves across operating corners, how much margin remains in a realistic system, whether aging creates permanent degradation, whether production can reproduce the engineering result, or whether laboratory assumptions remain true in the fleet.
 
-This is the single lifecycle. Later sections deepen measurements, bring-up checklists, and fleet triage; they do not define a competing stage order.
+Those questions cannot be answered by one large campaign. They require different evidence, and the evidence must be collected in a deliberate order. Each stage establishes the conditions needed to interpret the next one. A reliability result is not useful if the unit never operated correctly before stress. A clean characterization plot does not demonstrate interoperability with the target host. A qualified engineering build does not demonstrate that the supplier can reproduce the same distribution at volume.
+
+The lifecycle therefore moves from basic operation toward increasingly realistic and increasingly expensive evidence. Requirements and architecture come first so you measure the right product; the story below starts once hardware exists.
+
+##### Bring-up: establish an interpretable system.
+
+The first task is not to measure maximum performance. It is to establish that the product can operate in a controlled environment and that later measurements will mean what you think they mean.
+
+A module that does not reach the expected management state, emit light, recover timing, or pass data on a known-good host is not ready for characterization. At this point the leading uncertainty is integration: seating, power, firmware, fiber routing, configuration, host behavior, or an elementary product fault. Bring-up removes enough of that uncertainty to establish a trusted starting point.
+
+The output of bring-up is therefore not "the product passed." It is a known configuration in which the module reaches ready state, produces and receives light, holds lock, and achieves a usable pre-FEC BER at named reference planes. That known-good configuration becomes the baseline for every later comparison. Now that operation is reproducible, you can study behavior.
+
+##### Characterization: build the behavioral model.
+
+A successful room-temperature link tells you very little about the operating envelope. Characterization maps how the product responds as temperature, voltage, optical return loss, lane, unit, and manufacturing lot change.
+
+This stage is exploratory rather than purely pass/fail. The purpose is to understand distributions, sensitivities, and failure signatures. You want to know which margin ledgers are strong, which are thin, and which variables cause the response to move. Measurements such as OMA, TDECQ, wavelength, RIN, sensitivity, BER waterfalls, and control headroom are useful because together they reveal how the transmitter, channel, receiver, and control system respond to controlled changes.
+
+Characterization produces a model of normal behavior. It tells you what varies, how quickly it varies, and which corners deserve deeper attention. It may lead to a design change or a restricted operating envelope before substantial qualification resources are spent. Characterization still studies the product largely as an isolated object. A product can look healthy in that environment and fail when placed inside the real system. Now that behavior is mapped, you can challenge it inside the system.
+
+##### Margin and interoperability: test the product inside the system.
+
+Margin validation asks how close the link is to failure. Interoperability asks whether the location of that failure boundary changes when the host, peer module, cable plant, firmware, thermal environment, and traffic conditions change.
+
+These questions belong together because real systems combine impairments that are often separated on the bench. The module may experience hotter inlet air, live supply variation, adjacent-module heating, production fiber assemblies, optical reflections, host SerDes variation, management-state differences, and peer modules from another source. None of these conditions is necessarily severe by itself, but their combination may consume the remaining margin.
+
+The purpose of this stage is not to repeat characterization with more test points. It is to challenge the behavioral model under production-representative conditions. If the model remains predictive and the required margin closes, the system corner can be approved. If it does not, the result may require a design change, a host restriction, a reduced environmental envelope, or a narrower interoperability claim. At the end of this stage you understand whether the product works today, across the intended systems and operating corners. You still do not know whether it will continue to work after prolonged exposure and aging. Now that present-day margin is understood, you can ask whether time changes it.
+
+##### Stress qualification: determine whether time changes the answer.
+
+Qualification introduces a different question: does exposure create permanent degradation that threatens the intended life?
+
+Temperature sweeps during characterization show how a healthy product behaves while it is hot or cold. Reliability stresses ask whether temperature, humidity, cycling, operation, mating, or another mechanism causes the product to become permanently worse. That distinction is essential. A reversible operating-point shift is not the same problem as wear-out, fatigue, corrosion, contamination, or material degradation.
+
+Stress selection must therefore begin with a credible failure mechanism. HTOL, temperature cycling, humidity, ESD, and connector cycling are not evidence merely because they were performed. Each stress must have a reason for being included, an observable degradation signature, an acceptance criterion, and a justified connection to the use condition or lifetime claim.
+
+Qualification does not eliminate all life risk. It provides a bounded confidence argument for named mechanisms, samples, stresses, and assumptions. That argument supports a decision to accept the intended life, derate the use condition, gather more evidence, or hold release. Even a qualified design, however, may not be a manufacturable product. Now that design-life risk is bounded, you can ask whether production can reproduce the result.
+
+##### Production readiness: prove repeatability and detection.
+
+Qualification demonstrates that representative hardware can satisfy the design and life requirements. Production readiness asks whether the manufacturing process can reproduce that result across lots, tools, operators, suppliers, and time.
+
+Engineering samples often receive unusual attention. They may use selected components, experienced technicians, extensive calibration, or bench measurements that cannot be repeated economically in production. Volume readiness therefore requires evidence from manufacturing distributions, not only from the best units.
+
+This stage examines multi-lot yield, process stability, measurement-system correlation, ATP limits, guardbands, first-article evidence, and the ability of production screens to detect known escape mechanisms. The goal is not zero variation. The goal is controlled variation, with enough process capability and detection coverage to prevent unacceptable units from reaching the fleet. The decision is operational: open volume, restrict the ramp, improve the process or test coverage, or hold shipment. Production evidence still cannot reproduce every installation practice, rack environment, workload, and field interaction. Now that the process is controlled, deployment can test the remaining assumptions.
+
+##### Controlled pilot and fleet monitoring: compare the model with reality.
+
+A pilot is not merely a small production shipment. It is a controlled experiment designed to determine whether the assumptions made during validation and qualification remain true in deployment.
+
+The pilot population should be identifiable, instrumented, and governed by explicit exit criteria. Telemetry should reveal whether BER, FEC behavior, retrains, temperature, optical power, lane behavior, and cohort rates match the expected distributions. Lot, site, host, firmware, and installation metadata matter because fleet evidence becomes useful only when failures can be grouped into meaningful populations.
+
+If the observed behavior matches the model, deployment can expand while normal fleet monitoring continues. If it does not, the response may be to restrict a lot, pause a supplier, change installation controls, reopen qualification, modify ATP, or revise the design assumptions.
+
+Fleet monitoring is part of validation rather than an activity that begins after validation is "finished." The fleet is where the remaining assumptions are tested. Its evidence closes the learning loop back into requirements, design, qualification, manufacturing controls, and future products.
+
+##### Why the order matters.
+
+The stages are ordered by the type of uncertainty they remove.
+
+Bring-up establishes that measurements are interpretable. Characterization establishes the behavioral model. Margin and interoperability determine whether the model survives realistic system variation. Stress qualification determines whether time and exposure create permanent degradation. Production readiness determines whether the result can be reproduced and screened at volume. Pilot and fleet monitoring determine whether the laboratory model survives actual deployment.
+
+A later stage cannot substitute for an incomplete earlier one. Interoperability testing cannot rescue unstable bring-up. HTOL cannot prove host compatibility. A qualified engineering lot cannot establish manufacturing control. A successful pilot cannot explain why the design works or guarantee that an uncontrolled factory will reproduce it.
+
+The lifecycle is therefore not a bureaucratic sequence of gates. It is an efficient order for reducing uncertainty without asking expensive evidence to answer questions it was never designed to answer (Appendix D.16, Appendix D.2).
+
+<table class="book-table"><tr><th>Stage</th><th>Question</th><th>Evidence</th><th>Decision</th></tr><tr><td>Requirements</td><td>What must be true?</td><td>System requirements, constraints</td><td>Architecture target</td></tr><tr><td>Architecture</td><td>Can this design meet requirements?</td><td>Budgets, simulations, tradeoffs</td><td>Proceed or redesign</td></tr><tr><td>Bring-up</td><td>Does the hardware fundamentally work?</td><td>Init, traffic, basic BER</td><td>Usable hardware</td></tr><tr><td>Characterization</td><td>How does it behave?</td><td>Sweeps, distributions, trends</td><td>Behavior understood</td></tr><tr><td>Margin</td><td>How close are the limits?</td><td>T, V, loss, ORL, stress headroom</td><td>Sufficient headroom</td></tr><tr><td>Interoperability</td><td>Does it work in real systems?</td><td>Host/peer/FW/channel matrix</td><td>Supported ecosystem</td></tr><tr><td>Qualification</td><td>Will it survive expected life?</td><td>Mechanism-based stress evidence</td><td>Release confidence</td></tr><tr><td>Manufacturing</td><td>Can we build it repeatedly?</td><td>Yield, ATP, SPC, FAIR</td><td>Production readiness</td></tr><tr><td>Pilot</td><td>Does reality match lab assumptions?</td><td>Bounded deployment</td><td>Expand / restrict / reject</td></tr><tr><td>Mass production</td><td>Can we sustain volume with control?</td><td>SPC, ECO, RMA loop</td><td>Open / hold volume</td></tr><tr><td>Fleet</td><td>Does it remain healthy?</td><td>Telemetry, cohorts, escapes</td><td>Operational control</td></tr><tr><td>Feedback</td><td>What must change next?</td><td>FA, escapes, revision inputs</td><td>Next-revision targets</td></tr></table>
+**Table 7.1.** Canonical validation lifecycle (rapid reference). Decision unlocked: which stage exit you have evidence for, and which you do not. Wall-chart tree: Appendix D.2; interview names: Appendix A.8.5. EVT/DVT/PVT/MP map in Table 8.5.
+
+This is the single lifecycle. The operational notes below deepen each gate; they do not define a competing stage order. EVT/DVT/PVT names map in Table 8.5.
 
 > **Why experienced engineers walk stages in this order?**
 >
@@ -64,171 +132,23 @@ This is the single lifecycle. Later sections deepen measurements, bring-up check
 
 ### Requirements definition
 
-##### Purpose.
+The first validation step is not a measurement. It is defining what success means so you do not validate the wrong product. Without a requirements slice you do not know which BER, envelope, lifetime, volume, or deployment environment later measurements must close. Write performance, environment, reliability, manufacturing, and operational requirement classes with owners and, where applicable, named planes (§1.6, Table 5.4). Weak answer: "We test BER." Strong answer: first define target BER, operating envelope, lifetime, manufacturing volume, and deployment environment; then design validation around the risks.
 
-Prevent validating the wrong product. The first validation step is not a measurement. It is defining what success means.
-
-##### What uncertainty remains?
-
-Without a requirements slice you do not know which BER, envelope, lifetime, volume, or deployment environment later measurements must close.
-
-##### Inputs.
-
-Workload and reach intent; host and cable plant constraints; power and thermal envelope; reliability and service model; manufacturing volume and supplier capability; telemetry and field-replaceability expectations (§1.6, Table 5.4).
-
-##### Measurements.
-
-None yet. Write the requirement classes:
-
-Performance
-
-: Data rate, BER/FEC target, latency, power, reach.
-
-Environment
-
-: Temperature, humidity, vibration, contamination.
-
-Reliability
-
-: Lifetime, failure-rate target, service life.
-
-Manufacturing
-
-: Yield intent, test time, supplier capability.
-
-Operational
-
-: Telemetry, diagnostics, field replacement.
-
-##### Required access level.
-
-System and product owners. No hardware access required.
-
-##### Data collected.
-
-A signed requirements slice with owners, planes where applicable, and pass/fail language that later stages can fail without ambiguity.
-
-##### Analysis.
-
-Map each requirement to the risk that would falsify it. Those risks become validation stages.
-
-##### Exit criteria.
-
-**Exit when** the requirements slice is specific enough that architecture and later stages have pass criteria, or when you refuse to start hardware work until it is.
-
-##### Decision enabled.
-
-Architecture target and validation scope, or hold until success is defined.
-
-##### Common mistakes.
-
-Weak interview answer: "We test BER." Strong answer: first define target BER, operating envelope, lifetime, manufacturing volume, and deployment environment; then design validation around the risks.
+**Representative evidence:** Signed requirements slice with owners, planes, and unambiguous pass/fail language.\
+**Exit:** The slice is specific enough that architecture and later stages have pass criteria, or hardware work is refused until it is.\
+**Decision:** Architecture target and validation scope, or hold until success is defined.
 
 ### Architecture review
 
-##### Purpose.
+Determine whether the architecture can meet the requirements before hardware exists. Validation starts on paper and in models (§1.6, Table 5.9). Even with clear requirements, optical power, thermal budget, electrical margin, reliability target, and manufacturing cost may not close together. Close budgets under stated assumptions, or redesign before buying tooling. A quiet-bench prototype is not architecture proof. Skipping reliability and manufacturing cost until DVT is a common failure mode.
 
-Determine whether the architecture can meet the requirements before hardware exists. Validation starts on paper and in models (§1.6, Table 5.9).
-
-##### What uncertainty remains?
-
-Even with clear requirements, you may not know whether optical power, thermal budget, electrical margin, reliability target, and manufacturing cost can close together.
-
-##### Inputs.
-
-Link budget, thermal model, power model, noise model, reliability assumptions, and the manufacturing and service model implied by the requirements slice.
-
-##### Measurements.
-
-Simulations, budget closures, and trade studies. Prototype hardware is optional here; feasibility is the question.
-
-##### Required access level.
-
-Design and systems owners. Engineering samples are not required for the gate itself.
-
-##### Data collected.
-
-Closed or explicitly open budget lines; named assumptions; redesign triggers.
-
-##### Analysis.
-
-Ask whether the architecture can close optical power, thermal budget, electrical margin, reliability target, and manufacturing cost without heroic assumptions.
-
-##### Exit criteria.
-
-**Exit when** the architecture is feasible under stated assumptions, or when you redesign before buying tooling.
-
-##### Decision enabled.
-
-Proceed to hardware bring-up, or redesign.
-
-##### Common mistakes.
-
-Treating a quiet-bench prototype as architecture proof. Skipping reliability and manufacturing cost until DVT.
+**Representative evidence:** Closed or explicitly open budget lines; named assumptions; redesign triggers.\
+**Exit:** Architecture is feasible under stated assumptions, or redesign is chosen before tooling.\
+**Decision:** Proceed to hardware bring-up, or redesign.
 
 ### Engineering bring-up
 
-##### Purpose.
-
-Answer: is this hardware alive and measurable? Bring-up is not qualification. Separate questions that programs often collapse:
-
-Bench bring-up
-
-: Does the unit operate on a trusted setup well enough to produce interpretable measurements?
-
-System integration bring-up
-
-: Does it initialize and carry traffic on the target host?
-
-Margin / interop
-
-: Does it retain headroom across loaded corners? That is later ladder exit evidence, not bring-up exit evidence.
-
-##### What uncertainty remains?
-
-Before bring-up you do not know whether a failure is integration (seat, cable, firmware, host) or product physics.
-
-##### Inputs.
-
-Trusted setup or target host; known-good fiber; firmware load; CMIS tool chain (§7.9, Table 7.3).
-
-##### Measurements.
-
-Electrical
-
-: Rails, clocks, initialization, host link.
-
-Optical
-
-: Tx power, Rx power, wavelength, basic BER.
-
-Control
-
-: Firmware, CMIS state, alarms.
-
-##### Required access level.
-
-Black-box host and management access first. Engineering access only when basic operation cannot be established (Appendix D.11).
-
-##### Data collected.
-
-CMIS state progression, first-light and Rx power, CDR lock, usable pre-FEC BER at a named plane, snapshot for later RMA.
-
-##### Analysis.
-
-Confirm the unit can emit, receive, and pass data under controlled conditions before arguing about margin or life.
-
-##### Exit criteria.
-
-**Exit when** the unit reaches ready state, emits and receives light in class, holds CDR lock, and shows a usable pre-FEC BER on the golden or target host with named reference planes.
-
-##### Decision enabled.
-
-Continue into characterization, or stop and debug integration.
-
-##### Common mistakes.
-
-Deep failure analysis before basic operation. Treating loaded chassis corners as bring-up exit evidence. Spending weeks optimizing TDECQ on a part that never reliably links in a real chassis.
+Answer whether the hardware is alive and measurable. Bring-up is not qualification. Separate bench bring-up (trusted setup, interpretable measurements), system integration bring-up (target host init and traffic), and later margin/interop work. Before bring-up you do not know whether a failure is integration or product physics. Confirm emit, receive, CDR lock, and usable pre-FEC BER at named planes before arguing about margin or life (§7.9, Table 7.3). Deep FA before basic operation, or treating loaded chassis corners as bring-up exit evidence, wastes calendar.
 
 > **Tradeoff.** Bring-up speed vs characterization depth
 >
@@ -240,113 +160,25 @@ Deep failure analysis before basic operation. Treating loaded chassis corners as
 >
 > *Experienced decision:* Do not skip characterization to "save time." Without a baseline, margin and FA burn calendar later.
 
+**Representative evidence:** CMIS ready state; first-light and Rx power; CDR lock; usable pre-FEC BER on golden or target host at named planes.\
+**Exit:** Unit reaches ready state, emits and receives light in class, holds lock, and shows usable pre-FEC BER with named reference planes.\
+**Decision:** Continue into characterization, or stop and debug integration.
+
+Now that operation is reproducible, you can study behavior.
+
 ### Characterization
 
-##### Purpose.
+Create the behavioral model. The output is not pass/fail. The output is how the system behaves. Characterization is exploratory: finding a cliff improves understanding; it does not automatically fail the product. Before this stage you know one corner works. After it you know how distributions move with stress variables and which ledgers (power, noise, timing, spectral, control) are thin. Map temperature, voltage, optical stress, and unit/lot distributions. On the transmitter path, measure TDECQ, OMA, ER, and level linearity; with component access, add LIV, RIN, and SMSR (§7.4, §7.7, §5.7). Do not treat a hero sample at $25^\circ$C as the fleet model, and do not park life projection inside characterization.
 
-Create the behavioral model. The output is not pass/fail. The output is: this is how the system behaves. Characterization is exploratory. Finding a cliff improves understanding; it does not automatically fail the product.
+**Representative evidence:** Response surfaces; distribution summaries; thin-ledger list; candidate guardbands.\
+**Exit:** Population behavior versus required corners is mapped, thin ledgers are named, and you decide whether derate or redesign is needed before loaded-fleet work.\
+**Decision:** Proceed to margin validation, derate the envelope, or redesign.
 
-##### What uncertainty remains?
-
-Before characterization you know one corner works. After it you know how distributions move with stress variables and which ledgers (power, noise, timing, spectral, control) are thin.
-
-##### Inputs.
-
-Bring-up-complete units; temperature and voltage control; ORL or attenuation fixtures; multi-unit and multi-lot samples when available.
-
-##### Measurements.
-
-Temperature sweep
-
-: BER, power, wavelength, bias, current versus $T$.
-
-Voltage sweep
-
-: Electrical margin versus supply.
-
-Optical stress
-
-: Attenuation, ORL, contamination, connector conditions.
-
-Distributions
-
-: Unit-to-unit and lot-to-lot variation; short-term stability and preconditioning. Projected aging and permanent degradation belong to reliability qualification.
-
-On the transmitter path, measure TDECQ, OMA, ER, and level linearity. With component access, add LIV, RIN, and SMSR (§7.4, §7.7, §5.7).
-
-##### Required access level.
-
-Black-box metrics first. Engineering access for LIV/RIN/SMSR when the behavioral model needs physical baselines.
-
-##### Data collected.
-
-Response surfaces, distribution summaries, thin-ledger list, and candidate guardbands.
-
-##### Analysis.
-
-Separate response mapping, distribution estimation, specification verification against a named method and plane, and mechanism diagnostics. This data later feeds specifications, guardbands, ATP limits, and reliability plans.
-
-##### Exit criteria.
-
-**Exit when** population behavior versus the required corners is mapped, thin ledgers are named, and you decide whether the design needs derate or redesign before loaded-fleet work.
-
-##### Decision enabled.
-
-Proceed to margin validation, derate the envelope, or redesign.
-
-##### Common mistakes.
-
-Treating a hero sample at 25 $^\circ$C as the fleet model. Confusing characterization cliffs with automatic product failure. Parking life projection inside characterization.
+Now that behavior is mapped, you can challenge it inside the system.
 
 ### Margin validation
 
-##### Purpose.
-
-A product does not fail because it reaches a nominal limit. It fails because all margins are consumed. Measure remaining headroom under loaded, production- like stress (§7.9, §5.19).
-
-##### What uncertainty remains?
-
-Characterization maps the part. Extra uncertainty remains about how much capability survives temperature, voltage, loss, ORL, aging intent, and manufacturing variation when they stack.
-
-##### Inputs.
-
-Characterization baselines; production-representative corners; named reference planes; the requirements BER/FEC and envelope targets.
-
-##### Measurements.
-
-Loaded corners: target sled airflow, host rails with SerDes traffic, controlled contamination or ORL stress, production fiber length and bend radius, ELS hot-swap if promised, neighbor modules at full load (Table 7.4). Compare pre-FEC BER, telemetry, retrain count, and control headroom against the characterization baseline.
-
-##### Required access level.
-
-Black-box remaining-margin metrics first. External optical eye only when access exists and the corner needs it (Appendix D.11).
-
-##### Data collected.
-
-Cliff locations, remaining headroom by ledger, and a margin waterfall that does not double-count penalties.
-
-##### Analysis.
-
-Available margin is design capability minus the required operating condition. Track categories separately, then stack once:
-
-Optical
-
-: Tx power, receiver sensitivity, insertion loss.
-
-Electrical
-
-: Eye opening, jitter, equalization reserve.
-
-Thermal
-
-: Wavelength drift, laser efficiency, receiver noise.
-
-Reliability
-
-: Aging and wear-out allowances (intent from life plan).
-
-Manufacturing
-
-: Unit variation and process drift.
+A product does not fail because it reaches a nominal limit. It fails because all margins are consumed. Characterization maps the part; margin asks how much capability survives when temperature, voltage, loss, ORL, aging intent, and manufacturing variation stack under production-like stress (§7.9, §5.19). Compare pre-FEC BER, telemetry, retrain count, and control headroom against the characterization baseline. Track optical, electrical, thermal, reliability, and manufacturing margin categories separately, then stack once. Do not subtract the same physical effect twice under two names. Quiet-bench margin is not rack margin.
 
 *Margin waterfall (illustrative accounting, not a universal budget).*
 
@@ -358,31 +190,15 @@ Manufacturing
 > $-$ manufacturing variation\
 > $=$ remaining field margin
 
-Margin versus power and cost is the same tradeoff as in §5.19: allocate margin where uncertainty is highest.
+Allocate margin where uncertainty is highest (§5.19).
 
-Do not subtract the same physical effect twice under two names. If ORL stress is already in the loaded corner, do not also invent a second reflection tax without new evidence.
-
-##### Exit criteria.
-
-**Margin exit:** failure cliffs and remaining headroom are known at the named plane and loaded corners.
-
-##### Decision enabled.
-
-Approve the fleet corner envelope, restrict deployment conditions, or send the design back.
-
-##### Common mistakes.
-
-Quiet-bench margin treated as rack margin. Double-counting temperature and thermal-wavelength penalties. Calling interop tickets "laser failures" when the escape was an untested corner.
+**Representative evidence:** Cliff locations; remaining headroom by ledger; margin waterfall without double-counted penalties; loaded-corner results (Table 7.4).\
+**Exit:** Failure cliffs and remaining headroom are known at the named plane and loaded corners.\
+**Decision:** Approve the fleet corner envelope, restrict deployment conditions, or send the design back.
 
 ### Interoperability validation
 
-##### Purpose.
-
-A component can pass validation and still fail as a system. Prove supported host, peer, firmware, and channel combinations retain required headroom.
-
-##### What uncertainty remains?
-
-Margin on a golden host does not prove the supported ecosystem.
+A component can pass validation and still fail as a system. Prove supported host, peer, firmware, and channel combinations retain required headroom. Margin on a golden host does not prove the supported ecosystem. Exercise host ASIC / SerDes, peer module or second source, firmware and CMIS revision, faceplate temperature and airflow, and fiber/cable plant. Assign failures to host, peer, software, environment, or channel before changing laser bias tables.
 
 > **Tradeoff.** Golden-host speed vs interop risk
 >
@@ -394,335 +210,63 @@ Margin on a golden host does not prove the supported ecosystem.
 >
 > *Experienced decision:* Use golden hosts for speed; require representative hosts before calling interop done.
 
-##### Inputs.
+**Representative evidence:** Supported combination list; documented restrictions; failing combination signatures.\
+**Exit:** Supported host, peer, firmware, and channel combinations retain required headroom, or a documented restriction defines where the product may ship.\
+**Decision:** Approve the supported ecosystem, restrict SKUs or hosts, or reopen design.
 
-Margin baselines; claimed host and peer matrix; firmware revisions; cable and fiber plant classes.
-
-##### Measurements.
-
-Exercise the matrix dimensions (Host: switch ASIC / SerDes; Peer: optical module or second source; Software: firmware and CMIS revision/states; Environment: faceplate temperature and airflow; Channel: fiber/cable plant and connectors).
-
-Useful priors for tickets include CMIS state, media type, and electrical eye; those are starting points, not a general law that the laser path is innocent.
-
-##### Required access level.
-
-Black-box customer-visible metrics on target hosts. Engineering access only when ownership cannot be assigned from swaps and telemetry.
-
-##### Data collected.
-
-Supported combination list, documented restrictions, failing combination signatures.
-
-##### Analysis.
-
-Assign failures to host, peer, software, environment, or channel before changing laser bias tables.
-
-##### Exit criteria.
-
-**Interop exit:** supported host, peer, firmware, and channel combinations retain the required headroom, or a documented restriction defines where the product may ship.
-
-##### Decision enabled.
-
-Approve the supported ecosystem, restrict SKUs or hosts, or reopen design.
-
-##### Common mistakes.
-
-One golden host as "interop done." Merging margin cliffs with peer bugs into one vague fail bucket.
+Now that present-day margin is understood, you can ask whether time changes it.
 
 ### Reliability qualification
 
-##### Purpose.
+Build mechanism-based evidence that the design survives expected variation and life. Do not run stresses only because a checklist names them. Keep operational environment test (works while exposed), reliability stress (exposure causes unacceptable permanent change), and life projection (justified field-life claim) distinct. Functional and margin stages do not answer lifetime (§8.2, §8.3, Appendix D.3). Follow failure mechanism $\rightarrow$ acceleration method $\rightarrow$ stress $\rightarrow$ pre/post observable $\rightarrow$ acceptance criterion $\rightarrow$ confidence. A stress without a failure mechanism is only exposure. Deep FIT/DPPM math lives in Chapter 8.
 
-Build mechanism-based evidence that the design survives expected variation and life. Never run stresses only because a checklist names them. Keep three jobs distinct:
+**Representative evidence:** Pre/post stress margins; mechanism notes; sample and confidence statement; production-proxy candidates.\
+**Exit:** Sample plan, mechanism, and projected life support the requirements slice, or ship is explicitly held for life risk.\
+**Decision:** Accept life risk for the envelope, derate life or use conditions, or hold.
 
-Operational environment test
-
-: Does it work while exposed?
-
-Reliability stress
-
-: Does exposure cause unacceptable permanent change?
-
-Life projection
-
-: What field-life claim is justified, with what sample, confidence, and assumptions?
-
-##### What uncertainty remains?
-
-Functional and margin stages do not answer lifetime (§8.2, §8.3, Appendix D.3).
-
-##### Inputs.
-
-Named failure mechanisms from the requirements and architecture risk list; sample plan; acceptance criteria; production-proxy intent.
-
-##### Measurements.
-
-Follow the evidence path: failure mechanism $\rightarrow$ acceleration method $\rightarrow$ stress $\rightarrow$ pre/post observable $\rightarrow$ acceptance criterion $\rightarrow$ confidence. Examples by mechanism intent:
-
-Temperature cycling
-
-: Solder fatigue, CTE mismatch, mechanical stress.
-
-Humidity
-
-: Corrosion, moisture ingress.
-
-HTOL
-
-: Semiconductor degradation under bias and temperature.
-
-Vibration
-
-: Mechanical failures.
-
-A stress without a failure mechanism is only exposure. Deep FIT/DPPM math lives in Chapter 8; this stage owns the logic.
-
-##### Required access level.
-
-Qual lab access for stressed populations; black-box customer-visible margins before and after stress; engineering baselines (LIV, SMSR, spectrum) when returns need physical confirmation.
-
-##### Data collected.
-
-Pre/post stress margins, mechanism notes, sample and confidence statement, production-proxy candidates.
-
-##### Analysis.
-
-Justify $E_a$ and stress relevance for the named mechanism. A life claim without a mechanism is a narrative, not evidence (Appendix D.3, Appendix D.16).
-
-##### Exit criteria.
-
-**Exit when** the sample plan, mechanism, and projected life support the requirements slice, or when you explicitly hold ship for life risk.
-
-##### Decision enabled.
-
-Accept life risk for the envelope, derate life or use conditions, or hold.
-
-##### Common mistakes.
-
-Checklist stresses without mechanisms. Collapsing environment exposure and life projection. Using an EVT hero lot as the life population.
+Now that design-life risk is bounded, you can ask whether production can reproduce the result.
 
 ### Manufacturing validation
 
-##### Purpose.
+The factory is part of the design. Qualification proves the design. Manufacturing validation proves the process: build it repeatedly, measure it repeatedly, and detect bad units. A few carefully built engineering samples cannot establish volume readiness. This is the PVT question: whether yield, process control, and ATP coverage survive lot-to-lot variation (§8.9, §8.10, Table 8.5). DVT belongs earlier; do not park it inside this stage. Prove ATP/sample/SPC coverage against known escapes with replay, separation, and production repeatability. Silent "multi-lot" that means two hand-selected lots is not evidence.
 
-The factory is part of the design. Prove you can build it repeatedly, measure it repeatedly, and detect bad units. Qualification proves the design. Manufacturing validation proves the process.
+**Representative evidence:** Multi-lot yield; classified ATP/sample/SPC coverage; measurement capability; FAIR; escape-detection proof (Appendix D.16, §8.9).\
+**Exit:** Multi-lot yield, screen coverage, SPC stability, and FAIR evidence support opening volume, or shipment is held for process control.\
+**Decision:** Open volume toward pilot, hold shipment, or demand corrective action before ramp.
 
-##### What uncertainty remains?
-
-A few carefully built engineering samples cannot establish volume readiness. This is the Production Validation Test (*PVT*) question: whether yield, process control, and ATP coverage survive lot-to-lot variation (§8.9, §8.10, Table 8.5). Design Validation Test (*DVT*) belongs earlier: it freezes corners, margin, and the life plan before volume tooling. Do not park DVT inside this stage.
-
-##### Inputs.
-
-Qualified design intent; multi-lot material; ATE-to-bench correlation plan; escape signatures from earlier stages.
-
-##### Measurements.
-
-ATP
-
-: 100% or classified screens that catch known escapes.
-
-SPC
-
-: Process monitoring on the variables that move yield.
-
-Audit
-
-: Periodic deep tests the ATP cannot afford every unit.
-
-Supplier controls
-
-: Incoming quality and FAIR gates.
-
-##### Required access level.
-
-Production data systems, golden units, and supplier lot genealogy. Engineering lab access for correlation failures.
-
-##### Data collected.
-
-Lots, date codes, sites/lines, process corners, measurement capability, yield confidence, guardband justification, escape-detection proof (Appendix D.16, §8.9).
-
-##### Analysis.
-
-For a proposed ATP or screen update that claims to catch prior escapes, prove three things: replay the historical failing unit or equivalent; show separation of good and bad; show production repeatability supports the limit. Split supplier RMA codes so one vendor cannot hide inside a merged bucket.
-
-##### Exit criteria.
-
-**Exit when** multi-lot yield, classified ATP/sample/SPC coverage, SPC stability, and FAIR evidence support opening volume, or when you hold for process control.
-
-##### Decision enabled.
-
-Open volume toward pilot, hold shipment, or demand corrective action before ramp.
-
-##### Common mistakes.
-
-Shipping an uncontrolled second lot after a qualified hero process. Treating ATP as a substitute for qualification. Silent "multi-lot" that means two hand-selected lots.
+Now that the process is controlled, deployment can test the remaining assumptions.
 
 ### Controlled pilot
 
-##### Purpose.
+Validate assumptions in real deployment with a bounded population. Lab and factory evidence may still miss install practice, traffic mix, or environment. Use known serial numbers and lots, representative hosts, enhanced telemetry, and explicit success and rollback criteria (§7.12). Ask whether field reality matches lab assumptions. Calling open volume a pilot, or learning the escape from customer outage instead of a bounded trial, defeats the stage.
 
-Validate assumptions in real deployment with a bounded population. Distinct from mass production.
-
-##### What uncertainty remains?
-
-Lab and factory evidence may still miss install practice, traffic mix, or environment.
-
-##### Inputs.
-
-Known serial numbers and lots; representative hosts and environments; enhanced telemetry; success and rollback criteria; observation duration (§7.12).
-
-##### Measurements.
-
-Field BER/FEC and telemetry trends; install and reseat events; CMIS dumps preserved before reseat; comparison to lab baselines.
-
-##### Required access level.
-
-Ops telemetry and RMA path. Bench FA when pilot units return.
-
-##### Data collected.
-
-Pilot cohort database, exit metrics, signatures that feed ATP or design rules.
-
-##### Analysis.
-
-Ask whether field reality matches lab assumptions. Feed mismatches back into earlier stages.
-
-##### Exit criteria.
-
-**Exit when** pilot success/rollback criteria are met, or when you restrict or reject based on observed risk. Pilot has a real exit.
-
-##### Decision enabled.
-
-Expand deployment, restrict, pause a supplier or lot, or reopen an earlier ladder stage.
-
-##### Common mistakes.
-
-Calling open volume a pilot. Learning the escape mechanism from customer outage instead of from a bounded trial.
+**Representative evidence:** Pilot cohort database; field BER/FEC and telemetry trends versus lab baselines; exit metrics.\
+**Exit:** Pilot success/rollback criteria are met, or risk drives restrict or reject.\
+**Decision:** Expand deployment, restrict, pause a supplier or lot, or reopen an earlier ladder stage.
 
 ### Mass production
 
-##### Purpose.
+Sustain volume with process control after pilot exit. Depth lives in Table 8.5, Chapter 8. Pilot success does not prove ECO discipline, SPC stability, and RMA burn-down at volume. Hold or open volume based on control, not on hope that pilot luck continues.
 
-Sustain volume with process control after pilot exit. Thin gate here; depth lives in Table 8.5, Chapter 8.
-
-##### What uncertainty remains?
-
-Pilot success does not prove ECO discipline, SPC stability, and RMA burn-down at volume.
-
-##### Inputs.
-
-Pilot exit evidence; frozen ATP/SPC; supplier FAIR; ECO process.
-
-##### Measurements.
-
-SPC trends, yield, RMA rates by code, ECO impact checks.
-
-##### Required access level.
-
-Manufacturing and supplier quality systems.
-
-##### Data collected.
-
-Volume KPI set with owners and reaction plans.
-
-##### Analysis.
-
-Hold or open volume based on control, not on hope that pilot luck continues.
-
-##### Exit criteria.
-
-**Exit when** SPC, ECO, and RMA loops support sustained volume, or when you hold.
-
-##### Decision enabled.
-
-Open / hold volume; trigger supplier corrective action.
-
-##### Common mistakes.
-
-Treating MP as fleet monitoring. Skipping ECO impact validation.
+**Representative evidence:** SPC trends; yield; RMA rates by code; ECO impact checks.\
+**Exit:** SPC, ECO, and RMA loops support sustained volume, or volume is held.\
+**Decision:** Open / hold volume; trigger supplier corrective action.
 
 ### Fleet monitoring
 
-##### Purpose.
+Validation does not end at shipment. Keep escapes and drift detectable after release (§7.12, Table 7.5). Unknown failure modes, aging, supplier drift, and environmental effects appear only at scale. Every telemetry field must answer what decision it enables. Trend and disagreement alarms catch dying units; hard thresholds catch dead ones. There is no terminal exit: ownership transfers into steady operations when schema, owners, and cohort baselines are in place.
 
-Validation does not end at shipment. Keep escapes and drift detectable after release. Ongoing control, not a gate that exits into silence (§7.12, Table 7.5).
-
-##### What uncertainty remains?
-
-Unknown failure modes, aging, supplier drift, and environmental effects that only appear at scale.
-
-##### Inputs.
-
-Schema-stable telemetry; serial/lot/firmware/platform identity; cohort query tools; alarm ownership and retention policy.
-
-##### Measurements.
-
-Per-lane power, bias, pre-FEC BER and FEC histograms; temperature and actuator drive; LOS/LOL with context. Every telemetry field must answer: what decision does this enable?
-
-##### Required access level.
-
-Fleet telemetry and RMA. Bench FA for returns.
-
-##### Data collected.
-
-Cohort baselines, alarm history, RMA codes split by vendor and mechanism class.
-
-##### Analysis.
-
-Trend and disagreement alarms first; hard thresholds catch dead units, trends catch dying ones.
-
-##### Exit criteria.
-
-There is no terminal exit. **Ownership transfers** into steady operations when schema, owners, and cohort baselines are in place and broader ship was justified.
-
-##### Decision enabled.
-
-Continue ship, restrict, pause a supplier or lot, or reopen an earlier ladder stage when cohort evidence falsifies a qual assumption.
-
-##### Common mistakes.
-
-Logging registers with no decision owner. Closing NFF without a reproduction plan.
+**Representative evidence:** Schema-stable telemetry; cohort baselines; alarm history; RMA codes split by vendor and mechanism class.\
+**Exit:** Ownership transfer into operations with schema, owners, and cohort baselines in place (ongoing control, not silence).\
+**Decision:** Continue ship, restrict, pause a supplier or lot, or reopen an earlier ladder stage when cohort evidence falsifies a qual assumption.
 
 ### Feedback / next revision
 
-##### Purpose.
+Close the loop into the next requirements and architecture revision. Fleet and FA evidence that does not change the product is wasted. Separate one-off install errors from systematic design or process debt (§1.6). Fleet tickets that never become requirements, or fixes without screen changes, leave the next escape open.
 
-Close the loop into the next requirements and architecture revision. Fleet and FA evidence that does not change the product is wasted.
-
-##### What uncertainty remains?
-
-Which escapes, margin erosions, or requirement gaps must reshape the next design or screen set?
-
-##### Inputs.
-
-Fleet cohorts, FA/DPA, supplier 8D, ATP escapes, pilot lessons (§1.6).
-
-##### Measurements.
-
-None new by default. Mine existing evidence for revision targets.
-
-##### Required access level.
-
-Cross-functional: design, manufacturing, supplier, and fleet ops.
-
-##### Data collected.
-
-Revision backlog with owners: requirement changes, architecture changes, ATP updates, derates.
-
-##### Analysis.
-
-Separate one-off install errors from systematic design or process debt.
-
-##### Exit criteria.
-
-**Exit when** next-revision targets are written with owners, or when you explicitly accept residual risk without change.
-
-##### Decision enabled.
-
-Next-revision targets, ATP updates, or documented accept risk.
-
-##### Common mistakes.
-
-Fleet tickets that never become requirements. Fixing units without changing screens.
+**Representative evidence:** Revision backlog with owners: requirement changes, architecture changes, ATP updates, derates.\
+**Exit:** Next-revision targets are written with owners, or residual risk is explicitly accepted without change.\
+**Decision:** Next-revision targets, ATP updates, or documented accept risk.
 
 ### Which evidence class answers the uncertainty?
 
@@ -740,62 +284,6 @@ Can simulation answer it?
                           |
                           Field evidence (pilot / fleet) if lab cannot close it</code></pre>
 Do not use this fork as a second lifecycle. Use it inside a stage when choosing between model, bench, stress, and field evidence.
-
-### Why the stages occur in this order
-
-Requirements and architecture prevent measuring the wrong product. Bring-up makes later data interpretable. Characterization builds the behavioral model. Margin measures remaining headroom; interoperability proves that headroom in real systems. Reliability qualification answers life. Manufacturing validation answers repeatability. Controlled pilot checks lab assumptions in a bounded cohort; mass production sustains volume; fleet monitoring keeps escapes visible; feedback writes the next revision.
-
-Later stages must not compensate for incomplete earlier stages. A large interoperability matrix cannot fix unstable bring-up. Reliability testing cannot establish manufacturing consistency from one engineering lot. An HTOL pass does not prove bring-up on the target host. Treat each exit as evidence only for its own question (Table 7.1, Appendix D.2).
-
-### Learning summary
-
-Requirements
-
-: What must be true?
-
-Architecture
-
-: Can the design meet it?
-
-Bring-up
-
-: Is the hardware alive and measurable?
-
-Characterization
-
-: How does it behave?
-
-Margin
-
-: How close are the limits?
-
-Interoperability
-
-: Does it work in real systems?
-
-Qualification
-
-: Will it survive expected life?
-
-Manufacturing
-
-: Can we build and screen it repeatedly?
-
-Pilot
-
-: Does reality match lab assumptions?
-
-Mass production
-
-: Can we sustain volume with control?
-
-Fleet
-
-: Does it remain healthy in operations?
-
-Feedback
-
-: What must change next?
 
 > **Before open volume**
 >
@@ -1161,7 +649,7 @@ A module that passes on a golden host can still fail in a real chassis:
 
 ##### Exit criteria before "bring-up done."
 
-Call *bench bring-up* done when CMIS state machine and enable sequence are correct, the unit emits and receives light in class, CDR locks, pre-FEC BER is usable on a trusted setup at a named plane, and a CMIS+BER+$T$ snapshot is filed. Call *system integration bring-up* done when the same sequence closes on the target host, golden-swap has split host vs. module issues, and multi-lane / neighbor load has not opened a new basic failure mode. Do *not* require loaded chassis-thermal / host-rail / ORL margin closure to declare bring-up done; that is Stage 3 margin and interop evidence (§7.1.5, §7.1.6, Table 7.4). Everything after bring-up is characterization depth, margin/interop, supplier gates (§8.10), or fleet triage (§7.12).
+Call *bench bring-up* done when CMIS state machine and enable sequence are correct, the unit emits and receives light in class, CDR locks, pre-FEC BER is usable on a trusted setup at a named plane, and a CMIS+BER+$T$ snapshot is filed. Call *system integration bring-up* done when the same sequence closes on the target host, golden-swap has split host vs. module issues, and multi-lane / neighbor load has not opened a new basic failure mode. Do *not* require loaded chassis-thermal / host-rail / ORL margin closure to declare bring-up done; that is Stage 3 margin and interop evidence (§7.1.6, §7.1.7, Table 7.4). Everything after bring-up is characterization depth, margin/interop, supplier gates (§8.10), or fleet triage (§7.12).
 
 **Key idea.** Bring-up is a sequence (presence $\to$ CMIS $\to$ light $\to$ lock $\to$ BER $\to$ snapshot), then a system proof on the real host. Production-representative corners prove remaining headroom; they do not redefine bench bring-up. A quiet bench pass is not DVT.
 

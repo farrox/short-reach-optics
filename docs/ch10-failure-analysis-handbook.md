@@ -59,7 +59,7 @@ Unknown mechanism
 
 : Continue investigation with an owner and interim control.
 
-Connect FA back into qualification. After corrective action, name what changed: requirement, qualification plan, ATP, SPC, telemetry, or supplier process (Appendix D.3, §7.1.12).
+Connect FA back into qualification. After corrective action, name what changed: requirement, qualification plan, ATP, SPC, telemetry, or supplier process (Appendix D.3, §7.1.13).
 
 <pre class="dectree" aria-label="Observe"><code>Observe
   |
