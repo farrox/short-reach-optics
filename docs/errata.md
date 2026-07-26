@@ -131,6 +131,11 @@ No new frameworks. Structural relocation of existing material is allowed.
   corrected requirements/ATP contract language; clarified golden units, ATP
   fault-injection validation, and source vs closed-module access. PDF about
   389 pages.
+- **Ch10 Interview Q\&A and operational vocabulary:** Added operational events,
+  FEC interpretation, retrain/flap counters, architecture ownership table, and
+  MTBF/MTTR availability starter (`sec:networking-ops`). Replaced three self-test
+  questions with 12 compact Spoken/Pressure/Trap questions
+  (`sec:networking-interview-qa`). PDF about 397 pages.
 
 ## Typographical fixes
 

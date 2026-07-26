@@ -596,7 +596,27 @@ An AI fabric is judged by delivered workload time, not port rate, and the optica
 
 ### How it is measured
 
-Measure the network at workload, fabric, link, and module layers. At workload level, record step time, collective latency, accelerator idle time, and tail behavior. At fabric level, record delivered bandwidth, queue occupancy, route balance, retries, and failed links. At link level, record pre-FEC BER, FEC error distributions, equalizer state, and flaps. At module level, record optical power, temperature, wavelength or lock state, and electrical power. A peak-rate test does not replace an all-reduce or all-to-all run on the intended topology (§10.7, §7.12).
+> **Observe at four layers**\
+>
+> Workload
+>
+> : Step time, collective latency, accelerator idle time, and tail behavior.
+>
+> Fabric
+>
+> : Routes, queues, congestion, retries, and failed links.
+>
+> Link
+>
+> : Pre-FEC error distribution, corrected and uncorrectable FEC, equalizer state, retrains, and flaps.
+>
+> Module
+>
+> : Power, temperature, wavelength or lock, alarms, firmware, and control state.
+>
+> Start at the layer where the impact is observed, then descend only far enough to isolate the cause.
+
+A peak-rate test does not replace an all-reduce or all-to-all run on the intended topology (§10.7, §7.12, §10.17).
 
 ### How it fails
 
@@ -612,19 +632,213 @@ Start with the workload symptom and identify the slow collective, rail, or time 
 
 \> \*\*Debug story\*\* \> \> \*\*Observed.\*\* All-reduce tail latency rose after a rack expansion, while average link utilization looked normal. \> \> \*\*Investigation.\*\* Per-rail traces showed one path with FEC bursts and retries. A module swap moved the symptom with the module. \> \> \*\*Finding.\*\* The fabric had capacity, but one marginal optical lane set the collective tail. \> \> \*\*Root cause.\*\* A contaminated connector raised ORL and produced burst errors without a large average-power change. \> \> \*\*Resolution.\*\* The connector was replaced, inspection was added to the expansion runbook, and collective-tail alarms were tied to link-level error bursts.
 
+## Operational events, telemetry, and availability
+
+### Event vocabulary
+
+These events are related but not interchangeable. Debugging requires their order in time.
+
+Correctable FEC event
+
+: The decoder successfully repairs errors; the link remains logically usable.
+
+Uncorrectable FEC event
+
+: The error pattern exceeds correction capability and may produce packet loss, a lane failure, or a link-state event.
+
+Retrain
+
+: The PHY repeats equalization, CDR, lane alignment, or another link-training function. Traffic may interrupt without a full MAC-level down.
+
+Link flap
+
+: The operational link transitions down and later returns up, usually with a larger control-plane or topology reaction.
+
+Retry or retransmission
+
+: A transport, link, or protocol response to failed delivery. It does not identify the underlying layer by itself.
+
+Workload stall
+
+: An application-visible delay or pause, potentially caused by one or several lower-layer events.
+
+### FEC telemetry interpretation
+
+Averages are insufficient. For every FEC metric preserve lane, direction, code type, measurement interval, corrected and uncorrectable counts, codeword or symbol distribution, burst duration, threshold assumptions, and firmware or counter semantics. Two links with the same average error rate may have different operational risk if one has stationary random errors and the other has short bursts that approach the decoder limit. Do not state one universal pre-FEC threshold; tie thresholds to the actual FEC and PMD.
+
+### Retrain, flap, and recovery counters
+
+Extend the telemetry contract beyond optical power and temperature. Prefer actionable counters when the hardware exposes them: lane training, CDR loss and recovery, PCS alignment, FEC lock loss, link down/up, module reset, host reset, CMIS state change, firmware recovery, route reconvergence, packet retry or drop, and workload checkpoint or restart. Where a counter is missing, state the visibility gap rather than inferring the event from a distant proxy.
+
+<pre class="dectree" aria-label="Workload tail rises"><code>Workload tail rises
+  |
+Packet retries increase
+  |
+Link retrains / flaps
+  |
+FEC burst begins
+  |
+Optical / thermal / host state changes</code></pre>
+*Illustrative order only.* Align timestamps to determine the actual order. The same events in reverse order imply a different mechanism.
+
+### Host and module ownership by architecture
+
+<table class="book-table"><tr><th>Architecture</th><th>Host owns</th><th>Module / engine owns</th><th>Main operational ambiguity</th></tr><tr><td>Fully retimed</td><td>Host channel to module input; system FEC</td><td>Module CDR/DSP and optical conversion</td><td>DSP may hide where impairment began</td></tr><tr><td>LPO</td><td>EQ, CDR, FEC, much of end-to-end margin</td><td>Analog optical conversion and linearity</td><td>Host and module behavior strongly coupled</td></tr><tr><td>LRO</td><td>Direction-dependent shared ownership</td><td>Retimed direction plus analog direction</td><td>Failure ownership changes by direction</td></tr><tr><td>CPO</td><td>Switch package, electrical XSR, system FEC</td><td>Co-packaged optical engine and external laser path</td><td>Larger thermal/service failure domain</td></tr></table>
+**Table 10.11.** Operational ownership reference by architecture. Not a new architecture framework; use it when assigning debug ownership (§10.3.1, §10.10).
+
+### Component reliability versus system availability
+
+Component reliability describes how often a part is expected to fail under stated assumptions. System availability also depends on detection, redundancy, failover, repair time, spares, service access, and whether one failure interrupts useful work. A simple steady-state starting point is
+
+$$\begin{equation}
+A \approx \frac{\mathrm{MTBF}}{\mathrm{MTBF}+\mathrm{MTTR}}
+\end{equation}$$
+
+AI-fabric availability also depends on correlated failures, routing, detection and failover latency, repair access, spares, service policy, checkpoint or job restart cost, and workload-level impact. Independent component FIT addition is not a complete system-availability model (§8.8, §8.2).
+
 ## Interview takeaway
 
 **Key idea.** An AI fabric is judged by delivered workload time, not aggregate port rate. Connect collective traces to queue, route, FEC, optical, thermal, and service data. Choose pluggables, linear optics, or co-packaging by the measured system constraint and by how the fleet detects, contains, and repairs each failure.
 
 Junior mistake: rewrite the topology before scoping one weak rail, or ignore optics FA when collectives stall (§4.8, Chapter 11, Appendix D, Appendix F).
 
-##### Three questions to test yourself.
+### Interview Q&A: Networking and System Operation
 
-1.  What is the difference between scale-up and scale-out, and why do they use different optics?
+Practice speaking these answers aloud. Prefer first-person operational reasoning over topology slogans. Detail lives in §10.17, §10.17.1, §10.7, §7.12, Table 10.11.
 
-2.  A single lane has rising FEC errors but its Rx power is stable. Is this a power problem or a signal-quality problem?
+##### Question 1. What is the difference between scale-up and scale-out, and why does the distinction matter to an optical engineer?
 
-3.  How do pluggable, linear pluggable, and co-packaged choices trade host margin, power, cooling, fiber count, and repair time?
+*Tests:* system architecture, reach, bandwidth, latency, and optical deployment.
+
+*Spoken answer.* "Scale-up connects accelerators inside a tightly coupled node, rack, or pod. It usually has the highest bandwidth per endpoint and the strictest latency requirement, so copper remains attractive while the reach is short enough, but optics moves inward as lane rates and physical extent grow. Scale-out connects nodes and racks through a switched fabric across a much larger population. It already relies heavily on optics because of distance, routing, and link count. The distinction matters because scale-up prioritizes latency, power, and very short electrical reach, while scale-out adds topology, interoperability, serviceability, and fleet-scale availability" (§10.1).
+
+*Pressure follow-up.* "Would you always choose lower-latency LPO for scale-up?"\
+*Answer pivot.* "No. LPO reduces module power and retiming latency, but it transfers equalization, FEC, and channel-margin burden to the host. I would choose it only when the host electrical path and interop evidence close with adequate margin."
+
+*Trap:* "Scale-up is copper and scale-out is optics."
+
+##### Question 2. Explain pre-FEC errors, corrected errors, uncorrectable errors, and post-FEC behavior.
+
+*Tests:* FEC interpretation and operational meaning.
+
+*Spoken answer.* "Pre-FEC errors describe the raw impairment entering the decoder. Corrected symbol or codeword counts show how much work the FEC is doing while the link remains operational. Uncorrectable events occur when the error pattern exceeds the code's correction capability and may produce packet loss, lane failure, or a link-state event. Post-FEC BER is the residual error rate after decoding. I would never interpret one counter alone. I want the code type, measurement interval, lane distribution, burst shape, and trend relative to the specified threshold. Rising correctable errors can be an early warning even when post-FEC traffic is still clean" (§10.17.1).
+
+*Pressure follow-up.* "The link has zero uncorrectable errors. Is it healthy?"\
+*Answer pivot.* "Not necessarily. If correctable errors are rising, highly bursty, concentrated in one lane, or consuming most of the FEC margin, the link may be approaching a cliff. I would trend it and correlate it with temperature, power, equalizer state, and operational events."
+
+*Trap:* "If FEC corrects the errors, there is no problem."
+
+##### Question 3. A lane has rising FEC errors, but average receive power is stable. How do you respond?
+
+*Tests:* power versus quality, layer isolation, and discriminating evidence.
+
+*Spoken answer.* "Stable average power makes gross attenuation less likely, but it does not clear the optical path. I would first confirm which lane and direction are affected and inspect the time distribution of the errors. Then I would compare optical power, temperature, wavelength or lock state, equalizer taps, host SerDes counters, and FEC histograms. Possible mechanisms include RIN, reflections or MPI, transmitter distortion, wavelength drift, receiver noise, timing, crosstalk, or control behavior. A module or fiber swap can help isolate ownership, but I would preserve the original state before disturbing it" (§4.8).
+
+*Pressure follow-up.* "What would make you suspect connector reflection rather than loss?"\
+*Answer pivot.* "BER bursts or a floor with little average-power movement, sensitivity to remating or fiber routing, and degraded ORL would support a reflection hypothesis. I would still confirm it with controlled inspection, cleaning, ORL measurement, or a known-good path."
+
+*Trap:* "Power is normal, so the problem must be the host receiver."
+
+##### Question 4. Distinguish a retrain, a link flap, a packet retry, and a workload stall.
+
+*Tests:* event hierarchy and causal ordering.
+
+*Spoken answer.* "A retrain is a PHY or SerDes recovery event in which equalization, clock recovery, lane alignment, or another link-training function is repeated. It may interrupt traffic without always producing a full MAC-level down event. A link flap is an observable transition from link up to down and back, usually causing a larger control-plane or topology reaction. A packet retry or retransmission is a higher-layer response to loss or delivery failure and does not by itself identify the physical cause. A workload stall is the application-level symptom. I align timestamps across those layers before deciding which event caused which" (§10.17.1).
+
+*Pressure follow-up.* "The collective stalled at the same minute as a link flap. Is causality established?"\
+*Answer pivot.* "No. Minute-level coincidence is not enough. I need clocks aligned closely enough to order FEC bursts, retraining, link-state transitions, route changes, retries, and workload latency."
+
+*Trap:* "A retrain and a link flap are the same event with different names."
+
+##### Question 5. What telemetry contract would you require before deploying an optical module at scale?
+
+*Tests:* observability, metadata, cadence, and actionability.
+
+*Spoken answer.* "I would define telemetry around decisions rather than collecting every available field. At module level I want identity, serial and lot genealogy, firmware, case temperature, supply power, transmit and receive power, wavelength or lock state where applicable, alarms, and relevant control headroom. At link level I want lane-resolved pre-FEC errors, corrected and uncorrectable distributions, retrains, link-state events, and equalizer state where exposed. I also need host, switch, route, topology, workload, and maintenance timestamps. The schema, units, cadence, retention, clock source, and missing-data behavior must be defined before deployment" (§10.17, §7.12).
+
+*Pressure follow-up.* "Why not collect every register once per second?"\
+*Answer pivot.* "More data can create storage, firmware, and interpretation burden without improving decisions. Cadence should match the mechanism: a daily drift metric and a millisecond-scale burst event need different collection strategies."
+
+*Trap:* "Optical power and module temperature are enough for fleet monitoring."
+
+##### Question 6. How do you separate host, module, fiber-plant, peer, and switch ownership?
+
+*Tests:* system-boundary reasoning and controlled isolation.
+
+*Spoken answer.* "I begin by naming the failing direction and reference plane, because a bidirectional link has two transmitters, two receivers, and several electrical and optical boundaries. I compare lane-resolved counters at both ends, then use the least disruptive controlled change: fiber swap, endpoint swap, module swap, host-port swap, or loopback. If the symptom moves with the module, that strengthens module ownership; if it stays with the port, I investigate host channel, switch SerDes, configuration, or thermal environment. For LPO, I am especially careful because the host owns more equalization, CDR, and FEC behavior while the module remains analog" (Table 10.11).
+
+*Pressure follow-up.* "A module swap fixes the link. Is the original module confirmed bad?"\
+*Answer pivot.* "It is strong localization evidence, but not always mechanism confirmation. Reseating may also clean a connector, reset state, or alter thermal and mechanical conditions. I preserve and retest the original unit under controlled conditions."
+
+*Trap:* "If the problem disappears after replacing the module, the module was the root cause."
+
+##### Question 7. How does ownership change among a fully retimed module, LPO, LRO, and CPO?
+
+*Tests:* architecture-specific operational boundaries.
+
+*Spoken answer.* "A fully retimed module breaks the host and optical paths into more independent segments; its DSP and CDR absorb much of the host-channel impairment, which helps interoperability but costs power and latency. LPO removes that isolation, so the host owns most equalization, clock recovery, and FEC while the analog module must remain highly linear. LRO places retiming in only part of the path, so direction matters. CPO shortens the electrical path but couples optics more tightly to the switch package, thermals, fiber attach, and service model. I would never assign ownership without first identifying which architecture and direction I am debugging" (Table 10.11, §10.3.1, §10.10).
+
+*Pressure follow-up.* "Why can two individually compliant LPO components still fail together?"\
+*Answer pivot.* "Because the end-to-end margin depends on the combined host channel, equalizer behavior, module linearity, noise, and optical path. Point compliance reduces risk but does not replace host-to-host interoperability evidence."
+
+*Trap:* "The module vendor owns optical errors, and the host vendor owns electrical errors."
+
+##### Question 8. A large all-reduce operation slows down, but average fabric utilization looks normal. How do you debug it?
+
+*Tests:* workload-to-link correlation, topology, and straggler amplification.
+
+*Spoken answer.* "I would start with the workload trace and identify the affected collective, rail, rank group, and time window. Average utilization can hide a straggling path, so I would inspect tail latency, per-rail throughput, route balance, queue occupancy, retries, and lane-level FEC behavior. If one rail shows error bursts or flaps, I would reroute or remove that rail and see whether the collective tail improves. If links are clean but queues are persistently full, the problem is more likely congestion, oversubscription, or scheduling. I keep optics, switch, and workload timestamps aligned throughout" (§10.7, §10.16.4).
+
+*Pressure follow-up.* "Why can one weak link affect thousands of accelerators?"\
+*Answer pivot.* "Many collectives synchronize participants at each phase. The slowest path can set the completion time, so one marginal link becomes a system-level straggler rather than merely losing its own bandwidth."
+
+*Trap:* "Normal average utilization proves the fabric has enough capacity."
+
+##### Question 9. How does topology change optical count, failure impact, and debugging strategy?
+
+*Tests:* Clos, rails, path diversity, and failure domains.
+
+*Spoken answer.* "Topology determines how many optical links are deployed, which paths share failure domains, and whether traffic can be rerouted. A multi-tier Clos can provide path diversity but adds switch hops, optics, and more possible failure points. Rail-optimized fabrics reduce contention for collective traffic but make one degraded rail highly visible to a particular accelerator group. Hierarchical or dragonfly-style designs trade global bandwidth and long-link count differently. During debugging I need the physical topology and current routes, not just endpoint addresses, because the same workload symptom can result from one marginal link, route imbalance, or an oversubscribed tier" (§10.2).
+
+*Pressure follow-up.* "Would you redesign the topology after seeing repeated collective stalls?"\
+*Answer pivot.* "Not before determining whether the stalls come from capacity, routing, or a small set of weak links. A topology rewrite is expensive and may hide a correctable optical or operational problem."
+
+*Trap:* "More path redundancy automatically gives higher availability."
+
+##### Question 10. What is the difference between component reliability and system availability?
+
+*Tests:* FIT, redundancy, repair time, and operational consequence.
+
+*Spoken answer.* "Component reliability describes how often a component is expected to fail under stated assumptions. System availability depends not only on failure rate but also on detection, redundancy, failover behavior, repair time, spare strategy, service access, and whether one failure interrupts useful work. A module with a good FIT rate can still produce poor availability if replacement takes hours or if one failure stalls an entire collective. Conversely, a higher component failure rate may be tolerable when failures are detected quickly, isolated, rerouted, and repaired without workload impact" (§10.17.5, §8.8).
+
+*Pressure follow-up.* "What matters more: MTBF or MTTR?"\
+*Answer pivot.* "Neither alone. Availability depends on both and on the architecture's ability to mask or contain the failure. I would also include workload restart cost and correlated failure domains."
+
+*Trap:* "A high MTBF means the network will have high availability."
+
+##### Question 11. A link flaps intermittently in the fleet. Walk me through the operational response.
+
+*Tests:* evidence preservation, containment, event ordering, and recurrence control.
+
+*Spoken answer.* "I would preserve the pre-flap and post-flap telemetry before reseating or power cycling: FEC history, retrains, lane state, optical power, temperature, equalizer state, alarms, route changes, and workload impact. Then I would scope the population by module lot, host, port, peer, fiber path, firmware, site, and install age. Operationally, I may reroute, drain, or replace the affected link to protect the workload, but I preserve the original unit and path for controlled analysis. I then reproduce or isolate the mechanism and update the appropriate control: firmware, service procedure, connector inspection, ATP, supplier process, qualification, or telemetry" (§9.6, Chapter 11).
+
+*Pressure follow-up.* "The flap disappears after power cycling. What can you conclude?"\
+*Answer pivot.* "Only that state reset affected the symptom. It could be firmware, control, CDR, thermal state, an intermittent interface, or a marginal physical path. The reset may have erased the most valuable evidence."
+
+*Trap:* "Power-cycle it, and replace the module if the flap returns."
+
+##### Question 12. Give me a 60-second operational-debug plan for a degraded AI fabric.
+
+*Tests:* complete workload-to-optics Staff-level answer.
+
+*Spoken answer.* "I start with the workload symptom and identify the affected collective, topology region, and time window. I align clocks across workload, switch, host, link, and module telemetry, then determine whether the evidence points to congestion, route imbalance, packet loss, a link-state event, or gradual PHY-margin loss. For suspect links I inspect lane-level pre-FEC and FEC distributions, retrains, equalizer state, optical power, temperature, wavelength or lock state, and relevant alarms. I use a controlled reroute, fiber swap, module swap, or port swap to isolate ownership while preserving evidence. I contain workload risk first, confirm the mechanism second, and close the case only when a recurrence control and fleet monitor are in place."
+
+*Pressure follow-up.* "What would make you stop deployment or drain a whole cohort?"\
+*Answer pivot.* "I would escalate containment when the failure rate is growing, the mechanism can cause correlated loss, telemetry cannot bound the affected population, or the workload impact exceeds the available redundancy. The action should match exposure, confidence, and reversibility."
+
+*Trap:* "I would identify the worst link counters, replace those modules, and monitor the network."
+
+Score each response using the shared chapter-interview rubric in Appendix A.12.1. Repeat answers that do not connect the workload symptom, telemetry evidence, ownership decision, and operational action.
 
 
 <div class="nav-links">
