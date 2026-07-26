@@ -34,15 +34,35 @@ def parse_aux_labels():
         content = f.read()
     # Match \newlabel{key}{{number}{page}{title}{type.number}{}}
     # Example: \newlabel{sec:bringup}{{7.9}{124}{Module and system bring-up}{section.7.9}{}}
+    # Title may contain nested braces (\texorpdfstring {$Q$}{Q}), so do not
+    # parse it with [^}]*; skip it with a brace counter after {number}{page}.
     for m in re.finditer(
-        r"\\newlabel\{([^}]+)\}\{\{([^}]*)\}\{[^}]*\}\{[^}]*\}\{([^}]*)\}\{[^}]*\}\}",
+        r"\\newlabel\{([^}]+)\}\{\{([^}]*)\}\{[^{}]*\}",
         content,
     ):
         key = m.group(1)
         number = m.group(2)
-        type_dot_num = m.group(3)  # e.g. "section.7.9", "chapter.7", "table.7.2"
         if key.endswith("@cref"):
             continue
+        rest = content[m.end() :]
+        if not rest.startswith("{"):
+            continue
+        depth = 0
+        title_end = None
+        for i, ch in enumerate(rest):
+            if ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    title_end = i + 1
+                    break
+        if title_end is None:
+            continue
+        tm = re.match(r"\{([^}]*)\}", rest[title_end:])
+        if not tm:
+            continue
+        type_dot_num = tm.group(1)  # e.g. "section.7.9", "chapter.7", "table.7.2"
         # Determine type prefix for display
         if type_dot_num.startswith("appendix"):
             # appendix.A / appendix.B.3 → Appendix A / Appendix B.3

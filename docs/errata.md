@@ -168,6 +168,16 @@ No new frameworks. Structural relocation of existing material is allowed.
   unlock) scored with the case rubric; slimmed `sec:case-grading` to an App~A
   pointer. No second lifecycle or appendix 12-question Interview Q\&A. PDF about
   427 pages.
+- **Ch4 Interview Q\&A and quantitative-model prose:** Added model-fidelity
+  ladder, reference-plane/metric table, noise-bandwidth and variance-addition
+  limits, RIN metric definitions and simplified dominant-RIN ceiling language,
+  sensitivity assumptions, BER-waterfall signature table, model-to-bench
+  correlation, softened detector/PAM4 claims, and named recurrence controls for
+  BER floors. Debug fork routes investigation without claiming mechanism
+  ownership. Replaced three self-test questions with 12 compact
+  Spoken/Pressure/Trap questions (`sec:models-interview-qa`). HTML aux parser
+  now resolves labels whose titles contain nested braces (e.g.\ `sec:qber`).
+  PDF about 435 pages.
 
 ## Typographical fixes
 

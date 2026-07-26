@@ -17,6 +17,25 @@ Receivers},\sidenote{\citehref{sackinger2018}{E.~Säckinger, \emph{Analysis and 
 Amplifiers for Optical Receivers}, Wiley, 2018, ch.~4}.} and the sanity checks in
 the code reproduce that book's worked numbers.
 
+\paragraph{Model-fidelity ladder.}
+Use the simplest model that answers the decision. Do not force a simple model
+to explain evidence outside its assumptions. This is a model-fidelity ladder,
+not a product lifecycle.
+\begin{description}
+\item[Level 1. Scalar link budget] Tx OMA or power, path loss, receiver
+      sensitivity, allocated penalties and margin. Answers: does the first-order
+      budget close?
+\item[Level 2. Equivalent-$Q$ noise model] Optical levels, responsivity,
+      thermal/shot/RIN, effective noise bandwidth. Answers: does stochastic
+      vertical noise explain the required BER?
+\item[Level 3. Waveform and channel model] Finite bandwidth, dispersion,
+      jitter, ISI, nonlinear levels, reflections, equalization, compression.
+      Answers: how does the real waveform behave?
+\item[Level 4. Measured statistical behavior] BER waterfalls, error
+      histograms, time-correlated bursts, temperature and lane distributions.
+      Answers: does the product population match the model?
+\end{description}
+
 \section{The decision: from \texorpdfstring{$Q$}{Q} to BER}
 \label{sec:qber}
 
@@ -29,17 +48,30 @@ measured in units of their combined noise:
   \qquad
   \mathrm{BER} = \tfrac{1}{2}\,\mathrm{erfc}\!\left(\frac{Q}{\sqrt{2}}\right).
 \]
-This binary $Q$-to-BER equation is an \emph{equivalent-quality} approximation used
+The mathematical $Q$-to-BER mapping depends on the sampled level distributions
+rather than directly on the optical pulse shape. Pulse shape, bandwidth,
+dispersion, jitter, and equalization still determine those distributions and
+therefore cannot be ignored when predicting $Q$ from a physical link. This
+binary $Q$-to-BER equation is an \emph{equivalent-quality} approximation used
 throughout link budgeting. A full PAM4 treatment evaluates three decision
 boundaries, unequal level noise, nonlinearity, equalization, and Gray mapping; do
-not treat the binary formula as a complete PAM4 model.\sidenote{$Q$ here is the
-electrical decision quality, not a laser-cavity or resonator $Q$.} Two reference
-points anchor the binary curve: the classic uncoded target $\mathrm{BER}=10^{-12}$
-needs $Q=7.03$. For a named KP4-class optical PMD under its random-error
-assumption, a pre-FEC objective near $2.4\times10^{-4}$ corresponds to
-$Q\approx3.5$ on this binary map (\Cref{ch:imdd}). That number is not a universal
-Reed--Solomon threshold; state the FEC architecture, error model, target PMD, and
-post-FEC metric.
+not treat the binary formula as a complete PAM4 model. When applying the
+approximation to a PAM4-class example, call it a \emph{binary-equivalent} $Q$.
+\sidenote{$Q$ here is the electrical decision quality, not a laser-cavity or
+resonator $Q$.} Two reference points anchor the binary curve: the classic uncoded
+target $\mathrm{BER}=10^{-12}$ needs $Q=7.03$. For a named KP4-class optical PMD
+under its random-error assumption, a pre-FEC objective near $2.4\times10^{-4}$
+corresponds to $Q\approx3.5$ on this binary map (\Cref{ch:imdd}). That number is
+not a universal Reed--Solomon threshold; state the FEC architecture, error model,
+target PMD, and post-FEC metric.
+
+\paragraph{BER and FEC terminology.}
+Pre-FEC BER or symbol-error behavior describes the decoder input. Post-FEC
+behavior describes residual errors after decoding. Corrected-codeword counts can
+reveal declining margin before post-FEC failure. FEC thresholds depend on code,
+interleaving, PMD, error distribution, and implementation. Burst errors can be
+more harmful than an equal average random BER. A quoted FEC threshold is not a
+universal analog receiver specification (\Cref{ch:networking,ch:imdd}).
 
 \begin{lstlisting}
 from scipy.special import erfc, erfcinv
@@ -69,7 +101,8 @@ from 7.03 down to 3.5 relaxes the optical power budget by several dB.
 \label{sec:noise}
 
 $Q$ is only as good as our estimate of $\sigma$. Three noise sources dominate a
-short-reach IM/DD receiver, and they add in quadrature (they are independent):
+short-reach IM/DD receiver. Independent noise sources add in variance (equivalently,
+rms amplitudes add in quadrature):
 
 \begin{description}
 \item[Thermal / circuit noise] the input-referred noise of the TIA and following
@@ -84,6 +117,22 @@ short-reach IM/DD receiver, and they add in quadrature (they are independent):
       $\mathrm{RIN}_{\text{lin}} = 10^{\mathrm{RIN[dB/Hz]}/10}$.
       \emph{Grows with the square of signal}, the key fact of the next section.
 \end{description}
+
+\paragraph{Noise bandwidth.}
+Noise bandwidth is the integral of the squared magnitude of the applicable noise
+transfer function, expressed as an equivalent rectangular bandwidth. It is not
+automatically equal to baud rate, bit rate, or the receiver's quoted $-3$~dB
+bandwidth. A first-order estimate must name where the noise density is referred,
+which filter response is assumed, and whether equalization changes the integrated
+noise.
+
+\paragraph{Limits of variance addition.}
+Correlated sources need covariance terms. Discrete spurs should not be treated
+automatically as white noise. Data-dependent jitter and ISI are not necessarily
+stochastic noise. RIN altered by reflections may be frequency-dependent and
+nonstationary. Receiver adaptation can change the effective noise transfer
+function. Do not add thermal, shot, and RIN \emph{currents} as if they were
+amplitudes on one line.
 
 Because shot and RIN noise are signal dependent, we evaluate $\sigma_1$ and
 $\sigma_0$ separately and form $Q$ with their sum. The core of the model is just
@@ -116,9 +165,13 @@ limit (thermal and shot negligible, $I_0\to0$):
   Q_{\max} \;=\; \frac{I_1}{\sigma_{\text{RIN},1}}
            \;=\; \frac{1}{\sqrt{\mathrm{RIN}_{\text{lin}}\,\mathrm{BW}}}.
 \]
-This is a hard ceiling: no amount of transmit power or receiver sensitivity can
-push $Q$ past it, so there is a BER floor set entirely by the laser and the
-bandwidth. Equivalently, the power penalty to hold a target $Q$ is
+This is a \emph{simplified dominant-RIN ceiling}, not a universal hard limit for
+every PAM4 product. It assumes dominant RIN, a defined effective bandwidth,
+approximately Gaussian stationary noise, adequate extinction, binary or idealized
+level structure, no receiver overload, and no stronger jitter, ISI, reflection,
+or nonlinear limitation. Under those assumptions, no amount of transmit power or
+receiver sensitivity can push $Q$ past $Q_{\max}$, so a BER floor appears.
+Equivalently, the power penalty to hold a target $Q$ is
 \[
   \mathrm{PP} = \frac{1}{\sqrt{1 - Q^2\,\mathrm{RIN}_{\text{lin}}\,\mathrm{BW}}},
 \]
@@ -244,6 +297,31 @@ bias-driver current noise converts to equivalent RIN
 (\Cref{sec:laser-drivers}) and must be budgeted separately from intrinsic laser
 RIN.
 
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:rin-metric-defs}%
+\centering
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{@{}p{0.28\linewidth}p{0.68\linewidth}@{}}
+\toprule
+Quantity & Meaning \\
+\midrule
+Intrinsic RIN & Relative intensity-noise spectrum under stated source conditions \\
+\addlinespace[0.8em]
+Stressed $\mathrm{RIN}_x\mathrm{OMA}$ & Standard-defined Tx metric under a named ORL and normalization \\
+\addlinespace[0.8em]
+Equivalent bias-board RIN & Optical intensity noise from electrical current-noise coupling \\
+\addlinespace[0.8em]
+Absolute RIN current density & Current-noise density at a stated photocurrent \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} RIN-related quantities. Similar
+units do not guarantee identical definitions
+(\Cref{sec:laser-drivers,ch:lasers}).\par}
+\end{table*}
+
 \keyidea{Thermal noise is beaten by power; dominant RIN is not. Under a
 simplified model, $\sigma_{\text{RIN}}\propto I$ imposes
 $Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$. Keep intrinsic RIN and stressed
@@ -275,6 +353,37 @@ conditions, not a complete description of whether the link closes. A link that
 ``has enough power'' can still fail if ER is poor, RIN is elevated, or the
 equalizer is saturated. Always close the full link budget
 (\Cref{sec:link-budget}), not just the power line.
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:metric-planes}%
+\centering
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{@{}p{0.22\linewidth}p{0.74\linewidth}@{}}
+\toprule
+Quantity & Required condition \\
+\midrule
+Transmit average power & Named output plane and operating state \\
+\addlinespace[0.7em]
+Transmit OMA & Named output plane, modulation definition, calibration method \\
+\addlinespace[0.7em]
+Received power & Receiver optical-input plane \\
+\addlinespace[0.7em]
+Receiver sensitivity & Average power or OMA; BER/FEC target; Tx condition; wavelength; temperature \\
+\addlinespace[0.7em]
+RIN & Intrinsic or stressed definition; optical power or OMA; ORL; frequency range \\
+\addlinespace[0.7em]
+TIA noise & Density or integrated rms; input reference; bandwidth and loading \\
+\addlinespace[0.7em]
+BER & Pre- or post-FEC; interval; pattern or traffic; lane and direction \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Metric and reference-plane
+checklist. A number without its metric definition and reference plane cannot be
+entered safely into the model.\par}
+\end{table*}
 
 \tradeoff{Better receiver sensitivity vs receiver complexity}{APD gain, stronger
 DSP, deeper equalization, or quieter optics can close a tight budget}{Power,
@@ -312,12 +421,23 @@ power alone (\Cref{sec:tdecq}).
 
 Turning the question around (\emph{what is the least power that meets a target
 BER?}) gives the sensitivity. Referring the receiver's input noise current
-$i_n$ back to the optical input through the responsivity $\mathcal{R}$:
+$i_n$ (already integrated rms, not a density) back to the optical input through
+the responsivity $\mathcal{R}$:
 \[
   P_{\text{sens}} = \frac{Q\,i_n}{\mathcal{R}}
   \qquad\text{(average power)},\qquad
   P_{\text{sens}}^{\text{OMA}} = \frac{2\,Q\,i_n}{\mathcal{R}}.
 \]
+These simple expressions assume binary signaling, a stated relation between
+average power and OMA, high or explicitly handled extinction ratio,
+signal-independent effective rms noise for the simplified form, a linear
+detector and TIA, no substantial ISI, jitter, compression, or RIN floor, and an
+optimal or defined decision threshold. For PAM4, treat the calculation as a
+\emph{first-order binary-equivalent estimate}, not a standards-compliance
+receiver calculation. A noise density in A/$\sqrt{\mathrm{Hz}}$ must be
+integrated through the effective noise bandwidth before it enters these
+equations.
+
 Modern short-reach standards specify \term{OMA} rather than average power. For
 binary NRZ, $\mathrm{OMA}=P_1-P_0$; for PAM4, outer OMA is $P_3-P_0$. OMA
 decouples the sensitivity spec from extinction ratio. As a check, the textbook
@@ -327,7 +447,10 @@ the code reproduces. A finite extinction ratio costs an idealized further
 $\mathrm{PP}_\mathrm{dB}=10\log_{10}[(\mathrm{ER}_\mathrm{lin}+1)/(\mathrm{ER}_\mathrm{lin}-1)]$:
 $0.87$~dB at 10~dB ER, $2.2$~dB at 6~dB ER. These penalties feed link budgets
 (\Cref{ch:imdd}) and TDECQ discussion (\Cref{ch:validation}); do not double-count
-TDECQ as an independent penalty if the compliance method already includes it.
+TDECQ as an independent penalty if the compliance method already includes it. Do
+not convert every impairment into arbitrary dB, mix average-power sensitivity
+with OMA penalties, or combine nominal values from one plane with worst-case
+values from another as if they were independent.
 
 \paragraph{Worked example: DR4-class budget check.}
 \label{sec:worked-budget}
@@ -373,16 +496,44 @@ Before applying $Q$, $Q_{\max}$, or $P_{\mathrm{sens}}$, ask:
 \item Is the input metric average power or OMA, and at which reference plane?
 \end{itemize}
 
+\begin{dectree}
+Measured BER behavior
+  |
+Gaussian stationary waterfall?
+  |-- YES --> equivalent-Q model may be adequate
+  |-- NO  --> inspect PAM4 levels, ISI, jitter,
+              bursts, reflections, compression,
+              adaptation, and non-Gaussian tails
+\end{dectree}
+
+\paragraph{Correlating the model with the bench.}
+\label{sec:model-to-bench}
+A model is validated by prediction across changed conditions, not by fitting one
+curve after the fact. Recommended order:
+\begin{enumerate}
+\item Verify attenuator and power-meter calibration.
+\item Establish the optical reference plane.
+\item Measure transmitter average power, OMA, ER or RLM, and quality metric.
+\item Measure receiver noise or infer an effective value from trusted
+      characterization.
+\item Sweep received OMA and record BER with sufficient error count or dwell.
+\item Fit only physically meaningful parameters.
+\item Compare curve crossing, slope, floor, and overload behavior.
+\item Repeat across lanes and temperature.
+\item Record model uncertainty and measurement uncertainty separately.
+\end{enumerate}
+
 \section{Receiver technologies and their noise (2026)}
 \label{sec:rxtech}
 
 The sensitivity formula $P_{\text{sens}}=Q\,i_n/\mathcal{R}$ has exactly two
 device inputs: the photodiode responsivity $\mathcal{R}$ and the amplifier's
 input-referred noise current $i_n$. So ``receiver noise performance'' is really a
-statement about the detector--TIA pair, and the winning short-reach recipe is the
-one the question anticipates: a \emph{waveguide germanium-on-silicon PIN} feeding a
-\emph{tightly integrated CMOS or SiGe-BiCMOS TIA}. The reasons are all in the two
-parameters above plus a parasitic (\Cref{sec:pd-tia} details the TIA side).
+statement about the detector--TIA pair. Ge-on-silicon PIN plus a closely
+integrated CMOS or SiGe TIA is a common short-reach path because it offers useful
+responsivity, bandwidth, and integration. Alternative detectors become attractive
+when gain, saturation, wavelength, linearity, or packaging requirements change
+(\Cref{sec:pd-tia}).
 
 \paragraph{Photodiodes and transimpedance amplifiers.}
 \label{sec:pd-tia}
@@ -408,18 +559,20 @@ a fixed high-frequency boost before the host SerDes ADC. Co-packaging PD and TIA
 (sub-mm interconnect) is the noise win repeated throughout this book
 (\Cref{ch:firstprinciples}).
 
-\paragraph{Why Ge-on-Si wins the mainstream.} Germanium grown on silicon absorbs
-the O- and C-bands, is fully CMOS-process-compatible, and is built \emph{on the
-same PIC} as the modulators and couplers. Modern devices reach
+\paragraph{Why Ge-on-Si is a common mainstream path.} Germanium grown on silicon
+absorbs the O- and C-bands, is CMOS-process-compatible, and can be built on the
+same PIC as the modulators and couplers. Modern devices reach
 $\mathcal{R}\approx0.8$--$1.0$~A/W with dark currents of single-digit to tens of
-nA and, in 2025 research, $-3$~dB bandwidths beyond 100~GHz (e.g.\ a recessed
+nA and, in mid-2020s research, $-3$~dB bandwidths beyond 100~GHz (e.g.\ a recessed
 Ge/Si PIN at 106~GHz, $0.93$~A/W, $<10$~nA; SiN-coupled lateral Ge $>110$~GHz at
-1~mA)~\cite{gesipd}. Crucially, monolithic or 3D/flip-chip co-integration keeps the
-PD-to-TIA interconnect sub-millimetre, so the input node capacitance stays tens of
-fF, and since a TIA's input-referred noise rises with that capacitance
-($i_n \!\propto\! C\,f^{3/2}$ in the front-end limit), \emph{short is quiet}. This
-is the same capacitance argument that drives co-packaging in
-\Cref{ch:firstprinciples} (Miller's receiver point), now cashed out as noise current.
+1~mA)~\cite{gesipd}. Monolithic or 3D/flip-chip co-integration keeps the
+PD-to-TIA interconnect short, so the input node capacitance stays low. In common
+front-end-limited approximations, input-referred noise rises strongly with input
+capacitance and required bandwidth; some simplified architectures produce an
+approximate $i_n \!\propto\! C\,f^{3/2}$ scaling. Actual scaling depends on TIA
+topology, transistor technology, feedback network, detector impedance,
+equalization, power, and stability. Short interconnects remain quiet when those
+terms cooperate (\Cref{ch:firstprinciples}).
 
 \paragraph{What the TIA must deliver.}
 \label{sec:tia-specs}
@@ -433,9 +586,11 @@ with a low-$C$ PD, linearity / overload so large OMA and reflections do not crus
 PAM4 levels (RLM) or trip AGC into a bad corner, and optional CTLE for LPO/LRO so
 the host SerDes sees a usable eye without module DSP
 (\Cref{sec:equalization,sec:conditioning}).
-Noise scales with input capacitance: $i_n \propto C\,f^{3/2}$ in the front-end
-limit. That is why co-packaging (or monolithic PD+TIA) is not optional at 200G+:
-every millimetre of bondwire is noise and BW you cannot recover with FEC.
+In common front-end-limited approximations, noise rises strongly with input
+capacitance and bandwidth (sometimes near $i_n \propto C\,f^{3/2}$). That is why
+close detector--TIA integration is valuable at 200G+: every millimetre of
+bondwire spends noise and bandwidth that FEC cannot recover. Integration is an
+engineering trade against repairability and yield, not a universal mandate.
 
 \paragraph{Noise levels you actually budget.}
 \Cref{tab:tia-noise} puts the model numbers next to published front-ends. Shot noise
@@ -510,7 +665,7 @@ SiGe $4\times$112~GBd TIA & TIA & 65~GHz; 13.2~pA$/\sqrt{\mathrm{Hz}}$ & 224G PA
 \addlinespace[1.5em]
 Recessed Ge/Si PIN & PD & 106~GHz; 0.93~A/W & 200~GBd-class & $<$10~nA dark \\
 \addlinespace[1.5em]
-Ge/Si UMC-APD & APD & 105~GHz @ $M\!\approx\!7$ & 224/260G; $-10.9$/$-10.1$~dBm & $\sim$9~dB over PIN \\
+Ge/Si UMC-APD & APD & 105~GHz @ $M\!\approx\!7$ & 224/260G; $-10.9$/$-10.1$~dBm & $\sim$9~dB over PIN (paper conditions) \\
 \addlinespace[1.5em]
 Ge/Si WG APD (300~mm) & APD & $>$100~GHz; 2~A/W @ 70~GHz & 400G/lane target & 7~V bias class \\
 \addlinespace[1.5em]
@@ -568,9 +723,10 @@ are effective (with gain) or device-record.\par}
 \end{table*}
 
 \paragraph{Outlook.}
-Volume short-reach receive stays on PIN + SiGe/CMOS TIA: noise in the low teens of
-pA$/\sqrt{\mathrm{Hz}}$ with $>\!100$~GHz Ge PINs is enough for DR/FR PAM4 when
-co-packaged, so the fight is capacitance and yield, not a new detector physics.
+Volume short-reach receive commonly stays on PIN + SiGe/CMOS TIA: noise in the
+low teens of pA$/\sqrt{\mathrm{Hz}}$ with $>\!100$~GHz Ge PINs is often enough
+for DR/FR PAM4 when closely integrated, so the fight is capacitance and yield as
+much as detector physics.
 Linear optics raises the bar: LPO/LRO need high linearity, on-chip EQ, and
 multi-lane density (Semtech's 224G family is the public commercial marker; 448G
 TIA demos are still provisional, \Cref{sec:drivers}). APDs are back in the 200G
@@ -589,14 +745,17 @@ demands it. LPO makes TIA linearity as important as raw noise.}
 \label{sec:nrzpam4}
 
 The 224G-per-lane roadmap (\Cref{ch:imdd}) rides on PAM4, so it is worth seeing
-the trade quantitatively. PAM4 sends two bits per symbol using four levels, so at a
-fixed bit rate its symbol rate (and thus noise bandwidth) is halved, collecting
-less noise. But its three eyes each span only a third of the OMA, costing roughly
-$20\log_{10}3 \approx 9.5$~dB of vertical separation. \Cref{fig:pam4} pits the two
-at a common 100~Gb/s: PAM4's narrower bandwidth partly offsets its level penalty,
-but it still needs several dB more received power for the same BER, repaid by
-halving the electrical bandwidth the SerDes and optics must support. That balance
-is exactly why 100G/lane went NRZ and 200G/lane went PAM4.
+the trade quantitatively. At equal bit rate, PAM4 halves the ideal symbol rate
+relative to NRZ but divides the available outer modulation span among three eyes.
+The resulting link penalty depends on bandwidth, transmitter linearity, level
+spacing, level-dependent noise, equalization, coding, and FEC. The figure
+$20\log_{10}3 \approx 9.5$~dB is an \emph{ideal vertical level-separation
+comparison} before bandwidth and implementation effects. \Cref{fig:pam4} pits the
+two at a common 100~Gb/s: PAM4's narrower bandwidth partly offsets its level
+penalty, but it still often needs several dB more received power for the same
+BER, repaid by relaxing the electrical bandwidth the SerDes and optics must
+support. That balance is why many 100G/lane products used NRZ and 200G/lane
+products used PAM4.
 
 \begin{figure}[ht]
 \centering
@@ -634,17 +793,47 @@ program's pre-FEC threshold with margin and without a floor
 
 Thermal noise dominates at low optical power, shot noise grows with photocurrent,
 and RIN grows with signal power. Reflections, crosstalk, jitter, and compression
-break a simple Gaussian fit. The signatures differ: a horizontal BER floor points
-to signal-proportional noise or bursts; a uniform horizontal shift points to lost
-power or added receiver noise; one lane moving alone points to its optical or
-electrical path.
+break a simple Gaussian fit. Curve shape chooses the next experiment; it is not a
+root-cause label (\Cref{tab:ber-curve-shape}).
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:ber-curve-shape}%
+\centering
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{@{}p{0.22\linewidth}p{0.40\linewidth}p{0.32\linewidth}@{}}
+\toprule
+Measured behavior & Raises these hypotheses & Does not prove \\
+\midrule
+Uniform waterfall shift & Lost OMA, loss, greater Rx noise, calibration offset & Which component caused it \\
+\addlinespace[0.8em]
+High-power floor & RIN, reflections, crosstalk, jitter, bursts, distortion & Intrinsic laser RIN \\
+\addlinespace[0.8em]
+High-power degradation & TIA/PD overload, compression, AGC/adaptation corner & Excess launch alone \\
+\addlinespace[0.8em]
+Temperature-dependent shift & Responsivity, noise, OMA, loss, wavelength, EQ & Aging \\
+\addlinespace[0.8em]
+One-lane-only movement & Lane-local optical or electrical path & Defective laser \\
+\addlinespace[0.8em]
+Correlated lane movement & Shared rail, source, clock, thermal or control & Common source failure \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} BER-waterfall signatures:
+hypothesis routing, not mechanism confirmation
+(\Cref{ch:failure-modes}).\par}
+\end{table*}
 
 \failuremode{BER floor}{BER improves with received power, then stops improving.}{RIN,
 reflection-driven multipath interference, laser-bias noise, crosstalk, or periodic
 jitter.}{BER versus OMA, RF RIN spectrum (PD+ESA or RIN analyzer, not OSA), ORL
 sweep, FEC error distribution, and a quiet laser-bias source.}{Remove the
-correlated noise source, improve ORL, isolate supplies, or reject the laser if
-its intrinsic RIN misses the ATP.}
+correlated noise source, improve ORL, or isolate supplies. The recurrence control
+may be source qualification, stressed-RIN screening, supplier process control,
+bias-board validation, ORL control, sampled audit, ATP proxy, or fleet monitoring,
+depending on where the mechanism can be detected reliably
+(\Cref{ch:lasers,ch:reliability,ch:manufacturing}).}
 
 \subsection{How it is debugged}
 \label{sec:models-how-debugged}
@@ -686,8 +875,9 @@ Decision + recurrence control
 \end{dectree}
 
 Stable average received power deprioritizes gross optical loss but does not
-eliminate fast power fluctuations, clipping, monitor averaging, or
-reflection-dependent effects.
+clear fast fluctuations, reflections, clipping, wavelength filtering, or
+monitor-calibration error. The fork chooses an investigation route; it does not
+establish mechanism ownership (\Cref{ch:failure-modes}).
 
 \paragraph{Did average received optical power change?}
 If yes, investigate the power path:
@@ -712,7 +902,8 @@ channel, receiver, and DSP quality:
 This fork often narrows an investigation in minutes. Power-path failures show up on
 a meter; signal-quality failures need FEC timing, DCA, BERT, or spectrum analysis,
 depending on access. Apply it before opening the package, changing settings, or
-blaming a supplier (\Cref{sec:fleet-triage}).
+blaming a supplier
+(\Cref{sec:fleet-triage,ch:failure-modes,ch:validation}).
 
 \whyexp{separate power from quality?}{Because average optical power is easy to
 measure but tells very little about timing, noise, distortion, or adaptation.
@@ -725,21 +916,307 @@ the primary story}
 \section{Interview takeaway}
 \label{sec:models-design-review}
 
-\keyidea{Four relations carry most of short-reach link design: the Gaussian
-$\mathrm{BER}(Q)$, the quadrature noise budget (thermal + shot + RIN), the RIN
-floor $Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$, and the sensitivity
-$P_{\text{sens}}=Q\,i_n/\mathcal{R}$. Close each relation with a measured curve,
-then use the curve shape to debug the link.}
+\keyidea{Name the metric and reference plane, state the model assumptions, and
+close only what the model can defend: Gaussian $\mathrm{BER}(Q)$, the variance
+noise budget (thermal + shot + RIN), the simplified dominant-RIN ceiling
+$Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$, and
+$P_{\text{sens}}=Q\,i_n/\mathcal{R}$ with integrated rms noise. Verify with a
+measured BER waterfall. Let disagreement reveal missing physics
+(\Cref{tab:metric-planes,sec:model-to-bench,tab:ber-curve-shape}).}
 
 Junior mistake: raise launch power into a BER floor, or quote sensitivity without
 the measurement conditions (\Cref{sec:rin,sec:debug-fork,ch:lasers,ch:validation}).
 
-\paragraph{Three questions to test yourself.}
-\begin{enumerate}
-\item Why does RIN impose a BER floor that no amount of optical power can overcome?
-\item Optical power is unchanged but pre-FEC BER worsened from well below the
-      FEC threshold into the $10^{-6}$ class. Where do you start?
-      (\Cref{sec:debug-fork})
-\item The BER curve flattens at high power. What mechanisms produce a floor?
-\end{enumerate}
+\subsection{Interview Q\&A: Quantitative Models, Noise, RIN, and BER}
+\label{sec:models-interview-qa}
+
+Practice speaking these answers aloud. Prefer physical meaning and assumptions
+over equation recitation. Detail lives earlier in this chapter
+(\Cref{sec:qber,sec:noise,sec:rin,sec:sensitivity,sec:debug-fork}).
+Score your answer using the chapter-end spoken-answer rubric
+(\Cref{sec:chapter-interview-rubric}).
+
+\paragraph{Question 1. What is the $Q$ factor, and when is the $Q$-to-BER
+relationship useful?}
+\textit{Tests:} physical interpretation, Gaussian assumption, and model scope.
+
+\textit{Spoken answer.}
+``In the simple binary receiver model, $Q$ is the separation between the sampled
+one and zero levels divided by the sum of their rms noise widths. Under
+approximately Gaussian sampled distributions and an appropriate decision
+threshold, $Q$ maps to BER through the complementary error function. I use it to
+convert measured or modeled signal and noise into an expected error rate and to
+understand sensitivity trends. I would not treat it as a complete waveform
+model. ISI, non-Gaussian tails, burst errors, unequal PAM4 eyes, clipping, and
+adaptation can make the equivalent-$Q$ interpretation incomplete.''
+
+\textit{Pressure follow-up.} ``Can you use the same $Q$ formula directly for
+PAM4?''\\
+\textit{Answer pivot.} ``Not as a complete PAM4 model. I can use
+binary-equivalent-$Q$ approximations for intuition or a stated reference model,
+but real PAM4 has three eyes, potentially unequal level spacing, level-dependent
+noise, and an FEC-specific error distribution.''
+
+\textit{Trap:} claiming $Q$ completely describes any optical link as long as the
+BER is known.
+
+\paragraph{Question 2. Walk me through the receiver noise budget.}
+\textit{Tests:} thermal, shot, and RIN scaling.
+
+\textit{Spoken answer.}
+``I convert optical levels to photocurrent using detector responsivity, then
+calculate the noise at each sampled level. Thermal and circuit noise are
+approximately signal-independent and integrate with noise bandwidth. Shot-noise
+variance grows linearly with photocurrent. RIN variance grows with the square of
+photocurrent. For independent terms, I add variances, not rms amplitudes, and I
+calculate the one-level and zero-level noise separately when the noise is
+signal-dependent. The resulting level separation and noise widths determine the
+equivalent $Q$ and expected BER.''
+
+\textit{Pressure follow-up.} ``Why are $\sigma_1$ and $\sigma_0$ different?''\\
+\textit{Answer pivot.} ``Shot noise and RIN depend on photocurrent, so the high
+optical level normally has more noise than the low level. Assuming one common
+noise value can misplace the optimal threshold and misestimate BER.''
+
+\textit{Trap:} adding thermal, shot, and RIN current amplitudes directly.
+
+\paragraph{Question 3. Why can RIN create a BER floor?}
+\textit{Tests:} signal-proportional noise and asymptotic behavior.
+
+\textit{Spoken answer.}
+``Thermal noise stays roughly fixed while the signal grows, so more received
+power improves signal-to-noise ratio in a thermal-noise-limited link. RIN noise
+grows in proportion to the optical signal amplitude, so once RIN dominates,
+increasing power increases the signal and its noise together. $Q$ then approaches
+a simplified dominant-RIN ceiling and BER stops improving. That ceiling assumes
+dominant, approximately white Gaussian RIN, a defined bandwidth, no receiver
+compression, and no stronger deterministic impairment.''
+
+\textit{Pressure follow-up.} ``Does a flat BER curve prove intrinsic laser
+RIN?''\\
+\textit{Answer pivot.} ``No. A floor can also come from optical feedback, MPI,
+electrical bias noise, periodic jitter, crosstalk, burst errors, or receiver
+limitations. The curve identifies a signal-quality class, not a unique
+mechanism.''
+
+\textit{Trap:} treating a BER floor as proof that the receiver needs more
+optical power.
+
+\paragraph{Question 4. What can the shape of a BER waterfall tell you?}
+\textit{Tests:} shift, floor, shoulder, cliff, and curve interpretation.
+
+\textit{Spoken answer.}
+``I compare the complete BER-versus-received-OMA curve rather than one operating
+point. A roughly horizontal shift can indicate lost OMA or increased receiver
+noise. A high-power floor suggests a signal-proportional, periodic, bursty, or
+deterministic impairment. A shoulder or multiple slopes can indicate a change in
+dominant mechanism, adaptation behavior, pattern dependence, or mixed
+populations. A sharp unexpected cliff may indicate overload, compression,
+control saturation, or lock loss. I compare the curve across lanes, temperature,
+host, and controlled disturbances before assigning ownership''
+(\Cref{tab:ber-curve-shape}).
+
+\textit{Pressure follow-up.} ``Two links have the same sensitivity at the
+threshold but different waterfall shapes. Are they equivalent?''\\
+\textit{Answer pivot.} ``No. One may have greater margin above the threshold
+while the other approaches a floor or cliff. A single crossing point hides the
+remaining operating envelope.''
+
+\textit{Trap:} treating the power where BER crosses the FEC threshold as the
+only important waterfall result.
+
+\paragraph{Question 5. What must accompany a receiver-sensitivity number?}
+\textit{Tests:} reference planes, conditions, and specification interpretation.
+
+\textit{Spoken answer.}
+``I need the optical reference plane, whether the metric is average power or
+OMA, the modulation format and lane rate, wavelength, transmitter-quality
+condition, extinction ratio or level structure, ORL condition, equalization
+state, temperature, pattern or traffic condition, FEC and BER criterion, dwell
+or error count, and measurement uncertainty. Sensitivity is a receiver result
+under defined conditions. It does not independently guarantee that a real
+transmitter, fiber plant, and host combination will close''
+(\Cref{tab:metric-planes}).
+
+\textit{Pressure follow-up.} ``A supplier says sensitivity is $-10$~dBm. What is
+your first question?''\\
+\textit{Answer pivot.} ``I would ask whether that is average power or OMA and at
+which reference plane and BER or FEC condition. Without those details, the
+number is not comparable.''
+
+\textit{Trap:} assuming that if receive power is above the sensitivity number,
+the link should work.
+
+\paragraph{Question 6. Explain average optical power, OMA, extinction ratio,
+RLM, and TDECQ.}
+\textit{Tests:} metric ownership and avoiding composite-metric misuse.
+
+\textit{Spoken answer.}
+``Average power measures mean optical energy. OMA measures the modulated optical
+separation: one minus zero for NRZ and outer OMA for PAM4. Extinction ratio
+describes the ratio of high and low optical levels. RLM describes PAM4
+level-spacing linearity. TDECQ is a composite transmitter-quality metric relative
+to a defined reference receiver. These metrics answer different questions. Two
+transmitters can have the same average power but different OMA or level quality
+and therefore very different BER. TDECQ can identify a transmitter-quality
+penalty, but it does not identify the physical mechanism.''
+
+\textit{Pressure follow-up.} ``Can you add a TDECQ penalty to a budget that
+already uses a TDECQ-based transmitter OMA requirement?''\\
+\textit{Answer pivot.} ``Not automatically. That can count the same transmitter
+impairment twice. I would first identify exactly what the compliance method and
+budget term already include.''
+
+\textit{Trap:} treating OMA, extinction ratio, and TDECQ as different ways of
+expressing transmitter power.
+
+\paragraph{Question 7. How do you estimate receiver sensitivity from noise and
+responsivity?}
+\textit{Tests:} sensitivity model, units, and assumptions.
+
+\textit{Spoken answer.}
+``For a simplified binary, thermal-noise-dominated receiver, I integrate the
+input-referred noise-current density over the applicable noise bandwidth to
+obtain rms current noise. I divide the required signal current by detector
+responsivity to refer it to optical power. The required signal separation depends
+on the target equivalent $Q$. Before trusting the estimate, I verify whether the
+noise value is a density or already integrated, whether the metric is average
+power or OMA, whether extinction ratio is finite, and whether shot noise, RIN,
+ISI, or compression are important.''
+
+\textit{Pressure follow-up.} ``Why can't you multiply a TIA noise density
+directly by $Q$ and divide by responsivity?''\\
+\textit{Answer pivot.} ``Because the density has units per square-root hertz. It
+must be integrated through the effective noise transfer function, often
+approximated as density times the square root of noise bandwidth, before it
+becomes rms current.''
+
+\textit{Trap:} using datasheet noise in pA/$\sqrt{\mathrm{Hz}}$ directly in the
+optical-sensitivity equation.
+
+\paragraph{Question 8. How do bandwidth and detector--TIA capacitance affect
+receiver sensitivity?}
+\textit{Tests:} noise-bandwidth tradeoff and integration architecture.
+
+\textit{Spoken answer.}
+``Wider electrical bandwidth admits more noise and usually requires a faster
+front end with lower impedance or more gain-bandwidth burden. Detector
+capacitance, pad capacitance, bond wires, and interconnect parasitics load the
+TIA input and make it harder to achieve both low noise and high bandwidth. That
+is why close detector--TIA integration is valuable. I would not apply one
+universal capacitance-to-noise power law to every topology, but the direction is
+clear: excess input capacitance consumes bandwidth, noise, power, or all three.''
+
+\textit{Pressure follow-up.} ``Why not simply narrow the receiver bandwidth to
+improve sensitivity?''\\
+\textit{Answer pivot.} ``Because insufficient bandwidth creates deterministic ISI
+and closes the eye. The optimum bandwidth balances integrated noise against
+waveform distortion and equalizer capability.''
+
+\textit{Trap:} claiming maximum receiver bandwidth always provides the best BER.
+
+\paragraph{Question 9. Compare PIN, APD, and high-saturation detector
+approaches.}
+\textit{Tests:} detector choice and complete receiver tradeoffs.
+
+\textit{Spoken answer.}
+``A PIN detector provides no internal gain and is attractive for low excess
+noise, simple biasing, and close integration with a TIA. An APD provides
+internal multiplication that can improve sensitivity when the gain exceeds the
+combined excess-noise and bandwidth penalties, but it adds high-voltage bias,
+temperature dependence, gain control, and qualification burden. UTC or MUTC-style
+detectors emphasize bandwidth, saturation, and linearity rather than maximum
+responsivity. I would choose from the complete detector--TIA requirement:
+sensitivity, bandwidth, linearity, overload, power, process integration, yield,
+and operating environment.''
+
+\textit{Pressure follow-up.} ``An APD paper reports 8~dB better sensitivity than
+a PIN. Does your product receive 8~dB?''\\
+\textit{Answer pivot.} ``Not automatically. I would compare modulation, rate, BER
+target, gain, bandwidth, noise, reference receiver, temperature, and integration
+conditions. Published improvement is conditional, not a universal device
+credit.''
+
+\textit{Trap:} claiming an APD is always preferable when the link budget is
+tight because it adds optical gain.
+
+\paragraph{Question 10. How do NRZ and PAM4 trade bandwidth against vertical
+margin?}
+\textit{Tests:} symbol rate, level spacing, and model limitations.
+
+\textit{Spoken answer.}
+``At the same bit rate, PAM4 carries two bits per symbol, so its symbol rate is
+half that of NRZ and the required channel bandwidth can be lower. The cost is
+four amplitude levels and three eyes, so the ideal level spacing is about one
+third of the outer OMA before accounting for unequal spacing, level-dependent
+noise, and transmitter distortion. That creates a significant vertical-margin
+penalty, partly offset by the lower bandwidth and by FEC. I would compare them
+using the actual transmitter, channel, receiver, equalization, and FEC model
+rather than one universal dB penalty.''
+
+\textit{Pressure follow-up.} ``Why not say PAM4 has exactly a 9.54~dB
+penalty?''\\
+\textit{Answer pivot.} ``That is the ideal amplitude-separation comparison for
+one-third eye spacing. The practical power penalty also depends on noise
+bandwidth, coding, level statistics, transmitter quality, and receiver
+implementation.''
+
+\textit{Trap:} claiming PAM4 is always more power-efficient because it uses half
+the baud rate.
+
+\paragraph{Question 11. The measured BER curve is worse than your model. How do
+you reconcile it?}
+\textit{Tests:} model correlation and disciplined hypothesis testing.
+
+\textit{Spoken answer.}
+``I first verify units, reference planes, OMA calibration, attenuation,
+responsivity, noise bandwidth, target BER, and FEC assumptions. Then I compare
+the predicted and measured curve shape. A uniform shift may point to
+calibration, loss, responsivity, or receiver noise. A floor points toward RIN,
+reflections, crosstalk, timing, or bursts. A high-power degradation suggests
+compression or overload. I then add one omitted mechanism at a time or run a
+measurement that separates the hypotheses. I do not tune several free parameters
+until the model matches, because that produces fit without understanding''
+(\Cref{sec:model-to-bench}).
+
+\textit{Pressure follow-up.} ``Can you use measured BER to back-calculate
+receiver noise?''\\
+\textit{Answer pivot.} ``Yes, as an effective parameter under the model
+assumptions, but it may absorb transmitter distortion, ISI, and other unmodeled
+penalties. I would label it effective noise rather than claim it is the
+intrinsic TIA noise.''
+
+\textit{Trap:} adjusting assumed receiver noise until the simulated BER matches
+the measurement.
+
+\paragraph{Question 12. Give me a 60-second quantitative link-analysis plan.}
+\textit{Tests:} complete Staff-level modeling and measurement answer.
+
+\textit{Spoken answer.}
+``I begin by defining the reference planes, modulation format, lane rate, target
+BER and FEC, temperature, fiber plant, and required margin. I convert
+transmitter levels into received OMA and photocurrent, then build the receiver
+noise budget using measured responsivity, input-referred noise, bandwidth, shot
+noise, and RIN under the relevant reflection condition. I use an equivalent-$Q$
+model only within its assumptions and treat PAM4, ISI, jitter, compression, and
+burst behavior separately where needed. I predict the BER waterfall, then
+measure it with a calibrated attenuator and compare its crossing, slope, floor,
+and temperature movement. The result drives the design margin, architecture
+choice, or next discriminating measurement.''
+
+\textit{Pressure follow-up.} ``What evidence would make you reject the
+simplified model?''\\
+\textit{Answer pivot.} ``Non-Gaussian tails, unequal PAM4 eyes, strong pattern
+dependence, a floor unexplained by the included noise, compression, adaptation
+discontinuities, or disagreement that cannot be resolved through measurement
+uncertainty. At that point I use a waveform, statistical-eye, or
+measured-distribution model.''
+
+\textit{Trap:} calculating the link budget, comparing receive power with
+sensitivity, and adding a standard margin.
+
+Score each response using the shared chapter-interview rubric in
+\Cref{sec:chapter-interview-rubric}. Repeat any answer that does not define the
+metric and reference plane, state the model assumptions, connect the model to a
+measured curve, and explain what decision the result enables.
 
