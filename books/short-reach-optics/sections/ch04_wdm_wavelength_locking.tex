@@ -25,8 +25,8 @@ At $100{,}000$+ accelerator scale, every extra fiber is another connector,
 another patch, and another failure mode. \term{Wavelength-division multiplexing}
 (WDM)\firstterm{WDM} puts many independent channels on a single fiber, each on its own
 wavelength, so bandwidth per fiber rises without adding fiber. Each wavelength
-can still be an ordinary IM/DD channel. WDM and IM/DD are orthogonal; you simply
-run IM/DD \emph{per wavelength}.
+can still be an ordinary IM/DD channel. WDM and IM/DD are orthogonal; you run
+IM/DD \emph{per wavelength}.
 
 Historically the industry climbed a ladder of spacing. Coarse CWDM4 used
 $\approx$20~nm slots and uncooled lasers. LAN-WDM tightened that for 2~km-class
@@ -632,6 +632,10 @@ and neighbor-load hold testing became an ATP corner.}
 link. Measure the grid, capture, hold, shared thermal paths, and per-lane margin.
 Then use one-lane versus all-lane behavior to split the source, ring bank, MUX,
 thermal controller, and common supplies.}
+
+Junior mistake: blame every unlock on the laser, or debug lock from final
+register values without neighbor-load and time-aligned traces
+(\Cref{sec:debug-fork,ch:failure-modes}).
 
 \paragraph{Three questions to test yourself.}
 \begin{enumerate}

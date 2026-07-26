@@ -171,7 +171,7 @@ Treat engineering as hypothesis testing: $$\begin{split}
 &\longrightarrow \text{belief updated / hypothesis eliminated}.
 \end{split}$$
 
-**Key idea.** Debugging is simply Bayesian inference performed in a laboratory.
+**Key idea.** Debugging is Bayesian inference performed in a laboratory.
 
 Every measurement updates the probability of competing hypotheses. Speak the update out loud. "Calibration drift is my leading hypothesis, wavelength walk is second, and receiver noise is lower probability; the next measurement should sharply reorder those beliefs." A test that leaves the ranking unchanged was the wrong test, or the wrong reference plane.
 
@@ -453,7 +453,7 @@ A good answer explains why each choice constrains the next one. A VCSEL path poi
 
 Before you open an instrument, walk the failure up the scope ladder (unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ site $\rightarrow$ fleet). Each rung changes the owner and the next action (Appendix D.5, Appendix D.9). Also ask time and change: sudden versus gradual, intermittent versus constant, and what changed just before the symptom. Scope often removes more hypotheses than the first bench measurement. A fleet-wide gradual drift cannot be a single dirty connector. A vendor-lot signature points to supplier containment before you redesign the module.
 
-Preserve the failing state and its telemetry before you reseat, clean, reboot, or change calibration. Capture CMIS monitors, pre-FEC BER, bias currents, temperatures, LOS and LOL flags, and firmware versions. An intermittent that disappears under debugging is still a real failure; you just destroyed the evidence (§7.12, Table 10.1).
+Preserve the failing state and its telemetry before you reseat, clean, reboot, or change calibration. Capture CMIS monitors, pre-FEC BER, bias currents, temperatures, LOS and LOL flags, and firmware versions. An intermittent that disappears under debugging is still a real failure; you destroyed the evidence (§7.12, Table 10.1).
 
 > **Why experienced engineers ask about scope first?**
 >

@@ -17,7 +17,7 @@ Deep learning
 
 Interview preparation
 
-: Follow the one-week plan (Appendix A.13), practice cases (Appendix B), drill thirty-second answers (Appendix C), and review the Top 25 question index (Appendix E).
+: Follow the one-week plan (Appendix A.13), practice cases (Appendix B), drill thirty-second answers and tradeoff questions (Appendix C), and review the Top 25 index (Appendix E).
 
 Incident / problem solving
 

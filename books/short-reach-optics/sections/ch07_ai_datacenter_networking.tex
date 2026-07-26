@@ -869,10 +869,9 @@ while one optical lane sets the job tail.}
 \heuristic{Judge the fabric by delivered step time and collective tail, not by
 aggregate port rate on a clean bench.}
 
-\tradeoff{More telemetry vs operational complexity}{Faster isolation of weak
-rails and lot-scoped escapes}{Storage, firmware, and false-alarm load}{When each
-field maps to a triage decision and an owner}{Instrument ledgers that unlock
-contain or repair; skip vanity counters (\Cref{fw:telemetry}).}
+Telemetry versus complexity: same decision criteria as
+\Cref{sec:fleet-triage,fw:telemetry}. Instrument ledgers that unlock contain or
+repair; skip vanity counters.
 
 \section{Fabric options}
 \label{sec:fabric-protocols}
@@ -1560,6 +1559,10 @@ runbook, and collective-tail alarms were tied to link-level error bursts.}
 rate. Connect collective traces to queue, route, FEC, optical, thermal, and service
 data. Choose pluggables, linear optics, or co-packaging by the measured system
 constraint and by how the fleet detects, contains, and repairs each failure.}
+
+Junior mistake: rewrite the topology before scoping one weak rail, or ignore
+optics FA when collectives stall
+(\Cref{sec:debug-fork,ch:failure-modes,app:case-studies}).
 
 \paragraph{Three questions to test yourself.}
 \begin{enumerate}

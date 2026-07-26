@@ -108,10 +108,9 @@ Feedback & What must change next? & FA, escapes, revision inputs & Next-revision
 \end{tabular}
 \par\medskip
 {\raggedright\footnotesize\textbf{Table~\thetable.} Canonical validation
-lifecycle. One source of truth for this book. The wall-chart tree is
-\Cref{sec:tree-qualification}; interview names are
-\Cref{sec:interview-validation-ladder}. Manufacturing aliases EVT/DVT/PVT/MP
-map onto these stages in \Cref{tab:npi}.\par}
+lifecycle. Decision unlocked: which stage exit you have evidence for, and which
+you do not. Wall-chart tree: \Cref{sec:tree-qualification}; interview names:
+\Cref{sec:interview-validation-ladder}. EVT/DVT/PVT/MP map in \Cref{tab:npi}.\par}
 \end{table*}
 
 This is the single lifecycle. Later sections deepen measurements, bring-up
@@ -154,7 +153,7 @@ System and product owners. No hardware access required.
 
 \paragraph{Data collected.}
 A signed requirements slice with owners, planes where applicable, and
-pass/fail language that later stages can fail clearly.
+pass/fail language that later stages can fail without ambiguity.
 
 \paragraph{Analysis.}
 Map each requirement to the risk that would falsify it. Those risks become
@@ -390,11 +389,8 @@ $-$ contamination / ORL penalty\\
 $-$ manufacturing variation\\
 $=$ remaining field margin
 \end{quote}
-\tradeoff{More optical margin vs cost and power}{Reach and corner tolerance under
-temperature, aging, and plant loss}{Laser power, thermal load, and efficiency
-(\Cref{sec:laser-margin-erosion})}{When a named uncertainty still dominates the
-remaining risk}{Allocate margin where uncertainty is highest; do not maximize
-every ledger equally.}
+Margin versus power and cost is the same tradeoff as in
+\Cref{sec:laser-margin-erosion}: allocate margin where uncertainty is highest.
 
 Do not subtract the same physical effect twice under two names. If ORL stress
 is already in the loaded corner, do not also invent a second reflection tax
@@ -1930,6 +1926,9 @@ shift source check was added.}
 management state, move through spectrum and waveform, then trust BER only after
 the blocks and reference planes are known. Run the target host, chassis, fiber,
 and neighbor corners before calling the product ready.}
+
+Junior mistake: call a golden-host BER pass ``production ready,'' or open
+supplier FA before clearing the tester (\Cref{tab:ladder,ch:reliability}).
 
 \paragraph{Three questions to test yourself.}
 \begin{enumerate}

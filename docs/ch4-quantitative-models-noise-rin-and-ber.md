@@ -324,6 +324,8 @@ This fork often narrows an investigation in minutes. Power-path failures show up
 
 **Key idea.** Four relations carry most of short-reach link design: the Gaussian $\mathrm{BER}(Q)$, the quadrature noise budget (thermal + shot + RIN), the RIN floor $Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$, and the sensitivity $P_{\text{sens}}=Q\,i_n/\mathcal{R}$. Close each relation with a measured curve, then use the curve shape to debug the link.
 
+Junior mistake: raise launch power into a BER floor, or quote sensitivity without the measurement conditions (§4.3, §4.8, Chapter 7).
+
 ##### Three questions to test yourself.
 
 1.  Why does RIN impose a BER floor that no amount of optical power can overcome?

@@ -143,7 +143,7 @@ Fabric capacity can fall behind injected traffic. A single marginal link can sta
 
 ### How it is debugged
 
-Use the debugging pyramid: start at the system symptom, narrow to signal quality, walk the link budget, bisect the subsystem, then identify the physical root cause. Do not skip layers.
+Use the debugging pyramid: start at the system symptom, narrow to signal quality, walk the link budget, bisect the subsystem, then identify the physical root cause. Do not skip layers. Junior mistake: open a connector or blame a laser before the workload symptom and population are named (§4.8, Chapter 10).
 
 ## The debugging pyramid
 

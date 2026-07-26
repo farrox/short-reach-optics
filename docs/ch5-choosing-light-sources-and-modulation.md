@@ -884,6 +884,8 @@ Manufacturing / fleet
 
 **Key idea.** Measure LIV, SMSR, wavelength, and RIN as distributions across temperature, lot, and age. Tie each requirement to an ATP row, each life claim to a physical mechanism, and each field alarm to a measurement that separates the laser from its driver, monitor, cooler, and optical path.
 
+Junior mistake: declare wear-out from monitor telemetry alone, or raise launch power before naming which ledger spent (§5.19, Chapter 7).
+
 ##### Three questions to test yourself.
 
 1.  Why is the laser typically the reliability-limiting component in an optical link?

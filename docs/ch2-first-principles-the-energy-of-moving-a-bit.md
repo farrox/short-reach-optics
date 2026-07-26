@@ -101,6 +101,8 @@ Compare measured link power against the design budget, split by block. If the to
 
 > **Engineering heuristic.** A power rise after a firmware update is often deeper equalization, retries, or thermal control, not a new laser physics. Check what the software asked the hardware to do.
 
+Junior mistake: quote faceplate watts without a measured energy-per-bit split, or treat peak FLOPs as proof the fabric is not the limit (Chapter 9, §9.7).
+
 ## Interview takeaway
 
 **Key idea.** Short-reach optics is, at bottom, an energy-per-bit optimization. Optical energy is spent at the endpoints and is flat with distance; electrical energy grows with distance and rate; so rising data rates push optics ever closer to the chip. Miller's framework is the lens the rest of this book looks through.

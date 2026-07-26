@@ -54,7 +54,7 @@ Optical programs fail in the same places again and again: a part that looks good
 The core principle is uncertainty reduction. At every stage ask: what do we know before this stage, what uncertainty remains, what evidence removes it, what decision that evidence unlocks, and what risk remains afterward (Appendix D.16).
 
 <table class="book-table"><tr><th>Phase</th><th>Main question</th><th>Evidence</th><th>Exit decision</th></tr><tr><td>Requirements</td><td>What must be true?</td><td>System requirements, constraints</td><td>Architecture target</td></tr><tr><td>Architecture</td><td>Can this design meet requirements?</td><td>Budgets, simulations, tradeoffs</td><td>Proceed or redesign</td></tr><tr><td>Bring-up</td><td>Does the hardware fundamentally work?</td><td>Init, traffic, basic BER</td><td>Usable hardware</td></tr><tr><td>Characterization</td><td>How does it behave?</td><td>Sweeps, distributions, trends</td><td>Behavior understood</td></tr><tr><td>Margin</td><td>How close are the limits?</td><td>T, V, loss, ORL, stress headroom</td><td>Sufficient headroom</td></tr><tr><td>Interoperability</td><td>Does it work in real systems?</td><td>Host/peer/FW/channel matrix</td><td>Supported ecosystem</td></tr><tr><td>Qualification</td><td>Will it survive expected life?</td><td>Mechanism-based stress evidence</td><td>Release confidence</td></tr><tr><td>Manufacturing</td><td>Can we build it repeatedly?</td><td>Yield, ATP, SPC, FAIR</td><td>Production readiness</td></tr><tr><td>Pilot</td><td>Does reality match lab assumptions?</td><td>Bounded deployment</td><td>Expand / restrict / reject</td></tr><tr><td>Mass production</td><td>Can we sustain volume with control?</td><td>SPC, ECO, RMA loop</td><td>Open / hold volume</td></tr><tr><td>Fleet</td><td>Does it remain healthy?</td><td>Telemetry, cohorts, escapes</td><td>Operational control</td></tr><tr><td>Feedback</td><td>What must change next?</td><td>FA, escapes, revision inputs</td><td>Next-revision targets</td></tr></table>
-**Table 7.1.** Canonical validation lifecycle. One source of truth for this book. The wall-chart tree is Appendix D.2; interview names are Appendix A.8.5. Manufacturing aliases EVT/DVT/PVT/MP map onto these stages in Table 8.5.
+**Table 7.1.** Canonical validation lifecycle. Decision unlocked: which stage exit you have evidence for, and which you do not. Wall-chart tree: Appendix D.2; interview names: Appendix A.8.5. EVT/DVT/PVT/MP map in Table 8.5.
 
 This is the single lifecycle. Later sections deepen measurements, bring-up checklists, and fleet triage; they do not define a competing stage order.
 
@@ -106,7 +106,7 @@ System and product owners. No hardware access required.
 
 ##### Data collected.
 
-A signed requirements slice with owners, planes where applicable, and pass/fail language that later stages can fail clearly.
+A signed requirements slice with owners, planes where applicable, and pass/fail language that later stages can fail without ambiguity.
 
 ##### Analysis.
 
@@ -358,15 +358,7 @@ Manufacturing
 > $-$ manufacturing variation\
 > $=$ remaining field margin
 
-> **Tradeoff.** More optical margin vs cost and power
->
-> *Improves:* Reach and corner tolerance under temperature, aging, and plant loss
->
-> *Worsens:* Laser power, thermal load, and efficiency (§5.19)
->
-> *When acceptable:* When a named uncertainty still dominates the remaining risk
->
-> *Experienced decision:* Allocate margin where uncertainty is highest; do not maximize every ledger equally.
+Margin versus power and cost is the same tradeoff as in §5.19: allocate margin where uncertainty is highest.
 
 Do not subtract the same physical effect twice under two names. If ORL stress is already in the loaded corner, do not also invent a second reflection tax without new evidence.
 
@@ -1409,6 +1401,8 @@ Preserve the failing state and record software, firmware, calibration, fixture, 
 ## Interview takeaway
 
 **Key idea.** Validation is a chain of evidence. Start with calibrated power and management state, move through spectrum and waveform, then trust BER only after the blocks and reference planes are known. Run the target host, chassis, fiber, and neighbor corners before calling the product ready.
+
+Junior mistake: call a golden-host BER pass "production ready," or open supplier FA before clearing the tester (Table 7.1, Chapter 8).
 
 ##### Three questions to test yourself.
 

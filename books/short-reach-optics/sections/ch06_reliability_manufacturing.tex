@@ -103,11 +103,6 @@ evidence under accelerated operation; a production burn-in is a manufacturing
 screen only when separation, cycle time, and cost justify it. Do not imply that
 every GR-468-style HTOL is a per-unit screen.
 
-\tradeoff{More qualification stress vs schedule}{Mechanism coverage and life
-confidence}{Calendar delay and engineering bandwidth}{When the open risk is a
-named mechanism without a production proxy}{Buy the next stress that removes the
-largest remaining uncertainty, then stop.}
-
 \term{Arrhenius} acceleration underpins life projection only when the named
 failure mechanism is temperature-accelerated in the assumed regime: raising
 temperature accelerates wear-out by a factor set by the activation energy for
@@ -157,7 +152,9 @@ Connector wear & Mate cycling & Insertion loss, ORL & Cycle-count IL budget & Su
 {\raggedright\footnotesize\textbf{Table~\thetable.} Qualification planning
 matrix. Each row is mechanism $\rightarrow$ stress $\rightarrow$ observable
 $\rightarrow$ acceptance $\rightarrow$ production control
-(\Cref{sec:tree-qual-evidence}; interview form \Cref{fw:qual-plan}).\par}
+(\Cref{sec:tree-qual-evidence}; interview form \Cref{fw:qual-plan}).
+Decision unlocked: which mechanism-stress-observable row is missing before you
+claim life.\par}
 \end{table*}
 
 Interview and wall-chart form of the same path:
@@ -988,10 +985,8 @@ leverage}{Validation, interop matrix, and manufacturing differences}{When supply
 or concentration risk exceeds the qual cost}{Qualify second sources based on
 risk and evidence, not ideology.}
 
-\tradeoff{Best laboratory performance vs production yield}{Peak component
-metrics on engineering lots}{Lower yield, harder calibration, and field
-escapes}{When a slightly softer design still meets system requirements with
-process control}{Optimize the manufacturable system, not the hero sample.}
+Lab hero samples versus manufacturable yield: same tradeoff as in
+\Cref{ch:validation}. Optimize the system you can build, not the best bench unit.
 
 \begin{dectree}
 Design requirements
@@ -1017,7 +1012,7 @@ Production validation is replayable and decision-oriented
 \paragraph{NPI gates and exit criteria.}
 New product introduction (\term{NPI}\firstterm{NPI}) gates are the manufacturing
 face of the validation ladder. \Cref{tab:npi} is the usual stage map. Write exit
-criteria a supplier can fail clearly, not slogans. EVT/DVT/PVT/MP are stage
+criteria a supplier can fail without ambiguity, not slogans. EVT/DVT/PVT/MP are stage
 names, not a calendar; dates and sample sizes belong in the program plan.
 
 \begin{table*}[ht]
@@ -1443,6 +1438,10 @@ measurement system, controlled supplier changes, and field data that preserve lo
 history. When yield or fleet health moves, contain the population, clear the test
 system, find the first changed input, and verify the corrective control with new
 data.}
+
+Junior mistake: treat zero fails in a small HTOL lot as a FIT claim, or escalate
+a supplier before the measurement system is cleared
+(\Cref{sec:qual-sample-strategy,ch:failure-modes,app:case-studies}).
 
 \paragraph{Three questions to test yourself.}
 \begin{enumerate}

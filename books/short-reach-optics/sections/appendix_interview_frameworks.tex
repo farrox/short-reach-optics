@@ -645,7 +645,7 @@ Controlled ORL $\rightarrow$ reflection-driven path? $\rightarrow$ plant.\\
 Supply noise / FEC histogram $\rightarrow$ PSRR or burst? $\rightarrow$ owner.}
 
 \fwfollow{\begin{itemize}
-\item Why not just increase OMA?
+\item Why not increase OMA alone?
 \item How do FEC histograms look for MPI bursts?
 \end{itemize}}
 
@@ -780,10 +780,8 @@ Golden units across stations $\rightarrow$ correlation? $\rightarrow$ ship.}
 
 \execanswer{Log what discriminates hypotheses: per-lane power, bias, pre-FEC BER and FEC histograms; module temperature and actuator drive; LOS/LOL with context. Require timestamp accuracy, sampling cadence, aggregation window, units, calibration/scaling, missing-data behavior, firmware/schema version, serial/lot/platform, event trigger, retention, and a decision owner. Alarm on trends and disagreements, not only hard thresholds. Therefore I would instrument the ledgers margin testing said die first.}
 
-\tradeoff{More telemetry vs operational complexity}{Earlier margin erosion
-detection and fleet triage without pulling hardware}{Firmware, storage, and
-alarm fatigue}{When a field has a decision owner and a reaction plan}{Add a
-register only if it changes contain, derate, RMA, or FA ownership.}
+Add a register only if it changes contain, derate, RMA, or FA ownership. Full
+tradeoff: \Cref{sec:fleet-triage}.
 
 \begin{dectree}
 Telemetry purpose: early margin erosion

@@ -585,6 +585,8 @@ For degraded receiver sensitivity, first verify the power meter and reference pl
 
 **Key idea.** IM/DD is intensity in, power out, with FEC and DSP closing the gap that PAM4's SNR penalty opens. Know OMA, ER, chirp and dispersion, pre-FEC BER, and the reference plane for every number. Then measure, bisect, and correct the failing block.
 
+Junior mistake: treat average power as signal quality, or skip the named plane before arguing TDECQ (§4.8, Chapter 7).
+
 ##### Three questions to test yourself.
 
 1.  Why is PAM4 preferred over NRZ at 200G/lane despite its SNR penalty?

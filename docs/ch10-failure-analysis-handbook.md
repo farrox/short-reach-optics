@@ -23,15 +23,7 @@ This chapter is a symptom-first field guide. Start with what the bench, producti
 >
 > *Experienced decision:* Contain first when the population can grow. Perfect mechanism stories do not unship yesterday's lot.
 
-> **Tradeoff.** Customer realism vs diagnostic visibility
->
-> *Improves:* Bookended evidence matches field ownership
->
-> *Worsens:* Slower root-cause isolation without breakout samples
->
-> *When acceptable:* When the next decision is contain, derate, or supplier hold, not die-level physics
->
-> *Experienced decision:* Stay black-box until deeper access changes the decision (Appendix A.8.7, Appendix D.11).
+Black-box versus engineering access is the same tradeoff as Appendix A.8.7: stay external until deeper access changes the decision (Appendix D.11).
 
 > **Tradeoff.** Deep FA vs ship with a control
 >
@@ -521,15 +513,7 @@ Use time scale and recovery to route the incident. A reversible shift during a t
 
 5.  Route reversible thermal loss to cooling, control, calibration, or derating. Route cumulative change to HTOL and life-model review. Route lot-clustered permanent steps to manufacturing failure analysis.
 
-> **Tradeoff.** More optical margin vs cost and power
->
-> *Improves:* Survives temperature, aging, and plant loss without redesign
->
-> *Worsens:* Watts, heat, and sometimes lifetime (§5.19)
->
-> *When acceptable:* When the spent ledger is still uncertain after isolation
->
-> *Experienced decision:* Add margin only on the ledger that is actually empty; do not raise launch power by habit.
+On margin versus power, see §5.19: add margin only on the ledger that is empty; do not raise launch power by habit.
 
 The corrective action must restore margin at combined corners. A room-temperature retest does not close a high-temperature incident, and one clean HTOL readout does not explain a reversible lock failure.
 
@@ -617,6 +601,8 @@ Correct / prevent
 ## Interview takeaway
 
 **Key idea.** A useful failure analysis starts with a symptom and ends with a new control. Preserve the failing state, split shared from local behavior, clear the measurement system, and choose one measurement that can falsify the leading hypothesis. The corrective action is incomplete until production or fleet data show that the same signature no longer escapes.
+
+Junior mistake: reseat first, or close without a recurrence control in ATP or telemetry (§7.12, Appendix B, Appendix A.1).
 
 ##### Three questions to test yourself.
 

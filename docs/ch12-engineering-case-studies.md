@@ -12,7 +12,7 @@ This appendix is practice under incomplete information. The frameworks already l
 The best next measurement is not the most detailed measurement. It is the measurement that eliminates the most uncertainty at acceptable cost (Appendix A.1, Appendix A.2).
 
 <table class="book-table"><tr><th>Measurement</th><th>Cost</th><th>Information gained</th></tr><tr><td>Telemetry query</td><td>Low</td><td>Population scope, trends, lot/host tags</td></tr><tr><td>Swap / remap experiment</td><td>Low</td><td>Ownership isolation (Tx / Rx / host / plant)</td></tr><tr><td>Attenuation / BER waterfall</td><td>Medium</td><td>Margin shape: shift versus floor</td></tr><tr><td>External optical eye</td><td>Medium</td><td>Signal quality at a named plane</td></tr><tr><td>Optical / package teardown</td><td>High</td><td>Physical mechanism confirmation</td></tr></table>
-**Table B.1.** Information value is uncertainty removed per cost. Prefer Level 0--2 access until those measurements stop reordering beliefs (Appendix A.2).
+**Table B.1.** Information value is uncertainty removed per cost. Decision unlocked: which next measurement to buy. Prefer Level 0--2 until those measurements stop reordering beliefs (Appendix A.2).
 
 Bad next step: "Run full optical characterization." Better: "Compare failing and passing units from the same lot," because that separates population effects quickly.
 

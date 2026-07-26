@@ -372,15 +372,7 @@ Optical engineering maps to these patterns indirectly. More rails and higher per
 
 > **Engineering heuristic.** Judge the fabric by delivered step time and collective tail, not by aggregate port rate on a clean bench.
 
-> **Tradeoff.** More telemetry vs operational complexity
->
-> *Improves:* Faster isolation of weak rails and lot-scoped escapes
->
-> *Worsens:* Storage, firmware, and false-alarm load
->
-> *When acceptable:* When each field maps to a triage decision and an owner
->
-> *Experienced decision:* Instrument ledgers that unlock contain or repair; skip vanity counters (Appendix C.14).
+Telemetry versus complexity: same decision criteria as §7.12, Appendix C.14. Instrument ledgers that unlock contain or repair; skip vanity counters.
 
 ## Fabric options
 
@@ -623,6 +615,8 @@ Start with the workload symptom and identify the slow collective, rail, or time 
 ## Interview takeaway
 
 **Key idea.** An AI fabric is judged by delivered workload time, not aggregate port rate. Connect collective traces to queue, route, FEC, optical, thermal, and service data. Choose pluggables, linear optics, or co-packaging by the measured system constraint and by how the fleet detects, contains, and repairs each failure.
+
+Junior mistake: rewrite the topology before scoping one weak rail, or ignore optics FA when collectives stall (§4.8, Chapter 10, Appendix B).
 
 ##### Three questions to test yourself.
 

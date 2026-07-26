@@ -19,7 +19,7 @@ Early datacenter optics mostly ran one wavelength per fiber. That worked while p
 
 ## Why multiplex wavelengths at all
 
-At $100{,}000$+ accelerator scale, every extra fiber is another connector, another patch, and another failure mode. *Wavelength-division multiplexing* (WDM) puts many independent channels on a single fiber, each on its own wavelength, so bandwidth per fiber rises without adding fiber. Each wavelength can still be an ordinary IM/DD channel. WDM and IM/DD are orthogonal; you simply run IM/DD *per wavelength*.
+At $100{,}000$+ accelerator scale, every extra fiber is another connector, another patch, and another failure mode. *Wavelength-division multiplexing* (WDM) puts many independent channels on a single fiber, each on its own wavelength, so bandwidth per fiber rises without adding fiber. Each wavelength can still be an ordinary IM/DD channel. WDM and IM/DD are orthogonal; you run IM/DD *per wavelength*.
 
 Historically the industry climbed a ladder of spacing. Coarse CWDM4 used $\approx$20 nm slots and uncooled lasers. LAN-WDM tightened that for 2 km-class FR4. Dense grids and then CW-WDM O-band combs for CPO pushed spacing into the 100--800 GHz class and made active locking mandatory. Those spacings are standardized grids, not vendor choices: the 20 nm CWDM slots follow the ITU-T G.694.2 wavelength grid (18 channels, 1271--1611 nm), and the 50/100/200 GHz datacom DWDM spacings follow the ITU-T G.694.1 frequency grid anchored at 193.1 THz . CWDM4 uses the four O-band lines of that CWDM grid; the CW-WDM combs in §6.6 define their own O-band grids for dense integration. Table 6.1 is that ladder as you will meet it in short-reach AI optics today.
 
@@ -303,6 +303,8 @@ First decide whether the fault affects one lane or all lanes. Apply the power-ve
 ## Interview takeaway
 
 **Key idea.** Wavelength locking is a control-system problem wrapped around an optical link. Measure the grid, capture, hold, shared thermal paths, and per-lane margin. Then use one-lane versus all-lane behavior to split the source, ring bank, MUX, thermal controller, and common supplies.
+
+Junior mistake: blame every unlock on the laser, or debug lock from final register values without neighbor-load and time-aligned traces (§4.8, Chapter 10).
 
 ##### Three questions to test yourself.
 

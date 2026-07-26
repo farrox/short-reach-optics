@@ -60,16 +60,6 @@ Optoelectronics inherited a common qualification language from telecom: *Telcord
 
 Keep the jobs distinct: **burn-in** screens infant mortality from a production population; **qualification HTOL** gathers life or mechanism evidence under accelerated operation; a production burn-in is a manufacturing screen only when separation, cycle time, and cost justify it. Do not imply that every GR-468-style HTOL is a per-unit screen.
 
-> **Tradeoff.** More qualification stress vs schedule
->
-> *Improves:* Mechanism coverage and life confidence
->
-> *Worsens:* Calendar delay and engineering bandwidth
->
-> *When acceptable:* When the open risk is a named mechanism without a production proxy
->
-> *Experienced decision:* Buy the next stress that removes the largest remaining uncertainty, then stop.
-
 *Arrhenius* acceleration underpins life projection only when the named failure mechanism is temperature-accelerated in the assumed regime: raising temperature accelerates wear-out by a factor set by the activation energy for that mechanism. Do not apply one $E_a$ to mixed mechanisms.
 
 ##### GR-468 in practice.
@@ -83,7 +73,7 @@ A 1,000-hour life test may justify a 100% room-temperature proxy, a sampled hot 
 Qualification engineering starts from mechanisms, not from a museum of tests. The matrix is illustrative: fill cells for the product class and claimed life.
 
 <table class="book-table"><tr><th>Failure mechanism</th><th>Stress</th><th>Observable</th><th>Acceptance</th><th>Production control</th></tr><tr><td>Laser degradation</td><td>Temperature / lifetime (HTOL)</td><td>Power, wavelength, BER</td><td>Named limit vs life claim</td><td>ATP / SPC / burn-in proxy</td></tr><tr><td>Solder fatigue</td><td>Temperature cycling</td><td>Resistance, BER, opens</td><td>Post-stress continuity / BER</td><td>Process control, FAIR</td></tr><tr><td>Contamination / corrosion</td><td>Humidity / damp heat</td><td>Loss, ORL, leakage</td><td>IL/ORL / functional limits</td><td>Handling, sealing, audit</td></tr><tr><td>Connector wear</td><td>Mate cycling</td><td>Insertion loss, ORL</td><td>Cycle-count IL budget</td><td>Supplier / hygiene control</td></tr></table>
-**Table 8.1.** Qualification planning matrix. Each row is mechanism $\rightarrow$ stress $\rightarrow$ observable $\rightarrow$ acceptance $\rightarrow$ production control (Appendix D.3; interview form Appendix C.15).
+**Table 8.1.** Qualification planning matrix. Each row is mechanism $\rightarrow$ stress $\rightarrow$ observable $\rightarrow$ acceptance $\rightarrow$ production control (Appendix D.3; interview form Appendix C.15). Decision unlocked: which mechanism-stress-observable row is missing before you claim life.
 
 Interview and wall-chart form of the same path: Appendix C.15, Appendix D.3.
 
@@ -529,15 +519,7 @@ The supplier path is milestones, performance targets, quality, and manufacturabi
 >
 > *Experienced decision:* Qualify second sources based on risk and evidence, not ideology.
 
-> **Tradeoff.** Best laboratory performance vs production yield
->
-> *Improves:* Peak component metrics on engineering lots
->
-> *Worsens:* Lower yield, harder calibration, and field escapes
->
-> *When acceptable:* When a slightly softer design still meets system requirements with process control
->
-> *Experienced decision:* Optimize the manufacturable system, not the hero sample.
+Lab hero samples versus manufacturable yield: same tradeoff as in Chapter 7. Optimize the system you can build, not the best bench unit.
 
 <pre class="dectree" aria-label="Design requirements"><code>Design requirements
   |
@@ -558,7 +540,7 @@ Production validation is replayable and decision-oriented (Appendix D.13).
 
 ##### NPI gates and exit criteria.
 
-New product introduction (*NPI*) gates are the manufacturing face of the validation ladder. Table 8.5 is the usual stage map. Write exit criteria a supplier can fail clearly, not slogans. EVT/DVT/PVT/MP are stage names, not a calendar; dates and sample sizes belong in the program plan.
+New product introduction (*NPI*) gates are the manufacturing face of the validation ladder. Table 8.5 is the usual stage map. Write exit criteria a supplier can fail without ambiguity, not slogans. EVT/DVT/PVT/MP are stage names, not a calendar; dates and sample sizes belong in the program plan.
 
 <table class="book-table"><tr><th>Gate</th><th>Main question</th><th>Evidence required</th><th>Decision unlocked</th></tr><tr><td>EVT</td><td>Does it operate at all?</td><td>First light; CMIS bring-up; basic LIV/SMSR/RIN; one link closes BER</td><td>Continue / redesign integration</td></tr><tr><td>DVT</td><td>Does it meet spec across corners?</td><td>Full ATP at T/V; prod-rep corners; stress plan + FIT model frozen</td><td>Enter qual / PVT / hold</td></tr><tr><td>Qual</td><td>Env / reliability evidence ready?</td><td>Named mechanisms; sample plan; confidence (sec:tree-qual-evidence)</td><td>Enter PVT / hold</td></tr><tr><td>PVT</td><td>Is it buildable at yield?</td><td>Multi-lot yield; SPC; burn-in escape; FAIR; production-host bring-up</td><td>Enter pilot / hold</td></tr><tr><td>Pilot</td><td>Do assumptions hold in a bounded field trial?</td><td>Known serials/lots; enhanced telemetry; exit/rollback criteria</td><td>Open MP / restrict</td></tr><tr><td>MP</td><td>Is quality sustained?</td><td>Steady DPPM; owned RMA Pareto; ECO control; fleet feedback</td><td>Keep shipping / CAPA / restrict</td></tr></table>
 **Table 8.5.** NPI gates as a decision map. Pilot sits between PVT and MP; MP is sustained production plus fleet feedback, not "fleet monitoring" alone.
@@ -771,6 +753,8 @@ For a yield fall, freeze software, limits, and suspect material. Split by tester
 ## Interview takeaway
 
 **Key idea.** Production readiness joins mechanism-based qualification, a stable measurement system, controlled supplier changes, and field data that preserve lot history. When yield or fleet health moves, contain the population, clear the test system, find the first changed input, and verify the corrective control with new data.
+
+Junior mistake: treat zero fails in a small HTOL lot as a FIT claim, or escalate a supplier before the measurement system is cleared (§8.2, Chapter 10, Appendix B).
 
 ##### Three questions to test yourself.
 

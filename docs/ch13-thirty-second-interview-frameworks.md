@@ -535,7 +535,7 @@ Supply noise / FEC histogram $\rightarrow$ PSRR or burst? $\rightarrow$ owner.
 
 **Typical follow-ups.**
 
-- Why not just increase OMA?
+- Why not increase OMA alone?
 
 - How do FEC histograms look for MPI bursts?
 
@@ -655,15 +655,7 @@ Golden units across stations $\rightarrow$ correlation? $\rightarrow$ ship.
 
 > **30-second answer (memorize).** Log what discriminates hypotheses: per-lane power, bias, pre-FEC BER and FEC histograms; module temperature and actuator drive; LOS/LOL with context. Require timestamp accuracy, sampling cadence, aggregation window, units, calibration/scaling, missing-data behavior, firmware/schema version, serial/lot/platform, event trigger, retention, and a decision owner. Alarm on trends and disagreements, not only hard thresholds. Therefore I would instrument the ledgers margin testing said die first.
 
-> **Tradeoff.** More telemetry vs operational complexity
->
-> *Improves:* Earlier margin erosion detection and fleet triage without pulling hardware
->
-> *Worsens:* Firmware, storage, and alarm fatigue
->
-> *When acceptable:* When a field has a decision owner and a reaction plan
->
-> *Experienced decision:* Add a register only if it changes contain, derate, RMA, or FA ownership.
+Add a register only if it changes contain, derate, RMA, or FA ownership. Full tradeoff: §7.12.
 
 <pre class="dectree" aria-label="Telemetry purpose: early margin erosion"><code>Telemetry purpose: early margin erosion
   |
