@@ -38,26 +38,30 @@ Stable average power deprioritizes gross optical loss but does not eliminate fas
 
 <pre class="dectree" aria-label="Qualification lifecycle"><code>Qualification lifecycle
   |
-Requirements
+Requirements definition
   |
-Bring-up
+Architecture review
   |
-Nominal characterization
+Engineering bring-up
   |
-Margin characterization
+Characterization
   |
-Interoperability
+Margin validation
   |
-Environmental and reliability qualification
+Interoperability validation
   |
-Manufacturing and ATP readiness
+Reliability qualification
+  |
+Manufacturing validation
   |
 Controlled pilot
   |
-Fleet deployment and monitoring
+Mass production
   |
-Ship / restrict / reject</code></pre>
-Each gate removes a different uncertainty. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness. The shorter ladder in Table 7.1 is a grouped view of this same order (§7.1, Appendix A.6.5, §8.2).
+Fleet monitoring
+  |
+Feedback / next revision</code></pre>
+Each gate removes a different uncertainty. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness. Table 7.1 is the same order in table form (§7.1, Appendix A.6.5, §8.2).
 
 ## Qualification evidence tree
 

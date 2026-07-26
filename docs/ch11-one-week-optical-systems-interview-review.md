@@ -347,45 +347,57 @@ Name the spent ledger before naming a laser, TIA, or connector. The ledger picks
 
 **Key idea.** Validation is staged uncertainty reduction. Engineering is decision making; decision making is uncertainty reduction; measurements reduce uncertainty; therefore measurements exist to improve decisions.
 
-For every stage, name the question the stage answers and the uncertainty it removes. A test that answers no question is cost, not confidence. Full exit criteria, activities, and decisions live in §7.1, Table 7.1. The expanded names below are interview vocabulary for the same six grouped stages.
+For every stage, name the question the stage answers and the uncertainty it removes. A test that answers no question is cost, not confidence. Full exit criteria, activities, and decisions live in §7.1, Table 7.1. Memorize this same order:
 
 Requirements
 
-: What envelope and production needs freeze the program?
+: What must be true?
+
+Architecture
+
+: Can this design meet requirements?
 
 Bring-up
 
-: Does it operate on a known-good host?
+: Does the hardware fundamentally work?
 
-Nominal characterization
+Characterization
 
-: How does it behave across corners and units?
+: How does it behave?
 
-Margin characterization
+Margin
 
-: How close is it to failure?
+: How close are the limits?
 
 Interoperability
 
-: Does margin survive real hosts, plant, and peers?
+: Does it work in real systems?
 
-Environmental and reliability qualification
+Qualification
 
-: Will it survive intended life under named stress?
+: Will it survive expected life?
 
-Manufacturing and ATP readiness
+Manufacturing
 
-: Can it be built and screened at volume?
+: Can we build and screen it repeatedly?
 
 Controlled pilot
 
-: Do lab assumptions hold in a limited field cohort?
+: Do lab assumptions hold in a bounded cohort?
 
-Fleet deployment and monitoring
+Mass production
 
-: Do those assumptions remain valid at scale?
+: Can we sustain volume with control?
 
-Margin and interoperability map to Stage 3; controlled pilot and fleet map to Stage 6. Night-before path: Framework 7 in Appendix B. Practice prose: Appendix A.8.2.
+Fleet monitoring
+
+: Does it remain healthy in operations?
+
+Feedback
+
+: What must change next?
+
+Night-before path: Framework 7 in Appendix B. Practice prose: Appendix A.8.2.
 
 ### Margin budgeting
 
@@ -831,7 +843,7 @@ Internalize this one page. The rest of the appendix is supporting detail.
 
 *Philosophy.* Engineering reduces uncertainty. Measurements unlock decisions. Every measurement updates beliefs. Measurements characterize margin. The job is a responsible, appropriately reversible decision with today's evidence.
 
-*Trees.* Debug: scope $\rightarrow$ power fork $\rightarrow$ isolation $\rightarrow$ decision $\rightarrow$ control. Qual: requirements $\rightarrow$ bring-up $\rightarrow$ nominal/margin $\rightarrow$ interop $\rightarrow$ env/reliability $\rightarrow$ ATP $\rightarrow$ pilot $\rightarrow$ fleet (Appendix A.2).
+*Trees.* Debug: scope $\rightarrow$ power fork $\rightarrow$ isolation $\rightarrow$ decision $\rightarrow$ control. Lifecycle: requirements $\rightarrow$ architecture $\rightarrow$ bring-up $\rightarrow$ characterization $\rightarrow$ margin $\rightarrow$ interop $\rightarrow$ qualification $\rightarrow$ manufacturing $\rightarrow$ pilot $\rightarrow$ MP $\rightarrow$ fleet $\rightarrow$ feedback (Appendix A.6.5, Table 7.1).
 
 *Spine (4 phases).* Understand $\rightarrow$ Investigate $\rightarrow$ Resolve $\rightarrow$ Prevent.
 

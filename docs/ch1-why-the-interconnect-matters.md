@@ -83,7 +83,7 @@ More compute increases the amount of traffic the system can inject. It does not 
 
 ## The systems engineering loop
 
-Work from the system downward, then close the loop in the fleet:
+Work from the system downward, then close the loop in the fleet. This chapter's loop is the outer product loop. Chapter 7 expands the Validation $\rightarrow$ Deployment $\rightarrow$ Fleet $\rightarrow$ Feedback segment into the full validation ladder (Table 7.1, Appendix C.2).
 
 <pre class="dectree" aria-label="Requirements"><code>Requirements
   |

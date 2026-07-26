@@ -494,7 +494,7 @@ New product introduction (*NPI*) gates are the manufacturing face of the validat
 
 ##### Pilot (controlled field confirmation).
 
-**Purpose:** confirm qual assumptions on a bounded field population before open volume. **Evidence:** known serials and lots, representative hosts and environments, enhanced telemetry, success and rollback criteria, defined observation duration (§7.1.6). **Exit:** pilot criteria met or restrict/reject. **Decision:** open MP or hold.
+**Purpose:** confirm qual assumptions on a bounded field population before open volume. **Evidence:** known serials and lots, representative hosts and environments, enhanced telemetry, success and rollback criteria, defined observation duration (§7.1.9). **Exit:** pilot criteria met or restrict/reject. **Decision:** open MP or hold.
 
 ##### MP (mass production).
 
@@ -502,7 +502,7 @@ New product introduction (*NPI*) gates are the manufacturing face of the validat
 
 ##### Why NPI order matches the ladder.
 
-EVT is bring-up. DVT is characterization plus margin/interop plus frozen stress intent. Qualification owns environmental and reliability evidence. PVT is production readiness. Controlled pilot is bounded field confirmation. MP is sustained production with fleet feedback. Do not use an EVT hero sample as PVT evidence, and do not treat MP as "fleet monitoring" alone (§7.1.6, §7.1.7).
+EVT maps to engineering bring-up. DVT covers characterization, margin, interoperability, and frozen stress intent after architecture feasibility. Qualification owns mechanism-based reliability evidence. PVT is manufacturing validation. Controlled pilot is bounded field confirmation. MP is sustained volume with SPC/ECO/RMA control; fleet monitoring and feedback continue after MP (§7.1.10, §7.1.9, §7.1.11, §7.1.12). Do not use an EVT hero sample as PVT evidence, and do not treat MP as fleet monitoring alone.
 
 Hold a gate if the exit data are missing.
 

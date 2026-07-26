@@ -527,7 +527,7 @@ NPC
 
 NPI
 
-: New product introduction. Gate sequence EVT $\to$ DVT $\to$ PVT $\to$ MP that maps onto the validation ladder (Table 8.4).
+: New product introduction. Gate sequence EVT $\to$ DVT $\to$ Qual $\to$ PVT $\to$ Pilot $\to$ MP that maps onto the validation ladder (Table 8.4, Table 7.1).
 
 NPO
 

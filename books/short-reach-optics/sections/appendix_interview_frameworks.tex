@@ -369,7 +369,7 @@ Supplier ATP vs your proxy $\rightarrow$ escape risk? $\rightarrow$ ship gate.}
 
 \fwassumptions{The product is bookended unless engineering samples are contracted; customer-visible metrics dominate; open volume waits on pilot exit.}
 
-\execanswer{Freeze the customer-visible requirements slice. Walk bring-up, nominal and margin characterization, interoperability, environmental and reliability qualification, manufacturing and ATP readiness, controlled pilot, then fleet monitoring. Request engineering access only when black-box evidence is insufficient. Therefore I would gate open volume on FAIR, ATP correlation, pilot exit, and split RMA codes.}
+\execanswer{Freeze the customer-visible requirements slice. Walk architecture feasibility, bring-up, characterization, margin, interoperability, reliability qualification, manufacturing validation, controlled pilot, mass production readiness, then fleet monitoring with feedback. Request engineering access only when black-box evidence is insufficient. Therefore I would gate open volume on FAIR, ATP correlation, pilot exit, and split RMA codes.}
 
 \begin{dectree}
 Second module / cable source
@@ -418,22 +418,24 @@ through production?}
 
 \fwassumptions{Requirements and owners exist; stage exits are binary enough to fail; engineering access is requested only when a gate cannot decide.}
 
-\execanswer{A validation program is sequenced uncertainty reduction with named owners. Walk requirements, bring-up, nominal characterization, margin characterization, interop, environmental and reliability qualification, manufacturing and ATP readiness, controlled pilot, then fleet monitoring. Each stage has an exit criterion and a dependency on the previous. Therefore I would refuse any test that answers no new question and staff the gates that unlock schedule.}
+\execanswer{I start by defining the system requirements and failure risks. Then I build the validation plan around reducing uncertainty: architecture proves the budgets can close, bring-up proves basic operation, characterization builds the behavioral model, margin testing determines headroom, interoperability proves system compatibility, qualification proves reliability, manufacturing validation proves repeatability, and controlled deployment plus telemetry confirms field assumptions. Every stage has an exit criterion tied to a decision.}
 
 \begin{dectree}
-Requirements
+Requirements definition
   |
-Bring-up -> Nominal characterization
+Architecture review
   |
-Margin characterization -> Interoperability
+Bring-up -> Characterization
   |
-Env + reliability qual
+Margin validation -> Interoperability
   |
-Manufacturing / ATP -> Controlled pilot
+Reliability qualification
   |
-Fleet monitoring
+Manufacturing validation
   |
-Ship / restrict / reject
+Controlled pilot -> Mass production
+  |
+Fleet monitoring -> Feedback
 \end{dectree}
 
 \fwwhy{This answer is about program sequencing and ownership. Qualification
@@ -785,7 +787,7 @@ design.}
 
 \fwquestion{How do you plan qualification for a new IM/DD module?}
 
-\fwtesting{Qualification-evidence judgment: mechanism coverage, stress selection, sample strategy, acceptance criteria, confidence, production correlation, release evidence.}
+\fwtesting{Qualification-evidence judgment: mechanism coverage, stress selection, sample strategy, acceptance criteria, confidence, production correlation, release evidence. This playbook is a scoped evidence path, not a second full lifecycle; use \Cref{fw:validation-plan,sec:tree-qualification} for the stage order.}
 
 \fwassumptions{Requirements name mechanisms; sample strategy and confidence are stated; production proxies are cheaper than full GR-468 replay; release is a ship / restrict / reject decision.}
 

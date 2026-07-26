@@ -305,7 +305,7 @@ Supplier ATP vs your proxy $\rightarrow$ escape risk? $\rightarrow$ ship gate.
 
 **Assumptions to state.** The product is bookended unless engineering samples are contracted; customer-visible metrics dominate; open volume waits on pilot exit.
 
-> **30-second answer (memorize).** Freeze the customer-visible requirements slice. Walk bring-up, nominal and margin characterization, interoperability, environmental and reliability qualification, manufacturing and ATP readiness, controlled pilot, then fleet monitoring. Request engineering access only when black-box evidence is insufficient. Therefore I would gate open volume on FAIR, ATP correlation, pilot exit, and split RMA codes.
+> **30-second answer (memorize).** Freeze the customer-visible requirements slice. Walk architecture feasibility, bring-up, characterization, margin, interoperability, reliability qualification, manufacturing validation, controlled pilot, mass production readiness, then fleet monitoring with feedback. Request engineering access only when black-box evidence is insufficient. Therefore I would gate open volume on FAIR, ATP correlation, pilot exit, and split RMA codes.
 
 <pre class="dectree" aria-label="Second module / cable source"><code>Second module / cable source
   |
@@ -350,21 +350,23 @@ Pilot cohort $\rightarrow$ assumptions hold? $\rightarrow$ open MP.
 
 **Assumptions to state.** Requirements and owners exist; stage exits are binary enough to fail; engineering access is requested only when a gate cannot decide.
 
-> **30-second answer (memorize).** A validation program is sequenced uncertainty reduction with named owners. Walk requirements, bring-up, nominal characterization, margin characterization, interop, environmental and reliability qualification, manufacturing and ATP readiness, controlled pilot, then fleet monitoring. Each stage has an exit criterion and a dependency on the previous. Therefore I would refuse any test that answers no new question and staff the gates that unlock schedule.
+> **30-second answer (memorize).** I start by defining the system requirements and failure risks. Then I build the validation plan around reducing uncertainty: architecture proves the budgets can close, bring-up proves basic operation, characterization builds the behavioral model, margin testing determines headroom, interoperability proves system compatibility, qualification proves reliability, manufacturing validation proves repeatability, and controlled deployment plus telemetry confirms field assumptions. Every stage has an exit criterion tied to a decision.
 
-<pre class="dectree" aria-label="Requirements"><code>Requirements
+<pre class="dectree" aria-label="Requirements definition"><code>Requirements definition
   |
-Bring-up -&gt; Nominal characterization
+Architecture review
   |
-Margin characterization -&gt; Interoperability
+Bring-up -&gt; Characterization
   |
-Env + reliability qual
+Margin validation -&gt; Interoperability
   |
-Manufacturing / ATP -&gt; Controlled pilot
+Reliability qualification
   |
-Fleet monitoring
+Manufacturing validation
   |
-Ship / restrict / reject</code></pre>
+Controlled pilot -&gt; Mass production
+  |
+Fleet monitoring -&gt; Feedback</code></pre>
 **Engineering reasoning.** This answer is about program sequencing and ownership. Qualification *evidence* construction lives in Appendix B.15, Appendix C.3. The ladder stages are the gates (Appendix A.6.5, Appendix C.2).
 
 **Measurements.** Each ladder stage $\rightarrow$ named uncertainty removed $\rightarrow$ continue / redesign / tighten ATP / stop ship.\
@@ -658,7 +660,7 @@ Actuator near rail $\rightarrow$ control margin? $\rightarrow$ thermal design.
 
 **Interview question.** How do you plan qualification for a new IM/DD module?
 
-**What the interviewer is testing.** Qualification-evidence judgment: mechanism coverage, stress selection, sample strategy, acceptance criteria, confidence, production correlation, release evidence.
+**What the interviewer is testing.** Qualification-evidence judgment: mechanism coverage, stress selection, sample strategy, acceptance criteria, confidence, production correlation, release evidence. This playbook is a scoped evidence path, not a second full lifecycle; use Appendix B.8, Appendix C.2 for the stage order.
 
 **Assumptions to state.** Requirements name mechanisms; sample strategy and confidence are stated; production proxies are cheaper than full GR-468 replay; release is a ship / restrict / reject decision.
 

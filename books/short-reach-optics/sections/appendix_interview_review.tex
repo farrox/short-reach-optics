@@ -605,25 +605,24 @@ uncertainty; therefore measurements exist to improve decisions.}
 For every stage, name the question the stage answers and the uncertainty it
 removes. A test that answers no question is cost, not confidence. Full exit
 criteria, activities, and decisions live in
-\Cref{sec:validation-workflow,tab:ladder}. The expanded names below are
-interview vocabulary for the same six grouped stages.
+\Cref{sec:validation-workflow,tab:ladder}. Memorize this same order:
 
 \begin{description}
-\item[Requirements] What envelope and production needs freeze the program?
-\item[Bring-up] Does it operate on a known-good host?
-\item[Nominal characterization] How does it behave across corners and units?
-\item[Margin characterization] How close is it to failure?
-\item[Interoperability] Does margin survive real hosts, plant, and peers?
-\item[Environmental and reliability qualification] Will it survive intended
-      life under named stress?
-\item[Manufacturing and ATP readiness] Can it be built and screened at volume?
-\item[Controlled pilot] Do lab assumptions hold in a limited field cohort?
-\item[Fleet deployment and monitoring] Do those assumptions remain valid at
-      scale?
+\item[Requirements] What must be true?
+\item[Architecture] Can this design meet requirements?
+\item[Bring-up] Does the hardware fundamentally work?
+\item[Characterization] How does it behave?
+\item[Margin] How close are the limits?
+\item[Interoperability] Does it work in real systems?
+\item[Qualification] Will it survive expected life?
+\item[Manufacturing] Can we build and screen it repeatedly?
+\item[Controlled pilot] Do lab assumptions hold in a bounded cohort?
+\item[Mass production] Can we sustain volume with control?
+\item[Fleet monitoring] Does it remain healthy in operations?
+\item[Feedback] What must change next?
 \end{description}
 
-Margin and interoperability map to Stage~3; controlled pilot and fleet map to
-Stage~6. Night-before path: Framework~7 in \Cref{app:interview-frameworks}.
+Night-before path: Framework~7 in \Cref{app:interview-frameworks}.
 Practice prose: \Cref{sec:interview-worked-validation}.
 
 \subsection{Margin budgeting}
@@ -1423,10 +1422,11 @@ Internalize this one page. The rest of the appendix is supporting detail.
 unlock decisions. Every measurement updates beliefs. Measurements
 characterize margin. The job is a responsible, appropriately reversible decision with today's evidence.\par
 \noindent\textit{Trees.} Debug: scope $\rightarrow$ power fork $\rightarrow$
-isolation $\rightarrow$ decision $\rightarrow$ control. Qual: requirements
-$\rightarrow$ bring-up $\rightarrow$ nominal/margin $\rightarrow$ interop
-$\rightarrow$ env/reliability $\rightarrow$ ATP $\rightarrow$ pilot
-$\rightarrow$ fleet (\Cref{sec:interview-decision-trees}).\par
+isolation $\rightarrow$ decision $\rightarrow$ control. Lifecycle: requirements
+$\rightarrow$ architecture $\rightarrow$ bring-up $\rightarrow$ characterization
+$\rightarrow$ margin $\rightarrow$ interop $\rightarrow$ qualification
+$\rightarrow$ manufacturing $\rightarrow$ pilot $\rightarrow$ MP $\rightarrow$ fleet
+$\rightarrow$ feedback (\Cref{sec:interview-validation-ladder,tab:ladder}).\par
 \noindent\textit{Spine (4 phases).} Understand $\rightarrow$ Investigate
 $\rightarrow$ Resolve $\rightarrow$ Prevent.\par
 \noindent\textit{Checklist.} Scope? Ledger? Power or quality? Fastest
