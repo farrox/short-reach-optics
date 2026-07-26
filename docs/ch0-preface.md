@@ -7,21 +7,21 @@ title: "Ch 0: Preface"
 
 Artificial intelligence has become an infrastructure problem. Training and serving frontier models at scale is no longer limited only by the accelerator at the center of the rack, but by how many accelerators can be wired together efficiently, reliably, and within a fixed power envelope. That wiring is increasingly optical, and the optics (especially the lasers inside them) have become a first-order lever on the cost, power, and reliability of the whole system.
 
-This book is a concise technical overview of that layer: the short-reach optical interconnects that stitch together AI datacenters, from in-package optical I/O out to intra-rack links, deliberately setting aside the 2--10 km campus links that belong to coherent optics (reach). It concentrates on the subjects that decide whether these links work at scale: IM/DD physics and vocabulary; lasers and external light sources; WDM and wavelength locking; quantitative noise and sensitivity models; validation from bench to fleet; and reliability and manufacturing at volume. Two chapters bracket those fundamentals: why inference-scale computing puts the interconnect on the critical path (Chapter 1), and how AI datacenter networks are built where optics dominate cost and power (Ch. networking).
+This book is a concise technical overview of that layer: the short-reach optical interconnects that stitch together AI datacenters, from in-package optical I/O out to intra-rack links, deliberately setting aside the 2--10 km campus links that belong to coherent optics (§3.3). It concentrates on the subjects that decide whether these links work at scale: IM/DD physics and vocabulary; lasers and external light sources; WDM and wavelength locking; quantitative noise and sensitivity models; validation from bench to fleet; and reliability and manufacturing at volume. Two chapters bracket those fundamentals: why inference-scale computing puts the interconnect on the critical path (Chapter 1), and how AI datacenter networks are built where optics dominate cost and power (Chapter 9).
 
 **How to use this handbook.** The book supports three modes. Pick one and stay in it until you switch deliberately.
 
 Deep learning
 
-: Read the body chapters from requirements downward (Chapter 1 through Ch. networking), then the failure-analysis handbook (Ch. failure-modes). Every major chapter asks: How does it work? How is it measured, and what uncertainty does the measurement remove? How does it fail? How is it debugged?
+: Read the body chapters from requirements downward (Chapter 1 through Chapter 9), then the failure-analysis handbook (Chapter 10). Every major chapter asks: How does it work? How is it measured, and what uncertainty does the measurement remove? How does it fail? How is it debugged?
 
 Interview preparation
 
-: Follow the one-week plan (interview-week-plan), practice cases (app:case-studies), drill thirty-second answers and tradeoff questions (app:interview-frameworks), review the Top 25 index (app:top25), and read how Staff judgment works (app:staff-thinking).
+: Follow the one-week plan (Appendix A.13), practice cases (Appendix B), drill thirty-second answers and tradeoff questions (Appendix C), review the Top 25 index (Appendix E), and read how Staff judgment works (Appendix F).
 
 Incident / problem solving
 
-: Open the wall-chart trees (app:decision-trees), failure handbook (Ch. failure-modes), case (app:case-studies), Staff judgment (app:staff-thinking), validation ladder (Ch. validation, Table ladder), or qualification (Ch. reliability).
+: Open the wall-chart trees (Appendix D), failure handbook (Chapter 10), case (Appendix B), Staff judgment (Appendix F), validation ladder (Chapter 7, Table 7.2), or qualification (Chapter 8).
 
 Start from the requirement, not the component. Move downward from system requirements to architecture, subsystem, component, and only then to the physics needed to make the decision. A choice at one layer constrains the next. The aim is operational judgment: reduce uncertainty enough to make the next decision, then name the control that prevents recurrence.
 

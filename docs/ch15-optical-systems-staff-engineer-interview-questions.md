@@ -9,65 +9,65 @@ Index only. Each item is one speakable question plus a pointer to the worked ans
 
 ## Debugging
 
-1.  Pre-FEC BER rose while average received power held steady. How do you debug it? fw:ber-stable-power, interview-worked-sensitivity
+1.  Pre-FEC BER rose while average received power held steady. How do you debug it? Appendix C.1, Appendix A.10.7
 
-2.  Received power decreased. What do you check first? fw:power-down, tree-power-fork
+2.  Received power decreased. What do you check first? Appendix C.2, Appendix D.4
 
-3.  A single lane is weak in a multi-lane module. How do you isolate it? fw:weak-lane, interview-worked-lane
+3.  A single lane is weak in a multi-lane module. How do you isolate it? Appendix C.3, Appendix A.10.6
 
-4.  BER worsens at high temperature but average power is stable. What next? fw:hot-fail, interview-worked-hot-ber, case-hot-ber
+4.  BER worsens at high temperature but average power is stable. What next? Appendix C.4, Appendix A.10.3, Appendix B.7
 
-5.  The failure is intermittent. How do you scope and trap it? fw:intermittent, tree-time-behavior
+5.  The failure is intermittent. How do you scope and trap it? Appendix C.12, Appendix D.6
 
 ## Validation
 
-6.  How would you validate a new optical transmitter from bring-up through margin? fw:validation-plan, interview-worked-validation, Table ladder
+6.  How would you validate a new optical transmitter from bring-up through margin? Appendix C.8, Appendix A.10.2, Table 7.2
 
-7.  How would you set laser requirements for a new IM/DD link? interview-worked-laser-reqs, Table laser-prd
+7.  How would you set laser requirements for a new IM/DD link? Appendix A.10.1, Table 5.4
 
-8.  Received power is unchanged but required receiver power increased. Why? interview-worked-sensitivity, interview-waterfall
+8.  Received power is unchanged but required receiver power increased. Why? Appendix A.10.7, Appendix A.8.9
 
-9.  Why can a link show a BER floor that more launch power does not fix? fw:ber-floor, interview-worked-ber-floor
+9.  Why can a link show a BER floor that more launch power does not fix? Appendix C.11, Appendix A.10.8
 
-10. Which measurement do you choose next when access is limited? interview-access-levels, case-info-value
+10. Which measurement do you choose next when access is limited? Appendix A.2, Appendix B.1
 
 ## Qualification
 
-11. How do you build a qualification plan that maps mechanisms to stress? fw:qual-plan, tree-qual-evidence, qual-planning-matrix
+11. How do you build a qualification plan that maps mechanisms to stress? Appendix C.15, Appendix D.3, §8.2
 
-12. What makes an HTOL projection credible? interview-worked-htol, Ch. reliability
+12. What makes an HTOL projection credible? Appendix A.10.9, Chapter 8
 
-13. How do you distinguish laser aging from calibration drift? fw:aging-vs-cal, interview-worked-aging-vs-cal
+13. How do you distinguish laser aging from calibration drift? Appendix C.5, Appendix A.10.4
 
-14. A field escape passed qual. How do you classify the miss? fw:supplier-escape, tree-escape
+14. A field escape passed qual. How do you classify the miss? Appendix C.10, Appendix D.9
 
-15. What evidence closes a qualification decision? tree-qual-evidence, tree-decision-closure
+15. What evidence closes a qualification decision? Appendix D.3, Appendix D.16
 
 ## Manufacturing
 
-16. When would you update ATP after a field or lab escape? fw:atp-update, tree-production-loop
+16. When would you update ATP after a field or lab escape? Appendix C.13, Appendix D.13
 
-17. Which data must an automated test save so a failure can be replayed? interview-worked-test-data
+17. Which data must an automated test save so a failure can be replayed? Appendix A.10.10
 
-18. How do you decide whether a field issue is performance, reliability, or manufacturability? interview-worked-triage-class
+18. How do you decide whether a field issue is performance, reliability, or manufacturability? Appendix A.10.12
 
-19. What would you put in fleet telemetry, and why? fw:telemetry, interview-worked-telemetry, fw:fleet
+19. What would you put in fleet telemetry, and why? Appendix C.14, Appendix A.10.13, Appendix C.9
 
-20. You do not know the mechanism yet. What do you decide anyway? fw:unknown, tree-unknown
+20. You do not know the mechanism yet. What do you decide anyway? Appendix C.16, Appendix D.15
 
 ## Supplier
 
-21. How would you qualify a second laser or PIC supplier? fw:second-component, interview-worked-second-source
+21. How would you qualify a second laser or PIC supplier? Appendix C.6, Appendix A.10.5
 
-22. How would you qualify a second transceiver or cable-assembly supplier? fw:second-module, tree-supplier
+22. How would you qualify a second transceiver or cable-assembly supplier? Appendix C.7, Appendix D.8
 
-23. A supplier lot looks correlated with a fleet cohort. What do you do? fw:fleet, case-fleet-ber, tree-scope-population
+23. A supplier lot looks correlated with a fleet cohort. What do you do? Appendix C.9, Appendix B.5, Appendix D.5
 
 ## Architecture
 
-24. When would you choose an EML, silicon MZM, or ring modulator? interview-worked-modulator, Chapter 3
+24. When would you choose an EML, silicon MZM, or ring modulator? Appendix A.10.11, Chapter 3
 
-25. How do optics choices constrain AI datacenter networking cost and power? Ch. networking, Chapter 1
+25. How do optics choices constrain AI datacenter networking cost and power? Chapter 9, Chapter 1
 
 **Key idea.** Speak the question home first: scope, ledger, measurement, decision, control. Then open the matching playbook only if the interviewer asks for depth.
 

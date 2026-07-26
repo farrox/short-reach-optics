@@ -57,6 +57,22 @@ No new frameworks or chapters.
   list with causal prose on how characterization, verification, validation,
   qualification, and production test/ATP differ, then one
   Term/Question/Decision table (`tab:validation-jobs`) (`ch05`).
+- **Prose-first pass (Ch5–8, Ch10):** Replaced spreadsheet-style
+  Purpose/Uncertainty/Decision cards with causal prose before one reference
+  table (or checklist). Ch8: qualification as life/variation argument, wear-out
+  in three mechanism families, NPI maturity prose, ATP by evidence-purchase
+  category, gauge R\&R wording for HTML. Ch10: incident-path opening,
+  recurrence-control closure once, BER floor nested under waterfall-first BER
+  increase, FA output categories moved to checklist close. Ch5: architecture
+  story after source matrix, LIV/SMSR/RIN questions and bench order, calibration
+  vs exhausted-margin distinction, reference labels on bias-driver/pinout/safety/
+  CW-WDM survey. Ch7 leftovers: one-module five-jobs example, instruments by
+  question, CMIS sequence primary with table as quick reference, production
+  corners in four groups, link-budget walkthrough before Method A/B. Ch6 light
+  hierarchy: MUX signal journey, capture/hold before actuators, CW-WDM
+  architecture before MSA reference, SOA/polarization interview takeaways.
+  Interview reading-path blurbs (Read first / Deep dive / Reference) at chapter
+  tops. Net PDF pages 369 to 361.
 
 ## Typographical fixes
 

@@ -5,7 +5,7 @@ title: "Appendix C: Engineering decision trees"
 
 # Appendix C: Engineering decision trees
 
-This appendix is the wall chart. It collects the universal reasoning frameworks used throughout the book, independent of any interview question. Open it when you need the pattern without the surrounding prose. Interview pressure maps are in app:interview-frameworks; the drill philosophy is in app:interview-review.
+This appendix is the wall chart. It collects the universal reasoning frameworks used throughout the book, independent of any interview question. Open it when you need the pattern without the surrounding prose. Interview pressure maps are in Appendix C; the drill philosophy is in Appendix A.
 
 Debugging and qualification are the same philosophy at different times. Debugging asks which margin was exhausted. Qualification asks how much margin remains after the expected stresses. Both end on an engineering decision and a recurrence control.
 
@@ -32,7 +32,7 @@ Controlled confirmation
 Decision + owner + timeline + reversibility
   |
 Follow-up control (ATP / SPC / telemetry / supplier)</code></pre>
-Stable average power deprioritizes gross optical loss but does not eliminate fast power fluctuations, clipping, monitor averaging, or reflection-dependent effects. A surviving hypothesis is only the leading mechanism until confirmed by reproduction, controlled swap, stress dependence, rollback, or physical evidence (debug-fork, validation-fork, tree-evidence-block).
+Stable average power deprioritizes gross optical loss but does not eliminate fast power fluctuations, clipping, monitor averaging, or reflection-dependent effects. A surviving hypothesis is only the leading mechanism until confirmed by reproduction, controlled swap, stress dependence, rollback, or physical evidence (§4.8, §7.11, Appendix D.16).
 
 > **Why experienced engineers ask about scope before touching the lab?**
 >
@@ -67,7 +67,7 @@ Mass production
 Fleet monitoring
   |
 Feedback / next revision</code></pre>
-Same order as Table ladder, not a second Staff loop. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness (validation-workflow, interview-validation-ladder, gr468).
+Same order as Table 7.2, not a second Staff loop. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness (§7.1, Appendix A.8.5, §8.2).
 
 ## Qualification evidence tree
 
@@ -88,7 +88,7 @@ Acceptance criterion
 Production proxy
   |
 Ship / restrict / reject</code></pre>
-Use inside the reliability gate of tree-qualification. The lifecycle says *when*; this tree says *what evidence* is defensible (tree-evidence-block, gr468).
+Use inside the reliability gate of Appendix D.2. The lifecycle says *when*; this tree says *what evidence* is defensible (Appendix D.16, §8.2).
 
 > **Why experienced engineers insist on mechanism $\rightarrow$ stress $\rightarrow$ observable?**
 >
@@ -112,7 +112,7 @@ Highest-value measurement
 Leading mechanism -&gt; controlled confirmation
   |
 Decision + recurrence control</code></pre>
-One check before retuning equalizers or bias tables (debug-fork, tree-debugging).
+One check before retuning equalizers or bias tables (§4.8, Appendix D.1).
 
 > **Engineering heuristic.** Name the power-versus-quality branch before you name a laser, TIA, or connector. Parts without a branch are guesses.
 
@@ -132,7 +132,7 @@ Correlation analysis (which cohort?)
   |-- lot / date code / FW / cal / platform / location
   |
 Containment and corrective action</code></pre>
-Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (fleet-triage, yield-analysis).
+Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (§7.12, §8.6).
 
 > **Engineering heuristic.** Population behavior is usually more informative than one failing unit. A cohort plot often beats another hour on the same sample.
 
@@ -147,7 +147,7 @@ Gradual?
   |-- aging / drift / margin erosion / contamination / cal movement
   |
 Prioritize measurements (priors, not conclusions)</code></pre>
-Sudden and gradual are priors that reorder the bench, not confirmed-mechanism claims (Ch. failure-modes).
+Sudden and gradual are priors that reorder the bench, not confirmed-mechanism claims (Chapter 10).
 
 ## Transmitter, channel, or receiver
 
@@ -161,7 +161,7 @@ Golden swap / loopback
 Evidence
   |
 Owner + decision</code></pre>
-Bisect domains before opening packages (debug, fm-ber-increase).
+Bisect domains before opening packages (§7.10, §10.2).
 
 ## Supplier qualification
 
@@ -178,7 +178,7 @@ Qualification (named mechanisms)
 Production readiness (FAIR, ATP, SPC)
   |
 Fleet monitoring (RMA, telemetry)</code></pre>
-Customer view measures external behavior. Vendor view owns internals (interview-customer-vendor, supplier-exec).
+Customer view measures external behavior. Vendor view owns internals (Appendix A.8.7, §8.10).
 
 ## Supplier escape containment flow
 
@@ -201,7 +201,7 @@ Recurrence control
 Decision closure: owner / timeline / reversibility / follow-up</code></pre>
 > **Engineering heuristic.** Contain first when the population can grow. Perfect mechanism stories do not unship yesterday's lot.
 
-Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (escaped-defects, fleet-triage, tree-evidence-block, tree-decision-closure).
+Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (§8.7, §7.12, Appendix D.16).
 
 ## Margin-consumption flow
 
@@ -226,7 +226,7 @@ Remaining margin
 Above deployment requirement?
   |-- YES --&gt; proceed
   |-- NO  --&gt; redesign / restrict / recalibrate / reject</code></pre>
-This is a conceptual margin flow. Measure net margin at a defined reference plane and avoid double-counting overlapping penalties (laser-margin-erosion, link-budget).
+This is a conceptual margin flow. Measure net margin at a defined reference plane and avoid double-counting overlapping penalties (§5.19, §7.7).
 
 ## Black-box versus engineering access
 
@@ -242,7 +242,7 @@ Enough confidence to decide?
               Tx-only / Rx-only / breakout / diagnostics
               |
               Isolate margin</code></pre>
-An optical eye is measured externally with suitable access. Do not assume the module reports a conventional eye unless that capability exists (interview-customer-vendor).
+An optical eye is measured externally with suitable access. Do not assume the module reports a conventional eye unless that capability exists (Appendix A.8.7).
 
 ## Recurrence-control loop
 
@@ -259,7 +259,7 @@ Update screening or ATP
 Verify next lot
   |
 Monitor fleet</code></pre>
-Containment, confirmed mechanism, and prevention are three different actions (escaped-defects).
+Containment, confirmed mechanism, and prevention are three different actions (§8.7).
 
 ## Production feedback loop
 
@@ -278,7 +278,7 @@ Failure analysis
 Updated limits or screens
   |
 Next production cycle</code></pre>
-Production validation is replayable and decision-oriented (supplier-exec, hvm-test).
+Production validation is replayable and decision-oriented (§8.10, §8.9).
 
 ## Measurement-selection loop
 
@@ -311,7 +311,7 @@ Decision with today's confidence
 Continue measuring?
   |-- YES --&gt; next measurement
   |-- NO  --&gt; control + owner + residual risk</code></pre>
-Unknown mechanism is not a freeze. Decide with weighted evidence (interview-under-uncertainty, tree-measurement-loop).
+Unknown mechanism is not a freeze. Decide with weighted evidence (Appendix A.6, Appendix D.14).
 
 ## Evidence block
 
@@ -325,7 +325,7 @@ Population: units, lots, hosts, environments
   |
 Measurement: metric + reference plane + condition
   |
-Access: Level 0--4 (interview-access-levels)
+Access: Level 0--4 (Appendix A.2)
   |
 Condition: T, V, pattern, ORL, traffic, dwell
   |
@@ -351,7 +351,7 @@ Reversibility: how hard to undo?
 Follow-up control: ATP / SPC / telemetry / supplier CA</code></pre>
 Example (supplier defect): stop shipment of the scoped lot; owner Operations plus Quality; follow-up is supplier corrective action and the production or fleet control that would catch the next escape.
 
-Ch. validation, Ch. reliability, Ch. failure-modes, app:interview-frameworks point here rather than restating the list.
+Chapter 7, Chapter 8, Chapter 10, Appendix C point here rather than restating the list.
 
 ## Before you start: three checklists
 

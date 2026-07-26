@@ -1,6 +1,15 @@
 \chapter{Reliability and manufacturing at scale}
 \label{ch:reliability}
 
+\textit{Read first:} FIT versus DPPM; qualification argument; sample confidence;
+ATP versus qualification versus SPC; NPI; escaped defects.
+
+\textit{Deep dive:} Arrhenius life projection; GR-468 stress detail; connector
+mate-cycle physics.
+
+\textit{Reference:} wear-out map, NPI gate table, ATP control checklist,
+yield-owner split.
+
 A link that closes in the lab can still fail the business case if lasers die in
 the field or suppliers cannot hold yield. At gigawatt, multi-generation scale,
 reliability and manufacturability stop being afterthoughts and become design
@@ -428,7 +437,7 @@ points at a different owner.
       wirebond pull, epoxy placement. Caught at module ATP. Owner: assembly supplier.
 \item[Test yield (first-pass)] ATP-limited: units that fail one or more acceptance
       criteria on first pass. May include measurement-system false rejects (gauge
-      gauge R\&R). Owner: test engineering.
+      RR). Owner: test engineering.
 \item[Escaped DPPM (post-screen field failures)] Units that passed all screens but
       fail in the fleet. Each escape is either a preventable coverage gap (the
       screen exists but missed the defect) or a residual latent failure that no
@@ -450,7 +459,7 @@ Wafer / die & Waveguide, resonance, heater, PD dark & Wafer probe & Foundry SPC 
 \addlinespace[1.5em]
 Assembly & FAU align, solder, wirebond, epoxy & Module ATP & Assembly supplier \\
 \addlinespace[1.5em]
-Test (first-pass) & ATP fails; may include false rejects & ATP station + gauge R\&R & Test engineering \\
+Test (first-pass) & ATP fails; may include false rejects & ATP station + gauge RR & Test engineering \\
 \addlinespace[1.5em]
 Escaped DPPM & Passed screens; failed in fleet & Field RMA / triage & Quality / reliability \\
 \bottomrule

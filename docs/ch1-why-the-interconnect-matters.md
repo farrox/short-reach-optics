@@ -27,7 +27,7 @@ That last point is the hook for this book. Purpose-built inference silicon does 
 
 ## Why inference makes the interconnect matter
 
-Inference is not training. Once a model is trained, serving it is dominated by two phases with very different bottlenecks (developed fully in Ch. networking):
+Inference is not training. Once a model is trained, serving it is dominated by two phases with very different bottlenecks (developed fully in Chapter 9):
 
 Prefill
 
@@ -55,11 +55,11 @@ Memory-limited
 
 Network-limited
 
-: Sharded frontier models (2020--present). Tensor, pipeline, and expert parallelism put collectives on the critical path; fabric bandwidth and tail latency now limit realized compute use (collectives, inference-bottlenecks).
+: Sharded frontier models (2020--present). Tensor, pipeline, and expert parallelism put collectives on the critical path; fabric bandwidth and tail latency now limit realized compute use (§9.7, §9.6).
 
 Power-limited
 
-: Gigawatt-class deployments (emerging). Site megawatts cap total capacity; every pJ/bit the interconnect saves is a watt returned to compute (power).
+: Gigawatt-class deployments (emerging). Site megawatts cap total capacity; every pJ/bit the interconnect saves is a watt returned to compute (§9.13).
 
 The bottleneck did not replace the previous one; it stacked on top. A modern cluster is simultaneously memory-bandwidth-bound in decode, network-bound in collectives, and power-bound at the site. The interconnect sits at the intersection of the last two, which is why this book treats optics as infrastructure rather than as a module datasheet exercise.
 
@@ -69,7 +69,7 @@ An accelerator does useful work only while its operands arrive on time. Model pa
 
 All-reduce
 
-: combines partial results across a group and returns the result to every member. The slowest path can hold the whole group at the synchronization point (collectives).
+: combines partial results across a group and returns the result to every member. The slowest path can hold the whole group at the synchronization point (§9.7).
 
 All-to-all
 
@@ -83,7 +83,7 @@ More compute increases the amount of traffic the system can inject. It does not 
 
 ## The systems engineering loop
 
-Work from the system downward, then close the loop in the fleet. This chapter's loop is the outer product loop. Ch. validation expands the Validation $\rightarrow$ Deployment $\rightarrow$ Fleet $\rightarrow$ Feedback segment into the full validation ladder (Table ladder, tree-qualification).
+Work from the system downward, then close the loop in the fleet. This chapter's loop is the outer product loop. Chapter 7 expands the Validation $\rightarrow$ Deployment $\rightarrow$ Fleet $\rightarrow$ Feedback segment into the full validation ladder (Table 7.2, Appendix D.2).
 
 <pre class="dectree" aria-label="Requirements"><code>Requirements
   |
@@ -113,7 +113,7 @@ A component choice is never isolated. A VCSEL usually commits the link to an 850
 
 ##### Validation reduces uncertainty.
 
-Characterization asks what the design does across its operating range. Margin testing asks how close it is to a limit. Environmental and life testing ask which mechanisms move with temperature, stress, and time. Production testing asks whether process variation and assembly escapes can be caught at useful test cost. A passing result is useful only when the test answers one of those questions (Ch. validation, Ch. reliability).
+Characterization asks what the design does across its operating range. Margin testing asks how close it is to a limit. Environmental and life testing ask which mechanisms move with temperature, stress, and time. Production testing asks whether process variation and assembly escapes can be caught at useful test cost. A passing result is useful only when the test answers one of those questions (Chapter 7, Chapter 8).
 
 ##### Margin erodes before the link fails.
 
@@ -121,7 +121,7 @@ Power, noise, timing, and spectral margins usually move a little at a time. A co
 
 ##### Debug by eliminating hypotheses.
 
-First scope the failure: one unit, one lot, one vendor, one site, or the fleet. Then classify its pattern: sudden or gradual, constant or temperature-dependent, power-related or signal-quality-related. Choose the next measurement for its ability to separate competing causes. The debugging pyramid below gives the order; the failure-analysis handbook in Ch. failure-modes gives the symptom-led procedures.
+First scope the failure: one unit, one lot, one vendor, one site, or the fleet. Then classify its pattern: sudden or gradual, constant or temperature-dependent, power-related or signal-quality-related. Choose the next measurement for its ability to separate competing causes. The debugging pyramid below gives the order; the failure-analysis handbook in Chapter 10 gives the symptom-led procedures.
 
 > **Engineering heuristic.** Scope before mechanism. A fleet-wide sudden event is almost never solved by staring at one connector.
 
@@ -133,7 +133,7 @@ The interconnect carries partial results between accelerators, and collectives m
 
 ### How it is measured
 
-At the system level: step time, collective latency, accelerator idle fraction, and tail behavior. At the link level: pre-FEC BER, FEC error distribution, optical power, module temperature, and flap count. At the architecture level: delivered bandwidth per watt, link count, and FIT-weighted availability (fleet-triage, fit-example).
+At the system level: step time, collective latency, accelerator idle fraction, and tail behavior. At the link level: pre-FEC BER, FEC error distribution, optical power, module temperature, and flap count. At the architecture level: delivered bandwidth per watt, link count, and FIT-weighted availability (§7.12, §5.13).
 
 ### How it fails
 
@@ -143,11 +143,11 @@ Fabric capacity can fall behind injected traffic. A single marginal link can sta
 
 ### How it is debugged
 
-Use the debugging pyramid: start at the system symptom, narrow to signal quality, walk the link budget, bisect the subsystem, then confirm a mechanism with evidence. Do not skip layers. Junior mistake: open a connector or blame a laser before the workload symptom and population are named (debug-fork, Ch. failure-modes).
+Use the debugging pyramid: start at the system symptom, narrow to signal quality, walk the link budget, bisect the subsystem, then confirm a mechanism with evidence. Do not skip layers. Junior mistake: open a connector or blame a laser before the workload symptom and population are named (§4.8, Chapter 10).
 
 ## The debugging pyramid
 
-When a link fails, work from the top down. The pyramid is a scope order inside the Staff loop (interview-staff-pattern), not a second philosophy. Apply the power-versus-quality fork early (debug-fork, tree-power-fork) and organize lost margin with the five ledgers (laser-margin-erosion).
+When a link fails, work from the top down. The pyramid is a scope order inside the Staff loop (Appendix A.1), not a second philosophy. Apply the power-versus-quality fork early (§4.8, Appendix D.4) and organize lost margin with the five ledgers (§5.19).
 
 > **Why experienced engineers start at the system symptom?**
 >
@@ -178,19 +178,19 @@ Layer 1: System
 
 Layer 2: Signal quality
 
-: What changed in the signal? Eye opening, jitter, noise, equalization margin, FEC error distribution. These are what the host and module already report (cmis, fleet-triage).
+: What changed in the signal? Eye opening, jitter, noise, equalization margin, FEC error distribution. These are what the host and module already report (§7.8, §7.12).
 
 Layer 3: Link budget
 
-: Where did margin disappear? Optical power, receiver sensitivity, insertion loss, extinction ratio, ORL. Walk the ledger from transmitter to receiver (link-budget).
+: Where did margin disappear? Optical power, receiver sensitivity, insertion loss, extinction ratio, ORL. Walk the ledger from transmitter to receiver (§7.7).
 
 Layer 4: Subsystem
 
-: Which block is responsible? Laser, modulator, driver, photodiode, TIA, DSP, connector, fiber, or host SerDes. Bisect with loopbacks and golden swaps (debug, bringup).
+: Which block is responsible? Laser, modulator, driver, photodiode, TIA, DSP, connector, fiber, or host SerDes. Bisect with loopbacks and golden swaps (§7.10, §7.9).
 
 Layer 5: Confirmed mechanism
 
-: What mechanism explains the failure after evidence reorders belief? Until confirmation, speak of a leading hypothesis. Open FA or 8D here (supplier-exec).
+: What mechanism explains the failure after evidence reorders belief? Until confirmation, speak of a leading hypothesis. Open FA or 8D here (§8.10).
 
 Do not skip layers. Jumping to a named mechanism before confirming the system symptom and localizing the subsystem wastes weeks on the wrong part.
 
@@ -212,19 +212,19 @@ The chapters build from requirements to fleet operation:
 
 1.  Chapter 2, Chapter 3: energy, IM/DD vocabulary, architecture, modulators, FEC, and equalization.
 
-2.  Ch. models: quantitative noise, RIN, sensitivity (use with link-budget).
+2.  Chapter 4: quantitative noise, RIN, sensitivity (use with §7.7).
 
-3.  Ch. lasers: requirements-led source and modulation decisions, measurement, aging, and service architecture.
+3.  Chapter 5: requirements-led source and modulation decisions, measurement, aging, and service architecture.
 
-4.  Ch. wdm: wavelength locking, thermal crosstalk, CW-WDM, on-chip MUX.
+4.  Chapter 6: wavelength locking, thermal crosstalk, CW-WDM, on-chip MUX.
 
-5.  Ch. validation, Ch. reliability: measurement ladder, link budgets, qual, packaging.
+5.  Chapter 7, Chapter 8: measurement ladder, link budgets, qual, packaging.
 
-6.  Ch. networking: scale-up/out, pluggables, CPO/XPO, inference collectives.
+6.  Chapter 9: scale-up/out, pluggables, CPO/XPO, inference collectives.
 
-7.  Ch. failure-modes: symptom-led mechanism isolation and corrective action.
+7.  Chapter 10: symptom-led mechanism isolation and corrective action.
 
-To use the book as a design drill, pick one link style (retimed 800G DR, LPO, or CPO WDM) and trace it end to end through §3.2, pluggables, cpo-status.
+To use the book as a design drill, pick one link style (retimed 800G DR, LPO, or CPO WDM) and trace it end to end through §3.2, §9.3, §9.10.
 
 
 <div class="nav-links">

@@ -5,7 +5,7 @@ title: "Appendix D: Abbreviations and terminology"
 
 # Appendix D: Abbreviations and terminology
 
-This glossary merges OIF CEI-448G Framework terms (OIF-FD-CEI-448G-01.0, September 2025)  with optical, reliability, and manufacturing terms used in the book (including the must-know list in app:interview-review). Entries are alphabetical. Market-position claims belong in dated chapter sidebars, not here.
+This glossary merges OIF CEI-448G Framework terms (OIF-FD-CEI-448G-01.0, September 2025)  with optical, reliability, and manufacturing terms used in the book (including the must-know list in Appendix A). Entries are alphabetical. Market-position claims belong in dated chapter sidebars, not here.
 
 ## Glossary
 
@@ -227,7 +227,7 @@ DSP
 
 DVT
 
-: Design Validation Test. Proves the design meets requirements across corners, margin, and a frozen life plan before volume tooling (Table npi).
+: Design Validation Test. Proves the design meets requirements across corners, margin, and a frozen life plan before volume tooling (Table 8.5).
 
 DWDM
 
@@ -275,7 +275,7 @@ ESD
 
 EVT
 
-: Engineering Validation Test. Early bring-up on engineering samples: first light, CMIS, basic LIV/SMSR/RIN, one closing BER (Table npi).
+: Engineering Validation Test. Early bring-up on engineering samples: first light, CMIS, basic LIV/SMSR/RIN, one closing BER (Table 8.5).
 
 Faceplate
 
@@ -479,7 +479,7 @@ MoE
 
 MP
 
-: Mass production. Sustained volume after PVT: DPPM, RMA ownership, ECO control (Table npi).
+: Mass production. Sustained volume after PVT: DPPM, RMA ownership, ECO control (Table 8.5).
 
 MPI
 
@@ -527,7 +527,7 @@ NPC
 
 NPI
 
-: New product introduction. Gate sequence EVT $\to$ DVT $\to$ Qual $\to$ PVT $\to$ Pilot $\to$ MP that maps onto the validation ladder (Table npi, Table ladder).
+: New product introduction. Gate sequence EVT $\to$ DVT $\to$ Qual $\to$ PVT $\to$ Pilot $\to$ MP that maps onto the validation ladder (Table 8.5, Table 7.2).
 
 NPO
 
@@ -631,7 +631,7 @@ PUE
 
 PVT
 
-: Production Validation Test. Proves the factory can build the qualified design repeatedly at yield with ATP and SPC (Table npi).
+: Production Validation Test. Proves the factory can build the qualified design repeatedly at yield with ATP and SPC (Table 8.5).
 
 QSFP-DD
 
@@ -927,7 +927,7 @@ TDECQ / SECQ / EECQ
 
 DVT / PVT / EVT
 
-: EVT is early engineering validation; DVT proves the design; PVT proves the factory can build it (Table npi).
+: EVT is early engineering validation; DVT proves the design; PVT proves the factory can build it (Table 8.5).
 
 FIT / DPPM
 
@@ -939,7 +939,7 @@ CPO / NPO / OBO
 
 LPO / LRO / TRO / RTLR
 
-: LPO is linear both directions; LRO/RTLR retimes Tx only (linear Rx); TRO retimes Tx (linear Rx) under that naming. Draw the host electrical Tx/Rx path rather than expanding acronyms alone (Ch. networking).
+: LPO is linear both directions; LRO/RTLR retimes Tx only (linear Rx); TRO retimes Tx (linear Rx) under that naming. Draw the host electrical Tx/Rx path rather than expanding acronyms alone (Chapter 9).
 
 RS sublayer / RS-FEC
 
