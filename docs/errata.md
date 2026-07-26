@@ -143,6 +143,15 @@ No new frameworks. Structural relocation of existing material is allowed.
   eight-step checklist. Replaced three self-test questions with 12 compact
   Spoken/Pressure/Trap questions (`sec:failure-analysis-interview-qa`). PDF about
   405 pages.
+- **Ch5 Interview Q\&A and source-selection prose:** Corrected taxonomy
+  (VCSEL/DFB structures; DML mode; EML laser+EAM; SiPh platform, not a laser
+  family), decision order, and requirements-vs-ATP language (`tab:laser-prd`
+  Evidence / production control; life row not ATP). Softened blanket laser
+  reliability-bottleneck claim; bounded qualification FIT language; added access
+  ladder, transmitter-quality metrics table, five-ledger double-count caveat,
+  and RIN/driver-noise spectral-density caveat. Replaced three self-test
+  questions with 12 compact Spoken/Pressure/Trap questions
+  (`sec:lasers-interview-qa`). PDF about 413 pages.
 
 ## Typographical fixes
 

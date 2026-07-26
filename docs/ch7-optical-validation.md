@@ -73,7 +73,7 @@ Once success is defined, the team can determine whether any architecture can mee
 
 ### Step 2: Review the architecture
 
-Determine whether the architecture can meet the requirements before hardware exists. Validation starts on paper and in models (§1.1, Table 5.9). Even with clear requirements, optical power, thermal budget, electrical margin, reliability target, and manufacturing cost may not close together.
+Determine whether the architecture can meet the requirements before hardware exists. Validation starts on paper and in models (§1.1, Table 5.10). Even with clear requirements, optical power, thermal budget, electrical margin, reliability target, and manufacturing cost may not close together.
 
 Close budgets under stated assumptions, or redesign before buying tooling. A quiet-bench prototype is not architecture proof. Simulation and paper budgets are Step 2 evidence when assumptions are named and later checkable; they do not replace later steps.
 
