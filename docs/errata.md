@@ -152,6 +152,13 @@ No new frameworks. Structural relocation of existing material is allowed.
   and RIN/driver-noise spectral-density caveat. Replaced three self-test
   questions with 12 compact Spoken/Pressure/Trap questions
   (`sec:lasers-interview-qa`). PDF about 413 pages.
+- **Ch6 Interview Q\&A and wavelength-control prose:** Softened locking$\neq$WDM
+  / microring language; distinguished capture, hold, reacquisition, and control
+  headroom; added lock-evidence and guardband ledgers, open-loop vs closed-loop,
+  loop-stability signatures, and access-aware ATP language. Softened comb market
+  claims and external-laser FIT wording; corrected neighbor-load recurrence
+  control (not automatic ATP). Replaced three self-test questions with 12 compact
+  Spoken/Pressure/Trap questions (`sec:wdm-interview-qa`). PDF about 421 pages.
 
 ## Typographical fixes
 
