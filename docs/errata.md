@@ -101,6 +101,11 @@ No new frameworks. Structural relocation of existing material is allowed.
   chapters, then retains AI-interconnect motivation after the roadmap.
   HTML slug changed; stub at `ch1-why-the-interconnect-matters`. Ch1 about
   12 pages; PDF about 371 pages.
+- **Ch7/Ch8 Interview Q\&A:** Replaced end-of-chapter cold-question lists with
+  15 spoken-style interview questions each (strong answer, follow-ups,
+  interviewer intent, weak answer) plus a shared 0--10 self-assessment rubric
+  (`sec:validation-interview-qa`, `sec:reliability-interview-qa`). PDF about
+  387 pages.
 
 ## Typographical fixes
 
