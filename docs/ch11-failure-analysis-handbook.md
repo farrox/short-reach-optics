@@ -36,7 +36,7 @@ Measure / isolate (name access)
 Contain / confirm
   |
 Recurrence control + FA output category</code></pre>
-The debugging pyramid in §1.8, the power-versus-signal fork in §4.8, the fleet router in Table 7.6, and the wall-chart trees in Appendix D are the same method at different scales. Earlier chapters own mechanism physics. This chapter owns order of operations. Symptom routes:
+The debugging pyramid in §1.16, the power-versus-signal fork in §4.8, the fleet router in Table 7.6, and the wall-chart trees in Appendix D are the same method at different scales. Earlier chapters own mechanism physics. This chapter owns order of operations. Symptom routes:
 
 Power loss
 

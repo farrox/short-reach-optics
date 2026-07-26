@@ -211,7 +211,7 @@ Interpret evidence (observation / correlation / hypothesis / confirmation)
 Decision + owner
   |
 Recurrence control</code></pre>
-The diagram is a memory aid, not the answer. Speak one clear paragraph per phase under time pressure, and expand a node only when asked. Do not jump from a symptom to a component. End every debug answer with the decision (Table A.1). The systems loop in §1.6, the debugging pyramid in §1.8, and the failure-analysis method in Chapter 11 are the full versions of this spine.
+The diagram is a memory aid, not the answer. Speak one clear paragraph per phase under time pressure, and expand a node only when asked. Do not jump from a symptom to a component. End every debug answer with the decision (Table A.1). The systems loop in §1.1, the debugging pyramid in §1.16, and the failure-analysis method in Chapter 11 are the full versions of this spine.
 
 ##### Requirements.
 

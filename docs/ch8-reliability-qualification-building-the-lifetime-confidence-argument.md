@@ -83,7 +83,7 @@ DPPM (defective parts per million)
 
 **Key idea.** Zero failures do not prove a zero failure rate. 0 failures in 20 units is not the same evidence as 0 failures in 1,000 units. 0 failures after $10^{3}$ device-hours is not the same evidence as 0 failures after $10^{6}$ device-hours. Evidence strength depends on sample-hours, one-sided upper confidence bounds, censoring, and whether lots and sites are representative. Qualification and production SPC complement each other; neither alone is a fleet claim.
 
-[^17]
+[^16]
 
 ## Qualification flows
 

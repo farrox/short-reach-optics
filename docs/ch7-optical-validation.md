@@ -62,7 +62,7 @@ This is one lifecycle. Simulation, bench measurement, qualification stress, and 
 
 The first validation step is not a measurement. It is defining what success means so you do not validate the wrong product. Without a requirements slice you do not know which BER, envelope, lifetime, volume, or deployment environment later measurements must close.
 
-Write performance, environment, reliability, manufacturing, and operational requirement classes with owners and, where applicable, named planes (§1.6, Table 5.4). Weak answer: "We test BER." Strong answer: first define target BER, operating envelope, lifetime, manufacturing volume, and deployment environment; then design validation around the risks. The evidence here is a signed contract, not a bench plot.
+Write performance, environment, reliability, manufacturing, and operational requirement classes with owners and, where applicable, named planes (§1.1, Table 5.4). Weak answer: "We test BER." Strong answer: first define target BER, operating envelope, lifetime, manufacturing volume, and deployment environment; then design validation around the risks. The evidence here is a signed contract, not a bench plot.
 
 **Representative evidence:** Signed requirements slice with owners, planes, and unambiguous pass/fail language.\
 **Exit:** The slice is specific enough that architecture and later steps have pass criteria, or hardware work is refused until it is.\
@@ -73,7 +73,7 @@ Once success is defined, the team can determine whether any architecture can mee
 
 ### Step 2: Review the architecture
 
-Determine whether the architecture can meet the requirements before hardware exists. Validation starts on paper and in models (§1.6, Table 5.9). Even with clear requirements, optical power, thermal budget, electrical margin, reliability target, and manufacturing cost may not close together.
+Determine whether the architecture can meet the requirements before hardware exists. Validation starts on paper and in models (§1.1, Table 5.9). Even with clear requirements, optical power, thermal budget, electrical margin, reliability target, and manufacturing cost may not close together.
 
 Close budgets under stated assumptions, or redesign before buying tooling. A quiet-bench prototype is not architecture proof. Simulation and paper budgets are Step 2 evidence when assumptions are named and later checkable; they do not replace later steps.
 
@@ -232,7 +232,7 @@ Fleet observations have value only when they change the next product or its cont
 
 ### Step 11: Feed learning into the next revision
 
-Close the loop into the next requirements and architecture revision. Fleet and FA evidence that does not change the product is wasted. Separate one-off install errors from systematic design or process debt (§1.6). Fleet tickets that never become requirements, or fixes without screen changes, leave the next escape open.
+Close the loop into the next requirements and architecture revision. Fleet and FA evidence that does not change the product is wasted. Separate one-off install errors from systematic design or process debt (§1.1). Fleet tickets that never become requirements, or fixes without screen changes, leave the next escape open.
 
 **Representative evidence:** Revision backlog with owners: requirement changes, architecture changes, ATP updates, derates.\
 **Exit:** Next-revision targets are written with owners, or residual risk is explicitly accepted without change.\
@@ -611,7 +611,7 @@ Debug at this level is data-driven, not opinion-driven. The method is discipline
 
 The third step is where modern PAM4 links differ from older eye-mask work. Tap saturation and FEC histograms often reveal the failure mode before a single waveform screenshot does. Treat those as primary evidence, not as afterthoughts logged once BER already fails.
 
-[^16]
+[^15]
 
 ## The debugging fork in validation
 

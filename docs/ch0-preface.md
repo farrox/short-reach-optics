@@ -7,7 +7,7 @@ title: "Ch 0: Preface"
 
 Artificial intelligence has become an infrastructure problem. Training and serving frontier models at scale is no longer limited only by the accelerator at the center of the rack, but by how many accelerators can be wired together efficiently, reliably, and within a fixed power envelope. That wiring is increasingly optical, and the optics (especially the lasers inside them) have become a first-order lever on the cost, power, and reliability of the whole system.
 
-This book is a concise technical overview of that layer: the short-reach optical interconnects that stitch together AI datacenters, from in-package optical I/O out to intra-rack links, deliberately setting aside the 2--10 km campus links that belong to coherent optics (§3.3). It concentrates on the subjects that decide whether these links work at scale: IM/DD physics and vocabulary; lasers and external light sources; WDM and wavelength locking; quantitative noise and sensitivity models; validation from bench to fleet; reliability qualification; and manufacturing validation at volume. Two chapters bracket those fundamentals: why inference-scale computing puts the interconnect on the critical path (Chapter 1), and how AI datacenter networks are built where optics dominate cost and power (Chapter 10).
+This book is a concise technical overview of that layer: the short-reach optical interconnects that stitch together AI datacenters, from in-package optical I/O out to intra-rack links, deliberately setting aside the 2--10 km campus links that belong to coherent optics (§3.3). It concentrates on the subjects that decide whether these links work at scale: IM/DD physics and vocabulary; lasers and external light sources; WDM and wavelength locking; quantitative noise and sensitivity models; validation from bench to fleet; reliability qualification; and manufacturing validation at volume. Two chapters bracket those fundamentals: the orientation from optical science to a shippable interconnect (Chapter 1), and how AI datacenter networks are built where optics dominate cost and power (Chapter 10).
 
 **How to use this handbook.** The book supports three modes. Pick one and stay in it until you switch deliberately.
 
@@ -35,5 +35,5 @@ Content freeze: this handbook is frozen for expansion except structural relocati
 <div class="nav-links">
   <span></span>
   <a href="./">Table of Contents</a>
-  <a href="ch1-why-the-interconnect-matters">Next &rarr;</a>
+  <a href="ch1-from-optical-physics-to-a-shippable-interconnect">Next &rarr;</a>
 </div>

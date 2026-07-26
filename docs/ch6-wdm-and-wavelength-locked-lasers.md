@@ -173,7 +173,7 @@ SuperNova
 
 : the external CW light source, positioned as the first CW-WDM-MSA-compliant 16-wavelength source, delivering up to 16 wavelengths into each of 16 fibers. That is light for 256 data channels (vendor claim: about 16 Tb/s bidirectional), and roughly $64\times$ the wavelength count of CWDM4 pluggables.
 
-Vendor performance claims versus pluggables plus electrical SerDes (5--10$\times$ bandwidth, 10$\times$ lower latency, 4--8$\times$ better power efficiency) are marketing numbers; use them as orientation, not as ATP limits.[^15]
+Vendor performance claims versus pluggables plus electrical SerDes (5--10$\times$ bandwidth, 10$\times$ lower latency, 4--8$\times$ better power efficiency) are marketing numbers; use them as orientation, not as ATP limits.[^14]
 
 ### Comb sources: one device, many lines
 

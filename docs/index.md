@@ -14,7 +14,7 @@ title: "Table of Contents"
 ## Chapters
 
 - [**0.** Preface](ch0-preface)
-- [**1.** Why the interconnect matters](ch1-why-the-interconnect-matters)
+- [**1.** From Optical Physics to a Shippable Interconnect](ch1-from-optical-physics-to-a-shippable-interconnect)
 - [**2.** First principles: the energy of moving a bit](ch2-first-principles-the-energy-of-moving-a-bit)
 - [**3.** Intensity modulation, direct detection](ch3-intensity-modulation-direct-detection)
 - [**4.** Quantitative models: noise, RIN, and BER](ch4-quantitative-models-noise-rin-and-ber)

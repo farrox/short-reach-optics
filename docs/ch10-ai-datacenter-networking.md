@@ -277,7 +277,7 @@ Past that wall the conversion to light pays for itself. When the reach exceeds w
 
 ### Reshaping, retiming, and where the DSP lives
 
-To survive that lossy channel the signal is conditioned at several points (§3.6), and it helps to keep two device classes distinct.[^18]
+To survive that lossy channel the signal is conditioned at several points (§3.6), and it helps to keep two device classes distinct.[^17]
 
 Redriver
 
@@ -441,7 +441,7 @@ By 2025--26, co-packaged optics crossed from demonstrations into shipping produc
 
 ### Broadcom Tomahawk and CPO
 
-Broadcom entered CPO earlier than most switch vendors and treated it as a product line, not a one-off demo. The current flagship is *Tomahawk 6*, a 102.4 Tb/s single-chip Ethernet switch (shipping 2025) offered with either copper or co-packaged optics, on 100G/200G SerDes.[^19] The CPO variant, *TH6-Davisson*, began shipping in October 2025 as Broadcom's *third-generation* CPO switch. The public numbers sketch the architecture:
+Broadcom entered CPO earlier than most switch vendors and treated it as a product line, not a one-off demo. The current flagship is *Tomahawk 6*, a 102.4 Tb/s single-chip Ethernet switch (shipping 2025) offered with either copper or co-packaged optics, on 100G/200G SerDes.[^18] The CPO variant, *TH6-Davisson*, began shipping in October 2025 as Broadcom's *third-generation* CPO switch. The public numbers sketch the architecture:
 
 - 102.4 Tb/s optically enabled, built from sixteen 6.4 Tb/s "Davisson DR" optical engines at 200 Gb/s per channel.
 
@@ -491,7 +491,7 @@ Arista, with Coherent, Marvell, Lightmatter, and a broad partner list, launched 
 <table class="book-table"><tr><th>Attribute</th><th>Retimed / LPO pluggable</th><th>XPO</th><th>CPO</th></tr><tr><td>Capacity</td><td>0.8--1.6 Tb/s/module</td><td>12.8 Tb/s/module</td><td>100+ Tb/s on-package</td></tr><tr><td>Density</td><td>baseline</td><td>4 (204.8 Tb/s per RU)</td><td>highest</td></tr><tr><td>Power path</td><td>full electrical run to faceplate</td><td>short run to dense faceplate</td><td>shortest (on substrate)</td></tr><tr><td>Cooling</td><td>air (or LPO savings)</td><td>integrated cold plate, 400 W+</td><td>switch-package liquid cooling</td></tr><tr><td>Serviceability</td><td>field-replaceable (best)</td><td>field-replaceable (slide-out)</td><td>soldered; ELSFP lasers replaceable</td></tr><tr><td>Energy/bit</td><td>highest</td><td>intermediate</td><td>lowest (<5, then <2 pJ/bit)</td></tr><tr><td>Maturity</td><td>shipping</td><td>MSA launched OFC 2026</td><td>shipping (Broadcom, NVIDIA)</td></tr></table>
 **Table 10.8.** Where XPO sits between pluggables and co-packaged optics.
 
-[^20]
+[^19]
 
 **The broader OFC 2026 picture.** XPO landed inside a clear consensus: 1.6T transceivers went mainstream and 3.2T (400G/lane) previews appeared, with initial demos expected around 2027; CPO moved from demo to imminent, with new MSAs (Open CPX, "socketed CPO") blurring the pluggable/co-packaged line; and hollow-core fiber (record loss now $\sim$0.091 dB/km) advanced toward low-latency intra-datacenter use (§10.12.1). The through-line is the one this book opened with: rising per-lane rate forcing optics closer to the silicon and squeezing every last pJ/bit.
 

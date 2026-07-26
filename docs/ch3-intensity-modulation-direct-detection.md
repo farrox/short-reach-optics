@@ -7,7 +7,7 @@ title: "Ch 3: Intensity modulation, direct detection"
 
 ## What IM/DD means
 
-Almost every short-reach datacenter link still uses the same basic deal with physics: put data on optical *power*, and recover it with a photodiode. That is *IM/DD*: *intensity modulation, direct detection*. The transmitter encodes bits as changes in optical intensity; the receiver is a photodiode plus a transimpedance amplifier (TIA) that turns photocurrent back into voltage. There is no local oscillator and no coherent mixing.[^10] Detection is square-law (photocurrent proportional to optical power), so phase is discarded. That limitation is acceptable inside the rack and across a few hundred meters of fiber, where cost, power, and latency matter more than spectral efficiency. It is why IM/DD, not coherent, wires AI compute fabrics today.
+Almost every short-reach datacenter link still uses the same basic deal with physics: put data on optical *power*, and recover it with a photodiode. That is *IM/DD*: *intensity modulation, direct detection*. The transmitter encodes bits as changes in optical intensity; the receiver is a photodiode plus a transimpedance amplifier (TIA) that turns photocurrent back into voltage. There is no local oscillator and no coherent mixing.[^9] Detection is square-law (photocurrent proportional to optical power), so phase is discarded. That limitation is acceptable inside the rack and across a few hundred meters of fiber, where cost, power, and latency matter more than spectral efficiency. It is why IM/DD, not coherent, wires AI compute fabrics today.
 
 ## The IM/DD transceiver chain
 
@@ -250,7 +250,7 @@ Receiver sensitivity
 
 : the minimum OMA needed to hit a target bit-error ratio; "stressed" sensitivity adds a calibrated impairment for margin.
 
-[^11]
+[^10]
 
 > **Engineering heuristic.** Argue about one ledger term at a time. A fight that mixes OMA, ER, RIN, and TDECQ without naming which debit moved is not a debug.
 

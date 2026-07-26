@@ -95,6 +95,12 @@ No new frameworks. Structural relocation of existing material is allowed.
   old `ch8-reliability-and-manufacturing-at-scale`,
   `ch9-ai-datacenter-networking`, and `ch10-failure-analysis-handbook`.
   PDF about 365 pages (near length-neutral versus prior ~359).
+- **Ch1 orientation rewrite:** Retitled to ``From Optical Physics to a
+  Shippable Interconnect'' (`ch:role`). Leads with the gap between device
+  science and a shippable product, maps architecture choices and later
+  chapters, then retains AI-interconnect motivation after the roadmap.
+  HTML slug changed; stub at `ch1-why-the-interconnect-matters`. Ch1 about
+  12 pages; PDF about 371 pages.
 
 ## Typographical fixes
 
