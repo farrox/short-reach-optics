@@ -129,149 +129,15 @@ Program limits come from \Cref{tab:laser-prd}.\par}
 \subsection{Reading the source and modulation matrix}
 \label{sec:source-mod-matrix-read}
 
-\Cref{tab:source-mod-matrix} is a decision map across paths, not a datasheet.
-Read it by \emph{attribute row}: each row asks one engineering question that
-every path must answer. Family detail for VCSEL, DML, EML, MZM, and rings
-follows in later sections; use this matrix to see which questions become hard
-before you commit.
-
-\paragraph{Wavelength / fiber.}
-
-\textbf{Purpose.}
-Which wavelength band and fiber type does the path assume?
-
-\textbf{Uncertainty removed.}
-Reach, plant, and WDM grid are not free variables after this choice. MMF at
-850--940~nm and SMF at 1310/1550~nm pull different connectors, modal limits,
-and lock burdens.
-
-\textbf{Decision unlocked.}
-Accept the plant class, or reject a path that cannot meet the fiber and grid
-requirement.
-
-\textbf{Risk if skipped.}
-You pick a modulator before you know whether the link is MMF short-reach or
-SMF WDM.
-
-\paragraph{Modulation fit.}
-
-\textbf{Purpose.}
-Is the path direct modulation, integrated EAM, external MZM, or resonant
-ring?
-
-\textbf{Uncertainty removed.}
-Driver, chirp, and lock problems change with the modulator class. Direct
-paths buy simplicity and pay chirp or modal limits; external paths buy
-bandwidth and pay attach and control.
-
-\textbf{Decision unlocked.}
-Allocate driver, bias, and control ownership for the chosen modulator class.
-
-\paragraph{Bandwidth / reach.}
-
-\textbf{Purpose.}
-Can the path close the baud and reach without a physics veto?
-
-\textbf{Uncertainty removed.}
-Modal bandwidth, chirp, or lock range may kill a path before cost discussions
-matter.
-
-\textbf{Decision unlocked.}
-Keep the path, derate reach/rate, or move to a higher-BW class (for example
-EML or MZM over DML).
-
-\paragraph{RIN / linewidth.}
-
-\textbf{Purpose.}
-Which noise and spectral purity limits dominate the BER floor and WDM fit?
-
-\textbf{Uncertainty removed.}
-Isolator-free and reflection-rich plants harden RIN. Rings and WDM harden
-spectral alignment. External cavities often win linewidth but still need
-feedback checks.
-
-\textbf{Decision unlocked.}
-Set RIN@ORL and SMSR/linewidth requirements in \Cref{tab:laser-prd}.
-
-\paragraph{Power / efficiency.}
-
-\textbf{Purpose.}
-Where does wall-plug and optical power go: laser only, or laser plus driver,
-EAM/MZM loss, heaters, and lock?
-
-\textbf{Uncertainty removed.}
-``Efficient laser'' claims fail if heater and lock power dominate the module
-budget.
-
-\textbf{Decision unlocked.}
-Accept the power split, or reject a dense path that breaks the rack power
-envelope.
-
-\paragraph{Reliability.}
-
-\textbf{Purpose.}
-Which wear-out and fault classes own life: junction, facet, EAM, attach,
-heater, or lock?
-
-\textbf{Uncertainty removed.}
-Life models and FA paths differ by class (\Cref{sec:wearout-modes}). An
-integrated source makes laser yield a package risk; an ELS makes the optical
-interface a service risk.
-
-\textbf{Decision unlocked.}
-Name the life owner and the screens (HTOL, EAM age, mate cycles) before NPI.
-
-\paragraph{Manufacturing.}
-
-\textbf{Purpose.}
-What assembly and plant skills does the path demand?
-
-\textbf{Uncertainty removed.}
-Array MMF plants, SMF attach, multi-die RF match, and dense PIC thermal
-control are different factories. Path choice is also a supplier-capability
-choice.
-
-\textbf{Decision unlocked.}
-Pick a path the supply chain can screen, or fund the missing process.
-
-\paragraph{Validation burden.}
-
-\textbf{Purpose.}
-Which measurements become mandatory because of the path?
-
-\textbf{Uncertainty removed.}
-VCSEL needs modal and temperature work. EML needs LIV, RIN, EAM sweep, and
-TDECQ. Rings need resonance, crosstalk, and lock. External cavities need
-spectrum, lock, and feedback.
-
-\textbf{Decision unlocked.}
-Size the ATP and DVT matrix to the path; do not copy another product's
-checklist blindly.
-
-\subsection{How to use the matrix}
-
-\begin{enumerate}
-\item Freeze wavelength/fiber and reach/rate from the product requirements.
-\item Strike paths that fail bandwidth/reach or plant class.
-\item Among survivors, score RIN/linewidth, power, reliability, and
-      manufacturing against your constraints.
-\item Read the validation-burden row as a cost: every hard cell is an ATP
-      and FA investment you must fund.
-\item Fill \Cref{tab:laser-prd} from the winning path; reject alternatives
-      with a one-line reason retained for review.
-\end{enumerate}
-
-Later sections teach each family. Do not let family enthusiasm override a row
-that already vetoes the path.
-
-\subsection{Learning summary}
-
-\begin{description}
-\item[Wavelength / fiber] Plant and grid first.
-\item[Modulation / BW] Physics veto before cost.
-\item[RIN / power / reliability] The ledgers that usually decide.
-\item[Manufacturing / validation] Can you build and screen it repeatedly?
-\end{description}
+\Cref{tab:source-mod-matrix} is a decision map, not a datasheet. Architecture
+order is plant and reach first, then modulation class, then the burdens those
+choices create (RIN/linewidth, power split, life owner, factory skill,
+validation cost), and only then the specific source part. Freeze fiber and
+rate from the product; strike paths that fail bandwidth or plant class; score
+survivors on the remaining rows; treat the validation-burden row as ATP and FA
+cost you must fund. Fill \Cref{tab:laser-prd} from the winning path and keep a
+one-line reject reason for each alternative. Later sections teach each family;
+do not let family enthusiasm override a row that already vetoes the path.
 
 \section{Directly modulated lasers and VCSELs}
 \label{sec:dml-vcsel}
@@ -526,8 +392,20 @@ the ATP (\Cref{sec:supplier-exec}).}
 \section{LIV, SMSR, and RIN: the measurement playbook}
 \label{sec:laser-params}
 
-These three measurements decide whether a laser chip or module is usable. The
-instruments are standard; the skill is knowing which failure each one catches.
+Three questions decide whether a laser chip or module is usable. Can it make
+enough power in a kink-free bias window at the thermal class you claim (LIV)?
+Is it single-mode enough for the plant and WDM grid (SMSR)? Is intensity noise
+quiet enough at the ORL you will actually see (RIN)? The instruments are
+standard; the skill is knowing which failure each answer catches.
+
+Bench order: LIV $\to$ SMSR $\to$ wavelength $\to$ RIN (quiet, then stressed
+ORL) $\to$ EAM or bias-driver checks as the path requires. Stop when
+distributions across temperature and units support the bias window, grid, and
+RIN policy in \Cref{tab:laser-prd}. If RIN fails, bisect electrical versus
+optical before you blame the diode: quiet SMU / high ORL first, then product
+bias rails, then an ORL sweep. Rise with reflection is laser feedback; rise
+independent of ORL points at the electrical path; discrete ESA spurs are
+supply or clock pickup (\Cref{sec:laser-drivers,sec:rin-values}).
 
 \paragraph{LIV (light--current--voltage).}
 \firstterm{LIV} The LIV curve plots optical power and forward voltage versus bias
@@ -593,12 +471,8 @@ EAM bias (EML) & bias sweep + DCA/TDECQ & extinction, chirp, RLM & aging shifts 
 measure, with what, and what failure looks like.\par}
 \end{table*}
 
-Measure in order: LIV $\to$ SMSR $\to$ wavelength $\to$ RIN (quiet then
-stressed ORL) $\to$ EAM or bias-driver checks as the path requires. Stop when
-distributions across temperature and units support the bias window, grid, and
-RIN policy in \Cref{tab:laser-prd} (see also
-\Cref{tab:laser-engineering-checklist}). Do not keep measuring for its own
-sake once those exits close.
+See also \Cref{tab:laser-engineering-checklist}. Do not keep measuring for its
+own sake once those exits close.
 
 \section{Laser drivers and the RIN budget}
 \label{sec:laser-drivers}
@@ -608,7 +482,12 @@ or MZM. Laser \emph{bias} drivers are a different circuit: they set a quiet
 constant current into the diode. Current noise on that path becomes optical
 intensity noise and adds in the RIN budget of \Cref{sec:rin}. Confusing the two
 is a common debug miss: a great SiGe PAM4 driver can still ruin a CW laser if its
-supply or ground couples into the bias rail.
+supply or ground couples into the bias rail. The electrical-versus-optical
+bisection is in \Cref{sec:laser-params}; use it before redesigning the diode.
+
+\textit{Reference: bias-driver noise numerics.} The conversion and table below
+are budget tools for quiet-CW sizing. Skip to path notes if you already have a
+measured product-board RIN.
 
 \paragraph{From current noise to equivalent RIN.}
 Above threshold, optical power tracks bias approximately as
@@ -687,20 +566,6 @@ quiet as a CW source, and treat the EAM RF driver under \Cref{sec:drivers}. EAM
 drive amplitude sets extinction and chirp; DFB bias noise still lands in optical
 intensity before the modulator.
 
-\paragraph{What to measure on the bench.}
-Bisect electrical vs.\ optical RIN:
-\begin{enumerate}
-\item Measure intrinsic RIN with a quiet SMU or known low-noise driver and high ORL
-      (\Cref{sec:laser-params}).
-\item Repeat with the product bias board / module rails connected. Any rise is
-      driver or supply contribution, not laser physics.
-\item Sweep ORL. Rise with reflection is feedback-driven laser RIN
-      (\Cref{sec:rin-values}); rise independent of ORL points at the electrical path.
-\item Look for discrete spurs on the ESA (switching frequencies, CMIS clocks). Spurs
-      fail stressed $\mathrm{RIN}_x\mathrm{OMA}$ even when the broadband floor looks
-      fine (\Cref{sec:rin-values}).
-\end{enumerate}
-
 \keyidea{Treat laser bias noise as a RIN term:
 $\mathrm{RIN}_{\mathrm{eq}}\approx(i_n/(I-I_\mathrm{th}))^2$. Quiet CW drivers at
 tens to hundreds of pA$/\sqrt{\mathrm{Hz}}$ usually sit under a $-145$~dB/Hz
@@ -762,6 +627,12 @@ moving after each stress interval needs an aging or damage hypothesis.
 
 \section{Calibration: what drifts and what triggers retuning}
 \label{sec:laser-calibration}
+
+Calibration corrects predictable unit-to-unit and temperature variation by
+storing operating points. It does not repair exhausted margin. A railed TEC,
+heater, or bias DAC, a permanently walked LIV or absorption curve, or a loop
+error that no longer converges is a design, life, or FA problem, not a
+``retune the table'' task.
 
 Calibration exists because no transmitter runs at a datasheet point. Every unit
 has its own threshold, slope, absorption curve, quadrature point, and resonance,
@@ -937,7 +808,8 @@ resets, initializes management, and stays in low-power mode with lasers
 lasers~\firstcite{elsfp}. \texttt{ModPrsL} and \texttt{IntL} support presence detect
 and asynchronous alarms for safe hot-swap.
 
-\paragraph{Electrical pinout (OIF-ELSFP-02.0 Table~7).}
+\paragraph{Reference: electrical pinout (OIF-ELSFP-02.0 Table~7).}
+	extit{Deep dive / pin map.} Skip unless you are wiring the host connector.
 Twenty-four contacts: multiple 3.3~V VCC and GND pins, module reset (\texttt{ResetL}),
 low-power mode (\texttt{LPModeL}), two-wire serial management (\texttt{SCL}/\texttt{SDA}),
 presence (\texttt{ModPrsL}), and interrupt (\texttt{IntL}), plus reserved pins for
@@ -966,13 +838,13 @@ Pin & Function & Requirements & Notes \\
 \addlinespace[1.5em]
 8--10 & GND & 1.5~A, 3.3~V & with noise filtering \\
 \addlinespace[1.5em]
-11 & TBD & reserved & --- \\
+11 & TBD & reserved & (reserved) \\
 \addlinespace[1.5em]
 12 & SCL & TWI clock & host 4.7~k$\Omega$ pull-up; module $\ge$10~k$\Omega$ \\
 \addlinespace[1.5em]
 13 & SDA & TWI data & same pull-ups as SCL \\
 \addlinespace[1.5em]
-14 & TBD & reserved & --- \\
+14 & TBD & reserved & (reserved) \\
 \addlinespace[1.5em]
 15--17 & GND & 1.5~A, 3.3~V & with noise filtering \\
 \addlinespace[1.5em]
@@ -1004,6 +876,10 @@ in the triage tree (\Cref{sec:fleet-triage}).
 
 \section{Optical safety and laser classes}
 \label{sec:laser-safety}
+
+\textit{Reference / compliance deep dive.} Read when you own APR/ALS ATP or
+multi-fiber hazard classification. Architecture chapters only need the rule that
+aggregate port power, not per-lane datasheet power, sets the class.
 
 \subsection{Hazard and laser classes}
 
@@ -1059,6 +935,10 @@ real hazard. Fold the APR/ALS check into the ELS hot-swap corner in
 
 \section{CW-WDM source validation}
 \label{sec:cwwdm-laser}
+
+\textit{Reference: multi-wavelength source survey.} Architecture contract for
+CW-WDM locking lives in \Cref{ch:wdm}; this section lists per-channel acceptance
+checks and example products.
 
 Multi-wavelength CW sources (CW-WDM MSA) feed dense ring or filter banks on a PIC
 (\Cref{sec:cwwdm,ch:wdm}). Validation is per-channel plus cross-channel:
@@ -1129,116 +1009,20 @@ and the qualification ownership each one creates.\par}
 \subsection{Reading the supplier ownership matrix}
 \label{sec:laser-suppliers-read}
 
-\Cref{tab:laser-suppliers} is a qualification-ownership map. The fork decides
-who owns life data, screens, and field service, not only who ships a die.
-
-\paragraph{Merchant DFB / EML / CW die.}
-
-\textbf{Purpose.}
-Who owns attach, driver match, module screen, and package reliability when
-the source is a merchant die?
-
-\textbf{Uncertainty removed.}
-Die datasheets do not qualify the module. After ownership is explicit, the
-integrator knows which FAIR, ATP, and HTOL packages stay in-house.
-
-\textbf{Evidence the other party still owes.}
-Die-level LIV, SMSR, RIN, and life sample data from the merchant; change
-control on epi and process.
-
-\textbf{Decision unlocked.}
-Accept integrator-owned module qual, or reject the path if attach and screen
-capability are missing.
-
-\textbf{Risk if ownership is assumed wrong.}
-You treat a die cert as module qual and discover attach or driver match in
-the fleet.
-
-\paragraph{External CW-WDM / ELSFP module.}
-
-\textbf{Purpose.}
-What does the source supplier own versus what the system still must qualify?
-
-\textbf{Uncertainty removed.}
-A replaceable ELS moves source life into a field unit, but connector, ORL,
-hot-swap, and host interop remain system-owned (\Cref{sec:elsfp}).
-
-\textbf{Evidence the other party still owes.}
-Supplier: source-module ATP, CMIS, life, and mate ratings. System: optical
-mate, ORL plant, service sequence, and engine bring-up with light present.
-
-\textbf{Decision unlocked.}
-Approve ELS architecture only when both ownership packs exist.
-
-\textbf{Risk if ownership is assumed wrong.}
-You qualify the laser module and skip the optical interface that fails first
-in service.
-
-\paragraph{Multi-wavelength source.}
-
-\textbf{Purpose.}
-How do channel yield, power flatness, and replacement couple across the
-comb?
-
-\textbf{Uncertainty removed.}
-One weak channel can scrap or derate the whole source. Shared control means
-shared field risk (\Cref{sec:cwwdm-laser}).
-
-\textbf{Evidence required.}
-Per-channel power and wavelength distributions, flatness over temperature,
-and a replacement/service policy when one channel fails.
-
-\textbf{Decision unlocked.}
-Accept coupled yield, require channel redundancy, or split into multiple
-sources.
-
-\textbf{Risk if ownership is assumed wrong.}
-You buy ``one laser'' economics and inherit N-channel fail modes without
-N-channel screens.
-
-\paragraph{Source integrated with PIC.}
-
-\textbf{Purpose.}
-When laser yield and wear-out become package risks, who owns life and
-service?
-
-\textbf{Uncertainty removed.}
-Density gains remove a replaceable optical interface. Failures then pull the
-engine or package, not a pluggable source.
-
-\textbf{Evidence required.}
-Package-level life, known-good attach, and a service model that matches
-non-replaceable sources.
-
-\textbf{Decision unlocked.}
-Accept integrated risk for density, or keep ELS/merchant die for field
-replaceability.
-
-\textbf{Risk if ownership is assumed wrong.}
-You qualify the die physics and underfund package yield and fleet
-replacement cost.
+\Cref{tab:laser-suppliers} is a qualification-ownership map. Choose the service
+model before you freeze optics. A merchant die leaves attach, driver match,
+screen, and package life with the integrator. An ELS or CW-WDM module moves
+source life into a replaceable unit while mate, ORL, hot-swap, and host interop
+stay system-owned. A multi-wavelength source couples channel yield, flatness,
+and replacement. An integrated PIC source makes laser yield and wear-out part of
+package life. Approve a path only when both ownership packs exist; do not treat
+a die cert as module qual, or a laser-module ATP as an optical-interface qual.
 
 \subsection{Why ownership order matters}
 
 Choose the service and ownership model before you freeze the optical
-architecture. An external source is replaceable and adds a managed interface.
-An integrated source removes that interface and places source yield inside
-the package. Qualify the architecture you will service, not only the laser
+architecture. Qualify the architecture you will service, not only the laser
 die.
-
-\subsection{Learning summary}
-
-\begin{description}
-\item[Merchant die] Integrator owns module qual; merchant owns die life data.
-\item[ELS / CW-WDM module] Supplier owns source; system owns mate, ORL, swap.
-\item[Multi-wavelength] Channels share yield and replacement risk.
-\item[Integrated PIC] Laser life is package life; plan service accordingly.
-\end{description}
-
-\aside{The fork is a reliability and ownership decision. An external source makes
-the source replaceable but adds a managed optical interface. An integrated source
-removes that interface but places source yield and wear-out inside the package.
-Qualify the architecture you will service, not only the laser die.}
 
 \section{Why lasers are the reliability bottleneck}
 
@@ -1589,16 +1373,6 @@ about floors and eyes. Thermal separates reversible control from permanent
 drift before aging claims. Manufacturing and fleet close the loop so life and
 screens stay honest after ship. Later rows must not compensate for a missing
 architecture or ship baseline.
-
-\subsection{Learning summary}
-
-\begin{description}
-\item[Architecture] Does the path close the product?
-\item[LIV / spectrum / RIN] Is the source healthy in its plant?
-\item[Modulation / thermal] Does the eye and control survive corners?
-\item[Aging] What drifts permanently, and how fast?
-\item[Manufacturing / fleet] Can you screen it and triage it at volume?
-\end{description}
 
 \section{Interview takeaway}
 \label{sec:lasers-design-review}
