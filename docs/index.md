@@ -20,7 +20,7 @@ title: "Table of Contents"
 - [**4.** Quantitative models: noise, RIN, and BER](ch4-quantitative-models-noise-rin-and-ber)
 - [**5.** Choosing light sources and modulation](ch5-choosing-light-sources-and-modulation)
 - [**6.** WDM and wavelength-locked lasers](ch6-wdm-and-wavelength-locked-lasers)
-- [**7.** Optical validation](ch7-optical-validation)
+- [**7.** Optical Product Readiness: From Requirements to Fleet](ch7-optical-product-readiness-from-requirements-to-fleet)
 - [**8.** Reliability Qualification: Building the Lifetime Confidence Argument](ch8-reliability-qualification-building-the-lifetime-confidence-argument)
 - [**9.** Manufacturing Validation and Production Readiness](ch9-manufacturing-validation-and-production-readiness)
 - [**10.** AI datacenter networking](ch10-ai-datacenter-networking)

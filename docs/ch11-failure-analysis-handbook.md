@@ -21,7 +21,7 @@ A corrective action repairs the current mechanism. A recurrence control prevents
 
 ##### Recurrence-control closure.
 
-An incident is not closed when the unit recovers. Close only when a production or fleet control catches the same signature next time. The best control may be design, supplier process, incoming inspection, ATP, sampled audit, SPC, telemetry, service procedure, or qualification (Appendix D.3, §7.1.12). Each symptom section ends with a short *Recurrence control* line for that signature. Name the FA output category when you file the case (§11.13).
+An incident is not closed when the unit recovers. Close only when a production or fleet control catches the same signature next time. The best control may be design, supplier process, incoming inspection, ATP, sampled audit, SPC, telemetry, service procedure, or qualification (Appendix D.3, §7.3.13). Each symptom section ends with a short *Recurrence control* line for that signature. Name the FA output category when you file the case (§11.13).
 
 > **Why experienced engineers preserve state before reseating?**
 >
@@ -44,7 +44,7 @@ Confirm
 Correct
   |
 Prevent</code></pre>
-This is the only general incident sequence. Symptom-specific trees later in the chapter are local routes inside it. The debugging pyramid in §1.16, the power-versus-signal fork in §4.8, the fleet router in Table 7.6, and the wall-chart trees in Appendix D are the same method at different scales. Earlier chapters own mechanism physics. This chapter owns order of operations. Symptom routes:
+This is the only general incident sequence. Symptom-specific trees later in the chapter are local routes inside it. The debugging pyramid in §1.16, the power-versus-signal fork in §4.8, the fleet router in Table 7.7, and the wall-chart trees in Appendix D are the same method at different scales. Earlier chapters own mechanism physics. This chapter owns order of operations. Symptom routes:
 
 Power loss
 
@@ -311,7 +311,7 @@ TDECQ exceeds the PMD limit even though average power and ER look acceptable. Th
 
 ##### Likely hypotheses.
 
-TDECQ measures how much noise the transmitter can tolerate before BER exceeds the FEC threshold, relative to an ideal transmitter (§7.4). High TDECQ means the equalized eye is poor. Common causes: (1) insufficient EO bandwidth (modulator or driver roll-off), (2) poor level linearity (RLM $<$ 0.95; driver or modulator compression), (3) pattern-dependent effects (ISI from bandwidth limit, reflections, or impedance mismatch), (4) chromatic dispersion on FR-class fiber eating into the margin.
+TDECQ measures how much noise the transmitter can tolerate before BER exceeds the FEC threshold, relative to an ideal transmitter (§7.6). High TDECQ means the equalized eye is poor. Common causes: (1) insufficient EO bandwidth (modulator or driver roll-off), (2) poor level linearity (RLM $<$ 0.95; driver or modulator compression), (3) pattern-dependent effects (ISI from bandwidth limit, reflections, or impedance mismatch), (4) chromatic dispersion on FR-class fiber eating into the margin.
 
 ##### Measurements, mechanism isolation, and confirmation.
 
@@ -459,13 +459,13 @@ Retest BER and sensitivity</code></pre>
 
 3.  Clean and re-inspect (dry-click cleaner or lint-free wipe with IPA). If the endface still fails IEC 61300-3-35 zone criteria, replace the jumper .
 
-4.  Measure insertion loss and ORL across the mated pair at the named plane. Compare to the link-budget allocation (§7.7).
+4.  Measure insertion loss and ORL across the mated pair at the named plane. Compare to the link-budget allocation (§7.9).
 
 5.  Retest BER and sensitivity. Clearing after cleaning supports contamination as the leading mechanism; confirm with IL/ORL and watch for recurrence. Log connector location and date code.
 
 ##### Corrective action and recurrence control.
 
-After evidence is preserved: clean, re-inspect, and verify IL/ORL and BER. Preventive: dust caps on unused ports, "inspect before connect" in the service runbook, sealed cassettes or trunk cables that minimize open-ferrule exposure. For high-power paths (ELSFP, CW-WDM), burn damage requires replacement, not re-cleaning. Track contamination RMAs as a distinct failure code (not "laser failure") so FIT accounting stays honest (§7.12).
+After evidence is preserved: clean, re-inspect, and verify IL/ORL and BER. Preventive: dust caps on unused ports, "inspect before connect" in the service runbook, sealed cassettes or trunk cables that minimize open-ferrule exposure. For high-power paths (ELSFP, CW-WDM), burn damage requires replacement, not re-cleaning. Track contamination RMAs as a distinct failure code (not "laser failure") so FIT accounting stays honest (§7.14).
 
 > **Engineering heuristic.** Inspect before you clean, and photograph before you disturb. Cleaning first can erase the only evidence that the mate was dirty.
 
@@ -541,7 +541,7 @@ Laser threshold and slope drift, wavelength movement, ring-resonance drift, TEC 
 
 ##### Corrective action and recurrence control.
 
-Restore thermal headroom, correct calibration and control limits, reduce coupling, or derate the operating point. Add the loaded-neighbor temperature ramp to the ATP or design-validation plan that missed it. *Recurrence control:* loaded-neighbor temperature ramp in ATP or DV.
+Restore thermal headroom, correct calibration and control limits, reduce coupling, or derate the operating point. Add the loaded-neighbor temperature ramp to the ATP or the product-readiness plan step that missed it (Chapter 7). *Recurrence control:* loaded-neighbor temperature ramp in ATP or requirement-verification / system-validation evidence.
 
 ## Failure-analysis checklist
 
@@ -590,7 +590,7 @@ What volatile evidence will a reseat, reboot, clean, or retest destroy? Snapshot
 
 ##### Scope / classify / locate (short).
 
-Name the population (unit, lot, vendor, site, fleet) before instruments (§7.12). Record sudden versus gradual and whether cool-down recovers. Name which ledger moved first: power, noise, timing, spectrum, or control (Appendix A.8.4). **Exit when** population, time class, and first-moving ledger are evidenced. **Risk if skipped:** wrong containment width or the wrong instrument tour.
+Name the population (unit, lot, vendor, site, fleet) before instruments (§7.14). Record sudden versus gradual and whether cool-down recovers. Name which ledger moved first: power, noise, timing, spectrum, or control (Appendix A.8.4). **Exit when** population, time class, and first-moving ledger are evidenced. **Risk if skipped:** wrong containment width or the wrong instrument tour.
 
 ##### Falsify.
 
@@ -702,13 +702,13 @@ Preserve first because reseat and reboot destroy state. Scope next so containmen
 
 ## Interview takeaway
 
-**Key idea.** A useful failure analysis starts with a symptom and ends with a new control. Preserve the failing state, split shared from local behavior, clear the measurement system, and choose one measurement that can falsify the leading hypothesis. The corrective action is incomplete until production or fleet data show that the same signature no longer escapes.
+**Key idea.** A useful failure analysis starts with a symptom and ends with a new control. Preserve the failing state, split shared from local behavior, clear the measurement system, and choose one measurement that can falsify the leading hypothesis. Return fleet and production evidence to the appropriate product-readiness step: requirement, architecture, characterization, system validation, reliability qualification, manufacturing validation, ATP, or fleet control. The corrective action is incomplete until production or fleet data show that the same signature no longer escapes.
 
-Junior mistake: reseat first, or close without a recurrence control (§7.12, Appendix B, Appendix C, Appendix F).
+Junior mistake: reseat first, or close without a recurrence control (§7.14, Appendix B, Appendix C, Appendix F).
 
 ### Interview Q&A: Failure Analysis
 
-Practice speaking these answers aloud. Prefer first-person incident reasoning over instrument inventories. Detail lives in §11.13, §11.13.2, §4.8, §7.12.
+Practice speaking these answers aloud. Prefer first-person incident reasoning over instrument inventories. Detail lives in §11.13, §11.13.2, §4.8, §7.14.
 
 ##### Question 1. Walk me through your failure-analysis process.
 

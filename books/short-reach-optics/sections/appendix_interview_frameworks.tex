@@ -424,19 +424,19 @@ Pilot cohort $\rightarrow$ assumptions hold? $\rightarrow$ open MP.}
 
 \fwdeep{\Cref{sec:interview-worked-second-source,sec:supplier-exec}.}
 
-\framework{Validation plan for a new transceiver}
+\framework{Product-readiness plan for a new transceiver}
 \label{fw:validation-plan}
 
-\fwquestion{How would you validate a new optical transmitter from bring-up
-through production?}
+\fwquestion{How would you establish readiness for a new optical transmitter from
+bring-up through production?}
 
-\fwtesting{Validation-program judgment: sequencing, ownership, stage gates, dependencies, exit criteria, schedule and resource judgment.}
+\fwtesting{Product-readiness judgment: sequencing, ownership, stage gates, dependencies, exit criteria, schedule and resource judgment.}
 
 \fwassumptions{Requirements and owners exist; stage exits are binary enough to fail; engineering access is requested only when a gate cannot decide.}
 
 \fwfirst{Freeze the requirements slice and named risks before listing instruments.}
 
-\execanswer{I start by defining the system requirements and failure risks. Then I build the validation plan around reducing uncertainty: architecture demonstrates the budgets can close, bring-up demonstrates basic operation, characterization builds the behavioral model, margin testing determines headroom, interoperability demonstrates system compatibility, qualification demonstrates reliability, manufacturing validation demonstrates repeatability, and controlled deployment plus telemetry confirms field assumptions. Every stage has an exit criterion tied to a decision.}
+\execanswer{I start by defining the system requirements and failure risks. Then I build the product-readiness plan around reducing uncertainty: architecture demonstrates the budgets can close, bring-up demonstrates basic operation, characterization builds the behavioral model, requirement verification and system validation close specs and intended use, reliability qualification demonstrates life and environmental confidence, manufacturing validation demonstrates repeatability, and controlled deployment plus telemetry confirms field assumptions. Every stage has an exit criterion tied to a decision.}
 
 \begin{dectree}
 Requirements definition
@@ -445,7 +445,7 @@ Architecture review
   |
 Bring-up -> Characterization
   |
-Margin validation -> Interoperability
+Verify requirements -> Validate system use
   |
 Reliability qualification
   |
@@ -458,10 +458,10 @@ Fleet monitoring -> Feedback
 
 \fwwhy{This answer is about program sequencing and ownership. Qualification
 \emph{evidence} construction lives in \Cref{fw:qual-plan,sec:tree-qual-evidence}.
-The ladder stages are the gates
+The product-readiness stages are the gates
 (\Cref{sec:interview-validation-ladder,sec:tree-qualification}).}
 
-\fwmeas{Each ladder stage $\rightarrow$ named uncertainty removed
+\fwmeas{Each readiness stage $\rightarrow$ named uncertainty removed
 $\rightarrow$ continue / redesign / tighten ATP / stop ship.\\
 Margin sweeps $\rightarrow$ which ledger dies first? $\rightarrow$ telemetry
 alarms.}

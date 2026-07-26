@@ -157,7 +157,7 @@ Received power exceeding the datasheet sensitivity number does not guarantee low
 
 - equalization state and FEC margin.
 
-Sensitivity is therefore a shorthand for receiver noise performance under reference conditions, not a complete description of whether the link closes. A link that "has enough power" can still fail if ER is poor, RIN is elevated, or the equalizer is saturated. Always close the full link budget (§7.7), not just the power line.
+Sensitivity is therefore a shorthand for receiver noise performance under reference conditions, not a complete description of whether the link closes. A link that "has enough power" can still fail if ER is poor, RIN is elevated, or the equalizer is saturated. Always close the full link budget (§7.9), not just the power line.
 
 <table class="book-table"><tr><th>Quantity</th><th>Required condition</th></tr><tr><td>Transmit average power</td><td>Named output plane and operating state</td></tr><tr><td>Transmit OMA</td><td>Named output plane, modulation definition, calibration method</td></tr><tr><td>Received power</td><td>Receiver optical-input plane</td></tr><tr><td>Receiver sensitivity</td><td>Average power or OMA; BER/FEC target; Tx condition; wavelength; temperature</td></tr><tr><td>RIN</td><td>Intrinsic or stressed definition; optical power or OMA; ORL; frequency range</td></tr><tr><td>TIA noise</td><td>Density or integrated rms; input reference; bandwidth and loading</td></tr><tr><td>BER</td><td>Pre- or post-FEC; interval; pattern or traffic; lane and direction</td></tr></table>
 **Table 4.3.** Metric and reference-plane checklist. A number without its metric definition and reference plane cannot be entered safely into the model.
@@ -177,7 +177,7 @@ Sensitivity is therefore a shorthand for receiver noise performance under refere
 Two links may have identical average optical power but different BER. The reason is OMA and extinction ratio. At fixed average power $P_\mathrm{avg}$, the OMA depends on ER through $$\frac{\mathrm{OMA}}{P_\mathrm{avg}}
   = \frac{2(\mathrm{ER}-1)}{\mathrm{ER}+1},$$ where ER is the linear extinction ratio $P_1/P_0$. A link with 10 dB ER ($\mathrm{ER}_\mathrm{lin}=10$) delivers $\mathrm{OMA}/P_\mathrm{avg} = 18/11 \approx 1.636$, while 6 dB ER ($\mathrm{ER}_\mathrm{lin}\approx 4$) delivers $6/5 = 1.200$. The difference is about 1.36 dB of OMA at the same average power. Whether that 1.36 dB matters depends on where the receiver sits on its BER waterfall: near the sensitivity cliff a 1 dB OMA change moves BER by orders of magnitude (§4.1, §4.2), while well above sensitivity the same change is invisible. The impact also depends on RIN, bandwidth, equalization state, and TDECQ; ER alone does not set BER.
 
-For PAM4, the relevant quantity is the outer OMA ($P_3 - P_0$), and level spacing (RLM) matters independently. A transmitter that launches adequate average power but has compressed inner eyes (poor RLM) will fail TDECQ even though a power meter reads in-spec. This is why TDECQ, OMA, and RLM are specified together, not average power alone (§7.4).
+For PAM4, the relevant quantity is the outer OMA ($P_3 - P_0$), and level spacing (RLM) matters independently. A transmitter that launches adequate average power but has compressed inner eyes (poor RLM) will fail TDECQ even though a power meter reads in-spec. This is why TDECQ, OMA, and RLM are specified together, not average power alone (§7.6).
 
 ### The sensitivity formula
 
@@ -196,7 +196,7 @@ Integrated thermal-class noise: $i_n \sqrt{\mathrm{BW}} \approx
 \approx \frac{2\times3.5\times3.2~\mu\text{A}}{0.9} \approx 25~\mu\text{W}
 \approx -16~\text{dBm}.$$ Illustrative allocations (not a normative budget): $\sim$3 dB TDECQ-class Tx impairment *or* remaining margin after a TDECQ-based OMA method (not both), $\sim$2 dB connector/fiber at stated planes, $\sim$2 dB system margin. That lands near $-9$ dBm class OMA at the receiver input, or roughly $-6$ to $-4$ dBm launched depending on reach. Parameter sensitivity: $\pm$1 dB in $i_n$ or $\mathcal{R}$ moves the estimate about 1 dB; a RIN floor or MPI can invalidate the waterfall entirely.
 
-Where the model stops: unequal PAM4 levels, level-dependent noise, strong ISI, compressed TIA, correlated RIN, or a different FEC/error model. If measured sensitivity is worse, bisect RIN, reflections, and ER (§7.7, §7.2.2).
+Where the model stops: unequal PAM4 levels, level-dependent noise, strong ISI, compressed TIA, correlated RIN, or a different FEC/error model. If measured sensitivity is worse, bisect RIN, reflections, and ER (§7.9, §7.4.2).
 
 ##### Model-validity checklist.
 
@@ -382,7 +382,7 @@ If average received power is stable but BER worsened, isolate transmitter, chann
 
 - control: bias, APC, TEC/heaters, calibration, EQ authority.
 
-This fork often narrows an investigation in minutes. Power-path failures show up on a meter; signal-quality failures need FEC timing, DCA, BERT, or spectrum analysis, depending on access. Apply it before opening the package, changing settings, or blaming a supplier (§7.12, Chapter 11, Chapter 7).
+This fork often narrows an investigation in minutes. Power-path failures show up on a meter; signal-quality failures need FEC timing, DCA, BERT, or spectrum analysis, depending on access. Apply it before opening the package, changing settings, or blaming a supplier (§7.14, Chapter 11, Chapter 7).
 
 > **Why experienced engineers separate power from quality?**
 >

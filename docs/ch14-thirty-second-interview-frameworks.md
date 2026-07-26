@@ -356,17 +356,17 @@ Pilot cohort $\rightarrow$ assumptions hold? $\rightarrow$ open MP.
 
 **Deep dive.** Appendix A.10.5, §9.2.
 
-## Validation plan for a new transceiver
+## Product-readiness plan for a new transceiver
 
-**Interview question.** How would you validate a new optical transmitter from bring-up through production?
+**Interview question.** How would you establish readiness for a new optical transmitter from bring-up through production?
 
-**What the interviewer is testing.** Validation-program judgment: sequencing, ownership, stage gates, dependencies, exit criteria, schedule and resource judgment.
+**What the interviewer is testing.** Product-readiness judgment: sequencing, ownership, stage gates, dependencies, exit criteria, schedule and resource judgment.
 
 **Assumptions to state.** Requirements and owners exist; stage exits are binary enough to fail; engineering access is requested only when a gate cannot decide.
 
 **First thing I would check.** Freeze the requirements slice and named risks before listing instruments.
 
-> **30-second answer (memorize).** I start by defining the system requirements and failure risks. Then I build the validation plan around reducing uncertainty: architecture demonstrates the budgets can close, bring-up demonstrates basic operation, characterization builds the behavioral model, margin testing determines headroom, interoperability demonstrates system compatibility, qualification demonstrates reliability, manufacturing validation demonstrates repeatability, and controlled deployment plus telemetry confirms field assumptions. Every stage has an exit criterion tied to a decision.
+> **30-second answer (memorize).** I start by defining the system requirements and failure risks. Then I build the product-readiness plan around reducing uncertainty: architecture demonstrates the budgets can close, bring-up demonstrates basic operation, characterization builds the behavioral model, requirement verification and system validation close specs and intended use, reliability qualification demonstrates life and environmental confidence, manufacturing validation demonstrates repeatability, and controlled deployment plus telemetry confirms field assumptions. Every stage has an exit criterion tied to a decision.
 
 <pre class="dectree" aria-label="Requirements definition"><code>Requirements definition
   |
@@ -374,7 +374,7 @@ Architecture review
   |
 Bring-up -&gt; Characterization
   |
-Margin validation -&gt; Interoperability
+Verify requirements -&gt; Validate system use
   |
 Reliability qualification
   |
@@ -383,9 +383,9 @@ Manufacturing validation
 Controlled pilot -&gt; Mass production
   |
 Fleet monitoring -&gt; Feedback</code></pre>
-**Key concepts.** This answer is about program sequencing and ownership. Qualification *evidence* construction lives in Appendix C.15, Appendix D.3. The ladder stages are the gates (Appendix A.8.5, Appendix D.2).
+**Key concepts.** This answer is about program sequencing and ownership. Qualification *evidence* construction lives in Appendix C.15, Appendix D.3. The product-readiness stages are the gates (Appendix A.8.5, Appendix D.2).
 
-**Measurements.** Each ladder stage $\rightarrow$ named uncertainty removed $\rightarrow$ continue / redesign / tighten ATP / stop ship.\
+**Measurements.** Each readiness stage $\rightarrow$ named uncertainty removed $\rightarrow$ continue / redesign / tighten ATP / stop ship.\
 Margin sweeps $\rightarrow$ which ledger dies first? $\rightarrow$ telemetry alarms.
 
 **Typical follow-ups.**
@@ -402,7 +402,7 @@ Margin sweeps $\rightarrow$ which ledger dies first? $\rightarrow$ telemetry ala
 
 **Thirty-second close.** I walk the ladder as staged uncertainty reduction and refuse any measurement that answers no new question about remaining margin.
 
-**Deep dive.** Appendix A.10.2, Table 7.2, Appendix A.8.7.
+**Deep dive.** Appendix A.10.2, Table 7.3, Appendix A.8.7.
 
 ## Fleet issue
 
@@ -429,7 +429,7 @@ Rate / trend / customer impact
 Bucket: performance / reliability / manufacturability
   |
 Decision + owner + telemetry control</code></pre>
-**Key concepts.** Fleet economics and scope pick the owner before FA. Pulling units without a bucket wastes the only failing state you had (Appendix A.6, §7.12).
+**Key concepts.** Fleet economics and scope pick the owner before FA. Pulling units without a bucket wastes the only failing state you had (Appendix A.6, §7.14).
 
 **Measurements.** Telemetry query $\rightarrow$ scope and trend? $\rightarrow$ contain vs monitor.\
 Lot/date correlation $\rightarrow$ manufacturability? $\rightarrow$ supplier.\
@@ -449,7 +449,7 @@ Golden host in rack $\rightarrow$ environment vs module? $\rightarrow$ owner.
 
 **Thirty-second close.** I scope first, pick the bucket, contain if growing and supplier-specific, and name the owner of the next control.
 
-**Deep dive.** Appendix A.6, Table 7.6.
+**Deep dive.** Appendix A.6, Table 7.7.
 
 ## Supplier escape
 
@@ -572,7 +572,7 @@ Reproduce with dwell / stress
 Scope population
   |
 Decision: contain / ATP dwell / monitor</code></pre>
-**Key concepts.** Intermittents die when the evidence is destroyed. NFF is often a triage failure, not a healthy part (§7.12).
+**Key concepts.** Intermittents die when the evidence is destroyed. NFF is often a triage failure, not a healthy part (§7.14).
 
 **Measurements.** FEC histogram $\rightarrow$ burst vs Gaussian? $\rightarrow$ MPI / intermittent.\
 Time sync + event capture $\rightarrow$ state preserved? $\rightarrow$ FA.\
@@ -594,7 +594,7 @@ Mate/demate $\rightarrow$ connector? $\rightarrow$ hygiene / replace.
 
 **Thirty-second close.** I preserve state before reseating, reproduce with dwell, and refuse NFF without a reproduction and control plan.
 
-**Deep dive.** §7.12, Table 11.1.
+**Deep dive.** §7.14, Table 11.1.
 
 ## Production recurrence-control update
 
@@ -655,7 +655,7 @@ Golden units across stations $\rightarrow$ correlation? $\rightarrow$ ship.
 
 > **30-second answer (memorize).** Log what discriminates hypotheses: per-lane power, bias, pre-FEC BER and FEC histograms; module temperature and actuator drive; LOS/LOL with context. Require timestamp accuracy, sampling cadence, aggregation window, units, calibration/scaling, missing-data behavior, firmware/schema version, serial/lot/platform, event trigger, retention, and a decision owner. Alarm on trends and disagreements, not only hard thresholds. Therefore I would instrument the ledgers margin testing said die first.
 
-Add a register only if it changes contain, derate, RMA, or FA ownership. Full tradeoff: §7.12.
+Add a register only if it changes contain, derate, RMA, or FA ownership. Full tradeoff: §7.14.
 
 <pre class="dectree" aria-label="Telemetry purpose: early margin erosion"><code>Telemetry purpose: early margin erosion
   |
@@ -686,7 +686,7 @@ Actuator near rail $\rightarrow$ control margin? $\rightarrow$ thermal design.
 
 **Thirty-second close.** I instrument the ledgers that discriminate hypotheses and alarm on trends and disagreements that unlock triage.
 
-**Deep dive.** Appendix A.10.13, §7.8.
+**Deep dive.** Appendix A.10.13, §7.10.
 
 ## Qualification planning
 
@@ -795,7 +795,7 @@ Staff follow-ups often stop asking "what test?" and start asking "given constrai
 
 *Benefit:* faster fleet triage and earlier margin erosion detection.\
 *Downside:* firmware, storage, alarm fatigue.\
-*Criteria:* each field needs a decision owner and a reaction plan (Appendix C.14, §7.12).
+*Criteria:* each field needs a decision owner and a reaction plan (Appendix C.14, §7.14).
 
 ##### Would you run more qualification?
 

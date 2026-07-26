@@ -32,7 +32,7 @@ Controlled confirmation
 Decision + owner + timeline + reversibility
   |
 Follow-up control (ATP / SPC / telemetry / supplier)</code></pre>
-Stable average power deprioritizes gross optical loss but does not eliminate fast power fluctuations, clipping, monitor averaging, or reflection-dependent effects. A surviving hypothesis is only the leading mechanism until confirmed by reproduction, controlled swap, stress dependence, rollback, or physical evidence (§4.8, §7.11, Appendix D.16).
+Stable average power deprioritizes gross optical loss but does not eliminate fast power fluctuations, clipping, monitor averaging, or reflection-dependent effects. A surviving hypothesis is only the leading mechanism until confirmed by reproduction, controlled swap, stress dependence, rollback, or physical evidence (§4.8, §7.13, Appendix D.16).
 
 > **Why experienced engineers ask about scope before touching the lab?**
 >
@@ -40,9 +40,9 @@ Stable average power deprioritizes gross optical loss but does not eliminate fas
 
 > **Engineering heuristic.** If two explanations fit equally well, prefer the one that requires the fewest independent failures.
 
-## Validation flow (Steps 1--11)
+## Optical product-readiness lifecycle wall chart (Steps 1--11)
 
-<pre class="dectree" aria-label="Validation flow (same as tab:ladder)"><code>Validation flow (same as tab:ladder)
+<pre class="dectree" aria-label="Product-readiness lifecycle (same as tab:ladder)"><code>Product-readiness lifecycle (same as tab:ladder)
   |
 Step 1: Define requirements
   |
@@ -52,7 +52,7 @@ Step 3: Bring up hardware
   |
 Step 4: Characterize behavior
   |
-Step 5: Validate margin and interoperability
+Step 5: Verify requirements and validate system use
   |
 Step 6: Qualify reliability
   |
@@ -65,7 +65,9 @@ Step 9: Ramp mass production
 Step 10: Monitor the fleet
   |
 Step 11: Feed learning / next revision</code></pre>
-Same order as Table 7.2, not a second Staff loop. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness (§7.1, Appendix A.8.5, §8.3).
+Same order as Table 7.3, not a second Staff loop. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness (§7.3, Appendix A.8.5, §8.3).
+
+*Legend.* Program phases: EVT, DVT, PVT, pilot, MP. Engineering disciplines: characterization, verification, system validation, reliability qualification, manufacturing validation, production control, fleet monitoring. Program phases group work. Engineering disciplines define the evidence (§7.1, §7.2).
 
 Step 6 (qualify reliability): mechanism $\rightarrow$ stress $\rightarrow$ observable $\rightarrow$ acceptance $\rightarrow$ confidence. See Chapter 8.
 
@@ -134,7 +136,7 @@ Correlation analysis (which cohort?)
   |-- lot / date code / FW / cal / platform / location
   |
 Containment and corrective action</code></pre>
-Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (§7.12, §9.3).
+Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (§7.14, §9.3).
 
 > **Engineering heuristic.** Population behavior is usually more informative than one failing unit. A cohort plot often beats another hour on the same sample.
 
@@ -163,7 +165,7 @@ Golden swap / loopback
 Evidence
   |
 Owner + decision</code></pre>
-Bisect domains before opening packages (§7.10, §11.2).
+Bisect domains before opening packages (§7.12, §11.2).
 
 ## Supplier qualification
 
@@ -203,7 +205,7 @@ Recurrence control
 Decision closure: owner / timeline / reversibility / follow-up</code></pre>
 > **Engineering heuristic.** Contain first when the population can grow. Perfect mechanism stories do not unship yesterday's lot.
 
-Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (§9.6, §7.12, Appendix D.16).
+Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (§9.6, §7.14, Appendix D.16).
 
 ## Margin-consumption flow
 
@@ -228,7 +230,7 @@ Remaining margin
 Above deployment requirement?
   |-- YES --&gt; proceed
   |-- NO  --&gt; redesign / restrict / recalibrate / reject</code></pre>
-This is a conceptual margin flow. Measure net margin at a defined reference plane and avoid double-counting overlapping penalties (§5.19, §7.7).
+This is a conceptual margin flow. Measure net margin at a defined reference plane and avoid double-counting overlapping penalties (§5.19, §7.9).
 
 ## Black-box versus engineering access
 
@@ -361,7 +363,7 @@ Decision trees prioritize the next measurement. They do not convert a symptom in
 
 ## Decision-Tree Interview Drills
 
-Compact navigation drills. Enter the correct route quickly. Do not invent a second lifecycle; re-enter Appendix D.2, Table 7.2 when the decision requires it. Score spoken answers with Appendix A.12.1 if useful; use Appendix A.12 for full case practice.
+Compact navigation drills. Enter the correct route quickly. Do not invent a second lifecycle; re-enter Appendix D.2, Table 7.3 when the decision requires it. Score spoken answers with Appendix A.12.1 if useful; use Appendix A.12 for full case practice.
 
 ##### Scenario 1. BER rises while average power remains stable.
 

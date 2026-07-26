@@ -5,7 +5,7 @@ title: "Ch 13: Engineering case studies"
 
 # 13 Engineering case studies
 
-This appendix is practice under incomplete information. The frameworks already live in Appendix A, Appendix C, Appendix D and Table 7.2. Here you apply them. Do not jump to the mechanism. Score yourself with Appendix A.12 after each case.
+This appendix is practice under incomplete information. The frameworks already live in Appendix A, Appendix C, Appendix D and Table 7.3. Here you apply them. Do not jump to the mechanism. Score yourself with Appendix A.12 after each case.
 
 ## Information value
 
@@ -135,7 +135,7 @@ Add or tighten the production proxy that would have caught the signature; review
 
 ##### Fleet prevention.
 
-Burn down the installed cohort; keep the control owner until rates fall; feed the lesson into §7.1.12.
+Burn down the installed cohort; keep the control owner until rates fall; feed the lesson into §7.3.13.
 
 ##### Score yourself.
 
@@ -169,7 +169,7 @@ Not "it will work if the datasheet matches." Equivalence must be defined across 
 
 ##### Decision tree.
 
-Freeze requirements first (Table 7.2). Then walk bring-up through margin, interop, mechanism-based qualification, manufacturing validation, controlled pilot, and fleet monitoring. A hero sample is not a gate.
+Freeze requirements first (Table 7.3). Then walk bring-up through margin, interop, mechanism-based qualification, manufacturing validation, controlled pilot, and fleet monitoring. A hero sample is not a gate.
 
 ##### Measurements selected.
 
@@ -213,7 +213,7 @@ Problem: second-source equivalence claim. Impact: single-vendor risk reduction v
 
 ##### Deep dive.
 
-Appendix C.7, Appendix C.15, §8.3, Table 7.2, §9.2.
+Appendix C.7, Appendix C.15, §8.3, Table 7.3, §9.2.
 
 ## Case 3: Temperature-dependent BER failure
 
@@ -258,7 +258,7 @@ Mechanical alignment
 Power supply / PSRR</code></pre>
 ##### Decision tree.
 
-Appendix C.4, Appendix D.4, §7.1.6: scope; power versus quality; measure remaining margin at the failing temperature first.
+Appendix C.4, Appendix D.4, §7.3.7: scope; power versus quality; measure remaining margin at the failing temperature first.
 
 ##### Measurements selected.
 
@@ -302,7 +302,7 @@ Problem: BER fail at high temperature, power stable. Impact: envelope risk. Evid
 
 ##### Deep dive.
 
-Appendix C.4, §7.1.6, Appendix A.10.3, §11.12.
+Appendix C.4, §7.3.7, Appendix A.10.3, §11.12.
 
 ## Case 4: Qualification escape
 
@@ -376,7 +376,7 @@ Add the stress or observable that would have caught it; widen sample strategy; a
 
 ##### Fleet prevention.
 
-Keep cohort burn-down and a decision owner until rates fall; feed §7.1.12.
+Keep cohort burn-down and a decision owner until rates fall; feed §7.3.13.
 
 ##### Score yourself.
 

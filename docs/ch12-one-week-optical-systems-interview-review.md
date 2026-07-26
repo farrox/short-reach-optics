@@ -49,7 +49,7 @@ Decision
 Control
   |
 Learning</code></pre>
-Do not invent a second framework. Use this loop inside the validation lifecycle (Table 7.2), the qualification evidence path (Appendix D.3), and the failure-analysis handbook (Chapter 11).
+Do not invent a second framework. Use this loop inside the product-readiness lifecycle (Table 7.3), the qualification evidence path (Appendix D.3), and the failure-analysis handbook (Chapter 11).
 
 > **Why experienced engineers force this loop before naming a part?**
 >
@@ -453,7 +453,7 @@ A good answer explains why each choice constrains the next one. A VCSEL path poi
 
 Before you open an instrument, walk the failure up the scope ladder (unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ site $\rightarrow$ fleet). Each rung changes the owner and the next action (Appendix D.5, Appendix D.9). Also ask time and change: sudden versus gradual, intermittent versus constant, and what changed just before the symptom. Scope often removes more hypotheses than the first bench measurement. A fleet-wide gradual drift cannot be a single dirty connector. A vendor-lot signature points to supplier containment before you redesign the module.
 
-Preserve the failing state and its telemetry before you reseat, clean, reboot, or change calibration. Capture CMIS monitors, pre-FEC BER, bias currents, temperatures, LOS and LOL flags, and firmware versions. An intermittent that disappears under debugging is still a real failure; you destroyed the evidence (§7.12, Table 11.1).
+Preserve the failing state and its telemetry before you reseat, clean, reboot, or change calibration. Capture CMIS monitors, pre-FEC BER, bias currents, temperatures, LOS and LOL flags, and firmware versions. An intermittent that disappears under debugging is still a real failure; you destroyed the evidence (§7.14, Table 11.1).
 
 > **Why experienced engineers ask about scope first?**
 >
@@ -467,7 +467,7 @@ Preserve the failing state and its telemetry before you reseat, clean, reboot, o
 
 ### Use the power-versus-signal-quality fork
 
-First ask whether received optical power changed. That one question splits the debug tree. Full instrument paths and worked examples live in §4.8, §7.11.
+First ask whether received optical power changed. That one question splits the debug tree. Full instrument paths and worked examples live in §4.8, §7.13.
 
 If power changed, stay on the power ledger: source enable, coupling, connectors, ORL, plant loss, and monitor calibration. Confirm with an external meter at a named plane before retuning eyes or equalizers.
 
@@ -510,13 +510,13 @@ Name the spent ledger before naming a laser, TIA, or connector. The ledger picks
 
 > **Engineering heuristic.** An actuator near its rail is often the story before the diode is dead. Check control authority before you declare wear-out.
 
-### Use the validation ladder
+### Use the product-readiness lifecycle
 
-**Key idea.** Validation is staged uncertainty reduction. Engineering is decision making; decision making is uncertainty reduction; measurements reduce uncertainty; therefore measurements exist to improve decisions.
+**Key idea.** Product readiness is staged uncertainty reduction. Engineering is decision making; decision making is uncertainty reduction; measurements reduce uncertainty; therefore measurements exist to improve decisions.
 
-For every stage, name the question the stage answers and the uncertainty it removes. A test that answers no question is cost, not confidence. Do not re-list the lifecycle here; memorize the order in Table 7.2 and the exit criteria in §7.1.
+For every stage, name the question the stage answers and the uncertainty it removes. A test that answers no question is cost, not confidence. Do not re-list the lifecycle here; memorize the order in Table 7.3 and the exit criteria in §7.3.
 
-Night-before path: validation playbook in Appendix C.8. Practice prose: Appendix A.10.2.
+Night-before path: readiness playbook in Appendix C.8. Practice prose: Appendix A.10.2.
 
 ### Margin budgeting
 
@@ -538,7 +538,7 @@ The vendor designs internals. The customer characterizes externally observable b
 
 ### Know what each instrument answers
 
-Do not recite instrument names. Use Measurement $\rightarrow$ uncertainty removed $\rightarrow$ decision unlocked (Appendix D.14). Fast map: power meter (power ledger), LIV (device vs setpoint), OSA (spectral), RIN/ORL (floor), DCA (eye), BERT/FEC (waterfall shape), VNA (electrical plant), thermal chamber (reversible vs aging), bias sweep (control ledger). Details and reference planes live in §7.6, Table 7.3.
+Do not recite instrument names. Use Measurement $\rightarrow$ uncertainty removed $\rightarrow$ decision unlocked (Appendix D.14). Fast map: power meter (power ledger), LIV (device vs setpoint), OSA (spectral), RIN/ORL (floor), DCA (eye), BERT/FEC (waterfall shape), VNA (electrical plant), thermal chamber (reversible vs aging), bias sweep (control ledger). Details and reference planes live in §7.8, Table 7.4.
 
 ### Read a BER waterfall: shift, floor, and burst pattern
 
@@ -634,9 +634,9 @@ Walk four steps: (1) system constraints choose the architecture path before any
 
 Open Appendix C.8 only if the interviewer expands into the ladder; otherwise expand one constraint into the budget table and ATP/FAIR landing. Architecture forks: §5.1, Table 5.1.
 
-### How would you validate a new optical transmitter from bring-up through production?
+### How would you establish readiness for a new optical transmitter from bring-up through production?
 
-This is the question most likely to open the interview. The ladder itself is in Appendix A.8.5, Table 7.2. Frame first: validation is staged uncertainty reduction. Each stage answers a question the previous stage could not.
+This is the question most likely to open the interview. The lifecycle itself is in Appendix A.8.5, Table 7.3. Frame first: product readiness is staged uncertainty reduction. Each stage answers a question the previous stage could not.
 
 > **30-second answer (memorize).** See Appendix C.8 for the canonical 30-second answer. Deliver that first; expand below only if asked.
 
@@ -646,7 +646,7 @@ Walk the ladder in order. For each stage, name one instrument, the uncertainty r
 
 ##### 10-minute reference (read only).
 
-Open Appendix C.8 for the thirty-second playbook. Expand only the stage the interviewer picks using Table 7.2: entry condition, key uncertainty, exit criteria, decision unlocked. Body detail is in Chapter 7, Chapter 8. Prefer customer-visible measurements unless engineering access is available (Appendix D.11).
+Open Appendix C.8 for the thirty-second playbook. Expand only the stage the interviewer picks using Table 7.3: entry condition, key uncertainty, exit criteria, decision unlocked. Body detail is in Chapter 7, Chapter 8. Prefer customer-visible measurements unless engineering access is available (Appendix D.11).
 
 ### BER worsens at high temperature but average power is stable. What do you do?
 
@@ -834,7 +834,7 @@ A ring wins when many wavelengths must fit on one die, in dense WDM and co-packa
 
 ### How do you decide whether a field issue is performance, reliability, or manufacturability?
 
-Wrong bucket, wrong owner, wasted weeks. Classify on the ticket before failure analysis starts (§7.12).
+Wrong bucket, wrong owner, wasted weeks. Classify on the ticket before failure analysis starts (§7.14).
 
 ##### Bucket 1: performance.
 
@@ -860,7 +860,7 @@ Install age, lot correlation, and trend shape (sudden, gradual, or corner- depen
 
 ### What would you put in fleet telemetry, and why?
 
-Telemetry exists to catch margin erosion early and to triage without pulling hardware. Log what discriminates hypotheses, not every register on the chip (§7.8, §7.12).
+Telemetry exists to catch margin erosion early and to triage without pulling hardware. Log what discriminates hypotheses, not every register on the chip (§7.10, §7.14).
 
 ##### Per-lane observables.
 
@@ -1007,7 +1007,7 @@ Assume seven days, with the interview near the end of Day 7. Protect sleep. Eac
 
 ##### Day 1: Mental models.
 
-*Learn:* five ledgers (Appendix A.8.4), validation lifecycle (Table 7.2), margin thinking, reference planes, Staff pattern (Appendix A.1).\
+*Learn:* five ledgers (Appendix A.8.4), validation lifecycle (Table 7.3), margin thinking, reference planes, Staff pattern (Appendix A.1).\
 *Output:* Explain aloud, "How would you debug a BER failure?"
 
 ##### Day 2: Optical fundamentals.
@@ -1017,7 +1017,7 @@ Assume seven days, with the interview near the end of Day 7. Protect sleep. Eac
 
 ##### Day 3: Validation.
 
-*Learn:* characterization, margin, interoperability, and where qualification and manufacturing sit in the lifecycle (Appendix A.8.5, Appendix C.8, Table 7.2).\
+*Learn:* characterization, margin, interoperability, and where qualification and manufacturing sit in the lifecycle (Appendix A.8.5, Appendix C.8, Table 7.3).\
 *Output:* Design a validation plan for a new optical module in two minutes.
 
 ##### Day 4: Reliability qualification.
@@ -1060,7 +1060,7 @@ Full trees: Appendix D.1, Appendix D.4. Pick the next measurement by information
 ### Cheat Sheet B: Validation / decision loop
 
 <table class="book-table"><tr><th>Requirement Risk Mechanism</th></tr><tr><td>[0.4em]</td></tr><tr><td>[0.2em] Measurement Evidence Decision Control</td></tr></table>
-Staff pattern and lifecycle: Appendix A.1, Table 7.2.
+Staff pattern and lifecycle: Appendix A.1, Table 7.3.
 
 ##### Executive frame (one breath).
 
@@ -1085,7 +1085,7 @@ Three pairs only. Grade yourself against the strong column, then open the matchi
 ##### 2. Validate a new module.
 
 *Weak:* "I would use a DCA, a power meter, and a temperature chamber."\
-*Strong:* Walk the lifecycle stage that matches the risk: requirements, characterization, margin, interop, qual, manufacturing control (Appendix C.8, Table 7.2). Instruments are means, not the plan.
+*Strong:* Walk the lifecycle stage that matches the risk: requirements, characterization, margin, interop, qual, manufacturing control (Appendix C.8, Table 7.3). Instruments are means, not the plan.
 
 ##### 3. Qual escape in the field.
 

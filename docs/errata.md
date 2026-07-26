@@ -178,6 +178,15 @@ No new frameworks. Structural relocation of existing material is allowed.
   Spoken/Pressure/Trap questions (`sec:models-interview-qa`). HTML aux parser
   now resolves labels whose titles contain nested braces (e.g.\ `sec:qber`).
   PDF about 435 pages.
+- **Ch7 product-readiness terminology:** Retitled Chapter~7 to Optical Product
+  Readiness: From Requirements to Fleet (`ch:product-readiness`; keep
+  `ch:validation` alias). Product-readiness lifecycle is the 11-step umbrella;
+  system validation is Step~5 only (verify requirements vs intended use).
+  EVT/DVT/PVT are program-phase labels with sidenotes and mapping table.
+  Updated evidence-discipline table, Step~6/~7 boundaries, Interview Q\&A,
+  Ch8--11 cross-language, App~C wall chart, glossary, and App~A readiness
+  ladder wording. Old HTML slug redirects from `ch7-optical-validation`.
+  PDF about 441 pages.
 
 ## Typographical fixes
 

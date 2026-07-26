@@ -736,8 +736,10 @@ thermal gradient that affects one lane.
 \paragraph{Corrective action and recurrence control.}
 Restore thermal headroom, correct calibration and control limits, reduce coupling,
 or derate the operating point. Add the loaded-neighbor temperature ramp to the ATP
-or design-validation plan that missed it.
-\emph{Recurrence control:} loaded-neighbor temperature ramp in ATP or DV.
+or the product-readiness plan step that missed it
+(\Cref{ch:product-readiness}).
+\emph{Recurrence control:} loaded-neighbor temperature ramp in ATP or
+requirement-verification / system-validation evidence.
 
 \section{Failure-analysis checklist}
 \label{sec:failure-analysis-checklist}
@@ -908,7 +910,10 @@ wrong scope.
 \keyidea{A useful failure analysis starts with a symptom and ends with a new
 control. Preserve the failing state, split shared from local behavior, clear the
 measurement system, and choose one measurement that can falsify the leading
-hypothesis. The corrective action is incomplete until production or fleet data
+hypothesis. Return fleet and production evidence to the appropriate
+product-readiness step: requirement, architecture, characterization, system
+validation, reliability qualification, manufacturing validation, ATP, or fleet
+control. The corrective action is incomplete until production or fleet data
 show that the same signature no longer escapes.}
 
 Junior mistake: reseat first, or close without a recurrence control

@@ -21,7 +21,7 @@ Interview preparation
 
 Incident / problem solving
 
-: Open the wall-chart trees (Appendix D), failure handbook (Chapter 11), case (Appendix B), Staff judgment (Appendix F), validation ladder (Chapter 7, Table 7.2), qualification (Chapter 8), or manufacturing validation (Chapter 9).
+: Open the wall-chart trees (Appendix D), failure handbook (Chapter 11), case (Appendix B), Staff judgment (Appendix F), validation ladder (Chapter 7, Table 7.3), qualification (Chapter 8), or manufacturing validation (Chapter 9).
 
 Start from the requirement, not the component. Move downward from system requirements to architecture, subsystem, component, and only then to the physics needed to make the decision. A choice at one layer constrains the next. The aim is operational judgment: reduce uncertainty enough to make the next decision, then name the control that prevents recurrence.
 

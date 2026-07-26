@@ -28,7 +28,7 @@ Transmit
 
 Channel
 
-: fiber, connectors, MUX (§7.2.2, §6.3).
+: fiber, connectors, MUX (§7.4.2, §6.3).
 
 Receive
 
@@ -48,7 +48,7 @@ The block list above is one module. A working rack-to-rack link chains two of th
 
 Start at the switch ASIC in rack A. It builds Ethernet frames, runs the reconciliation and coding sublayers, and encodes KP4 FEC (§3.8, §3.12), then hands parallel bit streams to the host *SerDes*. The SerDes serializes each stream to a 112 GBd PAM4 lane, applies transmit FFE, and drives the host PCB and the module cage connector. That electrical hop, host to module, is the AUI (an OIF VSR-class channel; §3.3, §3.14). Inside the module, an optional DSP or retimer reshapes the lane, or for a linear pluggable (LPO) nothing does and the host SerDes owns the whole electrical budget (§3.6, §3.14.2). The driver then swings a modulator, an EML, Mach--Zehnder, or ring (§3.14.3), and electrons become photons. That is the first domain crossing, marked E$\to$O in the figure.
 
-The fiber plant is the quiet middle: duplex or parallel single-mode fiber, connectors, and patch panels carrying the light a few meters to a few hundred meters (§7.2.2, §3.3). At the far module the light hits a photodiode and TIA and becomes current again (O$\to$E, the second crossing; §4.5). An optional module DSP cleans it up, and the rack B host SerDes recovers timing, equalizes the lane, and decodes KP4. The switch ASIC reassembles frames and forwards them into the fabric, out a NIC, and over the in-node link (PCIe or an NVLink-class fabric) into the destination GPU or CPU. Every pluggable link is this shape; form factors and CPO only rearrange where the boundaries fall.
+The fiber plant is the quiet middle: duplex or parallel single-mode fiber, connectors, and patch panels carrying the light a few meters to a few hundred meters (§7.4.2, §3.3). At the far module the light hits a photodiode and TIA and becomes current again (O$\to$E, the second crossing; §4.5). An optional module DSP cleans it up, and the rack B host SerDes recovers timing, equalizes the lane, and decodes KP4. The switch ASIC reassembles frames and forwards them into the fabric, out a NIC, and over the in-node link (PCIe or an NVLink-class fabric) into the destination GPU or CPU. Every pluggable link is this shape; form factors and CPO only rearrange where the boundaries fall.
 
 <figure id="fig:link-chain" data-latex-placement="ht">
 <embed src="figures/fig_link_chain.pdf" />
@@ -101,7 +101,7 @@ CTLE (continuous-time linear equalizer)
 
 FFE (feed-forward equalizer)
 
-: is a finite-impulse-response filter with pre- and post-cursor taps. Host SerDes and module DSPs use FFE (often with CTLE ahead of it) to open the eye. Transmitter and dispersion eye closure quaternary (TDECQ) applies a *bounded* reference FFE when scoring transmitters (§7.4).
+: is a finite-impulse-response filter with pre- and post-cursor taps. Host SerDes and module DSPs use FFE (often with CTLE ahead of it) to open the eye. Transmitter and dispersion eye closure quaternary (TDECQ) applies a *bounded* reference FFE when scoring transmitters (§7.6).
 
 DFE (decision-feedback equalizer)
 
@@ -209,7 +209,7 @@ The mistake to avoid is treating TP2 and TP3 as electrical points just past a co
 <figcaption>Test points on a one-way IM/DD link. Green marks the host and die-pad electrical planes (TP0, TP1a, TP4a, TP5); blue the module’s electrical connector (TP1, TP4); red the optical planes at the fiber <em>MDI</em> (TP2, TP3). The two domain crossings, E<span class="math inline">→</span>O in the module transmitter and O<span class="math inline">→</span>E in the module receiver, sit between the electrical and optical planes.<span id="fig:test-points" data-label="fig:test-points"></span></figcaption>
 </figure>
 
-**Read the chain in order.** At the transmit end, **TP0** is the transmit SerDes output at the die pad, the silicon designer's reference. **TP1a** is the same host signal referenced at the module cage, the *AUI* the module must accept; its electrical eye quality is *EECQ*, the electrical analog of TDECQ. **TP1** is the module's electrical input on the far side of the mated connector. The module then converts electrical to optical, and **TP2** is the optical launch at the transmitter *MDI*, where TDECQ, TECQ, OMA$_{\mathrm{outer}}$, ER, and RIN are specified (Chapter 7, §7.4). After the fiber, **TP3** is the optical input at the receiver MDI, where stressed receiver sensitivity (SECQ) is specified. The module converts back to electrical at **TP4** (its electrical output), **TP4a** is the host-referenced input near the receive SerDes under worst-case module output, and **TP5** is the receive die pad.
+**Read the chain in order.** At the transmit end, **TP0** is the transmit SerDes output at the die pad, the silicon designer's reference. **TP1a** is the same host signal referenced at the module cage, the *AUI* the module must accept; its electrical eye quality is *EECQ*, the electrical analog of TDECQ. **TP1** is the module's electrical input on the far side of the mated connector. The module then converts electrical to optical, and **TP2** is the optical launch at the transmitter *MDI*, where TDECQ, TECQ, OMA$_{\mathrm{outer}}$, ER, and RIN are specified (Chapter 7, §7.6). After the fiber, **TP3** is the optical input at the receiver MDI, where stressed receiver sensitivity (SECQ) is specified. The module converts back to electrical at **TP4** (its electrical output), **TP4a** is the host-referenced input near the receive SerDes under worst-case module output, and **TP5** is the receive die pad.
 
 <table class="book-table"><tr><th>Point</th><th>Domain</th><th>Location</th><th>Principal measurement</th><th>Owning spec</th></tr><tr><td>TP0</td><td>Electrical</td><td>Tx ASIC/SerDes die pad (host)</td><td>Silicon Tx quality; design reference, hard to probe once packaged</td><td>OIF CEI C2M</td></tr><tr><td>TP1a</td><td>Electrical</td><td>Host output at the cage, host-referenced (SerDes output via a host compliance board)</td><td>Host Tx eye, EECQ; the AUI the module must accept</td><td>OIF CEI C2M; LPO MSA</td></tr><tr><td>TP1</td><td>Electrical</td><td>Module electrical input (module side of the mated connector)</td><td>Module input stressor calibration</td><td>IEEE 802.3 AUI; OIF CEI</td></tr><tr><td>TP2</td><td>Optical</td><td>Transmitter MDI, fiber launch (after E)</td><td>TDECQ, TECQ, OMA_outer, ER, RIN_xOMA</td><td>IEEE 802.3 PMD; LPO MSA</td></tr><tr><td>TP3</td><td>Optical</td><td>Receiver MDI, fiber input (before O)</td><td>Stressed receiver sensitivity, SECQ</td><td>IEEE 802.3 PMD; LPO MSA</td></tr><tr><td>TP4</td><td>Electrical</td><td>Module electrical output (module side of the connector)</td><td>Module Rx electrical output, EECQ</td><td>IEEE 802.3 AUI; OIF CEI</td></tr><tr><td>TP4a</td><td>Electrical</td><td>Stressed host input, host-referenced (near the Rx SerDes)</td><td>Host Rx under worst-case module output</td><td>OIF CEI C2M; LPO MSA</td></tr><tr><td>TP5</td><td>Electrical</td><td>Rx ASIC/SerDes die pad (host)</td><td>Silicon Rx recovery; design reference, hard to probe</td><td>OIF CEI C2M</td></tr></table>
 **Table 3.5.** Test-point reference planes on a short-reach IM/DD link, transmit to receive. The optical planes TP2 and TP3 carry the transmitter- and receiver-quality specs; the electrical planes carry the host and module eye specs. See §10.3 for the concrete LPO MSA assignments.
@@ -266,7 +266,7 @@ Source choice sets chirp (Chapter 5, Table 3.12, §3.14.3):
 
 - **EML / external MZM / ring:** low chirp; default for DR/FR and CPO.
 
-- **Reflections:** light reflected back into the laser raises effective chirp and RIN; optical return loss (ORL) specs exist for this reason (§7.2.2).
+- **Reflections:** light reflected back into the laser raises effective chirp and RIN; optical return loss (ORL) specs exist for this reason (§7.4.2).
 
 For the distances this book treats (in-package through a few hundred meters), dispersion is often secondary to TDECQ, connector loss, and receiver noise. It becomes decisive when a low-chirp assumption fails (aging EAM bias, DML on SMF, or FR edge cases). TDECQ embeds dispersion in its name because the reference receiver includes a dispersion penalty model for the standardized test channel.
 
@@ -337,7 +337,7 @@ One SerDes core may not cover XSR through LR efficiently: short reaches want sim
 
 ### Deploying 224G: LPO, COM, and TDECQ corners
 
-At 224G the alphabet is settled (PAM4 + KP4). What fails in the field is the *margin stack*: electrical channel operating margin (COM) on the host side, transmitter and dispersion eye closure quaternary (TDECQ) on the optical side, and the production corners that couple them (§7.9). Retimed modules still dominate 1.6T faceplate ports because their DSP absorbs host-channel sin. LPO and LRO exist to delete that DSP for power and latency; they only ship when both ledgers close without it .
+At 224G the alphabet is settled (PAM4 + KP4). What fails in the field is the *margin stack*: electrical channel operating margin (COM) on the host side, transmitter and dispersion eye closure quaternary (TDECQ) on the optical side, and the production corners that couple them (§7.11). Retimed modules still dominate 1.6T faceplate ports because their DSP absorbs host-channel sin. LPO and LRO exist to delete that DSP for power and latency; they only ship when both ledgers close without it .
 
 ##### The two ledgers that must close together.
 
@@ -349,7 +349,7 @@ Electrical COM
 
 Optical TDECQ / TECQ
 
-: Outer OMA, RLM, and TDECQ (or *TECQ* without the test fiber) score the transmitter after a bounded reference FFE (§7.4). LPO MSA language for 100G/lane DR already couples OMA to max(TECQ, TDECQ) and caps TDECQ near 3.4 dB; 224G-class linear modules inherit the same philosophy even while CEI-224G-Linear and IEEE 802.3dj freeze the exact limits .
+: Outer OMA, RLM, and TDECQ (or *TECQ* without the test fiber) score the transmitter after a bounded reference FFE (§7.6). LPO MSA language for 100G/lane DR already couples OMA to max(TECQ, TDECQ) and caps TDECQ near 3.4 dB; 224G-class linear modules inherit the same philosophy even while CEI-224G-Linear and IEEE 802.3dj freeze the exact limits .
 
 CEI-224G-Linear defines the host/module electrical test points (TP1/TP1a, TP4/TP4a) so a linear module can sit between a DSP host SerDes and the fiber without its own CDR . Commercial 224G driver/TIA families advertise that interface explicitly (tunable swing, on-chip CTLE, CEI-224G-Linear host EQ) [Semtech 224G](https://www.semtech.com/company/press/semtech-launches-224-gbps-ic-family-for-linear-optics-era). If either ledger is soft, prefer retimed or LRO until the host PCB and module linearity improve; do not "fix" LPO with more FEC alone.
 
@@ -357,23 +357,23 @@ CEI-224G-Linear defines the host/module electrical test points (TP1/TP1a, TP4/TP
 
 The failure modes are familiar once you stop treating LPO as a cheaper OSFP:
 
-- **Host FIR / CTLE mistuned.** Taps pegged or CTLE boost too aggressive raises COM loss and looks like a bad module. Golden-swap the module first (§7.9).
+- **Host FIR / CTLE mistuned.** Taps pegged or CTLE boost too aggressive raises COM loss and looks like a bad module. Golden-swap the module first (§7.11).
 
 - **Connector and package return loss.** VSR/MR channels already sit near the edge at 112 GBd; a resonant stub or long bondwire eats the few mV of slicer margin (§10.5, §10.5.1).
 
 - **Module nonlinearity.** Driver or TIA compression wrecks RLM; TDECQ climbs even when average power looks fine. Linear-optics parts exist because retimed DSP no longer hides this (§3.14.3, §4.5).
 
-- **ORL / RIN feedback.** Dirty fiber or a bad isolator raises effective RIN and floors pre-FEC BER while LIV still looks healthy (§4.3, §7.2.2).
+- **ORL / RIN feedback.** Dirty fiber or a bad isolator raises effective RIN and floors pre-FEC BER while LIV still looks healthy (§4.3, §7.4.2).
 
-- **Chassis thermal + neighbor load.** Faceplate case temperature and adjacent lanes move bias, TEC, and (for rings) lock; TDECQ and unlock show up together (Table 7.5, §6.5).
+- **Chassis thermal + neighbor load.** Faceplate case temperature and adjacent lanes move bias, TEC, and (for rings) lock; TDECQ and unlock show up together (Table 7.6, §6.5).
 
 ##### Half-retimed LRO as the pragmatic middle.
 
-When full LPO will not close on the target host, *LRO*/*TRO* (retimed TX, linear RX) keeps roughly half the DSP power and still relaxes the Tx eye into the fiber . Many AI clusters take that path first: spend watts on the harder electrical$\to$optical direction, keep the receive path linear into the host. The validation split is the same: COM and stressed host input on the linear side, TDECQ on the retimed Tx side (§10.3, §7.5).
+When full LPO will not close on the target host, *LRO*/*TRO* (retimed TX, linear RX) keeps roughly half the DSP power and still relaxes the Tx eye into the fiber . Many AI clusters take that path first: spend watts on the harder electrical$\to$optical direction, keep the receive path linear into the host. The validation split is the same: COM and stressed host input on the linear side, TDECQ on the retimed Tx side (§10.3, §7.7).
 
 ##### CPO at the same SerDes generation.
 
-Co-packaged engines shipping in 2025--26 typically run *200 Gb/s per optical channel* on 100G/200G SerDes into microring banks with external lasers (§10.10): same CEI-224G-class shoreline as faceplate 224G, but the lossy pluggable connector is gone and the laser service model moves to ELSFP (§5.14). Deployment corners shift from cage thermals to FAU mate, lock hold under neighbor heaters, and ELS hot-swap (Table 7.5, Chapter 6). The electrical alphabet is still 224G PAM4; the hard part is packaging and wavelength control.
+Co-packaged engines shipping in 2025--26 typically run *200 Gb/s per optical channel* on 100G/200G SerDes into microring banks with external lasers (§10.10): same CEI-224G-class shoreline as faceplate 224G, but the lossy pluggable connector is gone and the laser service model moves to ELSFP (§5.14). Deployment corners shift from cage thermals to FAU mate, lock hold under neighbor heaters, and ELS hot-swap (Table 7.6, Chapter 6). The electrical alphabet is still 224G PAM4; the hard part is packaging and wavelength control.
 
 **Key idea.** 224G deployment is a margin problem, not a modulation problem. Close COM and TDECQ together under production-representative corners; use LRO when full LPO will not; treat CPO as the same SerDes generation with a shorter electrical path and a harder laser/lock service model.
 
@@ -508,7 +508,7 @@ Every external modulator (Si MZM, TFLN, ring, EAM) needs an RF path that deliver
 
 ##### What the driver must deliver.
 
-At 224 GBd PAM4 the symbol Nyquist frequency is 112 GHz, so a usable driver is not just "fast enough on paper." It needs RF bandwidth roughly $\gtrsim$100--120 GHz (3 dB) with flat gain and low group-delay ripple, output swing matched to $V_\pi$ or EAM drive (often $\sim$1.5--3 V peak-to-peak, differential or single-ended, part- and modulator-dependent), linearity good enough that RLM and TDECQ stay inside the PMD budget when the optical path adds its own compression (§7.4), and return loss / matching into 50 $\Omega$ (or the designed modulator impedance) so bondwire and package reflections do not eat the bandwidth you paid for on the die. Distributed (traveling-wave) SiGe drivers dominate the high-BW niche: many cascoded gain cells along an artificial transmission line. Lumped drivers win on area and power at lower baud. Flip-chip bumped die and short wirebonds matter as much as $f_T$: a 120 GHz die behind a long bond loop is a 70 GHz module.
+At 224 GBd PAM4 the symbol Nyquist frequency is 112 GHz, so a usable driver is not just "fast enough on paper." It needs RF bandwidth roughly $\gtrsim$100--120 GHz (3 dB) with flat gain and low group-delay ripple, output swing matched to $V_\pi$ or EAM drive (often $\sim$1.5--3 V peak-to-peak, differential or single-ended, part- and modulator-dependent), linearity good enough that RLM and TDECQ stay inside the PMD budget when the optical path adds its own compression (§7.6), and return loss / matching into 50 $\Omega$ (or the designed modulator impedance) so bondwire and package reflections do not eat the bandwidth you paid for on the die. Distributed (traveling-wave) SiGe drivers dominate the high-BW niche: many cascoded gain cells along an artificial transmission line. Lumped drivers win on area and power at lower baud. Flip-chip bumped die and short wirebonds matter as much as $f_T$: a 120 GHz die behind a long bond loop is a 70 GHz module.
 
 ##### Record and commercial snapshot (2025--26).
 
@@ -519,11 +519,11 @@ Table 3.11 separates research demos (often with offline DSP) from shipping or a
 
 ##### LPO and the host-as-driver path.
 
-For *LPO*, the host SerDes (or a linear driver in the module with no retimer) is the modulator driver. Waveform fidelity is end to end: host FFE, connector ISI, driver/modulator nonlinearity, and TIA all land in TDECQ and pre-FEC BER (§3.6, §7.4, §10.5.1). That is why linear-optics driver families (e.g. Semtech's 224G set) advertise CEI-224G-Linear host EQ and tunable swing: the module cannot clean up what the host launches [Semtech 224G](https://www.semtech.com/company/press/semtech-launches-224-gbps-ic-family-for-linear-optics-era). Retimed modules hide some of this behind DSP; they also burn the watts LPO was meant to save.
+For *LPO*, the host SerDes (or a linear driver in the module with no retimer) is the modulator driver. Waveform fidelity is end to end: host FFE, connector ISI, driver/modulator nonlinearity, and TIA all land in TDECQ and pre-FEC BER (§3.6, §7.6, §10.5.1). That is why linear-optics driver families (e.g. Semtech's 224G set) advertise CEI-224G-Linear host EQ and tunable swing: the module cannot clean up what the host launches [Semtech 224G](https://www.semtech.com/company/press/semtech-launches-224-gbps-ic-family-for-linear-optics-era). Retimed modules hide some of this behind DSP; they also burn the watts LPO was meant to save.
 
 ##### Outlook.
 
-Driver roadmaps are no longer waiting on papers alone. Commercial 448G-class parts are shipping as dies: MACOM's $>$120 GHz MZM and EML drivers (OFC 2026) are the clearest public 400G/lane announcement [MACOM](https://www.macom.com/updates/news/2026/macom-announces-two-new-448g-per-lane-drivers-for-3-2t-data-cent), while research benches already run past 200 GBd on short RF paths. Expect a short period where optics and drivers lead host SerDes, so gearboxed 224G electrical into 448G optical remains common (§3.14.3). The hard problems are packaging (bondwire, FAU, faceplate connectors), co-design of peaking with modulator $S_{21}$, and LPO cases where driver linearity and host COM sit beside TDECQ as first-order validation items (§10.5.2, §7.9). After the driver, the next ceilings are modulator EO bandwidth and the PD/TIA noise stack (§3.14.3, §4.5).
+Driver roadmaps are no longer waiting on papers alone. Commercial 448G-class parts are shipping as dies: MACOM's $>$120 GHz MZM and EML drivers (OFC 2026) are the clearest public 400G/lane announcement [MACOM](https://www.macom.com/updates/news/2026/macom-announces-two-new-448g-per-lane-drivers-for-3-2t-data-cent), while research benches already run past 200 GBd on short RF paths. Expect a short period where optics and drivers lead host SerDes, so gearboxed 224G electrical into 448G optical remains common (§3.14.3). The hard problems are packaging (bondwire, FAU, faceplate connectors), co-design of peaking with modulator $S_{21}$, and LPO cases where driver linearity and host COM sit beside TDECQ as first-order validation items (§10.5.2, §7.11). After the driver, the next ceilings are modulator EO bandwidth and the PD/TIA noise stack (§3.14.3, §4.5).
 
 **Key idea.** A 448G-class modulator driver is a $>$100 GHz linear SiGe amp with swing matched to $V_\pi$, not a SerDes pin. Commercial dies now claim $>$120 GHz for MZM/EML/TFLN; research shows $\sim$230 GBd on co-designed benches. Package and modulator match set the real ceiling; LPO makes the host the driver.
 

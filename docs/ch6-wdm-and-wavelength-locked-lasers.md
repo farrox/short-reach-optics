@@ -50,7 +50,7 @@ A Mach--Zehnder is comparatively broadband, so it normally does not require the 
 
 ## WDM filters, grids, and on-chip multiplexing
 
-WDM is not only lasers and locking (§6.6): the PIC needs wavelength selective routing. The MUX/demux stage is a first-class link-budget line item (§7.7), not a packaging footnote.
+WDM is not only lasers and locking (§6.6): the PIC needs wavelength selective routing. The MUX/demux stage is a first-class link-budget line item (§7.9), not a packaging footnote.
 
 ##### Signal journey through the MUX.
 
@@ -173,7 +173,7 @@ Three actuators show up repeatedly, and the bring-up order usually starts with t
 
 ##### Source versus ring isolation.
 
-When a loop loses lock, bisect laser versus ring by holding one side fixed and moving the other (§7.6, §7.12, §6.7):
+When a loop loses lock, bisect laser versus ring by holding one side fixed and moving the other (§7.8, §7.14, §6.7):
 
 <pre class="dectree" aria-label="Source wavelength actuator"><code>Source wavelength actuator
   |
@@ -192,11 +192,11 @@ Dense ring banks share a substrate. Heating one ring to stay on resonance shifts
 
 ##### Where heat comes from.
 
-Self-heating from the ring's own heater (and absorbed optical power) shifts its resonance, so the lock loop must settle with the lane at operating optical power, not dark. Adjacent heaters on nearest-neighbor and next-nearest rings in a WDM bank are the next disturbance; the worst case is all neighbors at max heater power while you hold lock. Package and ASIC load add a common-mode walk: switch or XPU case-temperature ramps and local hotspots move the whole bank, and a shared TEC or cold plate sets how much of that walk the lock loop must reject (§7.9).
+Self-heating from the ring's own heater (and absorbed optical power) shifts its resonance, so the lock loop must settle with the lane at operating optical power, not dark. Adjacent heaters on nearest-neighbor and next-nearest rings in a WDM bank are the next disturbance; the worst case is all neighbors at max heater power while you hold lock. Package and ASIC load add a common-mode walk: switch or XPU case-temperature ramps and local hotspots move the whole bank, and a shared TEC or cold plate sets how much of that walk the lock loop must reject (§7.11).
 
 ##### Design and validation implications.
 
-Budget heater range with headroom for crosstalk, manufacturing offset, temperature, and aging, not just for the coldest and hottest case alone. Lock range is the total region where acquisition or control is possible; control headroom is the remaining distance from the present operating point to a heater rail, TEC limit, laser-current trim limit, safe temperature, or calibration-map boundary. A locked unit with near-zero headroom is already a reliability risk. Layout (heater placement, thermal isolation trenches, ring pitch) is a reliability and yield problem as much as a control problem. Characterize the thermal coupling matrix; do not validate channels only in isolation. In validation, simultaneous full-traffic on neighbors plus max case $T$ is a *lock* test: unlock, BER walk, or TDECQ rise on one $\lambda$ under neighbor load supports a thermal-coupling or control hypothesis, not a confirmed bad laser die (§7.9, §7.12, Chapter 11). Widening heater or TEC range without checking noise, crosstalk, power, and lifetime is not the first fix.
+Budget heater range with headroom for crosstalk, manufacturing offset, temperature, and aging, not just for the coldest and hottest case alone. Lock range is the total region where acquisition or control is possible; control headroom is the remaining distance from the present operating point to a heater rail, TEC limit, laser-current trim limit, safe temperature, or calibration-map boundary. A locked unit with near-zero headroom is already a reliability risk. Layout (heater placement, thermal isolation trenches, ring pitch) is a reliability and yield problem as much as a control problem. Characterize the thermal coupling matrix; do not validate channels only in isolation. In validation, simultaneous full-traffic on neighbors plus max case $T$ is a *lock* test: unlock, BER walk, or TDECQ rise on one $\lambda$ under neighbor load supports a thermal-coupling or control hypothesis, not a confirmed bad laser die (§7.11, §7.14, Chapter 11). Widening heater or TEC range without checking noise, crosstalk, power, and lifetime is not the first fix.
 
 ## External multi-wavelength sources (CW-WDM)
 
@@ -286,9 +286,9 @@ Instruments and BER methods live in Chapter 7. What is special to WDM is the or
 
 3.  **Close lock:** enable the feedback loop; verify capture on every $\lambda$ at operating optical power.
 
-4.  **Stress neighbors / temperature:** max case $T$, neighbor heaters and traffic on (§6.5, §7.9). Confirm hold, not just capture.
+4.  **Stress neighbors / temperature:** max case $T$, neighbor heaters and traffic on (§6.5, §7.11). Confirm hold, not just capture.
 
-5.  **Close the link:** BER / TDECQ / sensitivity on the weakest lane first (§7.4, §7.7).
+5.  **Close the link:** BER / TDECQ / sensitivity on the weakest lane first (§7.6, §7.9).
 
 **Exit when** every assigned $\lambda$ is grid-identified, captures at operating power, holds under neighbor heat and case $T$, and the weakest lane closes BER. **Decision unlocked:** proceed to loaded characterization, or stop and bisect laser versus ring before trusting any BER number.
 
@@ -305,11 +305,11 @@ If one $\lambda$ unlocks or walks, change one actuator at a time (§6.4):
 
 - change ring heater with laser fixed: if the error follows the heater, localize toward the ring, monitor PD, calibration, or thermal crosstalk;
 
-- if both look fine but OMA is low, inspect MUX imbalance and connector/ORL (Table 6.2, §7.2.2).
+- if both look fine but OMA is low, inspect MUX imbalance and connector/ORL (Table 6.2, §7.4.2).
 
 ##### Fleet telltales.
 
-Slow BER creep with rising bias on one line raises a laser-aging hypothesis (§8.5, Chapter 11). Sudden unlock under neighbor load with healthy LIV supports a thermal-coupling or lock-firmware hypothesis. One dark lane with neighbors up localizes investigation toward COD, FAU, or a single ring/heater path; classify with §7.12 before you open an 8D on the wrong supplier.
+Slow BER creep with rising bias on one line raises a laser-aging hypothesis (§8.5, Chapter 11). Sudden unlock under neighbor load with healthy LIV supports a thermal-coupling or lock-firmware hypothesis. One dark lane with neighbors up localizes investigation toward COD, FAU, or a single ring/heater path; classify with §7.14 before you open an 8D on the wrong supplier.
 
 > **What this usually means.** All lanes unlock after a temperature step
 >
@@ -532,5 +532,5 @@ Score each response using the shared chapter-interview rubric in Appendix A.12.1
 <div class="nav-links">
   <a href="ch5-choosing-light-sources-and-modulation">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch7-optical-validation">Next &rarr;</a>
+  <a href="ch7-optical-product-readiness-from-requirements-to-fleet">Next &rarr;</a>
 </div>

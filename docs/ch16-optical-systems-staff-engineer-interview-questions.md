@@ -21,7 +21,7 @@ Index only. Each item is one speakable question plus a pointer to the worked ans
 
 ## Validation
 
-6.  How would you validate a new optical transmitter from bring-up through margin? Appendix C.8, Appendix A.10.2, Table 7.2
+6.  How would you validate a new optical transmitter from bring-up through margin? Appendix C.8, Appendix A.10.2, Table 7.3
 
 7.  How would you set laser requirements for a new IM/DD link? Appendix A.10.1, Table 5.4
 

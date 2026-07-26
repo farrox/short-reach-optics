@@ -43,7 +43,7 @@ Risk ownership includes saying when monitor-only is correct. Tiny, flat rates wi
 
 Separate observation, correlation, hypothesis, and confirmation. Strong confidence on weak evidence is a junior failure mode; weak confidence on strong evidence is how fleets ship escapes.
 
-Hero samples do not answer ship. Population data, versioned ATP, and a life model do. One failing unit can open FA; it cannot by itself justify a fleet-wide architecture rewrite (Appendix A.2.1, Table 7.2).
+Hero samples do not answer ship. Population data, versioned ATP, and a life model do. One failing unit can open FA; it cannot by itself justify a fleet-wide architecture rewrite (Appendix A.2.1, Table 7.3).
 
 *Principle:* Match the strength of the claim to the strength of the evidence.
 
@@ -65,7 +65,7 @@ Second sources are not ideology. Qualify them when concentration risk exceeds fl
 
 ## Fleet thinking
 
-One unit is a story. A lot, rack, vendor, or time trend is a decision. Scope before you generalize (§7.12, Appendix C.9). Telemetry earns its keep only when each field has a decision owner and a reaction plan (Appendix C.14).
+One unit is a story. A lot, rack, vendor, or time trend is a decision. Scope before you generalize (§7.14, Appendix C.9). Telemetry earns its keep only when each field has a decision owner and a reaction plan (Appendix C.14).
 
 Ask what fraction of the population is affected, whether the rate is rising, and whether healthy paths can keep shipping while the bad population is held. Fleet judgment is population math plus reversible containment, not a louder lab story.
 

@@ -253,16 +253,16 @@ visible and its prediction can be checked against hardware
 \section{Why validation, reliability, and manufacturing are separate}
 
 A product working once does not establish distribution, corner behavior, margin,
-interoperability, lifetime, manufacturability, or field readiness. Validation
-turns requirements into evidence. The canonical lifecycle in
-\Cref{ch:validation} is:
+interoperability, lifetime, manufacturability, or field readiness. Product
+readiness turns requirements into evidence. The canonical product-readiness
+lifecycle in \Cref{ch:product-readiness} is:
 
 \begin{enumerate}
 \item Define requirements.
 \item Review architecture.
 \item Bring up hardware.
 \item Characterize behavior.
-\item Validate margin and interoperability.
+\item Verify requirements and validate system use.
 \item Qualify reliability.
 \item Validate manufacturing.
 \item Run a controlled pilot.
@@ -273,13 +273,14 @@ turns requirements into evidence. The canonical lifecycle in
 
 Do not treat those Steps as interchangeable.
 
-Validation asks whether the product works for its intended use now. Reliability
-qualification asks whether named mechanisms threaten its ability to continue
-working over time and environmental exposure: laser aging, thermal fatigue,
-humidity, corrosion, ESD, vibration, connector durability, acceleration models,
-sample confidence, and acceptance criteria. Qualification is not a collection of
-harsh tests. It is a confidence argument connecting a requirement, mechanism,
-stress, observable, and decision (\Cref{ch:reliability}).
+System validation asks whether the product works for its intended use and
+supported ecosystem. Reliability qualification asks whether named mechanisms
+threaten its ability to continue working over time and environmental exposure:
+laser aging, thermal fatigue, humidity, corrosion, ESD, vibration, connector
+durability, acceleration models, sample confidence, and acceptance criteria.
+Qualification is not a collection of harsh tests. It is a confidence argument
+connecting a requirement, mechanism, stress, observable, and decision
+(\Cref{ch:reliability}).
 
 A qualified engineering unit does not prove that a factory can reproduce the
 result. Manufacturing validation covers production-reference freeze,

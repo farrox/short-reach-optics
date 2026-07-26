@@ -98,7 +98,7 @@ Inside the node, the load-store fabric is PCI Express and *CXL*. PCI-SIG release
 
 ##### Management and telemetry.
 
-Module management is OIF CMIS (§7.8), but the box and fleet layers above it are not OIF. *DMTF Redfish* is the RESTful standard for server and switch management and telemetry; *OpenConfig* defines vendor-neutral data models and streaming telemetry (gNMI) for network devices; and *SONiC* is the open network operating system many hyperscalers run, with its own dataplane telemetry hooks . These are where per-module CMIS monitors surface as fleet signals: optical power, case temperature, FEC symbol-error counts, and pre-FEC BER aggregated across $10^5$ links (Chapter 8, §8.8). A module program that ships without a telemetry contract into one of these systems is effectively invisible at fleet scale.
+Module management is OIF CMIS (§7.10), but the box and fleet layers above it are not OIF. *DMTF Redfish* is the RESTful standard for server and switch management and telemetry; *OpenConfig* defines vendor-neutral data models and streaming telemetry (gNMI) for network devices; and *SONiC* is the open network operating system many hyperscalers run, with its own dataplane telemetry hooks . These are where per-module CMIS monitors surface as fleet signals: optical power, case temperature, FEC symbol-error counts, and pre-FEC BER aggregated across $10^5$ links (Chapter 8, §8.8). A module program that ships without a telemetry contract into one of these systems is effectively invisible at fleet scale.
 
 The frontier is optics entering the scale-up domain (optical NVLink-class links, co-packaged switches), because copper reach at 200G/lane is only about a meter.
 
@@ -132,7 +132,7 @@ XPO
 
 : liquid-cooled mega-pluggable (§10.11): 12.8 Tb/s per module, front-panel serviceability with CPO-class density.
 
-*CMIS* (§7.8) is the management layer for module identity, monitors, and (at 224G/448G) link-training and host-side signal-integrity tuning extensions. Optical engineers touch it when debugging lock, FEC, and equalizer settings across vendors.
+*CMIS* (§7.10) is the management layer for module identity, monitors, and (at 224G/448G) link-training and host-side signal-integrity tuning extensions. Optical engineers touch it when debugging lock, FEC, and equalizer settings across vendors.
 
 ##### Half-retimed and asymmetric modules.
 
@@ -164,7 +164,7 @@ The first published revision, *100G-DR-LPO* (v1.0, March 2025), targets 100 Gb/
 
 ##### Who owns which block.
 
-In an LPO link the host is not a passive cable driver. It runs KP4 FEC (§3.12), full SerDes equalization (CTLE, FFE, DFE, CDR; §3.6, §3.7), and optional nonlinear compensation (NLC) and startup protocol functions. The module is analog: linear driver, modulator or laser, photodiode, TIA, and at most a fixed CTLE. No retiming, no FEC, no heavy DSP. CMIS (§7.8) is the management contract. SFF hardware specs (QSFP-DD, OSFP cages) set the mechanical envelope. The MSA's job is to define what must pass at each interface between those blocks so modules from different vendors close on the same host.
+In an LPO link the host is not a passive cable driver. It runs KP4 FEC (§3.12), full SerDes equalization (CTLE, FFE, DFE, CDR; §3.6, §3.7), and optional nonlinear compensation (NLC) and startup protocol functions. The module is analog: linear driver, modulator or laser, photodiode, TIA, and at most a fixed CTLE. No retiming, no FEC, no heavy DSP. CMIS (§7.10) is the management contract. SFF hardware specs (QSFP-DD, OSFP cages) set the mechanical envelope. The MSA's job is to define what must pass at each interface between those blocks so modules from different vendors close on the same host.
 
 > **Tradeoff.** Retimed module vs LPO host burden
 >
@@ -183,7 +183,7 @@ LPO MSA normative compliance is organized around six electrical/optical test poi
 <table class="book-table"><tr><th>Point</th><th>Location</th><th>Principal measurements</th></tr><tr><td>TP1a</td><td>Host SerDes output</td><td>EECQ (electrical eye closure), host TX quality</td></tr><tr><td>TP1</td><td>Module electrical input</td><td>Module input stressor calibration</td></tr><tr><td>TP2</td><td>Optical TX (2--5 m patch cord)</td><td>TDECQ, TECQ, OMA_outer, RIN_xOMA, ER</td></tr><tr><td>TP3</td><td>Optical RX input</td><td>Stressed receiver calibration (SECQ), sensitivity masks</td></tr><tr><td>TP4</td><td>Module electrical output</td><td>Module RX linear output (EECQ)</td></tr><tr><td>TP4a</td><td>Stressed host input</td><td>Host RX under worst-case module output</td></tr></table>
 ##### Optical limits that matter.
 
-The MSA optical tables (§7.4, Chapter 7) inherit IEEE 802.3 measurement methods with LPO-specific reference equalizers. The numbers you will quote in a datasheet review:
+The MSA optical tables (§7.6, Chapter 7) inherit IEEE 802.3 measurement methods with LPO-specific reference equalizers. The numbers you will quote in a datasheet review:
 
 - TDECQ and TECQ capped at 3.4 dB per lane, measured with a 9-tap T-spaced reference FFE and SER target $4.0\times10^{-4}$.
 
@@ -277,7 +277,7 @@ Past that wall the conversion to light pays for itself. When the reach exceeds w
 
 ### Reshaping, retiming, and where the DSP lives
 
-To survive that lossy channel the signal is conditioned at several points (§3.6), and it helps to keep two device classes distinct.[^17]
+To survive that lossy channel the signal is conditioned at several points (§3.6), and it helps to keep two device classes distinct.[^27]
 
 Redriver
 
@@ -309,7 +309,7 @@ What must the signal actually look like where it hands off to the module? The CE
 
 ##### Jitter and level uniformity.
 
-At 112 GBd, 1 UI $\approx$8.9 ps; 0.01 UI rms jitter is $\sim$90 fs rms. Random jitter adds vertical eye closure; deterministic jitter (ISI, crosstalk) shows up in bathtub curves and COM. *RLM* $\ge0.95$ keeps the three PAM4 eyes even; poor RLM wastes vertical margin the same way excess TDECQ does on the optical side (§7.4).
+At 112 GBd, 1 UI $\approx$8.9 ps; 0.01 UI rms jitter is $\sim$90 fs rms. Random jitter adds vertical eye closure; deterministic jitter (ISI, crosstalk) shows up in bathtub curves and COM. *RLM* $\ge0.95$ keeps the three PAM4 eyes even; poor RLM wastes vertical margin the same way excess TDECQ does on the optical side (§7.6).
 
 Retimers reset jitter per segment; redrivers do not. That is why long ACC chains accumulate timing budget stress while AEC segments stay independent (§10.5, §10.5.1).
 
@@ -322,7 +322,7 @@ Here is the number that reframes "acceptable noise." After the reference receive
 
 COM connects directly to optics because the module is the last analog segment before FEC. A retimed module can absorb some host-channel sin; LPO cannot (§10.3, §3.14.3). When COM is tight, debug in this order: host TX SNDR and RLM, connector return loss, equalizer tap saturation, then module input swing and TIA noise (§4.5, Chapter 4).
 
-Optical-side analogs are not identical: TDECQ scores the transmitter with a reference equalizer; SECQ stresses the receiver (§7.4, §7.5). Think of COM as the *electrical* counterpart to those optical margin tests.
+Optical-side analogs are not identical: TDECQ scores the transmitter with a reference equalizer; SECQ stresses the receiver (§7.6, §7.7). Think of COM as the *electrical* counterpart to those optical margin tests.
 
 **Key idea.** Electrical reach is the hidden clock behind form factors. Trace loss per inch roughly doubles from 112G (28 GHz) to 224G (56 GHz), collapsing copper reach to a few inches on-board and $\sim$1 m in cable. Each step inward (pluggable, OBO, NPO, CPO, on-interposer optical I/O) buys power and reach and spends serviceability. The signal is held together by redrivers (reshape), retimers (reclock), and DSPs (both), which LPO deletes, inside a brutal budget: $\sim$1 V~ppd~ in, 33 dB TX SNDR, COM $\ge3$ dB, and a post-equalizer eye of only a few mV rescued by FEC.
 
@@ -372,7 +372,7 @@ Optical engineering maps to these patterns indirectly. More rails and higher per
 
 > **Engineering heuristic.** Judge the fabric by delivered step time and collective tail, not by aggregate port rate on a clean bench.
 
-Telemetry versus complexity: same decision criteria as §7.12, Appendix C.14. Instrument ledgers that unlock contain or repair; skip vanity counters.
+Telemetry versus complexity: same decision criteria as §7.14, Appendix C.14. Instrument ledgers that unlock contain or repair; skip vanity counters.
 
 ## Fabric options
 
@@ -404,7 +404,7 @@ Most production OCS today is free-space: a fiber-collimator array launches beams
 
 Insertion loss
 
-: a hop through the switch costs roughly 2 dB, straight off the optical budget (§7.7). Higher launch power or better receiver sensitivity has to cover it (Chapter 5, §4.4).
+: a hop through the switch costs roughly 2 dB, straight off the optical budget (§7.9). Higher launch power or better receiver sensitivity has to cover it (Chapter 5, §4.4).
 
 Radix
 
@@ -416,7 +416,7 @@ Reconfiguration time
 
 Crosstalk, return loss, polarization
 
-: a mirror that leaks light into the wrong port is crosstalk; a reflective interface raises ORL and feeds laser RIN (§7.2.2, §4.3). Free-space paths are largely polarization-insensitive, which suits IM/DD.
+: a mirror that leaks light into the wrong port is crosstalk; a reflective interface raises ORL and feeds laser RIN (§7.4.2, §4.3). Free-space paths are largely polarization-insensitive, which suits IM/DD.
 
 <table class="book-table"><tr><th>Technology</th><th>Switching</th><th>Insertion loss</th><th>Radix</th><th>Where it fits</th></tr><tr><td>MEMS mirror array (free-space)</td><td>ms</td><td>1--3 dB</td><td>100s (136136 shipping)</td><td>DC fabric and AI-pod topology reconfiguration</td></tr><tr><td>Piezoelectric beam steering</td><td>ms</td><td>low--moderate</td><td>10s--100s</td><td>free-space alternative to MEMS</td></tr><tr><td>Liquid crystal (LCoS)</td><td>ms</td><td>moderate</td><td>wavelength-selective</td><td>wavelength add/drop, WSS roles</td></tr><tr><td>3D robotic fiber</td><td>seconds--minutes</td><td>0.5 dB</td><td>1000s</td><td>automated patch and provisioning, not per-job</td></tr><tr><td>Silicon photonic (MZI / SOA)</td><td>ns--</td><td>higher (integrated)</td><td>10s</td><td>fast, low-radix; research and niche</td></tr></table>
 **Table 10.6.** OCS technologies. Free-space MEMS switches dominate AI deployments today; robotic-fiber switches trade speed for radix and very low loss; integrated photonic switches trade radix and loss for nanosecond speed.
@@ -427,7 +427,7 @@ Google's Jupiter datacenter fabric replaced a patch-panel Clos interconnect with
 
 ##### What OCS asks of the transceivers.
 
-An OCS layer changes the module spec in ways this book cares about. Because the switch adds a fixed loss and is wavelength-transparent, single-fiber duplex reaches (FR, one fiber each way) fit an OCS better than parallel-fiber reaches (DR, many fibers), so an OCS deployment pulls the plant toward FR optics and toward circulators for bidirectional operation on one fiber . The insertion loss argues for higher launch power and tighter ORL budgets, since every mated interface and mirror is a reflection the laser sees (§7.2.2, §4.3.1). Wavelength transparency means a WDM link passes through the switch unchanged, so CW-WDM and ring-based engines (Chapter 6, §6.6) compose with an OCS without a translation layer. None of this is exotic optics; it is the same DR/FR PMD and laser work from earlier chapters (§3.13, Chapter 5), specified against a channel that now includes a switch.
+An OCS layer changes the module spec in ways this book cares about. Because the switch adds a fixed loss and is wavelength-transparent, single-fiber duplex reaches (FR, one fiber each way) fit an OCS better than parallel-fiber reaches (DR, many fibers), so an OCS deployment pulls the plant toward FR optics and toward circulators for bidirectional operation on one fiber . The insertion loss argues for higher launch power and tighter ORL budgets, since every mated interface and mirror is a reflection the laser sees (§7.4.2, §4.3.1). Wavelength transparency means a WDM link passes through the switch unchanged, so CW-WDM and ring-based engines (Chapter 6, §6.6) compose with an OCS without a translation layer. None of this is exotic optics; it is the same DR/FR PMD and laser work from earlier chapters (§3.13, Chapter 5), specified against a channel that now includes a switch.
 
 ##### Status and where it sits next to CPO.
 
@@ -441,7 +441,7 @@ By 2025--26, co-packaged optics crossed from demonstrations into shipping produc
 
 ### Broadcom Tomahawk and CPO
 
-Broadcom entered CPO earlier than most switch vendors and treated it as a product line, not a one-off demo. The current flagship is *Tomahawk 6*, a 102.4 Tb/s single-chip Ethernet switch (shipping 2025) offered with either copper or co-packaged optics, on 100G/200G SerDes.[^18] The CPO variant, *TH6-Davisson*, began shipping in October 2025 as Broadcom's *third-generation* CPO switch. The public numbers sketch the architecture:
+Broadcom entered CPO earlier than most switch vendors and treated it as a product line, not a one-off demo. The current flagship is *Tomahawk 6*, a 102.4 Tb/s single-chip Ethernet switch (shipping 2025) offered with either copper or co-packaged optics, on 100G/200G SerDes.[^28] The CPO variant, *TH6-Davisson*, began shipping in October 2025 as Broadcom's *third-generation* CPO switch. The public numbers sketch the architecture:
 
 - 102.4 Tb/s optically enabled, built from sixteen 6.4 Tb/s "Davisson DR" optical engines at 200 Gb/s per channel.
 
@@ -491,13 +491,13 @@ Arista, with Coherent, Marvell, Lightmatter, and a broad partner list, launched 
 <table class="book-table"><tr><th>Attribute</th><th>Retimed / LPO pluggable</th><th>XPO</th><th>CPO</th></tr><tr><td>Capacity</td><td>0.8--1.6 Tb/s/module</td><td>12.8 Tb/s/module</td><td>100+ Tb/s on-package</td></tr><tr><td>Density</td><td>baseline</td><td>4 (204.8 Tb/s per RU)</td><td>highest</td></tr><tr><td>Power path</td><td>full electrical run to faceplate</td><td>short run to dense faceplate</td><td>shortest (on substrate)</td></tr><tr><td>Cooling</td><td>air (or LPO savings)</td><td>integrated cold plate, 400 W+</td><td>switch-package liquid cooling</td></tr><tr><td>Serviceability</td><td>field-replaceable (best)</td><td>field-replaceable (slide-out)</td><td>soldered; ELSFP lasers replaceable</td></tr><tr><td>Energy/bit</td><td>highest</td><td>intermediate</td><td>lowest (<5, then <2 pJ/bit)</td></tr><tr><td>Maturity</td><td>shipping</td><td>MSA launched OFC 2026</td><td>shipping (Broadcom, NVIDIA)</td></tr></table>
 **Table 10.8.** Where XPO sits between pluggables and co-packaged optics.
 
-[^19]
+[^29]
 
 **The broader OFC 2026 picture.** XPO landed inside a clear consensus: 1.6T transceivers went mainstream and 3.2T (400G/lane) previews appeared, with initial demos expected around 2027; CPO moved from demo to imminent, with new MSAs (Open CPX, "socketed CPO") blurring the pluggable/co-packaged line; and hollow-core fiber (record loss now $\sim$0.091 dB/km) advanced toward low-latency intra-datacenter use (§10.12.1). The through-line is the one this book opened with: rising per-lane rate forcing optics closer to the silicon and squeezing every last pJ/bit.
 
 ## The latency budget
 
-The book has a link budget in dB (§7.7) and, next, an energy budget in pJ/bit. It needs a third ledger. Inference puts the optical link on the critical path (§10.6), so you should be able to add up a link's latency the way you add up its loss and its power. The contributors fall into two groups: fixed digital costs that do not care about distance, and a propagation term that does.
+The book has a link budget in dB (§7.9) and, next, an energy budget in pJ/bit. It needs a third ledger. Inference puts the optical link on the critical path (§10.6), so you should be able to add up a link's latency the way you add up its loss and its power. The contributors fall into two groups: fixed digital costs that do not care about distance, and a propagation term that does.
 
 <table class="book-table"><tr><th>Contributor</th><th>Typical latency</th></tr><tr><td>PCS framing / serialization</td><td>a few ns</td></tr><tr><td>FEC encode + decode (KP4)</td><td>20--100 ns each</td></tr><tr><td>Module DSP / retimer (per hop)</td><td>8--10 ns (fully retimed)</td></tr><tr><td>LPO (no DSP)</td><td><3 ns</td></tr><tr><td>Driver, modulator, PD, TIA</td><td>sub-ns</td></tr><tr><td>Fiber propagation (silica)</td><td>4.9 ns/m</td></tr><tr><td>hollow-core fiber</td><td>3.3 ns/m</td></tr><tr><td>Switch hop (O-E-O)</td><td>100--560 ns</td></tr></table>
 **The fixed digital cost dominates a short link.** FEC is the largest single term. KP4 RS(544,514) (§3.12) costs roughly 20 to 100 ns to encode and again to decode, set by the codeword length and the implementation, not the fiber . The module DSP adds another 8 to 10 ns per hop when the link is fully retimed. The analog stages, driver, modulator, photodiode, and *TIA*, together contribute well under a nanosecond of group delay and are almost never the problem. On a 10 m in-rack link the fiber itself is about 50 ns, smaller than one pass through the FEC.
@@ -576,15 +576,15 @@ Fleet telemetry + corrective action</code></pre>
 
 4.  **Laser, modulation, and WDM selection.** DFB, EML, CW+Si MZM, CW+ring, or CW+TFLN? Single-wavelength DR or dense WDM with locking? The choice sets the ATP, the supplier base, and the fleet FIT model. (Chapter 5, Chapter 6, Table 5.1, Table 3.12)
 
-5.  **Link, power, and thermal budgets.** Close the optical ledger (OMA to sensitivity with penalties), the electrical ledger (COM), the energy ledger (pJ/bit), and the thermal envelope together. (§7.7, §10.5.2, §10.13, §10.13.1)
+5.  **Link, power, and thermal budgets.** Close the optical ledger (OMA to sensitivity with penalties), the electrical ledger (COM), the energy ledger (pJ/bit), and the thermal envelope together. (§7.9, §10.5.2, §10.13, §10.13.1)
 
 6.  **Noise, sensitivity, and receiver design.** Match photodiode, TIA, and equalization to the power the laser and channel deliver. Budget RIN, shot, and thermal noise against the pre-FEC BER target. (Chapter 4, §4.4, §4.3, §4.5)
 
-7.  **Validation evidence.** Walk the ladder: bring-up, characterization, margin corners, stress qualification, and production readiness. Name the instrument and reference plane for every number. (Chapter 7, §7.1, §7.9)
+7.  **Product-readiness evidence.** Walk the lifecycle: bring-up, characterization, requirement verification and system validation, stress qualification, and manufacturing validation. Name the instrument and reference plane for every number. (Chapter 7, §7.3, §7.11)
 
 8.  **Yield and supplier readiness.** Multi-lot yield, SPC, ATP coverage, NPI gates, first-article, and 8D discipline. Prove the part can be built at volume before committing the fleet. (Chapter 9, §9.3, §9.2)
 
-9.  **Fleet telemetry and corrective action.** CMIS monitors, FEC histograms, triage buckets, RMA codes, and the feedback loop from field to ATP. The system is not done until the fleet can detect, classify, and correct a failure without the design team. (§7.12, §8.8)
+9.  **Fleet telemetry and corrective action.** Pilot, ramp, and fleet monitoring are operational readiness and sustaining evidence. CMIS monitors, FEC histograms, triage buckets, RMA codes, and the feedback loop from field to ATP. The system is not done until the fleet can detect, classify, and correct a failure without the design team. (§7.14, §8.8, §7.3.10)
 
 A design review should be able to point at evidence for every step. Where evidence is missing, the step is not done. Where two steps conflict (power budget versus serviceability, yield versus guardband), the trade must be stated and owned, not hidden behind a single-number spec.
 
@@ -616,7 +616,7 @@ An AI fabric is judged by delivered workload time, not port rate, and the optica
 >
 > Start at the layer where the impact is observed, then descend only far enough to isolate the cause.
 
-A peak-rate test does not replace an all-reduce or all-to-all run on the intended topology (§10.7, §7.12, §10.17).
+A peak-rate test does not replace an all-reduce or all-to-all run on the intended topology (§10.7, §7.14, §10.17).
 
 ### How it fails
 
@@ -704,7 +704,7 @@ Junior mistake: rewrite the topology before scoping one weak rail, or ignore opt
 
 ### Interview Q&A: Networking and System Operation
 
-Practice speaking these answers aloud. Prefer first-person operational reasoning over topology slogans. Detail lives in §10.17, §10.17.1, §10.7, §7.12, Table 10.11.
+Practice speaking these answers aloud. Prefer first-person operational reasoning over topology slogans. Detail lives in §10.17, §10.17.1, §10.7, §7.14, Table 10.11.
 
 ##### Question 1. What is the difference between scale-up and scale-out, and why does the distinction matter to an optical engineer?
 
@@ -754,7 +754,7 @@ Practice speaking these answers aloud. Prefer first-person operational reasoning
 
 *Tests:* observability, metadata, cadence, and actionability.
 
-*Spoken answer.* "I would define telemetry around decisions rather than collecting every available field. At module level I want identity, serial and lot genealogy, firmware, case temperature, supply power, transmit and receive power, wavelength or lock state where applicable, alarms, and relevant control headroom. At link level I want lane-resolved pre-FEC errors, corrected and uncorrectable distributions, retrains, link-state events, and equalizer state where exposed. I also need host, switch, route, topology, workload, and maintenance timestamps. The schema, units, cadence, retention, clock source, and missing-data behavior must be defined before deployment" (§10.17, §7.12).
+*Spoken answer.* "I would define telemetry around decisions rather than collecting every available field. At module level I want identity, serial and lot genealogy, firmware, case temperature, supply power, transmit and receive power, wavelength or lock state where applicable, alarms, and relevant control headroom. At link level I want lane-resolved pre-FEC errors, corrected and uncorrectable distributions, retrains, link-state events, and equalizer state where exposed. I also need host, switch, route, topology, workload, and maintenance timestamps. The schema, units, cadence, retention, clock source, and missing-data behavior must be defined before deployment" (§10.17, §7.14).
 
 *Pressure follow-up.* "Why not collect every register once per second?"\
 *Answer pivot.* "More data can create storage, firmware, and interpretation burden without improving decisions. Cadence should match the mechanism: a daily drift metric and a millisecond-scale burst event need different collection strategies."

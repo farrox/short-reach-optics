@@ -117,7 +117,7 @@ Junior mistake: quote faceplate watts without a measured energy-per-bit split, o
 
 ## Why this framework anchors the book
 
-Everything that follows is an effort to approach these floors at the required data rate and reliability. Laser wall-plug efficiency (Chapter 5) sets how much optical power you can afford. Modulation and FEC (Chapter 3, §3.12, §3.6) trade SNR for reach and rate. WDM (Chapter 6) amortizes one laser source across many wavelengths. Receiver noise and sensitivity (Chapter 4, §4.4.3, §7.7) decide whether that power is enough. Co-packaging and energy-per-bit trends (§10.13) show the same first principle playing out as copper reach collapses and optics move onto the interposer.
+Everything that follows is an effort to approach these floors at the required data rate and reliability. Laser wall-plug efficiency (Chapter 5) sets how much optical power you can afford. Modulation and FEC (Chapter 3, §3.12, §3.6) trade SNR for reach and rate. WDM (Chapter 6) amortizes one laser source across many wavelengths. Receiver noise and sensitivity (Chapter 4, §4.4.3, §7.9) decide whether that power is enough. Co-packaging and energy-per-bit trends (§10.13) show the same first principle playing out as copper reach collapses and optics move onto the interposer.
 
 
 <div class="nav-links">

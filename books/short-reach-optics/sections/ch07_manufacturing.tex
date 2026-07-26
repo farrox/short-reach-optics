@@ -93,8 +93,8 @@ Fleet monitoring & Does deployed behavior match the release model? & Telemetry, 
 \par\medskip
 {\raggedright\footnotesize\textbf{Table~\thetable.} Adjacent activities. Do not
 use qualification, manufacturing validation, ATP, SPC, and fleet monitoring
-interchangeably. Lifecycle placement:
-\Cref{sec:validation-workflow}.\par}
+interchangeably. Manufacturing validation is Step~7 of the product-readiness
+lifecycle in \Cref{sec:product-readiness}.\par}
 \end{table*}
 \FloatBarrier
 
@@ -143,27 +143,34 @@ Production validation is replayable and decision-oriented
 (\Cref{sec:tree-production-loop}).
 
 \paragraph{NPI as program maturity.}
-New product introduction (\term{NPI}\firstterm{NPI}) is the manufacturing face of
-the validation Steps in \Cref{sec:validation-workflow}. Write exit criteria a
-supplier can fail without ambiguity, not slogans. EVT/DVT/PVT/MP are stage
-names, not a calendar; dates and sample sizes belong in the program plan.
+New product introduction (\term{NPI}\firstterm{NPI}) is the cross-functional
+program that moves a design into controlled production. It is an organizational
+umbrella for engineering evidence, supplier readiness, factory process
+development, test development, quality planning, operations, change control,
+and ramp, not a technical evidence category beside the product-readiness
+lifecycle in \Cref{sec:product-readiness}. Write exit criteria a supplier can
+fail without ambiguity, not slogans. EVT/DVT/PVT/MP are program-phase labels,
+not a calendar; dates and sample sizes belong in the program plan
+(\Cref{sec:phase-labels}).
 
 \paragraph{Why program maturity changes the question.}
 Early in the program the question is whether the architecture can be made to
-work at all (EVT), then whether behavior and margin are understood across the
-intended corners (DVT). Once the part is characterized, the question shifts to
-whether named failure mechanisms threaten life (qualification), then whether
-production tooling and suppliers can reproduce that qualified result across lots
-(PVT). A pilot asks whether laboratory and factory assumptions survive a
-bounded, observable deployment. Mass production is not another validation
-experiment: it is sustained control with SPC, ECO, and RMA ownership
+work at all (often during EVT), then whether behavior and margin are understood
+across the intended corners (often during DVT). Once the part is characterized,
+the question shifts to whether named failure mechanisms threaten life
+(reliability qualification, Step~6), then whether production tooling and
+suppliers can reproduce that qualified result across lots (manufacturing
+validation, Step~7, often emphasized in PVT). A pilot asks whether laboratory
+and factory assumptions survive a bounded, observable deployment. Mass
+production is not another system-validation experiment: it is sustained control
+with SPC, ECO, and RMA ownership
 (\Cref{sec:ladder-mp,sec:ladder-fleet-monitor}).
 
 Do not use an EVT hero sample as PVT evidence, and do not treat MP as fleet
 monitoring alone. Hold a gate if the exit data are missing.
 \Cref{tab:npi} retrieves the gate questions and release calls; it does not
-define a second lifecycle beside the Steps
-(\Cref{sec:validation-workflow,sec:tree-qualification}).
+define a second lifecycle beside the product-readiness Steps
+(\Cref{sec:product-readiness,sec:tree-qualification}).
 
 \begin{table*}[ht]
 \refstepcounter{table}\label{tab:npi}%

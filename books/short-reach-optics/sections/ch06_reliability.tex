@@ -68,10 +68,11 @@ Keep these jobs distinct:
 \begin{description}
 \item[Characterization] Maps behavior and distributions across corners.
 \item[Verification] Checks measured results against frozen requirements.
-\item[Validation] Demonstrates that the complete product is suitable for its
-      intended system use (\Cref{ch:validation}).
+\item[System validation] Demonstrates that the complete product is suitable for
+      its intended system use (\Cref{ch:product-readiness}).
 \item[Reliability qualification] Builds confidence that named lifetime and
-      environmental mechanisms do not violate the intended claim.
+      environmental mechanisms do not violate the intended claim. This is
+      Step~6 of the product-readiness lifecycle in \Cref{ch:product-readiness}.
 \item[Production screening] Attempts to detect unacceptable units or early-life
       defects at manufacturing scale (\Cref{ch:manufacturing}).
 \item[Burn-in] A possible production screen for specific early-life mechanisms.
@@ -80,8 +81,8 @@ Keep these jobs distinct:
 \end{description}
 
 \noindent\textit{Module example.} Characterization maps LIV and BER versus
-temperature. Verification checks that ship power and BER meet the PRD.
-Validation shows the module works in the target host and plant. Qualification
+temperature. Verification checks that ship power and BER meet the PRD. System
+validation shows the module works in the target host and plant. Qualification
 HTOL asks whether biased high-temperature exposure permanently shifts threshold
 or slope beyond the life claim. Burn-in may cull infant mortality on the line;
 it does not prove five-year wear-out life.
@@ -130,9 +131,11 @@ resulting evidence is sufficient for the claim
 (\Cref{sec:tree-qual-evidence,sec:interview-validation-ladder}).
 
 Debugging is what you do when remaining margin hits zero. Qualification asks
-how much margin remains after the expected stresses. Place this work in
-\Cref{sec:validation-workflow} Step~6; manufacturing validation and ATP live in
-\Cref{ch:manufacturing}. Keep the customer view and the vendor view distinct: the
+how much margin remains after the expected stresses. Reliability qualification
+is Step~6 of the product-readiness lifecycle described in
+\Cref{ch:product-readiness,sec:product-readiness}; manufacturing validation and
+ATP live in \Cref{ch:manufacturing}. Keep the customer view and the vendor view
+distinct: the
 vendor designs internals; the customer characterizes externally visible behavior
 and decides deployment
 (\Cref{sec:interview-margin-budget,sec:interview-customer-vendor}).

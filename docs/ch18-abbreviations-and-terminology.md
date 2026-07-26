@@ -67,7 +67,7 @@ ASIC
 
 ATP
 
-: Acceptance test plan. Production test limits, methods, reference planes, and reaction rules for ship or hold decisions.
+: Acceptance test procedure or acceptance test plan, depending on company usage. In this book: the released production acceptance-test flow that makes a pass, fail, hold, rework, or disposition decision using validated measurements or proxies. Does not replace characterization, system validation, reliability qualification, or manufacturing validation.
 
 AUI
 
@@ -103,7 +103,7 @@ BoW
 
 Burn-in
 
-: Production or sample screen that removes infant-mortality parts before ship. Distinct from HTOL life projection.
+: Optional production screen intended to precipitate a demonstrated early-life defect population before shipment. Does not replace representative reliability qualification; require a mechanism, detection benefit, and damage-risk analysis.
 
 Cabled host
 
@@ -116,6 +116,10 @@ CDR
 CEI
 
 : Common Electrical IO, an OIF Implementation Agreement containing clauses defining electrical interface specifications, each optimized for various reaches at minimal power.
+
+Characterization
+
+: Measurement intended to map behavior, distributions, interactions, and boundaries rather than only pass or fail (§7.2).
 
 CMIS
 
@@ -227,7 +231,7 @@ DSP
 
 DVT
 
-: Design Validation Test. Proves the design meets requirements across corners, margin, and a frozen life plan before volume tooling (Table 9.2).
+: Company-specific program-phase label, commonly Design Validation Test or Design Verification Test. Scope and exit criteria vary; translate into hardware population, evidence, open risks, and exit decision (§7.1, Table 7.1).
 
 DWDM
 
@@ -275,7 +279,7 @@ ESD
 
 EVT
 
-: Engineering Validation Test. Early bring-up on engineering samples: first light, CMIS, basic LIV/SMSR/RIN, one closing BER (Table 9.2).
+: Company-specific program-phase label: Engineering Validation Test or Engineering Verification Test. Commonly early hardware learning, bring-up, and risk retirement; not a universal engineering definition (§7.1, Table 7.1).
 
 Faceplate
 
@@ -479,7 +483,11 @@ MoE
 
 MP
 
-: Mass production. Sustained volume after PVT: DPPM, RMA ownership, ECO control (Table 9.2).
+: Mass production. Production exposure and operating cadence after controlled ramp; not evidence quality by itself (§7.1, Table 9.2).
+
+Manufacturing validation
+
+: Evidence that the production system can repeatedly build, measure, trace, and control the design (Step 7 of the product-readiness lifecycle; Chapter 9).
 
 MPI
 
@@ -527,7 +535,19 @@ NPC
 
 NPI
 
-: New product introduction. Gate sequence EVT $\to$ DVT $\to$ Qual $\to$ PVT $\to$ Pilot $\to$ MP that maps onto the validation ladder (Table 9.2, Table 7.2).
+: New Product Introduction. Cross-functional program umbrella for moving a design into controlled production; not a technical evidence category beside the product-readiness lifecycle (§7.1, Table 9.2, Table 7.3).
+
+Pilot
+
+: Bounded production-representative deployment with identifiable cohort, success criteria, enhanced telemetry, and rollback or containment. Not merely a small shipment (§7.3.10).
+
+Product readiness
+
+: Complete evidence-building lifecycle from requirements and architecture through verification, system validation, reliability qualification, manufacturing validation, deployment, and fleet learning (Chapter 7).
+
+Production acceptance testing
+
+: Production measurements or validated proxies used to make a disposition decision for a unit or population; commonly called ATP in this book.
 
 NPO
 
@@ -631,7 +651,15 @@ PUE
 
 PVT
 
-: Production Validation Test. Proves the factory can build the qualified design repeatedly at yield with ATP and SPC (Table 9.2).
+: Company-specific program-phase label, commonly Production Validation Test or Production Verification Test. Usually emphasizes production-intent hardware, ATP, capability, and ramp; does not by itself establish system suitability or lifetime qualification (§7.1, Table 7.1).
+
+Reliability qualification
+
+: Mechanism-driven evidence supporting life and environmental claims (Step 6 of the product-readiness lifecycle; Chapter 8).
+
+System validation
+
+: Evidence that the complete product is suitable for its intended system use, including supported hosts, peers, fiber plant, management, environment, and workload (Step 5 of the product-readiness lifecycle; §7.3.7).
 
 QSFP-DD
 
@@ -735,7 +763,11 @@ SOI
 
 SPC
 
-: Statistical process control. Tracks process distributions and trends to catch drift before escapes ship.
+: Statistical process control. Monitors process or product measurements in build order to detect movement before yield loss or escape. Control limits describe process behavior; they are not product specification limits.
+
+Verification
+
+: Comparison of evidence against a frozen requirement under stated conditions and at a named reference plane (§7.2).
 
 SR
 
@@ -927,7 +959,11 @@ TDECQ / SECQ / EECQ
 
 DVT / PVT / EVT
 
-: EVT is early engineering validation; DVT proves the design; PVT proves the factory can build it (Table 9.2).
+: Company-specific program-phase labels, not evidence definitions. Translate each into hardware population, required evidence, open risks, and exit decision (§7.1, Table 7.1).
+
+Product readiness / system validation
+
+: Product readiness is the complete 11-step lifecycle; system validation is one discipline within it (Step 5).
 
 FIT / DPPM
 
@@ -969,9 +1005,9 @@ Does a bad TDECQ identify a unique root cause?\
 
 ##### Prompt.
 
-How do characterization, verification, validation, qualification, and ATP differ?\
-*Check.* Characterization maps behavior; verification checks a frozen requirement; validation asks whether the product works for intended use; qualification bounds life and environment risk; ATP detects unacceptable units in production (Chapter 7, Chapter 8, Chapter 9).\
-*Common confusion.* Calling them "levels of testing."
+How do characterization, verification, system validation, reliability qualification, manufacturing validation, and ATP differ?\
+*Check.* Characterization maps behavior; verification checks a frozen requirement; system validation asks whether the product works for intended use; reliability qualification bounds life and environment risk; manufacturing validation asks whether production can reproduce and control the design; ATP dispositions a unit or population (Chapter 7, Chapter 8, Chapter 9).\
+*Common confusion.* Calling them "levels of testing," or using validation as the name of the entire readiness lifecycle.
 
 ##### Prompt.
 

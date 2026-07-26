@@ -64,7 +64,7 @@ Deployment
 Fleet (telemetry / RMA / FIT)
   |
 Feedback into requirements</code></pre>
-Inside architecture, descend only as far as the requirement forces: requirements $\rightarrow$ architecture $\rightarrow$ subsystem $\rightarrow$ component $\rightarrow$ needed physics. Freeze an architecture class only when reach, lane rate, power, lifetime, cost, and manufacturing volume have named owners. Do not pick a laser die before those constraints rule out the other paths. Chapter 7 expands the validation-to-fleet segment into the full numbered lifecycle (Table 7.2, Appendix D.2).
+Inside architecture, descend only as far as the requirement forces: requirements $\rightarrow$ architecture $\rightarrow$ subsystem $\rightarrow$ component $\rightarrow$ needed physics. Freeze an architecture class only when reach, lane rate, power, lifetime, cost, and manufacturing volume have named owners. Do not pick a laser die before those constraints rule out the other paths. Chapter 7 expands the validation-to-fleet segment into the full numbered lifecycle (Table 7.3, Appendix D.2).
 
 ## Begin with the system need, not a preferred technology
 
@@ -136,11 +136,11 @@ WDM trades fiber simplicity for wavelength-control complexity. That burden is de
 
 The book develops optical power, OMA, extinction ratio, receiver sensitivity, noise, RIN, BER, dispersion, bandwidth, link budgets, and thermal response because a quantitative model lets you predict behavior, identify dominant terms, allocate margin, choose a measurement, detect double counting, and know when a result is surprising.
 
-Models are bounded by assumptions. A model is valuable when its assumptions are visible and its prediction can be checked against hardware (Chapter 4, §7.7).
+Models are bounded by assumptions. A model is valuable when its assumptions are visible and its prediction can be checked against hardware (Chapter 4, §7.9).
 
 ## Why validation, reliability, and manufacturing are separate
 
-A product working once does not establish distribution, corner behavior, margin, interoperability, lifetime, manufacturability, or field readiness. Validation turns requirements into evidence. The canonical lifecycle in Chapter 7 is:
+A product working once does not establish distribution, corner behavior, margin, interoperability, lifetime, manufacturability, or field readiness. Product readiness turns requirements into evidence. The canonical product-readiness lifecycle in Chapter 7 is:
 
 1.  Define requirements.
 
@@ -150,7 +150,7 @@ A product working once does not establish distribution, corner behavior, margin,
 
 4.  Characterize behavior.
 
-5.  Validate margin and interoperability.
+5.  Verify requirements and validate system use.
 
 6.  Qualify reliability.
 
@@ -166,7 +166,7 @@ A product working once does not establish distribution, corner behavior, margin,
 
 Do not treat those Steps as interchangeable.
 
-Validation asks whether the product works for its intended use now. Reliability qualification asks whether named mechanisms threaten its ability to continue working over time and environmental exposure: laser aging, thermal fatigue, humidity, corrosion, ESD, vibration, connector durability, acceleration models, sample confidence, and acceptance criteria. Qualification is not a collection of harsh tests. It is a confidence argument connecting a requirement, mechanism, stress, observable, and decision (Chapter 8).
+System validation asks whether the product works for its intended use and supported ecosystem. Reliability qualification asks whether named mechanisms threaten its ability to continue working over time and environmental exposure: laser aging, thermal fatigue, humidity, corrosion, ESD, vibration, connector durability, acceleration models, sample confidence, and acceptance criteria. Qualification is not a collection of harsh tests. It is a confidence argument connecting a requirement, mechanism, stress, observable, and decision (Chapter 8).
 
 A qualified engineering unit does not prove that a factory can reproduce the result. Manufacturing validation covers production-reference freeze, representative builds, genealogy and traceability, measurement-system analysis, first-pass yield, ATP, gauge R&R, process capability, SPC, supplier controls, change control, and ramp decisions. Reliability qualification asks whether the design survives. Manufacturing validation asks whether the production system can reproduce, measure, control, and protect it (Chapter 9).
 
@@ -174,7 +174,7 @@ A qualified engineering unit does not prove that a factory can reproduce the res
 
 An optical module exists inside switch or accelerator architecture, topology, radix and bandwidth requirements, rack power, cooling, cable plant, redundancy, and deployment or service procedures. A component metric may not map directly to system value: lower module power may reduce cooling burden; additional reach may simplify topology; higher radix may reduce stages; a serviceable pluggable may beat a denser but hard-to-repair architecture; an optical technology may shift failures from replaceable modules into board-level assemblies (Chapter 10).
 
-Shipment is not the end of validation. The fleet may reveal rare interactions, process escapes, supplier correlations, installation problems, aging, environmental corners, firmware effects, and cohort differences. Failure analysis teaches how to preserve evidence, scope the population, separate symptom from mechanism, choose discriminating measurements, confirm the mechanism, contain risk, and change a recurrence control. A failure is not fully resolved when the unit works again. It is resolved when the affected population is understood and an effective recurrence control changes (Chapter 11, §7.12).
+Shipment is not the end of validation. The fleet may reveal rare interactions, process escapes, supplier correlations, installation problems, aging, environmental corners, firmware effects, and cohort differences. Failure analysis teaches how to preserve evidence, scope the population, separate symptom from mechanism, choose discriminating measurements, confirm the mechanism, contain risk, and change a recurrence control. A failure is not fully resolved when the unit works again. It is resolved when the affected population is understood and an effective recurrence control changes (Chapter 11, §7.14).
 
 ## How to read this book
 
@@ -323,15 +323,15 @@ Layer 1: System
 
 Layer 2: Signal quality
 
-: Eye, jitter, noise, equalization margin, FEC error distribution (§7.8, §7.12).
+: Eye, jitter, noise, equalization margin, FEC error distribution (§7.10, §7.14).
 
 Layer 3: Link budget
 
-: Optical power, sensitivity, insertion loss, extinction ratio, ORL (§7.7).
+: Optical power, sensitivity, insertion loss, extinction ratio, ORL (§7.9).
 
 Layer 4: Subsystem
 
-: Laser, modulator, driver, photodiode, TIA, DSP, connector, fiber, or host SerDes; bisect with loopbacks and golden swaps (§7.10, §7.9).
+: Laser, modulator, driver, photodiode, TIA, DSP, connector, fiber, or host SerDes; bisect with loopbacks and golden swaps (§7.12, §7.11).
 
 Layer 5: Confirmed mechanism
 

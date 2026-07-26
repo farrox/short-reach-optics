@@ -51,13 +51,13 @@ Verification
 
 : Checks measured results against frozen requirements.
 
-Validation
+System validation
 
 : Demonstrates that the complete product is suitable for its intended system use (Chapter 7).
 
 Reliability qualification
 
-: Builds confidence that named lifetime and environmental mechanisms do not violate the intended claim.
+: Builds confidence that named lifetime and environmental mechanisms do not violate the intended claim. This is Step 6 of the product-readiness lifecycle in Chapter 7.
 
 Production screening
 
@@ -67,7 +67,7 @@ Burn-in
 
 : A possible production screen for specific early-life mechanisms. Burn-in is not automatically qualification and does not replace qualification HTOL.
 
-*Module example.* Characterization maps LIV and BER versus temperature. Verification checks that ship power and BER meet the PRD. Validation shows the module works in the target host and plant. Qualification HTOL asks whether biased high-temperature exposure permanently shifts threshold or slope beyond the life claim. Burn-in may cull infant mortality on the line; it does not prove five-year wear-out life.
+*Module example.* Characterization maps LIV and BER versus temperature. Verification checks that ship power and BER meet the PRD. System validation shows the module works in the target host and plant. Qualification HTOL asks whether biased high-temperature exposure permanently shifts threshold or slope beyond the life claim. Burn-in may cull infant mortality on the line; it does not prove five-year wear-out life.
 
 ## The language of scale: FIT and DPPM
 
@@ -83,13 +83,13 @@ DPPM (defective parts per million)
 
 **Key idea.** Zero failures do not prove a zero failure rate. 0 failures in 20 units is not the same evidence as 0 failures in 1,000 units. 0 failures after $10^{3}$ device-hours is not the same evidence as 0 failures after $10^{6}$ device-hours. Evidence strength depends on sample-hours, one-sided upper confidence bounds, censoring, and whether lots and sites are representative. Qualification and production SPC complement each other; neither alone is a fleet claim.
 
-[^16]
+[^26]
 
 ## Qualification flows
 
 Qualification is a life and variation argument, not a list of stresses. A requirement such as five-year operation is too abstract to test directly. You identify the mechanisms that could violate it, choose stresses that accelerate those mechanisms, monitor an observable signature, and decide whether the resulting evidence is sufficient for the claim (Appendix D.3, Appendix A.8.5).
 
-Debugging is what you do when remaining margin hits zero. Qualification asks how much margin remains after the expected stresses. Place this work in §7.1 Step 6; manufacturing validation and ATP live in Chapter 9. Keep the customer view and the vendor view distinct: the vendor designs internals; the customer characterizes externally visible behavior and decides deployment (Appendix A.8.6, Appendix A.8.7).
+Debugging is what you do when remaining margin hits zero. Qualification asks how much margin remains after the expected stresses. Reliability qualification is Step 6 of the product-readiness lifecycle described in Chapter 7, §7.3; manufacturing validation and ATP live in Chapter 9. Keep the customer view and the vendor view distinct: the vendor designs internals; the customer characterizes externally visible behavior and decides deployment (Appendix A.8.6, Appendix A.8.7).
 
 > **Margin budgeting**
 >
@@ -150,7 +150,7 @@ GR-468 covers active optoelectronics. Its companion, *Telcordia GR-1221-CORE* (G
 
 ##### Handoff to manufacturing.
 
-Qualification bounds life risk for representative hardware. Whether production can reproduce that result, screen escapes, and hold SPC is developed in Chapter 9. Failures that pass qual but fail field usually sit in derating policy, connector contamination, or a manufacturing coverage gap (§5.13, §7.12, §9.6).
+Qualification bounds life risk for representative hardware. Whether production can reproduce that result, screen escapes, and hold SPC is developed in Chapter 9. Failures that pass qual but fail field usually sit in derating policy, connector contamination, or a manufacturing coverage gap (§5.13, §7.14, §9.6).
 
 ## Electronics reliability: driver, TIA, and DSP silicon
 
@@ -172,7 +172,7 @@ Latch-up
 
 : a parasitic thyristor structure in CMOS turns on under an overvoltage or current-injection event and holds a low-impedance path until power is cycled. *JESD78* defines the overvoltage and $\pm100$ mA current-injection test that classifies susceptibility by supply and signal pin . A latched driver IC can look like a dead laser on the bench (no light, no LIV signature) until you check the supply current instead of the optical path.
 
-ESD and latch-up are primarily design-qualification and process-control concerns. Targeted production measurements or screens may be used when their detection capability is validated, but many latent ESD conditions cannot be economically detected on every finished unit. Do not project either mechanism with an activation energy. If a driver fails ESD or latch-up in the field, that is a manufacturability or design-margin bucket item (§7.12), not a wear-out FIT argument.
+ESD and latch-up are primarily design-qualification and process-control concerns. Targeted production measurements or screens may be used when their detection capability is validated, but many latent ESD conditions cannot be economically detected on every finished unit. Do not project either mechanism with an activation energy. If a driver fails ESD or latch-up in the field, that is a manufacturability or design-margin bucket item (§7.14), not a wear-out FIT argument.
 
 ##### AEC-Q100: a borrowed grade, not a requirement.
 
@@ -184,7 +184,7 @@ Carry IC-level qual into the production acceptance and SPC structure in Chapter�
 
 ## Wear-out modes to know
 
-Arrhenius math, derating, and the worked FIT example live in §5.13. This section is the mechanism catalog: how each failure shows up in ATP and telemetry, and which triage bucket owns it (§7.12). Do not run process CAPA on a wear-out part, and do not burn FIT math on a dirty connector.
+Arrhenius math, derating, and the worked FIT example live in §5.13. This section is the mechanism catalog: how each failure shows up in ATP and telemetry, and which triage bucket owns it (§7.14). Do not run process CAPA on a wear-out part, and do not burn FIT math on a dirty connector.
 
 ##### Infant mortality versus wear-out versus packaging.
 
@@ -195,11 +195,11 @@ Field failures come in three clocks, and mixing them up wastes CAPA. Infant mort
 Table 8.2 is the working list for laser-bearing modules and CPO/ELS paths. Qualification plans should be organized around mechanisms. ATP may detect a validated observable proxy, while mechanisms without a useful proxy must be controlled through design, supplier evidence, process control, sampled audit, or fleet monitoring. Customize limits in the ATP; keep the classification discipline.
 
 <table class="book-table"><tr><th>Mechanism</th><th>Observable</th><th>ATP / telemetry</th><th>Triage bucket</th></tr><tr><td>COD (facet)</td><td>Sudden dark or hard fail; was healthy</td><td>Dark LIV; DPA facet; date-code cluster?</td><td>Reliability (COD) or mfg (ESD)</td></tr><tr><td>Gradual facet / active region</td><td>I_th up, slope down over life</td><td>LIV trend vs ship ATP; HTOL lot history</td><td>Reliability (wear-out)</td></tr><tr><td>SMSR collapse</td><td>Side modes rise; modal noise / BER</td><td>OSA SMSR vs floor at T</td><td>Reliability; watch aging</td></tr><tr><td>EAM aging (EML)</td><td>TDECQ/RLM creep at fixed bias</td><td>EAM bias sweep + DCA; bias creep log</td><td>Reliability (EAM)</td></tr><tr><td>RIN rise</td><td>BER floor up; feedback sensitive</td><td>RIN @ ORL; isolator / connector check</td><td>Perf if ORL; reliability if isolator</td></tr><tr><td>TEC / thermal control</td><td>Unlock or walk; LIV may look fine</td><td>TEC current, case T, lock status</td><td>Perf (lock) or reliability (TEC)</td></tr><tr><td>Coupling / FAU / solder</td><td>Loss step, intermittent LOS, shock-related</td><td>ORL, mate cycles, DPA FAU/solder</td><td>Manufacturability / packaging</td></tr><tr><td>Driver/TIA latch-up (ESD)</td><td>Sudden hard fail; no light, no LIV signature; supply current spikes</td><td>Supply current vs bias; JESD78 rating; date-code cluster?</td><td>Mfg (ESD) or design margin</td></tr><tr><td>Connector wear / contamination</td><td>ORL creep after repeated mate cycles; RIN floor rise</td><td>Mate-cycle count vs IEC 61300-2-2 rating; endface grade (IEC 61300-3-35)</td><td>Manufacturability / packaging</td></tr></table>
-**Table 8.2.** Wear-out and packaging mechanisms versus observables. Arrhenius projection and derating for the laser rows: §5.13. Electronics stress qualification: §8.4. Connector reliability: §8.7. Field classification workflow: §7.12.
+**Table 8.2.** Wear-out and packaging mechanisms versus observables. Arrhenius projection and derating for the laser rows: §5.13. Electronics stress qualification: §8.4. Connector reliability: §8.7. Field classification workflow: §7.14.
 
 ### Reading the wear-out map
 
-Table 8.2 is a triage map, not a life calculator. Classify before corrective action. Reliability rows need life models and derate. Performance rows need plant and control fixes. Manufacturing and packaging rows need process and ATP screens. Mixing buckets wastes CAPA (§7.12). Arrhenius projection lives in §5.13; this section teaches how to read the map in three families.
+Table 8.2 is a triage map, not a life calculator. Classify before corrective action. Reliability rows need life models and derate. Performance rows need plant and control fixes. Manufacturing and packaging rows need process and ATP screens. Mixing buckets wastes CAPA (§7.14). Arrhenius projection lives in §5.13; this section teaches how to read the map in three families.
 
 ##### Semiconductor wear.
 
@@ -231,7 +231,7 @@ Wear-out (end of life)
 
 : Physics-driven degradation: laser facet, active region, EAM absorption curve shift, TEC aging, epoxy creep. Onset depends on temperature, current, optical power, and time. Fixed by derating, Arrhenius-based life projection, and planned replacement intervals (§5.13).
 
-A rising failure rate after years of service is wear-out and calls for replacement planning, not supplier 8D. A cluster of early failures on a new lot is infant mortality and calls for tighter screens. A steady trickle with no date-code correlation is useful-life random and calls for redundancy and fast repair. The triage tree in §7.12 forces this classification before corrective action starts.
+A rising failure rate after years of service is wear-out and calls for replacement planning, not supplier 8D. A cluster of early failures on a new lot is infant mortality and calls for tighter screens. A steady trickle with no date-code correlation is useful-life random and calls for redundancy and fast repair. The triage tree in §7.14 forces this classification before corrective action starts.
 
 ## Photonic packaging and module-level failures
 
@@ -239,13 +239,13 @@ Fleet FIT is not only laser wear-out. Once lasers are screened and derated, modu
 
 ##### Connector reliability: MPO, mating cycles, and endface quality.
 
-Multi-fiber connectors are the highest-touch mechanical interface in the fleet: every ELSFP swap, every fiber-attach unit (FAU) rework, and every cable-plant install mates and unmates an MPO. The MPO/MT ferrule family (rectangular, 6.4 mm $\times$ 2.5 mm, guide-pin aligned, 8/12/16/24 fibers per row) is standardized in *IEC 61754-7*, split into one-fibre-row and two-fibre-row parts . That standard fixes geometry, not lifetime; lifetime comes from two companion test methods. *IEC 61300-2-2* specifies the mate/unmate cycling test connector datasheets are rated against, and *IEC 61300-3-35* grades endface scratches, pits, and debris into pass/fail zones on the fiber core and cladding . TIA-568.3 sets 500 cycles as the structured-cabling mating-durability floor; MPO/MTP-class connectors in practice are commonly rated well above 1000 cycles, but that headroom erodes fast with the wrong cleaning discipline (§7.2.2).
+Multi-fiber connectors are the highest-touch mechanical interface in the fleet: every ELSFP swap, every fiber-attach unit (FAU) rework, and every cable-plant install mates and unmates an MPO. The MPO/MT ferrule family (rectangular, 6.4 mm $\times$ 2.5 mm, guide-pin aligned, 8/12/16/24 fibers per row) is standardized in *IEC 61754-7*, split into one-fibre-row and two-fibre-row parts . That standard fixes geometry, not lifetime; lifetime comes from two companion test methods. *IEC 61300-2-2* specifies the mate/unmate cycling test connector datasheets are rated against, and *IEC 61300-3-35* grades endface scratches, pits, and debris into pass/fail zones on the fiber core and cladding . TIA-568.3 sets 500 cycles as the structured-cabling mating-durability floor; MPO/MTP-class connectors in practice are commonly rated well above 1000 cycles, but that headroom erodes fast with the wrong cleaning discipline (§7.4.2).
 
-Three practical consequences follow for an ELSFP or CPO fiber-attach program. First, ORL creep is a mating-cycle and cleaning problem before it is a laser problem: a rising RIN floor after repeated ELS swaps (Table 8.2) is diagnosed with an IEC 61300-3-35-style endface inspection, not a laser FA request. Second, mate-cycle count belongs in the same telemetry you already read for CMIS and DDM (§7.8); track it per connector, not per module, since a connector can outlive several module swaps or vice versa. Third, write the mating-cycle and endface-grade limits into the ATP explicitly (Table 9.3) rather than inheriting a generic MPO datasheet number: an ELS bank that hot-swaps weekly reaches a 500-cycle floor in under ten years, and a CPO fiber array that is field-serviced more aggressively reaches it faster still.
+Three practical consequences follow for an ELSFP or CPO fiber-attach program. First, ORL creep is a mating-cycle and cleaning problem before it is a laser problem: a rising RIN floor after repeated ELS swaps (Table 8.2) is diagnosed with an IEC 61300-3-35-style endface inspection, not a laser FA request. Second, mate-cycle count belongs in the same telemetry you already read for CMIS and DDM (§7.10); track it per connector, not per module, since a connector can outlive several module swaps or vice versa. Third, write the mating-cycle and endface-grade limits into the ATP explicitly (Table 9.3) rather than inheriting a generic MPO datasheet number: an ELS bank that hot-swaps weekly reaches a 500-cycle floor in under ten years, and a CPO fiber array that is field-serviced more aggressively reaches it faster still.
 
-ELSFP cycling adds connector wear and contamination that raise ORL (§7.2.2, §5.14); the mating-cycle and endface-grade limits above are exactly the numbers that turn "the connector feels loose" into an ATP line item instead of a guess.
+ELSFP cycling adds connector wear and contamination that raise ORL (§7.4.2, §5.14); the mating-cycle and endface-grade limits above are exactly the numbers that turn "the connector feels loose" into an ATP line item instead of a guess.
 
-Destructive physical analysis (cross-section, EDX) and structured 8D/CAPA with suppliers close the loop from RMA to design rule (§9.2, §7.12). Without that loop, packaging FIT gets mis-attributed to laser Arrhenius models and the wrong part gets redesigned.
+Destructive physical analysis (cross-section, EDX) and structured 8D/CAPA with suppliers close the loop from RMA to design rule (§9.2, §7.14). Without that loop, packaging FIT gets mis-attributed to laser Arrhenius models and the wrong part gets redesigned.
 
 ## Deep dive: from component FIT to fabric availability
 
@@ -285,7 +285,7 @@ At fleet scale, a modest per-part FIT times millions of parts is a steady stream
 
 ### How it is measured
 
-Reliability is measured as a distribution over stress and time. Qualification records failures and drift by mechanism, stress, lot, and sample history. Convert accelerated hours to field years only with a named mechanism, stated $E_a$, and confidence bounds (§8.2, §8.3). Fleet data add install age, temperature, firmware, supplier lot, and return code so wear-out and infant mortality are not mixed (§7.12).
+Reliability is measured as a distribution over stress and time. Qualification records failures and drift by mechanism, stress, lot, and sample history. Convert accelerated hours to field years only with a named mechanism, stated $E_a$, and confidence bounds (§8.2, §8.3). Fleet data add install age, temperature, firmware, supplier lot, and return code so wear-out and infant mortality are not mixed (§7.14).
 
 ### How it fails
 
@@ -441,7 +441,7 @@ Score each answer using the shared chapter-interview rubric in Appendix A.12.1; 
 
 
 <div class="nav-links">
-  <a href="ch7-optical-validation">&larr; Previous</a>
+  <a href="ch7-optical-product-readiness-from-requirements-to-fleet">&larr; Previous</a>
   <a href="./">Table of Contents</a>
   <a href="ch9-manufacturing-validation-and-production-readiness">Next &rarr;</a>
 </div>

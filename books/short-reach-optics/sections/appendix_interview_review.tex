@@ -65,8 +65,8 @@ Control
 Learning
 \end{dectree}
 
-Do not invent a second framework. Use this loop inside the validation lifecycle
-(\Cref{tab:ladder}), the qualification evidence path
+Do not invent a second framework. Use this loop inside the product-readiness
+lifecycle (\Cref{tab:ladder}), the qualification evidence path
 (\Cref{sec:tree-qual-evidence}), and the failure-analysis handbook
 (\Cref{ch:failure-modes}).
 
@@ -763,19 +763,19 @@ cheap tests that would falsify it.}
 \heuristic{An actuator near its rail is often the story before the diode is
 dead. Check control authority before you declare wear-out.}
 
-\subsection{Use the validation ladder}
+\subsection{Use the product-readiness lifecycle}
 \label{sec:interview-validation-ladder}
 
-\keyidea{Validation is staged uncertainty reduction. Engineering is decision
-making; decision making is uncertainty reduction; measurements reduce
+\keyidea{Product readiness is staged uncertainty reduction. Engineering is
+decision making; decision making is uncertainty reduction; measurements reduce
 uncertainty; therefore measurements exist to improve decisions.}
 
 For every stage, name the question the stage answers and the uncertainty it
 removes. A test that answers no question is cost, not confidence. Do not re-list
 the lifecycle here; memorize the order in \Cref{tab:ladder} and the exit criteria
-in \Cref{sec:validation-workflow}.
+in \Cref{sec:product-readiness}.
 
-Night-before path: validation playbook in \Cref{fw:validation-plan}.
+Night-before path: readiness playbook in \Cref{fw:validation-plan}.
 Practice prose: \Cref{sec:interview-worked-validation}.
 
 \subsection{Margin budgeting}
@@ -1038,14 +1038,14 @@ Open \Cref{fw:validation-plan} only if the interviewer expands into the ladder;
 otherwise expand one constraint into the budget table and ATP/FAIR landing.
 Architecture forks: \Cref{sec:laser-system-requirements,tab:source-mod-matrix}.
 
-\subsection{How would you validate a new optical transmitter from bring-up
-through production?}
+\subsection{How would you establish readiness for a new optical transmitter from
+bring-up through production?}
 \label{sec:interview-worked-validation}
 
-This is the question most likely to open the interview. The ladder itself is
-in \Cref{sec:interview-validation-ladder,tab:ladder}. Frame first: validation
-is staged uncertainty reduction. Each stage answers a question the previous
-stage could not.
+This is the question most likely to open the interview. The lifecycle itself is
+in \Cref{sec:interview-validation-ladder,tab:ladder}. Frame first: product
+readiness is staged uncertainty reduction. Each stage answers a question the
+previous stage could not.
 
 \execanswer{See \Cref{fw:validation-plan} for the canonical 30-second answer. Deliver that first; expand below only if asked.}
 
@@ -1058,8 +1058,9 @@ ship). End on which ledger the telemetry must watch.
 Open \Cref{fw:validation-plan} for the thirty-second playbook. Expand only the
 stage the interviewer picks using \Cref{tab:ladder,tab:ladder-gates}: entry
 condition, key uncertainty, exit criteria, decision unlocked. Body detail is
-in \Cref{ch:validation,ch:reliability}. Prefer customer-visible measurements
-unless engineering access is available (\Cref{sec:tree-blackbox-access}).
+in \Cref{ch:product-readiness,ch:reliability}. Prefer customer-visible
+measurements unless engineering access is available
+(\Cref{sec:tree-blackbox-access}).
 
 \subsection{BER worsens at high temperature but average power is stable. What do
 you do?}
