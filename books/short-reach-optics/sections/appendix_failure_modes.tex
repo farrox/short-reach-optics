@@ -2,15 +2,27 @@
 \label{ch:failure-modes}
 
 This chapter is a symptom-first field guide. Start with what the bench,
-production line, or fleet reports. Preserve the failing state until its evidence
-has been captured, then use the same workflow for every incident. Distinguish
-observation, correlation, hypothesis, leading mechanism, and confirmed mechanism
-(after controlled confirmation). Do not call the last surviving hypothesis the confirmed
-mechanism without controlled reproduction, swap testing, stress dependence, or
-physical evidence. Do not say ``data proves'' until confirmation exists. For
-each symptom, state access (black-box versus engineering), the decision
-unlocked, and the earliest production or fleet control
-(\Cref{sec:tree-evidence-block,sec:interview-access-levels}).
+production line, or fleet reports, then run one incident path every time.
+
+Preserve the failing state before reseat, reboot, or clean. Those actions often
+destroy the only evidence that separates contact, firmware, and true wear
+(\Cref{sec:tree-evidence-block}). Next name the population: unit, lane, lot,
+vendor, site, or fleet. Contain when the population can grow; a perfect mechanism
+story does not unship yesterday's lot. Classify time behavior (sudden, gradual,
+intermittent) and which margin ledger moved first (power, noise, timing,
+spectrum, or control). Choose one measurement that can kill or promote the
+leading hypotheses at the access you have (black-box versus engineering;
+\Cref{sec:interview-access-levels,sec:tree-blackbox-access}). Confirm ownership
+with a controlled swap, stress, or physical evidence before you call a mechanism
+confirmed. Do not say ``data proves'' for the last surviving hypothesis alone.
+
+\paragraph{Recurrence-control closure.}
+An incident is not closed when the unit recovers. Close only when a production or
+fleet control catches the same signature next time: requirement, qualification
+plan, ATP, SPC, telemetry, or supplier process
+(\Cref{sec:tree-qual-evidence,sec:ladder-feedback}). Each symptom section ends
+with a short \emph{Recurrence control} line for that signature. Name the FA
+output category when you file the case (\Cref{sec:fa-output-categories}).
 
 \whyexp{preserve state before reseating?}{Because reseat, reboot, and clean often
 destroy the only evidence that separates contact, firmware, and true wear. Scope
@@ -19,91 +31,31 @@ without a snapshot is theater.}
 \heuristic{If two explanations fit equally well, prefer the one that requires
 the fewest independent failures.}
 
-\tradeoff{Contain now vs wait for FA}{Stops a growing population and limits
-fleet damage}{May pause good material and spend political capital}{When cohort
-evidence shows growth and impact is material}{Contain first when the population
-can grow. Perfect mechanism stories do not unship yesterday's lot.}
-
-Black-box versus engineering access is the same tradeoff as
-\Cref{sec:interview-customer-vendor}: stay external until deeper access changes
-the decision (\Cref{sec:tree-blackbox-access}).
-
-\tradeoff{Deep FA vs ship with a control}{Physical confirmation and supplier
-leverage}{Calendar cost and delayed learning if the control already catches the
-signature}{When the ATP or telemetry control already bounds escape risk}{Do not
-block every ship on teardown. Close with a control when confidence is enough for
-the decision.}
-
-\paragraph{Failure-analysis output categories.}
-\label{sec:fa-output-categories}
-Every FA result should land in one bucket before the case closes:
-
-\begin{description}
-\item[Design issue] Fix architecture or derate.
-\item[Process issue] Fix manufacturing or assembly.
-\item[Supplier issue] Fix incoming quality or supplier process.
-\item[Test escape] Improve detection (ATP, sample, SPC, telemetry).
-\item[Unknown mechanism] Continue investigation with an owner and interim
-      control.
-\end{description}
-
-Connect FA back into qualification. After corrective action, name what changed:
-requirement, qualification plan, ATP, SPC, telemetry, or supplier process
-(\Cref{sec:tree-qual-evidence,sec:ladder-feedback}).
-
 \begin{dectree}
-Observe
+Preserve failing state
   |
 Scope (unit / lot / vendor / site / fleet)
   |
-Time behavior (sudden / gradual / intermittent)
+Time behavior + first-moving ledger
   |
-Changing margin ledger
+Measure / isolate (name access)
   |
-Measure / isolate (name access level)
-  |
-Correct
+Contain / confirm
   |
 Recurrence control + FA output category
 \end{dectree}
 
-\begin{dectree}
-Escalation
-  |
-Contain if population can grow
-  |
-Bench confirm at named plane
-  |
-FA / DPA when mechanism unknown
-  |
-CAPA + ATP / SPC / telemetry update
-  |
-Fleet monitor until burn-down
-\end{dectree}
-
-\begin{dectree}
-Failure onset
-  |
-Sudden?
-  |-- config / handling / firmware / mechanical / power event
-  |
-Gradual?
-  |-- aging / drift / margin erosion / contamination / cal movement
-  |
-Prioritize measurements (priors, not conclusions)
-\end{dectree}
-
-Choose each measurement for its ability to separate competing hypotheses. The
-debugging pyramid in \Cref{sec:debug-pyramid}, the power-versus-signal fork in
-\Cref{sec:debug-fork}, the fleet router in \Cref{tab:fleet-triage}, and the
-wall-chart trees in \Cref{app:decision-trees} provide the same method at
-different scales.
+The debugging pyramid in \Cref{sec:debug-pyramid}, the power-versus-signal fork
+in \Cref{sec:debug-fork}, the fleet router in \Cref{tab:fleet-triage}, and the
+wall-chart trees in \Cref{app:decision-trees} are the same method at different
+scales. Earlier chapters own mechanism physics. This chapter owns order of
+operations. Symptom routes:
 
 \begin{description}
 \item[Power loss] Split launch-power loss from coupling, connector, MUX, fiber,
       monitor, and receiver-plane errors (\Cref{sec:fm-power-loss}).
-\item[BER increase] Separate a shifted waterfall from a BER floor, then check
-      power, eye quality, noise, timing, and spectrum
+\item[BER increase] Named-plane waterfall first; classify shift versus floor,
+      then power, eye, noise, timing, and spectrum
       (\Cref{sec:fm-ber-increase,sec:fm-ber-floor}).
 \item[Eye closure or low ER] Split bandwidth, drive, bias, reflection,
       dispersion, and resonance alignment
@@ -120,11 +72,6 @@ different scales.
 \item[Yield drop] Clear the tester, then split lot, site, process step, assembly,
       firmware, and calibration (\Cref{sec:fm-yield-drop}).
 \end{description}
-
-The cases below provide the detailed measurements and corrective actions. Use the
-failure and debug callouts in Chapters 3--9 as shorter versions of the same
-method. Earlier chapters own the mechanism physics. This chapter owns the order
-of operations.
 
 \section{Power loss}
 \label{sec:fm-power-loss}
@@ -175,51 +122,53 @@ Repair the first plane where power diverges. Correct calibration or monitor
 coefficients before changing source bias. Add a power check at the earliest
 production plane that can catch the signature and retain golden-path baselines
 for fleet comparison.
-What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
+\emph{Recurrence control:} ATP or sample power at that plane; golden-path baselines.
 
 \section{BER increase: waterfall shift or floor}
 \label{sec:fm-ber-increase}
 
+Interview path: name the optical plane, sweep a waterfall at that plane, then
+classify shift versus floor before picking instruments. One operating-point BER
+is not a classification.
+
 \begin{dectree}
 BER up
   |
-Power held?
-  |-- NO  --> power path (\Cref{sec:fm-power-loss})
-  |-- YES --> waterfall
-              |-- shift --> sensitivity / OMA / IL
-              |-- floor --> RIN / MPI / noise / crosstalk
+Name plane
+  |
+Waterfall (BER vs power)
+  |-- power not held --> power path (\Cref{sec:fm-power-loss})
+  |-- shift --> sensitivity / OMA / IL / eye / timing
+  |-- floor --> \Cref{sec:fm-ber-floor}
   |
 Decision + ATP / telemetry control
 \end{dectree}
 
 \paragraph{Observed behavior.}
-Pre-FEC BER rises, but the first task is to determine whether the whole BER
-waterfall moved to higher received power or whether it stopped improving at a
-horizontal floor. A waterfall is BER versus received power from a VOA sweep at
-a named reference plane. One operating-point BER is not enough to classify the
-failure.
+Pre-FEC BER rises. A waterfall is BER versus received power from a VOA sweep at
+a named reference plane. The curve either moves to higher power (shift), stops
+improving at a horizontal asymptote (floor), or shows both (soft floor on a
+shift).
 
 \paragraph{Likely hypotheses.}
 A shifted waterfall points toward lost power, receiver sensitivity, eye
 closure, timing, or dispersion: the link still responds to more photons, but
 the power needed for a given BER has moved. A floor points toward
 signal-proportional noise, reflection, crosstalk, or bursty impairments: past
-a point, more power does not help because noise grows with the signal. The
-distinction prevents a power fix from being applied to a noise-limited link.
-FEC error timing further splits the floor and shift cases: randomly sprinkled
-errors fit Gaussian or steady RIN; clustered bursts fit MPI, connector
-intermittents, or shared supply and clock events.
+a point, more power does not help. The distinction prevents a power fix on a
+noise-limited link. FEC error timing further splits the cases: randomly
+sprinkled errors fit Gaussian or steady RIN; clustered bursts fit MPI,
+connector intermittents, or shared supply and clock events.
 
 \paragraph{Measurements, mechanism isolation, and confirmation.}
 \begin{enumerate}
-\item Sweep received power and plot BER rather than recording one operating
-      point. Confirm whether the curve shifted, floored, or both (a soft floor
-      on top of a shift is common).
+\item Name the plane, then sweep received power and plot BER. Confirm shift,
+      floor, or both.
 \item If the waterfall shifted, compare received OMA, TDECQ, receiver
       sensitivity, equalizer taps, wavelength, and temperature with the golden
       baseline. Golden-swap Tx and Rx to assign ownership.
-\item If the curve floors, follow \Cref{sec:fm-ber-floor} and split intrinsic
-      RIN, electrical noise, ORL, MPI, and crosstalk.
+\item If the curve floors, continue in \Cref{sec:fm-ber-floor} and split
+      intrinsic RIN, electrical noise, ORL, MPI, and crosstalk.
 \item Use FEC error timing and lane correlation to separate random noise from
       bursts and shared disturbances. Preserve counters before reseating if the
       pattern is intermittent.
@@ -228,11 +177,12 @@ intermittents, or shared supply and clock events.
 \paragraph{Corrective action and recurrence control.}
 Restore the margin ledger that moved, then repeat the full BER sweep at loaded
 corners. Store waterfall shape, not only pass/fail BER, so later fleet changes
-can be classified without guessing. The interview study treatment of these
-shapes is in \Cref{sec:interview-waterfall}.
-What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
+can be classified without guessing. Interview study treatment:
+\Cref{sec:interview-waterfall}.
+\emph{Recurrence control:} waterfall or sensitivity sample in ATP/telemetry, not
+pass/fail BER alone.
 
-\section{BER floor}
+\subsection{BER floor}
 \label{sec:fm-ber-floor}
 
 \paragraph{Observed behavior.}
@@ -293,7 +243,7 @@ RIN, fix the bias supply. If ORL-driven, clean or replace connectors and verify
 isolator function. If MPI is confirmed from multiple reflections, reduce mated
 interfaces or improve their ORL. Update the earliest economical control (ATP,
 sampled audit, SPC, or telemetry), not every deep FA measurement.
-What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
+\emph{Recurrence control:} RIN@ORL sample or ORL audit at the stated plane.
 
 \section{Low extinction ratio}
 \label{sec:fm-low-er}
@@ -344,7 +294,7 @@ setpoint in firmware or flag the module for replacement if the absorption curve 
 shifted beyond the correctable range. For MZM drift, verify the bias controller and
 its monitor PD. For rings, retune or check for neighbor thermal crosstalk
 (\Cref{sec:thermal-xtalk}).
-What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
+\emph{Recurrence control:} ER or modulator-bias check in ATP or cal audit.
 
 \section{Lane imbalance}
 \label{sec:fm-lane-imbalance}
@@ -398,7 +348,7 @@ first-article coupling specs. Thermal gradient: redesign TEC zoning or derate th
 hot lane. Confirmed source wear-out: flag the lot and check burn-in screening
 effectiveness. Driver mismatch: work with the IC supplier on channel-to-channel
 gain flatness.
-What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
+\emph{Recurrence control:} per-lane coupling or TDECQ first-article / SPC.
 
 \section{Wavelength drift}
 \label{sec:fm-wavelength-drift}
@@ -437,7 +387,7 @@ derate the laser operating current. Ring unlock: increase heater headroom in the
 design, reduce thermal crosstalk with layout changes, or shift the CW-WDM source
 grid to re-center the ring tuning range. Aging: schedule preventive replacement
 (ELSFP hot-swap, \Cref{sec:elsfp}).
-What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
+\emph{Recurrence control:} TEC headroom and lock-error telemetry alarms.
 
 \section{Eye closure (high TDECQ)}
 \label{sec:fm-eye-closure}
@@ -479,7 +429,7 @@ Bandwidth: upgrade driver or modulator (higher-BW die or peaking network). RLM:
 tune driver pre-emphasis (DAC levels for each PAM4 symbol). Reflections: fix
 wirebond, impedance discontinuity, or connector. Dispersion: tighten wavelength
 tolerance or shorten the fiber (re-route).
-What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
+\emph{Recurrence control:} TDECQ/RLM sample tied to the failing corner.
 
 \section{Thermal runaway}
 \label{sec:fm-thermal-runaway}
@@ -523,7 +473,7 @@ to a lower-power module style (LPO instead of retimed, \Cref{sec:conditioning}).
 CPO: ensure the cold-plate thermal interface material (TIM) is intact and the
 liquid loop meets flow-rate spec. Long-term: specify a tighter thermal class in the
 laser requirements (\Cref{sec:laser-reqs}).
-What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
+\emph{Recurrence control:} loaded-cage thermal class in ATP or DV plan.
 
 \section{Intermittent failures}
 \label{sec:fm-intermittent}
@@ -585,7 +535,7 @@ Keep intermittent and no-fault-found RMA codes separate from laser wear-out.
 that the field is healthy. Separate intermittent codes from wear-out before you
 trust the FIT.}
 
-What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
+\emph{Recurrence control:} event-triggered FEC telemetry plus a dwell stress.
 
 \section{Connector contamination}
 \label{sec:fm-contamination}
@@ -645,7 +595,7 @@ failure'') so FIT accounting stays honest (\Cref{sec:fleet-triage}).
 \heuristic{Inspect before you clean, and photograph before you disturb. Cleaning
 first can erase the only evidence that the mate was dirty.}
 
-What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
+\emph{Recurrence control:} inspect-before-connect runbook; contamination RMA code.
 
 \section{Yield drop}
 \label{sec:fm-yield-drop}
@@ -680,7 +630,7 @@ or a guardband that no longer matches measurement spread.
 Restore the changed process or measurement input, add a statistical control at the
 first observable point, revise ATP only with correlation data, and require a new
 first-article check before releasing volume (\Cref{sec:supplier-exec}).
-What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
+\emph{Recurrence control:} SPC at the first separating observable; FAIR after change.
 
 \section{Aging, thermal response, and margin erosion}
 \label{sec:fm-aging-thermal-router}
@@ -743,10 +693,23 @@ thermal gradient that affects one lane.
 Restore thermal headroom, correct calibration and control limits, reduce coupling,
 or derate the operating point. Add the loaded-neighbor temperature ramp to the ATP
 or design-validation plan that missed it.
-What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (\Cref{sec:fa-output-categories}).
+\emph{Recurrence control:} loaded-neighbor temperature ramp in ATP or DV.
 
 \section{Failure-analysis checklist}
 \label{sec:failure-analysis-checklist}
+
+\paragraph{Failure-analysis output categories.}
+\label{sec:fa-output-categories}
+Every FA result should land in one bucket before the case closes:
+
+\begin{description}
+\item[Design issue] Fix architecture or derate.
+\item[Process issue] Fix manufacturing or assembly.
+\item[Supplier issue] Fix incoming quality or supplier process.
+\item[Test escape] Improve detection (ATP, sample, SPC, telemetry).
+\item[Unknown mechanism] Continue investigation with an owner and interim
+      control.
+\end{description}
 
 The checklist in \Cref{tab:failure-analysis-checklist} is a lifecycle, not a
 suggestion list. Each step removes a class of uncertainty before the next step
@@ -834,17 +797,6 @@ falsify so you pick the cheap separating test. Confirm before correct so you
 do not ship a story. Prevent last so the factory and fleet catch the next
 escape. Later steps must not compensate for a missing preserve pack or a
 wrong scope.
-
-\subsection{Learning summary}
-
-\begin{description}
-\item[Preserve] Snapshot before you touch it.
-\item[Scope] One unit, lot, vendor, site, or fleet?
-\item[Classify / locate] Time class and which ledger moved first?
-\item[Falsify / confirm] Kill hypotheses; confirm the block owns the fail.
-\item[Correct / prevent] Restore the corner; catch the next escape in ATP
-      or telemetry.
-\end{description}
 
 \section{Interview takeaway}
 \label{sec:failure-analysis-design-review}
