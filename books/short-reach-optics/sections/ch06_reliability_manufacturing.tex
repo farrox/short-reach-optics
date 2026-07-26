@@ -639,7 +639,7 @@ measured. An HTOL pass does not clear a date-code ESD cluster.
 \begin{description}
 \item[COD / ESD dark fails] Sudden dark: facet physics or electrical overstress?
 \item[Gradual LIV wear] Threshold up, slope down: life and derate.
-\item[SMSR / EAM / RIN] Spectrum, modulator, or noise floor: which ledger moved?
+\item[SMSR / EAM / RIN] OSA vs PD+ESA (not the same instrument): which ledger?
 \item[TEC / lock] Wavelength walk with healthy LIV: control before diode.
 \item[FAU / solder / connector] Step loss and mate history: packaging, not FIT.
 \end{description}
@@ -1299,14 +1299,11 @@ Your job in those meetings is to name the measurement that would kill the gate.
 If nobody can point to an ATP row or a corner, the milestone is not real.
 
 \keyidea{Reliability at scale is mechanism discipline plus supplier gates.
-Classify failures with the wear-out map (\Cref{tab:wearout-map}) before you argue
-FIT or open 8D. Laser wear-out gets Arrhenius and GR-468; driver and TIA silicon
-gets JESD47, HBM/CDM ESD, and latch-up ratings (\Cref{sec:ic-reliability}); MPO
-connectors get mating-cycle and endface-grade limits
-(\Cref{sec:connector-reliability}). Supplier execution is a gated contract:
-requirements and ATP at DVT, multi-lot SPC and FAIR at PVT, then 8D with evidence
-when a lot or field Pareto says manufacturability. Do not run process CAPA on a
-wear-out failure, and do not burn FIT math on a dirty or worn connector.}
+Classify with the wear-out map (\Cref{tab:wearout-map}) before FIT or 8D. Laser
+wear-out uses Arrhenius and GR-468; driver/TIA uses JESD47 and ESD ratings
+(\Cref{sec:ic-reliability}); connectors use mate-cycle and endface limits
+(\Cref{sec:connector-reliability}). Gate suppliers on ATP, multi-lot SPC, and
+FAIR. Do not run process CAPA on wear-out, or FIT math on a dirty connector.}
 
 \section{From component FIT to fabric availability}
 \label{sec:fabric-availability}
@@ -1416,11 +1413,10 @@ input, correct it, and verify with a controlled lot before release.}
 \label{sec:reliability-how-debugged}
 
 For a yield fall, freeze software, limits, and suspect material. Split by tester,
-shift, lot, supplier site, and ATP row. Run a golden unit across stations and a
-failing unit on a reference bench. If the failure follows the station, repair the
-measurement system. If it follows the unit, inspect upstream process data and
-choose failure analysis that can distinguish the top mechanisms. Contain first,
-confirm the mechanism second, change the process third, and verify the fix on fresh data.
+shift, lot, supplier site, and ATP row. Golden unit across stations; failing unit
+on a reference bench. Station-follows means repair the measurement system;
+unit-follows means upstream process and mechanism FA. Contain first, confirm
+second, change the process third, verify on fresh data.
 
 \debugstory{Module yield fell sharply after a supplier lot change.}{The failure
 Pareto pointed to one-lane TDECQ. Golden units passed all stations, and failed
@@ -1451,3 +1447,4 @@ a supplier before the measurement system is cleared
 \item Which corrective action changes a control so the same defect cannot escape
       again?
 \end{enumerate}
+

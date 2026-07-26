@@ -431,7 +431,8 @@ quote in a datasheet review:
 \item RIN$_{x\mathrm{OMA}} \le -138$~dB/Hz at 17.2~dB ORL (the ``$x$'' subscript
       tracks return loss, same convention as IEEE DR PMDs).
 \item Illustrative link budget 6.7~dB total at 500~m (3~dB channel loss plus 0.3~dB
-      MPI penalty plus 3.4~dB TDECQ allocation).
+      MPI penalty plus 3.4~dB TDECQ allocation). Do not stack that TDECQ
+      allocation on a SECQ-stressed sensitivity that already embeds Tx quality.
 \item Stressed receiver sensitivity $-3.1$~dBm OMA$_{\mathrm{outer}}$ at TP3 with
       SECQ = 3.4~dB and aggressor lanes at 4.2~dBm OMA.
 \end{itemize}
@@ -1562,7 +1563,7 @@ constraint and by how the fleet detects, contains, and repairs each failure.}
 
 Junior mistake: rewrite the topology before scoping one weak rail, or ignore
 optics FA when collectives stall
-(\Cref{sec:debug-fork,ch:failure-modes,app:case-studies}).
+(\Cref{sec:debug-fork,ch:failure-modes,app:decision-trees,app:staff-thinking}).
 
 \paragraph{Three questions to test yourself.}
 \begin{enumerate}
@@ -1573,3 +1574,4 @@ optics FA when collectives stall
 \item How do pluggable, linear pluggable, and co-packaged choices trade host margin,
       power, cooling, fiber count, and repair time?
 \end{enumerate}
+

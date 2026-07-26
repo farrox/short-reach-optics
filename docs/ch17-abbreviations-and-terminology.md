@@ -15,7 +15,7 @@ This glossary merges OIF CEI-448G Framework terms (OIF-FD-CEI-448G-01.0, Septemb
 
 8D / CAPA
 
-: Eight-discipline problem solving and corrective and preventive action. Structured containment, root cause, correction, and recurrence control for supplier or production failures.
+: Eight-discipline problem solving and corrective and preventive action. Structured containment, confirmed mechanism, correction, and recurrence control for supplier or production failures.
 
 ACC
 

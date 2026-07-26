@@ -171,9 +171,9 @@ Treat engineering as hypothesis testing: $$\begin{split}
 &\longrightarrow \text{belief updated / hypothesis eliminated}.
 \end{split}$$
 
-**Key idea.** Debugging is Bayesian inference performed in a laboratory.
+**Key idea.** Inside the Staff loop (Appendix A.1), each measurement reorders competing hypotheses.
 
-Every measurement updates the probability of competing hypotheses. Speak the update out loud. "Calibration drift is my leading hypothesis, wavelength walk is second, and receiver noise is lower probability; the next measurement should sharply reorder those beliefs." A test that leaves the ranking unchanged was the wrong test, or the wrong reference plane.
+Speak the update out loud. "Calibration drift is my leading hypothesis, wavelength walk is second, and receiver noise is lower probability; the next measurement should sharply reorder those beliefs." A measurement that leaves the ranking unchanged was the wrong measurement, or the wrong reference plane.
 
 **Principle 4: Measurements characterize margin.**\
 Engineering is not only proving that a product works. It determines how much uncertainty and margin remain before failure. Debugging identifies exhausted margin. Qualification verifies that remaining margin is still acceptable after expected stresses. The same ledgers (power, noise, timing, spectral, control) appear in both jobs.

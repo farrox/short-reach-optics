@@ -1,0 +1,62 @@
+# Errata — Short-Reach Optics for AI Compute (v1.0.0)
+
+Release-candidate audit against freeze baseline `d12cc0f` (373 pages). Changes
+below are cuts, wording, cross-references, and corrections only. No new
+frameworks or chapters. Page count held at 373.
+
+## Technical corrections
+
+- **Link budget / TDECQ double-count:** Clarified that TDECQ (or a TDECQ-coupled
+  OMA limit / SECQ-stressed sensitivity) must not be debited twice when closing
+  margin (`ch02` mental model; `ch07` MSA illustrative budget note).
+- **Post-FEC / “error-free”:** Replaced universal “error-free $<10^{-12}$”
+  language in the post-FEC term snip with a named residual / FLR / UCR objective
+  plus duration.
+- **BER plane labels:** Pre-FEC vs post-FEC and FEC-threshold context added where
+  debug examples used bare $10^{-12}$ / $10^{-6}$ classes (`ch_models` debug and
+  self-test; CEI-224G table caption in `ch02`).
+- **Sensitivity measurement:** Receiver sensitivity wording now requires named
+  BER plane, pattern, EQ, and reference plane (`ch05`).
+- **RIN vs OSA:** Separated OSA (SMSR/spectrum) from PD+ESA / RIN analyzer
+  (intensity noise) in reliability learning summary and BER-floor debug list
+  (`ch06`, `ch_models`).
+- **Premature root-cause claims:** Softened fleet triage language that treated
+  ORL/RIN and ELSFP-swap signatures as confirmed mechanisms before confirmation
+  evidence (`ch05`).
+
+## Clarifications
+
+- **Debugging pyramid:** Renamed “physical root cause” layer to “confirmed
+  mechanism (evidence)” and stated the pyramid is a scope order inside the Staff
+  loop, not a second philosophy (`ch01`;
+  `\Cref{sec:interview-staff-pattern}`).
+- **Bayesian keyidea:** Reframed as belief update *inside* the Staff loop, not
+  a competing framework (`app:interview-review`).
+- **Validation stage tree:** Renamed “Qualification lifecycle” wall chart to
+  “Validation stage order” and tied it explicitly to `tab:ladder`
+  (`app:decision-trees`).
+- **Validation vs qualification vocabulary:** Laser source matrix “Validation
+  burden” → “Evidence burden” with note that ATP/characterization and life
+  qualification are separate jobs (`ch03`). Qual-stage prose “validates the net
+  behavior” → “measures net remaining margin” (`ch05`).
+- **Root-cause wording:** Glossary 8D/CAPA, escape-tree prose, and Staff
+  appendix now prefer “confirmed mechanism” until evidence closes.
+- **Chapter endings / navigation:** Kept existing takeaway + three questions;
+  preface Incident mode now points at validation ladder and reliability homes.
+  Forward maps already present in Ch1 / first-principles were left as the
+  navigation spine.
+- **Interview frameworks:** Validation-plan close now ends on gate decision +
+  control owner; “refuse any test” → “refuse any measurement.”
+
+## Typographical fixes
+
+- None beyond the wording edits above in this pass.
+
+## Future ideas (not committed)
+
+- Exhaustive caption retrofit for every ASCII `dectree` (title + takeaway).
+- Full glossary pass renaming remaining colloquial “root cause” in historical
+  industry phrases where the term is conventional (kept only where confirmed).
+- Optional HTML search index beyond TOC (out of scope for freeze).
+- Deeper CEI-224G draft clause citations as IAs stabilize (numbers are
+  provisional where marked).

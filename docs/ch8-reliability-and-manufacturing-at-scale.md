@@ -314,7 +314,7 @@ Gradual LIV wear
 
 SMSR / EAM / RIN
 
-: Spectrum, modulator, or noise floor: which ledger moved?
+: OSA vs PD+ESA (not the same instrument): which ledger?
 
 TEC / lock
 
@@ -698,7 +698,7 @@ Align the partner calendar to gates, not slideware:
 
 Your job in those meetings is to name the measurement that would kill the gate. If nobody can point to an ATP row or a corner, the milestone is not real.
 
-**Key idea.** Reliability at scale is mechanism discipline plus supplier gates. Classify failures with the wear-out map (Table 8.2) before you argue FIT or open 8D. Laser wear-out gets Arrhenius and GR-468; driver and TIA silicon gets JESD47, HBM/CDM ESD, and latch-up ratings (§8.3); MPO connectors get mating-cycle and endface-grade limits (§8.8). Supplier execution is a gated contract: requirements and ATP at DVT, multi-lot SPC and FAIR at PVT, then 8D with evidence when a lot or field Pareto says manufacturability. Do not run process CAPA on a wear-out failure, and do not burn FIT math on a dirty or worn connector.
+**Key idea.** Reliability at scale is mechanism discipline plus supplier gates. Classify with the wear-out map (Table 8.2) before FIT or 8D. Laser wear-out uses Arrhenius and GR-468; driver/TIA uses JESD47 and ESD ratings (§8.3); connectors use mate-cycle and endface limits (§8.8). Gate suppliers on ATP, multi-lot SPC, and FAIR. Do not run process CAPA on wear-out, or FIT math on a dirty connector.
 
 ## From component FIT to fabric availability
 
@@ -746,7 +746,7 @@ Programs fail at scale through wear, variation, and escapes. Wear shifts a unit 
 
 ### How it is debugged
 
-For a yield fall, freeze software, limits, and suspect material. Split by tester, shift, lot, supplier site, and ATP row. Run a golden unit across stations and a failing unit on a reference bench. If the failure follows the station, repair the measurement system. If it follows the unit, inspect upstream process data and choose failure analysis that can distinguish the top mechanisms. Contain first, confirm the mechanism second, change the process third, and verify the fix on fresh data.
+For a yield fall, freeze software, limits, and suspect material. Split by tester, shift, lot, supplier site, and ATP row. Golden unit across stations; failing unit on a reference bench. Station-follows means repair the measurement system; unit-follows means upstream process and mechanism FA. Contain first, confirm second, change the process third, verify on fresh data.
 
 \> \*\*Debug story\*\* \> \> \*\*Observed.\*\* Module yield fell sharply after a supplier lot change. \> \> \*\*Investigation.\*\* The failure Pareto pointed to one-lane TDECQ. Golden units passed all stations, and failed units kept the bad lane on the reference bench. Cross-sections showed a shifted fiber-array attach. \> \> \*\*Finding.\*\* The electrical path and testers were stable. \> \> \*\*Root cause.\*\* An assembly fixture change moved one fiber row outside its coupling window. \> \> \*\*Resolution.\*\* The lot was held, the fixture was restored, first-article coupling checks were tightened, and the supplier control plan was revised.
 

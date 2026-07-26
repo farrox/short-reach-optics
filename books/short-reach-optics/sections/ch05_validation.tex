@@ -871,9 +871,10 @@ instead (\Cref{sec:rin-values,ch:lasers}). Fiber attach
 \subsection{Receiver}
 
 Receiver work asks whether the front-end can still decide bits at the OMA that
-survives the channel. Measure sensitivity (minimum OMA for the target BER) and
-stressed-receiver sensitivity with a calibrated stressor for margin
-(\Cref{sec:secq}), plus overload before the TIA saturates. Underneath those
+survives the channel. Measure sensitivity (minimum OMA for the named BER
+objective at a stated plane, pattern, and EQ) and stressed-receiver sensitivity
+with a calibrated stressor for margin (\Cref{sec:secq}), plus overload before
+the TIA saturates. Underneath those
 system numbers sit the photodiode/TIA pair: responsivity, bandwidth, and
 input-referred noise (\Cref{sec:pd-tia,ch:models}).
 
@@ -991,7 +992,8 @@ connectors, add isolation, or reopen the budget. \textbf{Risk if skipped:}
 burst tickets look like random laser death.
 
 \paragraph{Receiver sensitivity.}
-Sensitivity is the minimum OMA for the target BER, the budget's bottom line.
+Sensitivity is the minimum OMA for the named BER objective at a stated plane,
+pattern, and EQ, the budget's bottom line.
 A parallel waterfall shift with no floor usually means the Rx path or channel
 loss changed. \textbf{Exit when} sensitivity meets the ledger with stated
 pattern and stress. \textbf{Decision:} golden-swap ownership, derate reach, or
@@ -1174,7 +1176,7 @@ Distinguish margin allocation in design from margin verification in test.
 During design, engineers allocate transmitter output, receiver sensitivity,
 insertion loss, temperature degradation, aging, jitter, and manufacturing
 variation. During customer or system qualification, the integrator often
-validates the net behavior across the operating envelope.
+measures net remaining margin across the operating envelope.
 
 \begin{dectree}
 Design: allocate line items
@@ -1842,16 +1844,17 @@ laser: a ring unlock is still performance (\Cref{sec:siring,ch:wdm}).
 
 \emph{``Random burst errors, average power fine.''}
 Check FEC histogram for clustered errors and CMIS for Rx power dropouts. Clean
-and measure ORL. If RIN rises with ORL, it is performance/architecture
-(feedback). If ORL is fine and bursts track a date code, it is mfg (intermittent
-fiber attach). If bursts grow over months at fixed ORL, suspect laser or driver
-aging (\Cref{sec:laser-drivers,sec:laser-aging}).
+and measure ORL. If RIN rises with ORL, treat feedback/ORL as the leading
+performance hypothesis until confirmed. If ORL is fine and bursts track a date
+code, treat intermittent fiber attach as the leading manufacturing hypothesis.
+If bursts grow over months at fixed ORL, suspect laser or driver aging
+(\Cref{sec:laser-drivers,sec:laser-aging}).
 
 \emph{``ELSFP replace fixed it; returned module looks alive on the bench.''}
-Alive LIV with high ORL sensitivity or dirty MT face means connector/ORL
-(mfg/ops), not laser death. Dead or kinked LIV means reliability. Split those RMA
-codes explicitly or your FIT math will blame the wrong wear-out mode
-(\Cref{sec:elsfp,sec:photonic-packaging}).
+Alive LIV with high ORL sensitivity or a dirty MT face supports connector/ORL
+over laser wear-out; confirm with IL/ORL and recurrence. Dead or kinked LIV
+supports a reliability path. Split those RMA codes or FIT math blames the wrong
+mode (\Cref{sec:elsfp,sec:photonic-packaging}).
 
 \paragraph{RMA labels that keep FIT honest.}
 RMA\firstterm{RMA} codes should be distinct, not a single ``optics fail'':
@@ -1928,7 +1931,7 @@ the blocks and reference planes are known. Run the target host, chassis, fiber,
 and neighbor corners before calling the product ready.}
 
 Junior mistake: call a golden-host BER pass ``production ready,'' or open
-supplier FA before clearing the tester (\Cref{tab:ladder,ch:reliability}).
+supplier FA before clearing the tester (\Cref{tab:ladder,ch:reliability,app:decision-trees}).
 
 \paragraph{Three questions to test yourself.}
 \begin{enumerate}
@@ -1939,3 +1942,4 @@ supplier FA before clearing the tester (\Cref{tab:ladder,ch:reliability}).
 \item How do you detect tester drift before it becomes a yield cliff or a field
       escape?
 \end{enumerate}
+

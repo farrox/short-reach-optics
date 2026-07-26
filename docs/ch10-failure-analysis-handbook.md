@@ -602,7 +602,7 @@ Correct / prevent
 
 **Key idea.** A useful failure analysis starts with a symptom and ends with a new control. Preserve the failing state, split shared from local behavior, clear the measurement system, and choose one measurement that can falsify the leading hypothesis. The corrective action is incomplete until production or fleet data show that the same signature no longer escapes.
 
-Junior mistake: reseat first, or close without a recurrence control in ATP or telemetry (§7.12, Appendix B, Appendix A.1).
+Junior mistake: reseat first, or close without a recurrence control in ATP or telemetry (§7.12, Appendix B, Appendix C, Appendix F).
 
 ##### Three questions to test yourself.
 

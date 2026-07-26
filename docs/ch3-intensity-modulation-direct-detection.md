@@ -331,7 +331,7 @@ Per-lane rate is the axis the whole industry advances along, because doubling it
 </figure>
 
 <table class="book-table"><tr><th>Class</th><th>Hop</th><th>Nominal reach / channel</th><th>Notes</th></tr><tr><td>XSR</td><td>Die-to-die or die-to-OE</td><td>50 mm package substrate</td><td>CPO / chiplet optics; light EQ</td></tr><tr><td>VSR</td><td>Chip-to-pluggable module</td><td>200 mm host + 20 mm module, 1 connector</td><td>Classic faceplate retimed path</td></tr><tr><td>MR</td><td>Chip-to-chip / midplane</td><td>500 mm, 1 connector</td><td>Board-scale copper</td></tr><tr><td>LR</td><td>Backplane or copper cable</td><td>1000 mm host+daughter, 2 connectors</td><td>DAC/ACC/AEC territory</td></tr><tr><td>Linear</td><td>Chip-to-linear module</td><td>Same cages as VSR-class ports; no module DSP</td><td>LPO foundation; host EQ + FEC</td></tr></table>
-**Table 3.8.** CEI-224G electrical classes (project map). BER target on the reach classes is $10^{-15}$ or better with FEC allowed. Draft LR/MR IAs were member-review as of OFC 2025; Linear is the separate full-linear module track.
+**Table 3.8.** CEI-224G electrical classes (project map). Post-FEC residual is typically $10^{-15}$ class when the IA allows FEC; quote the named pre-FEC objective from the active draft. Draft LR/MR IAs were member-review as of OFC 2025; Linear is the separate full-linear module track.
 
 One SerDes core may not cover XSR through LR efficiently: short reaches want simple, low-power equalization, while LR burns DSP to close tens of dB of loss. That is why Linear is its own project rather than "VSR with the DSP deleted," and why CPO (XSR) and LPO (Linear) show up as different power/serviceability bets (§3.14.2, §9.3, §9.10).
 
@@ -585,7 +585,7 @@ For degraded receiver sensitivity, first verify the power meter and reference pl
 
 **Key idea.** IM/DD is intensity in, power out, with FEC and DSP closing the gap that PAM4's SNR penalty opens. Know OMA, ER, chirp and dispersion, pre-FEC BER, and the reference plane for every number. Then measure, bisect, and correct the failing block.
 
-Junior mistake: treat average power as signal quality, or skip the named plane before arguing TDECQ (§4.8, Chapter 7).
+Junior mistake: treat average power as signal quality, or skip the named plane before arguing TDECQ (§4.8, Chapter 4, Chapter 7).
 
 ##### Three questions to test yourself.
 

@@ -52,11 +52,11 @@ point at different owners and different next measurements.}
 \heuristic{If two explanations fit equally well, prefer the one that requires
 the fewest independent failures.}
 
-\section{Qualification lifecycle}
+\section{Validation stage order}
 \label{sec:tree-qualification}
 
 \begin{dectree}
-Qualification lifecycle
+Validation stage order (same as tab:ladder)
   |
 Requirements definition
   |
@@ -83,9 +83,8 @@ Fleet monitoring
 Feedback / next revision
 \end{dectree}
 
-Each gate removes a different uncertainty. Do not treat a bring-up pass as
-margin evidence, or an HTOL pass as production readiness. \Cref{tab:ladder} is
-the same order in table form
+Same order as \Cref{tab:ladder}, not a second Staff loop. Do not treat a
+bring-up pass as margin evidence, or an HTOL pass as production readiness
 (\Cref{sec:validation-workflow,sec:interview-validation-ladder,sec:gr468}).
 
 \section{Qualification evidence tree}
@@ -188,8 +187,8 @@ Gradual?
 Prioritize measurements (priors, not conclusions)
 \end{dectree}
 
-Sudden and gradual are priors that reorder the bench, not root-cause claims
-(\Cref{ch:failure-modes}).
+Sudden and gradual are priors that reorder the bench, not confirmed-mechanism
+claims (\Cref{ch:failure-modes}).
 
 \section{Transmitter, channel, or receiver}
 \label{sec:tree-tx-channel-rx}
@@ -334,7 +333,7 @@ Verify next lot
 Monitor fleet
 \end{dectree}
 
-Containment, root cause, and prevention are three different actions
+Containment, confirmed mechanism, and prevention are three different actions
 (\Cref{sec:escaped-defects}).
 
 \section{Production feedback loop}

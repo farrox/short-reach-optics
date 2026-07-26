@@ -21,7 +21,7 @@ Modulator path
   |
 Receiver / detector
   |
-Validation burden (ATP, lock, thermal, life)</code></pre>
+Validation / qual burden (ATP, lock, thermal, life)</code></pre>
 Reach and fiber
 
 : decide whether multimode loss and modal bandwidth are acceptable or whether the link needs single-mode fiber.
@@ -92,8 +92,8 @@ External laser source (ELS/ELSFP)
 
 : a pluggable laser module supplying CW light to a co-packaged switch, so a failed laser is field-replaceable (§5.14).
 
-<table class="book-table"><tr><th>Attribute</th><th>VCSEL direct</th><th>DFB direct</th><th>DFB + EAM</th><th>CW DFB/DBR + MZM</th><th>CW DFB/DBR + ring</th><th>External cavity + modulator</th></tr><tr><td>Wavelength / fiber</td><td>850--940 nm / MMF</td><td>1310 nm / SMF</td><td>1310 nm / SMF</td><td>1310 or 1550 nm / SMF</td><td>WDM grid / SMF</td><td>Tunable grid / SMF</td></tr><tr><td>Modulation fit</td><td>Direct only</td><td>Direct</td><td>Integrated EML</td><td>Si or TFLN MZM</td><td>Resonant Si ring</td><td>External MZM or ring</td></tr><tr><td>Bandwidth / reach</td><td>Short, modal limit</td><td>Chirp-limited</td><td>High BW, low chirp</td><td>High BW, broad passband</td><td>High BW, lock-limited</td><td>High BW, architecture-specific</td></tr><tr><td>RIN / linewidth</td><td>RIN and modal noise</td><td>RIN and chirp</td><td>RIN plus EAM bias</td><td>RIN; linewidth usually secondary</td><td>RIN plus spectral alignment</td><td>Low linewidth; verify feedback response</td></tr><tr><td>Power / efficiency</td><td>Low Tx complexity</td><td>Low Tx complexity</td><td>Driver and EAM loss</td><td>Laser, driver, and MZM loss</td><td>Laser, heater, and lock power</td><td>Laser plus control overhead</td></tr><tr><td>Reliability</td><td>Junction and temperature wear</td><td>Facet and active-region wear</td><td>Laser plus EAM aging</td><td>Source, attach, and bias drift</td><td>Source, heater, and lock faults</td><td>Cavity, package, and lock faults</td></tr><tr><td>Manufacturing</td><td>Array-friendly, MMF plant</td><td>Simple Tx, SMF attach</td><td>Mature integrated Tx</td><td>Multi-die attach and RF match</td><td>Dense PIC, tight thermal control</td><td>Tight optical assembly and control</td></tr><tr><td>Validation burden</td><td>Modal, temperature, aging</td><td>Chirp, LIV, RIN</td><td>LIV, RIN, EAM sweep, TDECQ</td><td>Source plus bias and RF path</td><td>Source plus resonance and crosstalk</td><td>Spectrum, lock, feedback, environment</td></tr></table>
-**Table 5.1.** Decision matrix for common source and modulation paths. Entries show the dominant engineering concern, not fixed rankings. Program limits come from Table 5.4.
+<table class="book-table"><tr><th>Attribute</th><th>VCSEL direct</th><th>DFB direct</th><th>DFB + EAM</th><th>CW DFB/DBR + MZM</th><th>CW DFB/DBR + ring</th><th>External cavity + modulator</th></tr><tr><td>Wavelength / fiber</td><td>850--940 nm / MMF</td><td>1310 nm / SMF</td><td>1310 nm / SMF</td><td>1310 or 1550 nm / SMF</td><td>WDM grid / SMF</td><td>Tunable grid / SMF</td></tr><tr><td>Modulation fit</td><td>Direct only</td><td>Direct</td><td>Integrated EML</td><td>Si or TFLN MZM</td><td>Resonant Si ring</td><td>External MZM or ring</td></tr><tr><td>Bandwidth / reach</td><td>Short, modal limit</td><td>Chirp-limited</td><td>High BW, low chirp</td><td>High BW, broad passband</td><td>High BW, lock-limited</td><td>High BW, architecture-specific</td></tr><tr><td>RIN / linewidth</td><td>RIN and modal noise</td><td>RIN and chirp</td><td>RIN plus EAM bias</td><td>RIN; linewidth usually secondary</td><td>RIN plus spectral alignment</td><td>Low linewidth; verify feedback response</td></tr><tr><td>Power / efficiency</td><td>Low Tx complexity</td><td>Low Tx complexity</td><td>Driver and EAM loss</td><td>Laser, driver, and MZM loss</td><td>Laser, heater, and lock power</td><td>Laser plus control overhead</td></tr><tr><td>Reliability</td><td>Junction and temperature wear</td><td>Facet and active-region wear</td><td>Laser plus EAM aging</td><td>Source, attach, and bias drift</td><td>Source, heater, and lock faults</td><td>Cavity, package, and lock faults</td></tr><tr><td>Manufacturing</td><td>Array-friendly, MMF plant</td><td>Simple Tx, SMF attach</td><td>Mature integrated Tx</td><td>Multi-die attach and RF match</td><td>Dense PIC, tight thermal control</td><td>Tight optical assembly and control</td></tr><tr><td>Evidence burden</td><td>Modal, temperature, aging</td><td>Chirp, LIV, RIN</td><td>LIV, RIN, EAM sweep, TDECQ</td><td>Source plus bias and RF path</td><td>Source plus resonance and crosstalk</td><td>Spectrum, lock, feedback, environment</td></tr></table>
+**Table 5.1.** Decision matrix for common source and modulation paths. "Evidence burden" mixes characterization/ATP with life qualification; keep those jobs separate (Table 7.1, Chapter 8). Program limits come from Table 5.4.
 
 ### Reading the source and modulation matrix
 
@@ -884,7 +884,7 @@ Manufacturing / fleet
 
 **Key idea.** Measure LIV, SMSR, wavelength, and RIN as distributions across temperature, lot, and age. Tie each requirement to an ATP row, each life claim to a physical mechanism, and each field alarm to a measurement that separates the laser from its driver, monitor, cooler, and optical path.
 
-Junior mistake: declare wear-out from monitor telemetry alone, or raise launch power before naming which ledger spent (§5.19, Chapter 7).
+Junior mistake: declare wear-out from monitor telemetry alone, or raise launch power before naming which ledger spent (§5.19, Chapter 6, Chapter 8).
 
 ##### Three questions to test yourself.
 

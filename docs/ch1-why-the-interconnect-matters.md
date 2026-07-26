@@ -143,11 +143,11 @@ Fabric capacity can fall behind injected traffic. A single marginal link can sta
 
 ### How it is debugged
 
-Use the debugging pyramid: start at the system symptom, narrow to signal quality, walk the link budget, bisect the subsystem, then identify the physical root cause. Do not skip layers. Junior mistake: open a connector or blame a laser before the workload symptom and population are named (§4.8, Chapter 10).
+Use the debugging pyramid: start at the system symptom, narrow to signal quality, walk the link budget, bisect the subsystem, then confirm a mechanism with evidence. Do not skip layers. Junior mistake: open a connector or blame a laser before the workload symptom and population are named (§4.8, Chapter 10).
 
 ## The debugging pyramid
 
-When a link fails, work from the top down. Each layer narrows the search before you open a connector or reseat a module. This framework reappears in every chapter. Apply the power-versus-quality fork early (§4.8, Appendix D.4) and organize lost margin with the five ledgers (§5.19).
+When a link fails, work from the top down. The pyramid is a scope order inside the Staff loop (Appendix A.1), not a second philosophy. Apply the power-versus-quality fork early (§4.8, Appendix D.4) and organize lost margin with the five ledgers (§5.19).
 
 > **Why experienced engineers start at the system symptom?**
 >
@@ -167,10 +167,10 @@ Link budget (power / noise / timing / spectrum)
   |
 Subsystem bisect (Tx / channel / Rx)
   |
-Physical root cause
+Confirmed mechanism (evidence)
   |
 Decision + recurrence control</code></pre>
-> **Engineering heuristic.** Do not skip pyramid layers. A root-cause story without a confirmed system symptom and a localized subsystem is a story, not a close.
+> **Engineering heuristic.** Do not skip pyramid layers. A mechanism story without a confirmed system symptom and a localized subsystem is a story, not a close.
 
 Layer 1: System
 
@@ -188,11 +188,11 @@ Layer 4: Subsystem
 
 : Which block is responsible? Laser, modulator, driver, photodiode, TIA, DSP, connector, fiber, or host SerDes. Bisect with loopbacks and golden swaps (§7.10, §7.9).
 
-Layer 5: Physical root cause
+Layer 5: Confirmed mechanism
 
-: What mechanism explains the failure? Aging, contamination, thermal stress, process variation, assembly defect, calibration error, firmware bug. This is where you open FA or 8D (§8.10).
+: What mechanism explains the failure after evidence reorders belief? Until confirmation, speak of a leading hypothesis. Open FA or 8D here (§8.10).
 
-Do not skip layers. A direct jump to root cause without first confirming the system symptom and localizing the subsystem wastes weeks on the wrong part. The pyramid is a discipline, not a checklist: each layer produces a measurement that either confirms or falsifies the hypothesis before you descend.
+Do not skip layers. Jumping to a named mechanism before confirming the system symptom and localizing the subsystem wastes weeks on the wrong part.
 
 ## Interview takeaway
 
@@ -222,7 +222,7 @@ The chapters build from requirements to fleet operation:
 
 6.  Chapter 9: scale-up/out, pluggables, CPO/XPO, inference collectives.
 
-7.  Chapter 10: symptom-led root-cause isolation and corrective action.
+7.  Chapter 10: symptom-led mechanism isolation and corrective action.
 
 To use the book as a design drill, pick one link style (retimed 800G DR, LPO, or CPO WDM) and trace it end to end through §3.2, §9.3, §9.10.
 

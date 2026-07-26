@@ -654,9 +654,11 @@ about one of them.
       ratio; ``stressed'' sensitivity adds a calibrated impairment for margin.
 \end{description}
 
-\aside{A clean mental model: start with transmitter OMA, subtract connector and
-fiber loss, subtract penalties (dispersion, TDECQ, reflection), and compare the
-result to receiver sensitivity (\Cref{sec:sensitivity,ch:models,sec:link-budget}). What remains is margin.}
+\aside{Start with transmitter OMA, subtract connector and fiber loss, then
+subtract only penalties not already in the compliance numbers you use next. Do
+not debit TDECQ again when the Tx OMA limit or SECQ-stressed sensitivity already
+includes that quality allocation
+(\Cref{sec:sensitivity,ch:models,sec:link-budget,sec:tdecq}).}
 
 \heuristic{Argue about one ledger term at a time. A fight that mixes OMA, ER,
 RIN, and TDECQ without naming which debit moved is not a debug.}
@@ -880,9 +882,9 @@ Linear & Chip-to-linear module & Same cages as VSR-class ports; no module DSP & 
 \end{tabular}
 \par\medskip
 {\raggedright\footnotesize\textbf{Table~\thetable.} CEI-224G electrical classes (project map).
-BER target on the reach classes is $10^{-15}$ or better with FEC allowed. Draft
-LR/MR IAs were member-review as of OFC~2025; Linear is the separate full-linear
-module track.\par}
+Post-FEC residual is typically $10^{-15}$ class when the IA allows FEC; quote the
+named pre-FEC objective from the active draft. Draft LR/MR IAs were member-review
+as of OFC~2025; Linear is the separate full-linear module track.\par}
 \end{table*}
 
 One SerDes core may not cover XSR through LR efficiently: short reaches want
@@ -1672,7 +1674,7 @@ reference plane for every number. Then measure, bisect, and correct the failing
 block.}
 
 Junior mistake: treat average power as signal quality, or skip the named plane
-before arguing TDECQ (\Cref{sec:debug-fork,ch:validation}).
+before arguing TDECQ (\Cref{sec:debug-fork,ch:models,ch:validation}).
 
 \paragraph{Three questions to test yourself.}
 \begin{enumerate}
@@ -1680,3 +1682,4 @@ before arguing TDECQ (\Cref{sec:debug-fork,ch:validation}).
 \item Average power is in spec but BER fails. What do you measure next?
 \item What production escape leaves power in range while BER fails?
 \end{enumerate}
+

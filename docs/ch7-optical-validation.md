@@ -821,7 +821,7 @@ If the transmitter looks clean into a golden receiver and the link still fails, 
 
 ### Receiver
 
-Receiver work asks whether the front-end can still decide bits at the OMA that survives the channel. Measure sensitivity (minimum OMA for the target BER) and stressed-receiver sensitivity with a calibrated stressor for margin (§7.5), plus overload before the TIA saturates. Underneath those system numbers sit the photodiode/TIA pair: responsivity, bandwidth, and input-referred noise (§4.5, Chapter 4).
+Receiver work asks whether the front-end can still decide bits at the OMA that survives the channel. Measure sensitivity (minimum OMA for the named BER objective at a stated plane, pattern, and EQ) and stressed-receiver sensitivity with a calibrated stressor for margin (§7.5), plus overload before the TIA saturates. Underneath those system numbers sit the photodiode/TIA pair: responsivity, bandwidth, and input-referred noise (§4.5, Chapter 4).
 
 ### Link level
 
@@ -860,7 +860,7 @@ Insertion loss is the first power-ledger line. ORL asks whether reflections are 
 
 ##### Receiver sensitivity.
 
-Sensitivity is the minimum OMA for the target BER, the budget's bottom line. A parallel waterfall shift with no floor usually means the Rx path or channel loss changed. **Exit when** sensitivity meets the ledger with stated pattern and stress. **Decision:** golden-swap ownership, derate reach, or redesign Rx. **Risk if skipped:** Tx FA on an Rx-limited link.
+Sensitivity is the minimum OMA for the named BER objective at a stated plane, pattern, and EQ, the budget's bottom line. A parallel waterfall shift with no floor usually means the Rx path or channel loss changed. **Exit when** sensitivity meets the ledger with stated pattern and stress. **Decision:** golden-swap ownership, derate reach, or redesign Rx. **Risk if skipped:** Tx FA on an Rx-limited link.
 
 ##### Pre-FEC BER / FEC histogram.
 
@@ -974,7 +974,7 @@ Keep power budget, signal-quality penalties, timing, thermal, and control author
 
 ##### Design allocation versus validation measurement.
 
-Distinguish margin allocation in design from margin verification in test. During design, engineers allocate transmitter output, receiver sensitivity, insertion loss, temperature degradation, aging, jitter, and manufacturing variation. During customer or system qualification, the integrator often validates the net behavior across the operating envelope.
+Distinguish margin allocation in design from margin verification in test. During design, engineers allocate transmitter output, receiver sensitivity, insertion loss, temperature degradation, aging, jitter, and manufacturing variation. During customer or system qualification, the integrator often measures net remaining margin across the operating envelope.
 
 <pre class="dectree" aria-label="Design: allocate line items"><code>Design: allocate line items
   |
@@ -1352,9 +1352,9 @@ Scope before mechanism. Telemetry before destructive FA. Bucket before owner. Co
 
 *"High temp only."* CMIS shows module near thermal limit and Tx power sagging. Bucket starts as performance (thermal design / derate). A permanent LIV or spectrum shift at temperature that matches an aged lot raises $P(\mathrm{aging})$ and justifies moving the ticket toward reliability; cool-down recovery without baseline shift keeps it in performance. Measure OSA wavelength before blaming the laser: a ring unlock is still performance (§3.14.3, Chapter 6).
 
-*"Random burst errors, average power fine."* Check FEC histogram for clustered errors and CMIS for Rx power dropouts. Clean and measure ORL. If RIN rises with ORL, it is performance/architecture (feedback). If ORL is fine and bursts track a date code, it is mfg (intermittent fiber attach). If bursts grow over months at fixed ORL, suspect laser or driver aging (§5.8, §5.13).
+*"Random burst errors, average power fine."* Check FEC histogram for clustered errors and CMIS for Rx power dropouts. Clean and measure ORL. If RIN rises with ORL, treat feedback/ORL as the leading performance hypothesis until confirmed. If ORL is fine and bursts track a date code, treat intermittent fiber attach as the leading manufacturing hypothesis. If bursts grow over months at fixed ORL, suspect laser or driver aging (§5.8, §5.13).
 
-*"ELSFP replace fixed it; returned module looks alive on the bench."* Alive LIV with high ORL sensitivity or dirty MT face means connector/ORL (mfg/ops), not laser death. Dead or kinked LIV means reliability. Split those RMA codes explicitly or your FIT math will blame the wrong wear-out mode (§5.14, §8.8).
+*"ELSFP replace fixed it; returned module looks alive on the bench."* Alive LIV with high ORL sensitivity or a dirty MT face supports connector/ORL over laser wear-out; confirm with IL/ORL and recurrence. Dead or kinked LIV supports a reliability path. Split those RMA codes or FIT math blames the wrong mode (§5.14, §8.8).
 
 ##### RMA labels that keep FIT honest.
 
@@ -1402,7 +1402,7 @@ Preserve the failing state and record software, firmware, calibration, fixture, 
 
 **Key idea.** Validation is a chain of evidence. Start with calibrated power and management state, move through spectrum and waveform, then trust BER only after the blocks and reference planes are known. Run the target host, chassis, fiber, and neighbor corners before calling the product ready.
 
-Junior mistake: call a golden-host BER pass "production ready," or open supplier FA before clearing the tester (Table 7.1, Chapter 8).
+Junior mistake: call a golden-host BER pass "production ready," or open supplier FA before clearing the tester (Table 7.1, Chapter 8, Appendix D).
 
 ##### Three questions to test yourself.
 

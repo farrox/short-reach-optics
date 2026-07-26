@@ -11,7 +11,7 @@ This appendix is judgment, not physics. The machinery lives elsewhere: validatio
 
 You rarely get a confirmed mechanism before a ship, hold, or contain call. Uncertainty is the normal state. The job is to decide with today's evidence, name residual risk, and keep the FA path open (Appendix A.6).
 
-Do not confuse "I do not know the root cause" with "I cannot act." Scope, population, trend, and a reversible control are often enough for today's call. Waiting for SEM photos while a bad lot keeps shipping is a process failure, not scientific humility.
+Do not confuse "I do not know the confirmed mechanism" with "I cannot act." Scope, population, trend, and a reversible control are often enough for today's call. Waiting for SEM photos while a bad lot keeps shipping is a process failure, not scientific humility.
 
 *Principle:* Decide with the evidence you have; name what you still do not know.
 
@@ -27,7 +27,7 @@ Ask: What is the cost of being wrong either way? If a hold costs a week of sched
 
 Pick the next measurement by information value per cost and access level, not by instrument prestige (Appendix A.2, Appendix B.1). Climb Level 0--2 until they stop reordering beliefs. Name the decision the measurement unlocks before you request Level 3--4 access.
 
-A good next test separates the largest useful hypothesis set. A bad next test confirms what you already believe or spends the sample before you know the question.
+A good next measurement separates the largest useful hypothesis set. A bad next measurement confirms what you already believe or spends the sample before you know the question.
 
 *Principle:* Measure to unlock an action, not to collect comfort.
 

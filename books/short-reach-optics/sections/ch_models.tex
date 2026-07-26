@@ -641,20 +641,22 @@ electrical path.
 
 \failuremode{BER floor}{BER improves with received power, then stops improving.}{RIN,
 reflection-driven multipath interference, laser-bias noise, crosstalk, or periodic
-jitter.}{BER versus OMA, RIN spectrum, ORL sweep, FEC error distribution, and a
-quiet laser-bias source.}{Remove the correlated noise source, improve ORL, isolate
-supplies, or reject the laser if its intrinsic RIN misses the ATP.}
+jitter.}{BER versus OMA, RF RIN spectrum (PD+ESA or RIN analyzer, not OSA), ORL
+sweep, FEC error distribution, and a quiet laser-bias source.}{Remove the
+correlated noise source, improve ORL, isolate supplies, or reject the laser if
+its intrinsic RIN misses the ATP.}
 
 \subsection{How it is debugged}
 \label{sec:models-how-debugged}
 
-When BER moves from $10^{-12}$ class to $10^{-6}$ class, save the failing
-condition and work in this order: received OMA, transmitter OMA and ER, receiver
-noise, RIN and ORL, electrical jitter, and lane crosstalk. Sweep power before
-changing settings. If the curve recovers with power, quantify the sensitivity
-shift. If it floors, split intrinsic laser noise from board noise and reflection
-feedback. If only temperature moves it, repeat the same terms hot and cold instead
-of assigning the change to ``thermal margin.''
+When pre-FEC BER moves from well below the named FEC threshold into a
+$10^{-6}$-class regime, save the failing condition and work in this order:
+received OMA, transmitter OMA and ER, receiver noise, RIN and ORL, electrical
+jitter, and lane crosstalk.
+Sweep power before changing settings. If the curve recovers with power, quantify
+the sensitivity shift. If it floors, split intrinsic laser noise from board noise
+and reflection feedback. If only temperature moves it, repeat the same terms hot
+and cold instead of assigning the change to ``thermal margin.''
 
 \debugstory{One lane developed a BER floor after the product board replaced the
 bench supply.}{The optical power sweep flattened. Intrinsic RIN on the quiet
@@ -730,12 +732,14 @@ $P_{\text{sens}}=Q\,i_n/\mathcal{R}$. Close each relation with a measured curve,
 then use the curve shape to debug the link.}
 
 Junior mistake: raise launch power into a BER floor, or quote sensitivity without
-the measurement conditions (\Cref{sec:rin,sec:debug-fork,ch:validation}).
+the measurement conditions (\Cref{sec:rin,sec:debug-fork,ch:lasers,ch:validation}).
 
 \paragraph{Three questions to test yourself.}
 \begin{enumerate}
 \item Why does RIN impose a BER floor that no amount of optical power can overcome?
-\item Optical power is unchanged but BER worsened from $10^{-12}$ to $10^{-6}$.
-      Where do you start? (\Cref{sec:debug-fork})
+\item Optical power is unchanged but pre-FEC BER worsened from well below the
+      FEC threshold into the $10^{-6}$ class. Where do you start?
+      (\Cref{sec:debug-fork})
 \item The BER curve flattens at high power. What mechanisms produce a floor?
 \end{enumerate}
+

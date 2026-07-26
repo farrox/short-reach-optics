@@ -188,12 +188,13 @@ Treat engineering as hypothesis testing:
 &\longrightarrow \text{belief updated / hypothesis eliminated}.
 \end{split}
 \]
-\keyidea{Debugging is Bayesian inference performed in a laboratory.}
-Every measurement updates the probability of competing hypotheses. Speak the
-update out loud. ``Calibration drift is my leading hypothesis, wavelength walk
-is second, and receiver noise is lower probability; the next measurement should
-sharply reorder those beliefs.'' A test that leaves the ranking unchanged
-was the wrong test, or the wrong reference plane.
+\keyidea{Inside the Staff loop
+(\Cref{sec:interview-staff-pattern}), each measurement reorders competing
+hypotheses.}
+Speak the update out loud. ``Calibration drift is my leading hypothesis,
+wavelength walk is second, and receiver noise is lower probability; the next
+measurement should sharply reorder those beliefs.'' A measurement that leaves
+the ranking unchanged was the wrong measurement, or the wrong reference plane.
 
 \noindent\textbf{Principle 4: Measurements characterize margin.}\\
 Engineering is not only proving that a product works. It determines how much

@@ -191,7 +191,7 @@ The MSA optical tables (§7.4, Chapter 7) inherit IEEE 802.3 measurement method
 
 - RIN$_{x\mathrm{OMA}} \le -138$ dB/Hz at 17.2 dB ORL (the "$x$" subscript tracks return loss, same convention as IEEE DR PMDs).
 
-- Illustrative link budget 6.7 dB total at 500 m (3 dB channel loss plus 0.3 dB MPI penalty plus 3.4 dB TDECQ allocation).
+- Illustrative link budget 6.7 dB total at 500 m (3 dB channel loss plus 0.3 dB MPI penalty plus 3.4 dB TDECQ allocation). Do not stack that TDECQ allocation on a SECQ-stressed sensitivity that already embeds Tx quality.
 
 - Stressed receiver sensitivity $-3.1$ dBm OMA$_{\mathrm{outer}}$ at TP3 with SECQ = 3.4 dB and aggressor lanes at 4.2 dBm OMA.
 
@@ -616,7 +616,7 @@ Start with the workload symptom and identify the slow collective, rail, or time 
 
 **Key idea.** An AI fabric is judged by delivered workload time, not aggregate port rate. Connect collective traces to queue, route, FEC, optical, thermal, and service data. Choose pluggables, linear optics, or co-packaging by the measured system constraint and by how the fleet detects, contains, and repairs each failure.
 
-Junior mistake: rewrite the topology before scoping one weak rail, or ignore optics FA when collectives stall (§4.8, Chapter 10, Appendix B).
+Junior mistake: rewrite the topology before scoping one weak rail, or ignore optics FA when collectives stall (§4.8, Chapter 10, Appendix D, Appendix F).
 
 ##### Three questions to test yourself.
 

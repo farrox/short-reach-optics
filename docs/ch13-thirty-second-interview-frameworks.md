@@ -400,7 +400,7 @@ Margin sweeps $\rightarrow$ which ledger dies first? $\rightarrow$ telemetry ala
 
 - Running HTOL without a named mechanism.
 
-**Thirty-second close.** I walk the ladder as staged uncertainty reduction and refuse any test that answers no new question about remaining margin.
+**Thirty-second close.** I walk the ladder as staged uncertainty reduction and refuse any measurement that answers no new question about remaining margin.
 
 **Deep dive.** Appendix A.10.2, Table 7.1, Appendix A.8.7.
 

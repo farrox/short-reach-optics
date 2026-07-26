@@ -22,7 +22,7 @@ Modulator path
   |
 Receiver / detector
   |
-Validation burden (ATP, lock, thermal, life)
+Validation / qual burden (ATP, lock, thermal, life)
 \end{dectree}
 
 \begin{description}
@@ -115,13 +115,14 @@ Reliability & Junction and temperature wear & Facet and active-region wear & Las
 \addlinespace[1.5em]
 Manufacturing & Array-friendly, MMF plant & Simple Tx, SMF attach & Mature integrated Tx & Multi-die attach and RF match & Dense PIC, tight thermal control & Tight optical assembly and control \\
 \addlinespace[1.5em]
-Validation burden & Modal, temperature, aging & Chirp, LIV, RIN & LIV, RIN, EAM sweep, TDECQ & Source plus bias and RF path & Source plus resonance and crosstalk & Spectrum, lock, feedback, environment \\
+Evidence burden & Modal, temperature, aging & Chirp, LIV, RIN & LIV, RIN, EAM sweep, TDECQ & Source plus bias and RF path & Source plus resonance and crosstalk & Spectrum, lock, feedback, environment \\
 \bottomrule
 \end{tabular}
 \par\medskip
 {\raggedright\footnotesize\textbf{Table~\thetable.} Decision matrix for common
-source and modulation paths. Entries show the dominant engineering concern, not
-fixed rankings. Program limits come from \Cref{tab:laser-prd}.\par}
+source and modulation paths. ``Evidence burden'' mixes characterization/ATP with
+life qualification; keep those jobs separate (\Cref{tab:ladder,ch:reliability}).
+Program limits come from \Cref{tab:laser-prd}.\par}
 \end{table*}
 \FloatBarrier
 
@@ -1608,7 +1609,7 @@ a physical mechanism, and each field alarm to a measurement that separates the
 laser from its driver, monitor, cooler, and optical path.}
 
 Junior mistake: declare wear-out from monitor telemetry alone, or raise launch
-power before naming which ledger spent (\Cref{sec:laser-margin-erosion,ch:validation}).
+power before naming which ledger spent (\Cref{sec:laser-margin-erosion,ch:wdm,ch:reliability}).
 
 \paragraph{Three questions to test yourself.}
 \begin{enumerate}
@@ -1619,3 +1620,4 @@ power before naming which ledger spent (\Cref{sec:laser-margin-erosion,ch:valida
 \item How would you qualify a second laser supplier without assuming the first
       supplier's failure distribution?
 \end{enumerate}
+

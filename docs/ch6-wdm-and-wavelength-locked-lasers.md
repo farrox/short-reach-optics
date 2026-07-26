@@ -304,7 +304,7 @@ First decide whether the fault affects one lane or all lanes. Apply the power-ve
 
 **Key idea.** Wavelength locking is a control-system problem wrapped around an optical link. Measure the grid, capture, hold, shared thermal paths, and per-lane margin. Then use one-lane versus all-lane behavior to split the source, ring bank, MUX, thermal controller, and common supplies.
 
-Junior mistake: blame every unlock on the laser, or debug lock from final register values without neighbor-load and time-aligned traces (§4.8, Chapter 10).
+Junior mistake: blame every unlock on the laser, or debug lock from final register values without neighbor-load and time-aligned traces (§4.8, Chapter 7, Chapter 10).
 
 ##### Three questions to test yourself.
 

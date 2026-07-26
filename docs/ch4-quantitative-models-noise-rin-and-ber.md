@@ -256,11 +256,11 @@ A BER model earns trust only when every term has a bench measurement. Use a BERT
 
 Thermal noise dominates at low optical power, shot noise grows with photocurrent, and RIN grows with signal power. Reflections, crosstalk, jitter, and compression break a simple Gaussian fit. The signatures differ: a horizontal BER floor points to signal-proportional noise or bursts; a uniform horizontal shift points to lost power or added receiver noise; one lane moving alone points to its optical or electrical path.
 
-\> \*\*Failure mode: BER floor\*\* \> \> \*\*Symptoms.\*\* BER improves with received power, then stops improving. \> \> \*\*Likely causes.\*\* RIN, reflection-driven multipath interference, laser-bias noise, crosstalk, or periodic jitter. \> \> \*\*Measurements.\*\* BER versus OMA, RIN spectrum, ORL sweep, FEC error distribution, and a quiet laser-bias source. \> \> \*\*Mitigations.\*\* Remove the correlated noise source, improve ORL, isolate supplies, or reject the laser if its intrinsic RIN misses the ATP.
+\> \*\*Failure mode: BER floor\*\* \> \> \*\*Symptoms.\*\* BER improves with received power, then stops improving. \> \> \*\*Likely causes.\*\* RIN, reflection-driven multipath interference, laser-bias noise, crosstalk, or periodic jitter. \> \> \*\*Measurements.\*\* BER versus OMA, RF RIN spectrum (PD+ESA or RIN analyzer, not OSA), ORL sweep, FEC error distribution, and a quiet laser-bias source. \> \> \*\*Mitigations.\*\* Remove the correlated noise source, improve ORL, isolate supplies, or reject the laser if its intrinsic RIN misses the ATP.
 
 ### How it is debugged
 
-When BER moves from $10^{-12}$ class to $10^{-6}$ class, save the failing condition and work in this order: received OMA, transmitter OMA and ER, receiver noise, RIN and ORL, electrical jitter, and lane crosstalk. Sweep power before changing settings. If the curve recovers with power, quantify the sensitivity shift. If it floors, split intrinsic laser noise from board noise and reflection feedback. If only temperature moves it, repeat the same terms hot and cold instead of assigning the change to "thermal margin."
+When pre-FEC BER moves from well below the named FEC threshold into a $10^{-6}$-class regime, save the failing condition and work in this order: received OMA, transmitter OMA and ER, receiver noise, RIN and ORL, electrical jitter, and lane crosstalk. Sweep power before changing settings. If the curve recovers with power, quantify the sensitivity shift. If it floors, split intrinsic laser noise from board noise and reflection feedback. If only temperature moves it, repeat the same terms hot and cold instead of assigning the change to "thermal margin."
 
 \> \*\*Debug story\*\* \> \> \*\*Observed.\*\* One lane developed a BER floor after the product board replaced the bench supply. \> \> \*\*Investigation.\*\* The optical power sweep flattened. Intrinsic RIN on the quiet source passed, but discrete tones appeared with the product rails active. \> \> \*\*Finding.\*\* The laser was not the noisy element. \> \> \*\*Root cause.\*\* A switching regulator coupled into the laser bias path. \> \> \*\*Resolution.\*\* The bias filter and return path were changed, and a powered-board RIN check was added to validation.
 
@@ -324,13 +324,13 @@ This fork often narrows an investigation in minutes. Power-path failures show up
 
 **Key idea.** Four relations carry most of short-reach link design: the Gaussian $\mathrm{BER}(Q)$, the quadrature noise budget (thermal + shot + RIN), the RIN floor $Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$, and the sensitivity $P_{\text{sens}}=Q\,i_n/\mathcal{R}$. Close each relation with a measured curve, then use the curve shape to debug the link.
 
-Junior mistake: raise launch power into a BER floor, or quote sensitivity without the measurement conditions (§4.3, §4.8, Chapter 7).
+Junior mistake: raise launch power into a BER floor, or quote sensitivity without the measurement conditions (§4.3, §4.8, Chapter 5, Chapter 7).
 
 ##### Three questions to test yourself.
 
 1.  Why does RIN impose a BER floor that no amount of optical power can overcome?
 
-2.  Optical power is unchanged but BER worsened from $10^{-12}$ to $10^{-6}$. Where do you start? (§4.8)
+2.  Optical power is unchanged but pre-FEC BER worsened from well below the FEC threshold into the $10^{-6}$ class. Where do you start? (§4.8)
 
 3.  The BER curve flattens at high power. What mechanisms produce a floor?
 

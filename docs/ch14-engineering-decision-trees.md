@@ -40,9 +40,9 @@ Stable average power deprioritizes gross optical loss but does not eliminate fas
 
 > **Engineering heuristic.** If two explanations fit equally well, prefer the one that requires the fewest independent failures.
 
-## Qualification lifecycle
+## Validation stage order
 
-<pre class="dectree" aria-label="Qualification lifecycle"><code>Qualification lifecycle
+<pre class="dectree" aria-label="Validation stage order (same as tab:ladder)"><code>Validation stage order (same as tab:ladder)
   |
 Requirements definition
   |
@@ -67,7 +67,7 @@ Mass production
 Fleet monitoring
   |
 Feedback / next revision</code></pre>
-Each gate removes a different uncertainty. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness. Table 7.1 is the same order in table form (§7.1, Appendix A.8.5, §8.2).
+Same order as Table 7.1, not a second Staff loop. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness (§7.1, Appendix A.8.5, §8.2).
 
 ## Qualification evidence tree
 
@@ -147,7 +147,7 @@ Gradual?
   |-- aging / drift / margin erosion / contamination / cal movement
   |
 Prioritize measurements (priors, not conclusions)</code></pre>
-Sudden and gradual are priors that reorder the bench, not root-cause claims (Chapter 10).
+Sudden and gradual are priors that reorder the bench, not confirmed-mechanism claims (Chapter 10).
 
 ## Transmitter, channel, or receiver
 
@@ -259,7 +259,7 @@ Update screening or ATP
 Verify next lot
   |
 Monitor fleet</code></pre>
-Containment, root cause, and prevention are three different actions (§8.7).
+Containment, confirmed mechanism, and prevention are three different actions (§8.7).
 
 ## Production feedback loop
 
