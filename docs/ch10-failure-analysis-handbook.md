@@ -5,7 +5,7 @@ title: "Ch 10: Failure analysis handbook"
 
 # 10 Failure analysis handbook
 
-This chapter is a symptom-first field guide. Start with what the bench, production line, or fleet reports. Preserve the failing state until its evidence has been captured, then use the same workflow for every incident. Distinguish observation, correlation, hypothesis, leading mechanism, and confirmed mechanism (after controlled confirmation). Do not call the last surviving hypothesis the confirmed mechanism without controlled reproduction, swap testing, stress dependence, or physical evidence. Do not say "data proves" until confirmation exists. For each symptom, state access (black-box versus engineering), the decision unlocked, and the earliest production or fleet control (Appendix D.16, Appendix A.2).
+This chapter is a symptom-first field guide. Start with what the bench, production line, or fleet reports. Preserve the failing state until its evidence has been captured, then use the same workflow for every incident. Distinguish observation, correlation, hypothesis, leading mechanism, and confirmed mechanism (after controlled confirmation). Do not call the last surviving hypothesis the confirmed mechanism without controlled reproduction, swap testing, stress dependence, or physical evidence. Do not say "data proves" until confirmation exists. For each symptom, state access (black-box versus engineering), the decision unlocked, and the earliest production or fleet control (tree-evidence-block, interview-access-levels).
 
 > **Why experienced engineers preserve state before reseating?**
 >
@@ -23,7 +23,7 @@ This chapter is a symptom-first field guide. Start with what the bench, producti
 >
 > *Experienced decision:* Contain first when the population can grow. Perfect mechanism stories do not unship yesterday's lot.
 
-Black-box versus engineering access is the same tradeoff as Appendix A.8.7: stay external until deeper access changes the decision (Appendix D.11).
+Black-box versus engineering access is the same tradeoff as interview-customer-vendor: stay external until deeper access changes the decision (tree-blackbox-access).
 
 > **Tradeoff.** Deep FA vs ship with a control
 >
@@ -59,7 +59,7 @@ Unknown mechanism
 
 : Continue investigation with an owner and interim control.
 
-Connect FA back into qualification. After corrective action, name what changed: requirement, qualification plan, ATP, SPC, telemetry, or supplier process (Appendix D.3, §7.1.13).
+Connect FA back into qualification. After corrective action, name what changed: requirement, qualification plan, ATP, SPC, telemetry, or supplier process (tree-qual-evidence, ladder-feedback).
 
 <pre class="dectree" aria-label="Observe"><code>Observe
   |
@@ -95,39 +95,39 @@ Gradual?
   |-- aging / drift / margin erosion / contamination / cal movement
   |
 Prioritize measurements (priors, not conclusions)</code></pre>
-Choose each measurement for its ability to separate competing hypotheses. The debugging pyramid in §1.8, the power-versus-signal fork in §4.8, the fleet router in Table 7.5, and the wall-chart trees in Appendix D provide the same method at different scales.
+Choose each measurement for its ability to separate competing hypotheses. The debugging pyramid in §1.8, the power-versus-signal fork in debug-fork, the fleet router in Table fleet-triage, and the wall-chart trees in app:decision-trees provide the same method at different scales.
 
 Power loss
 
-: Split launch-power loss from coupling, connector, MUX, fiber, monitor, and receiver-plane errors (§10.1).
+: Split launch-power loss from coupling, connector, MUX, fiber, monitor, and receiver-plane errors (fm-power-loss).
 
 BER increase
 
-: Separate a shifted waterfall from a BER floor, then check power, eye quality, noise, timing, and spectrum (§10.2, §10.3).
+: Separate a shifted waterfall from a BER floor, then check power, eye quality, noise, timing, and spectrum (fm-ber-increase, fm-ber-floor).
 
 Eye closure or low ER
 
-: Split bandwidth, drive, bias, reflection, dispersion, and resonance alignment (§10.7, §10.4).
+: Split bandwidth, drive, bias, reflection, dispersion, and resonance alignment (fm-eye-closure, fm-low-er).
 
 Lane imbalance
 
-: Split source, modulator or ring, filter or MUX, fiber attach, driver, and receiver (§10.5).
+: Split source, modulator or ring, filter or MUX, fiber attach, driver, and receiver (fm-lane-imbalance).
 
 Temperature sensitivity
 
-: Track power, wavelength, lock error, TEC or heater headroom, receiver margin, and package stress (§10.13).
+: Track power, wavelength, lock error, TEC or heater headroom, receiver margin, and package stress (fm-temperature).
 
 Wavelength drift
 
-: Split source movement from filter, ring, TEC, and control-loop movement (§10.6).
+: Split source movement from filter, ring, TEC, and control-loop movement (fm-wavelength-drift).
 
 Intermittent bursts
 
-: Preserve counters before reseating. Check connector contamination, ORL, supply noise, lock state, and weak attach (§10.9).
+: Preserve counters before reseating. Check connector contamination, ORL, supply noise, lock state, and weak attach (fm-intermittent).
 
 Yield drop
 
-: Clear the tester, then split lot, site, process step, assembly, firmware, and calibration (§10.11).
+: Clear the tester, then split lot, site, process step, assembly, firmware, and calibration (fm-yield-drop).
 
 The cases below provide the detailed measurements and corrective actions. Use the failure and debug callouts in Chapters 3--9 as shorter versions of the same method. Earlier chapters own the mechanism physics. This chapter owns the order of operations.
 
@@ -160,20 +160,20 @@ Launch power can fall because the laser is disabled, thermally rolled over, or a
 
 3.  Rerun LIV at the failing temperature. A moved LIV raises $P(\mathrm{source})$; a stable LIV raises $P(\mathrm{path\ or\ monitor})$ until confirmed. Do not treat either as a confirmed mechanism before controlled confirmation.
 
-4.  Preserve telemetry, then inspect connectors before cleaning (§10.10). Measure insertion loss and ORL. Use a golden fiber and module swap to separate field plant from module.
+4.  Preserve telemetry, then inspect connectors before cleaning (fm-contamination). Measure insertion loss and ORL. Use a golden fiber and module swap to separate field plant from module.
 
 5.  For a weak lane, compare sibling lanes and per-lane coupling. Lot or lane clustering points toward assembly or MUX variation.
 
 ##### Corrective action and recurrence control.
 
-Repair the first plane where power diverges. Correct calibration or monitor coefficients before changing source bias. Add a power check at the earliest production plane that can catch the signature and retain golden-path baselines for fleet comparison. What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (§10).
+Repair the first plane where power diverges. Correct calibration or monitor coefficients before changing source bias. Add a power check at the earliest production plane that can catch the signature and retain golden-path baselines for fleet comparison. What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (fa-output-categories).
 
 ## BER increase: waterfall shift or floor
 
 <pre class="dectree" aria-label="BER up"><code>BER up
   |
 Power held?
-  |-- NO  --&gt; power path (§10.1)
+  |-- NO  --&gt; power path (fm-power-loss)
   |-- YES --&gt; waterfall
               |-- shift --&gt; sensitivity / OMA / IL
               |-- floor --&gt; RIN / MPI / noise / crosstalk
@@ -193,13 +193,13 @@ A shifted waterfall points toward lost power, receiver sensitivity, eye closure,
 
 2.  If the waterfall shifted, compare received OMA, TDECQ, receiver sensitivity, equalizer taps, wavelength, and temperature with the golden baseline. Golden-swap Tx and Rx to assign ownership.
 
-3.  If the curve floors, follow §10.3 and split intrinsic RIN, electrical noise, ORL, MPI, and crosstalk.
+3.  If the curve floors, follow fm-ber-floor and split intrinsic RIN, electrical noise, ORL, MPI, and crosstalk.
 
 4.  Use FEC error timing and lane correlation to separate random noise from bursts and shared disturbances. Preserve counters before reseating if the pattern is intermittent.
 
 ##### Corrective action and recurrence control.
 
-Restore the margin ledger that moved, then repeat the full BER sweep at loaded corners. Store waterfall shape, not only pass/fail BER, so later fleet changes can be classified without guessing. The interview study treatment of these shapes is in Appendix A.8.9. What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (§10).
+Restore the margin ledger that moved, then repeat the full BER sweep at loaded corners. Store waterfall shape, not only pass/fail BER, so later fleet changes can be classified without guessing. The interview study treatment of these shapes is in interview-waterfall. What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (fa-output-categories).
 
 ## BER floor
 
@@ -209,7 +209,7 @@ Pre-FEC BER improves as you increase transmit or received power, then stops impr
 
 ##### Likely hypotheses.
 
-A BER floor means additional received power no longer removes the dominant impairment. That is a diagnostic pattern, not one mechanism. RIN can create a floor when signal-proportional intensity noise dominates the receiver budget: $\sigma_\mathrm{RIN} \propto I$, so $Q$ can saturate at $Q_\mathrm{max} = 1/\sqrt{\mathrm{RIN}_\mathrm{lin} \cdot \mathrm{BW}}$ under a dominant-RIN model (§4.3). Do not define every floor as RIN-limited. Other leading mechanisms include multipath interference (MPI), bias-rail noise that converts to equivalent intensity noise (§5.8), pattern-dependent distortion or residual ISI, crosstalk, timing or CDR limits, and DSP or equalization limits.
+A BER floor means additional received power no longer removes the dominant impairment. That is a diagnostic pattern, not one mechanism. RIN can create a floor when signal-proportional intensity noise dominates the receiver budget: $\sigma_\mathrm{RIN} \propto I$, so $Q$ can saturate at $Q_\mathrm{max} = 1/\sqrt{\mathrm{RIN}_\mathrm{lin} \cdot \mathrm{BW}}$ under a dominant-RIN model (rin). Do not define every floor as RIN-limited. Other leading mechanisms include multipath interference (MPI), bias-rail noise that converts to equivalent intensity noise (laser-drivers), pattern-dependent distortion or residual ISI, crosstalk, timing or CDR limits, and DSP or equalization limits.
 
 MPI may produce deterministic interference, power-independent floors, pattern sensitivity, environmental sensitivity, or time-correlated errors depending on coherence, path delay, motion, and modulation. Useful evidence includes ORL dependence, delay-related structure on an ESA, aggressor dependence, pattern dependence, thermal or mechanical sensitivity, and FEC error timing. Do not treat "bursty FEC histogram" alone as proof of MPI.
 
@@ -223,7 +223,7 @@ MPI may produce deterministic interference, power-independent floors, pattern se
 
 1.  Confirm the floor exists: sweep received power (or Tx OMA) at a named reference plane and plot BER vs. power. A floor appears as a horizontal asymptote.
 
-2.  Where engineering access exists, bisect optical vs. electrical RIN: quiet SMU (intrinsic) versus product bias board. If the floor moves, the electrical path is injecting noise (§5.8).
+2.  Where engineering access exists, bisect optical vs. electrical RIN: quiet SMU (intrinsic) versus product bias board. If the floor moves, the electrical path is injecting noise (laser-drivers).
 
 3.  Sweep ORL with a controlled reflector. If the floor worsens with lower ORL, the path is feedback-sensitive. Check isolator, connector, and fiber-attach cleanliness.
 
@@ -233,7 +233,7 @@ MPI may produce deterministic interference, power-independent floors, pattern se
 
 ##### Corrective action and recurrence control.
 
-If intrinsic RIN is confirmed as the limiter, replace or derate. If electrical RIN, fix the bias supply. If ORL-driven, clean or replace connectors and verify isolator function. If MPI is confirmed from multiple reflections, reduce mated interfaces or improve their ORL. Update the earliest economical control (ATP, sampled audit, SPC, or telemetry), not every deep FA measurement. What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (§10).
+If intrinsic RIN is confirmed as the limiter, replace or derate. If electrical RIN, fix the bias supply. If ORL-driven, clean or replace connectors and verify isolator function. If MPI is confirmed from multiple reflections, reduce mated interfaces or improve their ORL. Update the earliest economical control (ATP, sampled audit, SPC, or telemetry), not every deep FA measurement. What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (fa-output-categories).
 
 ## Low extinction ratio
 
@@ -247,7 +247,7 @@ Linear extinction ratio is $\mathrm{ER}_\mathrm{lin}=P_1/P_0$ (for PAM4 outer le
 
 An idealized receiver OMA penalty for finite ER is $$\mathrm{PP}_\mathrm{dB}
 =
-10\log_{10}\!\left(\frac{\mathrm{ER}_\mathrm{lin}+1}{\mathrm{ER}_\mathrm{lin}-1}\right).$$ At 10 dB ER the penalty is $\sim$0.87 dB; at 6 dB ER it rises to $\sim$2.2 dB (§4.4). This is an idealized receiver-penalty model, not a measured compliance quantity such as TDECQ.
+10\log_{10}\!\left(\frac{\mathrm{ER}_\mathrm{lin}+1}{\mathrm{ER}_\mathrm{lin}-1}\right).$$ At 10 dB ER the penalty is $\sim$0.87 dB; at 6 dB ER it rises to $\sim$2.2 dB (sensitivity). This is an idealized receiver-penalty model, not a measured compliance quantity such as TDECQ.
 
 ##### Measurements, mechanism isolation, and confirmation.
 
@@ -263,7 +263,7 @@ An idealized receiver OMA penalty for finite ER is $$\mathrm{PP}_\mathrm{dB}
 
 ##### Corrective action and recurrence control.
 
-Recalibrate the modulator operating point. For EML aging, update the EAM bias setpoint in firmware or flag the module for replacement if the absorption curve has shifted beyond the correctable range. For MZM drift, verify the bias controller and its monitor PD. For rings, retune or check for neighbor thermal crosstalk (§6.5). What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (§10).
+Recalibrate the modulator operating point. For EML aging, update the EAM bias setpoint in firmware or flag the module for replacement if the absorption curve has shifted beyond the correctable range. For MZM drift, verify the bias controller and its monitor PD. For rings, retune or check for neighbor thermal crosstalk (thermal-xtalk). What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (fa-output-categories).
 
 ## Lane imbalance
 
@@ -299,7 +299,7 @@ Black-box path: per-lane power/BER/FEC, host lane remap, sibling comparison, tem
 
 ##### Corrective action and recurrence control.
 
-FAU misalignment is a manufacturing escape; tighten incoming inspection or first-article coupling specs. Thermal gradient: redesign TEC zoning or derate the hot lane. Confirmed source wear-out: flag the lot and check burn-in screening effectiveness. Driver mismatch: work with the IC supplier on channel-to-channel gain flatness. What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (§10).
+FAU misalignment is a manufacturing escape; tighten incoming inspection or first-article coupling specs. Thermal gradient: redesign TEC zoning or derate the hot lane. Confirmed source wear-out: flag the lot and check burn-in screening effectiveness. Driver mismatch: work with the IC supplier on channel-to-channel gain flatness. What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (fa-output-categories).
 
 ## Wavelength drift
 
@@ -309,7 +309,7 @@ In a WDM system, one or more channels walk off the ITU grid or the ring/filter p
 
 ##### Likely hypotheses.
 
-Laser wavelength moves with temperature and bias current. If the TEC or wavelength-locker servo cannot track, the channel walks off its assigned slot. In microring systems, resonance also moves strongly with temperature, and neighbor heaters create thermal crosstalk that pushes adjacent channels (§6.4, §6.5).
+Laser wavelength moves with temperature and bias current. If the TEC or wavelength-locker servo cannot track, the channel walks off its assigned slot. In microring systems, resonance also moves strongly with temperature, and neighbor heaters create thermal crosstalk that pushes adjacent channels (locking-techniques, thermal-xtalk).
 
 ##### Measurements, mechanism isolation, and confirmation.
 
@@ -325,7 +325,7 @@ Laser wavelength moves with temperature and bias current. If the TEC or waveleng
 
 ##### Corrective action and recurrence control.
 
-TEC saturation: reduce case temperature (improve airflow or liquid cooling) or derate the laser operating current. Ring unlock: increase heater headroom in the design, reduce thermal crosstalk with layout changes, or shift the CW-WDM source grid to re-center the ring tuning range. Aging: schedule preventive replacement (ELSFP hot-swap, §5.14). What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (§10).
+TEC saturation: reduce case temperature (improve airflow or liquid cooling) or derate the laser operating current. Ring unlock: increase heater headroom in the design, reduce thermal crosstalk with layout changes, or shift the CW-WDM source grid to re-center the ring tuning range. Aging: schedule preventive replacement (ELSFP hot-swap, elsfp). What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (fa-output-categories).
 
 ## Eye closure (high TDECQ)
 
@@ -335,7 +335,7 @@ TDECQ exceeds the PMD limit even though average power and ER look acceptable. Th
 
 ##### Likely hypotheses.
 
-TDECQ measures how much noise the transmitter can tolerate before BER exceeds the FEC threshold, relative to an ideal transmitter (§7.4). High TDECQ means the equalized eye is poor. Common causes: (1) insufficient EO bandwidth (modulator or driver roll-off), (2) poor level linearity (RLM $<$ 0.95; driver or modulator compression), (3) pattern-dependent effects (ISI from bandwidth limit, reflections, or impedance mismatch), (4) chromatic dispersion on FR-class fiber eating into the margin.
+TDECQ measures how much noise the transmitter can tolerate before BER exceeds the FEC threshold, relative to an ideal transmitter (tdecq). High TDECQ means the equalized eye is poor. Common causes: (1) insufficient EO bandwidth (modulator or driver roll-off), (2) poor level linearity (RLM $<$ 0.95; driver or modulator compression), (3) pattern-dependent effects (ISI from bandwidth limit, reflections, or impedance mismatch), (4) chromatic dispersion on FR-class fiber eating into the margin.
 
 ##### Measurements, mechanism isolation, and confirmation.
 
@@ -351,7 +351,7 @@ TDECQ measures how much noise the transmitter can tolerate before BER exceeds th
 
 ##### Corrective action and recurrence control.
 
-Bandwidth: upgrade driver or modulator (higher-BW die or peaking network). RLM: tune driver pre-emphasis (DAC levels for each PAM4 symbol). Reflections: fix wirebond, impedance discontinuity, or connector. Dispersion: tighten wavelength tolerance or shorten the fiber (re-route). What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (§10).
+Bandwidth: upgrade driver or modulator (higher-BW die or peaking network). RLM: tune driver pre-emphasis (DAC levels for each PAM4 symbol). Reflections: fix wirebond, impedance discontinuity, or connector. Dispersion: tighten wavelength tolerance or shorten the fiber (re-route). What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (fa-output-categories).
 
 ## Thermal runaway
 
@@ -369,7 +369,7 @@ In a faceplate pluggable, double-digit-watt module power must leave through the 
 
 2.  **Check TEC current.** A TEC at max drive current is saturated; it cannot pump more heat. The junction temperature is higher than the case $T$ suggests.
 
-3.  **Measure LIV at temperature.** If threshold rises and slope drops steeply with $T$, the laser is near thermal rollover (§5.13). The operating point may be marginal.
+3.  **Measure LIV at temperature.** If threshold rises and slope drops steeply with $T$, the laser is near thermal rollover (laser-aging). The operating point may be marginal.
 
 4.  **Neighbor loading.** Bring all lanes and neighbor modules to full traffic simultaneously. If the problem only appears under full-cage load, the thermal design margin is insufficient.
 
@@ -377,7 +377,7 @@ In a faceplate pluggable, double-digit-watt module power must leave through the 
 
 ##### Corrective action and recurrence control.
 
-System-level: improve airflow, lower ambient, or reduce module count per cage. Module-level: derate the laser (lower bias current reduces self-heating) or switch to a lower-power module style (LPO instead of retimed, §9.5.1). CPO: ensure the cold-plate thermal interface material (TIM) is intact and the liquid loop meets flow-rate spec. Long-term: specify a tighter thermal class in the laser requirements (§5.6). What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (§10).
+System-level: improve airflow, lower ambient, or reduce module count per cage. Module-level: derate the laser (lower bias current reduces self-heating) or switch to a lower-power module style (LPO instead of retimed, conditioning). CPO: ensure the cold-plate thermal interface material (TIM) is intact and the liquid loop meets flow-rate spec. Long-term: specify a tighter thermal class in the laser requirements (laser-reqs). What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (fa-output-categories).
 
 ## Intermittent failures
 
@@ -426,7 +426,7 @@ Fix the confirmed contact, attach, supply, lock, or firmware cause. Add event-tr
 
 > **Engineering heuristic.** A rising NFF rate is often a triage and evidence problem, not proof that the field is healthy. Separate intermittent codes from wear-out before you trust the FIT.
 
-What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (§10).
+What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (fa-output-categories).
 
 ## Connector contamination
 
@@ -459,17 +459,17 @@ Retest BER and sensitivity</code></pre>
 
 3.  Clean and re-inspect (dry-click cleaner or lint-free wipe with IPA). If the endface still fails IEC 61300-3-35 zone criteria, replace the jumper .
 
-4.  Measure insertion loss and ORL across the mated pair at the named plane. Compare to the link-budget allocation (§7.7).
+4.  Measure insertion loss and ORL across the mated pair at the named plane. Compare to the link-budget allocation (link-budget).
 
 5.  Retest BER and sensitivity. Clearing after cleaning supports contamination as the leading mechanism; confirm with IL/ORL and watch for recurrence. Log connector location and date code.
 
 ##### Corrective action and recurrence control.
 
-After evidence is preserved: clean, re-inspect, and verify IL/ORL and BER. Preventive: dust caps on unused ports, "inspect before connect" in the service runbook, sealed cassettes or trunk cables that minimize open-ferrule exposure. For high-power paths (ELSFP, CW-WDM), burn damage requires replacement, not re-cleaning. Track contamination RMAs as a distinct failure code (not "laser failure") so FIT accounting stays honest (§7.12).
+After evidence is preserved: clean, re-inspect, and verify IL/ORL and BER. Preventive: dust caps on unused ports, "inspect before connect" in the service runbook, sealed cassettes or trunk cables that minimize open-ferrule exposure. For high-power paths (ELSFP, CW-WDM), burn damage requires replacement, not re-cleaning. Track contamination RMAs as a distinct failure code (not "laser failure") so FIT accounting stays honest (fleet-triage).
 
 > **Engineering heuristic.** Inspect before you clean, and photograph before you disturb. Cleaning first can erase the only evidence that the mate was dirty.
 
-What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (§10).
+What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (fa-output-categories).
 
 ## Yield drop
 
@@ -497,7 +497,7 @@ Process drift, incoming material variation, fiber-array alignment, die-attach or
 
 ##### Corrective action and recurrence control.
 
-Restore the changed process or measurement input, add a statistical control at the first observable point, revise ATP only with correlation data, and require a new first-article check before releasing volume (§8.10). What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (§10).
+Restore the changed process or measurement input, add a statistical control at the first observable point, revise ATP only with correlation data, and require a new first-article check before releasing volume (supplier-exec). What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (fa-output-categories).
 
 ## Aging, thermal response, and margin erosion
 
@@ -509,11 +509,11 @@ Use time scale and recovery to route the incident. A reversible shift during a t
 
 3.  Repeat the temperature sweep with source, wavelength-selective element, receiver, and neighbors isolated in turn.
 
-4.  Update the power, noise, timing, spectral, and control ledgers (§5.19). Several small shifts can explain a BER failure even when each component remains inside its stand-alone limit.
+4.  Update the power, noise, timing, spectral, and control ledgers (laser-margin-erosion). Several small shifts can explain a BER failure even when each component remains inside its stand-alone limit.
 
 5.  Route reversible thermal loss to cooling, control, calibration, or derating. Route cumulative change to HTOL and life-model review. Route lot-clustered permanent steps to manufacturing failure analysis.
 
-On margin versus power, see §5.19: add margin only on the ledger that is empty; do not raise launch power by habit.
+On margin versus power, see laser-margin-erosion: add margin only on the ledger that is empty; do not raise launch power by habit.
 
 The corrective action must restore margin at combined corners. A room-temperature retest does not close a high-temperature incident, and one clean HTOL readout does not explain a reversible lock failure.
 
@@ -541,14 +541,14 @@ Laser threshold and slope drift, wavelength movement, ring-resonance drift, TEC 
 
 ##### Corrective action and recurrence control.
 
-Restore thermal headroom, correct calibration and control limits, reduce coupling, or derate the operating point. Add the loaded-neighbor temperature ramp to the ATP or design-validation plan that missed it. What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (§10).
+Restore thermal headroom, correct calibration and control limits, reduce coupling, or derate the operating point. Add the loaded-neighbor temperature ramp to the ATP or design-validation plan that missed it. What changed afterward? Name the update among requirement, qualification, ATP, SPC, telemetry, or supplier process, and the FA output category (fa-output-categories).
 
 ## Failure-analysis checklist
 
-The checklist in Table 10.1 is a lifecycle, not a suggestion list. Each step removes a class of uncertainty before the next step spends lab time. Skip Preserve and you often destroy the only evidence that separated host, plant, and product.
+The checklist in Table failure-analysis-checklist is a lifecycle, not a suggestion list. Each step removes a class of uncertainty before the next step spends lab time. Skip Preserve and you often destroy the only evidence that separated host, plant, and product.
 
 <table class="book-table"><tr><th>Step</th><th>Question</th><th>Required record</th></tr><tr><td>Preserve</td><td>What evidence will a reseat, reboot, clean, or retest destroy?</td><td>CMIS, BER and FEC history, rails, temperature, firmware, fixture, and time</td></tr><tr><td>Scope</td><td>One unit, lane, lot, vendor, site, or fleet?</td><td>Population and correlation plot</td></tr><tr><td>Classify</td><td>Sudden or gradual, constant or intermittent, thermal or cumulative?</td><td>Timeline and recovery test</td></tr><tr><td>Locate margin</td><td>Did power, noise, timing, spectrum, or control move first?</td><td>Golden comparison and margin ledger</td></tr><tr><td>Falsify</td><td>Which measurement best separates the leading hypotheses?</td><td>Expected result for each hypothesis before the test</td></tr><tr><td>Confirm</td><td>Does the fault follow the suspected block under a controlled swap or stress?</td><td>Repeated failure and passing control</td></tr><tr><td>Correct</td><td>Does the fix restore the original failing condition with margin?</td><td>Before and after data at loaded corners</td></tr><tr><td>Prevent</td><td>Where can production or fleet monitoring catch recurrence earliest?</td><td>ATP change, control limit, alarm, owner, and due date</td></tr></table>
-**Table 10.1.** Failure-analysis checklist. The incident is not closed until the cause is reproduced, corrected, and covered by a recurrence control.
+**Table ?.** Failure-analysis checklist. The incident is not closed until the cause is reproduced, corrected, and covered by a recurrence control.
 
 ### Reading the failure-analysis checklist
 
@@ -558,7 +558,7 @@ What volatile evidence will a reseat, reboot, clean, or retest destroy? Snapshot
 
 ##### Scope / classify / locate (short).
 
-Name the population (unit, lot, vendor, site, fleet) before instruments (§7.12). Record sudden versus gradual and whether cool-down recovers. Name which ledger moved first: power, noise, timing, spectrum, or control (Appendix A.8.4). **Exit when** population, time class, and first-moving ledger are evidenced. **Risk if skipped:** wrong containment width or the wrong instrument tour.
+Name the population (unit, lot, vendor, site, fleet) before instruments (fleet-triage). Record sudden versus gradual and whether cool-down recovers. Name which ledger moved first: power, noise, timing, spectrum, or control (interview-margin-ledgers). **Exit when** population, time class, and first-moving ledger are evidenced. **Risk if skipped:** wrong containment width or the wrong instrument tour.
 
 ##### Falsify.
 
@@ -570,7 +570,7 @@ Confirm the fault follows the suspected block under swap or stress, then show be
 
 ##### Prevent.
 
-Where can production or fleet monitoring catch recurrence earliest? Version an ATP row, SPC limit, or alarm with owner and due date. **Exit when** recurrence control is owned and the cohort is under watch. **Decision:** close the incident, or monitor-only if rate and impact justify it (Table A.1). **Risk if skipped:** you solve one RMA and train the factory to recreate it.
+Where can production or fleet monitoring catch recurrence earliest? Version an ATP row, SPC limit, or alarm with owner and due date. **Exit when** recurrence control is owned and the cohort is under watch. **Decision:** close the incident, or monitor-only if rate and impact justify it (Table interview-decisions). **Risk if skipped:** you solve one RMA and train the factory to recreate it.
 
 ### Why the steps occur in this order
 
@@ -602,7 +602,7 @@ Correct / prevent
 
 **Key idea.** A useful failure analysis starts with a symptom and ends with a new control. Preserve the failing state, split shared from local behavior, clear the measurement system, and choose one measurement that can falsify the leading hypothesis. The corrective action is incomplete until production or fleet data show that the same signature no longer escapes.
 
-Junior mistake: reseat first, or close without a recurrence control in ATP or telemetry (§7.12, Appendix B, Appendix C, Appendix F).
+Junior mistake: reseat first, or close without a recurrence control in ATP or telemetry (fleet-triage, app:case-studies, app:interview-frameworks, app:staff-thinking).
 
 ##### Three questions to test yourself.
 

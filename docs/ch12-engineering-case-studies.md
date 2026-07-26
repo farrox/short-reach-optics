@@ -5,14 +5,14 @@ title: "Ch 12: Engineering case studies"
 
 # 12 Engineering case studies
 
-This appendix is practice under incomplete information. The frameworks already live in Appendix A, Appendix C, Appendix D and Table 7.1. Here you apply them. Do not jump to the mechanism. Score yourself with Appendix A.12 after each case.
+This appendix is practice under incomplete information. The frameworks already live in app:interview-review, app:interview-frameworks, app:decision-trees and Table ladder. Here you apply them. Do not jump to the mechanism. Score yourself with interview-scoring-rubric after each case.
 
 ## Information value
 
-The best next measurement is not the most detailed measurement. It is the measurement that eliminates the most uncertainty at acceptable cost (Appendix A.1, Appendix A.2).
+The best next measurement is not the most detailed measurement. It is the measurement that eliminates the most uncertainty at acceptable cost (interview-staff-pattern, interview-access-levels).
 
 <table class="book-table"><tr><th>Measurement</th><th>Cost</th><th>Information gained</th></tr><tr><td>Telemetry query</td><td>Low</td><td>Population scope, trends, lot/host tags</td></tr><tr><td>Swap / remap experiment</td><td>Low</td><td>Ownership isolation (Tx / Rx / host / plant)</td></tr><tr><td>Attenuation / BER waterfall</td><td>Medium</td><td>Margin shape: shift versus floor</td></tr><tr><td>External optical eye</td><td>Medium</td><td>Signal quality at a named plane</td></tr><tr><td>Optical / package teardown</td><td>High</td><td>Physical mechanism confirmation</td></tr></table>
-**Table B.1.** Information value is uncertainty removed per cost. Decision unlocked: which next measurement to buy. Prefer Level 0--2 until those measurements stop reordering beliefs (Appendix A.2).
+**Table ?.** Information value is uncertainty removed per cost. Decision unlocked: which next measurement to buy. Prefer Level 0--2 until those measurements stop reordering beliefs (interview-access-levels).
 
 Bad next step: "Run full optical characterization." Better: "Compare failing and passing units from the same lot," because that separates population effects quickly.
 
@@ -24,7 +24,7 @@ Bad next step: "Run full optical characterization." Better: "Compare failing and
 
 ## How interviewers evaluate answers
 
-Use this interview-facing summary. Full detail remains in Appendix A.12 (plane/access, causal discipline, and recurrence are scored there too).
+Use this interview-facing summary. Full detail remains in interview-scoring-rubric (plane/access, causal discipline, and recurrence are scored there too).
 
 <table class="book-table"><tr><th>Axis</th><th>Score</th><th>Meaning</th></tr><tr><td>Scope</td><td>0</td><td>Jumps to a solution.</td></tr><tr><td></td><td>1</td><td>Asks some questions.</td></tr><tr><td></td><td>2</td><td>Defines population, timeline, and ownership.</td></tr><tr><td>Hypothesis quality</td><td>0</td><td>One explanation.</td></tr><tr><td></td><td>1</td><td>Several guesses.</td></tr><tr><td></td><td>2</td><td>Mechanism-based hypothesis tree.</td></tr><tr><td>Measurement choice</td><td>0</td><td>Lists tests.</td></tr><tr><td></td><td>1</td><td>Lists useful measurements.</td></tr><tr><td></td><td>2</td><td>Chooses by information value and access level.</td></tr><tr><td>Decision quality</td><td>0</td><td>No action.</td></tr><tr><td></td><td>1</td><td>Technical fix only.</td></tr><tr><td></td><td>2</td><td>Containment + correction + prevention.</td></tr><tr><td>Communication</td><td>0</td><td>Rambling.</td></tr><tr><td></td><td>1</td><td>Technically correct but unstructured.</td></tr><tr><td></td><td>2</td><td>Clear executive frame plus engineering depth.</td></tr></table>
 ## Executive communication
@@ -59,7 +59,7 @@ Illustrative executive line (Case [12.5](#sec:case-fleet-ber) style): "About th
 
 ## Supplier conversation
 
-Structure supplier calls the same way you structure debug (§8.10, Appendix C.10, Appendix D.9):
+Structure supplier calls the same way you structure debug (supplier-exec, fw:supplier-escape, tree-escape):
 
 <pre class="dectree" aria-label="Supplier conversation framework"><code>Supplier conversation framework
   |
@@ -100,15 +100,15 @@ Whether cool-down recovers; whether the waterfall shifts or floors; component ge
 
 ##### Initial hypotheses.
 
-Transmitter quality, channel / plant, receiver, DSP, control loop, environment. Gross optical loss is deprioritized while average power holds (Appendix D.4). Lot correlation raises process, calibration, or component-supplier hypotheses above exotic new physics.
+Transmitter quality, channel / plant, receiver, DSP, control loop, environment. Gross optical loss is deprioritized while average power holds (tree-power-fork). Lot correlation raises process, calibration, or component-supplier hypotheses above exotic new physics.
 
 ##### Decision tree.
 
-Walk Appendix D.1, Appendix D.9, Appendix C.9: scope and time behavior; power versus quality; contain if the population can grow; compare good versus bad lots before deep FA.
+Walk tree-debugging, tree-escape, fw:fleet: scope and time behavior; power versus quality; contain if the population can grow; compare good versus bad lots before deep FA.
 
 ##### Measurements selected.
 
-Level 0: cohort query by lot, host, temperature, firmware (Table B.1). Level 1: golden swap and dwell on failing versus passing serials. Level 2: BER waterfall and external power at the faceplate. Level 3--4 only after ownership is assigned.
+Level 0: cohort query by lot, host, temperature, firmware (Table case-info-value). Level 1: golden swap and dwell on failing versus passing serials. Level 2: BER waterfall and external power at the faceplate. Level 3--4 only after ownership is assigned.
 
 ##### Results (staged).
 
@@ -124,7 +124,7 @@ Physical inspection and electrical FA confirm solder attachment failure on the a
 
 ##### Containment.
 
-Pause shipment and further deployment of the affected lot; raise monitoring on installed serials; replace highest-risk units per impact model (Appendix D.16).
+Pause shipment and further deployment of the affected lot; raise monitoring on installed serials; replace highest-risk units per impact model (tree-decision-closure).
 
 ##### Corrective action.
 
@@ -132,15 +132,15 @@ Supplier process corrective action on the attach step; incoming inspection or pr
 
 ##### Qualification / ATP / telemetry update.
 
-Add or tighten the production proxy that would have caught the signature; review whether qual stress covered this mechanism and sample diversity (Appendix D.3, Appendix C.13). Telemetry: alarm on BER trend with stable power for that cohort.
+Add or tighten the production proxy that would have caught the signature; review whether qual stress covered this mechanism and sample diversity (tree-qual-evidence, fw:atp-update). Telemetry: alarm on BER trend with stable power for that cohort.
 
 ##### Fleet prevention.
 
-Burn down the installed cohort; keep the control owner until rates fall; feed the lesson into §7.1.13.
+Burn down the installed cohort; keep the control owner until rates fall; feed the lesson into ladder-feedback.
 
 ##### Score yourself.
 
-Use Appendix A.12, Appendix B.2. Fail the drill if you named a component before scope and containment.
+Use interview-scoring-rubric, case-grading. Fail the drill if you named a component before scope and containment.
 
 ##### Executive summary.
 
@@ -148,7 +148,7 @@ Problem: gradual BER rise. Impact: one manufacturing lot in fleet. Evidence: sta
 
 ##### Deep dive.
 
-Appendix C.1, Appendix C.9, Appendix C.10, Appendix D.9, §10.2.
+fw:ber-stable-power, fw:fleet, fw:supplier-escape, tree-escape, fm-ber-increase.
 
 ## Case 2: New optical module supplier qualification
 
@@ -166,15 +166,15 @@ Multi-lot distributions; process corners; reliability mechanisms and $E_a$ justi
 
 ##### Initial hypotheses.
 
-Not "it will work if the datasheet matches." Equivalence must be defined across functional, performance, environmental, reliability, and manufacturing dimensions (Appendix C.7, Appendix C.15).
+Not "it will work if the datasheet matches." Equivalence must be defined across functional, performance, environmental, reliability, and manufacturing dimensions (fw:second-module, fw:qual-plan).
 
 ##### Decision tree.
 
-Freeze requirements first (Table 7.1). Then walk bring-up through margin, interop, mechanism-based qualification, manufacturing validation, controlled pilot, and fleet monitoring. A hero sample is not a gate.
+Freeze requirements first (Table ladder). Then walk bring-up through margin, interop, mechanism-based qualification, manufacturing validation, controlled pilot, and fleet monitoring. A hero sample is not a gate.
 
 ##### Measurements selected.
 
-Black-box: BER, throughput, interop on claimed hosts, margin corners, power and sensitivity distributions across lots. Engineering access only when black-box evidence cannot decide. Reliability: stresses tied to named mechanisms (§8.2).
+Black-box: BER, throughput, interop on claimed hosts, margin corners, power and sensitivity distributions across lots. Engineering access only when black-box evidence cannot decide. Reliability: stresses tied to named mechanisms (qual-planning-matrix).
 
 ##### Results (staged).
 
@@ -198,7 +198,7 @@ Require multi-lot data, closed interop matrix, and FAIR before PVT/MP language i
 
 ##### Qualification / ATP / telemetry update.
 
-Correlate supplier ATP to your proxy; split field RMA codes by vendor from day one; define pilot exit before broader ship (§8.2).
+Correlate supplier ATP to your proxy; split field RMA codes by vendor from day one; define pilot exit before broader ship (qual-sample-strategy).
 
 ##### Fleet prevention.
 
@@ -214,7 +214,7 @@ Problem: second-source equivalence claim. Impact: single-vendor risk reduction v
 
 ##### Deep dive.
 
-Appendix C.7, Appendix C.15, §8.2, Table 7.1, §8.10.
+fw:second-module, fw:qual-plan, qual-planning-matrix, Table ladder, supplier-exec.
 
 ## Case 3: Temperature-dependent BER failure
 
@@ -259,11 +259,11 @@ Mechanical alignment
 Power supply / PSRR</code></pre>
 ##### Decision tree.
 
-Appendix C.4, Appendix D.4, §7.1.6: scope; power versus quality; measure remaining margin at the failing temperature first.
+fw:hot-fail, tree-power-fork, ladder-margin: scope; power versus quality; measure remaining margin at the failing temperature first.
 
 ##### Measurements selected.
 
-Level 0--1: BER/FEC and telemetry at failing $T$; cool-down trial; sibling compare. Level 2: waterfall, external power, wavelength if telemetry weak. Level 3 (if access): bias sweep, external eye, OSA, TEC/heater codes (Appendix A.2).
+Level 0--1: BER/FEC and telemetry at failing $T$; cool-down trial; sibling compare. Level 2: waterfall, external power, wavelength if telemetry weak. Level 3 (if access): bias sweep, external eye, OSA, TEC/heater codes (interview-access-levels).
 
 ##### Results (staged).
 
@@ -303,7 +303,7 @@ Problem: BER fail at high temperature, power stable. Impact: envelope risk. Evid
 
 ##### Deep dive.
 
-Appendix C.4, §7.1.6, Appendix A.10.3, §10.13.
+fw:hot-fail, ladder-margin, interview-worked-hot-ber, fm-temperature.
 
 ## Case 4: Qualification escape
 
@@ -329,7 +329,7 @@ Wrong failure mechanism
 
 Insufficient sample diversity
 
-: Wrong lots, sites, or corners (§8.2).
+: Wrong lots, sites, or corners (qual-sample-strategy).
 
 Measurement gap
 
@@ -345,7 +345,7 @@ Fleet condition
 
 ##### Decision tree.
 
-Appendix D.3, §10, Appendix C.13: name the missed uncertainty; choose containment; update the evidence path and production proxy.
+tree-qual-evidence, fa-output-categories, fw:atp-update: name the missed uncertainty; choose containment; update the evidence path and production proxy.
 
 ##### Measurements selected.
 
@@ -373,11 +373,11 @@ Fix the process or design as owned; do not only rewrite the qual report.
 
 ##### Qualification / ATP / telemetry update.
 
-Add the stress or observable that would have caught it; widen sample strategy; add the cheapest production control that separates the signature (Appendix C.13).
+Add the stress or observable that would have caught it; widen sample strategy; add the cheapest production control that separates the signature (fw:atp-update).
 
 ##### Fleet prevention.
 
-Keep cohort burn-down and a decision owner until rates fall; feed §7.1.13.
+Keep cohort burn-down and a decision owner until rates fall; feed ladder-feedback.
 
 ##### Score yourself.
 
@@ -389,7 +389,7 @@ Problem: field fails after passed qual. Impact: (rate / cohort). Evidence: (miss
 
 ##### Deep dive.
 
-Appendix D.3, §8.2, §10, Appendix C.13, §8.1. )
+tree-qual-evidence, qual-sample-strategy, fa-output-categories, fw:atp-update, fit-dppm. )
 
 
 <div class="nav-links">

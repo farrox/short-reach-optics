@@ -5,7 +5,7 @@ title: "Appendix B: Thirty-second interview frameworks"
 
 # Appendix B: Thirty-second interview frameworks
 
-This appendix is the interview quick-reference. Deep technical explanations live in the body chapters and Appendix A. Each playbook uses one format: question, assumptions, 30-second answer, key concepts, common mistakes, and deep-dive reference. Memorize the callouts labeled "30-second answer." Expand only where the interview asks. Name access level (Appendix A.2) and use Appendix D.16 for claim, population, plane, and decision.
+This appendix is the interview quick-reference. Deep technical explanations live in the body chapters and app:interview-review. Each playbook uses one format: question, assumptions, 30-second answer, key concepts, common mistakes, and deep-dive reference. Memorize the callouts labeled "30-second answer." Expand only where the interview asks. Name access level (interview-access-levels) and use tree-evidence-block for claim, population, plane, and decision.
 
 ## BER increased with stable power
 
@@ -34,7 +34,7 @@ Tx quality clean?
 Correlation analysis (which cohort?)
   |
 Decision + recurrence control</code></pre>
-**Key concepts.** Stable average power deprioritizes gross insertion loss but does not eliminate fast fluctuation, intermittent contact, monitor averaging, or reflection-dependent effects. Scope sets severity first; correlation after isolation unlocks contain or lot action. A bias sweep requires engineering access and is not universally first (Appendix D.1, Appendix D.11).
+**Key concepts.** Stable average power deprioritizes gross insertion loss but does not eliminate fast fluctuation, intermittent contact, monitor averaging, or reflection-dependent effects. Scope sets severity first; correlation after isolation unlocks contain or lot action. A bias sweep requires engineering access and is not universally first (tree-debugging, tree-blackbox-access).
 
 **Measurements.** Power meter $\rightarrow$ power ledger intact? $\rightarrow$ optical path or SI.\
 Black-box BER/FEC $\rightarrow$ quality path? $\rightarrow$ next isolate.\
@@ -62,7 +62,7 @@ BER waterfall $\rightarrow$ shift or floor? $\rightarrow$ sensitivity vs noise.
 
 **Thirty-second close.** Average power is stable, so I deprioritize gross loss, scope the population, chase signal quality on the black-box surface first, isolate Tx / channel / Rx / DSP, then close with the control that catches the next escape.
 
-**Deep dive.** Full prose: Appendix A.10.7, §10.2. Ledgers: Appendix A.8.4. Pattern: Appendix A.1.
+**Deep dive.** Full prose: interview-worked-sensitivity, fm-ber-increase. Ledgers: interview-margin-ledgers. Pattern: interview-staff-pattern.
 
 ## Received power decreased
 
@@ -112,7 +112,7 @@ Lot query $\rightarrow$ population? $\rightarrow$ contain vs unit fix.
 
 **Thirty-second close.** I confirm power at a named plane with an external meter, bisect the optical path, contain if lot-correlated, and update the screen that missed it.
 
-**Deep dive.** Power fork and instruments: Appendix A.8.3. APC and calibration: §5.11.
+**Deep dive.** Power fork and instruments: interview-power-fork. APC and calibration: laser-calibration.
 
 ## One weak lane
 
@@ -139,7 +139,7 @@ Siblings OK?
    Lot pattern?
         |
    Decision: rework / screen / supplier</code></pre>
-**Key concepts.** Sibling comparison is the cheapest population cut inside one module. Optical-versus-electrical swap prevents weeks of laser FA on a TIA lane (Appendix A.10.6).
+**Key concepts.** Sibling comparison is the cheapest population cut inside one module. Optical-versus-electrical swap prevents weeks of laser FA on a TIA lane (interview-worked-lane).
 
 **Measurements.** Sibling BER/power $\rightarrow$ shared or local? $\rightarrow$ scope.\
 Lane swap $\rightarrow$ optical or electrical? $\rightarrow$ owner.\
@@ -159,7 +159,7 @@ LIV on weak lane $\rightarrow$ device or coupling? $\rightarrow$ FAU vs die.
 
 **Thirty-second close.** I compare siblings, swap optical versus electrical, then own the assembly or array element and the ATP row that would have caught it.
 
-**Deep dive.** Worked answer: Appendix A.10.6. FAU and parallel optics appear throughout Chapter 10.
+**Deep dive.** Worked answer: interview-worked-lane. FAU and parallel optics appear throughout Ch. failure-modes.
 
 ## High-temperature failures
 
@@ -187,7 +187,7 @@ Control ledger exhausted?
   |-- NO  --&gt; cal table / wavelength / Rx
   |
 Decision: retune + ATP corner</code></pre>
-**Key concepts.** Temperature failures are often control or calibration, not a dead laser. The decision uses externally visible remaining margin; internal physics is optional (Appendix A.10.3, Appendix D.11).
+**Key concepts.** Temperature failures are often control or calibration, not a dead laser. The decision uses externally visible remaining margin; internal physics is optional (interview-worked-hot-ber, tree-blackbox-access).
 
 **Measurements.** Cool-down test $\rightarrow$ reversible? $\rightarrow$ thermal vs aging.\
 Black-box BER/FEC at hot $\rightarrow$ remaining margin? $\rightarrow$ gate.\
@@ -209,7 +209,7 @@ OSA $\rightarrow$ spectral alignment? $\rightarrow$ lock / filter.
 
 **Thirty-second close.** I measure externally visible remaining margin at the failing temperature, ask whether cool-down recovers, fix table or thermal design, and put that loaded corner in ATP.
 
-**Deep dive.** Appendix A.10.3, §10.13. Control ledger: Appendix A.8.4.
+**Deep dive.** interview-worked-hot-ber, fm-temperature. Control ledger: interview-margin-ledgers.
 
 ## Laser aging versus calibration drift
 
@@ -239,7 +239,7 @@ Need mechanism split?
 Physical baselines vs ship data
   |-- moved --&gt; aging --&gt; life / derate / replace
   |-- OK ----&gt; deeper FA or table owner</code></pre>
-**Key concepts.** Telemetry can look identical for aging and drift. Recalibration recovery updates belief; external baselines confirm the owner (Appendix A.10.4, Appendix D.11).
+**Key concepts.** Telemetry can look identical for aging and drift. Recalibration recovery updates belief; external baselines confirm the owner (interview-worked-aging-vs-cal, tree-blackbox-access).
 
 **Measurements.** Recal trial $\rightarrow$ recovers? $\rightarrow$ updates P(drift).\
 External LIV / power / spectrum (if access) $\rightarrow$ baseline moved?\
@@ -260,7 +260,7 @@ Stress-hours plot $\rightarrow$ monotonic or step? $\rightarrow$ confirms.
 
 **Thirty-second close.** I start black-box, treat recal recovery as evidence not proof, then compare physical baselines when access exists; aging goes to life actions and drift to table control plus a loaded-corner screen.
 
-**Deep dive.** Appendix A.10.4, §5.11, §5.10.
+**Deep dive.** interview-worked-aging-vs-cal, laser-calibration, laser-thermal-vs-aging.
 
 ## Second component source
 
@@ -287,7 +287,7 @@ Mechanism-appropriate reliability
 Supplier ATP correlation
   |
 Module confirmation + split RMA</code></pre>
-**Key concepts.** Component and complete-product second sources have different access, interop burden, and owners (Appendix D.8, §8.10, Appendix D.16).
+**Key concepts.** Component and complete-product second sources have different access, interop burden, and owners (tree-supplier, supplier-exec, tree-evidence-block).
 
 **Measurements.** Wafer/lot distributions $\rightarrow$ process spread? $\rightarrow$ risk.\
 Module confirmation $\rightarrow$ integration OK? $\rightarrow$ continue.\
@@ -307,7 +307,7 @@ Supplier ATP vs your proxy $\rightarrow$ escape risk? $\rightarrow$ ship gate.
 
 **Thirty-second close.** I qualify at the component boundary with multi-lot distributions, then confirm in-module with FAIR, ATP correlation, and split RMA.
 
-**Deep dive.** Appendix A.10.5, §8.10.
+**Deep dive.** interview-worked-second-source, supplier-exec.
 
 ## Second module or cable source
 
@@ -334,7 +334,7 @@ Manufacturing + ATP readiness
 Controlled pilot
   |
 Fleet monitoring + split RMA</code></pre>
-**Key concepts.** Module second-source burden is interop and black-box margin across the envelope, not die physics first (Appendix D.11, Appendix A.8.5).
+**Key concepts.** Module second-source burden is interop and black-box margin across the envelope, not die physics first (tree-blackbox-access, interview-validation-ladder).
 
 **Measurements.** Multi-lot black-box margin $\rightarrow$ process spread? $\rightarrow$ risk.\
 Host/peer matrix $\rightarrow$ interop cliffs? $\rightarrow$ restrict.\
@@ -354,7 +354,7 @@ Pilot cohort $\rightarrow$ assumptions hold? $\rightarrow$ open MP.
 
 **Thirty-second close.** I walk the product lifecycle on the customer-visible surface, then gate volume on FAIR, ATP correlation, pilot exit, and split RMA.
 
-**Deep dive.** Appendix A.10.5, §8.10.
+**Deep dive.** interview-worked-second-source, supplier-exec.
 
 ## Validation plan for a new transceiver
 
@@ -383,7 +383,7 @@ Manufacturing validation
 Controlled pilot -&gt; Mass production
   |
 Fleet monitoring -&gt; Feedback</code></pre>
-**Key concepts.** This answer is about program sequencing and ownership. Qualification *evidence* construction lives in Appendix C.15, Appendix D.3. The ladder stages are the gates (Appendix A.8.5, Appendix D.2).
+**Key concepts.** This answer is about program sequencing and ownership. Qualification *evidence* construction lives in fw:qual-plan, tree-qual-evidence. The ladder stages are the gates (interview-validation-ladder, tree-qualification).
 
 **Measurements.** Each ladder stage $\rightarrow$ named uncertainty removed $\rightarrow$ continue / redesign / tighten ATP / stop ship.\
 Margin sweeps $\rightarrow$ which ledger dies first? $\rightarrow$ telemetry alarms.
@@ -402,7 +402,7 @@ Margin sweeps $\rightarrow$ which ledger dies first? $\rightarrow$ telemetry ala
 
 **Thirty-second close.** I walk the ladder as staged uncertainty reduction and refuse any measurement that answers no new question about remaining margin.
 
-**Deep dive.** Appendix A.10.2, Table 7.1, Appendix A.8.7.
+**Deep dive.** interview-worked-validation, Table ladder, interview-customer-vendor.
 
 ## Fleet issue
 
@@ -429,7 +429,7 @@ Rate / trend / customer impact
 Bucket: performance / reliability / manufacturability
   |
 Decision + owner + telemetry control</code></pre>
-**Key concepts.** Fleet economics and scope pick the owner before FA. Pulling units without a bucket wastes the only failing state you had (Appendix A.6, §7.12).
+**Key concepts.** Fleet economics and scope pick the owner before FA. Pulling units without a bucket wastes the only failing state you had (interview-under-uncertainty, fleet-triage).
 
 **Measurements.** Telemetry query $\rightarrow$ scope and trend? $\rightarrow$ contain vs monitor.\
 Lot/date correlation $\rightarrow$ manufacturability? $\rightarrow$ supplier.\
@@ -449,7 +449,7 @@ Golden host in rack $\rightarrow$ environment vs module? $\rightarrow$ owner.
 
 **Thirty-second close.** I scope first, pick the bucket, contain if growing and supplier-specific, and name the owner of the next control.
 
-**Deep dive.** Appendix A.6, Table 7.5.
+**Deep dive.** interview-under-uncertainty, Table fleet-triage.
 
 ## Supplier escape
 
@@ -480,7 +480,7 @@ ATP / process-control update
 Verify next lot
   |
 Fleet monitoring (customer owns ship gate)</code></pre>
-**Key concepts.** Containment, suspected mechanism, confirmed mechanism class, and recurrence control are separate steps. The system owner keeps responsibility for evidence quality and verifying the fix (Appendix D.9, Appendix A.6).
+**Key concepts.** Containment, suspected mechanism, confirmed mechanism class, and recurrence control are separate steps. The system owner keeps responsibility for evidence quality and verifying the fix (tree-escape, interview-under-uncertainty).
 
 **Measurements.** Lot genealogy $\rightarrow$ exposure? $\rightarrow$ quarantine list.\
 ATP hot corner $\rightarrow$ escape path? $\rightarrow$ production gate.\
@@ -500,7 +500,7 @@ DPA sample $\rightarrow$ mechanism class? $\rightarrow$ permanent fix.
 
 **Thirty-second close.** I contain Supplier B today, scope exposure, open joint FA, expand ATP, verify the next lot, keep fleet monitoring, and keep ownership of the ship gate.
 
-**Deep dive.** Appendix A.6, Table A.1.
+**Deep dive.** interview-under-uncertainty, Table interview-decisions.
 
 ## BER floor
 
@@ -527,7 +527,7 @@ Test for:
 Choose measurement from leading hypothesis
   |
 Fix mechanism, not launch</code></pre>
-**Key concepts.** A floor is a diagnostic pattern, not a single mechanism. The waterfall shape is the fast cut between sensitivity shift and a non-power-limited impairment (Appendix A.10.8, Appendix A.8.9).
+**Key concepts.** A floor is a diagnostic pattern, not a single mechanism. The waterfall shape is the fast cut between sensitivity shift and a non-power-limited impairment (interview-worked-ber-floor, interview-waterfall).
 
 **Measurements.** Waterfall $\rightarrow$ shift or floor? $\rightarrow$ next hunt.\
 Controlled ORL $\rightarrow$ reflection-driven path? $\rightarrow$ plant.\
@@ -547,7 +547,7 @@ Supply noise / FEC histogram $\rightarrow$ PSRR or burst? $\rightarrow$ owner.
 
 **Thirty-second close.** I confirm floor versus shift on a waterfall, then remove the non-power-limited impairment rather than raise launch power.
 
-**Deep dive.** Appendix A.10.8, §10.3, §4.3.
+**Deep dive.** interview-worked-ber-floor, fm-ber-floor, rin.
 
 ## Intermittent failures
 
@@ -572,7 +572,7 @@ Reproduce with dwell / stress
 Scope population
   |
 Decision: contain / ATP dwell / monitor</code></pre>
-**Key concepts.** Intermittents die when the evidence is destroyed. NFF is often a triage failure, not a healthy part (§7.12).
+**Key concepts.** Intermittents die when the evidence is destroyed. NFF is often a triage failure, not a healthy part (fleet-triage).
 
 **Measurements.** FEC histogram $\rightarrow$ burst vs Gaussian? $\rightarrow$ MPI / intermittent.\
 Time sync + event capture $\rightarrow$ state preserved? $\rightarrow$ FA.\
@@ -594,7 +594,7 @@ Mate/demate $\rightarrow$ connector? $\rightarrow$ hygiene / replace.
 
 **Thirty-second close.** I preserve state before reseating, reproduce with dwell, and refuse NFF without a reproduction and control plan.
 
-**Deep dive.** §7.12, Table 10.1.
+**Deep dive.** fleet-triage, Table failure-analysis-checklist.
 
 ## Production recurrence-control update
 
@@ -621,7 +621,7 @@ Station correlation
 Reaction plan + owner
   |
 Ship ATP change</code></pre>
-**Key concepts.** Recurrence control is not always an ATP change. A limit nobody can trace gets waived under ship pressure (Appendix A.10.2, Appendix D.9).
+**Key concepts.** Recurrence control is not always an ATP change. A limit nobody can trace gets waived under ship pressure (interview-worked-validation, tree-escape).
 
 **Measurements.** Escape unit replay $\rightarrow$ missed corner? $\rightarrow$ new test.\
 Gage R&R $\rightarrow$ repeatability? $\rightarrow$ guard band.\
@@ -641,7 +641,7 @@ Golden units across stations $\rightarrow$ correlation? $\rightarrow$ ship.
 
 **Thirty-second close.** I name the missed uncertainty, choose ATP / sample / SPC / supplier / design / firmware / telemetry, demonstrate separation, and ship the control with an owner.
 
-**Deep dive.** Production readiness stage in Appendix A.8.5.
+**Deep dive.** Production readiness stage in interview-validation-ladder.
 
 ## Telemetry design
 
@@ -655,7 +655,7 @@ Golden units across stations $\rightarrow$ correlation? $\rightarrow$ ship.
 
 > **30-second answer (memorize).** Log what discriminates hypotheses: per-lane power, bias, pre-FEC BER and FEC histograms; module temperature and actuator drive; LOS/LOL with context. Require timestamp accuracy, sampling cadence, aggregation window, units, calibration/scaling, missing-data behavior, firmware/schema version, serial/lot/platform, event trigger, retention, and a decision owner. Alarm on trends and disagreements, not only hard thresholds. Therefore I would instrument the ledgers margin testing said die first.
 
-Add a register only if it changes contain, derate, RMA, or FA ownership. Full tradeoff: §7.12.
+Add a register only if it changes contain, derate, RMA, or FA ownership. Full tradeoff: fleet-triage.
 
 <pre class="dectree" aria-label="Telemetry purpose: early margin erosion"><code>Telemetry purpose: early margin erosion
   |
@@ -666,7 +666,7 @@ Module: T, TEC/heater, rails, lock
 Events + lot/age/rack context
   |
 Alarms: trends / disagreements</code></pre>
-**Key concepts.** Telemetry exists to triage without pulling hardware and to catch dying units before dead ones (Appendix A.10.13).
+**Key concepts.** Telemetry exists to triage without pulling hardware and to catch dying units before dead ones (interview-worked-telemetry).
 
 **Measurements.** Bias at constant power $\rightarrow$ aging? $\rightarrow$ reliability bucket.\
 Power at constant bias $\rightarrow$ optical path? $\rightarrow$ plant.\
@@ -686,19 +686,19 @@ Actuator near rail $\rightarrow$ control margin? $\rightarrow$ thermal design.
 
 **Thirty-second close.** I instrument the ledgers that discriminate hypotheses and alarm on trends and disagreements that unlock triage.
 
-**Deep dive.** Appendix A.10.13, §7.8.
+**Deep dive.** interview-worked-telemetry, cmis.
 
 ## Qualification planning
 
 **Interview question.** How do you plan qualification for a new IM/DD module?
 
-**What the interviewer is testing.** Qualification-evidence judgment: mechanism coverage, stress selection, sample strategy, acceptance criteria, confidence, production correlation, release evidence. This playbook is a scoped evidence path, not a second full lifecycle; use Appendix C.8, Appendix D.2 for the stage order.
+**What the interviewer is testing.** Qualification-evidence judgment: mechanism coverage, stress selection, sample strategy, acceptance criteria, confidence, production correlation, release evidence. This playbook is a scoped evidence path, not a second full lifecycle; use fw:validation-plan, tree-qualification for the stage order.
 
 **Assumptions to state.** Requirements name mechanisms; sample strategy and confidence are stated; production proxies are cheaper than full GR-468 replay; release is a ship / restrict / reject decision.
 
 **First thing I would check.** Freeze the requirements slice and named mechanisms before listing stresses.
 
-> **30-second answer (memorize).** I qualify from requirements to mechanisms, not from a ritual list. What does the system require? What can fail? How do we accelerate those mechanisms? What observable changes? What defines pass/fail? How much evidence is enough? How does production control maintain quality? Therefore I would gate ship on remaining margin after named stresses with a stated sample strategy and confidence, plus a production proxy (Appendix D.3, §8.2).
+> **30-second answer (memorize).** I qualify from requirements to mechanisms, not from a ritual list. What does the system require? What can fail? How do we accelerate those mechanisms? What observable changes? What defines pass/fail? How much evidence is enough? How does production control maintain quality? Therefore I would gate ship on remaining margin after named stresses with a stated sample strategy and confidence, plus a production proxy (tree-qual-evidence, qual-planning-matrix).
 
 <pre class="dectree" aria-label="Qualification interview framework"><code>Qualification interview framework
   |
@@ -715,7 +715,7 @@ Acceptance: what defines pass/fail?
 Confidence: how much evidence is enough?
   |
 Production control: how do we maintain quality?</code></pre>
-**Key concepts.** This is a scoped evidence path inside the lifecycle, not a second lifecycle (Appendix C.8, Appendix D.2). Stress consumes margin; qual measures what remains (Appendix A.8.6, Appendix A.8.7). Sample strategy depends on failure-rate target, confidence, cost, and population variation, not a fixed "we test 20 units."
+**Key concepts.** This is a scoped evidence path inside the lifecycle, not a second lifecycle (fw:validation-plan, tree-qualification). Stress consumes margin; qual measures what remains (interview-margin-budget, interview-customer-vendor). Sample strategy depends on failure-rate target, confidence, cost, and population variation, not a fixed "we test 20 units."
 
 **Measurements.** Margin sweeps $\rightarrow$ cliff distance? $\rightarrow$ derate or redesign.\
 HTOL $\rightarrow$ wear-out hypothesis? $\rightarrow$ FIT.\
@@ -735,7 +735,7 @@ ATP correlation $\rightarrow$ factory control? $\rightarrow$ volume.
 
 **Thirty-second close.** I budget which stresses spend which ledgers, run HTOL only with a named mechanism, and gate ship on remaining margin.
 
-**Deep dive.** Appendix A.8.5, §8.2, §5.13.
+**Deep dive.** interview-validation-ladder, gr468, laser-aging.
 
 ## Unknown failure
 
@@ -760,7 +760,7 @@ Decision today (contain / ship / derate)
 FA path + control + owner
   |
 Update when mechanism closes</code></pre>
-**Key concepts.** The job is the best decision with today's evidence. Unknown mechanism is Framework 15 of Staff judgment, not a reason to freeze (Appendix A.6).
+**Key concepts.** The job is the best decision with today's evidence. Unknown mechanism is Framework 15 of Staff judgment, not a reason to freeze (interview-under-uncertainty).
 
 **Measurements.** Whatever removes the most uncertainty per hour toward the ship decision: scope query, golden swap, external power, hot-corner ATP sample.\
 DPA later $\rightarrow$ mechanism class? $\rightarrow$ permanent fix.
@@ -779,7 +779,7 @@ DPA later $\rightarrow$ mechanism class? $\rightarrow$ permanent fix.
 
 **Thirty-second close.** I decide with today's evidence, contain the scoped population, keep a healthy path shipping, and name the control and residual risk.
 
-**Deep dive.** Appendix A.6, Appendix A.4, Table A.1.
+**Deep dive.** interview-under-uncertainty, interview-decision-trees, Table interview-decisions.
 
 ## Tradeoff interview questions
 
@@ -789,33 +789,33 @@ Staff follow-ups often stop asking "what test?" and start asking "given constrai
 
 *Benefit of margin:* reach, temperature, aging, contamination tolerance.\
 *Downside:* laser power, heat, efficiency, sometimes lifetime.\
-*Criteria:* allocate margin where uncertainty is highest; do not maximize every ledger (§5.19, Chapter 7).
+*Criteria:* allocate margin where uncertainty is highest; do not maximize every ledger (laser-margin-erosion, Ch. validation).
 
 ##### Would you add more telemetry?
 
 *Benefit:* faster fleet triage and earlier margin erosion detection.\
 *Downside:* firmware, storage, alarm fatigue.\
-*Criteria:* each field needs a decision owner and a reaction plan (Appendix C.14, §7.12).
+*Criteria:* each field needs a decision owner and a reaction plan (fw:telemetry, fleet-triage).
 
 ##### Would you run more qualification?
 
 *Benefit:* confidence and fewer late escapes.\
 *Downside:* schedule, cost, delayed learning.\
-*Criteria:* prioritize by risk $\times$ uncertainty $\times$ impact; stop when remaining risk has a production control (§8.2).
+*Criteria:* prioritize by risk $\times$ uncertainty $\times$ impact; stop when remaining risk has a production control (qual-sample-strategy).
 
 ##### Would you add a second supplier?
 
 *Benefit:* supply resilience and pricing leverage.\
 *Downside:* validation, interop, and manufacturing differences.\
-*Criteria:* qualify on concentration risk and evidence, not ideology (§8.10, Appendix C.7).
+*Criteria:* qualify on concentration risk and evidence, not ideology (supplier-exec, fw:second-module).
 
 ##### Would you increase ATP coverage?
 
 *Benefit:* escape detection earlier in the flow.\
 *Downside:* cycle time, cost, false rejects.\
-*Criteria:* cheapest control that reliably detects the named mechanism: 100%, sample, SPC, or supplier process (§8.9).
+*Criteria:* cheapest control that reliably detects the named mechanism: 100%, sample, SPC, or supplier process (hvm-test).
 
-**Key idea.** Open the matching framework, deliver the thirty-second box, walk the tree, end on the decision and the control. When the interviewer asks a tradeoff question, name benefit, downside, and criteria. Philosophy is in Appendix A; this appendix is how you speak it under pressure.
+**Key idea.** Open the matching framework, deliver the thirty-second box, walk the tree, end on the decision and the control. When the interviewer asks a tradeoff question, name benefit, downside, and criteria. Philosophy is in app:interview-review; this appendix is how you speak it under pressure.
 
 
 <div class="nav-links">

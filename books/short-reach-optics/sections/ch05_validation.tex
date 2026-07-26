@@ -1,60 +1,88 @@
 \chapter{Optical validation}
 \label{ch:validation}
 
-A datasheet that closes on a quiet bench is not a product. \emph{Validation}
-reduces uncertainty about whether a link meets its requirements across the
-temperatures, hosts, connectors, production spread, and lifetime the fleet will
-actually see. Passing tests is an output, not the purpose. This chapter walks the
-ladder from a single device to a deployed fleet, the engineering question at
-each stage, module and system bring-up under production-like corners, and the
-hypothesis-driven debug method the work demands.
+A datasheet that closes on a quiet bench is not a product. A quiet-bench close
+proves one corner under one setup. It does not prove that the link meets its
+requirements across the temperatures, hosts, connectors, production spread, and
+lifetime the fleet will actually see.
 
-Debugging asks which margin ledger was exhausted. Qualification asks how much
-margin remains after the expected stresses. Both are uncertainty reduction that
-ends in a decision (\Cref{app:decision-trees,sec:tree-evidence-block}).
+\emph{Validation} is the process of building enough justified confidence to make
+those product decisions. Passing tests is an output, not the purpose. The job is
+to remove the uncertainty that blocks the next call: continue, redesign, derate,
+qualify, open volume, or hold. Debugging asks which margin ledger was exhausted.
+Qualification asks how much margin remains after the expected stresses. Both are
+uncertainty reduction that ends in a decision
+(\Cref{app:decision-trees,sec:tree-evidence-block}). This chapter sequences that
+work from a single device to a deployed fleet
+(\Cref{sec:validation-workflow}), then covers bring-up under production-like
+corners and the hypothesis-driven debug method the work demands.
 
-\paragraph{Operating definitions used in this book.}
-Companies may use EVT, DVT, PVT, verification, and qualification differently.
-Unless noted otherwise, this book uses the questions below. Abbreviations are
-collected in \Cref{app:abbreviations}.
+Companies overload EVT, DVT, PVT, and ``verification'' differently. Unless noted
+otherwise, this book freezes meanings by \emph{job}, not by org chart.
+Abbreviations are collected in \Cref{app:abbreviations}.
 
-\begin{description}
-\item[Characterization]
-      \emph{Question:} How does the design behave?\\
-      \emph{Purpose:} Discover behavior, measure distributions, find cliffs, and
-      understand sensitivity. Exploratory: a characterization failure improves
-      understanding; it does not automatically fail the product.\\
-      \emph{Examples:} BER versus temperature, wavelength drift, receiver
-      sensitivity, RIN behavior, bias trends.
-\item[Verification]
-      \emph{Question:} Does this implementation meet a stated requirement?\\
-      \emph{Purpose:} Requirement-based confirmation with a named method and
-      reference plane.\\
-      \emph{Examples:} transmit power, BER, wavelength accuracy, thermal
-      operating range.
-\item[Validation]
-      \emph{Question:} Does the product work for the intended customer and system
-      use?\\
-      \emph{Purpose:} System-context proof across hosts, cables, temperatures,
-      workloads, and deployment practice.\\
-      \emph{Examples:} supported switches, cable plant, expected temperatures,
-      real traffic mix.
-\item[Qualification]
-      \emph{Question:} Do we have evidence this design survives expected variation
-      and life?\\
-      \emph{Purpose:} Confidence building across environmental stress,
-      reliability, manufacturing variation, and supplier variation.\\
-      \emph{Examples:} HTOL with a named mechanism, temperature cycling, humidity,
-      multi-lot process corners.
-\item[Production test]
-      \emph{Question:} Can we repeatedly detect unacceptable units?\\
-      \emph{Purpose:} Factory and incoming screens that catch escapes at volume.
-      Production testing is not qualification.\\
-      \emph{Examples:} ATP, lot sampling, SPC, periodic audits.
-\item[ATP (acceptance test)]
-      A replayable production decision process applied per unit, per lot, or
-      according to a documented sampling plan. One form of production test.
-\end{description}
+\paragraph{How the jobs differ.}
+\emph{Characterization} maps how the design behaves. It discovers distributions,
+sensitivities, and cliffs. A characterization cliff improves understanding; it
+does not automatically fail the product. BER versus temperature, wavelength
+drift, receiver sensitivity, RIN, and bias trends belong here when the question
+is still ``what happens when you change $X$?''
+
+\emph{Verification} asks a narrower question: does this implementation meet a
+stated requirement with a named method and reference plane? Transmit power, BER
+at a stated FEC objective, wavelength accuracy, and thermal operating range are
+verification when the requirement, plane, and method are already frozen.
+
+\emph{Validation} asks whether the product works for the intended customer and
+system use. Hosts, cable plant, temperatures, workloads, and install practice are
+in scope. A verified BER on a golden bench is not validation of the fleet claim.
+
+\emph{Qualification} asks whether you have evidence the design survives expected
+variation and life. The evidence is mechanism-based stress and sample humility,
+not a ritual checklist. HTOL, temperature cycling, humidity, and multi-lot
+process corners matter only when each stress maps to a named mechanism and an
+acceptance rule.
+
+\emph{Production test} asks whether you can repeatedly detect unacceptable units
+at volume. Factory and incoming screens catch escapes; they do not prove life.
+\emph{ATP} (acceptance test) is one form of that process: a replayable
+accept/reject decision applied per unit, per lot, or by a documented sampling
+plan.
+
+The split matters because the classic program failures are category errors:
+treating characterization cliffs as automatic product failure, treating ATP as
+life proof, or treating HTOL as host interoperability. The rest of this chapter
+is written to keep those jobs from collapsing into one another.
+
+\begin{table}[ht]
+\centering
+\caption{Operating definitions used in this book. Decision unlocked: which job
+you are doing, and which decision that job can honestly support. Abbreviations:
+\Cref{app:abbreviations}.\label{tab:validation-jobs}}
+\setlength{\tabcolsep}{4pt}%
+\footnotesize
+\begin{tabular}{@{}p{0.22\linewidth}p{0.38\linewidth}p{0.32\linewidth}@{}}
+\toprule
+Term & Question & Decision it unlocks \\
+\midrule
+Characterization & How does it behave? & Model / derate / redesign before loaded work \\
+\addlinespace[0.5em]
+Verification & Does it meet a stated requirement? & Pass / fail that requirement at a named plane \\
+\addlinespace[0.5em]
+Validation & Does it work for intended system use? & Approve / restrict system claim \\
+\addlinespace[0.5em]
+Qualification & Does it survive expected variation and life? & Accept / derate / hold life risk \\
+\addlinespace[0.5em]
+Production test & Can we detect unacceptable units at volume? & Screen / sample / hold lot \\
+\addlinespace[0.5em]
+ATP & Replayable accept/reject process? & Ship / fail unit or lot \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The validation ladder in \Cref{sec:validation-workflow} is the ordered way these
+jobs are sequenced so expensive evidence is not asked to answer the wrong
+question.
 
 \section{The validation ladder}
 \label{sec:validation-workflow}

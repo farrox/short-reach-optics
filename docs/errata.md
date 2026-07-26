@@ -53,6 +53,10 @@ No new frameworks or chapters.
   reference table. Stage subsections are short prose plus Evidence/Exit/Decision
   blocks; duplicate Purpose/Uncertainty field lists and Learning summary removed
   (`ch05`).
+- **Validation chapter opening:** Replaced Question/Purpose/Examples definition
+  list with causal prose on how characterization, verification, validation,
+  qualification, and production test/ATP differ, then one
+  Term/Question/Decision table (`tab:validation-jobs`) (`ch05`).
 
 ## Typographical fixes
 

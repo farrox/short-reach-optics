@@ -5,7 +5,7 @@ title: "Ch 6: WDM and wavelength-locked lasers"
 
 # 6 WDM and wavelength-locked lasers
 
-Early datacenter optics mostly ran one wavelength per fiber. That worked while port counts were modest. At AI scale, fiber count itself becomes a first-order cost and cable-plant problem, so the industry packed more channels onto each strand. The price of that packing is control: once channel spacing tightens, or once the modulator is a wavelength-selective ring, someone must keep laser and filter locked together. Few phrases carry as much architectural information as "wavelength-locked laser," because locking only appears under those interconnect choices. Ring and MZM device physics stay in §3.14.3; per-$\lambda$ laser ATP and aging stay in Chapter 5. This chapter covers grids, lock loops, thermal crosstalk, MUX budget, and CW-WDM architecture.
+Early datacenter optics mostly ran one wavelength per fiber. That worked while port counts were modest. At AI scale, fiber count itself becomes a first-order cost and cable-plant problem, so the industry packed more channels onto each strand. The price of that packing is control: once channel spacing tightens, or once the modulator is a wavelength-selective ring, someone must keep laser and filter locked together. Few phrases carry as much architectural information as "wavelength-locked laser," because locking only appears under those interconnect choices. Ring and MZM device physics stay in siring, simzm; per-$\lambda$ laser ATP and aging stay in Ch. lasers. This chapter covers grids, lock loops, thermal crosstalk, MUX budget, and CW-WDM architecture.
 
 > **Tradeoff.** Dense WDM vs lock complexity
 >
@@ -21,10 +21,10 @@ Early datacenter optics mostly ran one wavelength per fiber. That worked while p
 
 At $100{,}000$+ accelerator scale, every extra fiber is another connector, another patch, and another failure mode. *Wavelength-division multiplexing* (WDM) puts many independent channels on a single fiber, each on its own wavelength, so bandwidth per fiber rises without adding fiber. Each wavelength can still be an ordinary IM/DD channel. WDM and IM/DD are orthogonal; you run IM/DD *per wavelength*.
 
-Historically the industry climbed a ladder of spacing. Coarse CWDM4 used $\approx$20 nm slots and uncooled lasers. LAN-WDM tightened that for 2 km-class FR4. Dense grids and then CW-WDM O-band combs for CPO pushed spacing into the 100--800 GHz class and made active locking mandatory. Those spacings are standardized grids, not vendor choices: the 20 nm CWDM slots follow the ITU-T G.694.2 wavelength grid (18 channels, 1271--1611 nm), and the 50/100/200 GHz datacom DWDM spacings follow the ITU-T G.694.1 frequency grid anchored at 193.1 THz . CWDM4 uses the four O-band lines of that CWDM grid; the CW-WDM combs in §6.6 define their own O-band grids for dense integration. Table 6.1 is that ladder as you will meet it in short-reach AI optics today.
+Historically the industry climbed a ladder of spacing. Coarse CWDM4 used $\approx$20 nm slots and uncooled lasers. LAN-WDM tightened that for 2 km-class FR4. Dense grids and then CW-WDM O-band combs for CPO pushed spacing into the 100--800 GHz class and made active locking mandatory. Those spacings are standardized grids, not vendor choices: the 20 nm CWDM slots follow the ITU-T G.694.2 wavelength grid (18 channels, 1271--1611 nm), and the 50/100/200 GHz datacom DWDM spacings follow the ITU-T G.694.1 frequency grid anchored at 193.1 THz . CWDM4 uses the four O-band lines of that CWDM grid; the CW-WDM combs in cwwdm define their own O-band grids for dense integration. Table wdm-grids is that ladder as you will meet it in short-reach AI optics today.
 
 <table class="book-table"><tr><th>Grid family</th><th>Spacing (class)</th><th>Channels / fiber</th><th>Cooling / lock</th><th>Typical short-reach use</th></tr><tr><td>CWDM4</td><td>20 nm</td><td>4</td><td>Uncooled; loose control</td><td>FR-class pluggables; faceplate WDM</td></tr><tr><td>LAN-WDM</td><td>800 GHz (4--5 nm @ 1310 nm)</td><td>4</td><td>Cooled or tight open-loop</td><td>2 km-class FR4 (edge of book scope)</td></tr><tr><td>Datacom DWDM</td><td>200/100/50 GHz</td><td>many</td><td>Locked to grid</td><td>Discrete DFB/EML DWDM modules</td></tr><tr><td>CW-WDM / CPO O-band</td><td>100--800 GHz class (MSA spans)</td><td>8 / 16 / 32</td><td>Locked; often ring-tuned</td><td>CPO engines, optical I/O chiplets</td></tr></table>
-**Table 6.1.** WDM grids for short-reach AI interconnects. CW-WDM MSA normative grids sit in O-band with 9/18/36 nm spans and 8/16/32-line sets (§6.6); spacing is set by the chosen span and channel count, not by Ethernet CWDM4.
+**Table ?.** WDM grids for short-reach AI interconnects. CW-WDM MSA normative grids sit in O-band with 9/18/36 nm spans and 8/16/32-line sets (cwwdm); spacing is set by the chosen span and channel count, not by Ethernet CWDM4.
 
 **Exit when** fiber count, lock burden, and cooling class pick one grid family for the product. **Decision unlocked:** accept uncooled CWDM4, or fund locked denser grids (LAN-WDM, DWDM, CW-WDM) with the control page they require.
 
@@ -38,11 +38,11 @@ To pack channels at 50--200 GHz class spacing, each laser must sit on its grid 
 
 ### Microring modulators and WDM locking
 
-Resonant ring and microdisk modulators are the dense-WDM workhorse (§3.14.3). Their resonance drifts by roughly $10$ GHz/°C in silicon, so even a stable laser is not enough: the laser and the ring must be wavelength-locked. Either lock the laser to the ring, or thermally tune the ring onto the laser with a feedback loop. That laser--ring co-locking is the central control problem in ring-based WDM links and in co-packaged optics, and it is why neighbor heat and case-temperature ramps belong in validation, not only in the thermal section of a datasheet.
+Resonant ring and microdisk modulators are the dense-WDM workhorse (siring). Their resonance drifts by roughly $10$ GHz/°C in silicon, so even a stable laser is not enough: the laser and the ring must be wavelength-locked. Either lock the laser to the ring, or thermally tune the ring onto the laser with a feedback loop. That laser--ring co-locking is the central control problem in ring-based WDM links and in co-packaged optics, and it is why neighbor heat and case-temperature ramps belong in validation, not only in the thermal section of a datasheet.
 
 ## WDM filters, grids, and on-chip multiplexing
 
-WDM is not only lasers and locking (§6.6): the PIC needs wavelength selective routing. The MUX/demux stage is a first-class link-budget line item (§7.7), not a packaging footnote.
+WDM is not only lasers and locking (cwwdm): the PIC needs wavelength selective routing. The MUX/demux stage is a first-class link-budget line item (link-budget), not a packaging footnote.
 
 ##### Hardware choices.
 
@@ -52,30 +52,30 @@ AWG / echelle gratings
 
 Ring filter banks
 
-: drop/port routing in microring banks sets how many $\lambda$ share a bus waveguide. Thermal tuning per ring is common (§3.14.3, §6.5).
+: drop/port routing in microring banks sets how many $\lambda$ share a bus waveguide. Thermal tuning per ring is common (siring, thermal-xtalk).
 
 Hybrid
 
 : some engines use a coarse AWG plus fine ring filters; count every stage in the ledger.
 
-**MZMs trade area for calm wavelength behavior.** When each lane carries its own laser (DR/FR SiPh modules), silicon Mach--Zehnder modulators sidestep ring locking (§3.14.3). Rings remain the default when many $\lambda$ share one PIC and area dominates (§3.14.3, Chapter 9).
+**MZMs trade area for calm wavelength behavior.** When each lane carries its own laser (DR/FR SiPh modules), silicon Mach--Zehnder modulators sidestep ring locking (simzm). Rings remain the default when many $\lambda$ share one PIC and area dominates (siring, Ch. networking).
 
 ##### Where MUX defects land.
 
-Table 6.2 maps common MUX faults to the measurement that catches them.
+Table mux-budget maps common MUX faults to the measurement that catches them.
 
 <table class="book-table"><tr><th>Fault</th><th>Optical symptom</th><th>Hits</th><th>Catch with</th></tr><tr><td>Stage insertion loss</td><td>Lower launch OMA on all</td><td>Link budget OMA</td><td>Power meter / OMA</td></tr><tr><td>Passband ripple / tilt</td><td>Uneven OMA across bank</td><td>Weakest</td><td>Per- OMA map</td></tr><tr><td>Adjacent-channel crosstalk</td><td>Closed eyes, RLM/TDECQ up</td><td>Tx quality / BER</td><td>Isolation sweep + DCA</td></tr><tr><td>MUX imbalance</td><td>One weak, neighbors OK</td><td>Single-lane BER</td><td>Per-lane power + BER</td></tr><tr><td>Grid misalignment</td><td>Filter edge clipping</td><td>TDECQ, unlock risk</td><td>OSA + lock status</td></tr></table>
-**Table 6.2.** MUX/demux defects and where they appear in validation. Isolation and imbalance tests belong in ATP for any dense WDM engine (§6.7, §5.16).
+**Table ?.** MUX/demux defects and where they appear in validation. Isolation and imbalance tests belong in ATP for any dense WDM engine (lock-validation, cwwdm-laser).
 
 Validation adds channel isolation sweeps, grid alignment across temperature, and MUX imbalance (uneven OMA per $\lambda$). Treat the weakest channel as the budget-limiting lane, not the average.
 
 ##### How to read the MUX budget.
 
-Table 6.2 is an FA map, not a datasheet. Stage loss hits every lane; ripple and imbalance make the weakest $\lambda$ the limit; crosstalk and grid misalignment show up as Tx quality or unlock before average power looks dead. **Exit when** the weakest lane's OMA, isolation, and grid alignment close the budget, or a MUX stage is redesigned. **Decision unlocked:** approve the MUX for ATP, or open packaging / PIC FA on the failing row.
+Table mux-budget is an FA map, not a datasheet. Stage loss hits every lane; ripple and imbalance make the weakest $\lambda$ the limit; crosstalk and grid misalignment show up as Tx quality or unlock before average power looks dead. **Exit when** the weakest lane's OMA, isolation, and grid alignment close the budget, or a MUX stage is redesigned. **Decision unlocked:** approve the MUX for ATP, or open packaging / PIC FA on the failing row.
 
 ## Lock-loop mechanics
 
-Wavelength locking closes the loop between source and filter. Pick a technique based on whether the laser, the ring, or both must be steered (§3.14.3, Chapter 7).
+Wavelength locking closes the loop between source and filter. Pick a technique based on whether the laser, the ring, or both must be steered (siring, Ch. validation).
 
 ##### Error-signal sources.
 
@@ -97,19 +97,19 @@ Athermal design
 
 Digital supervisory loop
 
-: CMIS-exposed monitors and firmware on modern modules; link training at 224G/448G may iterate EQ and wavelength trim together (§9.3).
+: CMIS-exposed monitors and firmware on modern modules; link training at 224G/448G may iterate EQ and wavelength trim together (pluggables).
 
 ##### What you trim.
 
-Three actuators show up repeatedly, and the bring-up order usually starts with the slowest, highest-authority knob. Laser TEC / temperature moves the whole comb or a single DFB on the frequency axis. Laser bias current is the fine wavelength trim (and also changes power), so watch RIN and SMSR when you use it as a locker (§5.8). Ring heaters park each microring onto its assigned $\lambda$ and are the per-channel control in dense banks (§6.5).
+Three actuators show up repeatedly, and the bring-up order usually starts with the slowest, highest-authority knob. Laser TEC / temperature moves the whole comb or a single DFB on the frequency axis. Laser bias current is the fine wavelength trim (and also changes power), so watch RIN and SMSR when you use it as a locker (laser-drivers). Ring heaters park each microring onto its assigned $\lambda$ and are the per-channel control in dense banks (thermal-xtalk).
 
 ##### Capture versus hold.
 
-*Capture* is acquiring lock from a cold or unlocked state: coarse scan of heater or TEC until the monitor error signal crosses zero, then close the loop. *Hold* is rejecting thermal drift and neighbor crosstalk once locked. Loop bandwidth must be fast enough to track case-temperature ramps and adjacent-heater steps, but slow enough not to fight the data path or inject RIN through bias modulation. Silicon rings at $\sim$10 GHz/°C set the disturbance scale: a 1 °C neighbor step is tens of GHz of resonance walk, which is a large fraction of a 100--200 GHz grid slot (§3.14.3).
+*Capture* is acquiring lock from a cold or unlocked state: coarse scan of heater or TEC until the monitor error signal crosses zero, then close the loop. *Hold* is rejecting thermal drift and neighbor crosstalk once locked. Loop bandwidth must be fast enough to track case-temperature ramps and adjacent-heater steps, but slow enough not to fight the data path or inject RIN through bias modulation. Silicon rings at $\sim$10 GHz/°C set the disturbance scale: a 1 °C neighbor step is tens of GHz of resonance walk, which is a large fraction of a 100--200 GHz grid slot (siring).
 
 ##### Failure signatures.
 
-When a loop loses lock, bisect laser versus ring by toggling the TEC setpoint and the ring heater independently (§7.6, §7.12, §6.7). The one-lane and intermittent signatures this produces, and their causes, are catalogued in §6.9.3.
+When a loop loses lock, bisect laser versus ring by toggling the TEC setpoint and the ring heater independently (instruments, fleet-triage, lock-validation). The one-lane and intermittent signatures this produces, and their causes, are catalogued in wdm-how-fails.
 
 ## Thermal crosstalk and heater budget
 
@@ -117,15 +117,15 @@ Dense ring banks share a substrate. Heating one ring to stay on resonance shifts
 
 ##### Where heat comes from.
 
-Self-heating from the ring's own heater (and absorbed optical power) shifts its resonance, so the lock loop must settle with the lane at operating optical power, not dark. Adjacent heaters on nearest-neighbor and next-nearest rings in a WDM bank are the next disturbance; the worst case is all neighbors at max heater power while you hold lock. Package and ASIC load add a common-mode walk: switch or XPU case-temperature ramps and local hotspots move the whole bank, and a shared TEC or cold plate sets how much of that walk the lock loop must reject (§7.9).
+Self-heating from the ring's own heater (and absorbed optical power) shifts its resonance, so the lock loop must settle with the lane at operating optical power, not dark. Adjacent heaters on nearest-neighbor and next-nearest rings in a WDM bank are the next disturbance; the worst case is all neighbors at max heater power while you hold lock. Package and ASIC load add a common-mode walk: switch or XPU case-temperature ramps and local hotspots move the whole bank, and a shared TEC or cold plate sets how much of that walk the lock loop must reject (prod-corners).
 
 ##### Design and validation implications.
 
-Budget heater range with headroom for crosstalk, not just for the coldest and hottest case alone. Layout (heater placement, thermal isolation trenches, ring pitch) is a reliability and yield problem as much as a control problem. In validation, simultaneous full-traffic on neighbors plus max case $T$ is a *lock* test: unlock, BER walk, or TDECQ rise on one $\lambda$ under neighbor load points at thermal design, not at a bad laser die (§7.9, §7.12).
+Budget heater range with headroom for crosstalk, not just for the coldest and hottest case alone. Layout (heater placement, thermal isolation trenches, ring pitch) is a reliability and yield problem as much as a control problem. In validation, simultaneous full-traffic on neighbors plus max case $T$ is a *lock* test: unlock, BER walk, or TDECQ rise on one $\lambda$ under neighbor load points at thermal design, not at a bad laser die (prod-corners, fleet-triage).
 
 ## External multi-wavelength sources (CW-WDM)
 
-Dense WDM with ring modulators needs a source of many clean, stable wavelengths. The industry answer is a *disaggregated* external laser: a single multi-wavelength continuous-wave (CW) module supplies a comb of wavelengths over fiber to the photonic engine, where microrings imprint data onto each one. The *CW-WDM MSA* standardizes those sources for AI, HPC, and high-density optics . Source-side measurement detail (per-channel power, SMSR, RIN, lock under neighbor heat) is in §5.16; this section is the architecture contract.
+Dense WDM with ring modulators needs a source of many clean, stable wavelengths. The industry answer is a *disaggregated* external laser: a single multi-wavelength continuous-wave (CW) module supplies a comb of wavelengths over fiber to the photonic engine, where microrings imprint data onto each one. The *CW-WDM MSA* standardizes those sources for AI, HPC, and high-density optics . Source-side measurement detail (per-channel power, SMSR, RIN, lock under neighbor heat) is in cwwdm-laser; this section is the architecture contract.
 
 ##### What the MSA specifies (and what it does not).
 
@@ -141,11 +141,11 @@ Core normative content:
 
 - **Power classes and AS parameters:** output power classes span low to high launch; SMSR, RIN, and linewidth floors are defined with measurement methods, with many limits marked application-specific (AS) in the normative tables.
 
-Informative appendix examples (not universal product guarantees) often quote $\approx$30 dB SMSR, $\approx-135$ dB/Hz RIN, $\approx$20 MHz linewidth, $\pm$1 dB per-line power variation, and $-20$ dB ORL tolerance for 18 nm-span examples. Treat those as negotiation anchors; write the ATP to your link budget (§5.16, Table 5.4).
+Informative appendix examples (not universal product guarantees) often quote $\approx$30 dB SMSR, $\approx-135$ dB/Hz RIN, $\approx$20 MHz linewidth, $\pm$1 dB per-line power variation, and $-20$ dB ORL tolerance for 18 nm-span examples. Treat those as negotiation anchors; write the ATP to your link budget (cwwdm-laser, Table laser-prd).
 
 ##### Why disaggregate the laser.
 
-External CW-WDM / ELSFP sources are field-replaceable. Lasers dominate wear-out FIT (Chapter 5, Chapter 8); keeping them off the ASIC package turns a COD or facet failure into a hot-swap, not a board pull. The photonic engine still needs per-$\lambda$ lock to rings or filters.
+External CW-WDM / ELSFP sources are field-replaceable. Lasers dominate wear-out FIT (Ch. lasers, Ch. reliability); keeping them off the ASIC package turns a COD or facet failure into a hot-swap, not a board pull. The photonic engine still needs per-$\lambda$ lock to rings or filters.
 
 ##### Exemplar: SuperNova + TeraPHY.
 
@@ -163,7 +163,7 @@ Vendor performance claims versus pluggables plus electrical SerDes (5--10$\times
 
 ##### System requirements the source must meet.
 
-For the PIC to close every lane, the comb must deliver, across temperature and with all ports active, a small set of properties at once: per-line power flatness (else MUX + modulator bank makes uneven OMA), grid placement and SMSR per line, RIN under the specified ORL, and absolute wavelength stable enough that ring heaters stay in range (§6.5, §5.16). Miss any one and a single $\lambda$ will look like a modulator or lock-loop failure when the source is the real cause.
+For the PIC to close every lane, the comb must deliver, across temperature and with all ports active, a small set of properties at once: per-line power flatness (else MUX + modulator bank makes uneven OMA), grid placement and SMSR per line, RIN under the specified ORL, and absolute wavelength stable enough that ring heaters stay in range (thermal-xtalk, cwwdm-laser). Miss any one and a single $\lambda$ will look like a modulator or lock-loop failure when the source is the real cause.
 
 ### Comb sources: one device, many lines
 
@@ -171,45 +171,45 @@ The SuperNova approach builds its comb from an array of discrete lasers, one dis
 
 **Quantum-dot mode-locked lasers** (*QD-MLL*s) are the front-runner for a monolithic O-band comb. Mode locking in a single cavity produces evenly spaced lines at the cavity round-trip rate; quantum-dot gain adds low RIN, a near-zero linewidth-enhancement factor, and strong optical-feedback tolerance, the same properties that make quantum-dot lasers attractive for isolator-free co-packaging . Reported O-band demos carry 14$\times$100 Gb/s PAM4 over 10 km at $\sim$284 fJ/bit, and isolator-free variants target interconnect capacity beyond 3.2 Tb/s. These are research results, not qualified products, so treat the line counts and efficiencies as provisional.
 
-**Kerr microcombs** take the opposite route: pump one high-$Q$ microresonator and let four-wave mixing fill in many evenly spaced lines on a chip . The line count and the spacing uniformity are excellent, and a 2025 demonstration added a monolithic demultiplexer that autonomously locks to and tracks the comb lines. The catch is power. Pump-to-comb conversion efficiency is modest, so each line leaves the chip weak and usually needs a booster or per-line amplifier before it reaches the modulator bank (§6.6.2). Microcombs also need a clean pump laser and careful thermal control to hold the soliton state.
+**Kerr microcombs** take the opposite route: pump one high-$Q$ microresonator and let four-wave mixing fill in many evenly spaced lines on a chip . The line count and the spacing uniformity are excellent, and a 2025 demonstration added a monolithic demultiplexer that autonomously locks to and tracks the comb lines. The catch is power. Pump-to-comb conversion efficiency is modest, so each line leaves the chip weak and usually needs a booster or per-line amplifier before it reaches the modulator bank (soa-distribution). Microcombs also need a clean pump laser and careful thermal control to hold the soliton state.
 
 **Gain-switched and quantum-dash combs** sit between the two: a directly driven laser produces a flatter, lower-line-count comb with simple electronics. They have reached multi-terabit aggregate rates in the lab but see less datacom traction than QD-MLLs.
 
-For any of them the contract from the MSA does not change: the source must hold per-line power flatness, SMSR, RIN, and grid placement across temperature with every port active (§5.16). A comb that delivers 32 lines but drops 6 dB across the band, or whose edge lines miss the grid, buys nothing over an array of DFBs the PIC already knows how to drive.
+For any of them the contract from the MSA does not change: the source must hold per-line power flatness, SMSR, RIN, and grid placement across temperature with every port active (cwwdm-laser). A comb that delivers 32 lines but drops 6 dB across the band, or whose edge lines miss the grid, buys nothing over an array of DFBs the PIC already knows how to drive.
 
 ### Gain and power distribution across the bank
 
-Whatever generates the comb, the light still has to survive the trip to the modulators. One source feeds a multiplexer, a splitter tree, and per-line routing before it reaches a ring, and each stage takes its cut. When the source is a chip-scale comb with weak lines (§6.6.1), or when the fan-out is large, a *semiconductor optical amplifier* (SOA) restores the budget.
+Whatever generates the comb, the light still has to survive the trip to the modulators. One source feeds a multiplexer, a splitter tree, and per-line routing before it reaches a ring, and each stage takes its cut. When the source is a chip-scale comb with weak lines (comb-sources), or when the fan-out is large, a *semiconductor optical amplifier* (SOA) restores the budget.
 
-**Where the gain sits.** A booster SOA placed right after the comb lifts every line before the split, so one device pays for the whole fan-out. A per-line SOA after the demultiplexer instead corrects line-to-line imbalance, at the cost of one amplifier per wavelength. The receiver-side SOA preamplifier (Table 4.4) is a separate job: there the goal is sensitivity, here it is launch power.
+**Where the gain sits.** A booster SOA placed right after the comb lifts every line before the split, so one device pays for the whole fan-out. A per-line SOA after the demultiplexer instead corrects line-to-line imbalance, at the cost of one amplifier per wavelength. The receiver-side SOA preamplifier (Table rxtech) is a separate job: there the goal is sensitivity, here it is launch power.
 
 **The noise-figure cost.** An SOA adds amplified spontaneous emission (*ASE*), and its noise figure sets how much. The quantum floor is 3 dB; commercial O-band SOAs land near 6--7 dB with roughly 15 dB of gain and about 1.5 dB polarization-dependent gain . Every dB of noise figure eats into the signal-to-noise ratio the receiver eventually sees, so an SOA that rescues launch power can cost link margin if it runs deep into saturation or amplifies an already-noisy comb. Quantum-dot SOAs grown on silicon are attractive for the same reason QD lasers are: low noise, wide O-band gain, and CMOS-compatible integration.
 
-**Holding the bank flat.** Gain is not uniform across the comb span, and SOAs compress near saturation, so the line that starts strongest is not the line that ends strongest. Per-line power flatness is a system spec (§6.6), held with some mix of source-side pre-emphasis, gain-tilt control, and per-line trimming. The alternative to any distribution-side gain is a higher-power source, which is why array-of-DFB designs that already meet the launch budget often skip the SOA entirely.
+**Holding the bank flat.** Gain is not uniform across the comb span, and SOAs compress near saturation, so the line that starts strongest is not the line that ends strongest. Per-line power flatness is a system spec (cwwdm), held with some mix of source-side pre-emphasis, gain-tilt control, and per-line trimming. The alternative to any distribution-side gain is a higher-power source, which is why array-of-DFB designs that already meet the launch budget often skip the SOA entirely.
 
 ### Polarization on the CW distribution path
 
-IM/DD is forgiving about polarization where it counts most. The photodiode is a square-law detector, so the received state of polarization does not affect the recovered bits (§3.4). A standard single-mode drop to the receiver therefore needs no polarization control. The external-source and CW-WDM architectures move the sensitive part upstream, onto the path between the laser and the modulator.
+IM/DD is forgiving about polarization where it counts most. The photodiode is a square-law detector, so the received state of polarization does not affect the recovered bits (coherent-boundary). A standard single-mode drop to the receiver therefore needs no polarization control. The external-source and CW-WDM architectures move the sensitive part upstream, onto the path between the laser and the modulator.
 
-**Where it matters.** Three elements on the CW feed care about the launched state. A *TFLN* Mach--Zehnder drives the electro-optic effect through TE-polarized light on one crystal axis (§3.14.3); light on the wrong axis sees little modulation. Silicon grating couplers are polarization-selective by construction, so coupling loss swings with the input state, a *polarization-dependent loss* (PDL) that comes straight off the launch budget. And a booster or per-line SOA adds polarization-dependent gain (§6.6.2), so a drifting state becomes a drifting per-line power. None of these sit after the photodiode, so none show up in a receiver-side budget: they act on light that has not yet been modulated.
+**Where it matters.** Three elements on the CW feed care about the launched state. A *TFLN* Mach--Zehnder drives the electro-optic effect through TE-polarized light on one crystal axis (tfln-mzm); light on the wrong axis sees little modulation. Silicon grating couplers are polarization-selective by construction, so coupling loss swings with the input state, a *polarization-dependent loss* (PDL) that comes straight off the launch budget. And a booster or per-line SOA adds polarization-dependent gain (soa-distribution), so a drifting state becomes a drifting per-line power. None of these sit after the photodiode, so none show up in a receiver-side budget: they act on light that has not yet been modulated.
 
-**How it is held.** Keep the CW feed on *polarization-maintaining* (PM) fiber and PM connectors from the external laser (Chapter 5) to the modulator input, launched on the coupler's preferred axis. On-chip the light is already single-polarization once it is in a TE waveguide, so the discipline is really about the fiber run and the mate at the package. A co-packaged design with the laser on the same substrate shortens that run to millimeters and sidesteps most of the problem; an external-laser design pays for a PM path and its alignment tolerance instead.
+**How it is held.** Keep the CW feed on *polarization-maintaining* (PM) fiber and PM connectors from the external laser (Ch. lasers) to the modulator input, launched on the coupler's preferred axis. On-chip the light is already single-polarization once it is in a TE waveguide, so the discipline is really about the fiber run and the mate at the package. A co-packaged design with the laser on the same substrate shortens that run to millimeters and sidesteps most of the problem; an external-laser design pays for a PM path and its alignment tolerance instead.
 
 ## Lock validation playbook
 
-Instruments and BER methods live in Chapter 7. What is special to WDM is the order: you cannot trust a BER number on a ring bank until the comb is identified, the resonances are parked, and the lock loops hold under neighbor heat. The sequence below is the usual bring-up; skip a step and you will debug the wrong domain.
+Instruments and BER methods live in Ch. validation. What is special to WDM is the order: you cannot trust a BER number on a ring bank until the comb is identified, the resonances are parked, and the lock loops hold under neighbor heat. The sequence below is the usual bring-up; skip a step and you will debug the wrong domain.
 
 ##### Bring-up order.
 
-1.  **Grid ID:** confirm each CW line (or DFB) is on the assigned channel with an OSA / wavemeter (§5.16).
+1.  **Grid ID:** confirm each CW line (or DFB) is on the assigned channel with an OSA / wavemeter (cwwdm-laser).
 
 2.  **Coarse align:** park rings near resonance with open-loop heater sweeps; check through/drop monitors.
 
 3.  **Close lock:** enable the feedback loop; verify capture on every $\lambda$ at operating optical power.
 
-4.  **Stress neighbors / temperature:** max case $T$, neighbor heaters and traffic on (§6.5, §7.9). Confirm hold, not just capture.
+4.  **Stress neighbors / temperature:** max case $T$, neighbor heaters and traffic on (thermal-xtalk, prod-corners). Confirm hold, not just capture.
 
-5.  **Close the link:** BER / TDECQ / sensitivity on the weakest lane first (§7.4, §7.7).
+5.  **Close the link:** BER / TDECQ / sensitivity on the weakest lane first (tdecq, link-budget).
 
 **Exit when** every assigned $\lambda$ is grid-identified, captures at operating power, holds under neighbor heat and case $T$, and the weakest lane closes BER. **Decision unlocked:** proceed to loaded characterization, or stop and bisect laser versus ring before trusting any BER number.
 
@@ -223,11 +223,11 @@ If one $\lambda$ unlocks or walks, change one actuator at a time:
 
 - change ring heater with laser fixed: if the error follows the heater, the ring, monitor PD, or thermal crosstalk is wrong;
 
-- if both look fine but OMA is low, inspect MUX imbalance and connector/ORL (Table 6.2, §7.2.2).
+- if both look fine but OMA is low, inspect MUX imbalance and connector/ORL (Table mux-budget, optical-channel).
 
 ##### Fleet telltales.
 
-Slow BER creep with rising bias on one line is often laser wear-out (§8.4). Sudden unlock under neighbor load with healthy LIV is thermal crosstalk or lock firmware. One dark lane with neighbors up is COD, FAU, or a single ring/heater fail; classify with §7.12 before you open an 8D on the wrong supplier.
+Slow BER creep with rising bias on one line is often laser wear-out (wearout-modes). Sudden unlock under neighbor load with healthy LIV is thermal crosstalk or lock firmware. One dark lane with neighbors up is COD, FAU, or a single ring/heater fail; classify with fleet-triage before you open an 8D on the wrong supplier.
 
 > **What this usually means.** All lanes unlock after a temperature step
 >
@@ -252,7 +252,7 @@ ATP: lock range, unlock, crosstalk
 Fleet: unlock alarms, wavelength telemetry</code></pre>
 
 <table class="book-table"><tr><th>Implication</th><th>Strength</th></tr><tr><td>Some form of WDM is in use</td><td>Near-certain: locking only matters with WDM.</td></tr><tr><td>Dense (D)WDM rather than coarse CWDM</td><td>Likely: locking implies tight spacing.</td></tr><tr><td>Microring-based silicon photonics with external multi-wavelength (CW-WDM) sources, often trending toward co-packaged optics</td><td>Common in modern AI interconnects (e.g. Broadcom and NVIDIA Quantum-X programs), driven by fiber-count pressure at scale.</td></tr><tr><td>Discrete DFB/EML DWDM (no rings)</td><td>Also possible; locking alone does not prove rings.</td></tr></table>
-**Table 6.3.** What a wavelength-locking requirement implies.
+**Table ?.** What a wavelength-locking requirement implies.
 
 The solid conclusion is that **WDM is present and wavelength control is central**; whether the implementation is ring-based silicon photonics with external multi-wavelength sources or discrete DFB/EML DWDM depends on the specific system.
 
@@ -264,7 +264,7 @@ WDM buys fiber count back by stacking wavelengths, and the price is control: onc
 
 ### How it is measured
 
-Start with an OSA or wavemeter to identify every source line, then sweep each ring or filter while recording through-port, drop-port, heater current, monitor-PD signal, and lock error. Measure insertion loss and adjacent-channel leakage per lane. Close the loop and repeat BER, OMA, and TDECQ under case-temperature ramps, neighbor heater activity, source-power spread, and restart. Capture range and hold range are different acceptance tests; §6.7 gives the order, and the source measurements follow the CW-WDM MSA methods .
+Start with an OSA or wavemeter to identify every source line, then sweep each ring or filter while recording through-port, drop-port, heater current, monitor-PD signal, and lock error. Measure insertion loss and adjacent-channel leakage per lane. Close the loop and repeat BER, OMA, and TDECQ under case-temperature ramps, neighbor heater activity, source-power spread, and restart. Capture range and hold range are different acceptance tests; lock-validation gives the order, and the source measurements follow the CW-WDM MSA methods .
 
 ### How it fails
 
@@ -274,19 +274,19 @@ One degraded lane points toward its laser line, ring, filter channel, heater, mo
 
 Possible causes, roughly in order of how often each shows up in the field:
 
-- **Wavelength locker failure:** the etalon-based error signal drifts or the locker photodiodes degrade, so the loop steers the laser to the wrong setpoint even though the laser itself is healthy (§6.4).
+- **Wavelength locker failure:** the etalon-based error signal drifts or the locker photodiodes degrade, so the loop steers the laser to the wrong setpoint even though the laser itself is healthy (locking-techniques).
 
-- **Ring drift:** the microring's own resonance walks off the assigned $\lambda$ under local heating or process aging, independent of the laser (§3.14.3).
+- **Ring drift:** the microring's own resonance walks off the assigned $\lambda$ under local heating or process aging, independent of the laser (siring).
 
-- **AWG issues:** an arrayed-waveguide grating channel shifts passband center or picks up excess adjacent-channel crosstalk, clipping one lane at the filter edge while neighboring channels stay clean (§6.3, Table 6.2). Distinguish from a laser or ring fault by sweeping the source across the passband and watching for a grid-alignment signature rather than a lock-error signature.
+- **AWG issues:** an arrayed-waveguide grating channel shifts passband center or picks up excess adjacent-channel crosstalk, clipping one lane at the filter edge while neighboring channels stay clean (wdm-hardware, Table mux-budget). Distinguish from a laser or ring fault by sweeping the source across the passband and watching for a grid-alignment signature rather than a lock-error signature.
 
-- **Thermal crosstalk:** an adjacent heater's disturbance exceeds this lane's hold-range budget while its own actuators read nominal (§6.5).
+- **Thermal crosstalk:** an adjacent heater's disturbance exceeds this lane's hold-range budget while its own actuators read nominal (thermal-xtalk).
 
 ##### Intermittent failure.
 
 Failures that appear and clear on their own point to control-loop dynamics rather than a broken part:
 
-- **Lock acquisition issues:** the loop fails to capture reliably from a cold or power-cycled state, so failures correlate with restarts or ELS hot-swaps rather than with steady-state operation (§6.7).
+- **Lock acquisition issues:** the loop fails to capture reliably from a cold or power-cycled state, so failures correlate with restarts or ELS hot-swaps rather than with steady-state operation (lock-validation).
 
 - **Heater control instability:** the thermal feedback loop oscillates or overshoots, often triggered by a control-loop bandwidth that fights the data path or a gain that was tuned for a different neighbor-load condition. Shows up as a heater current that hunts rather than settles.
 
@@ -296,7 +296,7 @@ Failures that appear and clear on their own point to control-loop dynamics rathe
 
 ### How it is debugged
 
-First decide whether the fault affects one lane or all lanes. Apply the power-versus-quality fork, then ask which ledger moved: often spectral or control (§4.8, §5.19). Freeze heater and laser actuators long enough to measure the open-loop spectrum. Move the source while holding the ring fixed, then move the ring while holding the source fixed. If neither follows the failing BER, inspect MUX loss, polarization, connector ORL, and the electrical lane. For intermittent unlock, align lock-error, heater, temperature, supply, and neighbor-traffic traces on one time axis. A control loop cannot be debugged from final register values alone.
+First decide whether the fault affects one lane or all lanes. Apply the power-versus-quality fork, then ask which ledger moved: often spectral or control (debug-fork, laser-margin-erosion). Freeze heater and laser actuators long enough to measure the open-loop spectrum. Move the source while holding the ring fixed, then move the ring while holding the source fixed. If neither follows the failing BER, inspect MUX loss, polarization, connector ORL, and the electrical lane. For intermittent unlock, align lock-error, heater, temperature, supply, and neighbor-traffic traces on one time axis. A control loop cannot be debugged from final register values alone.
 
 \> \*\*Debug story\*\* \> \> \*\*Observed.\*\* One lane failed only after adjacent lanes began traffic. \> \> \*\*Investigation.\*\* The source line stayed on grid, while the suspect ring heater railed and lock error grew with neighbor temperature. \> \> \*\*Finding.\*\* The optical source and receiver passed; the resonance was being pushed out of hold range. \> \> \*\*Root cause.\*\* Thermal coupling from the adjacent heater exceeded the control-loop budget. \> \> \*\*Resolution.\*\* The heater map and feed-forward terms were corrected, and neighbor-load hold testing became an ATP corner.
 
@@ -304,7 +304,7 @@ First decide whether the fault affects one lane or all lanes. Apply the power-ve
 
 **Key idea.** Wavelength locking is a control-system problem wrapped around an optical link. Measure the grid, capture, hold, shared thermal paths, and per-lane margin. Then use one-lane versus all-lane behavior to split the source, ring bank, MUX, thermal controller, and common supplies.
 
-Junior mistake: blame every unlock on the laser, or debug lock from final register values without neighbor-load and time-aligned traces (§4.8, Chapter 7, Chapter 10).
+Junior mistake: blame every unlock on the laser, or debug lock from final register values without neighbor-load and time-aligned traces (debug-fork, Ch. validation, Ch. failure-modes).
 
 ##### Three questions to test yourself.
 
