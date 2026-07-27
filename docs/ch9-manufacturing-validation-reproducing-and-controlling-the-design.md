@@ -163,6 +163,23 @@ A golden unit is a station monitor, not a universal accuracy standard. It can ag
 
 Yield is not one number. It splits by stage and by failure mode, and each split points at a different owner. Report first-pass yield (no retest or product intervention) and final yield (including valid retest or approved rework), together with retest, rework, scrap, and invalid-test rates. A high final yield can hide a weak process if many units fail initially.
 
+### Separate first-pass performance from recovery
+
+Start with a fixed population: $N_{\mathrm{eligible}}$ units entering a defined manufacturing and test route during a stated interval. Define in advance what makes a test attempt valid. A station abort, fixture fault, software error, or handling interruption may be coded as an invalid test rather than a product failure, but its rate must still be reported. Otherwise the denominator and the first-attempt history can be cleaned after the result is known.
+
+**First-pass yield (FPY)** is the fraction that passes the complete route on its first valid attempt, without product adjustment, repeated measurement, or rework: $$Y_{\mathrm{FP}} =
+\frac{N_{\mathrm{first\mbox{-}pass}}}{N_{\mathrm{eligible}}}.$$ A **retest** repeats a measurement without changing the product. A later pass does not turn the original first-pass failure into a first-pass pass. Instead, it creates a retest recovery that may indicate a false reject, intermittency, poor contact, or inadequate test repeatability.
+
+**Rework** changes the unit or its configuration before it is tested again. Examples include cleaning a connector, replacing or resoldering a component, repeating an attach operation, or applying an approved calibration or tuning adjustment. Every rework route needs authorization, traceability, before-and-after data, and a defined final disposition.
+
+**Final yield** is the fraction of the original eligible population that is eventually accepted after valid retest and approved rework: $$Y_{\mathrm{final}} =
+\frac{N_{\mathrm{final\ accepted}}}{N_{\mathrm{eligible}}}.$$ Final yield is a disposition metric, not a substitute for FPY. Report it with the invalid-test rate, retest rate and recovery, rework type and recovery, scrap, and escapes. If units can follow more than one recovery route, preserve the route sequence rather than counting one unit in several recovery buckets.
+
+The **recovery gap** is $$\Delta Y_{\mathrm{recovery}} =
+Y_{\mathrm{final}}-Y_{\mathrm{FP}}.$$ For 99% final yield and 85% FPY, the gap is $$99\%-85\%=14\ \text{percentage points}.$$ This is a 14-point gap, not a 14% relative increase. In a population of 1,000 units, 850 pass first time and 990 are eventually accepted, so 140 units were recovered after an initial failure. Of the 150 initial first-pass failures, $140/150=93.3\%$ were recovered. That conditional recovery rate is a different metric from the 14-point gap. A large gap is a diagnostic signal: the line may depend on unstable testing, marginal product, excessive tuning, or a process that creates defects and then repairs them. Separate clean retest recovery from actual product rework before judging process health.
+
+**Distributions matter because yield reduces every result to pass or fail.** Two processes can have the same yield while carrying different risk. One may be centered and narrow; the other may be off-center, wide, multimodal, or building a weak tail just inside the acceptance limit. Plot the measured parameter values and their distance to the applicable limit, preserve build order, and stratify by lot, site, station, operator, and recovery state. These views reveal drift and future escape risk before the headline yield changes.
+
 Wafer / die yield
 
 : Process-limited: waveguide loss, ring resonance spread, heater shorts, photodiode dark current. Caught at wafer probe. Owner: foundry SPC.
@@ -231,6 +248,12 @@ $$\begin{equation}
 \end{equation}$$
 
 where $G_{\mathrm{L}}$ and $G_{\mathrm{U}}$ are independently justified; a one-sided requirement uses only the applicable side. The budget may include reference-method uncertainty, repeatability and reproducibility, station-to-station correlation, resolution, test-condition conversion, and qualification-supported drift between production test and the claimed use condition. State how contributors are combined, including correlation, and identify margin already embedded in the product requirement so it is not counted twice.
+
+##### Numerical example.
+
+Suppose a transmitter wavelength specification is $$1295~\mathrm{nm}\leq\lambda\leq1325~\mathrm{nm}.$$ Thus, $\mathrm{LSL}_{\mathrm{spec}}=1295~\mathrm{nm}$ and $\mathrm{USL}_{\mathrm{spec}}=1325~\mathrm{nm}$. If the approved margin budget reserves $G_{\mathrm{L}}=2~\mathrm{nm}$ at the lower side and $G_{\mathrm{U}}=3~\mathrm{nm}$ at the upper side, the production limits are $$\mathrm{LSL}_{\mathrm{ATP}}=1295+2=1297~\mathrm{nm},
+\qquad
+\mathrm{USL}_{\mathrm{ATP}}=1325-3=1322~\mathrm{nm}.$$ The ATP therefore accepts measured wavelengths from 1297 through 1322 nm, inclusive. A unit measured at 1310 nm passes both ATP and the product specification. A unit measured at 1296 nm is still inside the product specification, but it fails ATP because it does not demonstrate the reserved lower-side margin. Likewise, a unit measured at 1323 nm is inside the specification but fails the upper ATP limit. Neither ATP failure alone proves that the unit is outside the product specification; it shows that the released production acceptance condition was not met.
 
 Every guardband creates two risks. Too little margin increases false accepts and field escapes. Too much margin increases false rejects, retest, rework, scrap, and capacity cost. Choose the limits from the consequence and uncertainty budget, validate the resulting decisions with representative marginal units, and version the limits with the test software and product configuration. A limit change requires measurement-system review, escape-risk assessment, affected-population disposition, approval, and revalidation; a yield excursion alone is not technical justification.
 
@@ -472,7 +495,7 @@ A retest repeats a measurement without changing the product. Rework or tuning ch
 Pass/fail yield also discards distance-to-limit information. I examine raw parameter distributions, tails, multimodality, drift in build order, and stratification by lot, site, station, and rework state. Two lines can have the same yield while one is centered and narrow and the other is off-center, wide, or accumulating a weak tail just inside the ATP limit. The second line carries greater future yield and escape risk even before its reported yield changes" (§9.5).
 
 *Pressure follow-up.* "A line has 99% final yield and 85% first-pass yield. Is it healthy?"\
-*Answer pivot.* "Not without explaining the 14-point recovery gap. I would separate invalid tests, clean retests, and actual rework; examine the first-fail Pareto and parameter trajectories; and stratify the recovery by station, operator, material, and intervention. Until the recovery mechanism is understood and controlled, 99% final yield is not evidence of a healthy process."
+*Answer pivot.* "Not without explaining the 14-percentage-point recovery gap. I would separate invalid tests, clean retests, and actual rework; examine the first-fail Pareto and parameter trajectories; and stratify the recovery by station, operator, material, and intervention. Until the recovery mechanism is understood and controlled, 99% final yield is not evidence of a healthy process" (§9.5.1).
 
 *Pressure follow-up.* "A unit fails once and then passes three times without intervention. Is it a first-pass pass?"\
 *Answer pivot.* "No. Its first valid result remains a first-pass failure. The later results may support an invalid-test or intermittency investigation, but they do not rewrite the original history or improve first-pass yield."
