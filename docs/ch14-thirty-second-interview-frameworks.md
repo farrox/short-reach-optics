@@ -287,7 +287,7 @@ Mechanism-appropriate reliability
 Supplier ATP correlation
   |
 Module confirmation + split RMA</code></pre>
-**Key concepts.** Component and complete-product second sources have different access, interop burden, and owners (Appendix D.8, §9.2, Appendix D.16).
+**Key concepts.** Component and complete-product second sources have different access, interop burden, and owners (Appendix D.8, §9.9, Appendix D.16).
 
 **Measurements.** Wafer/lot distributions $\rightarrow$ process spread? $\rightarrow$ risk.\
 Module confirmation $\rightarrow$ integration OK? $\rightarrow$ continue.\
@@ -307,7 +307,7 @@ Supplier ATP vs your proxy $\rightarrow$ escape risk? $\rightarrow$ ship gate.
 
 **Thirty-second close.** I qualify at the component boundary with multi-lot distributions, then confirm in-module with FAIR, ATP correlation, and split RMA.
 
-**Deep dive.** Appendix A.10.5, §9.2.
+**Deep dive.** Appendix A.10.5, §9.9.
 
 ## Second module or cable source
 
@@ -354,7 +354,7 @@ Pilot cohort $\rightarrow$ assumptions hold? $\rightarrow$ open MP.
 
 **Thirty-second close.** I walk the product lifecycle on the customer-visible surface, then gate volume on FAIR, ATP correlation, pilot exit, and split RMA.
 
-**Deep dive.** Appendix A.10.5, §9.2.
+**Deep dive.** Appendix A.10.5, §9.9.
 
 ## Product-readiness plan for a new transceiver
 
@@ -807,13 +807,13 @@ Staff follow-ups often stop asking "what test?" and start asking "given constrai
 
 *Benefit:* supply resilience and pricing leverage.\
 *Downside:* validation, interop, and manufacturing differences.\
-*Criteria:* qualify on concentration risk and evidence, not ideology (§9.2, Appendix C.7).
+*Criteria:* qualify on concentration risk and evidence, not ideology (§9.9, Appendix C.7).
 
 ##### Would you increase ATP coverage?
 
 *Benefit:* escape detection earlier in the flow.\
 *Downside:* cycle time, cost, false rejects.\
-*Criteria:* cheapest control that reliably detects the named mechanism: 100%, sample, SPC, or supplier process (§9.5).
+*Criteria:* cheapest control that reliably detects the named mechanism: 100%, sample, SPC, or supplier process (§9.7).
 
 **Key idea.** Open the matching framework, deliver the thirty-second box, walk the tree, end on the decision and the control. When the interviewer asks a tradeoff question, name benefit, downside, and criteria. Philosophy is in Appendix A; this appendix is how you speak it under pressure.
 

@@ -582,7 +582,7 @@ Fleet telemetry + corrective action</code></pre>
 
 7.  **Product-readiness evidence.** Walk the lifecycle: bring-up, characterization, requirement verification and system validation, stress qualification, and manufacturing validation. Name the instrument and reference plane for every number. (Chapter 7, §7.3, §7.6)
 
-8.  **Yield and supplier readiness.** Multi-lot yield, SPC, ATP coverage, NPI gates, first-article, and 8D discipline. Prove the part can be built at volume before committing the fleet. (Chapter 9, §9.3, §9.2)
+8.  **Yield and supplier readiness.** Multi-lot yield, SPC, ATP coverage, NPI gates, first-article, and 8D discipline. Prove the part can be built at volume before committing the fleet. (Chapter 9, §9.5, §9.9)
 
 9.  **Fleet telemetry and corrective action.** Pilot, ramp, and fleet monitoring are operational readiness and sustaining evidence. CMIS monitors, FEC histograms, triage buckets, RMA codes, and the feedback loop from field to ATP. The system is not done until the fleet can detect, classify, and correct a failure without the design team. (§11.16, §10.17.6, §7.4.8)
 
@@ -724,13 +724,13 @@ Sparing and field service.
 
 : Hot spare nodes and lanes cover the interval between failure and repair. Field-replaceable external lasers (§5.14) make a dead laser a faceplate swap rather than a fabric outage, which is the architectural reason ELS decouples laser FIT from switch FIT. The connector mating-cycle and endface budget (Appendix F.5) sets how many of those swaps the plant survives.
 
-The cost of a failure closes the loop. A hard interruption is lost compute plus the time to detect, reroute or reschedule, and restart from the last checkpoint. Fast detection and reroute shrink that lost time, which is the fabric-level reason the module work pays off: derating (§5.13), qualification and production screens (Chapter 8, Chapter 9), and a tight ATP (§9.2) lower the failure rate, and a resilient fabric lowers the cost of each failure that slips through. The two multiply.
+The cost of a failure closes the loop. A hard interruption is lost compute plus the time to detect, reroute or reschedule, and restart from the last checkpoint. Fast detection and reroute shrink that lost time, which is the fabric-level reason the module work pays off: derating (§5.13), qualification and production screens (Chapter 8, Chapter 9), and a tight ATP (§9.9) lower the failure rate, and a resilient fabric lowers the cost of each failure that slips through. The two multiply.
 
 ## Interview takeaway
 
 **Key idea.** An AI fabric is judged by delivered workload time, not aggregate port rate. Connect collective traces to queue, route, FEC, optical, thermal, and service data. Choose pluggables, linear optics, or co-packaging by the measured system constraint and by how the fleet detects, contains, and repairs each failure.
 
-Junior mistake: rewrite the topology before scoping one weak rail, or ignore optics FA when collectives stall (§4.8, Chapter 11, Appendix D, Appendix H).
+Junior mistake: rewrite the topology before scoping one weak rail, or ignore optics FA when collectives stall (§4.8, Chapter 11, Appendix D, Appendix I).
 
 ### Interview Q&A: Networking and System Operation
 
@@ -850,7 +850,7 @@ Practice speaking these answers aloud. Prefer first-person operational reasoning
 
 *Tests:* evidence preservation, containment, event ordering, and recurrence control.
 
-*Spoken answer.* "I would preserve the pre-flap and post-flap telemetry before reseating or power cycling: FEC history, retrains, lane state, optical power, temperature, equalizer state, alarms, route changes, and workload impact. Then I would scope the population by module lot, host, port, peer, fiber path, firmware, site, and install age. Operationally, I may reroute, drain, or replace the affected link to protect the workload, but I preserve the original unit and path for controlled analysis. I then reproduce or isolate the mechanism and update the appropriate control: firmware, service procedure, connector inspection, ATP, supplier process, qualification, or telemetry" (§9.6, Chapter 11).
+*Spoken answer.* "I would preserve the pre-flap and post-flap telemetry before reseating or power cycling: FEC history, retrains, lane state, optical power, temperature, equalizer state, alarms, route changes, and workload impact. Then I would scope the population by module lot, host, port, peer, fiber path, firmware, site, and install age. Operationally, I may reroute, drain, or replace the affected link to protect the workload, but I preserve the original unit and path for controlled analysis. I then reproduce or isolate the mechanism and update the appropriate control: firmware, service procedure, connector inspection, ATP, supplier process, qualification, or telemetry" (§9.10, Chapter 11).
 
 *Pressure follow-up.* "The flap disappears after power cycling. What can you conclude?"\
 *Answer pivot.* "Only that state reset affected the symptom. It could be firmware, control, CDR, thermal state, an intermittent interface, or a marginal physical path. The reset may have erased the most valuable evidence."
@@ -872,7 +872,7 @@ Score each response using the shared chapter-interview rubric in Appendix A.12.1
 
 
 <div class="nav-links">
-  <a href="ch9-manufacturing-validation-and-production-readiness">&larr; Previous</a>
+  <a href="ch9-manufacturing-validation-reproducing-and-controlling-the-design">&larr; Previous</a>
   <a href="./">Table of Contents</a>
   <a href="ch11-failure-analysis-handbook">Next &rarr;</a>
 </div>

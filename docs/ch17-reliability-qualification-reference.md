@@ -156,11 +156,11 @@ Three practical consequences follow for an ELSFP or CPO fiber-attach program.
 
 2.  Mate-cycle count belongs in the same telemetry you already read for CMIS and DDM (Appendix E.7). Track it per connector rather than per module, since a connector can outlive several module swaps or the reverse.
 
-3.  Acceptance limits may include an explicit mating-cycle count and endface grade rather than an inherited generic MPO datasheet number (Table 9.3). An ELS bank that hot-swaps weekly reaches a 500-cycle floor in under ten years, and a CPO fiber array that is field-serviced more aggressively reaches it faster.
+3.  Acceptance limits may include an explicit mating-cycle count and endface grade rather than an inherited generic MPO datasheet number (Table G.2). An ELS bank that hot-swaps weekly reaches a 500-cycle floor in under ten years, and a CPO fiber array that is field-serviced more aggressively reaches it faster.
 
 ELSFP cycling adds connector wear and contamination that raise ORL (Appendix E.2, §5.14). The mating-cycle and endface-grade numbers above are what turn "the connector feels loose" into a measurable limit instead of a guess.
 
-Destructive physical analysis (cross-section, EDX) and structured 8D or CAPA with suppliers close the loop from RMA to design rule (§9.2, §11.16). Without that loop, packaging failures get mis-attributed to laser Arrhenius models and the wrong part gets redesigned.
+Destructive physical analysis (cross-section, EDX) and structured 8D or CAPA with suppliers close the loop from RMA to design rule (§9.9, §11.16). Without that loop, packaging failures get mis-attributed to laser Arrhenius models and the wrong part gets redesigned.
 
 ## Rapid Interview Checks
 
@@ -198,5 +198,5 @@ Why is stable average power insufficient after connector cycling?\
 <div class="nav-links">
   <a href="ch16-optical-measurement-and-test-reference">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch18-optical-systems-staff-engineer-interview-questions">Next &rarr;</a>
+  <a href="ch18-manufacturing-validation-reference">Next &rarr;</a>
 </div>

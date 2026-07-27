@@ -135,7 +135,7 @@ CMIS / host tools
 
 The host drives a module state machine toward ModuleReady before authorizing light. Data-path and network-path states in later CMIS revisions refine lane enable. A module forced into an emitting state that passes BER has not passed bring-up if the required management sequence, safe state, diagnostics, alarms, and recovery behavior are incorrect (§7.6).
 
-*DDM* provides per-lane Tx/Rx power, bias when exposed, temperature, rails, LOS/LOL, and alarms. On bring-up, dump the register map you will use in the field and treat disagreement between DDM and an external meter as a finding. ATP should prove ModuleReady across voltage and thermal corners and ECO-control firmware like other production revisions (§9.2).
+*DDM* provides per-lane Tx/Rx power, bias when exposed, temperature, rails, LOS/LOL, and alarms. On bring-up, dump the register map you will use in the field and treat disagreement between DDM and an external meter as a finding. ATP should prove ModuleReady across voltage and thermal corners and ECO-control firmware like other production revisions (§9.9).
 
 ## Rapid Interview Checks
 

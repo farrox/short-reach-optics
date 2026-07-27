@@ -497,7 +497,7 @@ Process drift, incoming material variation, fiber-array alignment, die-attach or
 
 ##### Corrective action and recurrence control.
 
-Restore the changed process or measurement input, add a statistical control at the first observable point, revise ATP only with correlation data, and require a new first-article check before releasing volume (§9.2). *Recurrence control:* SPC at the first separating observable; FAIR after change.
+Restore the changed process or measurement input, add a statistical control at the first observable point, revise ATP only with correlation data, and require a new first-article check before releasing volume (§9.9). *Recurrence control:* SPC at the first separating observable; FAIR after change.
 
 ## Aging, thermal response, and margin erosion
 
@@ -773,7 +773,7 @@ Reliability
 
 Manufacturability
 
-: a subpopulation fails early or never met the ATP; the issue tracks lot, date code, supplier site, or assembly step. Examples: FAU misalign yield cliff, solder void on a driver die attach, incoming DPPM spike, CMIS register map mismatch on one firmware rev. Fix is SPC, ATP tighten, first-article, DPA, and 8D/CAPA with the supplier (§9.2, §8.5.4).
+: a subpopulation fails early or never met the ATP; the issue tracks lot, date code, supplier site, or assembly step. Examples: FAU misalign yield cliff, solder void on a driver die attach, incoming DPPM spike, CMIS register map mismatch on one firmware rev. Fix is SPC, ATP tighten, first-article, DPA, and 8D/CAPA with the supplier (§9.9, §8.5.4).
 
 A single symptom can sit in more than one bucket until you bisect. The tree below forces the split with telemetry first, then a short bench confirm, then an RMA label. Use the symptom procedures earlier in this chapter for bench confirmation.
 
@@ -873,9 +873,23 @@ Scope before mechanism. Telemetry before destructive FA. Bucket before owner. Co
 
     - Reliability: replace (ELSFP hot-swap when available), update FIT burn-down, tighten burn-in or derate (§5.13).
 
-    - Manufacturability: quarantine lot, incoming hold, supplier 8D with DPA photos and ATP deltas (§9.2).
+    - Manufacturability: quarantine lot, incoming hold, then structured 8D/CAPA with DPA when the physical mechanism is not yet confirmed (§11.16.2, §9.9).
 
 6.  **Close the loop.** Feed the signature back into ATP and CMIS alarm thresholds so the next incident trips earlier.
+
+##### Excursions: 8D / CAPA and DPA.
+
+When a lot fails ATP or incoming, or field triage lands in the manufacturability bucket, run structured corrective action. Manufacturing validation owns the production consequence sequence (detect, contain, scope, ownership, earliest control, verify on fresh lots; §9.10). This section owns mechanism confirmation and the supplier corrective-action loop.
+
+1.  **Contain:** quarantine WIP and ship holds; identify suspect date codes in the fleet.
+
+2.  **Evidence pack:** failing ATP rows, CMIS dumps, LIV/SMSR/RIN plots, and DPA photos (facet, solder, FAU cross-section) compared to a golden unit.
+
+3.  **8D / CAPA**: confirmed mechanism with the supplier (process step, material lot, firmware), corrective action, and preventive control (ATP tighten, SPC limit, poka-yoke).
+
+4.  **Verify closure:** containment confirmed effective; mechanism reproduced or physically confirmed; corrective action removes the failure; no unacceptable regression introduced; production control detects recurrence; next lots remain stable; field cohort trend improves. Re-run FAIR alone is not enough for environmental, intermittent, or fleet-specific escapes (Appendix D.16, Appendix G.4).
+
+Do not close 8D on "operator error" without a control that would have caught it at ATP or in process. If FA shows laser wear-out on a young unit, it may be a reliability screen gap, not a supplier process bug; reclassify with the buckets above before you argue FIT. Production-control and supplier-gate context: Chapter 9, §9.9, Appendix G.
 
 ##### Worked paths (three common tickets).
 
@@ -909,7 +923,7 @@ NFF rate and lot Pareto are as important as FIT. A rising NFF with clean LIV poi
 
 **Key idea.** A useful failure analysis starts with a symptom and ends with a new control. Preserve the failing state, split shared from local behavior, clear the measurement system, and choose one measurement that can falsify the leading hypothesis. Return fleet and production evidence to the appropriate product-readiness step: requirement, architecture, characterization, system validation, reliability qualification, manufacturing validation, ATP, or fleet control. The corrective action is incomplete until production or fleet data show that the same signature no longer escapes.
 
-Junior mistake: reseat first, or close without a recurrence control (§11.16, Appendix B, Appendix C, Appendix H).
+Junior mistake: reseat first, or close without a recurrence control (§11.16, Appendix B, Appendix C, Appendix I).
 
 ### Interview Q&A: Failure Analysis
 
@@ -1007,7 +1021,7 @@ Practice speaking these answers aloud. Prefer first-person incident reasoning ov
 
 *Tests:* classification across manufacturing, qualification, and field aging.
 
-*Spoken answer.* "I would not classify it from those facts alone. The ninety-day clock and lot clustering raise both an early-life reliability mechanism and a process or material escape. I would compare installation-age distributions, first-pass ATP data, rework history, supplier genealogy, thermal exposure, host and site mix, and the physical failure signature. If evidence connects the mechanism to an uncontrolled process or a detectable condition that production controls missed, it is a manufacturing escape. If representative hardware passed production correctly but a life mechanism was inadequately covered, it is a qualification gap. It may also be both" (Chapter 9, Chapter 8, §9.6).
+*Spoken answer.* "I would not classify it from those facts alone. The ninety-day clock and lot clustering raise both an early-life reliability mechanism and a process or material escape. I would compare installation-age distributions, first-pass ATP data, rework history, supplier genealogy, thermal exposure, host and site mix, and the physical failure signature. If evidence connects the mechanism to an uncontrolled process or a detectable condition that production controls missed, it is a manufacturing escape. If representative hardware passed production correctly but a life mechanism was inadequately covered, it is a qualification gap. It may also be both" (Chapter 9, Chapter 8, §9.10).
 
 *Pressure follow-up.* "Should ATP be tightened immediately?"\
 *Answer pivot.* "I may add temporary containment, but a permanent ATP change requires a validated observable correlated to the mechanism. Some aging mechanisms are better controlled by design, supplier process, qualification, or sampled audit."

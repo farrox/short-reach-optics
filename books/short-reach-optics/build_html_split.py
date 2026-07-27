@@ -19,6 +19,9 @@ APPENDIX_TITLES = {
     "Engineering decision trees": ("C", "Engineering decision trees"),
     "Abbreviations and terminology": ("D", "Abbreviations and terminology"),
     "Abbreviations": ("D", "Abbreviations and terminology"),
+    # PDF letters E/F are measurement and reliability; keep those pages numeric
+    # in HTML (do not remap A–F). Manufacturing is PDF Appendix G.
+    "Manufacturing Validation Reference": ("G", "Manufacturing Validation Reference"),
 }
 
 

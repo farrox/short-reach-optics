@@ -1,0 +1,248 @@
+\chapter{Manufacturing Validation Reference}
+\label{app:manufacturing-reference}
+
+This appendix is a lookup reference for program-gate manufacturing evidence,
+laser-bearing production-control checklists, gauge and station templates, and
+supplier first-article packages. It does not build the manufacturing-validation
+argument. That narrative lives in \Cref{ch:manufacturing}: freeze the
+production reference, build representative populations, preserve genealogy,
+validate the measurement system, map yield, establish capability and
+guardbands, choose controls, run SPC and reaction plans, manage changes, and
+feed escapes back into controls.
+
+\textit{Read first:} which gate asks which manufacturing question; how control
+classes differ.
+
+\textit{Reference:} ATP checklist; FAIR and supplier evidence; Rapid Interview
+Checks.
+
+\section{Program-gate manufacturing evidence}
+\label{sec:mfg-npi-reference}
+
+Program-phase labels (EVT, DVT, PVT, MP) are owned in
+\Cref{sec:phase-labels,tab:phase-readiness-map}. They are not a second
+lifecycle. The table below is a manufacturing-evidence lookup: which release
+call the gate evidence supports when the program uses those names.
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:npi}%
+\centering
+\setlength{\tabcolsep}{4pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.25}%
+\begin{tabular}{@{}p{0.10\linewidth}p{0.22\linewidth}p{0.36\linewidth}p{0.26\linewidth}@{}}
+\toprule
+Gate & Question & Representative evidence & Release decision \\
+\midrule
+EVT & Does it operate at all? & First light; CMIS bring-up; basic LIV/SMSR/RIN; one link closes BER & Continue / redesign integration \\
+\addlinespace[1.25em]
+DVT & Does it meet spec across corners? & Full ATP at $T$/$V$; prod-rep corners; stress plan + FIT model frozen & Enter qual / PVT / hold \\
+\addlinespace[1.25em]
+Qual & Env / reliability evidence ready? & Named mechanisms; sample plan; confidence (\Cref{sec:tree-qual-evidence}) & Enter PVT / hold \\
+\addlinespace[1.25em]
+PVT & Is it buildable at yield? & Multi-lot first-pass yield; MSA; ATP coverage; process capability; traceability; supplier readiness; validated rework; FAIR; production-host bring-up & Enter pilot / hold \\
+\addlinespace[1.25em]
+Pilot & Do assumptions hold in a bounded field trial? & Known serials/lots; enhanced telemetry; exit/rollback criteria & Open MP / restrict \\
+\addlinespace[1.25em]
+MP & Is quality sustained? & Steady DPPM; owned RMA Pareto; ECO control; fleet feedback & Keep shipping / CAPA / restrict \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} NPI gates as a manufacturing
+evidence lookup. Pilot sits between PVT and MP. MP is sustained control, not
+fleet monitoring alone. Phase definitions:
+\Cref{sec:phase-labels}. Argument structure: \Cref{ch:manufacturing}.\par}
+\end{table*}
+\FloatBarrier
+
+\section{Laser-bearing production-control checklist}
+\label{sec:atp-laser-read}
+
+Every second of ATP costs line capacity. Every omitted screen leaves risk. Buy
+evidence in categories that cannot substitute for each other.
+\Cref{tab:atp-laser} is a working checklist for an EML pluggable or an ELSFP CW
+module. Customize limits from the datasheet and the link budget; do not invent
+numbers in the ATP itself. Control-selection logic lives in
+\Cref{sec:hvm-test,tab:mfg-control-types}.
+
+\paragraph{Every-unit fast screens.}
+Power class, CMIS state and bring-up, basic lane operation, and selected
+electrical or optical checks that are cheap enough for 100\% coverage. These
+catch dead units and firmware fails. They do not establish life.
+
+\paragraph{Sampled expensive measurements.}
+TDECQ, intrinsic and stressed RIN, detailed spectrum/SMSR, thermal corners, and
+longer BER dwell. Use lot sample or audit when the signature is expensive and
+correlated to escape risk.
+
+\paragraph{Qualification-only stresses.}
+HTOL, humidity, extensive cycling, and destructive analysis gather life or
+mechanism evidence. They are not per-unit ship screens
+(\Cref{sec:gr468,sec:tree-qual-evidence}).
+
+\paragraph{Process controls.}
+SPC on LIV, SMSR, RIN, TDECQ, and mate-cycle yield; golden-unit tracking; gauge
+R\&R; incoming quality; first-article / FAIR after tooling or site change
+(\Cref{sec:gauge-rr}).
+
+\paragraph{Fleet controls.}
+Telemetry, lot traceability, RMA codes split by mechanism, and recurrence
+monitoring (\Cref{sec:fleet-triage}). These catch what ATP never saw.
+
+A fast production power check does not establish life. HTOL does not prove every
+shipped unit has correct firmware. SPC does not detect an unmeasured mechanism.
+Source-level LIV, SMSR, and wavelength measurements can detect selected material
+or device shifts when those measurements are directly available and correlated
+to product risk. In a closed module, use a validated module-level proxy,
+supplier evidence, sampled audit, or genealogy-based control; do not claim
+internal measurement coverage when the production architecture does not expose
+it. RIN and ORL protect the reflection environment; EAM/DCA protects Tx quality
+on EML paths; CMIS protects field evidence. Burn-in may screen a demonstrated
+infant-mortality population. ESD robustness is primarily established through
+design qualification and handling controls; a finished-unit production screen
+may not reliably detect latent ESD damage. Thermal class protects the derate
+claim.
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:atp-laser}%
+\centering
+\setlength{\tabcolsep}{2.5pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{@{}p{0.18\linewidth}p{0.16\linewidth}p{0.14\linewidth}p{0.22\linewidth}p{0.22\linewidth}@{}}
+\toprule
+Item & Method & Control class & Pass intent & Ties to \\
+\midrule
+LIV ($I_\mathrm{th}$, slope, kink) & SMU + power meter & 100\% ATP (source) / module proxy & kink-free bias window & wear-out, derate \\
+\addlinespace[1.1em]
+SMSR & OSA & 100\% ATP (source) / lot sample & single-mode vs.\ floor & modal noise \\
+\addlinespace[1.1em]
+Intrinsic RIN & PD + ESA & Lot sample / FA & quiet source floor & BER floor budget \\
+\addlinespace[1.1em]
+Stressed $\mathrm{RIN}_x\mathrm{OMA}$ & PD + ESA @ ORL & Lot sample / 100\% if escape & stressed Tx metric & named PMD \\
+\addlinespace[1.1em]
+Wavelength / grid & OSA / wavemeter & 100\% ATP or sample & channel ID & WDM lock \\
+\addlinespace[1.1em]
+Optical power class & power meter & 100\% ATP & class met & link budget \\
+\addlinespace[1.1em]
+EAM / TDECQ (EML) & bias + DCA & Lot sample / audit & ER, RLM, TDECQ & Tx quality \\
+\addlinespace[1.1em]
+CMIS / TWI bring-up & host / CMIS tool & 100\% ATP & state machine & telemetry \\
+\addlinespace[1.1em]
+Connector / ORL & mate + ORL meter & Periodic audit / sample & cycles + endface & packaging \\
+\addlinespace[1.1em]
+Burn-in (infant) & production screen & 100\% or lot sample & infant culled & not HTOL life \\
+\addlinespace[1.1em]
+HTOL life evidence & accelerated life & Qualification only & mechanism + FIT claim & GR-468 \\
+\addlinespace[1.1em]
+Driver/TIA ESD & JESD47 report & Qualification / audit & rating on file & IC reliability \\
+\addlinespace[1.1em]
+Thermal class & chamber & Lot sample / SPC & LIV/RIN/CMIS pass & derate \\
+\addlinespace[1.1em]
+Process monitors & SPC charts & SPC / process & drift detection & escape prevention \\
+\addlinespace[1.1em]
+Fleet cohort metrics & telemetry & Fleet telemetry & trend / alarm & recurrence \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Control checklist for
+laser-bearing modules (EML or ELSFP). Control class separates 100\% ATP, lot
+sample, audit, qualification-only, SPC, and fleet telemetry. Intrinsic RIN and
+stressed $\mathrm{RIN}_x\mathrm{OMA}$ are different metrics.\par}
+\end{table*}
+\FloatBarrier
+
+\textbf{Exit for the ATP as a whole:} every ship lot (or defined sample) has
+traceable pass data against versioned limits tied to the requirements slice.
+\textbf{Decision:} ship, hold, or reopen DVT limits.
+
+\section{Gauge R\&R and station-correlation template}
+\label{sec:mfg-gauge-template}
+
+Use this checklist when teaching or auditing a production station. The chapter
+argument for why MSA precedes yield is in \Cref{sec:gauge-rr}.
+
+\begin{itemize}
+\item Define the metric, reference plane, and units under test (good, marginal,
+      failing).
+\item Repeatability: same station, operator, and unit; report within-station
+      spread.
+\item Reproducibility: across stations, shifts, operators, and fixtures.
+\item Bias: production station versus reference lab (DCA, BERT, OSA, power
+      meter).
+\item Stability: golden-unit trend over time; custody, recertification, and
+      retirement criteria for the golden.
+\item False reject / false accept: guardband from measurement uncertainty.
+\item Station correlation offset and spread; decision rule for when a station
+      is held.
+\item CMIS or embedded monitor correlation to the same bench instruments when
+      telemetry is used as a production proxy.
+\end{itemize}
+
+\section{FAIR and supplier evidence checklist}
+\label{sec:mfg-fair-checklist}
+
+When tooling, epi, assembly site, driver/TIA silicon, TEC vendor, FAU epoxy, or
+CMIS firmware changes, require a defined first-article package before open PO
+volume:
+
+\begin{itemize}
+\item Change notice: what changed, why, affected lots, and effective date.
+\item Pre- and post-change genealogy for representative units.
+\item Measurement-system status: gauge R\&R or station correlation still valid
+      for the affected ATP rows.
+\item Multi-lot first-pass yield and parameter distributions for the changed
+      population.
+\item Capability and guardband check on critical parameters.
+\item Qualification re-entry depth when life or environmental mechanisms are
+      affected (\Cref{ch:reliability,app:reliability-reference}).
+\item Incoming sample plan and SPC metrics with owners and reaction plans.
+\item ECO and firmware version control matching the production reference freeze
+      in \Cref{ch:manufacturing}.
+\end{itemize}
+
+\section{Sample control-plan mapping}
+\label{sec:mfg-control-plan-map}
+
+Requirements and the production control plan form the contract. Every
+requirement needs a named evidence source and owner, but that evidence may be
+ATP, a sampled audit, qualification, process control, supplier evidence, or
+fleet monitoring.
+
+\begin{enumerate}
+\item \textbf{Requirements / PRD slice for the laser path:} fill
+      \Cref{tab:laser-prd,sec:laser-reqs} (power class, grid, RIN@ORL, SMSR,
+      derating, CMIS, FIT). Version it with the production control plan.
+\item \textbf{Acceptance test plan (ATP):} the measurable tests that prove those
+      requirements on every ship lot (or on a defined sample) when every-unit or
+      sampled production test is the right control. Map each ATP line to a
+      requirement; map life claims to qualification where appropriate
+      (\Cref{sec:gr468,tab:atp-laser}).
+\end{enumerate}
+
+\heuristic{If a requirement has no evidence source, owner, or reaction plan, it
+is a wish. ATP is only one possible control. If an ATP line has no requirement,
+it is cost without a decision.}
+
+\section{Rapid Interview Checks}
+
+These are short prompts for self-test. Worked spoken answers live in
+\Cref{sec:manufacturing-interview-qa}.
+
+\paragraph{Prompt.} What must be frozen before a production-intent build?\\
+\textit{Check.} Hardware/BOM, suppliers, firmware, calibration, recipes,
+fixtures, test software, limits, and explicit deviations.
+
+\paragraph{Prompt.} Why clear the measurement system before yield?\\
+\textit{Check.} Otherwise station drift, golden aging, or bias masquerades as
+product or supplier failure (\Cref{sec:gauge-rr}).
+
+\paragraph{Prompt.} What proves an ATP screen detects defects?\\
+\textit{Check.} Naturally failing units or controlled fault injection across
+severity; detection probability and false rejects. Passing good units is not
+enough.
+
+\paragraph{Prompt.} When is a field fail a manufacturing escape?\\
+\textit{Check.} Only when evidence ties the mechanism to a preventable
+production or test-control gap. Otherwise wear-out, interop, install, service,
+software, or residual latent risk (\Cref{sec:escaped-defects,ch:failure-modes}).

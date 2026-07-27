@@ -136,7 +136,7 @@ Correlation analysis (which cohort?)
   |-- lot / date code / FW / cal / platform / location
   |
 Containment and corrective action</code></pre>
-Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (§11.16, §9.3).
+Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (§11.16, §9.5).
 
 > **Engineering heuristic.** Population behavior is usually more informative than one failing unit. A cohort plot often beats another hour on the same sample.
 
@@ -182,7 +182,7 @@ Qualification (named mechanisms)
 Production readiness (FAIR, ATP, SPC)
   |
 Fleet monitoring (RMA, telemetry)</code></pre>
-Customer view measures external behavior. Vendor view owns internals (Appendix A.8.7, §9.2).
+Customer view measures external behavior. Vendor view owns internals (Appendix A.8.7, §9.9).
 
 ## Supplier escape containment flow
 
@@ -205,7 +205,7 @@ Recurrence control
 Decision closure: owner / timeline / reversibility / follow-up</code></pre>
 > **Engineering heuristic.** Contain first when the population can grow. Perfect mechanism stories do not unship yesterday's lot.
 
-Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (§9.6, §11.16, Appendix D.16).
+Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (§9.10, §11.16, Appendix D.16).
 
 ## Margin-consumption flow
 
@@ -263,7 +263,7 @@ Update screening or ATP
 Verify next lot
   |
 Monitor fleet</code></pre>
-Containment, confirmed mechanism, and prevention are three different actions (§9.6).
+Containment, confirmed mechanism, and prevention are three different actions (§9.10).
 
 ## Production feedback loop
 
@@ -282,7 +282,7 @@ Failure analysis
 Updated limits or screens
   |
 Next production cycle</code></pre>
-Production validation is replayable and decision-oriented (§9.2, §9.5).
+Production validation is replayable and decision-oriented (§9.9, §9.7).
 
 ## Measurement-selection loop
 

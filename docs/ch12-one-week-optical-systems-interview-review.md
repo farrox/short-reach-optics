@@ -684,7 +684,7 @@ Playbook: Appendix C.5. Monitor-PD corruption is the silent drift mode: APC hold
 
 ### How would you qualify a second laser or photonic-integrated-circuit supplier?
 
-This question tests supplier judgment, not vendor names. Night-before playbook: Appendix C.6. The frame: the first supplier's failure distribution does not transfer. Qualify against the requirements slice, not against the incumbent's datasheet (Table 5.4, §9.2). Prefer customer-visible remaining margin; request engineering access only when black-box evidence is insufficient (Appendix D.11).
+This question tests supplier judgment, not vendor names. Night-before playbook: Appendix C.6. The frame: the first supplier's failure distribution does not transfer. Qualify against the requirements slice, not against the incumbent's datasheet (Table 5.4, §9.9). Prefer customer-visible remaining margin; request engineering access only when black-box evidence is insufficient (Appendix D.11).
 
 > **30-second answer (memorize).** See Appendix C.6 for the canonical 30-second answer (component / PIC path). For a finished module or cable second source, use Appendix C.7. Deliver that first; expand below only if asked.
 
@@ -886,7 +886,7 @@ Run a 45-minute mock interview. Pick six of the rehearsal questions at random. A
 
 ## Must-know abbreviations (drill list)
 
-Definitions live in Appendix I. Do not maintain a second glossary here. Drill the expansions cold, then say one measurement, stress, or decision each term unlocks.
+Definitions live in Appendix J. Do not maintain a second glossary here. Drill the expansions cold, then say one measurement, stress, or decision each term unlocks.
 
 ##### Optical / debug core.
 
@@ -1027,7 +1027,7 @@ Assume seven days, with the interview near the end of Day 7. Protect sleep. Eac
 
 ##### Day 5: Manufacturing.
 
-*Learn:* measurement systems, ATP, yield, SPC, and scale-up (Chapter 9, Appendix C.13, §9.5.3, Table 9.2).\
+*Learn:* measurement systems, ATP, yield, SPC, and scale-up (Chapter 9, Appendix C.13, §9.4, Table G.1).\
 *Output:* Discuss how you would take a link to volume production.
 
 ##### Day 6: Architecture and failure analysis.
@@ -1037,7 +1037,7 @@ Assume seven days, with the interview near the end of Day 7. Protect sleep. Eac
 
 ##### Day 7: Mock interviews.
 
-*Learn:* three cheat sheets below; Top 25 index (Appendix G); thirty-second callouts (Appendix C); whiteboard trees (Appendix D).\
+*Learn:* three cheat sheets below; Top 25 index (Appendix H); thirty-second callouts (Appendix C); whiteboard trees (Appendix D).\
 *Output:* Full mock. Light story review only. Stop two to three hours before the call. Sleep.
 
 ##### If you have less than seven days.

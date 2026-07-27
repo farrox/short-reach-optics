@@ -229,7 +229,7 @@ When a qualification test fails, preserve the stressed state, the baselines, the
 
 ##### From qualification to production and fleet evidence.
 
-Qualification bounds life risk for representative hardware under stated assumptions. Three things then happen in sequence. Production has to reproduce that population, which is a capability and control problem, not a repeat of the qualification (Chapter 9). The fleet accumulates the exposure no qualification can afford, so field data is the first real test of the mechanism model, with install age, temperature, firmware, supplier lot, and return code recorded so regimes do not get mixed. Failures that pass qualification and fail in the field usually sit in derating policy, connector contamination, or a manufacturing coverage gap (§5.13, §11.16, §9.6). Each of those sends a specific correction back into the qualification plan for the next product, which is how the argument improves rather than repeats.
+Qualification bounds life risk for representative hardware under stated assumptions. Three things then happen in sequence. Production has to reproduce that population, which is a capability and control problem, not a repeat of the qualification (Chapter 9). The fleet accumulates the exposure no qualification can afford, so field data is the first real test of the mechanism model, with install age, temperature, firmware, supplier lot, and return code recorded so regimes do not get mixed. Failures that pass qualification and fail in the field usually sit in derating policy, connector contamination, or a manufacturing coverage gap (§5.13, §11.16, §9.10). Each of those sends a specific correction back into the qualification plan for the next product, which is how the argument improves rather than repeats.
 
 ## Interview takeaway
 
@@ -417,5 +417,5 @@ Score each answer using the shared chapter-interview rubric in Appendix A.12.1; 
 <div class="nav-links">
   <a href="ch7-optical-product-readiness-from-requirements-to-fleet">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch9-manufacturing-validation-and-production-readiness">Next &rarr;</a>
+  <a href="ch9-manufacturing-validation-reproducing-and-controlling-the-design">Next &rarr;</a>
 </div>

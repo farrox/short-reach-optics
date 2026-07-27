@@ -58,7 +58,7 @@ Illustrative executive line (Case [13.5](#sec:case-fleet-ber) style): "About th
 
 ## Supplier conversation
 
-Structure supplier calls the same way you structure debug (§9.2, Appendix C.10, Appendix D.9):
+Structure supplier calls the same way you structure debug (§9.9, Appendix C.10, Appendix D.9):
 
 <pre class="dectree" aria-label="Supplier conversation framework"><code>Supplier conversation framework
   |
@@ -213,7 +213,7 @@ Problem: second-source equivalence claim. Impact: single-vendor risk reduction v
 
 ##### Deep dive.
 
-Appendix C.7, Appendix C.15, Appendix F.4, Table 7.3, §9.2.
+Appendix C.7, Appendix C.15, Appendix F.4, Table 7.3, §9.9.
 
 ## Case 3: Temperature-dependent BER failure
 

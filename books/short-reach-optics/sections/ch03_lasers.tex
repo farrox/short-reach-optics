@@ -280,8 +280,9 @@ power, control, assembly, and validation burden.
 
 Laser requirements only work when they are numbers a supplier can fail and a link
 budget can close. Start from the interconnect roadmap choice, then fill a short
-requirements slice; the ATP in \Cref{sec:supplier-exec} is how that slice is
-enforced on every lot.
+requirements slice; the ATP checklist in
+\Cref{tab:atp-laser,app:manufacturing-reference} is how that slice is enforced
+on every lot.
 
 \paragraph{Roadmap forks that set the laser.}
 Each architecture decision forces a different requirements set
@@ -946,7 +947,8 @@ command; default on plug-in is lasers off~\firstcite{elsfp}.\par}
 \end{table*}
 
 \paragraph{Qual hooks for suppliers.}
-Acceptance test plans should cover the checklist in \Cref{tab:atp-laser,sec:supplier-exec}:
+Acceptance test plans should cover the checklist in
+\Cref{tab:atp-laser,app:manufacturing-reference}:
 laser LIV/SMSR/RIN inside the module; optical power-class compliance; connector
 mating cycles and contamination/ORL; burn-in before ship; CMIS register sanity;
 and thermal class at rated case temperature. Module bring-up must also prove the

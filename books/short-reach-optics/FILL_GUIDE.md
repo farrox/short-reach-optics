@@ -99,7 +99,9 @@ Do one section per pass. Compile between sections so a break is easy to localize
 | Wear-out modes | `sec:wearout-modes` |
 | Photonic packaging failures | `sec:photonic-packaging` |
 | HVM production test (new) | `sec:hvm-test` |
-| Supplier execution playbook | `sec:supplier-exec` |
+| Supplier / second-source / change control (Ch9 §9.9) | `sec:supplier-exec` |
+| Manufacturing validation reference (NPI/ATP/FAIR) | `app:manufacturing-reference` |
+| 8D/CAPA/DPA procedure (Ch11) | `sec:mfg-8d-capa` |
 | Laser safety (new) | `sec:laser-safety` |
 | Coherent boundary (new) | `sec:coherent-boundary` |
 

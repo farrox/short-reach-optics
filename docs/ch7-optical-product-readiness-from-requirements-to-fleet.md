@@ -17,7 +17,7 @@ This chapter explains how an optical product progresses from requirements and ar
 
 **Key idea.** Product readiness and validation are not synonyms. Product readiness is the complete evidence-building process used to move an optical product from requirements and architectural assumptions through characterization, requirement verification, system validation, reliability qualification, manufacturing validation, controlled deployment, and fleet learning. System validation is one discipline within that lifecycle. It demonstrates that the complete product is suitable for its intended use with the supported hosts, peers, fiber plant, management behavior, environmental conditions, and operational workload. This chapter therefore uses *product-readiness lifecycle* for the complete 11-step flow and reserves *validation* for the narrower engineering claim.
 
-Companies may organize these activities under phase names such as EVT, DVT, or PVT, but those labels do not replace the technical definitions. Organizational team names are not used as engineering definitions in this book. Abbreviations are collected in Appendix I.
+Companies may organize these activities under phase names such as EVT, DVT, or PVT, but those labels do not replace the technical definitions. Organizational team names are not used as engineering definitions in this book. Abbreviations are collected in Appendix J.
 
 ## Why program-phase names are not enough
 
@@ -103,7 +103,7 @@ Organizational ownership varies. The technical question should remain stable eve
 *Fleet monitoring* compares deployed behavior with the release assumptions and identifies changes by lane, module, lot, site, firmware, topology, and installation age. Ask: is the deployed population behaving as predicted?
 
 <table class="book-table"><tr><th>Discipline</th><th>Primary question</th><th>Main output</th><th>What it does not replace</th></tr><tr><td>Characterization</td><td>How does the design behave and vary?</td><td>Behavioral model, distributions, sensitivities, failure boundaries</td><td>Requirement verification or release approval</td></tr><tr><td>Verification</td><td>Does measured evidence meet the frozen requirement?</td><td>Traceable requirement result with conditions and uncertainty</td><td>Intended-use evidence</td></tr><tr><td>System validation</td><td>Is the complete product suitable for its intended system use?</td><td>Supported operating and interoperability envelope</td><td>Lifetime qualification or factory capability</td></tr><tr><td>Reliability qualification</td><td>Will time and exposure cause unacceptable permanent degradation?</td><td>Mechanism-specific life and environmental confidence</td><td>Every-unit screening or manufacturing reproducibility</td></tr><tr><td>Manufacturing validation</td><td>Can the production system repeatedly build, measure, trace, and control the design?</td><td>Production capability, measurement confidence, control plan, ramp evidence</td><td>System validation or life qualification</td></tr><tr><td>Production acceptance testing</td><td>Should this unit or population proceed?</td><td>Pass, fail, hold, rework, or disposition record</td><td>Complete mechanism coverage or design qualification</td></tr><tr><td>Pilot deployment</td><td>Does a bounded production-representative population behave as predicted operationally?</td><td>Controlled field evidence and expansion decision</td><td>Uncontrolled mass deployment</td></tr><tr><td>Fleet monitoring</td><td>Does the deployed population match the release model?</td><td>Trends, cohorts, alerts, incident evidence, next-revision learning</td><td>Root-cause confirmation by itself</td></tr></table>
-**Table 7.2.** Evidence disciplines and the decisions they can honestly support. Abbreviations: Appendix I.
+**Table 7.2.** Evidence disciplines and the decisions they can honestly support. Abbreviations: Appendix J.
 
 The same measurement can contribute to more than one discipline. What changes is the question, population, condition, acceptance criterion, and decision. A temperature sweep may characterize reversible performance, verify a maximum-temperature requirement, support system validation in a loaded chassis, or provide pre- and post-stress measurements for qualification. The equipment does not determine the engineering category; the claim does.
 
@@ -111,7 +111,7 @@ The product-readiness lifecycle in §7.3 sequences these disciplines so expensiv
 
 ## The optical product-readiness lifecycle
 
-Program names such as NPI[^21] organize the same work without replacing the step definitions (Table 9.2, §7.1).
+Program names such as NPI[^21] organize the same work without replacing the step definitions (Table G.1, §7.1).
 
 ### Logical order does not require calendar serialization
 
@@ -266,7 +266,7 @@ A pilot is a bounded production-representative deployment with cohort identity, 
 
 ### Step 9: Ramp mass production
 
-Sustain volume under ATP, SPC, supplier, and change controls after pilot exit. Pilot luck is not proof of sustained control (Chapter 9, Table 9.2).
+Sustain volume under ATP, SPC, supplier, and change controls after pilot exit. Pilot luck is not proof of sustained control (Chapter 9, Table G.1).
 
 *Evidence and handoff:* Increase volume only while factory, supplier, and early-field indicators remain controlled.
 

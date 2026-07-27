@@ -122,14 +122,14 @@ Table 5.1 compares the system consequences. The device operation, bandwidth, in
 
 ## Laser requirements: from roadmap to specs
 
-Laser requirements only work when they are numbers a supplier can fail and a link budget can close. Start from the interconnect roadmap choice, then fill a short requirements slice; the ATP in §9.2 is how that slice is enforced on every lot.
+Laser requirements only work when they are numbers a supplier can fail and a link budget can close. Start from the interconnect roadmap choice, then fill a short requirements slice; the ATP checklist in Table G.2, Appendix G is how that slice is enforced on every lot.
 
 ##### Roadmap forks that set the laser.
 
 Each architecture decision forces a different requirements set (Table 5.3):
 
 <table class="book-table"><tr><th>Roadmap choice</th><th>Laser implication</th><th>Specs you must freeze early</th></tr><tr><td>Pluggable EML vs CW+Si/TFLN</td><td>Integrated EAM vs external CW + modulator</td><td>EAM bias/aging and TDECQ vs CW power class, RIN, and modulator V_ match</td></tr><tr><td>On-package laser vs ELSFP/CW-WDM</td><td>Field replace vs FIT inside the package</td><td>Connector/ORL/mate cycles and hot-swap CMIS vs COD/aging inside ASIC thermal</td></tr><tr><td>Isolator vs isolator-free (CPO)</td><td>Feedback tolerance vs quiet RIN only</td><td>Stressed RIN_xOMA at stated ORL; monitor PD / lock policy</td></tr><tr><td>Single- vs CW-WDM / comb</td><td>One line vs N lines into rings/filters</td><td>Per-line power flatness, SMSR, grid, crosstalk (sec:cwwdm-laser)</td></tr><tr><td>Retimed vs LPO</td><td>Module DSP hides Tx vs host sees raw eye</td><td>Laser+modulator TDECQ/RLM floor vs host COM budget (sec:com,sec:drivers)</td></tr><tr><td>Derate policy</td><td>Operating I, T, power below abs-max</td><td>Bias window, thermal class, FIT/E_a assumptions (sec:laser-aging)</td></tr></table>
-**Table 5.3.** Architecture forks and the laser specs each one forces. Freeze these before DVT samples are built (§9.2).
+**Table 5.3.** Architecture forks and the laser specs each one forces. Freeze these before DVT samples are built (§9.9).
 
 Each "Specs you must freeze early" cell is the exit criterion for that fork. **Exit when** every active fork has numbers (or explicit N/A) before DVT samples are built.
 
@@ -172,11 +172,11 @@ Work backward from the link, not forward from a marketing slide. The four steps 
 
 4.  From service model, choose ELSFP mate-cycle / hot-swap requirements or accept on-package life risk and write COD/aging controls accordingly (§5.14).
 
-Hand the filled slice to the supplier with the production-control checklist (Table 9.3, Chapter 9). If a roadmap slide cannot point to a row in Table 5.4, the requirement is not real yet.
+Hand the filled slice to the supplier with the production-control checklist (Table G.2, Chapter 9). If a roadmap slide cannot point to a row in Table 5.4, the requirement is not real yet.
 
 **Exit when** every cell in Table 5.4 is a program number or explicit N/A, with ORL stated wherever RIN appears and case-$T$ class stated wherever power or bias appears. **Decision unlocked:** negotiate evidence and production controls, or reopen the architecture fork that left a cell empty.
 
-**Key idea.** Laser leadership is a requirements sheet: architecture forks force specific specs (power, grid, RIN@ORL, SMSR, bias window, CMIS, life). Fill Table 5.4 from the link budget and fleet model, then assign each row an evidence source. ATP is only one possible control (Chapter 9, §9.2).
+**Key idea.** Laser leadership is a requirements sheet: architecture forks force specific specs (power, grid, RIN@ORL, SMSR, bias window, CMIS, life). Fill Table 5.4 from the link budget and fleet model, then assign each row an evidence source. ATP is only one possible control (Chapter 9, §9.9).
 
 ## LIV, SMSR, and RIN: the measurement playbook
 
@@ -338,7 +338,7 @@ HTOL (high-temperature operating life)
 
 Burn-in
 
-: An optional production screen for a demonstrated infant-mortality population. Burn-in trades test time for escape rate; it does not replace life qualification (§9.5, Chapter 9).
+: An optional production screen for a demonstrated infant-mortality population. Burn-in trades test time for escape rate; it does not replace life qualification (§9.7, Chapter 9).
 
 Environmental stress
 
@@ -422,7 +422,7 @@ extitDeep dive / pin map. Skip unless you are wiring the host connector. Twenty-
 
 ##### Qual hooks for suppliers.
 
-Acceptance test plans should cover the checklist in Table 9.3, §9.2: laser LIV/SMSR/RIN inside the module; optical power-class compliance; connector mating cycles and contamination/ORL; burn-in before ship; CMIS register sanity; and thermal class at rated case temperature. Module bring-up must also prove the CMIS enable sequence and ModuleReady laser policy (§7.6). Field returns split between laser wear-out and connector/fiber-attach faults; keep both in the triage tree (§11.16).
+Acceptance test plans should cover the checklist in Table G.2, Appendix G: laser LIV/SMSR/RIN inside the module; optical power-class compliance; connector mating cycles and contamination/ORL; burn-in before ship; CMIS register sanity; and thermal class at rated case temperature. Module bring-up must also prove the CMIS enable sequence and ModuleReady laser policy (§7.6). Field returns split between laser wear-out and connector/fiber-attach faults; keep both in the triage tree (§11.16).
 
 ## Optical safety and laser classes
 
@@ -681,7 +681,7 @@ Table 5.10 is the decision sequence for a laser program. Measurement methods fo
 
 ##### Manufacturing.
 
-**Purpose.** Can the ATP catch bad units and lot drift at useful test cost (Table 9.3)?
+**Purpose.** Can the ATP catch bad units and lot drift at useful test cost (Table G.2)?
 
 **Exit criteria.** **Exit when** limits, guardbands, GR&R, yield, and a reaction plan exist for the ship screens.
 
@@ -827,7 +827,7 @@ Practice speaking these answers aloud. Prefer first-person reasoning over defini
 
 *Tests:* equivalence, distributions, mechanisms, and production control.
 
-*Spoken answer.* "I would begin with the system requirements rather than asking the second source to copy the first supplier's nominal values. I would compare representative lots and sites across LIV distributions, wavelength and SMSR, quiet and stressed RIN, modulation behavior where applicable, thermal response, control headroom, aging evidence, package interaction, and closed-module performance. I would verify measurement correlation between supplier, engineering, and production stations and evaluate whether ATP or upstream controls detect the relevant variation. I also need supplier change control and genealogy. Meeting a datasheet does not establish identical tails, failure mechanisms, calibration behavior, or system margin" (Table 5.4, Chapter 9, §9.2).
+*Spoken answer.* "I would begin with the system requirements rather than asking the second source to copy the first supplier's nominal values. I would compare representative lots and sites across LIV distributions, wavelength and SMSR, quiet and stressed RIN, modulation behavior where applicable, thermal response, control headroom, aging evidence, package interaction, and closed-module performance. I would verify measurement correlation between supplier, engineering, and production stations and evaluate whether ATP or upstream controls detect the relevant variation. I also need supplier change control and genealogy. Meeting a datasheet does not establish identical tails, failure mechanisms, calibration behavior, or system margin" (Table 5.4, Chapter 9, §9.9).
 
 *Pressure follow-up.* "The replacement supplier meets every written laser specification. Is that sufficient?"\
 *Answer pivot.* "Only if the written requirements capture the system-relevant conditions and the supplier's distributions and package interactions remain inside the allocated margin. Nominal specification compliance alone is not an interoperability or life argument."

@@ -1193,12 +1193,44 @@ codes that make life models dishonest.
             design/spec defect.
       \item Reliability: replace (ELSFP hot-swap when available), update FIT burn-down,
             tighten burn-in or derate (\Cref{sec:laser-aging,sec:fit-example}).
-      \item Manufacturability: quarantine lot, incoming hold, supplier 8D with DPA
-            photos and ATP deltas (\Cref{sec:supplier-exec}).
+      \item Manufacturability: quarantine lot, incoming hold, then structured
+            8D/CAPA with DPA when the physical mechanism is not yet confirmed
+            (\Cref{sec:mfg-8d-capa,sec:supplier-exec}).
       \end{itemize}
 \item \textbf{Close the loop.} Feed the signature back into ATP and CMIS alarm
       thresholds so the next incident trips earlier.
 \end{enumerate}
+
+\paragraph{Excursions: 8D / CAPA and DPA.}
+\label{sec:mfg-8d-capa}
+When a lot fails ATP or incoming, or field triage lands in the manufacturability
+bucket, run structured corrective action. Manufacturing validation owns the
+production consequence sequence (detect, contain, scope, ownership, earliest
+control, verify on fresh lots; \Cref{sec:escaped-defects}). This section owns
+mechanism confirmation and the supplier corrective-action loop.
+
+\begin{enumerate}
+\item \textbf{Contain:} quarantine WIP and ship holds; identify suspect date codes
+      in the fleet.
+\item \textbf{Evidence pack:} failing ATP rows, CMIS dumps, LIV/SMSR/RIN plots, and
+      DPA\firstterm{DPA} photos (facet, solder, FAU cross-section) compared to a
+      golden unit.
+\item \textbf{8D / CAPA}\firstterm{eightD}: confirmed mechanism with the supplier
+      (process step, material lot, firmware), corrective action, and preventive
+      control (ATP tighten, SPC limit, poka-yoke).
+\item \textbf{Verify closure:} containment confirmed effective; mechanism
+      reproduced or physically confirmed; corrective action removes the failure;
+      no unacceptable regression introduced; production control detects
+      recurrence; next lots remain stable; field cohort trend improves. Re-run
+      FAIR alone is not enough for environmental, intermittent, or fleet-specific
+      escapes (\Cref{sec:tree-evidence-block,sec:mfg-fair-checklist}).
+\end{enumerate}
+
+Do not close 8D on ``operator error'' without a control that would have caught
+it at ATP or in process. If FA shows laser wear-out on a young unit, it may be a
+reliability screen gap, not a supplier process bug; reclassify with the buckets
+above before you argue FIT. Production-control and supplier-gate context:
+\Cref{ch:manufacturing,sec:supplier-exec,app:manufacturing-reference}.
 
 \paragraph{Worked paths (three common tickets).}
 

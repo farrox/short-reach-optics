@@ -228,6 +228,22 @@ No new frameworks. Structural relocation of existing material is allowed.
   Class~I/~II temperature, and acceptance-current detail live in Appendix~F
   (`sec:latch-up`). A component pass does not claim module hot-plug or
   sequencing immunity. PDF about 445 pages.
+- **Ch9 lean spine and manufacturing appendix:** Retitled Chapter~9 to
+  Manufacturing Validation: Reproducing and Controlling the Design. Reordered
+  around freeze $\rightarrow$ builds/genealogy $\rightarrow$ MSA
+  (`sec:gauge-rr`) $\rightarrow$ yield $\rightarrow$ capability $\rightarrow$
+  controls (`sec:hvm-test`, `tab:mfg-control-types`) $\rightarrow$ SPC/ramp
+  $\rightarrow$ supplier/change (`sec:supplier-exec`) $\rightarrow$ escapes
+  $\rightarrow$ case study. Relocated NPI table (`tab:npi`), laser ATP checklist
+  (`tab:atp-laser`, `sec:atp-laser-read`), FAIR/gauge/control-plan templates, and
+  Rapid Interview Checks to new Appendix~G Manufacturing Validation Reference
+  (`app:manufacturing-reference`). Phase-label ownership stays in Chapter~7;
+  detailed 8D/CAPA/DPA procedure moved to Chapter~11 (`sec:mfg-8d-capa`). Removed
+  the Engineering lens. Kept the worked yield case and all 12 Interview Q\&As.
+  Body cut from $\sim$794 to $\sim$509 lines; PDF Chapter~9 about 24$\rightarrow$16
+  pages. HTML title mapping adds Appendix~G only (A--D lettered titles unchanged);
+  old Ch9 slug redirects; references page at `ch22-references` with stubs at
+  `ch19`--`ch21-references`. PDF about 447 pages.
 
 ## Typographical fixes
 

@@ -335,7 +335,7 @@ Layer 4: Subsystem
 
 Layer 5: Confirmed mechanism
 
-: Leading hypothesis until evidence confirms; then FA or 8D (§9.2).
+: Leading hypothesis until evidence confirms; then FA or 8D (§9.9).
 
 Do not skip layers. A mechanism story without a confirmed system symptom and a localized subsystem is a story, not a close.
 

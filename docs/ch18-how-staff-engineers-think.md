@@ -5,8 +5,8 @@ title: "Moved: How Staff Engineers Think"
 
 # Moved
 
-This appendix is now:
+How Staff Engineers Think is now:
 
-- [**19.** How Staff Engineers Think](ch19-how-staff-engineers-think)
+- [**Chapter 20.** How Staff Engineers Think](ch20-how-staff-engineers-think)
 
 Return to the [table of contents](index).
