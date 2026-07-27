@@ -1677,8 +1677,76 @@ A \approx \frac{\mathrm{MTBF}}{\mathrm{MTBF}+\mathrm{MTTR}}
 AI-fabric availability also depends on correlated failures, routing, detection
 and failover latency, repair access, spares, service policy, checkpoint or job
 restart cost, and workload-level impact. Independent component FIT addition is
-not a complete system-availability model
-(\Cref{sec:fabric-availability,sec:fit-dppm}).
+not a complete system-availability model (\Cref{sec:fit-dppm}). The rest of
+this section works that gap in detail.
+
+\subsection{From component FIT to fabric availability}
+\label{sec:fabric-availability}
+
+The FIT arithmetic in \Cref{sec:fit-example} gives a rate: about $0.6$ laser
+failures per day for a fleet of $5\times10^5$ lasers at 50~FIT. That number
+sizes the RMA pipeline and the ELS spares bin (\Cref{sec:elsfp}), but it does
+not say what a failure costs or how a running job survives one. Two facts turn
+a per-component rate into a fabric problem.
+
+First, a training or large inference job is synchronous. A collective
+(\Cref{sec:collectives}) waits for its slowest member, so a single dead or slow
+link stalls the whole group, not just one endpoint
+(\Cref{sec:inference-bottlenecks}). A link that flaps for a second is a stall
+for every accelerator in that collective. The optical FIT that
+\Cref{ch:reliability} budgets therefore matters out of proportion to its share
+of the parts count.
+
+Second, at cluster scale failures are continuous, not rare. Meta's published
+Llama~3 run is the clearest public data point: 16{,}384 H100 GPUs over 54 days
+logged 466 interruptions (419 unexpected), roughly one every three hours, while
+holding about 90\% effective training time~\firstcite{metallama3}. GPU and HBM3
+faults dominated at close to half; network switch and cable faults were 35
+events, 8.4\% of the total. The optical link is a minority of hard job stops,
+but 8.4\% of a failure every three hours is still tens of network events per
+run, and the ELS, module, and connector FIT budgeted in
+\Cref{sec:fit-dppm,sec:connector-reliability} lands in exactly that bucket.
+
+So the design question shifts. It is no longer ``how reliable is one link'' but
+``how does a fabric of $10^5$ links keep a job running through a failure every
+few hours.'' The answers are architectural, and the optical engineer feeds each
+one.
+
+\begin{description}
+\item[Redundancy and rails.] Rail-optimized topologies (\Cref{sec:topologies})
+      already give parallel planes; dual-plane and dual-ToR designs let a lost link
+      degrade bandwidth instead of dropping an endpoint. Redundancy multiplies the
+      link and laser count, which feeds straight back into the FIT budget: more
+      resilience is more parts that can fail.
+\item[Detection and reroute.] Transient faults stay below the job. KP4 FEC
+      (\Cref{sec:kp4}) absorbs the error bursts a marginal link throws; link-level
+      retry and sub-second link-flap detection plus adaptive routing steer traffic
+      off a degraded link before the scheduler notices. Vendor fabrics (NVIDIA
+      Spectrum-X and Quantum, Broadcom Tomahawk) advertise adaptive or ``cognitive''
+      routing and link-level retry for this. Treat the specifics as vendor
+      orientation, but the mechanism is why transient optical faults rarely reach
+      the hard-stop bucket above.
+\item[Topology reconfiguration.] When a link or rack dies for good, an optical
+      circuit switch re-wires the topology around it in milliseconds, so the
+      scheduler routes around the dead node instead of stalling the pod
+      (\Cref{sec:ocs})~\citep{tpuv4ocs}. Component FIT still applies; the fabric
+      survives each failure by re-wiring optically.
+\item[Sparing and field service.] Hot spare nodes and lanes cover the interval
+      between failure and repair. Field-replaceable external lasers (\Cref{sec:elsfp})
+      make a dead laser a faceplate swap rather than a fabric outage, which is the
+      architectural reason ELS decouples laser FIT from switch FIT. The connector
+      mating-cycle and endface budget (\Cref{sec:connector-reliability}) sets how
+      many of those swaps the plant survives.
+\end{description}
+
+The cost of a failure closes the loop. A hard interruption is lost compute plus
+the time to detect, reroute or reschedule, and restart from the last
+checkpoint. Fast detection and reroute shrink that lost time, which is the
+fabric-level reason the module work pays off: derating
+(\Cref{sec:laser-aging}), qualification and production screens
+(\Cref{ch:reliability,ch:manufacturing}), and a tight ATP
+(\Cref{sec:supplier-exec}) lower the failure rate, and a resilient fabric
+lowers the cost of each failure that slips through. The two multiply.
 
 \section{Interview takeaway}
 \label{sec:networking-design-review}

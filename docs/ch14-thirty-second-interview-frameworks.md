@@ -698,7 +698,7 @@ Actuator near rail $\rightarrow$ control margin? $\rightarrow$ thermal design.
 
 **First thing I would check.** Freeze the requirements slice and named mechanisms before listing stresses.
 
-> **30-second answer (memorize).** I qualify from requirements to mechanisms, not from a ritual list. What does the system require? What can fail? How do we accelerate those mechanisms? What observable changes? What defines pass/fail? How much evidence is enough? How does production control maintain quality? Therefore I would gate ship on remaining margin after named stresses with a stated sample strategy and confidence, plus a production proxy (Appendix D.3, §8.3).
+> **30-second answer (memorize).** I qualify from requirements to mechanisms, not from a ritual list. What does the system require? What can fail? How do we accelerate those mechanisms? What observable changes? What defines pass/fail? How much evidence is enough? How does production control maintain quality? Therefore I would gate ship on remaining margin after named stresses with a stated sample strategy and confidence, plus a production proxy (Appendix D.3, Appendix F.4).
 
 <pre class="dectree" aria-label="Qualification interview framework"><code>Qualification interview framework
   |
@@ -735,7 +735,7 @@ ATP correlation $\rightarrow$ factory control? $\rightarrow$ volume.
 
 **Thirty-second close.** I budget which stresses spend which ledgers, run HTOL only with a named mechanism, and gate ship on remaining margin.
 
-**Deep dive.** Appendix A.8.5, §8.3, §5.13.
+**Deep dive.** Appendix A.8.5, Appendix F.1.1, §5.13.
 
 ## Unknown failure
 
@@ -801,7 +801,7 @@ Staff follow-ups often stop asking "what test?" and start asking "given constrai
 
 *Benefit:* confidence and fewer late escapes.\
 *Downside:* schedule, cost, delayed learning.\
-*Criteria:* prioritize by risk $\times$ uncertainty $\times$ impact; stop when remaining risk has a production control (§8.3).
+*Criteria:* prioritize by risk $\times$ uncertainty $\times$ impact; stop when remaining risk has a production control (§8.4).
 
 ##### Would you add a second supplier?
 

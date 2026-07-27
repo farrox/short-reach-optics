@@ -769,13 +769,17 @@ Performance
 
 Reliability
 
-: the unit met spec at ship and later degraded. Examples: LIV threshold rise, SMSR collapse, EAM bias creep, COD, TEC wear, epoxy creep on fiber attach. Fix is Arrhenius-backed life projection, burn-in/screen, derating, or field-replaceable lasers (§8.5, §5.13, §8.3, §5.14).
+: the unit met spec at ship and later degraded. Examples: LIV threshold rise, SMSR collapse, EAM bias creep, COD, TEC wear, epoxy creep on fiber attach. Fix is Arrhenius-backed life projection, burn-in/screen, derating, or field-replaceable lasers (§8.5, §5.13, Appendix F.1.1, §5.14).
 
 Manufacturability
 
-: a subpopulation fails early or never met the ATP; the issue tracks lot, date code, supplier site, or assembly step. Examples: FAU misalign yield cliff, solder void on a driver die attach, incoming DPPM spike, CMIS register map mismatch on one firmware rev. Fix is SPC, ATP tighten, first-article, DPA, and 8D/CAPA with the supplier (§9.2, §8.7).
+: a subpopulation fails early or never met the ATP; the issue tracks lot, date code, supplier site, or assembly step. Examples: FAU misalign yield cliff, solder void on a driver die attach, incoming DPPM spike, CMIS register map mismatch on one firmware rev. Fix is SPC, ATP tighten, first-article, DPA, and 8D/CAPA with the supplier (§9.2, §8.5.4).
 
 A single symptom can sit in more than one bucket until you bisect. The tree below forces the split with telemetry first, then a short bench confirm, then an RMA label. Use the symptom procedures earlier in this chapter for bench confirmation.
+
+##### Field classification is not qualification planning.
+
+The discriminations in this section belong here: COD versus ESD damage on a dark unit, date-code and lot clusters that point at a manufacturing escape, a clean facet cross-section that leaves a connector unexplained until ORL is measured, and the rule that later evidence does not silently rewrite an earlier bucket. All of it starts from a failure that already happened and ends with an owner. Qualification works the other direction: it starts from a claim and asks which mechanisms could violate it before any unit fails. Those mechanism families, and the exposure and acceptance each one needs, are in §8.5, Table 8.2. Do not plan a qualification from triage buckets, and do not close a field ticket with a qualification table.
 
 ##### Telemetry you actually read.
 
@@ -879,7 +883,7 @@ Scope before mechanism. Telemetry before destructive FA. Bucket before owner. Co
 
 *"Random burst errors, average power fine."* Check FEC histogram for clustered errors and CMIS for Rx power dropouts. Clean and measure ORL. If RIN rises with ORL, treat feedback/ORL as the leading performance hypothesis until confirmed. If ORL is fine and bursts track a date code, treat intermittent fiber attach as the leading manufacturing hypothesis. If bursts grow over months at fixed ORL, suspect laser or driver aging (§5.8, §5.13).
 
-*"ELSFP replace fixed it; returned module looks alive on the bench."* Alive LIV with high ORL sensitivity or a dirty MT face supports connector/ORL over laser wear-out; confirm with IL/ORL and recurrence. Dead or kinked LIV supports a reliability path. Split those RMA codes or FIT math blames the wrong mode (§5.14, §8.7).
+*"ELSFP replace fixed it; returned module looks alive on the bench."* Alive LIV with high ORL sensitivity or a dirty MT face supports connector/ORL over laser wear-out; confirm with IL/ORL and recurrence. Dead or kinked LIV supports a reliability path. Split those RMA codes or FIT math blames the wrong mode (§5.14, §8.5.4).
 
 ##### RMA labels that keep FIT honest.
 
@@ -905,7 +909,7 @@ NFF rate and lot Pareto are as important as FIT. A rising NFF with clean LIV poi
 
 **Key idea.** A useful failure analysis starts with a symptom and ends with a new control. Preserve the failing state, split shared from local behavior, clear the measurement system, and choose one measurement that can falsify the leading hypothesis. Return fleet and production evidence to the appropriate product-readiness step: requirement, architecture, characterization, system validation, reliability qualification, manufacturing validation, ATP, or fleet control. The corrective action is incomplete until production or fleet data show that the same signature no longer escapes.
 
-Junior mistake: reseat first, or close without a recurrence control (§11.16, Appendix B, Appendix C, Appendix G).
+Junior mistake: reseat first, or close without a recurrence control (§11.16, Appendix B, Appendix C, Appendix H).
 
 ### Interview Q&A: Failure Analysis
 

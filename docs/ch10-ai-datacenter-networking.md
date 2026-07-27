@@ -98,7 +98,7 @@ Inside the node, the load-store fabric is PCI Express and *CXL*. PCI-SIG release
 
 ##### Management and telemetry.
 
-Module management is OIF CMIS (Appendix E.7), but the box and fleet layers above it are not OIF. *DMTF Redfish* is the RESTful standard for server and switch management and telemetry; *OpenConfig* defines vendor-neutral data models and streaming telemetry (gNMI) for network devices; and *SONiC* is the open network operating system many hyperscalers run, with its own dataplane telemetry hooks . These are where per-module CMIS monitors surface as fleet signals: optical power, case temperature, FEC symbol-error counts, and pre-FEC BER aggregated across $10^5$ links (Chapter 8, §8.8). A module program that ships without a telemetry contract into one of these systems is effectively invisible at fleet scale.
+Module management is OIF CMIS (Appendix E.7), but the box and fleet layers above it are not OIF. *DMTF Redfish* is the RESTful standard for server and switch management and telemetry; *OpenConfig* defines vendor-neutral data models and streaming telemetry (gNMI) for network devices; and *SONiC* is the open network operating system many hyperscalers run, with its own dataplane telemetry hooks . These are where per-module CMIS monitors surface as fleet signals: optical power, case temperature, FEC symbol-error counts, and pre-FEC BER aggregated across $10^5$ links (Chapter 8, §10.17.6). A module program that ships without a telemetry contract into one of these systems is effectively invisible at fleet scale.
 
 The frontier is optics entering the scale-up domain (optical NVLink-class links, co-packaged switches), because copper reach at 200G/lane is only about a meter.
 
@@ -277,7 +277,7 @@ Past that wall the conversion to light pays for itself. When the reach exceeds w
 
 ### Reshaping, retiming, and where the DSP lives
 
-To survive that lossy channel the signal is conditioned at several points (§3.6), and it helps to keep two device classes distinct.[^23]
+To survive that lossy channel the signal is conditioned at several points (§3.6), and it helps to keep two device classes distinct.[^36]
 
 Redriver
 
@@ -441,7 +441,7 @@ By 2025--26, co-packaged optics crossed from demonstrations into shipping produc
 
 ### Broadcom Tomahawk and CPO
 
-Broadcom entered CPO earlier than most switch vendors and treated it as a product line, not a one-off demo. The current flagship is *Tomahawk 6*, a 102.4 Tb/s single-chip Ethernet switch (shipping 2025) offered with either copper or co-packaged optics, on 100G/200G SerDes.[^24] The CPO variant, *TH6-Davisson*, began shipping in October 2025 as Broadcom's *third-generation* CPO switch. The public numbers sketch the architecture:
+Broadcom entered CPO earlier than most switch vendors and treated it as a product line, not a one-off demo. The current flagship is *Tomahawk 6*, a 102.4 Tb/s single-chip Ethernet switch (shipping 2025) offered with either copper or co-packaged optics, on 100G/200G SerDes.[^37] The CPO variant, *TH6-Davisson*, began shipping in October 2025 as Broadcom's *third-generation* CPO switch. The public numbers sketch the architecture:
 
 - 102.4 Tb/s optically enabled, built from sixteen 6.4 Tb/s "Davisson DR" optical engines at 200 Gb/s per channel.
 
@@ -491,7 +491,7 @@ Arista, with Coherent, Marvell, Lightmatter, and a broad partner list, launched 
 <table class="book-table"><tr><th>Attribute</th><th>Retimed / LPO pluggable</th><th>XPO</th><th>CPO</th></tr><tr><td>Capacity</td><td>0.8--1.6 Tb/s/module</td><td>12.8 Tb/s/module</td><td>100+ Tb/s on-package</td></tr><tr><td>Density</td><td>baseline</td><td>4 (204.8 Tb/s per RU)</td><td>highest</td></tr><tr><td>Power path</td><td>full electrical run to faceplate</td><td>short run to dense faceplate</td><td>shortest (on substrate)</td></tr><tr><td>Cooling</td><td>air (or LPO savings)</td><td>integrated cold plate, 400 W+</td><td>switch-package liquid cooling</td></tr><tr><td>Serviceability</td><td>field-replaceable (best)</td><td>field-replaceable (slide-out)</td><td>soldered; ELSFP lasers replaceable</td></tr><tr><td>Energy/bit</td><td>highest</td><td>intermediate</td><td>lowest (<5, then <2 pJ/bit)</td></tr><tr><td>Maturity</td><td>shipping</td><td>MSA launched OFC 2026</td><td>shipping (Broadcom, NVIDIA)</td></tr></table>
 **Table 10.8.** Where XPO sits between pluggables and co-packaged optics.
 
-[^25]
+[^38]
 
 **The broader OFC 2026 picture.** XPO landed inside a clear consensus: 1.6T transceivers went mainstream and 3.2T (400G/lane) previews appeared, with initial demos expected around 2027; CPO moved from demo to imminent, with new MSAs (Open CPX, "socketed CPO") blurring the pluggable/co-packaged line; and hollow-core fiber (record loss now $\sim$0.091 dB/km) advanced toward low-latency intra-datacenter use (§10.12.1). The through-line is the one this book opened with: rising per-lane rate forcing optics closer to the silicon and squeezing every last pJ/bit.
 
@@ -584,7 +584,7 @@ Fleet telemetry + corrective action</code></pre>
 
 8.  **Yield and supplier readiness.** Multi-lot yield, SPC, ATP coverage, NPI gates, first-article, and 8D discipline. Prove the part can be built at volume before committing the fleet. (Chapter 9, §9.3, §9.2)
 
-9.  **Fleet telemetry and corrective action.** Pilot, ramp, and fleet monitoring are operational readiness and sustaining evidence. CMIS monitors, FEC histograms, triage buckets, RMA codes, and the feedback loop from field to ATP. The system is not done until the fleet can detect, classify, and correct a failure without the design team. (§11.16, §8.8, §7.4.8)
+9.  **Fleet telemetry and corrective action.** Pilot, ramp, and fleet monitoring are operational readiness and sustaining evidence. CMIS monitors, FEC histograms, triage buckets, RMA codes, and the feedback loop from field to ATP. The system is not done until the fleet can detect, classify, and correct a failure without the design team. (§11.16, §10.17.6, §7.4.8)
 
 A design review should be able to point at evidence for every step. Where evidence is missing, the step is not done. Where two steps conflict (power budget versus serviceability, yield versus guardband), the trade must be stated and owned, not hidden behind a single-number spec.
 
@@ -696,13 +696,41 @@ $$\begin{equation}
 A \approx \frac{\mathrm{MTBF}}{\mathrm{MTBF}+\mathrm{MTTR}}
 \end{equation}$$
 
-AI-fabric availability also depends on correlated failures, routing, detection and failover latency, repair access, spares, service policy, checkpoint or job restart cost, and workload-level impact. Independent component FIT addition is not a complete system-availability model (§8.8, §8.2).
+AI-fabric availability also depends on correlated failures, routing, detection and failover latency, repair access, spares, service policy, checkpoint or job restart cost, and workload-level impact. Independent component FIT addition is not a complete system-availability model (§8.4.1). The rest of this section works that gap in detail.
+
+### From component FIT to fabric availability
+
+The FIT arithmetic in §5.13 gives a rate: about $0.6$ laser failures per day for a fleet of $5\times10^5$ lasers at 50 FIT. That number sizes the RMA pipeline and the ELS spares bin (§5.14), but it does not say what a failure costs or how a running job survives one. Two facts turn a per-component rate into a fabric problem.
+
+First, a training or large inference job is synchronous. A collective (§10.7) waits for its slowest member, so a single dead or slow link stalls the whole group, not just one endpoint (§10.6). A link that flaps for a second is a stall for every accelerator in that collective. The optical FIT that Chapter 8 budgets therefore matters out of proportion to its share of the parts count.
+
+Second, at cluster scale failures are continuous, not rare. Meta's published Llama 3 run is the clearest public data point: 16,384 H100 GPUs over 54 days logged 466 interruptions (419 unexpected), roughly one every three hours, while holding about 90% effective training time . GPU and HBM3 faults dominated at close to half; network switch and cable faults were 35 events, 8.4% of the total. The optical link is a minority of hard job stops, but 8.4% of a failure every three hours is still tens of network events per run, and the ELS, module, and connector FIT budgeted in §8.4.1, Appendix F.5 lands in exactly that bucket.
+
+So the design question shifts. It is no longer "how reliable is one link" but "how does a fabric of $10^5$ links keep a job running through a failure every few hours." The answers are architectural, and the optical engineer feeds each one.
+
+Redundancy and rails.
+
+: Rail-optimized topologies (§10.2) already give parallel planes; dual-plane and dual-ToR designs let a lost link degrade bandwidth instead of dropping an endpoint. Redundancy multiplies the link and laser count, which feeds straight back into the FIT budget: more resilience is more parts that can fail.
+
+Detection and reroute.
+
+: Transient faults stay below the job. KP4 FEC (§3.12) absorbs the error bursts a marginal link throws; link-level retry and sub-second link-flap detection plus adaptive routing steer traffic off a degraded link before the scheduler notices. Vendor fabrics (NVIDIA Spectrum-X and Quantum, Broadcom Tomahawk) advertise adaptive or "cognitive" routing and link-level retry for this. Treat the specifics as vendor orientation, but the mechanism is why transient optical faults rarely reach the hard-stop bucket above.
+
+Topology reconfiguration.
+
+: When a link or rack dies for good, an optical circuit switch re-wires the topology around it in milliseconds, so the scheduler routes around the dead node instead of stalling the pod (§10.9) . Component FIT still applies; the fabric survives each failure by re-wiring optically.
+
+Sparing and field service.
+
+: Hot spare nodes and lanes cover the interval between failure and repair. Field-replaceable external lasers (§5.14) make a dead laser a faceplate swap rather than a fabric outage, which is the architectural reason ELS decouples laser FIT from switch FIT. The connector mating-cycle and endface budget (Appendix F.5) sets how many of those swaps the plant survives.
+
+The cost of a failure closes the loop. A hard interruption is lost compute plus the time to detect, reroute or reschedule, and restart from the last checkpoint. Fast detection and reroute shrink that lost time, which is the fabric-level reason the module work pays off: derating (§5.13), qualification and production screens (Chapter 8, Chapter 9), and a tight ATP (§9.2) lower the failure rate, and a resilient fabric lowers the cost of each failure that slips through. The two multiply.
 
 ## Interview takeaway
 
 **Key idea.** An AI fabric is judged by delivered workload time, not aggregate port rate. Connect collective traces to queue, route, FEC, optical, thermal, and service data. Choose pluggables, linear optics, or co-packaging by the measured system constraint and by how the fleet detects, contains, and repairs each failure.
 
-Junior mistake: rewrite the topology before scoping one weak rail, or ignore optics FA when collectives stall (§4.8, Chapter 11, Appendix D, Appendix G).
+Junior mistake: rewrite the topology before scoping one weak rail, or ignore optics FA when collectives stall (§4.8, Chapter 11, Appendix D, Appendix H).
 
 ### Interview Q&A: Networking and System Operation
 
@@ -811,7 +839,7 @@ Practice speaking these answers aloud. Prefer first-person operational reasoning
 
 *Tests:* FIT, redundancy, repair time, and operational consequence.
 
-*Spoken answer.* "Component reliability describes how often a component is expected to fail under stated assumptions. System availability depends not only on failure rate but also on detection, redundancy, failover behavior, repair time, spare strategy, service access, and whether one failure interrupts useful work. A module with a good FIT rate can still produce poor availability if replacement takes hours or if one failure stalls an entire collective. Conversely, a higher component failure rate may be tolerable when failures are detected quickly, isolated, rerouted, and repaired without workload impact" (§10.17.5, §8.8).
+*Spoken answer.* "Component reliability describes how often a component is expected to fail under stated assumptions. System availability depends not only on failure rate but also on detection, redundancy, failover behavior, repair time, spare strategy, service access, and whether one failure interrupts useful work. A module with a good FIT rate can still produce poor availability if replacement takes hours or if one failure stalls an entire collective. Conversely, a higher component failure rate may be tolerable when failures are detected quickly, isolated, rerouted, and repaired without workload impact" (§10.17.5, §10.17.6).
 
 *Pressure follow-up.* "What matters more: MTBF or MTTR?"\
 *Answer pivot.* "Neither alone. Availability depends on both and on the architecture's ability to mask or contain the failure. I would also include workload restart cost and correlated failure domains."

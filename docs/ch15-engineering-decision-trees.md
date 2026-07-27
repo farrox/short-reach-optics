@@ -65,7 +65,7 @@ Step 9: Ramp mass production
 Step 10: Monitor the fleet
   |
 Step 11: Feed learning / next revision</code></pre>
-Same order as Table 7.3, not a second Staff loop. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness (§7.3, Appendix A.8.5, §8.3).
+Same order as Table 7.3, not a second Staff loop. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness (§7.3, Appendix A.8.5, Appendix F.1.1).
 
 *Legend.* Program phases: EVT, DVT, PVT, pilot, MP. Engineering disciplines: characterization, verification, system validation, reliability qualification, manufacturing validation, production control, fleet monitoring. Program phases group work. Engineering disciplines define the evidence (§7.1, §7.2).
 
@@ -92,7 +92,7 @@ Acceptance criterion
 Production proxy
   |
 Ship / restrict / reject</code></pre>
-Use inside the reliability gate of Appendix D.2. The lifecycle says *when*; this tree says *what evidence* is defensible (Appendix D.16, §8.3).
+Use inside the reliability gate of Appendix D.2. The lifecycle says *when*; this tree says *what evidence* is defensible (Appendix D.16, Appendix F.1.1).
 
 > **Why experienced engineers insist on mechanism $\rightarrow$ stress $\rightarrow$ observable?**
 >

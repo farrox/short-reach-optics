@@ -330,7 +330,7 @@ Recalibration should be triggered by evidence, not habit: a control-loop error r
 
 ## How lasers are qualified
 
-Qualification supports a bounded life or degradation claim when the stress accelerates a credible field mechanism, the sample population is representative, observables and failure criteria are predefined, and the acceleration model and uncertainty are justified (Chapter 8, §8.3). Three stress classes do most of the work:
+Qualification supports a bounded life or degradation claim when the stress accelerates a credible field mechanism, the sample population is representative, observables and failure criteria are predefined, and the acceleration model and uncertainty are justified (Chapter 8, Appendix F.1.1). Three stress classes do most of the work:
 
 HTOL (high-temperature operating life)
 
@@ -342,7 +342,7 @@ Burn-in
 
 Environmental stress
 
-: Temperature cycling, damp heat, vibration, and shock catch packaging, attach, moisture, and mechanical risks that HTOL does not. They qualify different mechanisms and are not substitutes for powered-aging evidence (§8.3).
+: Temperature cycling, damp heat, vibration, and shock catch packaging, attach, moisture, and mechanical risks that HTOL does not. They qualify different mechanisms and are not substitutes for powered-aging evidence (Appendix F.1.1).
 
 Do not treat HTOL hours plus an Arrhenius factor as an automatic FIT proof. State the supported claim, sample-hours, lot diversity, and remaining risk.
 
@@ -360,7 +360,7 @@ Watch LIV and spectrum over HTOL or field life:
 
 - COD (catastrophic optical damage) at the facet under overstress.
 
-Each signature needs an evidence owner in qualification, production control, or fleet telemetry (§11.16, §8.3, Chapter 9).
+Each signature needs an evidence owner in qualification, production control, or fleet telemetry (§11.16, Appendix F.1.1, Chapter 9).
 
 ## Aging curves, derating, and fleet FIT
 
@@ -509,7 +509,7 @@ Laser-specific mechanisms that still need a plan include:
 
 - EAM aging in EMLs; coupling and solder drift in packaged assemblies.
 
-Because failures scale with the number of lasers, a fleet of $100{,}000$+ links can turn a modest per-laser FIT rate into a steady stream of field failures (§5.13, §8.3). Mitigations shape architecture: field-replaceable external laser sources (ELSFP, CW-WDM), redundancy, burn-in when a demonstrated infant-mortality population justifies it, and derating.
+Because failures scale with the number of lasers, a fleet of $100{,}000$+ links can turn a modest per-laser FIT rate into a steady stream of field failures (§5.13, Appendix F.1.1). Mitigations shape architecture: field-replaceable external laser sources (ELSFP, CW-WDM), redundancy, burn-in when a demonstrated infant-mortality population justifies it, and derating.
 
 ## Margin erosion over temperature, lot, and life
 
@@ -584,7 +584,7 @@ A laser is an active device with wear-out physics, so it is both the first line 
 
 ### How it is measured
 
-Qualify the laser as a set of curves across temperature, bias, ORL, and age, not a room-temperature data-sheet point. The measurement playbook (LIV, SMSR, RIN, wavelength, and EAM checks with their instruments and pass/fail intent) is in §5.7, Table 5.5; the stress classes that project field life are in §5.12, §5.13, §8.3 .
+Qualify the laser as a set of curves across temperature, bias, ORL, and age, not a room-temperature data-sheet point. The measurement playbook (LIV, SMSR, RIN, wavelength, and EAM checks with their instruments and pass/fail intent) is in §5.7, Table 5.5; the stress classes that project field life are in §5.12, §5.13, Appendix F.1.1 .
 
 ### How it fails
 

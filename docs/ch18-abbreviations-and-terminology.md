@@ -7,6 +7,6 @@ title: "Moved: Abbreviations and terminology"
 
 This glossary is now:
 
-- [**19.** Abbreviations and terminology](ch19-abbreviations-and-terminology)
+- [**Appendix D.** Abbreviations and terminology](ch20-abbreviations-and-terminology)
 
 Return to the [table of contents](index).

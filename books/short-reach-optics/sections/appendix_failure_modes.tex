@@ -1008,6 +1008,19 @@ A single symptom can sit in more than one bucket until you bisect. The tree belo
 forces the split with telemetry first, then a short bench confirm, then an RMA
 label. Use the symptom procedures earlier in this chapter for bench confirmation.
 
+\paragraph{Field classification is not qualification planning.}
+The discriminations in this section belong here: COD versus ESD damage on a
+dark unit, date-code and lot clusters that point at a manufacturing escape,
+a clean facet cross-section that leaves a connector unexplained until ORL is
+measured, and the rule that later evidence does not silently rewrite an
+earlier bucket. All of it starts from a failure that already happened and ends
+with an owner. Qualification works the other direction: it starts from a claim
+and asks which mechanisms could violate it before any unit fails. Those
+mechanism families, and the exposure and acceptance each one needs, are in
+\Cref{sec:wearout-modes,tab:qual-mechanism-families}. Do not plan a
+qualification from triage buckets, and do not close a field ticket with a
+qualification table.
+
 \paragraph{Telemetry you actually read.}
 At scale you rarely start with a DCA. Start with what the host and module already
 report:

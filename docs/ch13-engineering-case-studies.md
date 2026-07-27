@@ -173,7 +173,7 @@ Freeze requirements first (Table 7.3). Then walk bring-up through margin, inter
 
 ##### Measurements selected.
 
-Black-box: BER, throughput, interop on claimed hosts, margin corners, power and sensitivity distributions across lots. Engineering access only when black-box evidence cannot decide. Reliability: stresses tied to named mechanisms (§8.3).
+Black-box: BER, throughput, interop on claimed hosts, margin corners, power and sensitivity distributions across lots. Engineering access only when black-box evidence cannot decide. Reliability: stresses tied to named mechanisms (Appendix F.4).
 
 ##### Results (staged).
 
@@ -197,7 +197,7 @@ Require multi-lot data, closed interop matrix, and FAIR before PVT/MP language i
 
 ##### Qualification / ATP / telemetry update.
 
-Correlate supplier ATP to your proxy; split field RMA codes by vendor from day one; define pilot exit before broader ship (§8.3).
+Correlate supplier ATP to your proxy; split field RMA codes by vendor from day one; define pilot exit before broader ship (§8.4).
 
 ##### Fleet prevention.
 
@@ -213,7 +213,7 @@ Problem: second-source equivalence claim. Impact: single-vendor risk reduction v
 
 ##### Deep dive.
 
-Appendix C.7, Appendix C.15, §8.3, Table 7.3, §9.2.
+Appendix C.7, Appendix C.15, Appendix F.4, Table 7.3, §9.2.
 
 ## Case 3: Temperature-dependent BER failure
 
@@ -328,7 +328,7 @@ Wrong failure mechanism
 
 Insufficient sample diversity
 
-: Wrong lots, sites, or corners (§8.3).
+: Wrong lots, sites, or corners (§8.4).
 
 Measurement gap
 
@@ -388,7 +388,7 @@ Problem: field fails after passed qual. Impact: (rate / cohort). Evidence: (miss
 
 ##### Deep dive.
 
-Appendix D.3, §8.3, §11.13, Appendix C.13, §8.2.
+Appendix D.3, §8.4, §11.13, Appendix C.13, §8.4.1.
 
 ## Staged mock interviews
 

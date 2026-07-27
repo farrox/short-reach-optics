@@ -108,7 +108,7 @@ Requirements and the production control plan form the contract. Every requiremen
 
 1.  **Requirements / PRD slice for the laser path:** fill Table 5.4, §5.6 (power class, grid, RIN@ORL, SMSR, derating, CMIS, FIT). Version it with the production control plan.
 
-2.  **Acceptance test plan (ATP):** the measurable tests that prove those requirements on every ship lot (or on a defined sample) when every-unit or sampled production test is the right control. Map each ATP line to a requirement; map life claims to qualification where appropriate (§8.3).
+2.  **Acceptance test plan (ATP):** the measurable tests that prove those requirements on every ship lot (or on a defined sample) when every-unit or sampled production test is the right control. Map each ATP line to a requirement; map life claims to qualification where appropriate (Appendix F.1.1).
 
 ### How production evidence is purchased
 
@@ -124,7 +124,7 @@ TDECQ, intrinsic and stressed RIN, detailed spectrum/SMSR, thermal corners, and 
 
 ##### Qualification-only stresses.
 
-HTOL, humidity, extensive cycling, and destructive analysis gather life or mechanism evidence. They are not per-unit ship screens (§8.3, Appendix D.3).
+HTOL, humidity, extensive cycling, and destructive analysis gather life or mechanism evidence. They are not per-unit ship screens (Appendix F.1.1, Appendix D.3).
 
 ##### Process controls.
 
@@ -175,11 +175,11 @@ Align the partner calendar to gates, not slideware:
 
 - freeze FIT/$E_a$ assumptions before reliability marketing numbers ship;
 
-- require ECO notice on laser die revision, TEC vendor, FAU epoxy, driver/TIA silicon revision (§8.4), and CMIS firmware.
+- require ECO notice on laser die revision, TEC vendor, FAU epoxy, driver/TIA silicon revision (Appendix F.1.3), and CMIS firmware.
 
 Your job in those meetings is to name the measurement that would kill the gate. If nobody can point to an ATP row or a corner, the milestone is not real.
 
-**Key idea.** Manufacturing readiness is a frozen reference, a trusted measurement system, multi-lot yield, ATP coverage, and owned SPC with reaction plans. Classify escapes with the wear-out map (Table 8.2) before FIT or 8D. Gate suppliers on ATP, multi-lot SPC, and FAIR. Do not run process CAPA on wear-out, or FIT math on a dirty connector.
+**Key idea.** Manufacturing readiness is a frozen reference, a trusted measurement system, multi-lot yield, ATP coverage, and owned SPC with reaction plans. Name the mechanism family behind an escape (Table 8.2, §11.16) before you argue FIT or open an 8D. Gate suppliers on ATP, multi-lot SPC, and FAIR. Do not run process CAPA on wear-out, or FIT math on a dirty connector.
 
 ## Yield analysis
 
@@ -244,7 +244,7 @@ $C_p$ measures potential spread if the process were centered. $C_{pk}$ also refl
 
 ### Test time is a cost, coverage is a risk
 
-Every second in the acceptance test plan (ATP) times millions of units is line capacity and real money. Every skipped measurement creates uncontrolled escape risk; it is not automatically a field DPPM event (§8.2). The core tension in high-volume manufacturing is how much coverage you buy per second. The expensive optical steps are thermal soak and corner runs, TDECQ on a sampling scope, BER dwell long enough to trust a low pre-FEC target, laser burn-in, and mate-cycle stress on ELSFP connectors. Some screens are statistical (sample burn-in from a lot, audit TDECQ on a subset). Safety and enable-sequence faults usually require 100% coverage. At source or subassembly level, LIV, SMSR, and wavelength may be economical direct controls when they are available and correlated to product risk. In a closed module, use a validated module-level proxy, supplier evidence, sampled audit, or genealogy-based control. Do not claim internal measurement coverage when the production architecture does not expose it (Appendix E.7, §5.15, Table 9.3).
+Every second in the acceptance test plan (ATP) times millions of units is line capacity and real money. Every skipped measurement creates uncontrolled escape risk; it is not automatically a field DPPM event (§8.4.1). The core tension in high-volume manufacturing is how much coverage you buy per second. The expensive optical steps are thermal soak and corner runs, TDECQ on a sampling scope, BER dwell long enough to trust a low pre-FEC target, laser burn-in, and mate-cycle stress on ELSFP connectors. Some screens are statistical (sample burn-in from a lot, audit TDECQ on a subset). Safety and enable-sequence faults usually require 100% coverage. At source or subassembly level, LIV, SMSR, and wavelength may be economical direct controls when they are available and correlated to product risk. In a closed module, use a validated module-level proxy, supplier evidence, sampled audit, or genealogy-based control. Do not claim internal measurement coverage when the production architecture does not expose it (Appendix E.7, §5.15, Table 9.3).
 
 > **Tradeoff.** More production screening vs cost
 >
@@ -268,7 +268,7 @@ Every second in the acceptance test plan (ATP) times millions of units is line c
 
 ### Where the test happens: wafer, die, module, system
 
-Push defect detection as far upstream as correlation allows. Wafer-level or PIC probe catches process shifts (waveguide loss, ring resonance drift, bad heaters) before fiber attach and packaging spend. Killing a bad die at probe is orders of magnitude cheaper than an RMA (§8.7). Module ATP is the full functional test: optical power class, TDECQ or proxy, sensitivity spot-check, CMIS bring-up, and connector/ORL on ELS parts. System or golden-host bring-up catches interop: media type, firmware rev, equalizer defaults, and the corners in §7.6. Wafer test cannot catch fiber attach, FAU alignment, epoxy creep, or connector wear. Those failures must survive to module ATP and, for some signatures, to fleet telemetry (§11.16).
+Push defect detection as far upstream as correlation allows. Wafer-level or PIC probe catches process shifts (waveguide loss, ring resonance drift, bad heaters) before fiber attach and packaging spend. Killing a bad die at probe is orders of magnitude cheaper than an RMA (§8.5.4). Module ATP is the full functional test: optical power class, TDECQ or proxy, sensitivity spot-check, CMIS bring-up, and connector/ORL on ELS parts. System or golden-host bring-up catches interop: media type, firmware rev, equalizer defaults, and the corners in §7.6. Wafer test cannot catch fiber attach, FAU alignment, epoxy creep, or connector wear. Those failures must survive to module ATP and, for some signatures, to fleet telemetry (§11.16).
 
 ### ATE-to-bench correlation and gauge R&R
 
@@ -302,7 +302,9 @@ Production-test coverage is validated using naturally failing units, controlled 
 
 ### Screens, guardbanding, and SPC
 
-Burn-in (infant-mortality screen) and HTOL (life/mechanism evidence) trade different risks against test time and cost (§8.5, §8.3). Test limits are usually guardbanded tighter than the customer spec so field DPPM stays inside target under drift. SPC control charts on LIV, SMSR, RIN, TDECQ, and mate-cycle yield by lot, site, and date code catch a process shift before it becomes an 8D (§9.2). Production test is a yield, DPPM, and cost trade under a fixed reliability target. It is not a pass/fail checkbox after the optics already work on a golden bench.
+Burn-in (infant-mortality screen) and HTOL (life/mechanism evidence) trade different risks against test time and cost (§8.5, Appendix F.1.1). Test limits are usually guardbanded tighter than the customer spec so field DPPM stays inside target under drift. SPC control charts on LIV, SMSR, RIN, TDECQ, and mate-cycle yield by lot, site, and date code catch a process shift before it becomes an 8D (§9.2). Production test is a yield, DPPM, and cost trade under a fixed reliability target. It is not a pass/fail checkbox after the optics already work on a golden bench.
+
+Keep the two rate languages with their owners. Detailed DPPM, yield-split, and escape accounting belong to manufacturing and are developed in this chapter. FIT and the life-rate arithmetic behind a reliability target belong to qualification (§8.4.1). A guardband is set by the first; the target it protects comes from the second.
 
 ## Escaped defect analysis
 

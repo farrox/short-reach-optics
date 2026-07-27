@@ -173,5 +173,5 @@ Which decision should precede instrument selection?\
 <div class="nav-links">
   <a href="ch15-engineering-decision-trees">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch17-optical-systems-staff-engineer-interview-questions">Next &rarr;</a>
+  <a href="ch17-reliability-qualification-reference">Next &rarr;</a>
 </div>

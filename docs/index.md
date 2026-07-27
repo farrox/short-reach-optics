@@ -30,10 +30,11 @@ title: "Table of Contents"
 - [**Appendix B.** Thirty-second interview frameworks](ch14-thirty-second-interview-frameworks)
 - [**Appendix C.** Engineering decision trees](ch15-engineering-decision-trees)
 - [**16.** Optical Measurement and Test Reference](ch16-optical-measurement-and-test-reference)
-- [**17.** Optical Systems Staff Engineer Interview Questions](ch17-optical-systems-staff-engineer-interview-questions)
-- [**18.** How Staff Engineers Think](ch18-how-staff-engineers-think)
-- [**Appendix D.** Abbreviations and terminology](ch19-abbreviations-and-terminology)
-- [**20.** References](ch20-references)
+- [**17.** Reliability Qualification Reference](ch17-reliability-qualification-reference)
+- [**18.** Optical Systems Staff Engineer Interview Questions](ch18-optical-systems-staff-engineer-interview-questions)
+- [**19.** How Staff Engineers Think](ch19-how-staff-engineers-think)
+- [**Appendix D.** Abbreviations and terminology](ch20-abbreviations-and-terminology)
+- [**21.** References](ch21-references)
 
 ---
 

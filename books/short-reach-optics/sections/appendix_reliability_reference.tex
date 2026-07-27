@@ -1,0 +1,363 @@
+\chapter{Reliability Qualification Reference}
+\label{app:reliability-reference}
+
+This appendix is a lookup reference for qualification standards ownership,
+named stress methods, sample and confidence arithmetic, the qualification
+planning matrix, and connector and optical-interface test methods. It does not
+build the qualification argument. That narrative lives in
+\Cref{ch:reliability}: claim, mechanism, stress, observable, acceptance,
+samples, confidence, decision. Use this appendix to fill in the method names
+and cells once the argument is already framed.
+
+\textit{Read first:} which standard owns which part of the link; what each
+named stress method reveals and how it is misread.
+
+\textit{Reference:} sample and confidence rules; planning matrix; connector
+methods; Rapid Interview Checks.
+
+\section{Standards ownership in detail}
+
+No single standard covers an optical module. A laser die, a driver IC, a
+passive MUX, and an MPO connector are qualified under four different documents
+written by four different communities. Split the qualification the same way you
+split the failure budget, and state which document backs each claim.
+
+\subsection{Telcordia GR-468 in practice}
+\label{sec:gr468}
+
+Optoelectronics inherited a common qualification language from telecom:
+\term{Telcordia GR-468-CORE}\citep{gr468}. It covers active optoelectronic
+devices, meaning the laser die, the photodiode, and the hermetic or
+non-hermetic package around them. The stresses that show up on every laser and
+module program are HTOL for powered life or mechanism evidence, temperature
+cycling, damp heat, ESD, and mechanical stress. Burn-in appears alongside them
+as a production infant-mortality screen when a demonstrated early-life
+population justifies it.
+
+Map each stress onto the qualification evidence path in
+\Cref{sec:tree-qual-evidence} rather than treating the standard as a second,
+parallel sequence. Three practices keep GR-468 evidence honest:
+
+\begin{itemize}
+\item Keep burn-in and qualification HTOL distinct. Burn-in screens infant
+      mortality from a production population. Qualification HTOL gathers life
+      or mechanism evidence from representative samples. A 1{,}000-hour life
+      test may justify a room-temperature production proxy, a sampled hot
+      audit, a process monitor, or no direct production screen at all. It is
+      not itself a per-unit screen.
+\item Document the activation energy and confidence bounds whenever HTOL hours
+      are converted into field years, and keep sample-size humility
+      (\Cref{sec:fit-dppm,ch:manufacturing}).
+\item Qualify the laser die, the package, and the module assembly separately
+      when failures split across those boundaries
+      (\Cref{sec:photonic-packaging,sec:laser-aging,sec:elsfp}).
+\end{itemize}
+
+Arrhenius acceleration underpins life projection only when the named failure
+mechanism is temperature-accelerated in the assumed regime
+(\Cref{sec:accel-validity}).
+
+\subsection{GR-1221: the passive-component companion}
+
+GR-468 covers active optoelectronics. Its companion, \term{Telcordia
+GR-1221-CORE} (Generic Reliability Assurance Requirements for Passive Optical
+Components), covers the parts GR-468 does not: connectors, fiber couplers, WDM
+filters and MUX/DEMUX, splitters, and isolators~\firstcite{gr1221}. It uses the
+same style of stress sequence, including damp heat, temperature cycling,
+mechanical tests, and aging, but scores pass or fail on insertion loss and
+return loss rather than on LIV.
+
+A short-reach link that leans on an on-package or blind-mate MUX and on
+external multi-wavelength sources therefore carries a passive reliability
+budget that lives in GR-1221, not GR-468
+(\Cref{sec:connector-reliability,ch:wdm}).
+
+\subsection{Electronics: JESD47, ESD, latch-up, and AEC-Q100}
+\label{sec:ic-reliability}
+
+The modulator driver, TIA, retimer, and DSP (\Cref{sec:drivers,sec:pd-tia}) are
+ordinary CMOS or SiGe BiCMOS ICs. They fail by a different and
+better-documented set of mechanisms than the laser, so they use the
+semiconductor industry's own qualification language rather than laser-aging
+math borrowed from \Cref{sec:laser-aging}.
+
+\paragraph{JESD47: the silicon-side GR-468.}
+JEDEC \term{JESD47} is the baseline stress-test-driven qualification flow for a
+new IC, a device family, or a process change: temperature cycling, HTOL, HTSL,
+autoclave or HAST for moisture, and mechanical shock and
+vibration~\firstcite{jesd47}. It plays the same role for driver and TIA silicon
+that GR-468 plays for the laser. The supplier runs the flow once and the
+customer accepts the report instead of renegotiating a qualification plan on
+every design win.
+
+\paragraph{ESD and latch-up.}
+Two mechanisms are specific to ICs and absent from the optical mechanism
+families in \Cref{tab:qual-mechanism-families}:
+
+\begin{description}
+\item[ESD] A discharge event during handling or assembly damages a gate oxide
+      or junction. Component-level classification uses the human-body model
+      (HBM) and charged-device model (CDM) test standards,
+      \term{ANSI/ESDA/JEDEC JS-001} and \term{JS-002}~\firstcite{jsesd}. A
+      driver or TIA datasheet HBM/CDM rating is the number that protects the
+      part on the factory floor, at the fiber-attach and wire-bond stations
+      where a laser die is also exposed.
+\item[Latch-up] A parasitic thyristor structure in CMOS turns on under an
+      overvoltage or current-injection event and holds a low-impedance path
+      until power is cycled. \term{JESD78}\firstterm{JESD78} defines the
+      overvoltage and $\pm100$~mA current-injection test that classifies
+      susceptibility by supply and signal pin~\firstcite{jesd78}. A latched
+      driver IC can look like a dead laser on the bench, with no light and no
+      LIV signature, until you check the supply current instead of the optical
+      path.
+\end{description}
+
+ESD and latch-up are primarily design-qualification and process-control
+concerns. Targeted production measurements or screens may be used when their
+detection capability is validated, but many latent ESD conditions cannot be
+economically detected on every finished unit. Do not project either mechanism
+with an activation energy. A field ESD or latch-up failure is a manufacturing
+or design-margin item (\Cref{sec:fleet-triage}), not a wear-out FIT argument.
+
+\paragraph{AEC-Q100 is supplemental evidence, not a datacenter requirement.}
+\term{AEC-Q100}\firstterm{AECQ100} is the automotive industry's qualification
+standard for ICs, built on the same JEDEC JESD47 and JESD22 stress methods with
+tighter ESD targets and named temperature grades from Grade~3 ($-40$ to
+$85$\textdegree C) up to Grade~0 ($-40$ to $150$\textdegree
+C)~\firstcite{aecq100}. Datacenter optics does not require Q100. The fleet
+lives in a controlled data hall, not an engine bay, and no datacenter
+transceiver specification calls for automotive grading.
+
+Treat a published Q100 grade as a useful supplemental signal instead. A driver,
+TIA, or retimer die that also ships in an automotive part number carries a
+grade that is a fast proxy for the ESD and latch-up margin and the
+temperature-cycle depth behind the datasheet, which saves you from re-running
+the supplier's qualification plan yourself. It does not replace a product-level
+mechanism argument, and its absence is not a finding.
+
+\paragraph{Where IC qualification lands after release.}
+Carry IC-level qualification into the production acceptance and SPC structure
+in \Cref{ch:manufacturing}. Require the supplier's JESD47 report and the
+HBM/CDM/latch-up ratings for driver and TIA die at DVT. Add an ESD handling
+audit to the incoming-QC checklist alongside laser LIV and SMSR sampling. Treat
+a driver or TIA silicon revision the same way you treat a laser die revision or
+a CMIS firmware revision: an ECO that needs first-article requalification, not
+a silent BOM swap.
+
+\section{Stress-method quick reference}
+\label{sec:stress-method-reference}
+
+Each method below answers a specific question. None of them is evidence on its
+own. The evidence is the pairing of a named mechanism with a stress that
+accelerates it, an observable that reveals the change, and an acceptance limit
+set before the stress starts.
+
+Durations, temperatures, humidity levels, cycle counts, and acceleration
+factors are product-specific and are set by the claim, the standard in force,
+and the customer requirement. Do not carry a number from one program into
+another without re-deriving it.
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:stress-method-reference}%
+\centering
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{@{}p{0.15\linewidth}p{0.18\linewidth}p{0.07\linewidth}p{0.28\linewidth}p{0.28\linewidth}@{}}
+\toprule
+Method & Mechanism family & Powered & Typical observable & Common misuse \\
+\midrule
+HTOL & Powered semiconductor degradation & Yes & $I_\mathrm{th}$, slope, $\lambda$, OMA, BER, bias creep & Treated as a per-unit ship screen, or as burn-in \\
+\addlinespace[0.6em]
+HTSL (storage life) & Unbiased thermal and material change & No & Post-bake parametric shift, bond and epoxy integrity & Read as a powered-life result \\
+\addlinespace[0.6em]
+Temperature cycling & Thermo-mechanical fatigue & Either & Continuity, intermittent lanes, coupling shift, BER & Final functional pass only, so transient opens are missed \\
+\addlinespace[0.6em]
+Thermal shock & Fast-ramp thermo-mechanical fatigue & Usually no & Cracks, delamination, alignment step & Substituted for cycling when the ramp rate is not the threat \\
+\addlinespace[0.6em]
+Damp heat & Moisture, corrosion, material degradation & Either & Leakage, insertion loss, ORL, seal integrity & Described as a waterproofing test \\
+\addlinespace[0.6em]
+HAST & Accelerated moisture ingress & Either & Same as damp heat, at shorter exposure & Pressure and temperature drive a mechanism the field never sees \\
+\addlinespace[0.6em]
+Mechanical shock & Discrete acceleration events & Usually no & Alignment step, opens, physical damage & Assumed to cover repeated excitation \\
+\addlinespace[0.6em]
+Vibration & Repeated mechanical excitation & Often in situ & Intermittent contacts, lane drops, loss modulation & Run without in-situ monitoring \\
+\addlinespace[0.6em]
+Connector mate cycling & Optical-interface wear and debris & No & Insertion loss growth, ORL, endface grade & Datasheet cycle rating inherited without service-rate check \\
+\addlinespace[0.6em]
+ESD (HBM/CDM) & Electrical overstress & No & Pass/fail classification level & Projected with an activation energy \\
+\addlinespace[0.6em]
+Latch-up (JESD78) & Parasitic turn-on under injection & Yes & Supply-current latch, recovery on power cycle & Diagnosed as a dead laser \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Named stress methods and
+what each one reveals. Durations, levels, and cycle counts are product-specific
+and are not implied here. Acceptance is a bounded, pre-declared change tied to
+the life claim, not merely a post-stress functional pass. Standards ownership:
+\Cref{sec:gr468,sec:ic-reliability}. Argument structure:
+\Cref{sec:qual-argument}.\par}
+\end{table*}
+\FloatBarrier
+
+\section{Sample size, confidence, and evidence sufficiency}
+\label{sec:qual-sample-reference}
+
+Sample strategy is set by the failure-rate or degradation target, the required
+confidence, the cost of the units, and the variation in the population. The
+narrative rules are in \Cref{sec:fit-dppm,sec:qual-sample-strategy}; the
+mechanics are below.
+
+\begin{description}
+\item[Zero-failure upper bound] Zero failures establishes a one-sided upper
+      confidence bound on the failure rate under the stated assumptions, not a
+      zero rate. State the bound and the confidence level, or do not make the
+      claim.
+\item[Sample-hours] Evidence scales with units multiplied by stress hours,
+      adjusted by the acceleration factor. Twenty units for 1{,}000 hours and
+      1{,}000 units for 20 hours are not interchangeable, because they expose
+      different amounts of population variation.
+\item[Censoring] A test stopped at a fixed time, or units removed before the
+      end, produces censored data. Say which units ran to what exposure and how
+      the censoring was handled before quoting a rate.
+\item[Lot and site diversity] Cover lots, date codes, suppliers, manufacturing
+      sites or lines, and process corners. A single-lot result bounds that lot.
+      It does not bound the population the factory will ship.
+\item[Degradation versus failure] Parametric drift is usable evidence long
+      before a hard failure appears, and it needs far fewer units. Record
+      intermediate reads and fit the trend rather than waiting for units to
+      die.
+\item[Acceleration factor applicability] An acceleration factor applies to one
+      mechanism in one regime. Do not apply a single factor across laser wear,
+      corrosion, solder fatigue, and unrelated mechanisms
+      (\Cref{sec:accel-validity}).
+\end{description}
+
+\heuristic{Write the sentence you intend to claim before you size the sample.
+If the sentence is ``no more than $X$ failures per $10^{9}$ device-hours at
+$Y$\% confidence, for this population, over this exposure,'' the sample size
+follows from arithmetic. If the sentence is ``the product is reliable,'' no
+sample size will support it.}
+
+\section{Qualification planning matrix}
+\label{sec:qual-planning-matrix}
+
+The matrix restates the worked argument in \Cref{sec:qual-worked-laser} as
+mechanism, stress, observable, acceptance, and production control, then repeats
+the pattern for the other mechanism families. Fill the cells for the product
+class and claimed life. A blank row is an uncovered mechanism, not a covered
+one.
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:qual-planning-matrix}%
+\centering
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.15}%
+\begin{tabular}{@{}p{0.18\linewidth}p{0.18\linewidth}p{0.18\linewidth}p{0.18\linewidth}p{0.20\linewidth}@{}}
+\toprule
+Failure mechanism & Stress & Observable & Acceptance & Production control \\
+\midrule
+Laser degradation & Temperature and bias (HTOL) & $I_\mathrm{th}$, slope, $\lambda$, BER & Named drift limit vs life claim & ATP proxy, SPC, sampled audit, or none \\
+\addlinespace[0.7em]
+Solder and attach fatigue & Temperature cycling & Resistance, BER, opens & Post-stress continuity and BER & Process control, FAIR \\
+\addlinespace[0.7em]
+Contamination and corrosion & Damp heat or HAST & Loss, ORL, leakage & IL/ORL and functional limits & Handling, sealing, audit \\
+\addlinespace[0.7em]
+Connector wear & Mate cycling & Insertion loss, ORL, endface grade & Cycle-count IL and ORL budget & Supplier rating, service hygiene \\
+\addlinespace[0.7em]
+Driver, TIA, and DSP silicon & JESD47 flow; HBM/CDM; JESD78 & Parametric shift, supply current, lane failure & Supplier qual report plus product-level limits & Incoming QC, ESD handling audit, ECO control \\
+\addlinespace[0.7em]
+Package and passive optics & GR-1221-style sequence; shock and vibration & IL, ORL, alignment step, seal integrity & Passive loss budget over life & Assembly SPC, first-article, sampled DPA \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Qualification planning
+matrix. This is a reference aid for cell filling and coverage review. It does
+not replace the mechanism argument in \Cref{sec:qual-argument}, and a filled
+row is only evidence when the stress is justified for that mechanism.
+Interview form: \Cref{fw:qual-plan,sec:tree-qual-evidence}.\par}
+\end{table*}
+\FloatBarrier
+
+\section{Connector and optical-interface reference}
+\label{sec:connector-reliability}
+
+Multi-fiber connectors are the highest-touch mechanical interface in the fleet.
+Every ELSFP swap, every fiber-array rework, and every cable-plant install mates
+and unmates an MPO\firstterm{MPO}. The MPO/MT ferrule family (rectangular, 6.4~mm $\times$
+2.5~mm, guide-pin aligned, 8, 12, 16, or 24 fibers per row) is standardized in
+\term{IEC 61754-7}, split into one-fibre-row and two-fibre-row
+parts~\firstcite{iec617547}.
+
+That standard fixes geometry, not lifetime. Lifetime comes from two companion
+test methods. \term{IEC 61300-2-2} specifies the mate and unmate cycling test
+that connector datasheets are rated against, and \term{IEC 61300-3-35} grades
+endface scratches, pits, and debris into pass/fail zones on the fiber core and
+cladding~\firstcite{iec61300}. TIA-568.3 sets 500 cycles as the
+structured-cabling mating-durability floor. MPO and MTP-class connectors are
+commonly rated well above 1000 cycles in practice, but that headroom erodes
+quickly under poor cleaning discipline (\Cref{sec:optical-channel}).
+
+Three practical consequences follow for an ELSFP or CPO fiber-attach program.
+
+\begin{enumerate}
+\item ORL creep is a mating-cycle and cleaning problem before it is a laser
+      problem. A rising RIN floor after repeated ELS swaps
+      (\Cref{tab:qual-mechanism-families}) is diagnosed with an
+      IEC~61300-3-35-style endface inspection, not a laser FA request.
+\item Mate-cycle count belongs in the same telemetry you already read for CMIS
+      and DDM (\Cref{sec:cmis}). Track it per connector rather than per module,
+      since a connector can outlive several module swaps or the reverse.
+\item Acceptance limits may include an explicit mating-cycle count and endface
+      grade rather than an inherited generic MPO datasheet number
+      (\Cref{tab:atp-laser}). An ELS bank that hot-swaps weekly reaches a
+      500-cycle floor in under ten years, and a CPO fiber array that is
+      field-serviced more aggressively reaches it faster.
+\end{enumerate}
+
+ELSFP cycling adds connector wear and contamination that raise ORL
+(\Cref{sec:optical-channel,sec:elsfp}). The mating-cycle and endface-grade
+numbers above are what turn ``the connector feels loose'' into a measurable
+limit instead of a guess.
+
+Destructive physical analysis (cross-section, EDX) and structured 8D or CAPA
+with suppliers close the loop from RMA to design rule
+(\Cref{sec:supplier-exec,sec:fleet-triage}). Without that loop, packaging
+failures get mis-attributed to laser Arrhenius models and the wrong part gets
+redesigned.
+
+\section{Rapid Interview Checks}
+
+\paragraph{Prompt.} Why is HTOL not burn-in?\\
+\textit{Check.} HTOL gathers life or mechanism evidence from representative
+samples. Burn-in screens a production population for a demonstrated early-life
+mechanism. Different population, different question, different decision
+(\Cref{sec:qual-terms}).
+
+\paragraph{Prompt.} What does zero failures establish?\\
+\textit{Check.} A one-sided upper confidence bound on the failure rate for the
+tested population, exposure, and assumptions. Not a zero rate, and not a fleet
+claim (\Cref{sec:fit-dppm}).
+
+\paragraph{Prompt.} When can Arrhenius be used?\\
+\textit{Check.} When the named mechanism is temperature-activated in the
+assumed regime, the activation energy comes from that mechanism, and the stress
+did not introduce a different failure physics (\Cref{sec:accel-validity}).
+
+\paragraph{Prompt.} What does a standards pass fail to establish?\\
+\textit{Check.} That the mechanisms relevant to this product were covered, that
+the samples represented the shipping population, and that the remaining margin
+supports the life claim. A standard supplies methods and shared language, not
+the argument.
+
+\paragraph{Prompt.} Why can a post-stress functional pass miss fatigue?\\
+\textit{Check.} Temperature cycling and vibration can open a joint or shift an
+alignment transiently. The unit recovers at room temperature, so only in-situ
+or periodic monitoring catches it (\Cref{tab:stress-method-reference}).
+
+\paragraph{Prompt.} Why is stable average power insufficient after connector
+cycling?\\
+\textit{Check.} Reflections raise the RIN and BER floor while average power
+barely moves. Inspect the endface and measure ORL before clearing the connector
+(\Cref{sec:connector-reliability}).

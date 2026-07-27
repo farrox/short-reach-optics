@@ -886,7 +886,7 @@ Run a 45-minute mock interview. Pick six of the rehearsal questions at random. A
 
 ## Must-know abbreviations (drill list)
 
-Definitions live in Appendix H. Do not maintain a second glossary here. Drill the expansions cold, then say one measurement, stress, or decision each term unlocks.
+Definitions live in Appendix I. Do not maintain a second glossary here. Drill the expansions cold, then say one measurement, stress, or decision each term unlocks.
 
 ##### Optical / debug core.
 
@@ -1037,7 +1037,7 @@ Assume seven days, with the interview near the end of Day 7. Protect sleep. Eac
 
 ##### Day 7: Mock interviews.
 
-*Learn:* three cheat sheets below; Top 25 index (Appendix F); thirty-second callouts (Appendix C); whiteboard trees (Appendix D).\
+*Learn:* three cheat sheets below; Top 25 index (Appendix G); thirty-second callouts (Appendix C); whiteboard trees (Appendix D).\
 *Output:* Full mock. Light story review only. Stop two to three hours before the call. Sleep.
 
 ##### If you have less than seven days.
@@ -1069,7 +1069,7 @@ Issue / Impact / Population / Evidence / Confidence / Containment / Mechanism st
 ### Cheat Sheet C: Qualification flow
 
 <table class="book-table"><tr><th>Mechanism Stress Observable</th></tr><tr><td>[0.4em]</td></tr><tr><td>[0.2em] Acceptance Confidence Production control</td></tr></table>
-Evidence path and planning matrix: Appendix D.3, §8.3.
+Evidence path and planning matrix: Appendix D.3, Appendix F.4.
 
 **Key idea.** I first want to understand the scope of the problem, then determine which margin ledger is being spent, choose the measurement that eliminates the largest number of hypotheses, make the product decision, and finally add the control that prevents the next escape.
 

@@ -197,6 +197,23 @@ No new frameworks. Structural relocation of existing material is allowed.
   `sec:validation-fork`). Kept 11-step lifecycle, Step~5 split, bring-up/corners,
   and 12 Interview Q\&As. HTML references page shifted to `ch20-references`;
   stub retained at `ch19-references`. PDF about 427 pages.
+- **Ch8 compression and reliability appendix:** Cut Chapter~8 from about 20 to
+  about 16 PDF pages (body $\sim$978 to $\sim$841 lines including 12 Q\&As) by
+  relocating standards detail (GR-468, GR-1221, JESD/ESD/latch-up, AEC-Q100),
+  stress-method quick reference, sample/confidence arithmetic, full planning
+  matrix, and connector/optical-interface methods to new Appendix~F Reliability
+  Qualification Reference (`app:reliability-reference`). Consolidated plural
+  qualification flows into one claim$\rightarrow$mechanism$\rightarrow$evidence
+  argument (`sec:qual-argument`); one worked laser-aging walkthrough; HTOL versus
+  burn-in stated once; replaced triage-oriented wear-out map with compact
+  mechanism-family table (`tab:qual-mechanism-families`, alias
+  `tab:wearout-map`). Moved fabric-availability arithmetic to Chapter~10
+  (`sec:fabric-availability`); ATP/SPC/DPPM production-control depth to
+  Chapter~9; date-code/8D/CAPA and field-bucket triage teaching to Chapter~11.
+  Removed the Engineering lens block. Kept FIT primary and 12 Interview Q\&As.
+  HTML routes: reliability reference at `ch17-reliability-qualification-reference`;
+  references at `ch21-references` with stubs at `ch19-references` and
+  `ch20-references`. PDF about 441 pages.
 
 ## Typographical fixes
 

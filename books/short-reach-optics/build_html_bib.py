@@ -311,8 +311,10 @@ def render_markdown(entries: list[dict], citeurls: dict[str, str]) -> str:
 
 
 def find_refs_filename(docs_dir: str) -> str:
-    for name in os.listdir(docs_dir):
-        if name.startswith("ch") and name.endswith(".md") and "reference" in name:
+    # Match only the bibliography page (…-references.md), not appendix pages
+    # whose slugs contain "reference" (measurement / reliability reference).
+    for name in sorted(os.listdir(docs_dir)):
+        if re.fullmatch(r"ch\d+-references\.md", name):
             return os.path.join(docs_dir, name)
     return os.path.join(docs_dir, "ch15-references.md")
 
