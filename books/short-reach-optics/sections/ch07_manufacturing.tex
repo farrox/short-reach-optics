@@ -138,6 +138,92 @@ date codes, suppliers, operators, shifts, tools, fixtures, stations, and product
 variants. Prefer a balanced build that separates variables over a larger build
 where one supplier lot always runs on one station and one shift.
 
+\subsection{Zero observed defects and the one-sided upper bound}
+\label{sec:mfg-zero-defect-bound}
+
+Zero observed defects do not establish a zero defect probability. Suppose
+$N$ independent, representative units are each classified once as defective or
+nondefective, the classification method detects the defect of interest, and
+every unit has the same underlying defect probability $p$. If
+$X\sim\operatorname{Binomial}(N,p)$ is the number of observed defective units,
+then
+
+\begin{equation}
+\Pr(X=0\mid p)=(1-p)^N.
+\end{equation}
+
+Let $C$ be the desired confidence level and let
+$\alpha=1-C$ be the remaining tail probability. The exact one-sided upper
+confidence bound $p_{\mathrm{U}}$ is found by asking which value of $p$ would
+make zero observed defects occur with probability $\alpha$:
+
+\begin{equation}
+(1-p_{\mathrm{U}})^N=\alpha,
+\qquad
+p_{\mathrm{U}}=1-\alpha^{1/N}
+=1-(1-C)^{1/N}.
+\label{eq:mfg-zero-defect-bound}
+\end{equation}
+
+At 95\% confidence, $\alpha=0.05$. For $N=200$ units,
+
+\begin{equation}
+p_{\mathrm{U}}
+=1-0.05^{1/200}
+\approx 0.0149
+=1.49\%.
+\end{equation}
+
+For small $p$, use $\ln(1-p)\approx-p$. The exact expression then becomes
+
+\begin{equation}
+p_{\mathrm{U}}
+\approx\frac{-\ln(\alpha)}{N}
+=\frac{-\ln(0.05)}{N}
+\approx\frac{2.996}{N}
+\approx\frac{3}{N}.
+\label{eq:mfg-rule-of-three}
+\end{equation}
+
+This approximation is the \textbf{rule of three}. With zero observed defects
+in 200 units, the approximate 95\% upper bound is therefore $3/200=1.5\%$, or
+15{,}000~DPPM. The result is one-sided because the practical question is how
+large the defect probability could still be; the lower bound after zero
+observations is zero.
+
+The frequentist meaning is specific. If the true defect probability were above
+$p_{\mathrm{U}}$, observing zero defects in $N$ units would occur less than 5\%
+of the time. The statement does not mean that there is a 95\% probability that
+$p$ lies below the bound, and it does not claim that the actual defect
+probability equals the bound. It states which defect probabilities remain
+compatible with the zero-defect result under the model.
+
+The bound is useful because it prevents a small clean sample from being
+described as low-DPPM evidence. To plan a zero-defect demonstration for a target
+upper bound $p_\star$, solve
+
+\begin{equation}
+N
+\ge
+\frac{\ln(1-C)}{\ln(1-p_\star)}
+\approx
+\frac{-\ln(1-C)}{p_\star}.
+\label{eq:mfg-zero-defect-sample-size}
+\end{equation}
+
+For example, a 95\% upper bound of 100~DPPM
+($p_\star=10^{-4}$) requires about 30{,}000 independent, representative units
+with zero observed defects. Larger samples do not repair invalid assumptions.
+Repeated tests of the same unit are not independent units, correlated units
+from one lot provide less population evidence, a biased sample does not
+represent production, and an imperfect screen bounds observed detections rather
+than true escapes.
+
+This Bernoulli bound concerns a per-unit defect probability at a defined
+manufacturing boundary. A time-based reliability claim instead uses accumulated
+exposure and a failure-rate model, such as the zero-failure Poisson bound in
+\Cref{sec:qual-sample-strategy}.
+
 Preserve unit genealogy: product revision, firmware, calibration version,
 material lots, supplier sites, process tools, station, timestamp, test-software
 revision, fixture, raw measurements, applied limits, and complete retest or
@@ -796,10 +882,13 @@ cannot support, and which evidence must continue through the controlled ramp.''
 \textit{Answer pivot.} ``Enough for which claim? If the 200 are balanced across
 the intended sources of variation, they may characterize central distributions,
 early yield, and station behavior. But even with zero observed defects, the
-approximate one-sided 95\% upper bound is about $3/200$, or 1.5\%, under an
-independent Bernoulli model. That is nowhere near evidence for a low-DPPM escape
-claim. I would state the precision, population coverage, and release decision
-those units actually support.''
+exact one-sided 95\% upper bound under an independent Bernoulli model is
+$1-0.05^{1/200}=1.49\%$. The rule of three approximates it as $3/200=1.5\%$,
+or 15{,}000~DPPM. That is a bound on what the clean sample fails to rule out,
+not an estimate that the actual defect probability is 1.5\%. It is nowhere near
+evidence for a low-DPPM escape claim. I would state the precision, population
+coverage, and release decision those units actually support''
+(\Cref{sec:mfg-zero-defect-bound}).
 
 \textit{Trap:} ``We always validate with 200 units because that sample size is
 statistically significant.''
