@@ -523,11 +523,37 @@ the process mean and let $\sigma$ denote the estimated process standard
 deviation. In the equations below, $\mathrm{LSL}$ and $\mathrm{USL}$ denote the
 chosen lower and upper limits (either the product specification limits or the
 guardbanded ATP limits, which must be named with the result). The common
-two-sided capability indices are
+two-sided capability indices compare the process distribution with those
+limits.
+
+\textbf{Potential capability} asks a spread-only question: if the current
+process variation remained unchanged and the mean were placed exactly at the
+midpoint between the limits, would the distribution fit with adequate room?
+For an approximately normal distribution, the interval from $\mu-3\sigma$ to
+$\mu+3\sigma$ contains about 99.73\% of the population. Its width,
+$6\sigma$, is therefore called the natural process spread in this capability
+model. The potential capability index is
 
 \begin{equation}
 C_p=\frac{\mathrm{USL}-\mathrm{LSL}}{6\sigma}
 \end{equation}
+
+Thus, $C_p$ is the available limit width divided by the natural process spread:
+\begin{itemize}
+\item $C_p=1$ means the limit width equals $6\sigma$. If perfectly centered,
+      each limit is only $3\sigma$ from the mean.
+\item $C_p>1$ means the process spread is narrower than the available width.
+      If centered, $C_p=1.33$ places each limit about $4\sigma$ from the mean,
+      while $C_p=1.67$ places each limit about $5\sigma$ from the mean.
+\item $C_p<1$ means the process spread is wider than the available width. Moving
+      the mean cannot make the process capable; variation must be reduced or
+      the requirement must legitimately change.
+\end{itemize}
+
+The word \emph{potential} matters because $C_p$ deliberately ignores where the
+mean actually sits. A narrow process can have an attractive $C_p$ and still
+produce nonconforming units if it runs close to one limit. The location-aware
+index is
 
 \begin{equation}
 C_{pk}=
@@ -537,9 +563,16 @@ C_{pk}=
 \right)
 \end{equation}
 
-$C_p$ compares process spread with the available specification width and
-describes potential capability if the process were centered. $C_{pk}$ also
-penalizes an off-center mean.
+$C_{pk}$ measures the distance from the actual mean to the nearer limit in
+units of $3\sigma$. It equals $C_p$ only when the process is centered between
+the limits and is smaller whenever the mean is off-center. The comparison is
+diagnostic: a low $C_p$ points first to excessive variation, while a strong
+$C_p$ paired with a much lower $C_{pk}$ points first to a centering or drift
+problem. Neither index is a defect-rate guarantee. Both depend on process
+stability, the distribution model, the $\sigma$ estimator, sample size, and the
+measurement system. Values such as 1.33 or 1.67 are common program targets, not
+universal laws; the required threshold must be set in advance from product risk
+and the decision being supported.
 
 \paragraph{Numerical capability example.}
 Suppose transmitter wavelength has specification limits
