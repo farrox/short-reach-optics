@@ -5,39 +5,41 @@ title: "Ch 9: Manufacturing Validation: Reproducing and Controlling the Design"
 
 # 9 Manufacturing Validation: Reproducing and Controlling the Design
 
-*Read this chapter for:* the factory evidence system that freezes a production reference, trusts measurements, interprets yield and capability, chooses controls, ramps under exposure limits, and reacts to escapes.
+*Read this chapter for:* how to turn a qualified design into a controlled production system: define the production reference, expose representative variation, trust the measurements, establish yield and capability, validate controls, and authorize a bounded ramp.
 
-*Use the readiness and reliability chapters for:* the product-readiness lifecycle and phase labels (Chapter 7, §7.1), and the lifetime confidence argument (Chapter 8).
+*Use the readiness and reliability chapters for:* lifecycle and phase ownership (Chapter 7, §7.1) and the mechanism-driven lifetime confidence argument (Chapter 8).
 
-*Use the manufacturing reference appendix for:* NPI gate evidence lookup, laser ATP checklists, FAIR packages, and gauge templates (Appendix G).
+*Use the manufacturing reference appendix for:* NPI gate-evidence lookup, laser ATP checklists, FAIR packages, and measurement-system templates (Appendix G).
 
-A qualified engineering design is not automatically a manufacturable product. Engineering units may be assembled by experts, selected for favorable components, calibrated individually, reworked repeatedly, and measured with laboratory instruments that cannot support production takt time. Manufacturing validation proves that the factory can repeatedly build, measure, trace, detect, and control the qualified design across materials, operators, tools, shifts, sites, test stations, and time.
+A qualified design is not automatically a manufacturable product. Engineering units may be assembled by experts, use favorable components, receive individual calibration and repeated rework, and be judged with laboratory instruments that cannot support production cycle time. Those units can demonstrate design performance while saying little about what a factory will reproduce across materials, lots, operators, tools, shifts, sites, stations, and time.
 
-The aim is not to prove that every future unit will be good. The aim is to establish a system that can repeatedly produce acceptable output, detect unacceptable output, identify affected populations, and correct drift before it becomes a fleet problem. The input is the design bounded by Chapter 8.
+Manufacturing validation closes that gap. It is the evidence that a defined production system can repeatedly build the released design, measure it well enough to make decisions, expose and control important sources of variation, detect unacceptable output, preserve unit genealogy, and react when the process moves. It is not one pilot lot, an acceptable final-yield number, a PVT label, or the presence of a 100% outgoing test.
+
+The output is a bounded decision: hold, run a restricted ramp, or authorize volume under named controls, owners, exposure limits, and change triggers. The claim is not that every future unit will be good. The claim is that the factory can produce acceptable output predictably, identify the population at risk when something changes, and correct the system before the change becomes a fleet problem. Reliability qualification supplies the bounded design and mechanism evidence; manufacturing validation establishes whether production can reproduce and control it (Chapter 8).
 
 > **Canonical manufacturing-validation sequence**\
 >
-> - Freeze the production reference.
+> - **One: freeze the production reference.** Define exactly which design, materials, suppliers, processes, software, tools, and limits the validation evidence applies to.
 >
-> - Build representative populations.
+> - **Two: build representative populations.** Exercise the lots, sites, stations, shifts, tools, and product variants expected in production without confounding their effects.
 >
-> - Preserve genealogy.
+> - **Three: preserve genealogy.** Link every unit to its as-built configuration, process history, raw measurements, retests, rework, and release decision.
 >
-> - Validate the measurement system.
+> - **Four: validate the measurement system.** Show that the complete production test path is accurate, repeatable, reproducible, stable, and capable of resolving decisions near the limits.
 >
-> - Map yield and distributions.
+> - **Five: map yield and distributions.** Report first-pass and final outcomes while examining raw parameter centers, spreads, tails, mixtures, and movement in build order.
 >
-> - Establish capability and guardbands.
+> - **Six: establish capability and guardbands.** For a stable process, compare its distribution with the requirement and reserve justified margin for measurement uncertainty and supported drift.
 >
-> - Choose and validate production controls.
+> - **Seven: choose and validate production controls.** Place prevention or detection at the earliest effective point and prove its defect coverage and false-decision risk.
 >
-> - Establish SPC and reaction plans.
+> - **Eight: establish SPC and reaction plans.** Monitor trustworthy time-ordered signals and give every trigger an owner, containment window, investigation path, and restart rule.
 >
-> - Ramp under controlled exposure.
+> - **Nine: ramp under controlled exposure.** Increase volume through predefined gates with unit or customer exposure limits, hold criteria, and rollback paths.
 >
-> - Manage changes and feed escapes back into controls.
+> - **Ten: manage changes and feed escapes back into controls.** Keep every product or process delta traceable and use production and fleet failures to improve design, qualification, tests, and process controls.
 >
-> Do not interpret yield until the measurement system is trusted. Do not treat one pilot lot as sustained control.
+> The order matters: do not interpret yield before trusting the measurement system, do not quote capability for an unstable process, and do not treat one pilot lot as evidence of sustained control.
 
 ## What manufacturing validation proves
 
