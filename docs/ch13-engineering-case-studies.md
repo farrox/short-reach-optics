@@ -135,7 +135,7 @@ Add or tighten the production proxy that would have caught the signature; review
 
 ##### Fleet prevention.
 
-Burn down the installed cohort; keep the control owner until rates fall; feed the lesson into §7.3.13.
+Burn down the installed cohort; keep the control owner until rates fall; feed the lesson into §7.4.11.
 
 ##### Score yourself.
 
@@ -258,7 +258,7 @@ Mechanical alignment
 Power supply / PSRR</code></pre>
 ##### Decision tree.
 
-Appendix C.4, Appendix D.4, §7.3.7: scope; power versus quality; measure remaining margin at the failing temperature first.
+Appendix C.4, Appendix D.4, §7.4.5: scope; power versus quality; measure remaining margin at the failing temperature first.
 
 ##### Measurements selected.
 
@@ -302,7 +302,7 @@ Problem: BER fail at high temperature, power stable. Impact: envelope risk. Evid
 
 ##### Deep dive.
 
-Appendix C.4, §7.3.7, Appendix A.10.3, §11.12.
+Appendix C.4, §7.4.5, Appendix A.10.3, §11.12.
 
 ## Case 4: Qualification escape
 
@@ -376,7 +376,7 @@ Add the stress or observable that would have caught it; widen sample strategy; a
 
 ##### Fleet prevention.
 
-Keep cohort burn-down and a decision owner until rates fall; feed §7.3.13.
+Keep cohort burn-down and a decision owner until rates fall; feed §7.4.11.
 
 ##### Score yourself.
 

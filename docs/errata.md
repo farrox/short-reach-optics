@@ -187,6 +187,16 @@ No new frameworks. Structural relocation of existing material is allowed.
   Ch8--11 cross-language, App~C wall chart, glossary, and App~A readiness
   ladder wording. Old HTML slug redirects from `ch7-optical-validation`.
   PDF about 441 pages.
+- **Ch7 compression and measurement appendix:** Cut Chapter~7 from about 44 to
+  about 16 pages (body $\sim$2150 to $\sim$840 lines) by relocating instrument,
+  TDECQ/SECQ procedure, measurement-mapping, link-budget accounting, and CMIS
+  register detail to new Appendix~E Optical Measurement and Test Reference
+  (`app:measurement-reference`). Removed Method~A/B naming. Moved FEC histogram
+  teaching to Chapter~10 (`sec:fec-symbol-histogram`) and fleet-triage plus
+  power/quality fork detail to Chapter~11 (`sec:fleet-triage`,
+  `sec:validation-fork`). Kept 11-step lifecycle, Step~5 split, bring-up/corners,
+  and 12 Interview Q\&As. HTML references page shifted to `ch20-references`;
+  stub retained at `ch19-references`. PDF about 427 pages.
 
 ## Typographical fixes
 

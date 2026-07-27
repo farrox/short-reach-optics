@@ -453,7 +453,7 @@ A good answer explains why each choice constrains the next one. A VCSEL path poi
 
 Before you open an instrument, walk the failure up the scope ladder (unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ site $\rightarrow$ fleet). Each rung changes the owner and the next action (Appendix D.5, Appendix D.9). Also ask time and change: sudden versus gradual, intermittent versus constant, and what changed just before the symptom. Scope often removes more hypotheses than the first bench measurement. A fleet-wide gradual drift cannot be a single dirty connector. A vendor-lot signature points to supplier containment before you redesign the module.
 
-Preserve the failing state and its telemetry before you reseat, clean, reboot, or change calibration. Capture CMIS monitors, pre-FEC BER, bias currents, temperatures, LOS and LOL flags, and firmware versions. An intermittent that disappears under debugging is still a real failure; you destroyed the evidence (§7.14, Table 11.1).
+Preserve the failing state and its telemetry before you reseat, clean, reboot, or change calibration. Capture CMIS monitors, pre-FEC BER, bias currents, temperatures, LOS and LOL flags, and firmware versions. An intermittent that disappears under debugging is still a real failure; you destroyed the evidence (§11.16, Table 11.1).
 
 > **Why experienced engineers ask about scope first?**
 >
@@ -467,7 +467,7 @@ Preserve the failing state and its telemetry before you reseat, clean, reboot, o
 
 ### Use the power-versus-signal-quality fork
 
-First ask whether received optical power changed. That one question splits the debug tree. Full instrument paths and worked examples live in §4.8, §7.13.
+First ask whether received optical power changed. That one question splits the debug tree. Full instrument paths and worked examples live in §4.8, §11.15.
 
 If power changed, stay on the power ledger: source enable, coupling, connectors, ORL, plant loss, and monitor calibration. Confirm with an external meter at a named plane before retuning eyes or equalizers.
 
@@ -538,7 +538,7 @@ The vendor designs internals. The customer characterizes externally observable b
 
 ### Know what each instrument answers
 
-Do not recite instrument names. Use Measurement $\rightarrow$ uncertainty removed $\rightarrow$ decision unlocked (Appendix D.14). Fast map: power meter (power ledger), LIV (device vs setpoint), OSA (spectral), RIN/ORL (floor), DCA (eye), BERT/FEC (waterfall shape), VNA (electrical plant), thermal chamber (reversible vs aging), bias sweep (control ledger). Details and reference planes live in §7.8, Table 7.4.
+Do not recite instrument names. Use Measurement $\rightarrow$ uncertainty removed $\rightarrow$ decision unlocked (Appendix D.14). Fast map: power meter (power ledger), LIV (device vs setpoint), OSA (spectral), RIN/ORL (floor), DCA (eye), BERT/FEC (waterfall shape), VNA (electrical plant), thermal chamber (reversible vs aging), bias sweep (control ledger). Details and reference planes live in Appendix E.1, Table E.1.
 
 ### Read a BER waterfall: shift, floor, and burst pattern
 
@@ -834,7 +834,7 @@ A ring wins when many wavelengths must fit on one die, in dense WDM and co-packa
 
 ### How do you decide whether a field issue is performance, reliability, or manufacturability?
 
-Wrong bucket, wrong owner, wasted weeks. Classify on the ticket before failure analysis starts (§7.14).
+Wrong bucket, wrong owner, wasted weeks. Classify on the ticket before failure analysis starts (§11.16).
 
 ##### Bucket 1: performance.
 
@@ -860,7 +860,7 @@ Install age, lot correlation, and trend shape (sudden, gradual, or corner- depen
 
 ### What would you put in fleet telemetry, and why?
 
-Telemetry exists to catch margin erosion early and to triage without pulling hardware. Log what discriminates hypotheses, not every register on the chip (§7.10, §7.14).
+Telemetry exists to catch margin erosion early and to triage without pulling hardware. Log what discriminates hypotheses, not every register on the chip (Appendix E.7, §11.16).
 
 ##### Per-lane observables.
 
@@ -886,7 +886,7 @@ Run a 45-minute mock interview. Pick six of the rehearsal questions at random. A
 
 ## Must-know abbreviations (drill list)
 
-Definitions live in Appendix G. Do not maintain a second glossary here. Drill the expansions cold, then say one measurement, stress, or decision each term unlocks.
+Definitions live in Appendix H. Do not maintain a second glossary here. Drill the expansions cold, then say one measurement, stress, or decision each term unlocks.
 
 ##### Optical / debug core.
 
@@ -1037,7 +1037,7 @@ Assume seven days, with the interview near the end of Day 7. Protect sleep. Eac
 
 ##### Day 7: Mock interviews.
 
-*Learn:* three cheat sheets below; Top 25 index (Appendix E); thirty-second callouts (Appendix C); whiteboard trees (Appendix D).\
+*Learn:* three cheat sheets below; Top 25 index (Appendix F); thirty-second callouts (Appendix C); whiteboard trees (Appendix D).\
 *Output:* Full mock. Light story review only. Stop two to three hours before the call. Sleep.
 
 ##### If you have less than seven days.

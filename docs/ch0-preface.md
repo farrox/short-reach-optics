@@ -17,11 +17,11 @@ Deep learning
 
 Interview preparation
 
-: Follow the one-week plan (Appendix A.13), practice cases (Appendix B), drill thirty-second answers and tradeoff questions (Appendix C), review the Top 25 index (Appendix E), and read how Staff judgment works (Appendix F).
+: Follow the one-week plan (Appendix A.13), practice cases (Appendix B), drill thirty-second answers and tradeoff questions (Appendix C), review the Top 25 index (Appendix F), and read how Staff judgment works (Appendix G).
 
 Incident / problem solving
 
-: Open the wall-chart trees (Appendix D), failure handbook (Chapter 11), case (Appendix B), Staff judgment (Appendix F), validation ladder (Chapter 7, Table 7.3), qualification (Chapter 8), or manufacturing validation (Chapter 9).
+: Open the wall-chart trees (Appendix D), failure handbook (Chapter 11), case (Appendix B), Staff judgment (Appendix G), validation ladder (Chapter 7, Table 7.3), qualification (Chapter 8), or manufacturing validation (Chapter 9).
 
 Start from the requirement, not the component. Move downward from system requirements to architecture, subsystem, component, and only then to the physics needed to make the decision. A choice at one layer constrains the next. The aim is operational judgment: reduce uncertainty enough to make the next decision, then name the control that prevents recurrence.
 

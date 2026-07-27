@@ -164,11 +164,11 @@ Table 5.4 is the PRD-sized list. Fill every row with a number (or an explicit "
 
 Work backward from the link, not forward from a marketing slide. The four steps below turn an architecture choice into requirements and control owners:
 
-1.  Close the optical ledger at target pre-FEC BER (§7.9, §3.12). That sets minimum launch OMA/power and maximum allowed penalties (transmitter and dispersion eye closure quaternary, TDECQ; ORL/RIN).
+1.  Close the optical ledger at target pre-FEC BER (Appendix E.5, §3.12). That sets minimum launch OMA/power and maximum allowed penalties (transmitter and dispersion eye closure quaternary, TDECQ; ORL/RIN).
 
 2.  From receiver BW and the RIN ceiling $Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$ (§4.3), set a stressed RIN limit with margin under the plant ORL you will actually see (not only a quiet bench).
 
-3.  From case-temperature and derating policy, set the LIV bias window and thermal class so the laser never sits on a kink or at abs-max in the fleet (§5.13, §7.11).
+3.  From case-temperature and derating policy, set the LIV bias window and thermal class so the laser never sits on a kink or at abs-max in the fleet (§5.13, §7.6).
 
 4.  From service model, choose ELSFP mate-cycle / hot-swap requirements or accept on-package life risk and write COD/aging controls accordingly (§5.14).
 
@@ -326,7 +326,7 @@ Ring heater / lock point
 
 Tables are usually segmented by temperature. Segment boundaries are a real failure mode: the debug story in §5.20.4 is a healthy laser reading the wrong temperature segment after thermal cycling. Keep calibration tables under change control and record the table version with every test result, or failures cannot be replayed.
 
-Recalibration should be triggered by evidence, not habit: a control-loop error residual that no longer converges, an actuator (TEC, heater, bias DAC) that approaches its rail, telemetry that disagrees with an external reference, a temperature excursion beyond the table range, or a repair, rework, or firmware change that invalidates stored coefficients. Repeated recalibration can mask physical drift: if coefficients keep walking, treat that as an aging, attach, monitor, or control problem, not a permanent fix. ATP must verify calibration at the temperature corners the fleet will see, not only at the station ambient (§7.11, Chapter 9).
+Recalibration should be triggered by evidence, not habit: a control-loop error residual that no longer converges, an actuator (TEC, heater, bias DAC) that approaches its rail, telemetry that disagrees with an external reference, a temperature excursion beyond the table range, or a repair, rework, or firmware change that invalidates stored coefficients. Repeated recalibration can mask physical drift: if coefficients keep walking, treat that as an aging, attach, monitor, or control problem, not a permanent fix. ATP must verify calibration at the temperature corners the fleet will see, not only at the station ambient (§7.6, Chapter 9).
 
 ## How lasers are qualified
 
@@ -360,7 +360,7 @@ Watch LIV and spectrum over HTOL or field life:
 
 - COD (catastrophic optical damage) at the facet under overstress.
 
-Each signature needs an evidence owner in qualification, production control, or fleet telemetry (§7.14, §8.3, Chapter 9).
+Each signature needs an evidence owner in qualification, production control, or fleet telemetry (§11.16, §8.3, Chapter 9).
 
 ## Aging curves, derating, and fleet FIT
 
@@ -390,7 +390,7 @@ Telcordia GR-468-CORE qualifies optoelectronic parts with accelerated stress (HT
 
 ##### When the projection is valid.
 
-Acceleration assumes the stress speeds up the *same* physical mechanism the fleet will see. The projection fails in two ways: the stress activates a mechanism the field never sees (solder creep or moisture ingress at a stress temperature the product never reaches), or the field sees a mechanism the stress never exercises (connector wear, bias-rail transients, thermal cycling from traffic load). So a qual number is a hypothesis, not a fact: compare field-return Pareto and failure signatures against the qual projection, and treat divergence as evidence that $E_a$ or the mechanism model is wrong, not that the fleet is unlucky (§7.14). Sudden fails (COD, ESD, cracked fiber attach) sit outside §5.2; classify those separately before you fit Arrhenius parameters.
+Acceleration assumes the stress speeds up the *same* physical mechanism the fleet will see. The projection fails in two ways: the stress activates a mechanism the field never sees (solder creep or moisture ingress at a stress temperature the product never reaches), or the field sees a mechanism the stress never exercises (connector wear, bias-rail transients, thermal cycling from traffic load). So a qual number is a hypothesis, not a fact: compare field-return Pareto and failure signatures against the qual projection, and treat divergence as evidence that $E_a$ or the mechanism model is wrong, not that the fleet is unlucky (§11.16). Sudden fails (COD, ESD, cracked fiber attach) sit outside §5.2; classify those separately before you fit Arrhenius parameters.
 
 ##### Derating.
 
@@ -422,7 +422,7 @@ extitDeep dive / pin map. Skip unless you are wiring the host connector. Twenty-
 
 ##### Qual hooks for suppliers.
 
-Acceptance test plans should cover the checklist in Table 9.3, §9.2: laser LIV/SMSR/RIN inside the module; optical power-class compliance; connector mating cycles and contamination/ORL; burn-in before ship; CMIS register sanity; and thermal class at rated case temperature. Module bring-up must also prove the CMIS enable sequence and ModuleReady laser policy (§7.11). Field returns split between laser wear-out and connector/fiber-attach faults; keep both in the triage tree (§7.14).
+Acceptance test plans should cover the checklist in Table 9.3, §9.2: laser LIV/SMSR/RIN inside the module; optical power-class compliance; connector mating cycles and contamination/ORL; burn-in before ship; CMIS register sanity; and thermal class at rated case temperature. Module bring-up must also prove the CMIS enable sequence and ModuleReady laser policy (§7.6). Field returns split between laser wear-out and connector/fiber-attach faults; keep both in the triage tree (§11.16).
 
 ## Optical safety and laser classes
 
@@ -442,11 +442,11 @@ The safety case scales with *total* launched power at an accessible location, no
 
 When fiber continuity is lost, open connectors and broken fiber can expose hazardous power. *APR* (automatic power reduction) holds output at or below Hazard Level 1M and probes for re-mate with safe low-power pulses. *ALS* (automatic laser shutdown) cuts power entirely and was common on older SDH links; for modern high-power systems APR with automatic restart is the preferred pattern because restart probes stay within the hazard limit . ITU-T G.664 requires power reduction to Hazard Level 1M within about 3 s of a continuity break, a restart inhibit window, and restart only at safe power.
 
-These mechanisms tie directly to CMIS and bring-up policy: lasers enable only when the host commands ModuleReady (§7.11, §7.10). APR/ALS is what makes a live ELSFP hot-swap survivable in a running rack (§7.11).
+These mechanisms tie directly to CMIS and bring-up policy: lasers enable only when the host commands ModuleReady (§7.6, Appendix E.7). APR/ALS is what makes a live ELSFP hot-swap survivable in a running rack (§7.6).
 
 ### What validation and ops owe
 
-Optical safety is a validation deliverable, not a compliance sticker. ATP should verify APR/ALS trip threshold and timing on representative open-fiber faults; label modules and cages with the rated class; document max launched power per port and per MPO breakout; and write service procedures for multi-fiber connectors. At fleet scale, a hot-swap runbook that assumes ALS works but was never tested in ATP is a real hazard. Fold the APR/ALS check into the ELS hot-swap corner in §7.11 alongside mate-cycle and ORL tests.
+Optical safety is a validation deliverable, not a compliance sticker. ATP should verify APR/ALS trip threshold and timing on representative open-fiber faults; label modules and cages with the rated class; document max launched power per port and per MPO breakout; and write service procedures for multi-fiber connectors. At fleet scale, a hot-swap runbook that assumes ALS works but was never tested in ATP is a real hazard. Fold the APR/ALS check into the ELS hot-swap corner in §7.6 alongside mate-cycle and ORL tests.
 
 ## CW-WDM source validation
 
@@ -537,7 +537,7 @@ Control margin
 
 : headroom in APC, TEC, heaters, ring lock, bias DACs, and calibration tables. A railed loop can fail the link while the diode is still healthy. Calibration corrects predictable variation; it does not restore exhausted physical or control margin (§5.11).
 
-Recompute the link at combined production corners. A nominal part at nominal temperature says little about whether a slow loss in two ledgers will push a tail unit across the pre-FEC BER limit. A composite external measurement (TDECQ, BER waterfall) may already include several internal penalties; do not subtract the same impairment again in the system budget (§7.9). §7.11, Table 7.7 carry the same ledgers into validation and fleet triage. The interview review compresses this checklist in Appendix A.8.4. The wall-chart form is Appendix D.10.
+Recompute the link at combined production corners. A nominal part at nominal temperature says little about whether a slow loss in two ledgers will push a tail unit across the pre-FEC BER limit. A composite external measurement (TDECQ, BER waterfall) may already include several internal penalties; do not subtract the same impairment again in the system budget (Appendix E.5). §7.6, Table 11.2 carry the same ledgers into validation and fleet triage. The interview review compresses this checklist in Appendix A.8.4. The wall-chart form is Appendix D.10.
 
 > **Why experienced engineers track five ledgers instead of one margin number?**
 >
@@ -574,7 +574,7 @@ Remaining margin
 Above deployment requirement?
   |-- YES --&gt; proceed
   |-- NO  --&gt; redesign / restrict / recalibrate / reject</code></pre>
-Not every debit is naturally in decibels. Depending on the subsystem, remaining margin may be optical power, sensitivity, BER or FEC headroom, eye or TDECQ, jitter, control range, lifetime, or yield. Validation often measures the net externally visible result; do not double-count internal penalties the test cannot separate (§7.9).
+Not every debit is naturally in decibels. Depending on the subsystem, remaining margin may be optical power, sensitivity, BER or FEC headroom, eye or TDECQ, jitter, control range, lifetime, or yield. Validation often measures the net externally visible result; do not double-count internal penalties the test cannot separate (Appendix E.5).
 
 ## Engineering lens
 
@@ -653,7 +653,7 @@ Table 5.10 is the decision sequence for a laser program. Measurement methods fo
 
 **Purpose.** Do bias, drive, chirp, and bandwidth close the eye at baud?
 
-**Exit criteria.** **Exit when** bias sweeps and TDECQ (or equivalent) at named driver conditions meet Tx quality limits (§7.6).
+**Exit criteria.** **Exit when** bias sweeps and TDECQ (or equivalent) at named driver conditions meet Tx quality limits (Appendix E.3).
 
 **Decision unlocked.** Freeze EAM/MZM/ring bias policy, or reject the modulator class for this rate.
 
@@ -691,7 +691,7 @@ Table 5.10 is the decision sequence for a laser program. Measurement methods fo
 
 ##### Fleet operation.
 
-**Purpose.** Which monitors distinguish source, modulator, cooler, and optical path (§7.14)?
+**Purpose.** Which monitors distinguish source, modulator, cooler, and optical path (§11.16)?
 
 **Exit criteria.** **Exit when** telemetry map, alarm thresholds, and golden baselines are named and owned.
 

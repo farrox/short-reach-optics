@@ -1591,6 +1591,7 @@ in time.
 \end{description}
 
 \subsection{FEC telemetry interpretation}
+\label{sec:fec-symbol-histogram}
 
 Averages are insufficient. For every FEC metric preserve lane, direction, code
 type, measurement interval, corrected and uncorrectable counts, codeword or
@@ -1599,6 +1600,15 @@ counter semantics. Two links with the same average error rate may have different
 operational risk if one has stationary random errors and the other has short
 bursts that approach the decoder limit. Do not state one universal pre-FEC
 threshold; tie thresholds to the actual FEC and PMD.
+
+An FEC \emph{symbol-error histogram} is not a DCA eye histogram. For a named
+KP4-class Reed--Solomon code on fixed-size symbols (\Cref{sec:kp4}), host or
+decoder counters report wrong symbols per codeword or versus time. Sparse,
+Poisson-like distributions fit steady noise. Bursty clumps fit time-local
+events: MPI, connector intermittents, unlock, supply or clock glitches. A burst
+can exceed correction capability even when long-run average BER still looks
+acceptable. Shape prioritizes hypotheses; confirm with ORL, timing, swaps, and
+plant disturbance (\Cref{sec:fm-ber-increase,ch:failure-modes}).
 
 \subsection{Retrain, flap, and recovery counters}
 

@@ -32,7 +32,7 @@ Controlled confirmation
 Decision + owner + timeline + reversibility
   |
 Follow-up control (ATP / SPC / telemetry / supplier)</code></pre>
-Stable average power deprioritizes gross optical loss but does not eliminate fast power fluctuations, clipping, monitor averaging, or reflection-dependent effects. A surviving hypothesis is only the leading mechanism until confirmed by reproduction, controlled swap, stress dependence, rollback, or physical evidence (§4.8, §7.13, Appendix D.16).
+Stable average power deprioritizes gross optical loss but does not eliminate fast power fluctuations, clipping, monitor averaging, or reflection-dependent effects. A surviving hypothesis is only the leading mechanism until confirmed by reproduction, controlled swap, stress dependence, rollback, or physical evidence (§4.8, §11.15, Appendix D.16).
 
 > **Why experienced engineers ask about scope before touching the lab?**
 >
@@ -136,7 +136,7 @@ Correlation analysis (which cohort?)
   |-- lot / date code / FW / cal / platform / location
   |
 Containment and corrective action</code></pre>
-Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (§7.14, §9.3).
+Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (§11.16, §9.3).
 
 > **Engineering heuristic.** Population behavior is usually more informative than one failing unit. A cohort plot often beats another hour on the same sample.
 
@@ -165,7 +165,7 @@ Golden swap / loopback
 Evidence
   |
 Owner + decision</code></pre>
-Bisect domains before opening packages (§7.12, §11.2).
+Bisect domains before opening packages (§4.8, §11.2).
 
 ## Supplier qualification
 
@@ -205,7 +205,7 @@ Recurrence control
 Decision closure: owner / timeline / reversibility / follow-up</code></pre>
 > **Engineering heuristic.** Contain first when the population can grow. Perfect mechanism stories do not unship yesterday's lot.
 
-Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (§9.6, §7.14, Appendix D.16).
+Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (§9.6, §11.16, Appendix D.16).
 
 ## Margin-consumption flow
 
@@ -230,7 +230,7 @@ Remaining margin
 Above deployment requirement?
   |-- YES --&gt; proceed
   |-- NO  --&gt; redesign / restrict / recalibrate / reject</code></pre>
-This is a conceptual margin flow. Measure net margin at a defined reference plane and avoid double-counting overlapping penalties (§5.19, §7.9).
+This is a conceptual margin flow. Measure net margin at a defined reference plane and avoid double-counting overlapping penalties (§5.19, Appendix E.5).
 
 ## Black-box versus engineering access
 
@@ -479,5 +479,5 @@ Compact navigation drills. Enter the correct route quickly. Do not invent a seco
 <div class="nav-links">
   <a href="ch14-thirty-second-interview-frameworks">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch16-optical-systems-staff-engineer-interview-questions">Next &rarr;</a>
+  <a href="ch16-optical-measurement-and-test-reference">Next &rarr;</a>
 </div>

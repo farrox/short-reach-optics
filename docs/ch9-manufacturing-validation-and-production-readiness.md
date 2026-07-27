@@ -39,7 +39,7 @@ A qualified engineering design is not automatically a manufacturable product. En
 
 Manufacturing validation therefore begins by defining the production reference. The team must know exactly which design, firmware, calibration, materials, processes, fixtures, and test limits are being evaluated. It then builds representative units using the intended process, preserves their genealogy, and determines how much observed variation comes from the product versus the measurement system.
 
-Only after the measurements are trusted can yield, capability, and process movement be interpreted. Production tests must then be shown to detect important defects efficiently. Statistical process controls and reaction plans keep the process stable as volume increases. Fleet and failure-analysis evidence complete the loop by revealing escapes that factory evidence did not predict (Chapter 11, §7.14).
+Only after the measurements are trusted can yield, capability, and process movement be interpreted. Production tests must then be shown to detect important defects efficiently. Statistical process controls and reaction plans keep the process stable as volume increases. Fleet and failure-analysis evidence complete the loop by revealing escapes that factory evidence did not predict (Chapter 11, §11.16).
 
 The aim is not to prove that every future unit will be good. The aim is to establish a system that can repeatedly produce acceptable output, detect unacceptable output, identify affected populations, and correct drift before it becomes a fleet problem. The input is the design bounded by Chapter 8.
 
@@ -93,7 +93,7 @@ New product introduction (*NPI*) is the cross-functional program that moves a de
 
 ##### Why program maturity changes the question.
 
-Early in the program the question is whether the architecture can be made to work at all (often during EVT), then whether behavior and margin are understood across the intended corners (often during DVT). Once the part is characterized, the question shifts to whether named failure mechanisms threaten life (reliability qualification, Step 6), then whether production tooling and suppliers can reproduce that qualified result across lots (manufacturing validation, Step 7, often emphasized in PVT). A pilot asks whether laboratory and factory assumptions survive a bounded, observable deployment. Mass production is not another system-validation experiment: it is sustained control with SPC, ECO, and RMA ownership (§7.3.11, §7.3.12).
+Early in the program the question is whether the architecture can be made to work at all (often during EVT), then whether behavior and margin are understood across the intended corners (often during DVT). Once the part is characterized, the question shifts to whether named failure mechanisms threaten life (reliability qualification, Step 6), then whether production tooling and suppliers can reproduce that qualified result across lots (manufacturing validation, Step 7, often emphasized in PVT). A pilot asks whether laboratory and factory assumptions survive a bounded, observable deployment. Mass production is not another system-validation experiment: it is sustained control with SPC, ECO, and RMA ownership (§7.4.9, §7.4.10).
 
 Do not use an EVT hero sample as PVT evidence, and do not treat MP as fleet monitoring alone. Hold a gate if the exit data are missing. Table 9.2 retrieves the gate questions and release calls; it does not define a second lifecycle beside the product-readiness Steps (§7.3, Appendix D.2).
 
@@ -132,7 +132,7 @@ SPC on LIV, SMSR, RIN, TDECQ, and mate-cycle yield; golden-unit tracking; gauge 
 
 ##### Fleet controls.
 
-Telemetry, lot traceability, RMA codes split by mechanism, and recurrence monitoring (§7.14). These catch what ATP never saw.
+Telemetry, lot traceability, RMA codes split by mechanism, and recurrence monitoring (§11.16). These catch what ATP never saw.
 
 A fast production power check does not establish life. HTOL does not prove every shipped unit has correct firmware. SPC does not detect an unmeasured mechanism. Source-level LIV, SMSR, and wavelength measurements can detect selected material or device shifts when those measurements are directly available and correlated to product risk. In a closed module, use a validated module-level proxy, supplier evidence, sampled audit, or genealogy-based control; do not claim internal measurement coverage when the production architecture does not expose it. RIN and ORL protect the reflection environment; EAM/DCA protects Tx quality on EML paths; CMIS protects field evidence. Burn-in may screen a demonstrated infant-mortality population. ESD robustness is primarily established through design qualification and handling controls; a finished-unit production screen may not reliably detect latent ESD damage. Thermal class protects the derate claim.
 
@@ -153,7 +153,7 @@ Qual lots are small. Production catches drift that qual missed.
 
 ##### Excursions: 8D / CAPA.
 
-When a lot fails ATP, incoming, or field triage lands in the manufacturability bucket (§7.14), run structured corrective action:
+When a lot fails ATP, incoming, or field triage lands in the manufacturability bucket (§11.16), run structured corrective action:
 
 1.  **Contain:** quarantine WIP and ship holds; identify suspect date codes in the fleet.
 
@@ -163,7 +163,7 @@ When a lot fails ATP, incoming, or field triage lands in the manufacturability b
 
 4.  **Verify closure:** containment confirmed effective; mechanism reproduced or physically confirmed; corrective action removes the failure; no unacceptable regression introduced; production control detects recurrence; next lots remain stable; field cohort trend improves. Re-run FAIR alone is not enough for environmental, intermittent, or fleet-specific escapes (Appendix D.16).
 
-Do not close 8D on "operator error" without a control that would have caught it at ATP or in process. If FA shows laser wear-out on a young unit, it may be a reliability screen gap, not a supplier process bug; reclassify with §7.14 before you argue FIT.
+Do not close 8D on "operator error" without a control that would have caught it at ATP or in process. If FA shows laser wear-out on a young unit, it may be a reliability screen gap, not a supplier process bug; reclassify with §11.16 before you argue FIT.
 
 ##### Milestone hygiene with partners.
 
@@ -244,7 +244,7 @@ $C_p$ measures potential spread if the process were centered. $C_{pk}$ also refl
 
 ### Test time is a cost, coverage is a risk
 
-Every second in the acceptance test plan (ATP) times millions of units is line capacity and real money. Every skipped measurement creates uncontrolled escape risk; it is not automatically a field DPPM event (§8.2). The core tension in high-volume manufacturing is how much coverage you buy per second. The expensive optical steps are thermal soak and corner runs, TDECQ on a sampling scope, BER dwell long enough to trust a low pre-FEC target, laser burn-in, and mate-cycle stress on ELSFP connectors. Some screens are statistical (sample burn-in from a lot, audit TDECQ on a subset). Safety and enable-sequence faults usually require 100% coverage. At source or subassembly level, LIV, SMSR, and wavelength may be economical direct controls when they are available and correlated to product risk. In a closed module, use a validated module-level proxy, supplier evidence, sampled audit, or genealogy-based control. Do not claim internal measurement coverage when the production architecture does not expose it (§7.10, §5.15, Table 9.3).
+Every second in the acceptance test plan (ATP) times millions of units is line capacity and real money. Every skipped measurement creates uncontrolled escape risk; it is not automatically a field DPPM event (§8.2). The core tension in high-volume manufacturing is how much coverage you buy per second. The expensive optical steps are thermal soak and corner runs, TDECQ on a sampling scope, BER dwell long enough to trust a low pre-FEC target, laser burn-in, and mate-cycle stress on ELSFP connectors. Some screens are statistical (sample burn-in from a lot, audit TDECQ on a subset). Safety and enable-sequence faults usually require 100% coverage. At source or subassembly level, LIV, SMSR, and wavelength may be economical direct controls when they are available and correlated to product risk. In a closed module, use a validated module-level proxy, supplier evidence, sampled audit, or genealogy-based control. Do not claim internal measurement coverage when the production architecture does not expose it (Appendix E.7, §5.15, Table 9.3).
 
 > **Tradeoff.** More production screening vs cost
 >
@@ -268,7 +268,7 @@ Every second in the acceptance test plan (ATP) times millions of units is line c
 
 ### Where the test happens: wafer, die, module, system
 
-Push defect detection as far upstream as correlation allows. Wafer-level or PIC probe catches process shifts (waveguide loss, ring resonance drift, bad heaters) before fiber attach and packaging spend. Killing a bad die at probe is orders of magnitude cheaper than an RMA (§8.7). Module ATP is the full functional test: optical power class, TDECQ or proxy, sensitivity spot-check, CMIS bring-up, and connector/ORL on ELS parts. System or golden-host bring-up catches interop: media type, firmware rev, equalizer defaults, and the corners in §7.11. Wafer test cannot catch fiber attach, FAU alignment, epoxy creep, or connector wear. Those failures must survive to module ATP and, for some signatures, to fleet telemetry (§7.14).
+Push defect detection as far upstream as correlation allows. Wafer-level or PIC probe catches process shifts (waveguide loss, ring resonance drift, bad heaters) before fiber attach and packaging spend. Killing a bad die at probe is orders of magnitude cheaper than an RMA (§8.7). Module ATP is the full functional test: optical power class, TDECQ or proxy, sensitivity spot-check, CMIS bring-up, and connector/ORL on ELS parts. System or golden-host bring-up catches interop: media type, firmware rev, equalizer defaults, and the corners in §7.6. Wafer test cannot catch fiber attach, FAU alignment, epoxy creep, or connector wear. Those failures must survive to module ATP and, for some signatures, to fleet telemetry (§11.16).
 
 ### ATE-to-bench correlation and gauge R&R
 
@@ -294,7 +294,7 @@ Golden-unit stability and station drift
 
 : Catch a stale golden or drifting ATE before it becomes a yield cliff or DPPM escape.
 
-A golden unit is a station monitor, not a universal accuracy standard. It can age, become contaminated, or be mishandled, so it needs controlled custody, recertification, and retirement criteria. Use good, marginal, and failing units across the measurement range for correlation, not one perfect center unit only. Keep a golden module (and golden laser subassembly for ELS), run gauge R&R across testers and shifts, and correlate CMIS monitors to bench instruments the same way you correlate TDECQ (§7.10). If the ATE and the DCA disagree, fix the correlation before you argue with the supplier about spec.
+A golden unit is a station monitor, not a universal accuracy standard. It can age, become contaminated, or be mishandled, so it needs controlled custody, recertification, and retirement criteria. Use good, marginal, and failing units across the measurement range for correlation, not one perfect center unit only. Keep a golden module (and golden laser subassembly for ELS), run gauge R&R across testers and shifts, and correlate CMIS monitors to bench instruments the same way you correlate TDECQ (Appendix E.7). If the ATE and the DCA disagree, fix the correlation before you argue with the supplier about spec.
 
 ##### Validating ATP coverage.
 
@@ -376,7 +376,7 @@ Manufacturing validation proves that the qualified design (Chapter 8) can be re
 
 ### How it is measured
 
-Production records first-pass and final yield, retest and rework rates, fallout by ATP row, measurement distributions, gauge repeatability, station correlation, and escaped defects per million. Keep the chain from incoming material through module ATP so a drift can be traced to its first observable point (§9.5, §9.2, §7.14).
+Production records first-pass and final yield, retest and rework rates, fallout by ATP row, measurement distributions, gauge repeatability, station correlation, and escaped defects per million. Keep the chain from incoming material through module ATP so a drift can be traced to its first observable point (§9.5, §9.2, §11.16).
 
 ### How it fails
 

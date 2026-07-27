@@ -21,7 +21,7 @@ A corrective action repairs the current mechanism. A recurrence control prevents
 
 ##### Recurrence-control closure.
 
-An incident is not closed when the unit recovers. Close only when a production or fleet control catches the same signature next time. The best control may be design, supplier process, incoming inspection, ATP, sampled audit, SPC, telemetry, service procedure, or qualification (Appendix D.3, §7.3.13). Each symptom section ends with a short *Recurrence control* line for that signature. Name the FA output category when you file the case (§11.13).
+An incident is not closed when the unit recovers. Close only when a production or fleet control catches the same signature next time. The best control may be design, supplier process, incoming inspection, ATP, sampled audit, SPC, telemetry, service procedure, or qualification (Appendix D.3, §7.4.11). Each symptom section ends with a short *Recurrence control* line for that signature. Name the FA output category when you file the case (§11.13).
 
 > **Why experienced engineers preserve state before reseating?**
 >
@@ -44,7 +44,7 @@ Confirm
 Correct
   |
 Prevent</code></pre>
-This is the only general incident sequence. Symptom-specific trees later in the chapter are local routes inside it. The debugging pyramid in §1.16, the power-versus-signal fork in §4.8, the fleet router in Table 7.7, and the wall-chart trees in Appendix D are the same method at different scales. Earlier chapters own mechanism physics. This chapter owns order of operations. Symptom routes:
+This is the only general incident sequence. Symptom-specific trees later in the chapter are local routes inside it. The debugging pyramid in §1.16, the power-versus-signal fork in §4.8, the fleet router in Table 11.2, and the wall-chart trees in Appendix D are the same method at different scales. Earlier chapters own mechanism physics. This chapter owns order of operations. Symptom routes:
 
 Power loss
 
@@ -311,7 +311,7 @@ TDECQ exceeds the PMD limit even though average power and ER look acceptable. Th
 
 ##### Likely hypotheses.
 
-TDECQ measures how much noise the transmitter can tolerate before BER exceeds the FEC threshold, relative to an ideal transmitter (§7.6). High TDECQ means the equalized eye is poor. Common causes: (1) insufficient EO bandwidth (modulator or driver roll-off), (2) poor level linearity (RLM $<$ 0.95; driver or modulator compression), (3) pattern-dependent effects (ISI from bandwidth limit, reflections, or impedance mismatch), (4) chromatic dispersion on FR-class fiber eating into the margin.
+TDECQ measures how much noise the transmitter can tolerate before BER exceeds the FEC threshold, relative to an ideal transmitter (Appendix E.3). High TDECQ means the equalized eye is poor. Common causes: (1) insufficient EO bandwidth (modulator or driver roll-off), (2) poor level linearity (RLM $<$ 0.95; driver or modulator compression), (3) pattern-dependent effects (ISI from bandwidth limit, reflections, or impedance mismatch), (4) chromatic dispersion on FR-class fiber eating into the margin.
 
 ##### Measurements, mechanism isolation, and confirmation.
 
@@ -459,13 +459,13 @@ Retest BER and sensitivity</code></pre>
 
 3.  Clean and re-inspect (dry-click cleaner or lint-free wipe with IPA). If the endface still fails IEC 61300-3-35 zone criteria, replace the jumper .
 
-4.  Measure insertion loss and ORL across the mated pair at the named plane. Compare to the link-budget allocation (§7.9).
+4.  Measure insertion loss and ORL across the mated pair at the named plane. Compare to the link-budget allocation (Appendix E.5).
 
 5.  Retest BER and sensitivity. Clearing after cleaning supports contamination as the leading mechanism; confirm with IL/ORL and watch for recurrence. Log connector location and date code.
 
 ##### Corrective action and recurrence control.
 
-After evidence is preserved: clean, re-inspect, and verify IL/ORL and BER. Preventive: dust caps on unused ports, "inspect before connect" in the service runbook, sealed cassettes or trunk cables that minimize open-ferrule exposure. For high-power paths (ELSFP, CW-WDM), burn damage requires replacement, not re-cleaning. Track contamination RMAs as a distinct failure code (not "laser failure") so FIT accounting stays honest (§7.14).
+After evidence is preserved: clean, re-inspect, and verify IL/ORL and BER. Preventive: dust caps on unused ports, "inspect before connect" in the service runbook, sealed cassettes or trunk cables that minimize open-ferrule exposure. For high-power paths (ELSFP, CW-WDM), burn damage requires replacement, not re-cleaning. Track contamination RMAs as a distinct failure code (not "laser failure") so FIT accounting stays honest (§11.16).
 
 > **Engineering heuristic.** Inspect before you clean, and photograph before you disturb. Cleaning first can erase the only evidence that the mate was dirty.
 
@@ -590,7 +590,7 @@ What volatile evidence will a reseat, reboot, clean, or retest destroy? Snapshot
 
 ##### Scope / classify / locate (short).
 
-Name the population (unit, lot, vendor, site, fleet) before instruments (§7.14). Record sudden versus gradual and whether cool-down recovers. Name which ledger moved first: power, noise, timing, spectrum, or control (Appendix A.8.4). **Exit when** population, time class, and first-moving ledger are evidenced. **Risk if skipped:** wrong containment width or the wrong instrument tour.
+Name the population (unit, lot, vendor, site, fleet) before instruments (§11.16). Record sudden versus gradual and whether cool-down recovers. Name which ledger moved first: power, noise, timing, spectrum, or control (Appendix A.8.4). **Exit when** population, time class, and first-moving ledger are evidenced. **Risk if skipped:** wrong containment width or the wrong instrument tour.
 
 ##### Falsify.
 
@@ -700,15 +700,216 @@ Owner and due date
 
 Preserve first because reseat and reboot destroy state. Scope next so containment width matches the population. Classify and locate margin before falsify so you pick the cheap separating test. Confirm before correct so you do not ship a story. Prevent last so the factory and fleet catch the next escape. Later steps must not compensate for a missing preserve pack or a wrong scope.
 
+## Power-versus-quality fork and fleet triage
+
+Incident diagnosis owns the discriminating fork and fleet-bucket map. Product-readiness Step 10 in Chapter 7 states the monitoring decision; the procedures live here.
+
+## The debugging fork: power versus signal quality
+
+Apply the debugging fork (§4.8) before sweeping parameters or changing firmware: check the power meter or CMIS Rx power monitor first. If power moved, the fault is in the optical path (laser, coupling, connector, fiber, MUX); if power held but BER or TDECQ worsened, it is signal quality (bandwidth, noise, jitter, bias, equalization, reflection). This one check prevents the most common incident mistake: retuning an equalizer or laser bias when the real cause is a dirty connector. Then check which margin ledger moved (§5.19) before descending to component physics.
+
+> **Why experienced engineers separate power from quality first?**
+>
+> Because average optical power is cheap to measure and rules out gross attenuation, but it says almost nothing about timing, noise, distortion, spectral alignment, or adaptation.
+
+> **What this usually means.** Stable average power with rising BER
+>
+> *Usually:* timing, adaptation, noise, spectral alignment, or intermittent control
+>
+> *Not:* gross attenuation or a simple dirty connector as the whole story
+
+> **Engineering heuristic.** Never spend an hour on a DCA or spectrum sweep when a five-minute golden swap or attenuator step can eliminate half the tree.
+
+<pre class="dectree" aria-label="Observation"><code>Observation
+  |
+Possible ledgers (power / noise / timing / spectrum / control)
+  |
+Measurements (power first)
+  |
+Hypotheses removed
+  |
+Decision
+  |
+Recurrence control</code></pre>
+> **Before debugging**
+>
+> Scope $\cdot$ time behavior $\cdot$ population $\cdot$ power or quality $\cdot$ highest-value measurement $\cdot$ decision $\cdot$ recurrence control (Appendix D.18).
+
+> **Engineering heuristic.** A passing BER on a golden host is not production readiness. Interop, margin, and manufacturing control still have their own questions.
+
+## Fleet and field triage
+
+Lab debug asks: *what is broken on this unit?* Fleet triage asks: *which bucket does this failure belong in, and who owns the fix?* Optical programs at fleet scale own that split across performance, reliability, and manufacturability. Wrong bucket wastes weeks (sending a contaminated connector to laser FA, or rewriting a SerDes FIR when the laser is rolling over).
+
+> **Engineering heuristic.** Contain the population and clear the measurement system before you open supplier FA. A wrong ticket burns calendar time you cannot get back.
+
+> **What this usually means.** Temperature-only failures that recover cool
+>
+> *Usually:* thermal margin, wavelength or lock drift, bias tables, receiver noise rise, or mechanics that move with case temperature
+>
+> *Not:* a permanent wear-out mechanism already proven by ship LIV alone
+
+> **Tradeoff.** More telemetry vs operational complexity
+>
+> *Improves:* Faster fleet debug, better cohort plots, earlier prediction
+>
+> *Worsens:* Firmware cost, storage, and interpretation burden
+>
+> *When acceptable:* When each new field answers a named decision
+>
+> *Experienced decision:* Every telemetry field needs an owner and a decision it enables. Otherwise it is noise.
+
+##### Three buckets.
+
+Classify every field issue before deep root-cause work:
+
+Performance
+
+: the design or operating point does not close the budget under the conditions seen in the fleet. Examples: TDECQ/RLM marginal at case temperature, host COM tight on LPO, ring unlock under thermal crosstalk, ORL-driven RIN that the architecture assumed away. Fix is usually retune, derate, firmware, or a design/spec change (Appendix E.3, §10.5.2, §3.14.3).
+
+Reliability
+
+: the unit met spec at ship and later degraded. Examples: LIV threshold rise, SMSR collapse, EAM bias creep, COD, TEC wear, epoxy creep on fiber attach. Fix is Arrhenius-backed life projection, burn-in/screen, derating, or field-replaceable lasers (§8.5, §5.13, §8.3, §5.14).
+
+Manufacturability
+
+: a subpopulation fails early or never met the ATP; the issue tracks lot, date code, supplier site, or assembly step. Examples: FAU misalign yield cliff, solder void on a driver die attach, incoming DPPM spike, CMIS register map mismatch on one firmware rev. Fix is SPC, ATP tighten, first-article, DPA, and 8D/CAPA with the supplier (§9.2, §8.7).
+
+A single symptom can sit in more than one bucket until you bisect. The tree below forces the split with telemetry first, then a short bench confirm, then an RMA label. Use the symptom procedures earlier in this chapter for bench confirmation.
+
+##### Telemetry you actually read.
+
+At scale you rarely start with a DCA. Start with what the host and module already report:
+
+- *CMIS* monitors and alarms: module temperature, supply rails, Tx/Rx optical power, laser bias (when exposed), wavelength or channel ID on WDM parts, LOS/LOL flags, and interrupt history (`IntL` on ELSFP; §5.14).
+
+- Host link state: CDR lock, pre-FEC BER, FEC symbol-error histogram shape (§3.12), equalizer tap saturation (§3.6).
+
+- Fleet context: rack position, case temperature, time since install, date code / lot, neighbor-link correlation (one bad fiber vs whole tray).
+
+##### Decision tree (symptom $\to$ bucket).
+
+Table 11.2 is the working map. Read left to right: observe, check telemetry, pick a provisional bucket, then run the named confirm measurement before you open an RMA or change a design rule.
+
+<pre class="dectree" aria-label="Fleet symptom"><code>Fleet symptom
+  |
+Scope analysis (how large?)
+  |
+Technical isolation
+  |
+Correlation analysis (which cohort?)
+  |
+Bucket: performance / reliability / manufacturability
+  |
+Contain / FA / ATP / telemetry
+  |
+Fleet monitoring</code></pre>
+Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (Appendix D.5).
+
+<table class="book-table"><tr><th>Symptom</th><th>First telemetry check</th><th>Bucket</th><th>Confirm on bench / FA</th><th>Typical fix owner</th></tr><tr><td>Link never comes up (fresh install)</td><td>CMIS presence, Vcc, Tx power flatline, LOS</td><td>Mfg or install</td><td>Visual fiber/connector; golden module swap; CMIS dump</td><td>Ops install; supplier ATP if lot-correlated</td></tr><tr><td>Intermittent LOS / burst errors</td><td>Rx power dropouts; FEC bursts; ORL events</td><td>Perf (ORL) or mfg (contam.)</td><td>Clean/inspect MT; ORL meter; RIN vs ORL (sec:laser-drivers,sec:rin-values)</td><td>Ops cleaning; packaging if repeat RMA</td></tr><tr><td>Pre-FEC BER high, power OK</td><td>Tap saturation; RLM/TDECQ if logged; case T</td><td>Perf</td><td>DCA TDECQ/RLM; host COM; LPO vs retimed path (sec:tdecq,sec:com)</td><td>Host SI / module Tx design</td></tr><tr><td>BER rises only at high case T</td><td>Module temp alarm; Tx power drop; walk</td><td>Perf or reliability</td><td>LIV at T; OSA grid; TEC current; EAM bias (sec:laser-aging)</td><td>Derate / TEC / laser supplier</td></tr><tr><td>Slow BER creep over weeks/months</td><td>Bias current up for same Tx power; SMSR if monitored</td><td>Reliability</td><td>LIV/SMSR vs ship ATP; Arrhenius lot history</td><td>Laser wear-out; ELS replace</td></tr><tr><td>Sudden hard fail, was healthy</td><td>Last good CMIS snapshot; neighbor links OK</td><td>Reliability (COD) or mfg (ESD)</td><td>Dark LIV; DPA on facet/solder; date-code cluster?</td><td>FA + supplier 8D</td></tr><tr><td>One date code / site fails early</td><td>Lot Pareto; burn-in escape rate</td><td>Mfg</td><td>Incoming SPC vs ATP; FA on sample of lot</td><td>Supplier CAPA; hold shipment</td></tr><tr><td>WDM / ring unlock, power OK</td><td>Channel ID; thermal of neighbors; lock-loop status</td><td>Perf</td><td>Resonance tune; crosstalk; CW-WDM line power (sec:lock-validation,sec:thermal-xtalk,sec:cwwdm-laser)</td><td>Lock firmware / thermal design</td></tr><tr><td>ELSFP swap restores link</td><td>Old module CMIS vs new; connector cycles</td><td>Reliability or mfg (connector)</td><td>Inspect MT; mating-cycle count; laser LIV in returned module (sec:elsfp)</td><td>Laser vs connector split in FA</td></tr></table>
+**Table 11.2.** Fleet triage map: symptom to provisional bucket to confirm measurement. Perf $=$ performance (design/operating point); reliability $=$ time-dependent wear; mfg $=$ lot/process/install excursion. Row notes follow.
+
+### Reading the fleet triage map
+
+Each row is a provisional route, not a confirmed root cause. Capture telemetry first. Confirm with the smallest measurement that can falsify the bucket. Then assign an owner.
+
+##### Link never comes up (fresh install).
+
+Ask whether the part is seated, powered, and managed before you open laser FA. CMIS presence, supply rails, Tx power flatline, and loss-of-signal (LOS) split install from product. Confirm with visual fiber/connector checks, a golden module swap, and a frozen CMIS dump. **Decision:** ops fix, or supplier ATP if the fail tracks a lot. **Risk if skipped:** manufacturing escapes get filed as design defects.
+
+##### Intermittent LOS / burst errors.
+
+Ask whether the plant is reflecting or contaminating. Rx power dropouts and bursty FEC histograms point at connectors or ORL before intrinsic RIN. Confirm with inspect/clean, ORL meter, and RIN versus ORL. **Decision:** cleaning discipline or packaging FA if RMAs repeat. **Risk if skipped:** burst tickets become endless laser replacements.
+
+##### Pre-FEC BER high, power OK.
+
+Power held, so leave the power ledger. Tap saturation, logged TDECQ/RLM, and case temperature point at signal quality or host SI. Confirm on a DCA and with host channel operating margin (COM) thinking on linear paths. **Decision:** host SI, module Tx design, or retune. **Risk if skipped:** you reseat fiber forever on a quality-path fail.
+
+##### BER rises only at high case $T$.
+
+Ask whether the operating point or the device changed with heat. Telemetry for temp alarms, Tx sag, and wavelength walk comes first. Confirm with LIV at temperature, OSA, TEC/heater codes, and modulator bias. Cool-down recovery raises $P(\mathrm{operating\ point})$; permanent shift raises $P(\mathrm{aging})$. **Decision:** derate, thermal design, or supplier life action. **Risk if skipped:** ambient-only debug misses the spent control ledger.
+
+##### Slow BER creep over weeks/months.
+
+Ask whether wear-out is spending the noise or power ledger. Bias current rising at fixed Tx power raises $P(\mathrm{aging})$. Confirm against ship ATP baselines (LIV, SMSR, power, spectrum) and lot history; recovery after recalibration raises $P(\mathrm{control/cal})$ instead. **Decision:** replace, derate, or update burn-in. **Risk if skipped:** FIT models stay optimistic until the fleet teaches you.
+
+##### Sudden hard fail, was healthy.
+
+Ask whether the event is catastrophic optical damage, ESD, or a shared infrastructure hit. Neighbor links and the last good CMIS snapshot matter. Confirm with dark LIV and physical FA; check date-code clusters. **Decision:** FA plus supplier 8D, or infrastructure fix. **Risk if skipped:** one COD event becomes a false process CAPA.
+
+##### One date code / site fails early.
+
+Ask whether this is a manufacturing subpopulation. Lot Pareto and burn-in escape rate are the first cuts. Confirm incoming SPC versus ATP and FA on a sample. **Decision:** quarantine, CAPA, hold shipment. **Risk if skipped:** a bad lot keeps deploying while FA studies one unit.
+
+##### WDM / ring unlock, power OK.
+
+Ask whether the spectral or lock ledger was spent while average power looked fine. Channel ID, neighbor thermal, and lock-loop status are the telemetry. Confirm resonance tune, crosstalk, and line power. **Decision:** lock firmware or thermal design. **Risk if skipped:** unlocks get mislabeled as random BER.
+
+##### ELSFP swap restores link.
+
+Ask whether the external laser, the connector, or the engine owned the fail. Compare old versus new CMIS and connector cycles. Confirm MT inspect and LIV on the returned module. **Decision:** split RMA codes for laser versus connector. **Risk if skipped:** FIT burns down the wrong wear-out mode (§5.14).
+
+### Why triage order matters
+
+Scope before mechanism. Telemetry before destructive FA. Bucket before owner. Confirm before CAPA. Closing the loop into ATP is part of the incident, not optional paperwork. Reversing that order produces NFF piles and merged RMA codes that make life models dishonest.
+
+##### How to walk an incident (order of operations).
+
+1.  **Stabilize and capture.** Freeze CMIS dump, host BER/FEC counters, rack $T$, and install age before anyone reseats the module. Reseating destroys connector evidence.
+
+2.  **Localize.** One link vs tray vs rack. Tray-wide points at power, cooling, or a shared ELS. Single-link points at that module, fiber, or host lane.
+
+3.  **Classify** with Table 11.2. Write the bucket on the ticket before FA starts.
+
+4.  **Confirm** with the smallest measurement that can falsify the bucket (golden swap, clean/inspect, LIV, TDECQ, ORL). Do not skip to DPA.
+
+5.  **Act.**
+
+    - Performance: change operating policy (derate, FIR, lock loop) or open a design/spec defect.
+
+    - Reliability: replace (ELSFP hot-swap when available), update FIT burn-down, tighten burn-in or derate (§5.13).
+
+    - Manufacturability: quarantine lot, incoming hold, supplier 8D with DPA photos and ATP deltas (§9.2).
+
+6.  **Close the loop.** Feed the signature back into ATP and CMIS alarm thresholds so the next incident trips earlier.
+
+##### Worked paths (three common tickets).
+
+*"High temp only."* CMIS shows module near thermal limit and Tx power sagging. Bucket starts as performance (thermal design / derate). A permanent LIV or spectrum shift at temperature that matches an aged lot raises $P(\mathrm{aging})$ and justifies moving the ticket toward reliability; cool-down recovery without baseline shift keeps it in performance. Measure OSA wavelength before blaming the laser: a ring unlock is still performance (§3.14.3, Chapter 6).
+
+*"Random burst errors, average power fine."* Check FEC histogram for clustered errors and CMIS for Rx power dropouts. Clean and measure ORL. If RIN rises with ORL, treat feedback/ORL as the leading performance hypothesis until confirmed. If ORL is fine and bursts track a date code, treat intermittent fiber attach as the leading manufacturing hypothesis. If bursts grow over months at fixed ORL, suspect laser or driver aging (§5.8, §5.13).
+
+*"ELSFP replace fixed it; returned module looks alive on the bench."* Alive LIV with high ORL sensitivity or a dirty MT face supports connector/ORL over laser wear-out; confirm with IL/ORL and recurrence. Dead or kinked LIV supports a reliability path. Split those RMA codes or FIT math blames the wrong mode (§5.14, §8.7).
+
+##### RMA labels that keep FIT honest.
+
+RMA codes should be distinct, not a single "optics fail":
+
+- laser wear-out (LIV/SMSR/EAM baselines support aging; not proof alone);
+
+- COD / sudden dark;
+
+- connector / contamination / ORL;
+
+- fiber attach / FAU;
+
+- driver / bias electronics;
+
+- host / SerDes / LPO eye (not module);
+
+- NFF (no-fault-found; track these; high NFF means bad triage).
+
+NFF rate and lot Pareto are as important as FIT. A rising NFF with clean LIV points at install practice or intermittent connectors, not Arrhenius.
+
 ## Interview takeaway
 
 **Key idea.** A useful failure analysis starts with a symptom and ends with a new control. Preserve the failing state, split shared from local behavior, clear the measurement system, and choose one measurement that can falsify the leading hypothesis. Return fleet and production evidence to the appropriate product-readiness step: requirement, architecture, characterization, system validation, reliability qualification, manufacturing validation, ATP, or fleet control. The corrective action is incomplete until production or fleet data show that the same signature no longer escapes.
 
-Junior mistake: reseat first, or close without a recurrence control (§7.14, Appendix B, Appendix C, Appendix F).
+Junior mistake: reseat first, or close without a recurrence control (§11.16, Appendix B, Appendix C, Appendix G).
 
 ### Interview Q&A: Failure Analysis
 
-Practice speaking these answers aloud. Prefer first-person incident reasoning over instrument inventories. Detail lives in §11.13, §11.13.2, §4.8, §7.14.
+Practice speaking these answers aloud. Prefer first-person incident reasoning over instrument inventories. Detail lives in §11.13, §11.13.2, §4.8, §11.16.
 
 ##### Question 1. Walk me through your failure-analysis process.
 

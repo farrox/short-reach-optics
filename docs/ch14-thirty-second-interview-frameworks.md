@@ -429,7 +429,7 @@ Rate / trend / customer impact
 Bucket: performance / reliability / manufacturability
   |
 Decision + owner + telemetry control</code></pre>
-**Key concepts.** Fleet economics and scope pick the owner before FA. Pulling units without a bucket wastes the only failing state you had (Appendix A.6, §7.14).
+**Key concepts.** Fleet economics and scope pick the owner before FA. Pulling units without a bucket wastes the only failing state you had (Appendix A.6, §11.16).
 
 **Measurements.** Telemetry query $\rightarrow$ scope and trend? $\rightarrow$ contain vs monitor.\
 Lot/date correlation $\rightarrow$ manufacturability? $\rightarrow$ supplier.\
@@ -449,7 +449,7 @@ Golden host in rack $\rightarrow$ environment vs module? $\rightarrow$ owner.
 
 **Thirty-second close.** I scope first, pick the bucket, contain if growing and supplier-specific, and name the owner of the next control.
 
-**Deep dive.** Appendix A.6, Table 7.7.
+**Deep dive.** Appendix A.6, Table 11.2.
 
 ## Supplier escape
 
@@ -572,7 +572,7 @@ Reproduce with dwell / stress
 Scope population
   |
 Decision: contain / ATP dwell / monitor</code></pre>
-**Key concepts.** Intermittents die when the evidence is destroyed. NFF is often a triage failure, not a healthy part (§7.14).
+**Key concepts.** Intermittents die when the evidence is destroyed. NFF is often a triage failure, not a healthy part (§11.16).
 
 **Measurements.** FEC histogram $\rightarrow$ burst vs Gaussian? $\rightarrow$ MPI / intermittent.\
 Time sync + event capture $\rightarrow$ state preserved? $\rightarrow$ FA.\
@@ -594,7 +594,7 @@ Mate/demate $\rightarrow$ connector? $\rightarrow$ hygiene / replace.
 
 **Thirty-second close.** I preserve state before reseating, reproduce with dwell, and refuse NFF without a reproduction and control plan.
 
-**Deep dive.** §7.14, Table 11.1.
+**Deep dive.** §11.16, Table 11.1.
 
 ## Production recurrence-control update
 
@@ -655,7 +655,7 @@ Golden units across stations $\rightarrow$ correlation? $\rightarrow$ ship.
 
 > **30-second answer (memorize).** Log what discriminates hypotheses: per-lane power, bias, pre-FEC BER and FEC histograms; module temperature and actuator drive; LOS/LOL with context. Require timestamp accuracy, sampling cadence, aggregation window, units, calibration/scaling, missing-data behavior, firmware/schema version, serial/lot/platform, event trigger, retention, and a decision owner. Alarm on trends and disagreements, not only hard thresholds. Therefore I would instrument the ledgers margin testing said die first.
 
-Add a register only if it changes contain, derate, RMA, or FA ownership. Full tradeoff: §7.14.
+Add a register only if it changes contain, derate, RMA, or FA ownership. Full tradeoff: §11.16.
 
 <pre class="dectree" aria-label="Telemetry purpose: early margin erosion"><code>Telemetry purpose: early margin erosion
   |
@@ -686,7 +686,7 @@ Actuator near rail $\rightarrow$ control margin? $\rightarrow$ thermal design.
 
 **Thirty-second close.** I instrument the ledgers that discriminate hypotheses and alarm on trends and disagreements that unlock triage.
 
-**Deep dive.** Appendix A.10.13, §7.10.
+**Deep dive.** Appendix A.10.13, Appendix E.7.
 
 ## Qualification planning
 
@@ -795,7 +795,7 @@ Staff follow-ups often stop asking "what test?" and start asking "given constrai
 
 *Benefit:* faster fleet triage and earlier margin erosion detection.\
 *Downside:* firmware, storage, alarm fatigue.\
-*Criteria:* each field needs a decision owner and a reaction plan (Appendix C.14, §7.14).
+*Criteria:* each field needs a decision owner and a reaction plan (Appendix C.14, §11.16).
 
 ##### Would you run more qualification?
 

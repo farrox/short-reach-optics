@@ -136,7 +136,7 @@ WDM trades fiber simplicity for wavelength-control complexity. That burden is de
 
 The book develops optical power, OMA, extinction ratio, receiver sensitivity, noise, RIN, BER, dispersion, bandwidth, link budgets, and thermal response because a quantitative model lets you predict behavior, identify dominant terms, allocate margin, choose a measurement, detect double counting, and know when a result is surprising.
 
-Models are bounded by assumptions. A model is valuable when its assumptions are visible and its prediction can be checked against hardware (Chapter 4, §7.9).
+Models are bounded by assumptions. A model is valuable when its assumptions are visible and its prediction can be checked against hardware (Chapter 4, Appendix E.5).
 
 ## Why validation, reliability, and manufacturing are separate
 
@@ -174,7 +174,7 @@ A qualified engineering unit does not prove that a factory can reproduce the res
 
 An optical module exists inside switch or accelerator architecture, topology, radix and bandwidth requirements, rack power, cooling, cable plant, redundancy, and deployment or service procedures. A component metric may not map directly to system value: lower module power may reduce cooling burden; additional reach may simplify topology; higher radix may reduce stages; a serviceable pluggable may beat a denser but hard-to-repair architecture; an optical technology may shift failures from replaceable modules into board-level assemblies (Chapter 10).
 
-Shipment is not the end of validation. The fleet may reveal rare interactions, process escapes, supplier correlations, installation problems, aging, environmental corners, firmware effects, and cohort differences. Failure analysis teaches how to preserve evidence, scope the population, separate symptom from mechanism, choose discriminating measurements, confirm the mechanism, contain risk, and change a recurrence control. A failure is not fully resolved when the unit works again. It is resolved when the affected population is understood and an effective recurrence control changes (Chapter 11, §7.14).
+Shipment is not the end of validation. The fleet may reveal rare interactions, process escapes, supplier correlations, installation problems, aging, environmental corners, firmware effects, and cohort differences. Failure analysis teaches how to preserve evidence, scope the population, separate symptom from mechanism, choose discriminating measurements, confirm the mechanism, contain risk, and change a recurrence control. A failure is not fully resolved when the unit works again. It is resolved when the affected population is understood and an effective recurrence control changes (Chapter 11, §11.16).
 
 ## How to read this book
 
@@ -323,15 +323,15 @@ Layer 1: System
 
 Layer 2: Signal quality
 
-: Eye, jitter, noise, equalization margin, FEC error distribution (§7.10, §7.14).
+: Eye, jitter, noise, equalization margin, FEC error distribution (Appendix E.7, §11.16).
 
 Layer 3: Link budget
 
-: Optical power, sensitivity, insertion loss, extinction ratio, ORL (§7.9).
+: Optical power, sensitivity, insertion loss, extinction ratio, ORL (Appendix E.5).
 
 Layer 4: Subsystem
 
-: Laser, modulator, driver, photodiode, TIA, DSP, connector, fiber, or host SerDes; bisect with loopbacks and golden swaps (§7.12, §7.11).
+: Laser, modulator, driver, photodiode, TIA, DSP, connector, fiber, or host SerDes; bisect with loopbacks and golden swaps (§4.8, §7.6).
 
 Layer 5: Confirmed mechanism
 
