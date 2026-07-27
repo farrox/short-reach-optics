@@ -249,12 +249,6 @@ $$\begin{equation}
 
 where $G_{\mathrm{L}}$ and $G_{\mathrm{U}}$ are independently justified; a one-sided requirement uses only the applicable side. The budget may include reference-method uncertainty, repeatability and reproducibility, station-to-station correlation, resolution, test-condition conversion, and qualification-supported drift between production test and the claimed use condition. State how contributors are combined, including correlation, and identify margin already embedded in the product requirement so it is not counted twice.
 
-##### Numerical example.
-
-Suppose a transmitter wavelength specification is $$1295~\mathrm{nm}\leq\lambda\leq1325~\mathrm{nm}.$$ Thus, $\mathrm{LSL}_{\mathrm{spec}}=1295~\mathrm{nm}$ and $\mathrm{USL}_{\mathrm{spec}}=1325~\mathrm{nm}$. If the approved margin budget reserves $G_{\mathrm{L}}=2~\mathrm{nm}$ at the lower side and $G_{\mathrm{U}}=3~\mathrm{nm}$ at the upper side, the production limits are $$\mathrm{LSL}_{\mathrm{ATP}}=1295+2=1297~\mathrm{nm},
-\qquad
-\mathrm{USL}_{\mathrm{ATP}}=1325-3=1322~\mathrm{nm}.$$ The ATP therefore accepts measured wavelengths from 1297 through 1322 nm, inclusive. A unit measured at 1310 nm passes both ATP and the product specification. A unit measured at 1296 nm is still inside the product specification, but it fails ATP because it does not demonstrate the reserved lower-side margin. Likewise, a unit measured at 1323 nm is inside the specification but fails the upper ATP limit. Neither ATP failure alone proves that the unit is outside the product specification; it shows that the released production acceptance condition was not met.
-
 Every guardband creates two risks. Too little margin increases false accepts and field escapes. Too much margin increases false rejects, retest, rework, scrap, and capacity cost. Choose the limits from the consequence and uncertainty budget, validate the resulting decisions with representative marginal units, and version the limits with the test software and product configuration. A limit change requires measurement-system review, escape-risk assessment, affected-population disposition, approval, and revalidation; a yield excursion alone is not technical justification.
 
 For a stable, approximately normal, single-population process, let $\mu$ denote the process mean and let $\sigma$ denote the estimated process standard deviation. In the equations below, $\mathrm{LSL}$ and $\mathrm{USL}$ denote the chosen lower and upper limits (either the product specification limits or the guardbanded ATP limits, which must be named with the result). The common two-sided capability indices are
@@ -271,7 +265,27 @@ C_{pk}=
 \right)
 \end{equation}$$
 
-$C_p$ compares process spread with the available specification width and describes potential capability if the process were centered. $C_{pk}$ also penalizes an off-center mean. For a one-sided requirement, report the applicable one-sided index rather than inventing a second specification limit. Always name which limits were used (customer specification or guardbanded ATP limits) and report the sampling window, subgrouping, $\sigma$ estimator, and uncertainty in the estimate.
+$C_p$ compares process spread with the available specification width and describes potential capability if the process were centered. $C_{pk}$ also penalizes an off-center mean.
+
+##### Numerical capability example.
+
+Suppose transmitter wavelength has specification limits $\mathrm{LSL}=1295~\mathrm{nm}$ and $\mathrm{USL}=1325~\mathrm{nm}$. A stable process has $\mu=1307~\mathrm{nm}$ and $\sigma=3~\mathrm{nm}$. Its potential capability is $$C_p=\frac{1325-1295}{6(3)}
+   =\frac{30}{18}
+   =1.67.$$ The upper-side and lower-side capability values are $$\frac{\mathrm{USL}-\mu}{3\sigma}
+=\frac{1325-1307}{3(3)}
+=2.00,
+\qquad
+\frac{\mu-\mathrm{LSL}}{3\sigma}
+=\frac{1307-1295}{3(3)}
+=1.33.$$ Therefore, $$C_{pk}=\min(2.00,1.33)=1.33.$$ The process spread is narrow enough to produce $C_p=1.67$ if centered, but the mean is 3 nm below the specification midpoint of 1310 nm. The lower limit is therefore closer and controls $C_{pk}$. If the mean moved to 1310 nm without changing $\sigma$, then $C_{pk}$ would rise to 1.67 and equal $C_p$.
+
+The limits used in the calculation change the claim. If approved guardbands instead set $\mathrm{LSL}_{\mathrm{ATP}}=1297~\mathrm{nm}$ and $\mathrm{USL}_{\mathrm{ATP}}=1322~\mathrm{nm}$ for the same process, then $$C_{p,\mathrm{ATP}}=\frac{1322-1297}{6(3)}=1.39,
+\qquad
+C_{pk,\mathrm{ATP}}=
+\min\left(\frac{1322-1307}{3(3)},
+          \frac{1307-1297}{3(3)}\right)=1.11.$$ The product process has not changed. The indices are smaller because the ATP acceptance window is narrower than the product specification window.
+
+For a one-sided requirement, report the applicable one-sided index rather than inventing a second specification limit. Always name which limits were used (customer specification or guardbanded ATP limits) and report the sampling window, subgrouping, $\sigma$ estimator, and uncertainty in the estimate.
 
 Do not mix short-term within-subgroup indices with long-term overall performance. Between-lot, station, shift, and time variation belongs in the long-term production argument even when it is absent from a short qualification run. Likewise, do not force a normal capability calculation onto multimodal, autocorrelated, drifting, censored, or strongly non-normal optical data. Stratify known populations and use a justified distribution, direct percentile or defect-rate estimate, or additional data. A capability number never replaces SPC, a reaction plan, or engineering review of weak tails.
 
