@@ -137,9 +137,35 @@ Capability asks a narrower, predictive question: if the process continues to ope
 
 2.  **The process is statistically stable.** Time order, rational subgroups, and control charts must show that unresolved shifts, trends, mixtures, or special causes are not dominating the data. A capability index computed across a drifting process is a historical summary, not a prediction.
 
-Keep three kinds of limits separate. **Specification limits** come from the product requirement and define acceptable output. **Control limits** are calculated from process behavior and signal when the process has changed. **ATP limits** are production decision thresholds and may sit inside the specification limits. Control limits are not relaxed to improve yield, and they are not substituted for product specifications: a stable process can be stably off-center, while an unstable process can remain temporarily inside specification.
+### Three limits, three decisions
 
-An ATP guardband reserves margin for named uncertainties rather than adding an arbitrary safety factor. For two-sided requirements, write the decision limits explicitly as
+A limit is meaningful only when its requirement, reference plane, measurement condition, population, owner, and required action are named. Manufacturing uses three kinds of limits that may be applied to the same measurement but answer different questions:
+
+Specification limits
+
+: define conforming product. They come from the released product requirement and are evaluated at its stated reference plane and conditions. They do not move because the current process yield is high or low. A unit outside a specification limit is nonconforming unless the requirement itself is changed through the appropriate product process.
+
+Control limits
+
+: define the expected range of a statistically stable process or rational subgroup. They are estimated from time-ordered process data and are used to detect special causes, shifts, or trends. A point outside a control limit triggers the reaction plan; it does not, by itself, determine whether that unit conforms to the product specification.
+
+ATP limits
+
+: define the production disposition made by a particular test route. They are derived from the product requirement together with the approved measurement method, uncertainty budget, and any justified margin reservation. They may be tighter than the specification and produce an accept, reject, retest, rework, or review decision for each unit.
+
+The distinctions matter most when the limits disagree:
+
+- A unit can be inside specification but outside a control limit. The unit may conform, while the process still requires containment and investigation.
+
+- A unit can be outside specification while the process remains inside its control limits. The process may be stable but off-center or too wide, so the unit is nonconforming and the process is not capable.
+
+- A unit can be inside specification but outside a tighter ATP limit. It fails the released production route because the reserved margin is no longer demonstrated; it is not automatically proof that the product specification was violated.
+
+Never use specification limits as control limits, calculate control limits from the specification, or relax ATP limits merely to recover yield. Each action changes a different claim.
+
+### Derive guardbands from an explicit margin budget
+
+An ATP guardband is a controlled allocation for named uncertainty and future margin, not an arbitrary safety factor. For a two-sided requirement, express the production decision limits as follows. $\mathrm{LSL}_{\mathrm{spec}}$ and $\mathrm{USL}_{\mathrm{spec}}$ are the lower and upper specification limits. $\mathrm{LSL}_{\mathrm{ATP}}$ and $\mathrm{USL}_{\mathrm{ATP}}$ are the lower and upper limits used by the acceptance test procedure. $G_{\mathrm{L}}$ and $G_{\mathrm{U}}$ are the margins reserved on the lower and upper sides, respectively.
 
 $$\begin{equation}
 \mathrm{LSL}_{\mathrm{ATP}}=\mathrm{LSL}_{\mathrm{spec}}+G_{\mathrm{L}},
@@ -147,9 +173,11 @@ $$\begin{equation}
 \mathrm{USL}_{\mathrm{ATP}}=\mathrm{USL}_{\mathrm{spec}}-G_{\mathrm{U}},
 \end{equation}$$
 
-where the lower and upper guardbands may differ. Allocate them to documented contributors such as measurement uncertainty, station-to-station correlation, test-condition conversion, and qualification-supported drift. State whether the product specification already contains any of those margins so they are not counted twice. A tighter ATP limit reduces false accepts but increases false rejects, rework, and scrap; the chosen balance is a risk and cost decision.
+where $G_{\mathrm{L}}$ and $G_{\mathrm{U}}$ are independently justified; a one-sided requirement uses only the applicable side. The budget may include reference-method uncertainty, repeatability and reproducibility, station-to-station correlation, resolution, test-condition conversion, and qualification-supported drift between production test and the claimed use condition. State how contributors are combined, including correlation, and identify margin already embedded in the product requirement so it is not counted twice.
 
-For a stable, approximately normal, single-population process with a defensible estimate of $\sigma$,
+Every guardband creates two risks. Too little margin increases false accepts and field escapes. Too much margin increases false rejects, retest, rework, scrap, and capacity cost. Choose the limits from the consequence and uncertainty budget, validate the resulting decisions with representative marginal units, and version the limits with the test software and product configuration. A limit change requires measurement-system review, escape-risk assessment, affected-population disposition, approval, and revalidation; a yield excursion alone is not technical justification.
+
+For a stable, approximately normal, single-population process, let $\mu$ denote the process mean and let $\sigma$ denote the estimated process standard deviation. In the equations below, $\mathrm{LSL}$ and $\mathrm{USL}$ denote the chosen lower and upper limits (either the product specification limits or the guardbanded ATP limits, which must be named with the result). The common two-sided capability indices are
 
 $$\begin{equation}
 C_p=\frac{\mathrm{USL}-\mathrm{LSL}}{6\sigma}
