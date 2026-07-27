@@ -499,16 +499,49 @@ follow CEI-224G-Linear electrically while optical PMDs track 802.3dj.
 
 \bibitem[Telcordia(2004)]{gr468}
 Telcordia.
-\newblock \emph{GR-468-CORE: Generic Reliability Assurance Requirements for
-Optoelectronic Devices}.
+\newblock \citehref{gr468}{GR-468-CORE: Generic Reliability Assurance
+Requirements for Optoelectronic Devices Used in Telecommunications Equipment}.
+\newblock Active optoelectronics (lasers, LEDs, photodetectors, modulators,
+tunable lasers, optoelectronic receivers): qualification testing, accelerated
+aging, reliability assessment, and lot-to-lot controls. Evidence source for a
+mechanism-driven argument, not a complete product-readiness claim.
+
+\bibitem[Telcordia(1999)]{gr3013}
+Telcordia.
+\newblock \citehref{gr3013}{GR-3013-CORE: Generic Reliability Assurance
+Requirements for Optoelectronic Devices Used in Short-Life, Information-Handling
+Products and Equipment}, Issue~1 (December 1999).
+\newblock Shorter-life companion to GR-468 for active optoelectronics in
+information-handling equipment. Does not automatically apply to a current
+datacenter product without claim and architecture review.
 
 \bibitem[Telcordia(1999)]{gr1221}
 Telcordia.
-\newblock \emph{GR-1221-CORE: Generic Reliability Assurance Requirements for
-Passive Optical Components}, Issue~2 (January 1999).
+\newblock \citehref{gr1221}{GR-1221-CORE: Generic Reliability Assurance
+Requirements for Passive Optical Components}, Issue~2 (January 1999; later
+issues through Issue~3).
 \newblock Passive-component companion to GR-468: connectors, couplers, WDM
 filters, splitters, and isolators. Same stress families (damp heat, temperature
 cycle, mechanical, aging) scored on insertion and return loss rather than LIV.
+
+\bibitem[Telcordia(2010)]{gr1209}
+Telcordia.
+\newblock \citehref{gr1209}{GR-1209-CORE: Generic Requirements for Passive
+Optical Components}, Issue~4 (September 2010).
+\newblock Functional, environmental, and network-use criteria for passive
+optical components. Used with GR-1221; does not by itself complete reliability
+qualification.
+
+\bibitem[OpenLight(2025)]{openlightgr468}
+OpenLight Photonics.
+\newblock \citehref{openlightgr468}{OpenLight Achieves Successful Completion of
+Telcordia GR-468 Qualification for Silicon Photonics Components} (press release,
+March~24, 2025).
+\newblock Vendor announcement (provisional): GR-468 for lasers, EAMs, and
+photodetectors in a Tower PH18DA-based PDK; reported 2{,}000~h long-term suite
+(HTOL, damp-heat storage, temperature cycling, THB, ESD-HBM), with two lots
+$>$5{,}000~h and one $>$15{,}000~h without failures. Component/process evidence
+for that vendor, not a universal GR-468 matrix or field-life guarantee.
 
 \bibitem[Broadcom(2025)]{th6davisson}
 Broadcom Inc.
@@ -609,9 +642,13 @@ Supersede the older JEDEC-only JESD22-A114 (HBM) and JESD22-C101 (CDM) test meth
 \bibitem[JEDEC(2023)]{jesd78}
 JEDEC Solid State Technology Association.
 \newblock \href{https://www.jedec.org/standards-documents/docs/jesd-78b}{JESD78F.02, IC Latch-Up Test}.
-\newblock Published November 2023. Overvoltage and $\pm100$~mA current-injection
-test method for parasitic-thyristor latch-up susceptibility in CMOS, bipolar, and
-BiCMOS ICs; the failure mode COD is to a laser facet.
+\newblock Published November 2023. Component-level latch-up classification for
+CMOS, bipolar, and BiCMOS ICs: signal-pin current injection (I-Test/E-Test) and
+supply overvoltage; temperature Class~I versus Class~II ($T_\mathrm{j,max}$);
+Immunity Level~A commonly cites $\pm100$~mA pin injection and about
+$1.5\times$ maximum operating supply. Pass supports IC robustness for the named
+stresses; it does not establish module hot-plug or sequencing immunity. A
+latched driver can look like a dead laser until supply current is checked.
 
 \bibitem[AEC(2023--25)]{aecq100}
 Automotive Electronics Council.

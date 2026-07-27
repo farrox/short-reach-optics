@@ -214,6 +214,20 @@ No new frameworks. Structural relocation of existing material is allowed.
   HTML routes: reliability reference at `ch17-reliability-qualification-reference`;
   references at `ch21-references` with stubs at `ch19-references` and
   `ch20-references`. PDF about 441 pages.
+- **GR-468 as evidence source:** Rewrote Appendix~F GR-468 section as an
+  evidence-source argument (incomplete ``passed GR-468'' checklist; does not
+  establish readiness alone). Added ownership table covering GR-468, GR-3013,
+  GR-1221, GR-1209, and JEDEC methods (`tab:gr-standards-ownership`). Moved
+  Bellcore/Telcordia history to a sidenote. Kept OpenLight 2025 GR-468 report
+  as a labeled industry-example case box with provisional hour counts.
+  Ch8 standards table now points at GR-3013/GR-1209. PDF about 445 pages.
+- **Latch-up checkpoint ownership:** Chapter~8 keeps latch-up as a short
+  electronics-qualification checkpoint (susceptibility, not Arrhenius wear-out)
+  with a one-row Method/Contribution/Limitation table
+  (`tab:latchup-checkpoint`). JESD78 test classes, I-Test/E-Test injection,
+  Class~I/~II temperature, and acceptance-current detail live in Appendix~F
+  (`sec:latch-up`). A component pass does not claim module hot-plug or
+  sequencing immunity. PDF about 445 pages.
 
 ## Typographical fixes
 

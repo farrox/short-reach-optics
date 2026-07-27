@@ -22,55 +22,149 @@ passive MUX, and an MPO connector are qualified under four different documents
 written by four different communities. Split the qualification the same way you
 split the failure budget, and state which document backs each claim.
 
-\subsection{Telcordia GR-468 in practice}
+\subsection{GR-468 as a qualification evidence source}
 \label{sec:gr468}
 
-Optoelectronics inherited a common qualification language from telecom:
-\term{Telcordia GR-468-CORE}\citep{gr468}. It covers active optoelectronic
-devices, meaning the laser die, the photodiode, and the hermetic or
-non-hermetic package around them. The stresses that show up on every laser and
-module program are HTOL for powered life or mechanism evidence, temperature
-cycling, damp heat, ESD, and mechanical stress. Burn-in appears alongside them
-as a production infant-mortality screen when a demonstrated early-life
-population justifies it.
+\term{GR-468-CORE}, Generic Reliability Assurance Requirements for
+Optoelectronic Devices Used in Telecommunications Equipment, is a Telcordia
+generic-requirements document for the reliability assurance of active
+optoelectronic devices~\firstcite{gr468}. Its stated scope includes lasers,
+LEDs, photodetectors, modulators, tunable lasers, and optoelectronic receivers
+used in telecommunications equipment.\sidenote{GR document lineage. The GR
+family originated as Bellcore/Telcordia generic requirements for
+telecommunications equipment and components. The documents are now distributed
+through Ericsson's Telcordia information service. The historical origin
+explains their telecom terminology, but product applicability must still be
+established for the current architecture and use environment.}
 
-Map each stress onto the qualification evidence path in
-\Cref{sec:tree-qual-evidence} rather than treating the standard as a second,
-parallel sequence. Three practices keep GR-468 evidence honest:
+GR-468 provides an established vocabulary and method family for qualification
+testing, accelerated aging, reliability assessment, and lot-to-lot controls. It
+is an evidence source, not a substitute for the product's mechanism-driven
+qualification argument (\Cref{sec:qual-argument,sec:tree-qual-evidence}). The
+applicable stresses, sample populations, observables, and acceptance criteria
+depend on the device type, device level, intended environment, and supported
+claim.
+
+A statement that a device ``passed GR-468'' is therefore incomplete unless it
+identifies:
+\begin{itemize}
+\item the qualified device and process configuration;
+\item the represented lots and sites;
+\item the applicable stress rows and conditions;
+\item the measured degradation parameters;
+\item the acceptance criteria;
+\item the failures, censoring, and exposure;
+\item and the life or environmental claim being supported.
+\end{itemize}
+
+GR-468 is an important active-optoelectronic reliability reference. It supplies
+established methods and a common evidence language, but the engineering team
+must still demonstrate that the selected stresses accelerate credible
+mechanisms, that the samples represent the released design and process, and
+that the results support the product's actual life and environmental claims.
+GR-468 qualification does not by itself prove complete transceiver readiness, a
+universal field lifetime, manufacturing reproducibility, system
+interoperability, or fleet availability. Those claims require the additional
+evidence developed in \Cref{ch:product-readiness,ch:manufacturing,ch:networking}.
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:gr-standards-ownership}%
+\centering
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{@{}p{0.14\linewidth}p{0.22\linewidth}p{0.30\linewidth}p{0.28\linewidth}@{}}
+\toprule
+Reference family & Typical scope & Contribution to the evidence argument &
+Does not establish by itself \\
+\midrule
+GR-468 & Active optoelectronic devices and applicable device levels &
+Established reliability-assurance and accelerated-aging methods &
+Complete product readiness or universal field life \\
+\addlinespace[0.6em]
+GR-3013 & Active optoelectronic devices in short-life information-handling
+equipment & Reliability and quality-assurance criteria for shorter-life
+applications~\cite{gr3013} & Automatic applicability to the current product \\
+\addlinespace[0.6em]
+GR-1221 & Passive optical components & Reliability-assurance evidence for
+splitters, couplers, WDM filters, and related passive paths~\cite{gr1221} &
+Active-device life or system interoperability \\
+\addlinespace[0.6em]
+GR-1209 & Passive optical-component generic requirements & Functional,
+environmental, and network-use criteria~\cite{gr1209} & Complete reliability
+qualification by itself \\
+\addlinespace[0.6em]
+JEDEC device methods & Electronic ICs and semiconductor mechanisms & IC, ESD,
+latch-up, moisture, and process evidence (\Cref{sec:ic-reliability}) &
+Assembled optical-product readiness \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Standards ownership for
+optical-product reliability evidence. Choose the reference family from the
+architecture and claim, not from habit.\par}
+\end{table*}
+\FloatBarrier
+
+The selected standards must follow the actual architecture. A module containing
+active sources, electronic ICs, passive filters, connectors, and optical
+packages will usually require evidence from several method families.
+
+\endgraf\medskip\noindent
+\fcolorbox{keyidearule}{codebg}{%
+\begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}
+{\raggedright\footnotesize\textbf{Industry example: one reported GR-468
+implementation.}\par}
+\smallskip
+In 2025, OpenLight reported completing GR-468 qualification for lasers,
+electro-absorption modulators, and photodetectors integrated into its
+silicon-photonics process~\cite{openlightgr468}. The company reported a
+program containing 2{,}000~hours of long-term testing, including HTOL, damp-heat
+storage, temperature cycling, temperature-humidity bias, and ESD-HBM. It also
+reported two lots exceeding 5{,}000~hours and another exceeding 15{,}000~hours
+without failures.
+
+\smallskip
+{\raggedright\footnotesize This is useful evidence about that vendor's
+qualified components and process. It should not be read as a universal GR-468
+duration, stress matrix, sample count, or field-life guarantee. Vendor
+announcement; treat the hour counts as provisional.\par}
+\end{minipage}%
+}
+
+Three practices keep GR-468-style evidence honest when you map named stresses
+onto the qualification argument:
 
 \begin{itemize}
 \item Keep burn-in and qualification HTOL distinct. Burn-in screens infant
       mortality from a production population. Qualification HTOL gathers life
-      or mechanism evidence from representative samples. A 1{,}000-hour life
-      test may justify a room-temperature production proxy, a sampled hot
-      audit, a process monitor, or no direct production screen at all. It is
-      not itself a per-unit screen.
+      or mechanism evidence from representative samples. A long life test may
+      justify a room-temperature production proxy, a sampled hot audit, a
+      process monitor, or no direct production screen at all. It is not itself
+      a per-unit screen.
 \item Document the activation energy and confidence bounds whenever HTOL hours
       are converted into field years, and keep sample-size humility
-      (\Cref{sec:fit-dppm,ch:manufacturing}).
+      (\Cref{sec:fit-dppm,ch:manufacturing,sec:accel-validity}).
 \item Qualify the laser die, the package, and the module assembly separately
       when failures split across those boundaries
       (\Cref{sec:photonic-packaging,sec:laser-aging,sec:elsfp}).
 \end{itemize}
 
-Arrhenius acceleration underpins life projection only when the named failure
-mechanism is temperature-accelerated in the assumed regime
-(\Cref{sec:accel-validity}).
+\subsection{GR-1221 and GR-1209: the passive-component companions}
 
-\subsection{GR-1221: the passive-component companion}
-
-GR-468 covers active optoelectronics. Its companion, \term{Telcordia
+GR-468 covers active optoelectronics. For passive optics, use \term{Telcordia
 GR-1221-CORE} (Generic Reliability Assurance Requirements for Passive Optical
-Components), covers the parts GR-468 does not: connectors, fiber couplers, WDM
-filters and MUX/DEMUX, splitters, and isolators~\firstcite{gr1221}. It uses the
-same style of stress sequence, including damp heat, temperature cycling,
-mechanical tests, and aging, but scores pass or fail on insertion loss and
-return loss rather than on LIV.
+Components) together with \term{GR-1209-CORE} (Generic Requirements for Passive
+Optical Components)~\firstcite{gr1221,gr1209}. GR-1221 uses the same style of
+stress sequence, including damp heat, temperature cycling, mechanical tests,
+and aging, but scores pass or fail on insertion loss and return loss rather
+than on LIV. GR-1209 supplies the functional, environmental, and network-use
+criteria that the reliability stresses sit against.
 
 A short-reach link that leans on an on-package or blind-mate MUX and on
 external multi-wavelength sources therefore carries a passive reliability
-budget that lives in GR-1221, not GR-468
-(\Cref{sec:connector-reliability,ch:wdm}).
+budget that lives in GR-1221/GR-1209, not GR-468
+(\Cref{sec:connector-reliability,ch:wdm,tab:gr-standards-ownership}).
 
 \subsection{Electronics: JESD47, ESD, latch-up, and AEC-Q100}
 \label{sec:ic-reliability}
@@ -90,34 +184,61 @@ that GR-468 plays for the laser. The supplier runs the flow once and the
 customer accepts the report instead of renegotiating a qualification plan on
 every design win.
 
-\paragraph{ESD and latch-up.}
-Two mechanisms are specific to ICs and absent from the optical mechanism
-families in \Cref{tab:qual-mechanism-families}:
+\paragraph{ESD.}
+A discharge event during handling or assembly damages a gate oxide or junction.
+Component-level classification uses the human-body model (HBM) and charged-device
+model (CDM) test standards, \term{ANSI/ESDA/JEDEC JS-001} and
+\term{JS-002}~\firstcite{jsesd}. A driver or TIA datasheet HBM/CDM rating is the
+number that protects the part on the factory floor, at the fiber-attach and
+wire-bond stations where a laser die is also exposed. Latent ESD rarely has an
+economical every-unit screen. Do not project ESD with an activation energy. A
+field ESD failure is a manufacturing or design-margin item
+(\Cref{sec:fleet-triage}), not a wear-out FIT argument.
 
+\paragraph{Latch-up (JESD78): method detail.}
+\label{sec:latch-up}
+Latch-up is an electrical-susceptibility mechanism: a parasitic low-impedance
+path, classically a thyristor structure in CMOS or BiCMOS, turns on under
+current injection or supply overvoltage and holds a high supply current until
+power is cycled~\firstcite{jesd78}. It is not an Arrhenius wear-out process.
+\term{JESD78}\firstterm{JESD78} is the component-level method family used to
+classify whether an IC tolerates defined stresses without entering that state.
+Chapter~8 keeps the checkpoint and the contribution/limitation boundary
+(\Cref{tab:latchup-checkpoint}); the procedure detail lives here.
+
+JESD78-style testing has two stress families:
 \begin{description}
-\item[ESD] A discharge event during handling or assembly damages a gate oxide
-      or junction. Component-level classification uses the human-body model
-      (HBM) and charged-device model (CDM) test standards,
-      \term{ANSI/ESDA/JEDEC JS-001} and \term{JS-002}~\firstcite{jsesd}. A
-      driver or TIA datasheet HBM/CDM rating is the number that protects the
-      part on the factory floor, at the fiber-attach and wire-bond stations
-      where a laser die is also exposed.
-\item[Latch-up] A parasitic thyristor structure in CMOS turns on under an
-      overvoltage or current-injection event and holds a low-impedance path
-      until power is cycled. \term{JESD78}\firstterm{JESD78} defines the
-      overvoltage and $\pm100$~mA current-injection test that classifies
-      susceptibility by supply and signal pin~\firstcite{jesd78}. A latched
-      driver IC can look like a dead laser on the bench, with no light and no
-      LIV signature, until you check the supply current instead of the optical
-      path.
+\item[Signal-pin current injection] Current is forced into an I/O pin with a
+      voltage compliance limit (I-Test), or voltage is applied with a current
+      compliance limit (E-Test). Positive and negative polarities are exercised.
+      A common Immunity Level~A trigger target is $\pm100$~mA injection on
+      signal pins when that level is claimed.
+\item[Supply overvoltage] A defined overvoltage pulse is applied to a supply
+      group, often up to about $1.5\times$ the maximum operating supply (or a
+      stated maximum stress voltage chosen to avoid non-latch-up EOS damage).
 \end{description}
 
-ESD and latch-up are primarily design-qualification and process-control
-concerns. Targeted production measurements or screens may be used when their
-detection capability is validated, but many latent ESD conditions cannot be
-economically detected on every finished unit. Do not project either mechanism
-with an activation energy. A field ESD or latch-up failure is a manufacturing
-or design-margin item (\Cref{sec:fleet-triage}), not a wear-out FIT argument.
+Temperature classification matters because latch-up susceptibility usually
+rises with temperature. Class~II testing is performed at the maximum operating
+junction temperature (or an ambient/case temperature that achieves the
+equivalent $T_\mathrm{j}$). Class~I testing at a lower temperature is a weaker
+claim and is not a substitute for Class~II when the product thermal class
+reaches $T_\mathrm{j,max}$. After each stress pulse, supply current is compared
+with the pre-stress nominal current. Typical detection thresholds are an
+increase of about 10~mA when the nominal current is low, or about
+$1.4\times$ the nominal current when the device draws higher current; the
+exact acceptance limits follow the revision of JESD78 and the supplier report
+in force. A post-stress functional or ATE check is required because a short
+latch or EOS event can damage the die and then release before the latch-up
+tester records a sustained current increase.
+
+A latched driver or TIA can look like a dead laser on the bench: no light, no
+LIV signature, elevated supply current until power is cycled. Passing a
+component-level JESD78 classification supports IC robustness for the named
+injection and overvoltage stresses. It does not establish complete module
+immunity to hot-plug sequencing, shared-rail disturbance, connector events, or
+host-side grounding faults. Those remain system and manufacturing controls
+(\Cref{ch:manufacturing,sec:fleet-triage}).
 
 \paragraph{AEC-Q100 is supplemental evidence, not a datacenter requirement.}
 \term{AEC-Q100}\firstterm{AECQ100} is the automotive industry's qualification
@@ -361,3 +482,5 @@ cycling?\\
 \textit{Check.} Reflections raise the RIN and BER floor while average power
 barely moves. Inspect the endface and measure ORL before clearing the connector
 (\Cref{sec:connector-reliability}).
+
+\FloatBarrier

@@ -683,11 +683,21 @@ E. Säckinger. *Analysis and Design of Transimpedance Amplifiers for Optical Rec
 
 ## Reliability and manufacturing standards
 
+<a id="ref-gr3013"></a>**Telcordia(1999)**
+
+*Source type:* standard · *Date:* 1999
+
+Telcordia. GR-3013-CORE: Generic Reliability Assurance Requirements for Optoelectronic Devices Used in Short-Life, Information-Handling Products and Equipment, Issue 1 (December 1999). Shorter-life companion to GR-468 for active optoelectronics in information-handling equipment. Does not automatically apply to a current datacenter product without claim and architecture review. ([link](https://telecom-info.njdepot.ericsson.net/site-cgi/ido/docs.cgi?DOCUMENT=GR-3013&ID=SEARCH))
+
+<span class="bibkey">`gr3013`</span>
+
+---
+
 <a id="ref-gr1221"></a>**Telcordia(1999)**
 
 *Source type:* standard · *Date:* 1999
 
-Telcordia. *GR-1221-CORE: Generic Reliability Assurance Requirements for Passive Optical Components, Issue 2 (January 1999). Passive-component companion to GR-468: connectors, couplers, WDM filters, splitters, and isolators. Same stress families (damp heat, temperature cycle, mechanical, aging) scored on insertion and return loss rather than LIV. ([link](https://telecom-info.njdepot.com/))
+Telcordia. GR-1221-CORE: Generic Reliability Assurance Requirements for Passive Optical Components, Issue 2 (January 1999; later issues through Issue 3). Passive-component companion to GR-468: connectors, couplers, WDM filters, splitters, and isolators. Same stress families (damp heat, temperature cycle, mechanical, aging) scored on insertion and return loss rather than LIV. ([link](https://telecom-info.njdepot.ericsson.net/site-cgi/ido/docs.cgi?DOCUMENT=GR-1221&ID=SEARCH))
 
 <span class="bibkey">`gr1221`</span>
 
@@ -697,7 +707,7 @@ Telcordia. *GR-1221-CORE: Generic Reliability Assurance Requirements for Passive
 
 *Source type:* standard · *Date:* 2004
 
-Telcordia. *GR-468-CORE: Generic Reliability Assurance Requirements for Optoelectronic Devices. ([link](https://telecom-info.njdepot.com/))
+Telcordia. GR-468-CORE: Generic Reliability Assurance Requirements for Optoelectronic Devices Used in Telecommunications Equipment. Active optoelectronics (lasers, LEDs, photodetectors, modulators, tunable lasers, optoelectronic receivers): qualification testing, accelerated aging, reliability assessment, and lot-to-lot controls. Evidence source for a mechanism-driven argument, not a complete product-readiness claim. ([link](https://telecom-info.njdepot.ericsson.net/site-cgi/ido/docs.cgi?DOCUMENT=GR-468&ID=SEARCH))
 
 <span class="bibkey">`gr468`</span>
 
@@ -713,11 +723,21 @@ IEC. [IEC 61300-2-2:2009, Basic test and measurement procedures -- Mating durabi
 
 ---
 
+<a id="ref-gr1209"></a>**Telcordia(2010)**
+
+*Source type:* standard · *Date:* 2010
+
+Telcordia. GR-1209-CORE: Generic Requirements for Passive Optical Components, Issue 4 (September 2010). Functional, environmental, and network-use criteria for passive optical components. Used with GR-1221; does not by itself complete reliability qualification. ([link](https://telecom-info.njdepot.ericsson.net/site-cgi/ido/docs.cgi?DOCUMENT=GR-1209&ID=SEARCH))
+
+<span class="bibkey">`gr1209`</span>
+
+---
+
 <a id="ref-jesd78"></a>**JEDEC(2023)**
 
 *Source type:* standard · *Date:* 2023
 
-JEDEC Solid State Technology Association. [JESD78F.02, IC Latch-Up Test](https://www.jedec.org/standards-documents/docs/jesd-78b). Published November 2023. Overvoltage and 100 mA current-injection test method for parasitic-thyristor latch-up susceptibility in CMOS, bipolar, and BiCMOS ICs; the failure mode COD is to a laser facet.
+JEDEC Solid State Technology Association. [JESD78F.02, IC Latch-Up Test](https://www.jedec.org/standards-documents/docs/jesd-78b). Published November 2023. Component-level latch-up classification for CMOS, bipolar, and BiCMOS ICs: signal-pin current injection (I-Test/E-Test) and supply overvoltage; temperature Class I versus Class II (T_j,max); Immunity Level A commonly cites 100 mA pin injection and about 1.5 maximum operating supply. Pass supports IC robustness for the named stresses; it does not establish module hot-plug or sequencing immunity. A latched driver can look like a dead laser until supply current is checked.
 
 <span class="bibkey">`jesd78`</span>
 
@@ -750,6 +770,16 @@ JEDEC Solid State Technology Association and ESD Association. [ANSI/ESDA/JEDEC J
 JEDEC Solid State Technology Association. [JESD47M, Stress-Test-Driven Qualification of Integrated Circuits](https://www.jedec.org/standards-documents/docs/jesd-47g). Published August 2025. Baseline acceptance-test flow (temperature cycle, HTOL/HTSL, autoclave/HAST, mechanical shock and vibration) for qualifying an IC as a new product, a product family, or after a process change. The silicon-side counterpart to Telcordia GR-468-CORE for optoelectronics.
 
 <span class="bibkey">`jesd47`</span>
+
+---
+
+<a id="ref-openlightgr468"></a>**OpenLight(2025)**
+
+*Source type:* standard · *Date:* 2025
+
+OpenLight Photonics. OpenLight Achieves Successful Completion of Telcordia GR-468 Qualification for Silicon Photonics Components (press release, March 24, 2025). Vendor announcement (provisional): GR-468 for lasers, EAMs, and photodetectors in a Tower PH18DA-based PDK; reported 2,000 h long-term suite (HTOL, damp-heat storage, temperature cycling, THB, ESD-HBM), with two lots >5,000 h and one >15,000 h without failures. Component/process evidence for that vendor, not a universal GR-468 matrix or field-life guarantee. ([link](https://openlightphotonics.com/newsroom/openlight-achieves-successful-completion-of-telcordia-gr-468-qualification-for-silicon-photonics-components))
+
+<span class="bibkey">`openlightgr468`</span>
 
 ---
 

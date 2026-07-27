@@ -538,9 +538,36 @@ reproducible; otherwise debug integration.
 \subsection{Step 4: Characterize the behavior}
 \label{sec:ladder-characterization}
 
-Build the behavioral model: nominals, distributions, sensitivities, and cliffs.
-A characterization cliff improves understanding; it does not automatically fail
-the product (\Cref{sec:evidence-disciplines}).
+\paragraph{Characterization builds a behavioral model.}
+Characterization asks what the design does, how much it varies, what moves it,
+and where it stops working, not only whether it passes.
+
+\begin{description}
+\item[Nominal behavior] Typical performance under a defined baseline condition.
+\item[Distributions] Variation across units, lanes, lots, suppliers, and sites.
+      An average may look healthy while the weak tail has little margin.
+\item[Sensitivities] How strongly a result changes with temperature, voltage,
+      loss, reflection, wavelength, or host conditions.
+\item[Interactions] Combined variables may cause a larger penalty than each
+      variable tested alone.
+\item[Failure boundary] The condition where a requirement is first violated,
+      such as the received power at which BER crosses its limit.
+\item[Failure cliff] A small additional change causes a large performance
+      collapse. A characterization cliff improves understanding; it does not
+      automatically fail the product (\Cref{sec:evidence-disciplines}).
+\item[Failure signature] The pattern near failure, such as a shifted BER
+      waterfall, a BER floor, intermittent bursts, or a control output
+      approaching its limit.
+\end{description}
+
+For example, a receiver may typically fail at $-9.5$~dBm, while the weakest unit
+fails at $-8.7$~dBm. High temperature and a production host may move that
+boundary to $-7.4$~dBm. If the supported plant delivers $-7.0$~dBm, the design
+passes, but only with $0.4$~dB of measured margin.
+
+The output of characterization is therefore a map of population tails, thin
+margins, and high-risk combinations that verification and system validation
+must challenge.
 
 \textit{Evidence and handoff:} Name thin ledgers and candidate corners; proceed
 to Step~5, derate, or redesign before loaded-fleet claims.

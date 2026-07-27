@@ -17,7 +17,10 @@ fi
 trap 'rmdir "$LOCK" 2>/dev/null || true' EXIT
 
 run_xelatex() {
-  xelatex -interaction=nonstopmode -synctex=1 -output-directory="$BUILD" main.tex
+  # XeLaTeX often exits non-zero when the log only has warnings (undefined
+  # refs on early passes). Keep going so passes 2--3 can resolve them.
+  xelatex -interaction=nonstopmode -synctex=1 -output-directory="$BUILD" main.tex \
+    || true
 }
 
 run_xelatex
