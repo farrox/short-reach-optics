@@ -156,11 +156,36 @@ stressed $\mathrm{RIN}_x\mathrm{OMA}$ are different metrics.\par}
 traceable pass data against versioned limits tied to the requirements slice.
 \textbf{Decision:} ship, hold, or reopen DVT limits.
 
+\section{ANOVA gauge R\&R sketch}
+\label{sec:mfg-anova-gauge}
+
+This is a procedure-level sketch, not a statistics course. Worksheets,
+acceptance tables, and attribute studies live in the AIAG measurement-systems
+analysis reference~\cite{aiagmsa}. Why measurement-system analysis precedes
+yield interpretation: \Cref{sec:gauge-rr}.
+
+A crossed variable study typically uses $n$ parts that span the process range,
+$k$ appraisers (operators, stations, or shifts), and $r$ replicates of each
+part$\times$appraiser cell. An ANOVA random-effects model partitions the total
+observed variance into part-to-part, repeatability (equipment / method
+variation under fixed appraisal conditions), reproducibility (appraiser or
+condition contribution, often including part$\times$appraiser interaction), and
+gauge R\&R as the combined measurement contribution.
+
+Report the study with the metric, reference plane, units under test, and the
+decision the measurement must support. Common summary ratios include gauge R\&R
+as a fraction of total observed variation or of the tolerance width, and the
+number of distinct categories the measurement system can resolve. Treat those
+ratios as decision aids for a named ATP row, not as a universal green-light
+threshold for every optical metric. Destructive or non-replicable tests need
+alternate designs; do not force a crossed replicate study that the physics
+cannot support.
+
 \section{Gauge R\&R and station-correlation template}
 \label{sec:mfg-gauge-template}
 
-Use this checklist when teaching or auditing a production station. The chapter
-argument for why MSA precedes yield is in \Cref{sec:gauge-rr}.
+Use this checklist when teaching or auditing a production station. Background
+and ANOVA sketch: \Cref{sec:gauge-rr,sec:mfg-anova-gauge}.
 
 \begin{itemize}
 \item Define the metric, reference plane, and units under test (good, marginal,
@@ -177,6 +202,8 @@ argument for why MSA precedes yield is in \Cref{sec:gauge-rr}.
       is held.
 \item CMIS or embedded monitor correlation to the same bench instruments when
       telemetry is used as a production proxy.
+\item ANOVA gauge R\&R study design and reported variance components when a
+      quantitative measurement-system claim is required (\Cref{sec:mfg-anova-gauge}).
 \end{itemize}
 
 \section{FAIR and supplier evidence checklist}

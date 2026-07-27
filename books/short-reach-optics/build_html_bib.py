@@ -84,6 +84,8 @@ CATEGORY_OVERRIDES: dict[str, tuple[str, str]] = {
     "miller2009": ("books", "research"),
     "miller2017": ("books", "research"),
     "sackinger2018": ("books", "research"),
+    # Avoid MSA keyword routing this to "Standards and MSAs".
+    "aiagmsa": ("reliability", "standard"),
 }
 
 

@@ -707,7 +707,7 @@ failure mechanism, and why does failure timing matter?}
 then using timing to identify the failure regime.
 
 \textit{Spoken answer.}
-``A failure mode is what I observe---for example, low optical power, high BER,
+``A failure mode is what I observe: for example, low optical power, high BER,
 intermittent operation, or a dead lane. A failure mechanism is the physical or
 electrical process that caused the symptom, such as active-region degradation,
 optical-coupling shift, corrosion, solder fatigue, contamination, or ESD damage.
@@ -757,7 +757,7 @@ For a thermally activated mechanism, an Arrhenius model may translate stress
 exposure into equivalent use-condition exposure. However, the activation
 energy, temperature range, and other model parameters must be appropriate to
 that specific mechanism and process. I use the temperature at the relevant
-physical location---such as junction or active-region temperature---rather than
+physical location (such as junction or active-region temperature) rather than
 chamber air alone. I also define the degradation signature and failure criterion
 in advance, confirm that stressed and field-relevant samples exhibit consistent
 physical evidence, and account for duty cycle, operating conditions, sample
@@ -964,109 +964,209 @@ the complete module is qualified.''
 
 \paragraph{Question 9. Explain FIT, DPPM, sample size, and what zero failures
 actually mean.}
-\textit{Tests:} reliability statistics and denominator discipline.
+\textit{Tests:} denominator discipline, exposure-based confidence bounds, and
+population representation.
 
 \textit{Spoken answer.}
-``FIT and DPPM use different denominators. FIT is an exposure-normalized
-failure rate, one failure per $10^{9}$ device-hours, so I name the population
-unit, failure definition, exposure, confidence, hazard assumption, and whether
-the value is observed or predicted. DPPM is a unit-normalized quality rate at a
-named boundary, so I state incoming, outgoing, or escaped, plus inspection
-coverage and how rework, retest, and duplicate returns are counted. I do not
-trade one for the other. Qualification sample size follows from the claimed
-rate or degradation, stress hours, acceleration, confidence, and population
-diversity. Zero failures do not establish a zero rate; they establish an upper
-bound under stated assumptions''
+``FIT and DPPM answer different questions because they use different
+denominators. FIT is an exposure-normalized failure rate: one FIT is one failure
+per $10^{9}$ device-hours. When I quote FIT, I name the population unit (die,
+module, lane, or link), the failure definition, observation period, accumulated
+exposure, censoring rules, confidence bound, hazard regime, and whether the
+value is observed or model-predicted. FIT is commonly used for approximately
+constant-hazard useful-life behavior; it is not automatically a complete
+lifetime model.
+
+DPPM is a unit-normalized quality measure at a defined boundary. I state whether
+the count refers to incoming material, outgoing product, customer receipt, or
+confirmed field escapes, and I define the denominator, inspection coverage,
+time window, sampling, and treatment of rework, retest, and duplicate returns.
+A product can have low outgoing DPPM and poor wear-out reliability, or high
+incoming DPPM with effective screening and few customer escapes, so I do not
+substitute DPPM for FIT.
+
+Sample size follows from the claim. For a failure-rate claim, total equivalent
+device-hours determine the statistical upper bound, but the acceleration factor
+is usable only when its mechanism and model are justified. Unit count and the
+distribution across lots, date codes, suppliers, sites, and process corners
+separately determine how much population variation the test represents. For a
+parameter-drift claim, I size the study from the expected variation, effect or
+quantile of interest, confidence, and statistical power.
+
+Zero failures therefore do not establish a zero rate. Under an independent,
+constant-hazard Poisson model, zero failures over total equivalent exposure
+$T$ give the one-sided upper bound
+$\lambda_{\mathrm{U}}=-\ln(1-C)/T$ at confidence $C$. I report that bound and
+its assumptions rather than saying that the tested units proved the field rate
+is negligible''
 (\Cref{sec:fit-dppm,sec:qual-sample-strategy}).
+
+\textit{Pressure follow-up.} ``Twenty units each complete 1{,}000 device-hours
+with zero failures. What can you claim at 90\% confidence?''\\
+\textit{Answer pivot.} ``With no acceleration credit, the total exposure is
+20{,}000 device-hours. Under the constant-hazard Poisson assumptions, the
+one-sided 90\% upper bound is $2.303/20{,}000$, or about
+$1.15\times10^{-4}$ failures per hour, approximately 115{,}000~FIT. A justified
+acceleration factor could increase the equivalent use-condition exposure, but
+twenty units would still provide limited coverage of population variation.''
 
 \textit{Pressure follow-up.} ``How does component FIT become a fabric-level
 risk?''\\
-\textit{Answer pivot.} ``I fix the population unit, multiply by deployed
-population and exposure, then account for redundancy, detection, reroute,
-repair time, and the workload cost of each failure. Component rate and system
-consequence are separate parts of the availability argument''
+\textit{Answer pivot.} ``I first keep the population unit consistent. Under an
+independent constant-hazard model, deployed population times FIT times exposure
+gives the expected failure count. I then translate failures into service impact
+using detection coverage, redundancy, reroute behavior, repair time, sparing,
+and workload sensitivity, and I treat common-cause failures separately.
+Component occurrence rate and system consequence are distinct parts of the
+availability argument''
 (\Cref{sec:fabric-availability,ch:networking}).
 
 \textit{Trap:} ``Twenty units passed, so the field failure rate is effectively
-zero.''
+zero and the lot is representative of production.''
 
 \paragraph{Question 10. How do you define acceptance criteria, and when is
 qualification evidence sufficient?}
-\textit{Tests:} predefined limits, trend interpretation, and scaled evidence.
+\textit{Tests:} predeclared decision rules, life-margin closure, and
+decision-scaled evidence.
 
 \textit{Spoken answer.}
-``I define acceptance before the stress. It may include no catastrophic
-failure, bounded parameter drift, no new BER floor, no unacceptable sensitivity
-or power loss, preserved control headroom, and no physical degradation tied to
-the mechanism. I tie those limits to remaining system margin and the life
-claim. Evidence is sufficient when mechanism coverage, sample representation,
-degradation trends, confidence, and model uncertainty support the specific
-decision. A limited reversible pilot tolerates more residual uncertainty than
-unrestricted deployment. I state the supported claim and the remaining risk
-rather than saying qualification proved the product reliable.''
+``I define acceptance before the stress from the requirement, the credible
+mechanism, and the degradation budget available at end of life. For each test I
+state the measurement condition and reference plane, baseline method, hard
+failure and intermittency rules, allowable parameter shift or distribution,
+physical-evidence criteria, and treatment of measurement uncertainty. Typical
+criteria include no catastrophic failure, bounded drift in power or
+sensitivity, no new BER or noise floor, preserved control-loop headroom, and no
+mechanism-relevant physical damage.
+
+Acceptance is not simply ``inside the data-sheet limit after stress.'' I compare
+results at a common reference condition, account for guardband and measurement
+uncertainty, examine individual trajectories and population shifts, and project
+degradation to the claimed use condition only with a justified model. A unit can
+remain functional at the endpoint yet fail the qualification argument because
+it has consumed too much future margin.
+
+Evidence is sufficient when the credible mechanisms are covered, stresses
+preserve the intended physics, samples represent the released design and
+process, the test execution is valid, and the exposure, trends, confidence
+bounds, outliers, and model uncertainty support the decision being made.
+Sufficiency is decision-dependent: a limited, monitored, reversible pilot can
+carry more residual uncertainty than an unrestricted fleet release. I document
+the exact claim supported, the claims not supported, the remaining risk, and
+the product or process changes that would trigger requalification''
+(\Cref{sec:qual-argument,sec:qual-sample-strategy,tab:qual-planning-matrix}).
 
 \textit{Pressure follow-up.} ``All units pass the final limit, but one
 parameter is trending steadily toward it. Pass or fail?''\\
-\textit{Answer pivot.} ``I would not ignore the trajectory. I would check
-whether projected use-life drift still closes the requirement, whether the
-trend is accelerating, and whether more read points or a restricted release are
-needed.''
+\textit{Answer pivot.} ``The endpoint criterion passes, but the life claim is
+still open. I first verify the measurement and examine the individual and
+population trajectories. Then I test whether the trend is linear, saturating,
+or accelerating and project it to the use condition with parameter and model
+uncertainty. If the conservative projection crosses the end-of-life limit, I
+fail or restrict the claim, extend the evidence, or correct the design. If it
+closes with adequate margin, I can pass it with that margin and uncertainty
+documented. I do not average away a credible degrading unit.''
 
-\textit{Trap:} ``Qualification is complete when every sample passes every
-standard test.''
+\textit{Trap:} ``Every sample is still within its data-sheet limit after every
+standard test, so qualification is complete.''
 
 \paragraph{Question 11. What do you do when a qualification test fails?}
-\textit{Tests:} evidence preservation, containment, and scoped requalification.
+\textit{Tests:} test validity, as-found evidence, containment, mechanism
+confirmation, and scoped requalification.
 
 \textit{Spoken answer.}
-``I verify the setup and preserve the stressed state, baselines, read history,
-configuration, and sample genealogy before anything is retested. Then I scope
-whether the failure is isolated, lot-correlated, stress-dependent, or
-systematic. I separate the observed mode from the suspected mechanism and
-confirm it with discriminating measurements, reproduction, controlled swaps, or
-physical analysis. I contain the affected population and choose the response:
-design change, process change, supplier action, derating, restricted use, or
-more evidence. After corrective action I repeat the qualification needed to
-show that mechanism is addressed; I do not restart every unrelated row''
-(\Cref{ch:failure-modes}).
+``I first preserve the as-found evidence. I do not power-cycle, clean, rework,
+or repeatedly probe the failed unit until I have captured its state, baseline
+and intermediate reads, stress history, configuration and firmware, fixture
+and instrument logs, control-unit results, and sample genealogy.
+
+The first decision is whether I have a valid product failure or an invalid
+test. I check the chamber profile, actual device stress, instrumentation,
+calibration, fixture, controls, and protocol deviations. If the test was
+invalid, I document why, correct the test-system cause, and repeat enough valid
+exposure to support the original claim. I do not quietly discard the result or
+call a retest pass corrective action.
+
+If the failure is valid, I contain the potentially affected population and
+freeze relevant release or change activity. I classify the observed mode,
+timing, and population pattern, then confirm the mechanism using discriminating
+measurements, controlled swaps, reproduction, and physical analysis in an
+order that preserves evidence. The response may be a design or process change,
+supplier CAPA, derating, restricted use, additional screening, or more
+evidence.
+
+Requalification follows a documented change-impact analysis. I repeat the
+stresses needed to show that the mechanism and affected interfaces are
+corrected, add regression coverage for risks introduced by the change, and
+preserve applicable prior evidence. I do not automatically restart every
+unrelated row, but I also do not rerun only the failed row when the corrective
+action changes other failure physics''
+(\Cref{sec:qual-argument,sec:accel-validity,ch:failure-modes}).
 
 \textit{Pressure follow-up.} ``The failure occurred beyond the intended use
 condition. Can you dismiss it?''\\
-\textit{Answer pivot.} ``I can document that the stress is outside the claim,
-but I still determine whether it exposed a mechanism that can occur inside the
-intended range. Overstress is not a license to ignore relevant physics.''
+\textit{Answer pivot.} ``Not from stress level alone. I determine whether the
+failure has the same physical signature as a field-relevant mechanism or
+whether the excessive stress created a distinct mechanism that cannot occur
+inside the qualified envelope. If it is the same mechanism, the result remains
+relevant even though it appeared beyond the use condition. If it is demonstrably
+an overstress-only mechanism, I can exclude it from the release claim with the
+transition, evidence, and residual risk documented. If the boundary is
+uncertain, the qualification argument remains open.''
 
-\textit{Trap:} ``Send the unit to failure analysis and rerun the failed test.''
+\textit{Trap:} ``Rerun the unit; if it passes, record the first result as an
+anomaly and continue qualification.''
 
 \paragraph{Question 12. Give me a 60-second qualification plan for a new
 optical transceiver.}
-\textit{Tests:} complete, time-boxed Staff-level answer.
+\textit{Tests:} concise synthesis, risk prioritization, evidence ownership, and
+release handoff.
 
 \textit{Spoken answer.}
-``I start with the lifetime, environmental, handling, and performance claims. I
-identify credible mechanisms across the laser, electronics, package, passive
-optics, and connectors. For each one I pick a stress that preserves the
-mechanism, define the observable and acceptance limit before the stress, and
-sample representative lots, suppliers, sites, and corners. I monitor drift as
-well as hard failures, with intermediate reads, and interpret the result with
-explicit confidence and model limits. Failures are confirmed to a mechanism
-before corrective action. The outputs are a supported claim, a stated residual
-risk, and decisions: release, restriction, derating, redesign, supplier
-control, or production monitoring''
+``I first freeze the released configuration and its life, duty-cycle,
+environmental, handling, and retained-performance claims. I map each claim to
+credible mechanisms across the laser, electronics, package, passive optics,
+connectors, and their interfaces, then rank the mechanisms by risk and
+uncertainty. I reuse supplier GR-468, GR-1221, or JESD47 evidence only after
+confirming that it applies to the released design, process, package, site, and
+use condition.
+
+For each remaining gap, I choose a stress that preserves the field mechanism
+and predeclare the observable, reference measurement condition, intermediate
+reads, catastrophic and drift limits, sample population, and confidence basis.
+The plan typically combines powered aging, thermal and mechanical durability,
+moisture and bias, connector cycling, and electronics robustness as required by
+the architecture. Samples span representative lots, suppliers, sites, and
+process corners.
+
+I verify the applied stress, analyze trends as well as hard failures, and
+confirm valid failures to a mechanism before corrective action. The release
+gate is explicit: release, restrict, derate, redesign, or gather more evidence.
+I hand the result to production as named screens, monitors, SPC variables,
+supplier controls, and requalification triggers, and to the fleet as telemetry
+and feedback. The output is a bounded supported claim with residual risk, not a
+statement that the product is universally reliable''
 (\Cref{sec:qual-argument,tab:qual-planning-matrix}).
 
 \textit{Pressure follow-up.} ``Apply that to laser aging, and tell me whether
 production burn-in replaces HTOL.''\\
 \textit{Answer pivot.}
-``For a five-year claim I target active-region wear with justified biased
-high-temperature exposure, baseline and intermediate LIV or external proxies,
-and drift limits tied to remaining margin. Production burn-in may cull a
-validated infant-mortality population, but it does not replace the
-life-projection argument from representative qualification samples''
+``For a five-year claim, I target active-region degradation with representative
+qualification lots, justified biased high-temperature exposure, measured
+active-region temperature, baseline and intermediate LIV or correlated external
+proxies, and drift limits tied to end-of-life margin. I project only with a
+mechanism-specific acceleration model and report its uncertainty.
+
+Production burn-in serves a different regime. It can screen early-life
+manufacturing defects only when the screen stress, duration, detection
+signature, and escape correlation are validated. It does not provide the
+sample-hours, population strategy, or degradation projection needed for the
+wear-out claim, so it does not replace HTOL. I also verify that the screen does
+not consume useful life or create damage that would not otherwise occur''
 (\Cref{sec:qual-worked-laser}).
 
-\textit{Trap:} ``I would run the standard stress list and release if everything
-passes.''
+\textit{Trap:} ``I would collect the supplier reports, run the standard stress
+list, and release the module if every row passes.''
 
 Score each answer using the shared chapter-interview rubric in
 \Cref{sec:chapter-interview-rubric}; repeat any answer that does not state a

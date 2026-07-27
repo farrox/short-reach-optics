@@ -119,10 +119,24 @@ ability to assign ownership later
 \section{Validate the measurement system}
 \label{sec:gauge-rr}
 
-Do not interpret yield until the measurement system is trusted. Production
-testers are built for speed and cost, not lab fidelity. Correlation asks whether
-ATE TDECQ, OMA, or sensitivity tracks the DCA/BERT reference within a known
-offset and spread.
+Do not interpret yield until the measurement system is trusted.
+
+\textit{Background.} Gauge R\&R\firstterm{gaugeRR} (repeatability and
+reproducibility) is a measurement-system analysis technique. The usual
+ANOVA\firstterm{ANOVA} form fits a random-effects model that partitions the
+observed variation into
+part-to-part variation, repeatability (same part, same appraisal condition,
+repeated trials), and reproducibility (operators, stations, fixtures, or other
+appraisal conditions), so you can judge whether the measurement path can support
+yield and capability decisions~\cite{aiagmsa}. ``Gauge'' is not limited to a
+mechanical gauge: it covers instruments, fixtures, test methods, software
+limits, reference planes, and operators on production ATE as well as lab
+benches. Procedure sketch and study checklist:
+\Cref{sec:mfg-anova-gauge,sec:mfg-gauge-template}.
+
+Production testers are built for speed and cost, not lab fidelity. Correlation
+asks whether ATE TDECQ, OMA, or sensitivity tracks the DCA/BERT reference
+within a known offset and spread.
 
 \begin{description}
 \item[Accuracy / bias] Production station versus reference lab.
@@ -138,11 +152,11 @@ A golden unit is a station monitor, not a universal accuracy standard. It can
 age, become contaminated, or be mishandled, so it needs controlled custody,
 recertification, and retirement criteria. Use good, marginal, and failing units
 across the measurement range for correlation, not one perfect center unit only.
-Keep a golden module (and golden laser subassembly for ELS), run gauge R\&R
-across testers and shifts, and correlate CMIS monitors to bench instruments the
-same way you correlate TDECQ (\Cref{sec:cmis}). If the ATE and the DCA disagree,
-fix the correlation before you argue with the supplier about spec. Extended
-templates: \Cref{sec:mfg-gauge-template,app:manufacturing-reference}.
+Keep a golden module (and golden laser subassembly for ELS), run ANOVA gauge
+R\&R across testers and shifts, and correlate CMIS monitors to bench instruments
+the same way you correlate TDECQ (\Cref{sec:cmis}). If the ATE and the DCA
+disagree, fix the correlation before you argue with the supplier about spec.
+Extended templates: \Cref{sec:mfg-anova-gauge,sec:mfg-gauge-template}.
 
 \heuristic{Clear the tester with a golden unit before you escalate a supplier.
 Station drift masquerades as a process excursion more often than engineers
@@ -214,21 +228,60 @@ supplier corrective action until the measurement system is cleared
 \section{Establish capability, limits, and guardbands}
 \label{sec:process-capability}
 
-Yield tells you how often units pass. Capability asks whether a stable process
-can stay inside the requirement with room for measurement uncertainty and
-expected drift. Before quoting capability, clear the measurement system
-(\Cref{sec:gauge-rr}) and confirm the process is statistically stable enough for
-the model.
+Yield is an observed outcome: the fraction of a particular product mix that
+passed particular limits, on particular testers, during a particular time
+window. It tells you what happened. It does not by itself show whether the
+underlying process is centered, whether its variation is small, or whether the
+next lot will behave the same way. Two lines can report the same yield while one
+has a narrow distribution comfortably inside the limits and the other has a
+wide or drifting distribution whose tail is being clipped.
 
-Specification limits define acceptable product output. Control limits describe
-the expected behavior of a statistically stable process. They are not
-interchangeable: a stable process can be off-center and still produce bad units,
-while an unstable process may temporarily remain inside specification. ATP
-limits may be tighter than the customer specification as a guardband for
-measurement uncertainty and expected drift, but the guardband must be justified
-and must avoid double counting.
+Capability asks a narrower, predictive question: if the process continues to
+operate with only its common-cause variation, how does its distribution compare
+with the engineering requirement? That question is meaningful only after two
+gates are passed:
 
-For a roughly normal, stable process,
+\begin{enumerate}
+\item \textbf{The measurement system is adequate.} Bias, resolution,
+      repeatability, reproducibility, station correlation, and stability must
+      be small enough for the decision being made (\Cref{sec:gauge-rr}). A
+      biased or noisy tester can move the apparent mean, inflate the apparent
+      spread, and create false rejects or false accepts.
+\item \textbf{The process is statistically stable.} Time order, rational
+      subgroups, and control charts must show that unresolved shifts, trends,
+      mixtures, or special causes are not dominating the data. A capability
+      index computed across a drifting process is a historical summary, not a
+      prediction.
+\end{enumerate}
+
+Keep three kinds of limits separate. \textbf{Specification limits} come from
+the product requirement and define acceptable output.
+\textbf{Control limits} are calculated from process behavior and signal when
+the process has changed. \textbf{ATP limits} are production decision thresholds
+and may sit inside the specification limits. Control limits are not relaxed to
+improve yield, and they are not substituted for product specifications: a
+stable process can be stably off-center, while an unstable process can remain
+temporarily inside specification.
+
+An ATP guardband reserves margin for named uncertainties rather than adding an
+arbitrary safety factor. For two-sided requirements, write the decision limits
+explicitly as
+
+\begin{equation}
+\mathrm{LSL}_{\mathrm{ATP}}=\mathrm{LSL}_{\mathrm{spec}}+G_{\mathrm{L}},
+\qquad
+\mathrm{USL}_{\mathrm{ATP}}=\mathrm{USL}_{\mathrm{spec}}-G_{\mathrm{U}},
+\end{equation}
+
+where the lower and upper guardbands may differ. Allocate them to documented
+contributors such as measurement uncertainty, station-to-station correlation,
+test-condition conversion, and qualification-supported drift. State whether
+the product specification already contains any of those margins so they are not
+counted twice. A tighter ATP limit reduces false accepts but increases false
+rejects, rework, and scrap; the chosen balance is a risk and cost decision.
+
+For a stable, approximately normal, single-population process with a defensible
+estimate of $\sigma$,
 
 \begin{equation}
 C_p=\frac{\mathrm{USL}-\mathrm{LSL}}{6\sigma}
@@ -242,11 +295,22 @@ C_{pk}=
 \right)
 \end{equation}
 
-$C_p$ measures potential spread if the process were centered. $C_{pk}$ also
-reflects centering. Neither is meaningful until the process and measurement
-system are stable enough for the model. Do not treat a single universal $C_{pk}$
-threshold as automatic production readiness. Multimodal, drifting, censored, or
-strongly non-normal optical data need more care than a textbook index.
+$C_p$ compares process spread with the available specification width and
+describes potential capability if the process were centered. $C_{pk}$ also
+penalizes an off-center mean. For a one-sided requirement, report the applicable
+one-sided index rather than inventing a second specification limit. Always name
+which limits were used (customer specification or guardbanded ATP limits) and
+report the sampling window, subgrouping, $\sigma$ estimator, and uncertainty in
+the estimate.
+
+Do not mix short-term within-subgroup indices with long-term overall
+performance. Between-lot, station, shift, and time variation belongs in the
+long-term production argument even when it is absent from a short qualification
+run. Likewise, do not force a normal capability calculation onto multimodal,
+autocorrelated, drifting, censored, or strongly non-normal optical data.
+Stratify known populations and use a justified distribution, direct percentile
+or defect-rate estimate, or additional data. A capability number never replaces
+SPC, a reaction plan, or engineering review of weak tails.
 
 Keep the two rate languages with their owners. Detailed DPPM, yield-split, and
 escape accounting belong here. FIT and the life-rate arithmetic behind a
@@ -517,296 +581,583 @@ lists. Detail lives in
 
 \paragraph{Question 1. What is manufacturing validation, and how does it differ
 from reliability qualification, ATP, SPC, and fleet monitoring?}
-\textit{Tests:} terminology, lifecycle ownership, and decision boundaries.
+\textit{Tests:} lifecycle ownership, evidence boundaries, and the decisions
+each activity supports.
 
 \textit{Spoken answer.}
-``Manufacturing validation asks whether the intended production system can
-repeatedly reproduce, measure, detect, trace, and control the qualified design.
-Reliability qualification asks whether representative hardware survives named
-lifetime and environmental mechanisms. ATP makes a unit-level ship or reject
-decision using validated production measurements or proxies. SPC asks whether
-the process is moving over time, even before units fail specification. Fleet
-monitoring checks whether deployed populations match the release model. They
-share data, but they answer different questions and unlock different decisions''
-(\Cref{ch:reliability,ch:product-readiness,tab:mfg-vs-adjacent}).
+``Manufacturing validation is the evidence that a defined production system can
+repeatedly build, measure, trace, and control the released design at the
+intended rate and product mix. Its scope includes the approved materials and
+suppliers, sites, recipes, tooling, operators, firmware and calibration,
+measurement system, test limits, rework paths, and reaction plans. I look for
+representative production-intent builds, trustworthy measurements, stable and
+capable parameter distributions, validated defect controls, complete
+genealogy, and controlled variation across lots, stations, shifts, and sites.
+The decision is whether to hold, run a restricted ramp, or authorize production
+under named controls.
+
+Reliability qualification supports a different claim: that a defined design
+and process can withstand named lifetime and environmental mechanisms on
+representative samples. ATP is an execution control that makes a unit-level
+accept, reject, or route-for-review decision using validated measurements and
+limits; a high ATP pass rate does not prove that the process is stable or that
+latent mechanisms are controlled. SPC evaluates measurements in build order to
+detect process movement and trigger containment before it becomes a yield loss
+or escape. Fleet monitoring tests the release assumptions after deployment and
+feeds actual modes, rates, and population patterns back into design,
+qualification, ATP, and process controls.
+
+These activities may share measurements, but they differ in population, time
+horizon, evidence, owner, and decision. None is a substitute for the others''
+(\Cref{ch:reliability,ch:product-readiness,sec:gauge-rr,sec:process-capability,tab:mfg-vs-adjacent}).
 
 \textit{Pressure follow-up.} ``Can a product pass qualification and still fail
 manufacturing validation?''\\
-\textit{Answer pivot.} ``Yes. Hand-built qualification samples may be reliable
-while the production line has weak alignment yield, poor test correlation,
-uncontrolled rework, or supplier-lot variation. Qualification evidence does not
-establish factory repeatability.''
+\textit{Answer pivot.} ``Yes. Representative qualification samples may support
+the lifetime claim while the production system has poor station correlation,
+unstable optical alignment, excessive retest or tuning, incomplete genealogy,
+uncontrolled rework, or large supplier-lot variation. I would preserve the
+qualification result but hold or restrict the production ramp until the
+factory-specific gaps are closed.''
 
-\textit{Trap:} ``Manufacturing validation is qualification performed on
-production units.''
+\textit{Pressure follow-up.} ``If 100\% ATP catches every bad unit, can you skip
+manufacturing validation?''\\
+\textit{Answer pivot.} ``No. That claim itself requires defect-coverage and
+measurement evidence, and ATP cannot economically or physically observe every
+latent mechanism. Even a perfect outgoing screen would not establish process
+stability, capability, traceability, rework control, or sustainable cost and
+cycle time. Screening bad units is not equivalent to controlling how they are
+created.''
+
+\textit{Trap:} ``Manufacturing validation is reliability qualification
+performed on production units, followed by a passing ATP result.''
 
 \paragraph{Question 2. What must be frozen before a production-intent validation
 build?}
-\textit{Tests:} configuration control and interpretability.
+\textit{Tests:} production-reference completeness, controlled deviations, and
+causal interpretability.
 
 \textit{Spoken answer.}
-``I would freeze enough of the production reference that the build has an
-interpretable configuration. That includes the hardware and BOM revisions,
-approved suppliers, firmware, CMIS behavior, calibration algorithm,
-manufacturing recipes, tooling, work instructions, fixtures, test software,
-reference planes, and acceptance limits. Deviations can exist, but they must be
-explicit and traceable. If design, firmware, calibration, and process are all
-changing simultaneously, I may still run an engineering learning build, but I
-would not call its yield production-validation evidence.''
+``I freeze a versioned production reference that lets me identify exactly what
+was built, how it was built, and how it was judged. That includes the released
+hardware revision, BOM and approved alternates, supplier and site, firmware and
+CMIS behavior, calibration algorithm and constants, process recipes and
+windows, tooling and fixtures, work instructions, inspection points, test
+software, reference planes, acceptance limits and guardbands, approved rework
+flows, data schema, and control and reaction plans. I also state which
+materials, equipment, staffing, line rate, and environmental conditions are
+production-intent and which are temporary.
+
+Freeze does not mean that nothing can change. It means each change or deviation
+is reviewed, versioned, approved, and linked to the affected serial numbers,
+with its technical rationale and disposition recorded. If design, firmware,
+calibration, material, process, and test limits change together without that
+separation, I may still learn from the build, but I cannot attribute its yield
+or capability and would not use it as production-release evidence.''
 
 \textit{Pressure follow-up.} ``Does design freeze mean no changes are
 allowed?''\\
-\textit{Answer pivot.} ``No. It means changes are controlled, versioned, and
-tied to the units affected. The purpose is causality and traceability, not
-bureaucratic immobility.''
+\textit{Answer pivot.} ``No. It establishes a controlled baseline. Changes are
+expected during validation, but each one needs an impact assessment, a new
+version or explicit deviation, affected-unit traceability, and a decision about
+whether prior evidence still applies. The purpose is causality and evidence
+integrity, not bureaucratic immobility.''
 
-\textit{Trap:} ``The schematic revision and BOM are frozen, so the factory is
-ready.''
+\textit{Pressure follow-up.} ``A supplier substitutes an approved alternate
+mid-build. Can you pool all the data?''\\
+\textit{Answer pivot.} ``Only after showing that pooling is technically and
+statistically defensible. I preserve the populations separately, check whether
+the alternate changes performance, calibration, assembly interaction, or
+failure mechanisms, and either analyze it as a controlled factor or exclude the
+affected units from the original validation claim.''
+
+\textit{Trap:} ``The schematic revision and top-level BOM are frozen, so the
+factory configuration is controlled.''
 
 \paragraph{Question 3. How would you choose the size and structure of a
 manufacturing-validation build?}
-\textit{Tests:} representative sampling, confounding, and release evidence.
+\textit{Tests:} decision-based sample sizing, variation coverage, and
+confounding control.
 
 \textit{Spoken answer.}
-``I would choose the build around the sources of variation and the decision it
-must support, not around one universal sample count. I want representative
-production lots, component date codes, suppliers, operators, shifts, tools,
-fixtures, stations, and product variants. A few hundred units may be useful for
-early distributions and line behavior, but that number does not establish a very
-low escape rate. I would prefer a balanced build that separates variables over a
-larger build where one supplier lot always runs on one station and one shift.''
+``I size and structure the build from the decision and the variation model, not
+from a customary unit count. First I state what the build must establish:
+central parameter distributions, first-pass yield, process capability,
+station-to-station agreement, defect-control coverage, a bound on a failure or
+escape rate, or readiness for a particular ramp stage. Each claim needs a
+different sample calculation.
+
+I then map the production factors that must be represented: independent
+material and assembly lots, component date codes, suppliers and sites,
+operators and shifts, process tools, fixtures, test stations, product variants,
+and relevant process corners. I use balanced or deliberately nested allocation
+so those effects can be separated. One supplier lot always tested on one
+station and one shift is confounded, regardless of how many units it contains.
+I include enough repeats within each subgroup to estimate measurement and
+within-process variation, while preserving enough independent lots and time
+separation to observe between-population variation.
+
+Unit count and diversity answer different questions. More units tighten
+statistical precision under the model; they do not compensate for missing lots,
+sites, stations, or corners. I document what the build can support, what it
+cannot support, and which evidence must continue through the controlled ramp.''
 
 \textit{Pressure follow-up.} ``Would 200 units be enough?''\\
-\textit{Answer pivot.} ``Enough for what? Two hundred may characterize early
-yield and station behavior, but the confidence depends on lot diversity, defect
-frequency, measurement capability, and the release decision. I would state what
-those 200 units do and do not establish.''
+\textit{Answer pivot.} ``Enough for which claim? If the 200 are balanced across
+the intended sources of variation, they may characterize central distributions,
+early yield, and station behavior. But even with zero observed defects, the
+approximate one-sided 95\% upper bound is about $3/200$, or 1.5\%, under an
+independent Bernoulli model. That is nowhere near evidence for a low-DPPM escape
+claim. I would state the precision, population coverage, and release decision
+those units actually support.''
 
-\textit{Trap:} ``We normally build 200 units because that is statistically
-significant.''
+\textit{Trap:} ``We always validate with 200 units because that sample size is
+statistically significant.''
 
 \paragraph{Question 4. What traceability and unit genealogy do you need?}
-\textit{Tests:} population scoping and evidence preservation.
+\textit{Tests:} as-built configuration, immutable event history, and rapid
+population scoping.
 
 \textit{Spoken answer.}
-``I want each serial number connected to its product revision, firmware,
-calibration version, material lots, supplier sites, process tools, operator or
-station where relevant, timestamp, test-software revision, fixture, raw
-measurements, applied limits, and complete retest or rework history. A timestamp
-alone is not genealogy. I also preserve the first failure rather than
-overwriting it with the eventual passing result. That allows a field or yield
-issue to be scoped by lot, tool, station, firmware, or process change instead of
-treating every failure as an isolated unit.''
+``Genealogy must reconstruct the as-built unit and its complete manufacturing
+history, not merely identify when it shipped. I link each serial number to the
+design and BOM revisions, actual component lots and date codes, supplier and
+assembly sites, firmware and calibration versions, process recipes and tools,
+fixtures and stations, operator or automated route where relevant, timestamps,
+test-software and limit revisions, deviations, and parent--child relationships
+for subassemblies.
+
+I preserve raw measurements and metadata, the first failure, every retest with
+its reason, every rework or adjustment with before-and-after data, invalid-test
+dispositions, and the final release decision. Those events form an append-only
+history; a passing retest must not overwrite the original result. The same
+identity follows samples into destructive analysis and returned units back from
+the fleet.
+
+The test of the system is operational: when an excursion appears, can I quickly
+identify every potentially affected unit and every unaffected control
+population by lot, tool, station, firmware, recipe, or change window? If not,
+the genealogy may be voluminous, but it is not useful for containment or causal
+analysis.''
 
 \textit{Pressure follow-up.} ``Why preserve every retest if the unit finally
 passes?''\\
-\textit{Answer pivot.} ``Because repeated retest may reveal measurement
-instability, intermittent product behavior, marginality, or an undocumented
-intervention. Final pass alone destroys the evidence needed to improve the
-process.''
+\textit{Answer pivot.} ``Because the sequence carries information. Repeated
+retest may reveal measurement instability, an intermittent interface,
+temperature dependence, marginality, or an undocumented intervention. I need
+the original value, elapsed time, station, operator, reason code, and any action
+between attempts. Final pass alone destroys the evidence needed to distinguish
+tester behavior from product recovery or hidden rework.''
 
-\textit{Trap:} ``A serial number, final ATP result, and build date are
-sufficient.''
+\textit{Pressure follow-up.} ``The raw data volume is expensive. Can you retain
+only pass/fail and the final values?''\\
+\textit{Answer pivot.} ``Not if the discarded data are needed to reproduce the
+decision, detect drift, or scope an escape. I define a risk-based retention
+policy, compression, and archival tier, but retain the raw observables,
+versions, limits, and event history required for traceability and analysis.''
+
+\textit{Trap:} ``A serial number, build date, and final ATP pass record provide
+complete genealogy.''
 
 \paragraph{Question 5. What does measurement-system analysis tell you, and how
 would you validate a production station?}
-\textit{Tests:} accuracy, repeatability, reproducibility, correlation, and
-golden-unit limits.
+\textit{Tests:} measurement variation, decision risk, full-path correlation,
+and the limits of calibration and golden units.
 
 \textit{Spoken answer.}
-``Before interpreting process variation, I need to know how much observed
-variation comes from the measurement system. I would evaluate repeatability on
-the same station and unit, reproducibility across stations, operators, or
-fixtures, bias relative to a trusted laboratory reference, stability over time,
-and error across the measurement range. For optical ATP I would correlate
-representative good, marginal, and failing units between the production station
-and the DCA, BERT, OSA, or power-meter reference. Golden units help detect
-drift, but they also need custody, recertification, and retirement criteria''
-(\Cref{sec:gauge-rr}).
+``Measurement-system analysis tells me how much of the observed result comes
+from the product and how much comes from the measurement path. I evaluate
+resolution, repeatability, reproducibility across stations, fixtures, shifts,
+and operators, bias to a traceable laboratory reference, linearity across the
+measurement range, and stability over time. The study must include replicated
+measurements of representative good, marginal, and failing units; units near
+the center of the distribution alone cannot validate decisions near the limits.
+
+For optical ATP, I correlate the complete production path (instrument, fixture,
+cables and fibers, reference-plane definition, test sequence, software,
+calibration, and environmental condition) against the appropriate DCA, BERT,
+OSA, or power-meter reference. I examine residuals and disagreement
+near both acceptance boundaries, not merely overall correlation or
+$R^2$. I then translate measurement uncertainty into false-accept and
+false-reject risk and verify that the chosen guardband supports the production
+decision.
+
+Calibration is necessary but not sufficient because it may cover only the
+instrument, not the full method. Golden units are useful stability monitors,
+but they can age, become contaminated, or fail to span the decision range, so
+they require controlled custody, recertification, and retirement criteria. If
+the measurement system is inadequate, I fix or replace it, narrow the claim, or
+route the decision to a more capable reference method before interpreting
+yield or capability''
+(\Cref{sec:gauge-rr,sec:mfg-anova-gauge}).
 
 \textit{Pressure follow-up.} ``What does gauge R\&R not tell you?''\\
-\textit{Answer pivot.} ``It does not prove the product meets its specification
-or lifetime requirement. It tells me whether the measurement system can resolve
-the variation needed for the production decision.''
+\textit{Answer pivot.} ``It does not prove that the product meets its
+specification, that the production process is stable or capable, or that the
+design meets its lifetime claim. It quantifies selected measurement variation
+under the study conditions. Bias, linearity, reference correlation, software
+logic, and long-term stability still require explicit evidence.''
 
-\textit{Trap:} ``The station passed calibration, so its production measurements
-are trustworthy.''
+\textit{Pressure follow-up.} ``The station agrees with the laboratory at the
+center of the distribution. Is correlation complete?''\\
+\textit{Answer pivot.} ``No. I need agreement across the operating and decision
+range, especially around marginal pass and fail units. A station can agree at
+the center yet have offset, slope error, compression, or fixture interaction
+near a limit.''
+
+\textit{Trap:} ``The instrument passed calibration and the golden unit passes,
+so the production measurement system is validated.''
 
 \paragraph{Question 6. Explain first-pass yield, final yield, retest, rework,
 and why distributions matter.}
-\textit{Tests:} yield integrity and hidden process instability.
+\textit{Tests:} denominator integrity, recovery-path ownership, and weak-tail
+detection.
 
 \textit{Spoken answer.}
-``First-pass yield is the fraction that passes without retest or product
-intervention. Final yield includes units recovered through valid retest or
-approved rework. I report both, along with retest, rework, scrap, and
-invalid-test rates. A high final yield can hide a weak process if many units
-fail initially or require repeated adjustment. I also examine the parameter
-distributions, because two lines can have the same yield while one has a
-centered narrow distribution and the other has a wide tail clipped by the
-acceptance limit''
+``First-pass yield is the fraction of eligible units that pass the complete
+defined route on the first valid attempt, without product adjustment, rework,
+or repeated testing. I state the denominator and separate invalid tests caused
+by station, fixture, software, or handling problems rather than silently
+removing them.
+
+A retest repeats a measurement without changing the product. Rework or tuning
+changes the unit or its configuration and must follow an approved, traceable
+route. Final yield is the fraction eventually accepted after valid retest and
+approved rework, but I never report it alone. I report first-pass yield, final
+yield, retest attempts and recovery, rework type and recovery, invalid-test
+rate, scrap, and escapes by failure row and population. Otherwise a high final
+yield can hide unstable testers, marginal product, excessive tuning, or a
+process that manufactures defects and depends on repair.
+
+Pass/fail yield also discards distance-to-limit information. I examine raw
+parameter distributions, tails, multimodality, drift in build order, and
+stratification by lot, site, station, and rework state. Two lines can have the
+same yield while one is centered and narrow and the other is off-center, wide,
+or accumulating a weak tail just inside the ATP limit. The second line carries
+greater future yield and escape risk even before its reported yield changes''
 (\Cref{sec:yield-analysis}).
 
 \textit{Pressure follow-up.} ``A line has 99\% final yield and 85\% first-pass
 yield. Is it healthy?''\\
-\textit{Answer pivot.} ``Not without explanation. The recovery path may be
-tester instability, uncontrolled tuning, or product marginality. I would
-investigate the first-pass Pareto and retest behavior before approving the
+\textit{Answer pivot.} ``Not without explaining the 14-point recovery gap. I
+would separate invalid tests, clean retests, and actual rework; examine the
+first-fail Pareto and parameter trajectories; and stratify the recovery by
+station, operator, material, and intervention. Until the recovery mechanism is
+understood and controlled, 99\% final yield is not evidence of a healthy
 process.''
 
-\textit{Trap:} ``Only final yield matters because those are the units that
-ship.''
+\textit{Pressure follow-up.} ``A unit fails once and then passes three times
+without intervention. Is it a first-pass pass?''\\
+\textit{Answer pivot.} ``No. Its first valid result remains a first-pass
+failure. The later results may support an invalid-test or intermittency
+investigation, but they do not rewrite the original history or improve
+first-pass yield.''
+
+\textit{Trap:} ``Only final yield matters because every recovered unit
+eventually meets the shipping limit.''
 
 \paragraph{Question 7. How would you design the production-test architecture?}
-\textit{Tests:} every-unit screens, sampled audits, process controls, and test
-economics.
+\textit{Tests:} risk-based control placement, validated defect coverage, and
+escape-versus-cost tradeoffs.
 
 \textit{Spoken answer.}
-``I would start with the defect or risk, then choose the earliest and least
-expensive control that detects or prevents it reliably. Every-unit ATP should
-cover fast, high-value checks such as identity, firmware, CMIS states, basic
-optical and electrical function, power, wavelength, alarms, and selected BER or
-quality proxies. Expensive measurements such as full temperature sweeps, long
-BER waterfalls, detailed TDECQ, RIN, ORL sensitivity, or destructive inspection
-may belong in sampled audits. Some mechanisms have no useful finished-unit
-screen and must be controlled by design, qualification, supplier controls, or
-process monitoring''
+``I begin with the defect, mechanism, or escape risk and ask where it can be
+prevented or observed earliest. For each candidate control I define the
+observable, reference plane, defect-severity range, detection probability,
+false-accept and false-reject risk, test time, equipment and data cost, owner,
+and reaction plan. The architecture then uses layers rather than asking one
+final test to carry every risk.
+
+Upstream supplier and process controls prevent or detect defects before module
+completion. Every-unit ATP covers fast, high-value decisions such as identity,
+configuration and firmware, CMIS states, basic optical and electrical
+function, supply current, power, wavelength, alarms, and selected BER or signal-
+quality proxies. Sampled audits can carry slower or more expensive measurements
+such as temperature corners, long BER waterfalls, detailed TDECQ, RIN,
+reflection sensitivity, and destructive inspection. SPC monitors precursors
+and distribution movement in build order. Some latent mechanisms have no
+economical finished-unit signature and must be controlled through design,
+qualification, supplier evidence, process parameters, or a validated upstream
+screen.
+
+I validate the complete test path and its limits, challenge defect coverage
+with known marginal and failing units, and connect every failure code to a
+disposition and containment scope. I also review escapes and no-fault-found
+returns so the architecture learns: add or improve a control only when the new
+evidence shows that its coverage and economics are better than the existing
+risk treatment''
 (\Cref{sec:hvm-test,tab:mfg-control-types}).
 
 \textit{Pressure follow-up.} ``How do you prove an ATP screen actually catches
 the defect?''\\
-\textit{Answer pivot.} ``I use naturally failing units or controlled known-defect
-injection across the relevant severity range, then measure detection
-probability, false rejects, station dependence, and test time. Passing good
-units does not validate defect coverage.''
+\textit{Answer pivot.} ``I use naturally failing units, controlled fault
+injection, or process-split units with independently confirmed defects across
+the relevant severity range. I blind them into representative stations and
+measure detection probability, escape probability, false rejects,
+repeatability, station dependence, and test time. Passing known-good units
+validates only one side of the decision; it does not establish defect
+coverage.''
 
-\textit{Trap:} ``I would put every engineering test into ATP so nothing
-escapes.''
+\textit{Pressure follow-up.} ``Test time must be cut by 30\%. What do you
+remove?''\\
+\textit{Answer pivot.} ``I do not remove rows by duration alone. I rank them by
+risk reduction per unit cost, identify redundancy and low-information
+measurements, and determine whether a control can move upstream, become
+sampled, or use a validated faster proxy. I quantify the change in escape and
+false-reject risk and revalidate the revised route before release.''
+
+\textit{Trap:} ``I would put every engineering measurement into every-unit ATP
+so nothing can escape.''
 
 \paragraph{Question 8. Explain specification limits, control limits,
 capability, and guardbands.}
-\textit{Tests:} statistical process interpretation and limit discipline.
+\textit{Tests:} limit ownership, capability prerequisites, model discipline,
+and guardband economics.
 
 \textit{Spoken answer.}
-``Specification limits define acceptable product output. Control limits describe
-the expected behavior of a statistically stable process. They are not
-interchangeable: a stable process can be off-center and produce bad units, while
-an unstable process may temporarily remain inside specification. $C_p$ describes
-potential spread relative to the specification, while $C_{pk}$ also reflects
-centering, but neither is meaningful until the process and measurement system
-are stable enough for the model. ATP guardbands may be tighter than the customer
-limit to cover measurement uncertainty and expected drift, but the guardband must
-be justified and must avoid double counting''
+``Specification limits come from the product requirement and define acceptable
+output. Control limits come from time-ordered process data and signal when the
+process has changed. ATP limits are production decision thresholds and may be
+tighter than the product specification. These limits have different owners and
+must not be substituted for one another: a stable process can be stably
+off-center and make bad units, while an unstable process can remain temporarily
+inside specification.
+
+Yield reports the observed fraction passing a particular set of limits.
+Capability asks how the distribution of a stable process compares with those
+limits. Before quoting a capability index, I establish measurement-system
+adequacy and statistical stability, define the population and time window, and
+state the limits and $\sigma$ estimator used. For an approximately normal,
+stable process, $C_p$ compares the six-sigma spread with the available
+two-sided width, while $C_{pk}$ also penalizes an off-center mean. A one-sided
+requirement needs the applicable one-sided index. Multimodal, drifting,
+censored, autocorrelated, or strongly non-normal data require stratification or
+a more appropriate model; a universal $C_{pk}$ threshold does not establish
+production readiness.
+
+An ATP guardband reserves margin for named contributors such as measurement
+uncertainty, station correlation, test-condition conversion, and
+qualification-supported drift. Lower and upper guardbands may differ. I
+document the margin budget, avoid counting margin already embedded in the
+product specification, and evaluate both sides of the trade: tighter limits
+reduce false accepts but increase false rejects, rework, and scrap''
 (\Cref{sec:process-capability}).
 
 \textit{Pressure follow-up.} ``Can you relax an ATP limit because yield is
 poor?''\\
-\textit{Answer pivot.} ``Only after re-establishing the link between the
-customer requirement, measurement uncertainty, process distribution, and escape
-risk. Yield recovery alone is not a technical justification.''
+\textit{Answer pivot.} ``Not to recover yield alone. I can change the limit
+only through controlled reassessment of the product requirement, reference-
+method correlation, measurement uncertainty, process distribution, guardband
+budget, and resulting escape and false-reject risks. The revised limit and test
+route must then be validated before affected units are released.''
 
-\textit{Trap:} ``If $C_{pk}$ is greater than 1.33, the process is automatically
-ready for production.''
+\textit{Pressure follow-up.} ``Observed $C_{pk}$ is poor. Does that prove the
+manufacturing process is incapable?''\\
+\textit{Answer pivot.} ``No. First I verify the gauge, time stability,
+subgrouping, population mixture, and distribution model. Measurement noise,
+station offsets, drift, or pooled populations can depress the index. If those
+are cleared and the process remains stable but too wide or off-center, then the
+capability problem belongs to the manufacturing process.''
+
+\textit{Trap:} ``If $C_{pk}>1.33$, the process is automatically ready for
+production and no further SPC evidence is needed.''
 
 \paragraph{Question 9. Yield drops suddenly. Walk me through your response.}
-\textit{Tests:} containment, tester clearing, stratification, and controlled
-confirmation.
+\textit{Tests:} proportional containment, as-found evidence, change-point
+analysis, and controlled causal confirmation.
 
 \textit{Spoken answer.}
-``I would preserve the timeline and immediately bound exposure while avoiding
-premature root-cause claims. I would freeze test software, limits, firmware, and
-suspect material, then clear the measurement system using golden units and
-reference-bench correlation. Next I would stratify first-pass failures and
-parameter distributions by ATP row, station, fixture, operator, shift, material
-lot, supplier site, firmware, and build order. Correlation creates a leading
-hypothesis, not confirmation. I would run the smallest controlled swap or
-experiment that separates tester, product, material, and process ownership, then
-correct and verify on fresh production data before releasing the held
-population''
+``I first protect the customer and preserve the evidence. I define the failure
+mode and denominator, identify the last known-good and first known-bad points,
+hold the credible exposure window, and prevent suspect material or units from
+moving while preserving raw data, samples, station logs, software and limit
+versions, firmware, recipes, and genealogy. The containment scope is
+proportional to uncertainty and expands if traceability is weak.
+
+Before assigning product ownership, I clear the measurement path. I check
+golden and marginal units, calibration and fixture status, station-to-reference
+correlation, invalid-test and retest rates, and any software or limit change. I
+then compare first-pass failure modes and raw parameter distributions in build
+order and stratify by station, fixture, operator, shift, process tool, material
+lot and date code, supplier site, firmware, recipe, rework state, and
+environment. Change timing and genealogy narrow the hypothesis; a Pareto
+correlation does not prove cause.
+
+I build competing hypotheses across measurement, material, process, design or
+firmware, and handling, then run the smallest controlled swap, split, or
+reproduction that discriminates among them. I avoid making several corrective
+changes at once. After confirming the mechanism, I implement containment and
+corrective action, verify the measurement system again, and demonstrate
+recovery on fresh, representative production data. Only then do I disposition
+the held population and restart under explicit monitoring and recurrence
+criteria''
 (\Cref{sec:mfg-case-yield,sec:escaped-defects}).
 
 \textit{Pressure follow-up.} ``The failures correlate strongly with one laser
 lot. Do you open supplier CAPA?''\\
-\textit{Answer pivot.} ``I may notify and provisionally contain the lot, but I
-would first check whether the lot is confounded with one station, tool, or
-shift. I escalate the supplier with evidence, not merely a Pareto correlation.''
+\textit{Answer pivot.} ``I notify the supplier and provisionally contain the
+lot if the customer risk warrants it, but I first test whether the lot is
+confounded with a station, fixture, tool, shift, firmware, or time window. I
+compare the suspect and control lots through the same trusted measurement path
+and seek a discriminating physical or process signature. Supplier CAPA should
+begin from evidence of supplier-process ownership, not from correlation alone.''
 
-\textit{Trap:} ``The lot correlation proves the laser supplier caused the yield
-loss.''
+\textit{Pressure follow-up.} ``The golden unit fails on only one station. What
+does that change?''\\
+\textit{Answer pivot.} ``It moves the measurement path to the leading
+hypothesis and immediately expands the hold to units judged by that station
+since its last trusted check. I inspect the fixture, cables and fibers,
+calibration, environment, software, and reference-plane setup before consuming
+product samples in failure analysis.''
+
+\textit{Trap:} ``The strongest Pareto correlation identifies the root cause and
+corrective-action owner.''
 
 \paragraph{Question 10. What is the difference between ATP and SPC, and what
 makes an SPC program useful?}
-\textit{Tests:} unit decisions versus process-time decisions.
+\textit{Tests:} unit disposition versus process-state detection, rational
+subgrouping, and executable reaction plans.
 
 \textit{Spoken answer.}
-``ATP decides whether an individual unit meets the production acceptance
-criteria. SPC monitors selected process or product metrics in build order to
-detect movement before it becomes an escape or yield cliff. A useful SPC metric
-has a trustworthy measurement, sensitivity to a real process input, an owner, a
-trigger, an immediate containment window, an investigation path, and restart
-criteria. A control chart without a reaction plan is just a visualization.''
+``ATP decides whether an individual unit meets defined production acceptance
+criteria at a named point in its route. It uses specification-derived or
+guardbanded ATP limits and produces an accept, reject, rework, retest, or review
+disposition. ATP does not tell me by itself whether the process distribution is
+stable.
+
+SPC uses trustworthy, time-ordered process or product measurements to determine
+whether the process remains in its established common-cause state. Control
+limits describe that state; they are not product specification limits. SPC can
+therefore trigger action while every unit still passes ATP, and an ATP failure
+does not automatically mean the process is statistically out of control.
+
+A useful SPC program starts with a metric that is measurable, related to a
+credible process input or risk, and early enough to support action. I define
+rational subgroups, choose a chart appropriate to the data and sampling rate,
+establish limits from a stable baseline, and account for autocorrelation,
+mixtures, and station effects. Every signal has an owner, a specific trigger,
+the suspect time or unit window to contain, immediate checks, an investigation
+path, escalation rules, restart criteria, and verification that the action
+worked. I periodically remove charts that do not drive decisions. A dashboard
+without an executable reaction plan is monitoring, not process control.''
 
 \textit{Pressure follow-up.} ``The process is inside specification but shows a
 sustained upward trend in laser bias. What do you do?''\\
-\textit{Answer pivot.} ``I treat the trend as evidence of process movement even
-before units fail specification. I contain according to the reaction plan, verify
-the station, and investigate materials, calibration, temperature, and process
-chronology.''
+\textit{Answer pivot.} ``I treat the trend as a process-state signal even
+though the units still meet specification. I execute the reaction plan: define
+and hold the affected window if required, verify the measurement system, and
+investigate material lots, calibration, temperature, process tools, recipes,
+and chronology. I restart only after the cause or bounded risk is understood and
+fresh data demonstrate recovery.''
 
-\textit{Trap:} ``SPC means rejecting any unit outside the product
-specification.''
+\textit{Pressure follow-up.} ``One unit is outside a control limit but inside
+specification. Do you scrap it?''\\
+\textit{Answer pivot.} ``Not because of the control-chart signal alone. The
+unit may still satisfy ATP, but the signal triggers the process reaction plan
+and may place a wider population on hold while I investigate. Unit disposition
+and process containment are related but distinct decisions.''
+
+\textit{Trap:} ``SPC means rejecting any unit outside the product specification
+or any control limit.''
 
 \paragraph{Question 11. How would you qualify a second source or manage a
 supplier change?}
-\textit{Tests:} supplier evidence, equivalence, change control, and
-qualification re-entry.
+\textit{Tests:} delta-risk assessment, evidence applicability, controlled
+introduction, and qualification re-entry.
 
 \textit{Spoken answer.}
-``I first define what equivalence means for the change. A second-source
-component may affect performance distributions, calibration, thermal behavior,
-reliability mechanisms, assembly interaction, and ATP correlation. A
-second-source module adds firmware, CMIS, interoperability, telemetry, and
-manufacturing-system differences. I would compare representative lots, margins,
-process capability, measurement correlation, qualification evidence, and
-supported operating corners. Any supplier, site, material, firmware, or tooling
-change should have traceable pre- and post-change populations and a defined
-revalidation or requalification plan''
+``I manage a second source or supplier change as a controlled delta to the
+released product, not as a paperwork substitution. I first define the exact
+change and what equivalence must mean for this architecture. At component
+level, the delta can affect distributions, calibration, thermal behavior,
+reliability mechanisms, assembly interaction, and ATP correlation. At module
+level it can also affect firmware, CMIS behavior, telemetry, interoperability,
+test coverage, and manufacturing controls.
+
+I perform a mechanism- and interface-based risk assessment, then verify that
+supplier reports apply to the proposed die, material, process, package, site,
+tooling, and change state. The evidence plan may include document and process
+audits, measurement-system correlation, paired or balanced builds using
+multiple representative lots, parameter and capability comparison,
+calibration impact, operating-corner and interoperability testing, scoped
+reliability requalification, and validation that existing ATP and SPC controls
+still detect the relevant defects and shifts. ``Same specification'' is not
+evidence that tails, margins, or mechanisms are equivalent.
+
+I introduce the source under separate, immutable genealogy with predefined
+acceptance, ramp, hold, rollback, and fleet-monitoring criteria. I update the
+BOM, control plan, limits or calibration where justified, supplier change-
+notification agreement, and future requalification triggers. Approval is for a
+defined configuration and process; it is not permanent approval of every future
+supplier change''
 (\Cref{ch:reliability,sec:supplier-exec}).
 
 \textit{Pressure follow-up.} ``The supplier says the replacement is
 form-fit-function equivalent. Is that enough?''\\
 \textit{Answer pivot.} ``No. Form, fit, and nominal function do not establish
-distribution, margin, reliability mechanism, process interaction, or field
-behavior. The evidence depth should match what the change can affect.''
+distribution tails, calibration behavior, system margin, reliability
+mechanisms, assembly interaction, test correlation, or field behavior. I use
+the claim to define a comparison plan, but the evidence depth follows what the
+delta can affect and the consequence if equivalence is wrong.''
 
-\textit{Trap:} ``Once the supplier is approved, future process changes are their
-responsibility.''
+\textit{Pressure follow-up.} ``The new source has passed the same supplier
+qualification standard. Can you waive module testing?''\\
+\textit{Answer pivot.} ``Only for evidence that is demonstrably applicable and
+does not depend on module integration. The supplier report may cover component
+mechanisms, but it does not automatically cover our assembly interaction,
+thermal environment, calibration, firmware, interoperability, or ATP
+correlation. I close those delta-specific gaps at the appropriate level.''
+
+\textit{Trap:} ``Once a supplier is approved, its later material, process,
+site, and tooling changes are entirely the supplier's responsibility.''
 
 \paragraph{Question 12. Give me a 60-second manufacturing-validation plan for a
 new optical module.}
-\textit{Tests:} complete Staff-level manufacturing answer.
+\textit{Tests:} concise synthesis, release gates, control ownership, and
+closed-loop ramp readiness.
 
 \textit{Spoken answer.}
-``I would begin by freezing the production reference: design, BOM, suppliers,
-firmware, calibration, manufacturing recipes, fixtures, test software, and
-limits. Then I would plan balanced production-intent builds that cover relevant
-lots, operators, tools, stations, and material variation, with complete unit
-genealogy. Before interpreting yield, I would validate production measurements
-through gauge R\&R, station correlation, and golden-unit stability. I would
-analyze first-pass yield and parameter distributions, validate ATP coverage with
-known-defect units or controlled fault injection, and establish SPC metrics with
-owners and reaction plans. Volume would ramp in controlled stages, with supplier
-change control, escape containment, and fleet feedback tied back to ATP,
-process, qualification, or design.''
+``I define the ramp decision and freeze a versioned production reference:
+design and BOM, suppliers and sites, firmware and calibration, recipes,
+fixtures and test software, limits and guardbands, rework routes, and control
+plans. I run balanced production-intent builds across lots, materials, tools,
+stations, shifts, and variants, with complete genealogy and controlled
+deviations.
+
+Before judging yield, I validate the full measurement path through reference
+correlation, gauge R\&R, station agreement, and stability monitoring. I analyze
+first-pass yield and distributions in build order, establish stability and
+capability, and explain tails, retest, rework, and invalid tests. I challenge
+ATP with confirmed defects, move slower checks to sampled audits, and assign
+SPC owners and reaction plans.
+
+I ramp only through predefined gates with hold and rollback rules for
+measurement, capability, defect coverage, genealogy, supplier, and control-plan
+risks. Production receives controls and change triggers; fleet evidence returns
+to ATP, process, supplier, qualification, and design owners. The output is
+bounded authorization to ramp under named controls, not proof from one pilot
+lot that mass production is ready.''
 
 \textit{Pressure follow-up.} ``What evidence would make you hold the ramp?''\\
-\textit{Answer pivot.} ``I would hold for unresolved measurement disagreement,
-missing genealogy, unexplained yield or parameter movement, weak ATP coverage
-for a high-impact defect, uncontrolled rework, supplier changes without
-evidence, or field behavior inconsistent with the release model.''
+\textit{Answer pivot.} ``I hold for unresolved measurement disagreement or
+instability, missing or unreliable genealogy, an uncontrolled process signal,
+insufficient capability at the approved guardband, unexplained tails or yield
+movement, excessive retest or unapproved rework, weak ATP coverage for a
+high-impact defect, supplier or configuration changes without applicable
+evidence, or early field behavior inconsistent with the release model. The hold
+remains until the owner, containment, corrective evidence, and restart criteria
+are explicit.''
 
-\textit{Trap:} ``I would build a pilot lot, confirm acceptable yield, and open
-mass production.''
+\textit{Pressure follow-up.} ``The pilot meets its yield target, but one station
+has a persistent offset and the genealogy is incomplete. Can you start the
+ramp?''\\
+\textit{Answer pivot.} ``No. The reported yield is not trustworthy across
+stations, and incomplete genealogy prevents credible containment. I hold the
+ramp, correct and correlate the measurement path, repair the data-control gap,
+and repeat enough representative evidence to support the release gate.''
+
+\textit{Trap:} ``I would build one pilot lot, confirm acceptable final yield,
+and authorize mass production.''
 
 Score each response using the shared chapter-interview rubric in
 \Cref{sec:chapter-interview-rubric}. Repeat any answer that does not identify

@@ -723,6 +723,16 @@ IEC. [IEC 61300-2-2:2009, Basic test and measurement procedures -- Mating durabi
 
 ---
 
+<a id="ref-aiagmsa"></a>**AIAG(2010)**
+
+*Source type:* standard · *Date:* 2010
+
+Automotive Industry Action Group (AIAG), Chrysler Group, Ford Motor Company, and General Motors. Measurement Systems Analysis (MSA) Reference Manual, 4th ed., June 2010 (ISBN 978-1-60-534211-5). Variable gauge R&R by average-and-range and ANOVA methods; bias, linearity, and stability; attribute systems. ``Gauge'' covers measuring instruments, test methods, and other measurement systems, not only mechanical gauges. Industry reference for manufacturing measurement-system studies; acceptance thresholds remain product-specific. ([link](https://www.aiag.org/store/publications/details?ProductCode=MSA-4))
+
+<span class="bibkey">`aiagmsa`</span>
+
+---
+
 <a id="ref-gr1209"></a>**Telcordia(2010)**
 
 *Source type:* standard · *Date:* 2010

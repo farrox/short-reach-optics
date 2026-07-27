@@ -887,7 +887,7 @@ When a lot fails ATP or incoming, or field triage lands in the manufacturability
 
 3.  **8D / CAPA**: confirmed mechanism with the supplier (process step, material lot, firmware), corrective action, and preventive control (ATP tighten, SPC limit, poka-yoke).
 
-4.  **Verify closure:** containment confirmed effective; mechanism reproduced or physically confirmed; corrective action removes the failure; no unacceptable regression introduced; production control detects recurrence; next lots remain stable; field cohort trend improves. Re-run FAIR alone is not enough for environmental, intermittent, or fleet-specific escapes (Appendix D.16, Appendix G.4).
+4.  **Verify closure:** containment confirmed effective; mechanism reproduced or physically confirmed; corrective action removes the failure; no unacceptable regression introduced; production control detects recurrence; next lots remain stable; field cohort trend improves. Re-run FAIR alone is not enough for environmental, intermittent, or fleet-specific escapes (Appendix D.16, Appendix G.5).
 
 Do not close 8D on "operator error" without a control that would have caught it at ATP or in process. If FA shows laser wear-out on a young unit, it may be a reliability screen gap, not a supplier process bug; reclassify with the buckets above before you argue FIT. Production-control and supplier-gate context: Chapter 9, §9.9, Appendix G.
 

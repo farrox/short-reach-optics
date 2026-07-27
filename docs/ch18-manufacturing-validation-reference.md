@@ -49,9 +49,17 @@ A fast production power check does not establish life. HTOL does not prove every
 
 **Exit for the ATP as a whole:** every ship lot (or defined sample) has traceable pass data against versioned limits tied to the requirements slice. **Decision:** ship, hold, or reopen DVT limits.
 
+## ANOVA gauge R&R sketch
+
+This is a procedure-level sketch, not a statistics course. Worksheets, acceptance tables, and attribute studies live in the AIAG measurement-systems analysis reference . Why measurement-system analysis precedes yield interpretation: §9.4.
+
+A crossed variable study typically uses $n$ parts that span the process range, $k$ appraisers (operators, stations, or shifts), and $r$ replicates of each part$\times$appraiser cell. An ANOVA random-effects model partitions the total observed variance into part-to-part, repeatability (equipment / method variation under fixed appraisal conditions), reproducibility (appraiser or condition contribution, often including part$\times$appraiser interaction), and gauge R&R as the combined measurement contribution.
+
+Report the study with the metric, reference plane, units under test, and the decision the measurement must support. Common summary ratios include gauge R&R as a fraction of total observed variation or of the tolerance width, and the number of distinct categories the measurement system can resolve. Treat those ratios as decision aids for a named ATP row, not as a universal green-light threshold for every optical metric. Destructive or non-replicable tests need alternate designs; do not force a crossed replicate study that the physics cannot support.
+
 ## Gauge R&R and station-correlation template
 
-Use this checklist when teaching or auditing a production station. The chapter argument for why MSA precedes yield is in §9.4.
+Use this checklist when teaching or auditing a production station. Background and ANOVA sketch: §9.4, Appendix G.3.
 
 - Define the metric, reference plane, and units under test (good, marginal, failing).
 
@@ -68,6 +76,8 @@ Use this checklist when teaching or auditing a production station. The chapter a
 - Station correlation offset and spread; decision rule for when a station is held.
 
 - CMIS or embedded monitor correlation to the same bench instruments when telemetry is used as a production proxy.
+
+- ANOVA gauge R&R study design and reported variance components when a quantitative measurement-system claim is required (Appendix G.3).
 
 ## FAIR and supplier evidence checklist
 

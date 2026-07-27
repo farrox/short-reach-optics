@@ -244,6 +244,12 @@ No new frameworks. Structural relocation of existing material is allowed.
   pages. HTML title mapping adds Appendix~G only (A--D lettered titles unchanged);
   old Ch9 slug redirects; references page at `ch22-references` with stubs at
   `ch19`--`ch21-references`. PDF about 447 pages.
+- **ANOVA gauge R\&R background:** Chapter~9 measurement-system section now
+  states that ANOVA gauge R\&R is a measurement-system analysis method using a
+  random-effects model, and that ``gauge'' covers instruments, fixtures,
+  methods, software, and operators (not only mechanical gauges). Appendix~G
+  adds a short ANOVA study sketch (`sec:mfg-anova-gauge`) with AIAG MSA 4th~ed.\
+  citation (`aiagmsa`). PDF about 460 pages.
 
 ## Typographical fixes
 
