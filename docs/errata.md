@@ -250,6 +250,17 @@ No new frameworks. Structural relocation of existing material is allowed.
   methods, software, and operators (not only mechanical gauges). Appendix~G
   adds a short ANOVA study sketch (`sec:mfg-anova-gauge`) with AIAG MSA 4th~ed.\
   citation (`aiagmsa`). PDF about 460 pages.
+- **Ch9 remaining teaching blocks:** Tuned the FPY/final example to 90\%/99\%
+  (9-point recovery gap) with recovery-path tracking by failure mode, station,
+  supplier, lot, shift, and rework action. Added a Pareto term snip at first
+  body use; an explicit distribution$\rightarrow$stability$\rightarrow$capability
+  order before $C_p$/$C_{pk}$; a representation-versus-statistical-confidence
+  heuristic in builds/genealogy; an SPC reaction-plan table
+  (`tab:mfg-reaction-plan`) with a final-ATP BER fallout example; ATP threshold
+  false-accept/false-reject tradeoff prose; a compact control-placement stage
+  table (`tab:mfg-control-placement`); and a separate controlled-ramp section
+  after supplier/change (`sec:mfg-controlled-ramp`, label
+  `sec:mfg-spc-ramp` retained for SPC/reaction). PDF about 466 pages.
 
 ## Typographical fixes
 

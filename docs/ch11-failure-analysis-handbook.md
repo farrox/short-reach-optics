@@ -879,7 +879,7 @@ Scope before mechanism. Telemetry before destructive FA. Bucket before owner. Co
 
 ##### Excursions: 8D / CAPA and DPA.
 
-When a lot fails ATP or incoming, or field triage lands in the manufacturability bucket, run structured corrective action. Manufacturing validation owns the production consequence sequence (detect, contain, scope, ownership, earliest control, verify on fresh lots; §9.10). This section owns mechanism confirmation and the supplier corrective-action loop.
+When a lot fails ATP or incoming, or field triage lands in the manufacturability bucket, run structured corrective action. Manufacturing validation owns the production consequence sequence (detect, contain, scope, ownership, earliest control, verify on fresh lots; §9.11). This section owns mechanism confirmation and the supplier corrective-action loop.
 
 1.  **Contain:** quarantine WIP and ship holds; identify suspect date codes in the fleet.
 
@@ -1021,7 +1021,7 @@ Practice speaking these answers aloud. Prefer first-person incident reasoning ov
 
 *Tests:* classification across manufacturing, qualification, and field aging.
 
-*Spoken answer.* "I would not classify it from those facts alone. The ninety-day clock and lot clustering raise both an early-life reliability mechanism and a process or material escape. I would compare installation-age distributions, first-pass ATP data, rework history, supplier genealogy, thermal exposure, host and site mix, and the physical failure signature. If evidence connects the mechanism to an uncontrolled process or a detectable condition that production controls missed, it is a manufacturing escape. If representative hardware passed production correctly but a life mechanism was inadequately covered, it is a qualification gap. It may also be both" (Chapter 9, Chapter 8, §9.10).
+*Spoken answer.* "I would not classify it from those facts alone. The ninety-day clock and lot clustering raise both an early-life reliability mechanism and a process or material escape. I would compare installation-age distributions, first-pass ATP data, rework history, supplier genealogy, thermal exposure, host and site mix, and the physical failure signature. If evidence connects the mechanism to an uncontrolled process or a detectable condition that production controls missed, it is a manufacturing escape. If representative hardware passed production correctly but a life mechanism was inadequately covered, it is a qualification gap. It may also be both" (Chapter 9, Chapter 8, §9.11).
 
 *Pressure follow-up.* "Should ATP be tightened immediately?"\
 *Answer pivot.* "I may add temporary containment, but a permanent ATP change requires a validated observable correlated to the mechanism. Some aging mechanisms are better controlled by design, supplier process, qualification, or sampled audit."

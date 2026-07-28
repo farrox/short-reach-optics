@@ -58,6 +58,10 @@ If design, firmware, calibration, and process are all changing simultaneously, y
 
 Choose the build around the sources of variation and the decision it must support, not around one universal sample count. Cover production lots, component date codes, suppliers, operators, shifts, tools, fixtures, stations, and product variants. Prefer a balanced build that separates variables over a larger build where one supplier lot always runs on one station and one shift.
 
+> **Engineering heuristic.** Representation is not the same as statistical confidence. Representation asks whether the sample covers the important sources of variation: lots, suppliers, sites, stations, shifts, materials, and process corners. Statistical sufficiency asks whether enough observations were collected to support the intended estimate, comparison, detection power, or confidence bound. A large sample from one convenient lot can have strong counting statistics and weak product representation.
+
+There is no universal sample-size rule. To estimate a mean or percentile, size the study for the desired uncertainty. To compare suppliers or stations, size it for the smallest meaningful difference and desired power. To claim a defect rate below a threshold, use the appropriate binomial confidence calculation (§9.3.1). For rare escapes, manufacturing-validation builds may not provide enough exposure; use production and fleet evidence (§8.4, §9.11).
+
 ### Zero observed defects and the one-sided upper bound
 
 Zero observed defects do not establish a zero defect probability. Suppose $N$ independent, representative units are each classified once as defective or nondefective, the classification method detects the defect of interest, and every unit has the same underlying defect probability $p$. If $X\sim\operatorname{Binomial}(N,p)$ is the number of observed defective units, then
@@ -115,7 +119,7 @@ For example, a 95% upper bound of 100 DPPM ($p_\star=10^{-4}$) requires about 3
 
 This Bernoulli bound concerns a per-unit defect probability at a defined manufacturing boundary. A time-based reliability claim instead uses accumulated exposure and a failure-rate model, such as the zero-failure Poisson bound in §8.4.
 
-Preserve unit genealogy: product revision, firmware, calibration version, material lots, supplier sites, process tools, station, timestamp, test-software revision, fixture, raw measurements, applied limits, and complete retest or rework history. Preserve the first failure rather than overwriting it with the eventual passing result. Correlation scopes investigation; it is not confirmed mechanism ownership. Confounded builds (lot always on one station) destroy the ability to assign ownership later (§9.11).
+Preserve unit genealogy: product revision, firmware, calibration version, material lots, supplier sites, process tools, station, timestamp, test-software revision, fixture, raw measurements, applied limits, and complete retest or rework history. Preserve the first failure rather than overwriting it with the eventual passing result. Correlation scopes investigation; it is not confirmed mechanism ownership. Confounded builds (lot always on one station) destroy the ability to assign ownership later (§9.12).
 
 ## Validate the measurement system
 
@@ -176,7 +180,7 @@ Start with a fixed population: $N_{\mathrm{eligible}}$ units entering a defined 
 \frac{N_{\mathrm{final\ accepted}}}{N_{\mathrm{eligible}}}.$$ Final yield is a disposition metric, not a substitute for FPY. Report it with the invalid-test rate, retest rate and recovery, rework type and recovery, scrap, and escapes. If units can follow more than one recovery route, preserve the route sequence rather than counting one unit in several recovery buckets.
 
 The **recovery gap** is $$\Delta Y_{\mathrm{recovery}} =
-Y_{\mathrm{final}}-Y_{\mathrm{FP}}.$$ For 99% final yield and 85% FPY, the gap is $$99\%-85\%=14\ \text{percentage points}.$$ This is a 14-point gap, not a 14% relative increase. In a population of 1,000 units, 850 pass first time and 990 are eventually accepted, so 140 units were recovered after an initial failure. Of the 150 initial first-pass failures, $140/150=93.3\%$ were recovered. That conditional recovery rate is a different metric from the 14-point gap. A large gap is a diagnostic signal: the line may depend on unstable testing, marginal product, excessive tuning, or a process that creates defects and then repairs them. Separate clean retest recovery from actual product rework before judging process health.
+Y_{\mathrm{final}}-Y_{\mathrm{FP}}.$$ If first-pass yield is 90% and final yield is 99%, the factory recovered 9% of output through retest or rework: $$99\%-90\%=9\ \text{percentage points}.$$ That recovery may protect shipments, but it also signals cost, capacity loss, and an upstream process or measurement problem that final yield can hide. In a population of 1,000 units, 900 pass first time and 990 are eventually accepted, so 90 units were recovered after an initial failure. Of the 100 initial first-pass failures, $90/100=90\%$ were recovered. That conditional recovery rate is a different metric from the 9-point gap. Separate clean retest recovery from actual product rework before judging process health. Track the recovery path by failure mode, station, supplier, lot, shift, and rework action. A high final yield does not make a low first-pass yield healthy.
 
 **Distributions matter because yield reduces every result to pass or fail.** Two processes can have the same yield while carrying different risk. One may be centered and narrow; the other may be off-center, wide, multimodal, or building a weak tail just inside the acceptance limit. Plot the measured parameter values and their distance to the applicable limit, preserve build order, and stratify by lot, site, station, operator, and recovery state. These views reveal drift and future escape risk before the headline yield changes.
 
@@ -194,22 +198,34 @@ Test yield (first-pass)
 
 Escaped DPPM
 
-: Field or downstream failures that passed applicable production controls. Confirm a manufacturing escape only when evidence ties the mechanism to a preventable production or test-control gap (§9.10). Owner: quality and reliability engineering.
+: Field or downstream failures that passed applicable production controls. Confirm a manufacturing escape only when evidence ties the mechanism to a preventable production or test-control gap (§9.11). Owner: quality and reliability engineering.
 
 <table class="book-table"><tr><th>Yield stage</th><th>Main limit</th><th>First catch</th><th>Owner</th></tr><tr><td>Wafer / die</td><td>Waveguide, resonance, heater, PD dark</td><td>Wafer probe</td><td>Foundry SPC</td></tr><tr><td>Assembly</td><td>FAU align, solder, wirebond, epoxy</td><td>Module ATP</td><td>Assembly supplier</td></tr><tr><td>Test (first-pass)</td><td>ATP fails; may include false rejects</td><td>ATP station + gauge RR</td><td>Test engineering</td></tr><tr><td>Escaped DPPM</td><td>Passed screens; failed in fleet</td><td>Field RMA / triage</td><td>Quality / reliability</td></tr></table>
-**Table 9.2.** Yield stages, first catch, and owner. Split escapes further in Table 9.4.
+**Table 9.2.** Yield stages, first catch, and owner. Split escapes further in Table 9.6.
 
 Track yield by ATP row, lot, supplier site, tester, and date code. Stratify without confusing correlation with cause. A yield drop concentrated on one tester raises a measurement-system hypothesis. A yield drop concentrated in one supplier lot raises a material hypothesis only after station, shift, firmware, and chronology are checked for confounding. Examine parameter distributions and weak tails: two lines can share the same yield while one is centered and narrow and the other is a wide tail clipped by the acceptance limit. Do not open supplier corrective action until the measurement system is cleared (§9.4).
 
 ## Establish capability, limits, and guardbands
 
-Yield is an observed outcome: the fraction of a particular product mix that passed particular limits, on particular testers, during a particular time window. It tells you what happened. It does not by itself show whether the underlying process is centered, whether its variation is small, or whether the next lot will behave the same way. Two lines can report the same yield while one has a narrow distribution comfortably inside the limits and the other has a wide or drifting distribution whose tail is being clipped.
+Yield is an observed outcome: the fraction of a particular product mix that passed particular limits, on particular testers, during a particular time window. It tells you what happened. It does not by itself show whether the underlying process is centered, whether its variation is small, or whether the next lot will behave the same way.
 
-Capability asks a narrower, predictive question: if the process continues to operate with only its common-cause variation, how does its distribution compare with the engineering requirement? That question is meaningful only after two gates are passed:
+Keep three questions separate before quoting $C_p$ or $C_{pk}$:
 
-1.  **The measurement system is adequate.** Bias, resolution, repeatability, reproducibility, station correlation, and stability must be small enough for the decision being made (§9.4). A biased or noisy tester can move the apparent mean, inflate the apparent spread, and create false rejects or false accepts.
+Distribution
 
-2.  **The process is statistically stable.** Time order, rational subgroups, and control charts must show that unresolved shifts, trends, mixtures, or special causes are not dominating the data. A capability index computed across a drifting process is a historical summary, not a prediction.
+: Where the data sit, how wide they are, and whether tails, outliers, or multiple populations exist.
+
+Stability
+
+: Whether that distribution remains predictable over time or is being moved by special causes.
+
+Capability
+
+: How a *stable* process distribution compares with named specification or ATP limits.
+
+The order is: validate the measurement system (§9.4), inspect and stratify the distribution, establish statistical stability, and only then interpret $C_p$ or $C_{pk}$. A capability index computed across a drifting, multimodal, or poorly measured process is a historical summary, not a prediction.
+
+Capability asks a narrower, predictive question: if the process continues to operate with only its common-cause variation, how does its distribution compare with the engineering requirement? That question is meaningful only after the measurement system is adequate and the process is statistically stable.
 
 ### Three limits, three decisions
 
@@ -324,6 +340,11 @@ Every second in the ATP times millions of units is line capacity. Every skipped 
 
 Production-test coverage is validated using naturally failing units, controlled parameter offsets, or carefully designed fault injection. The study should span defect severity and measure detection probability, repeatability, false rejects, station dependence, and test time. Fault injection validates only the represented defect and severity range. Passing good units does not validate defect coverage.
 
+An ATP threshold balances false accepts against false rejects. Tightening a limit can cut escapes, but it also raises retest, scrap, and capacity cost when measurement uncertainty or process spread is large relative to the margin. Choose the threshold from defect severity, detection probability, measurement uncertainty, customer consequence, and the strength of upstream controls. If the trade stays bad, improve the process or the measurement rather than tightening forever.
+
+<table class="book-table"><tr><th>Build stage</th><th>Typical control role</th></tr><tr><td>Wafer / PIC</td><td>Catch process-limited defects early: waveguide loss, resonance spread, dark current, heater shorts</td></tr><tr><td>Laser die / source</td><td>Incoming LIV, SMSR, and lot gates before assembly commit</td></tr><tr><td>Optical subassembly</td><td>Align, attach, and package defects before full module cost</td></tr><tr><td>Module ATP</td><td>Every-unit ship/reject decision against released acceptance limits</td></tr><tr><td>Sample audit</td><td>Lot or process confirmation where full ATP is too slow or costly</td></tr><tr><td>Fleet</td><td>Cohort monitoring against the release model; escape and aging feedback</td></tr></table>
+**Table 9.4.** Where to place a control along the transceiver build. Control *class* (ATP, SPC, audit, supplier gate) is in Table 9.3.
+
 > **Tradeoff.** More production screening vs cost
 >
 > *Improves:* Escape detection and earlier catch
@@ -344,11 +365,16 @@ Production-test coverage is validated using naturally failing units, controlled 
 >
 > *Experienced decision:* Keep burn-in only while it buys escapes you cannot catch cheaper elsewhere.
 
-## SPC, reaction plans, and controlled ramp
+## SPC and reaction plans
 
-ATP decides whether an individual unit meets acceptance criteria. SPC monitors selected process or product metrics in build order to detect movement before it becomes an escape or yield cliff. A useful SPC metric has a trustworthy measurement, sensitivity to a real process input, an owner, a trigger, an immediate containment window, an investigation path, and restart criteria. Control limits describe process behavior; they are not product specification limits. A control chart without a reaction plan is just a visualization.
+ATP decides whether an individual unit meets acceptance criteria. SPC monitors selected process or product metrics in build order to detect movement before it becomes an escape or yield cliff. A useful SPC metric has a trustworthy measurement, sensitivity to a real process input, an owner, a trigger, an immediate containment window, an investigation path, and restart criteria. Control limits describe process behavior; they are not product specification limits. A control chart without a reaction plan is just a visualization. Containment depth follows the predefined reaction plan; do not improvise a universal "always hold everything" rule after the chart moves.
 
-SPC on LIV, SMSR, RIN, TDECQ, and mate-cycle yield by lot, site, and date code catches a process shift before it becomes a supplier excursion. Treat a sustained trend inside specification as process movement, not as a green light. Ramp stages increase exposure only when evidence supports the next volume: measurement agreement, genealogy, first-pass yield, ATP coverage for high-impact defects, controlled rework, and supplier changes with evidence. Avoid replaying the full pilot and fleet lifecycle from Chapter 7; hold the ramp when those manufacturing conditions fail.
+<table class="book-table"><tr><th>Reaction element</th><th>What to predefine</th></tr><tr><td>Trigger</td><td>Chart rule, fallout rate, or trend that starts the plan</td></tr><tr><td>Immediate containment</td><td>What WIP, lots, or shipments stop or quarantine</td></tr><tr><td>Owner</td><td>Named role with authority to contain and restart</td></tr><tr><td>Evidence capture</td><td>Genealogy, raw data, fixture, software, golden-unit state</td></tr><tr><td>Scope</td><td>Station, lot, supplier, site, firmware, or product family affected</td></tr><tr><td>Investigation path</td><td>Measurement check first, then process/material stratify</td></tr><tr><td>Restart criteria</td><td>What evidence clears containment or bounds it</td></tr><tr><td>Effectiveness check</td><td>Confirmation lot, chart recovery, or escape absence</td></tr></table>
+**Table 9.5.** Minimum contents of an SPC reaction plan. Fill these before the chart is trusted in production.
+
+**Example.** Final-ATP BER fallout exceeds the reaction trigger. Hold affected WIP and shipments per the plan. Verify the tester with reference units before blaming product. Stratify fails by host, station, laser lot, assembly lot, firmware, and fiber path. Preserve failing units for FA. Restart only after the cause is known or after bounded containment plus a fresh-lot confirmation clears the same metrics.
+
+SPC on LIV, SMSR, RIN, TDECQ, and mate-cycle yield by lot, site, and date code catches a process shift before it becomes a supplier excursion. Treat a sustained trend inside specification as process movement, not as a green light.
 
 ## Supplier, second-source, and change control
 
@@ -382,6 +408,10 @@ Define what equivalence means for the change. A second-source component may affe
 
 Site, tooling, material, firmware, and process changes need traceable pre- and post-change populations and a revalidation or requalification plan whose depth matches the affected risks (Chapter 8). Milestone hygiene: freeze requirements before DVT samples are built, freeze ATP limits before PVT yield is claimed, and freeze FIT/$E_a$ assumptions before reliability marketing numbers ship. Gate evidence lookup: Table G.1.
 
+## Controlled ramp
+
+Ramp stages increase exposure only when evidence supports the next volume: measurement agreement, genealogy, first-pass yield, ATP coverage for high-impact defects, controlled rework, and supplier changes with evidence. Avoid replaying the full pilot and fleet lifecycle from Chapter 7; hold the ramp when those manufacturing conditions fail. Keep the reaction plan from §9.8 live during the ramp: a volume increase is not a reason to ignore a trigger.
+
 ## Escapes and feedback
 
 When production or field evidence suggests an escape, run this production sequence:
@@ -391,7 +421,7 @@ When production or field evidence suggests an escape, run this production sequen
 Provisional containment and population scoping use genealogy: quarantine WIP and ship holds; identify suspect date codes, stations, firmware, and sites. A field or downstream failure that passed applicable production controls becomes a confirmed manufacturing escape only when evidence connects the mechanism to a preventable production or test-control gap. Otherwise triage wear-out, interop, install, service, software, or residual latent risk (Chapter 11, §11.16).
 
 <table class="book-table"><tr><th>Class</th><th>Meaning</th><th>Typical action</th><th>Lands in</th></tr><tr><td>Preventable coverage</td><td>Screen or control could have caught it</td><td>Change recurrence control</td><td>Escape DPPM, CAPA</td></tr><tr><td>Residual latent</td><td>No cost-effective screen</td><td>FIT / redundancy / replace</td><td>Residual FIT model</td></tr></table>
-**Table 9.4.** Escape classes. Preventable rows change production; residual rows change the life model (§8.4.1).
+**Table 9.6.** Escape classes. Preventable rows change production; residual rows change the life model (§8.4.1).
 
 For a preventable escape, change the earliest reliable and economical recurrence control: upstream process, supplier, design poka-yoke, incoming inspection, sampled audit, ATP, SPC, or service procedure. Do not assume the answer is always a new finished-unit ATP line. Verify effectiveness on fresh lots. Detailed mechanism confirmation, DPA, and structured 8D/CAPA procedure live in Chapter 11, §11.16.2, §11.16, Appendix D.9. Life-model changes belong in Chapter 8; fabric consequences in Chapter 10.
 
@@ -520,8 +550,8 @@ A retest repeats a measurement without changing the product. Rework or tuning ch
 
 Pass/fail yield also discards distance-to-limit information. I examine raw parameter distributions, tails, multimodality, drift in build order, and stratification by lot, site, station, and rework state. Two lines can have the same yield while one is centered and narrow and the other is off-center, wide, or accumulating a weak tail just inside the ATP limit. The second line carries greater future yield and escape risk even before its reported yield changes" (§9.5).
 
-*Pressure follow-up.* "A line has 99% final yield and 85% first-pass yield. Is it healthy?"\
-*Answer pivot.* "Not without explaining the 14-percentage-point recovery gap. I would separate invalid tests, clean retests, and actual rework; examine the first-fail Pareto and parameter trajectories; and stratify the recovery by station, operator, material, and intervention. Until the recovery mechanism is understood and controlled, 99% final yield is not evidence of a healthy process" (§9.5.1).
+*Pressure follow-up.* "A line has 99% final yield and 90% first-pass yield. Is it healthy?"\
+*Answer pivot.* "Not without explaining the 9-percentage-point recovery gap. I would separate invalid tests, clean retests, and actual rework; examine the first-fail Pareto and parameter trajectories; and stratify the recovery by failure mode, station, supplier, lot, shift, and rework action. Until the recovery mechanism is understood and controlled, 99% final yield is not evidence of a healthy process" (§9.5.1).
 
 *Pressure follow-up.* "A unit fails once and then passes three times without intervention. Is it a first-pass pass?"\
 *Answer pivot.* "No. Its first valid result remains a first-pass failure. The later results may support an invalid-test or intermittency investigation, but they do not rewrite the original history or improve first-pass yield."
@@ -572,7 +602,7 @@ An ATP guardband reserves margin for named contributors such as measurement unce
 
 Before assigning product ownership, I clear the measurement path. I check golden and marginal units, calibration and fixture status, station-to-reference correlation, invalid-test and retest rates, and any software or limit change. I then compare first-pass failure modes and raw parameter distributions in build order and stratify by station, fixture, operator, shift, process tool, material lot and date code, supplier site, firmware, recipe, rework state, and environment. Change timing and genealogy narrow the hypothesis; a Pareto correlation does not prove cause.
 
-I build competing hypotheses across measurement, material, process, design or firmware, and handling, then run the smallest controlled swap, split, or reproduction that discriminates among them. I avoid making several corrective changes at once. After confirming the mechanism, I implement containment and corrective action, verify the measurement system again, and demonstrate recovery on fresh, representative production data. Only then do I disposition the held population and restart under explicit monitoring and recurrence criteria" (§9.11, §9.10).
+I build competing hypotheses across measurement, material, process, design or firmware, and handling, then run the smallest controlled swap, split, or reproduction that discriminates among them. I avoid making several corrective changes at once. After confirming the mechanism, I implement containment and corrective action, verify the measurement system again, and demonstrate recovery on fresh, representative production data. Only then do I disposition the held population and restart under explicit monitoring and recurrence criteria" (§9.12, §9.11).
 
 *Pressure follow-up.* "The failures correlate strongly with one laser lot. Do you open supplier CAPA?"\
 *Answer pivot.* "I notify the supplier and provisionally contain the lot if the customer risk warrants it, but I first test whether the lot is confounded with a station, fixture, tool, shift, firmware, or time window. I compare the suspect and control lots through the same trusted measurement path and seek a discriminating physical or process signature. Supplier CAPA should begin from evidence of supplier-process ownership, not from correlation alone."

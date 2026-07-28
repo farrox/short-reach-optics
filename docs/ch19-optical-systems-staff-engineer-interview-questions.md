@@ -47,9 +47,9 @@ Index only. Each item is one speakable question plus a pointer to the worked ans
 
 16. How would you validate manufacturing? Chapter 9, Table 9.1, Table G.1
 
-17. How would you respond to a yield drop? Chapter 9, §9.11, Chapter 11
+17. How would you respond to a yield drop? Chapter 9, §9.12, Chapter 11
 
-18. When would you update ATP after a field or lab escape? Appendix C.13, Appendix D.13, §9.10
+18. When would you update ATP after a field or lab escape? Appendix C.13, Appendix D.13, §9.11
 
 19. Which data must an automated test save so a failure can be replayed? Appendix A.10.10, Chapter 9
 

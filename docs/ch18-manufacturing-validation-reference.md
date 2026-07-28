@@ -111,7 +111,7 @@ Requirements and the production control plan form the contract. Every requiremen
 
 ## Rapid Interview Checks
 
-These are short prompts for self-test. Worked spoken answers live in §9.12.1.
+These are short prompts for self-test. Worked spoken answers live in §9.13.1.
 
 ##### Prompt.
 
@@ -131,7 +131,7 @@ What proves an ATP screen detects defects?\
 ##### Prompt.
 
 When is a field fail a manufacturing escape?\
-*Check.* Only when evidence ties the mechanism to a preventable production or test-control gap. Otherwise wear-out, interop, install, service, software, or residual latent risk (§9.10, Chapter 11).
+*Check.* Only when evidence ties the mechanism to a preventable production or test-control gap. Otherwise wear-out, interop, install, service, software, or residual latent risk (§9.11, Chapter 11).
 
 
 <div class="nav-links">
