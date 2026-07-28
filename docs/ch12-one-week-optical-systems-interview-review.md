@@ -328,7 +328,7 @@ Derate / second source
 
 RMA / FA / DPA
 
-: Climb only as far as the decision requires; preserve first (§11.13).
+: Climb only as far as the decision requires; preserve first (§11.1).
 
 Firmware / calibration
 
@@ -453,7 +453,7 @@ A good answer explains why each choice constrains the next one. A VCSEL path poi
 
 Before you open an instrument, walk the failure up the scope ladder (unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ site $\rightarrow$ fleet). Each rung changes the owner and the next action (Appendix D.5, Appendix D.9). Also ask time and change: sudden versus gradual, intermittent versus constant, and what changed just before the symptom. Scope often removes more hypotheses than the first bench measurement. A fleet-wide gradual drift cannot be a single dirty connector. A vendor-lot signature points to supplier containment before you redesign the module.
 
-Preserve the failing state and its telemetry before you reseat, clean, reboot, or change calibration. Capture CMIS monitors, pre-FEC BER, bias currents, temperatures, LOS and LOL flags, and firmware versions. An intermittent that disappears under debugging is still a real failure; you destroyed the evidence (§11.16, Table 11.1).
+Preserve the failing state and its telemetry before you reseat, clean, reboot, or change calibration. Capture CMIS monitors, pre-FEC BER, bias currents, temperatures, LOS and LOL flags, and firmware versions. An intermittent that disappears under debugging is still a real failure; you destroyed the evidence (§11.10, Table 11.1).
 
 > **Why experienced engineers ask about scope first?**
 >
@@ -467,7 +467,7 @@ Preserve the failing state and its telemetry before you reseat, clean, reboot, o
 
 ### Use the power-versus-signal-quality fork
 
-First ask whether received optical power changed. That one question splits the debug tree. Full instrument paths and worked examples live in §4.8, §11.15.
+First ask whether received optical power changed. That one question splits the debug tree. Full instrument paths and worked examples live in §4.8, Appendix I.13.
 
 If power changed, stay on the power ledger: source enable, coupling, connectors, ORL, plant loss, and monitor calibration. Confirm with an external meter at a named plane before retuning eyes or equalizers.
 
@@ -542,7 +542,7 @@ Do not recite instrument names. Use Measurement $\rightarrow$ uncertainty remo
 
 ### Read a BER waterfall: shift, floor, and burst pattern
 
-These three words show up in almost every debug answer. Know what each one looks like on the bench, what it rules in, and what it rules out. The operational procedures are in §11.2, §11.2.1.
+These three words show up in almost every debug answer. Know what each one looks like on the bench, what it rules in, and what it rules out. The operational procedures are in Appendix I.2, Appendix I.2.1.
 
 ##### What a BER waterfall is.
 
@@ -558,7 +558,7 @@ A floor is a horizontal asymptote: as you raise received power, BER improves for
 
 ##### What a burst pattern means.
 
-Average BER alone hides how errors arrive in time. A burst pattern means errors cluster: many errored symbols in a short window, then quiet intervals, rather than a steady sprinkle of random bit flips. FEC histograms and pre-FEC error counters with timestamps make this visible. Gaussian thermal noise and well-behaved RIN tend to spread errors. MPI from a pair of reflective interfaces, connector intermittents, ESD events, supply glitches, and unlocked CDR intervals tend to cluster them. Lane- correlated bursts across a module point at a shared supply, clock, or thermal event. A single-lane burst pattern points at that lane's optical path or connector. In the fleet, bursty pre-FEC counters with stable average power are often intermittents: preserve the counters and CMIS event log before you reseat anything, or the evidence disappears (§11.8).
+Average BER alone hides how errors arrive in time. A burst pattern means errors cluster: many errored symbols in a short window, then quiet intervals, rather than a steady sprinkle of random bit flips. FEC histograms and pre-FEC error counters with timestamps make this visible. Gaussian thermal noise and well-behaved RIN tend to spread errors. MPI from a pair of reflective interfaces, connector intermittents, ESD events, supply glitches, and unlocked CDR intervals tend to cluster them. Lane- correlated bursts across a module point at a shared supply, clock, or thermal event. A single-lane burst pattern points at that lane's optical path or connector. In the fleet, bursty pre-FEC counters with stable average power are often intermittents: preserve the counters and CMIS event log before you reseat anything, or the evidence disappears (Appendix I.8).
 
 ##### How to say the three together.
 
@@ -650,7 +650,7 @@ Open Appendix C.8 for the thirty-second playbook. Expand only the stage the inte
 
 ### BER worsens at high temperature but average power is stable. What do you do?
 
-Classic fork question (§11.12, Appendix A.8.3).
+Classic fork question (Appendix I.12, Appendix A.8.3).
 
 > **30-second answer (memorize).** See Appendix C.4 for the canonical 30-second answer. Deliver that first; expand below only if asked.
 
@@ -712,7 +712,7 @@ Run the same units on the supplier's line and yours so an ATP limit means the sa
 
 ### A single lane is weak in a multi-lane module. How do you isolate optical, electrical, thermal, and assembly causes?
 
-Multi-lane modules give you a free control group: the sibling lanes. The frame is pattern recognition across lanes before any single-lane deep dive (§11.4).
+Multi-lane modules give you a free control group: the sibling lanes. The frame is pattern recognition across lanes before any single-lane deep dive (Appendix I.4).
 
 ##### Step 1: confirm one outlier, not a gradient.
 
@@ -736,7 +736,7 @@ Across lanes, units, and lots, the pattern chooses the fix: a rework instruction
 
 ### Received power is unchanged but required receiver power increased. What hypotheses remain?
 
-Apply the power-versus-quality fork (Appendix A.8.3): power ledger intact, so eye quality or the receiver (§11.2).
+Apply the power-versus-quality fork (Appendix A.8.3): power ledger intact, so eye quality or the receiver (Appendix I.2).
 
 > **30-second answer (memorize).** See Appendix C.1 for the canonical 30-second answer. Deliver that first; expand below only if asked.
 
@@ -746,7 +746,7 @@ List location-tagged hypotheses (Tx ER/RIN/jitter, channel MPI or filter walk, R
 
 ### Why can a link show a BER floor that more launch power does not fix?
 
-This question has a short physics answer and a longer debug answer. Give both (§11.2.1, §4.3).
+This question has a short physics answer and a longer debug answer. Give both (Appendix I.2.1, §4.3).
 
 ##### Step 1: state the pattern in one sentence.
 
@@ -834,7 +834,7 @@ A ring wins when many wavelengths must fit on one die, in dense WDM and co-packa
 
 ### How do you decide whether a field issue is performance, reliability, or manufacturability?
 
-Wrong bucket, wrong owner, wasted weeks. Classify on the ticket before failure analysis starts (§11.16).
+Wrong bucket, wrong owner, wasted weeks. Classify on the ticket before failure analysis starts (§11.10).
 
 ##### Bucket 1: performance.
 
@@ -860,7 +860,7 @@ Install age, lot correlation, and trend shape (sudden, gradual, or corner- depen
 
 ### What would you put in fleet telemetry, and why?
 
-Telemetry exists to catch margin erosion early and to triage without pulling hardware. Log what discriminates hypotheses, not every register on the chip (Appendix E.7, §11.16).
+Telemetry exists to catch margin erosion early and to triage without pulling hardware. Log what discriminates hypotheses, not every register on the chip (Appendix E.7, §11.10).
 
 ##### Per-lane observables.
 
@@ -886,7 +886,7 @@ Run a 45-minute mock interview. Pick six of the rehearsal questions at random. A
 
 ## Must-know abbreviations (drill list)
 
-Definitions live in Appendix K. Do not maintain a second glossary here. Drill the expansions cold, then say one measurement, stress, or decision each term unlocks.
+Definitions live in Appendix L. Do not maintain a second glossary here. Drill the expansions cold, then say one measurement, stress, or decision each term unlocks.
 
 ##### Optical / debug core.
 
@@ -1037,7 +1037,7 @@ Assume seven days, with the interview near the end of Day 7. Protect sleep. Eac
 
 ##### Day 7: Mock interviews.
 
-*Learn:* three cheat sheets below; Top 25 index (Appendix I); thirty-second callouts (Appendix C); whiteboard trees (Appendix D).\
+*Learn:* three cheat sheets below; Top 25 index (Appendix J); thirty-second callouts (Appendix C); whiteboard trees (Appendix D).\
 *Output:* Full mock. Light story review only. Stop two to three hours before the call. Sleep.
 
 ##### If you have less than seven days.
@@ -1094,7 +1094,7 @@ Three pairs only. Grade yourself against the strong column, then open the matchi
 
 
 <div class="nav-links">
-  <a href="ch11-failure-analysis-handbook">&larr; Previous</a>
+  <a href="ch11-failure-analysis-from-symptom-to-confirmed-mechanism">&larr; Previous</a>
   <a href="./">Table of Contents</a>
   <a href="ch13-engineering-case-studies">Next &rarr;</a>
 </div>

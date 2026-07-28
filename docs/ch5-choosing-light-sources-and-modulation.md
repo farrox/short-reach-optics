@@ -288,7 +288,7 @@ Aging (SMSR collapse, mode hopping)
 
 Thermal runaway
 
-: A positive feedback loop where higher junction temperature raises threshold current and cuts slope efficiency, so more drive power turns to heat for the same optical output, raising temperature further until the TEC saturates and the laser rolls over. Triggered by a failed or saturated TEC, a blocked heat path, or operation above the rated thermal class. Distinct from ordinary wear-out because it is fast (minutes, not months) once it starts; the failure-analysis handbook has the full symptom-to-cause breakdown (§11.7).
+: A positive feedback loop where higher junction temperature raises threshold current and cuts slope efficiency, so more drive power turns to heat for the same optical output, raising temperature further until the TEC saturates and the laser rolls over. Triggered by a failed or saturated TEC, a blocked heat path, or operation above the rated thermal class. Distinct from ordinary wear-out because it is fast (minutes, not months) once it starts; the failure-analysis handbook has the full symptom-to-cause breakdown (Appendix I.7).
 
 Monitor photodiode failure
 
@@ -360,7 +360,7 @@ Watch LIV and spectrum over HTOL or field life:
 
 - COD (catastrophic optical damage) at the facet under overstress.
 
-Each signature needs an evidence owner in qualification, production control, or fleet telemetry (§11.16, Appendix F.1.1, Chapter 9).
+Each signature needs an evidence owner in qualification, production control, or fleet telemetry (§11.10, Appendix F.1.1, Chapter 9).
 
 ## Aging curves, derating, and fleet FIT
 
@@ -390,7 +390,7 @@ Telcordia GR-468-CORE qualifies optoelectronic parts with accelerated stress (HT
 
 ##### When the projection is valid.
 
-Acceleration assumes the stress speeds up the *same* physical mechanism the fleet will see. The projection fails in two ways: the stress activates a mechanism the field never sees (solder creep or moisture ingress at a stress temperature the product never reaches), or the field sees a mechanism the stress never exercises (connector wear, bias-rail transients, thermal cycling from traffic load). So a qual number is a hypothesis, not a fact: compare field-return Pareto and failure signatures against the qual projection, and treat divergence as evidence that $E_a$ or the mechanism model is wrong, not that the fleet is unlucky (§11.16). Sudden fails (COD, ESD, cracked fiber attach) sit outside §5.2; classify those separately before you fit Arrhenius parameters.
+Acceleration assumes the stress speeds up the *same* physical mechanism the fleet will see. The projection fails in two ways: the stress activates a mechanism the field never sees (solder creep or moisture ingress at a stress temperature the product never reaches), or the field sees a mechanism the stress never exercises (connector wear, bias-rail transients, thermal cycling from traffic load). So a qual number is a hypothesis, not a fact: compare field-return Pareto and failure signatures against the qual projection, and treat divergence as evidence that $E_a$ or the mechanism model is wrong, not that the fleet is unlucky (§11.10). Sudden fails (COD, ESD, cracked fiber attach) sit outside §5.2; classify those separately before you fit Arrhenius parameters.
 
 ##### Derating.
 
@@ -422,7 +422,7 @@ extitDeep dive / pin map. Skip unless you are wiring the host connector. Twenty-
 
 ##### Qual hooks for suppliers.
 
-Acceptance test plans should cover the checklist in Table G.2, Appendix G: laser LIV/SMSR/RIN inside the module; optical power-class compliance; connector mating cycles and contamination/ORL; burn-in before ship; CMIS register sanity; and thermal class at rated case temperature. Module bring-up must also prove the CMIS enable sequence and ModuleReady laser policy (§7.6). Field returns split between laser wear-out and connector/fiber-attach faults; keep both in the triage tree (§11.16).
+Acceptance test plans should cover the checklist in Table G.2, Appendix G: laser LIV/SMSR/RIN inside the module; optical power-class compliance; connector mating cycles and contamination/ORL; burn-in before ship; CMIS register sanity; and thermal class at rated case temperature. Module bring-up must also prove the CMIS enable sequence and ModuleReady laser policy (§7.6). Field returns split between laser wear-out and connector/fiber-attach faults; keep both in the triage tree (§11.10).
 
 ## Optical safety and laser classes
 
@@ -537,7 +537,7 @@ Control margin
 
 : headroom in APC, TEC, heaters, ring lock, bias DACs, and calibration tables. A railed loop can fail the link while the diode is still healthy. Calibration corrects predictable variation; it does not restore exhausted physical or control margin (§5.11).
 
-Recompute the link at combined production corners. A nominal part at nominal temperature says little about whether a slow loss in two ledgers will push a tail unit across the pre-FEC BER limit. A composite external measurement (TDECQ, BER waterfall) may already include several internal penalties; do not subtract the same impairment again in the system budget (Appendix E.5). §7.6, Table 11.2 carry the same ledgers into validation and fleet triage. The interview review compresses this checklist in Appendix A.8.4. The wall-chart form is Appendix D.10.
+Recompute the link at combined production corners. A nominal part at nominal temperature says little about whether a slow loss in two ledgers will push a tail unit across the pre-FEC BER limit. A composite external measurement (TDECQ, BER waterfall) may already include several internal penalties; do not subtract the same impairment again in the system budget (Appendix E.5). §7.6, Table I.1 carry the same ledgers into validation and fleet triage. The interview review compresses this checklist in Appendix A.8.4. The wall-chart form is Appendix D.10.
 
 > **Why experienced engineers track five ledgers instead of one margin number?**
 >
@@ -691,7 +691,7 @@ Table 5.10 is the decision sequence for a laser program. Measurement methods fo
 
 ##### Fleet operation.
 
-**Purpose.** Which monitors distinguish source, modulator, cooler, and optical path (§11.16)?
+**Purpose.** Which monitors distinguish source, modulator, cooler, and optical path (§11.10)?
 
 **Exit criteria.** **Exit when** telemetry map, alarm thresholds, and golden baselines are named and owned.
 

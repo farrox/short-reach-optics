@@ -335,7 +335,7 @@ Use one sequence when choosing a control:
 <table class="book-table"><tr><th>Control type</th><th>Decision</th></tr><tr><td>Every-unit ATP</td><td>Ship or reject this unit</td></tr><tr><td>Lot sampling or audit</td><td>Accept, contain, or investigate the lot/process</td></tr><tr><td>SPC</td><td>Continue or contain based on process movement</td></tr><tr><td>Supplier/process control</td><td>Prevent or detect the defect upstream</td></tr><tr><td>Qualification</td><td>Support the life or environmental claim</td></tr><tr><td>Fleet monitoring</td><td>Compare deployed cohorts with the release model</td></tr></table>
 **Table 9.4.** How to choose the control class. Named optical checklists and instrument rows: Table G.2, Appendix G.
 
-Push detection as far upstream as correlation allows: wafer or die probe, then subassembly, module ATP, then system or golden-host bring-up. Wafer test cannot catch fiber attach, FAU alignment, epoxy creep, or connector wear (§8.5.4, §11.16).
+Push detection as far upstream as correlation allows: wafer or die probe, then subassembly, module ATP, then system or golden-host bring-up. Wafer test cannot catch fiber attach, FAU alignment, epoxy creep, or connector wear (§8.5.4, §11.10).
 
 Every second in the ATP times millions of units is line capacity. Every skipped measurement creates uncontrolled escape risk; it is not automatically a field DPPM event (§8.4.1). Expensive optical steps (thermal soak, TDECQ, long BER dwell, burn-in, mate-cycle stress) may be statistical samples. Safety and enable-sequence faults usually require 100% coverage. In a closed module, use a validated module-level proxy, supplier evidence, sampled audit, or genealogy-based control; do not claim internal measurement coverage the architecture does not expose (Appendix E.7, §5.15, Table G.2).
 
@@ -421,12 +421,12 @@ When production or field evidence suggests an escape, run this production sequen
 
 > Detect $\rightarrow$ contain $\rightarrow$ scope $\rightarrow$ confirm ownership $\rightarrow$ change the earliest reliable control $\rightarrow$ verify on fresh production data.
 
-Provisional containment and population scoping use genealogy: quarantine WIP and ship holds; identify suspect date codes, stations, firmware, and sites. A field or downstream failure that passed applicable production controls becomes a confirmed manufacturing escape only when evidence connects the mechanism to a preventable production or test-control gap. Otherwise triage wear-out, interop, install, service, software, or residual latent risk (Chapter 11, §11.16).
+Provisional containment and population scoping use genealogy: quarantine WIP and ship holds; identify suspect date codes, stations, firmware, and sites. A field or downstream failure that passed applicable production controls becomes a confirmed manufacturing escape only when evidence connects the mechanism to a preventable production or test-control gap. Otherwise triage wear-out, interop, install, service, software, or residual latent risk (Chapter 11, §11.10).
 
 <table class="book-table"><tr><th>Class</th><th>Meaning</th><th>Typical action</th><th>Lands in</th></tr><tr><td>Preventable coverage</td><td>Screen or control could have caught it</td><td>Change recurrence control</td><td>Escape DPPM, CAPA</td></tr><tr><td>Residual latent</td><td>No cost-effective screen</td><td>FIT / redundancy / replace</td><td>Residual FIT model</td></tr></table>
 **Table 9.7.** Escape classes. Preventable rows change production; residual rows change the life model (§8.4.1).
 
-For a preventable escape, change the earliest reliable and economical recurrence control: upstream process, supplier, design poka-yoke, incoming inspection, sampled audit, ATP, SPC, or service procedure. Do not assume the answer is always a new finished-unit ATP line. Verify effectiveness on fresh lots. Detailed mechanism confirmation, DPA, and structured 8D/CAPA procedure live in Chapter 11, §11.16.2, §11.16, Appendix D.9. Life-model changes belong in Chapter 8; fabric consequences in Chapter 10.
+For a preventable escape, change the earliest reliable and economical recurrence control: upstream process, supplier, design poka-yoke, incoming inspection, sampled audit, ATP, SPC, or service procedure. Do not assume the answer is always a new finished-unit ATP line. Verify effectiveness on fresh lots. Detailed mechanism confirmation, DPA, and structured 8D/CAPA procedure live in Chapter 11, Appendix I.14.2, §11.10, Appendix D.9. Life-model changes belong in Chapter 8; fabric consequences in Chapter 10.
 
 > **Engineering heuristic.** An escape without a changed recurrence control is unfinished work. Containment stops the bleed; the control stops the next lot.
 

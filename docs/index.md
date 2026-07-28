@@ -24,7 +24,7 @@ title: "Table of Contents"
 - [**8.** Reliability Qualification: Building the Lifetime Confidence Argument](ch8-reliability-qualification-building-the-lifetime-confidence-argument)
 - [**9.** Manufacturing Validation: Reproducing and Controlling the Design](ch9-manufacturing-validation-reproducing-and-controlling-the-design)
 - [**10.** Optical Links in Operation: From Physical Margin to Workload Impact](ch10-optical-links-in-operation-from-physical-margin-to-workload-impact)
-- [**11.** Failure analysis handbook](ch11-failure-analysis-handbook)
+- [**11.** Failure Analysis: From Symptom to Confirmed Mechanism](ch11-failure-analysis-from-symptom-to-confirmed-mechanism)
 - [**Appendix A.** One-week optical systems interview review](ch12-one-week-optical-systems-interview-review)
 - [**13.** Engineering case studies](ch13-engineering-case-studies)
 - [**Appendix B.** Thirty-second interview frameworks](ch14-thirty-second-interview-frameworks)
@@ -33,10 +33,11 @@ title: "Table of Contents"
 - [**17.** Reliability Qualification Reference](ch17-reliability-qualification-reference)
 - [**Appendix G.** Manufacturing Validation Reference](ch18-manufacturing-validation-reference)
 - [**Appendix H.** AI Fabric Context](ch19-ai-fabric-context)
-- [**20.** Optical Systems Staff Engineer Interview Questions](ch20-optical-systems-staff-engineer-interview-questions)
-- [**21.** How Staff Engineers Think](ch21-how-staff-engineers-think)
-- [**Appendix D.** Abbreviations and terminology](ch22-abbreviations-and-terminology)
-- [**23.** References](ch23-references)
+- [**Appendix I.** Failure Analysis Reference](ch20-failure-analysis-reference)
+- [**21.** Optical Systems Staff Engineer Interview Questions](ch21-optical-systems-staff-engineer-interview-questions)
+- [**22.** How Staff Engineers Think](ch22-how-staff-engineers-think)
+- [**Appendix D.** Abbreviations and terminology](ch23-abbreviations-and-terminology)
+- [**24.** References](ch24-references)
 
 ---
 

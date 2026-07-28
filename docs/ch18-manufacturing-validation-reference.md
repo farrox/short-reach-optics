@@ -40,7 +40,7 @@ SPC on LIV, SMSR, RIN, TDECQ, and mate-cycle yield; golden-unit tracking; gauge 
 
 ##### Fleet controls.
 
-Telemetry, lot traceability, RMA codes split by mechanism, and recurrence monitoring (§11.16). These catch what ATP never saw.
+Telemetry, lot traceability, RMA codes split by mechanism, and recurrence monitoring (§11.10). These catch what ATP never saw.
 
 A fast production power check does not establish life. HTOL does not prove every shipped unit has correct firmware. SPC does not detect an unmeasured mechanism. Source-level LIV, SMSR, and wavelength measurements can detect selected material or device shifts when those measurements are directly available and correlated to product risk. In a closed module, use a validated module-level proxy, supplier evidence, sampled audit, or genealogy-based control; do not claim internal measurement coverage when the production architecture does not expose it. RIN and ORL protect the reflection environment; EAM/DCA protects Tx quality on EML paths; CMIS protects field evidence. Burn-in may screen a demonstrated infant-mortality population. ESD robustness is primarily established through design qualification and handling controls; a finished-unit production screen may not reliably detect latent ESD damage. Thermal class protects the derate claim.
 

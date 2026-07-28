@@ -90,7 +90,7 @@ Average BER can hide burstiness. Threshold crossing and temporal clustering matt
 > **FEC counter semantics**\
 > FEC counters are implementation-specific evidence. Their meaning depends on the code, lane rate, counter definition, accumulation window, reset behavior, and whether the counter records corrected bits, symbols, codewords, or threshold events.
 
-An FEC symbol-error histogram is not a DCA eye histogram. Sparse, Poisson-like distributions fit steady noise. Bursty clumps fit time-local events: MPI, connector intermittents, unlock, supply or clock glitches. Shape prioritizes hypotheses; confirm with ORL, timing, swaps, and plant disturbance (§11.2, Chapter 11).
+An FEC symbol-error histogram is not a DCA eye histogram. Sparse, Poisson-like distributions fit steady noise. Bursty clumps fit time-local events: MPI, connector intermittents, unlock, supply or clock glitches. Shape prioritizes hypotheses; confirm with ORL, timing, swaps, and plant disturbance (Appendix I.2, Chapter 11).
 
 Do not claim that corrected errors mean the link is failing, that "below threshold" means safe, or that FEC hides the problem. Corrected activity indicates consumed margin. Uncorrectable events and recovery events indicate service impact.
 
@@ -286,7 +286,7 @@ Expansion requires metrics consistent with the release model, no unexplained coh
 
 ## Operational investigation workflow
 
-Stay at system-triage level. Mechanism confirmation belongs to Chapter 11, §11.16.
+Stay at system-triage level. Mechanism confirmation belongs to Chapter 11, §11.10.
 
 Canonical sequence:
 
@@ -322,7 +322,7 @@ Junior mistake: treat a link as healthy whenever it is up and post-FEC traffic a
 
 ### Interview Q&A: Optical Links in Operation
 
-Practice speaking these answers aloud. Prefer first-person operational reasoning. Detail lives in §10.1, §10.3, §10.5, §10.6, §10.9.1, §10.11, §11.16.
+Practice speaking these answers aloud. Prefer first-person operational reasoning. Detail lives in §10.1, §10.3, §10.5, §10.6, §10.9.1, §10.11, §11.10.
 
 ##### Question 1. What does it mean for an optical link to be operationally healthy?
 
@@ -460,5 +460,5 @@ Practice speaking these answers aloud. Prefer first-person operational reasoning
 <div class="nav-links">
   <a href="ch9-manufacturing-validation-reproducing-and-controlling-the-design">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch11-failure-analysis-handbook">Next &rarr;</a>
+  <a href="ch11-failure-analysis-from-symptom-to-confirmed-mechanism">Next &rarr;</a>
 </div>

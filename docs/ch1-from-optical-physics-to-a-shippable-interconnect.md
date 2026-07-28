@@ -174,7 +174,7 @@ A qualified engineering unit does not prove that a factory can reproduce the res
 
 An optical module exists inside switch or accelerator architecture, topology, radix and bandwidth requirements, rack power, cooling, cable plant, redundancy, and deployment or service procedures. A component metric may not map directly to system value: lower module power may reduce cooling burden; additional reach may simplify topology; higher radix may reduce stages; a serviceable pluggable may beat a denser but hard-to-repair architecture; an optical technology may shift failures from replaceable modules into board-level assemblies (Chapter 10).
 
-Shipment is not the end of validation. The fleet may reveal rare interactions, process escapes, supplier correlations, installation problems, aging, environmental corners, firmware effects, and cohort differences. Failure analysis teaches how to preserve evidence, scope the population, separate symptom from mechanism, choose discriminating measurements, confirm the mechanism, contain risk, and change a recurrence control. A failure is not fully resolved when the unit works again. It is resolved when the affected population is understood and an effective recurrence control changes (Chapter 11, §11.16).
+Shipment is not the end of validation. The fleet may reveal rare interactions, process escapes, supplier correlations, installation problems, aging, environmental corners, firmware effects, and cohort differences. Failure analysis teaches how to preserve evidence, scope the population, separate symptom from mechanism, choose discriminating measurements, confirm the mechanism, contain risk, and change a recurrence control. A failure is not fully resolved when the unit works again. It is resolved when the affected population is understood and an effective recurrence control changes (Chapter 11, §11.10).
 
 ## How to read this book
 
@@ -323,7 +323,7 @@ Layer 1: System
 
 Layer 2: Signal quality
 
-: Eye, jitter, noise, equalization margin, FEC error distribution (Appendix E.7, §11.16).
+: Eye, jitter, noise, equalization margin, FEC error distribution (Appendix E.7, §11.10).
 
 Layer 3: Link budget
 

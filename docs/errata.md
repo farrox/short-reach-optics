@@ -278,6 +278,17 @@ No new frameworks. Structural relocation of existing material is allowed.
   $\sim$650 lines; Chapter~10 about 42$\rightarrow$16 pages. HTML slug changes;
   old `ch10-ai-datacenter-networking` becomes a Moved stub. PDF about 474
   pages.
+- **Ch11 method vs encyclopedia split:** Retitled Chapter~11 to Failure
+  Analysis: From Symptom to Confirmed Mechanism. Promoted the
+  Preserve$\rightarrow$Prevent sequence, evidence states, correction versus
+  recurrence, and refined 12 Q\&As as the narrative spine. Moved detailed
+  symptom recipes (`sec:fm-*`), debugging-fork detail, fleet triage map, and
+  8D/CAPA/DPA to new Appendix~I Failure Analysis Reference
+  (`app:failure-analysis-reference`), preserving high-traffic labels. Slim
+  `sec:fleet-triage` handoff remains in Chapter~11. Body cut from $\sim$1594 to
+  $\sim$531 lines; Chapter~11 about 34$\rightarrow$12 pages. HTML slug changes;
+  old `ch11-failure-analysis-handbook` becomes a Moved stub. References at
+  `ch24-references`. PDF about 474 pages.
 
 ## Typographical fixes
 

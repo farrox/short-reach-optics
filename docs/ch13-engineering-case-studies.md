@@ -147,7 +147,7 @@ Problem: gradual BER rise. Impact: one manufacturing lot in fleet. Evidence: sta
 
 ##### Deep dive.
 
-Appendix C.1, Appendix C.9, Appendix C.10, Appendix D.9, §11.2.
+Appendix C.1, Appendix C.9, Appendix C.10, Appendix D.9, Appendix I.2.
 
 ## Case 2: New optical module supplier qualification
 
@@ -302,7 +302,7 @@ Problem: BER fail at high temperature, power stable. Impact: envelope risk. Evid
 
 ##### Deep dive.
 
-Appendix C.4, §7.4.5, Appendix A.10.3, §11.12.
+Appendix C.4, §7.4.5, Appendix A.10.3, Appendix I.12.
 
 ## Case 4: Qualification escape
 
@@ -344,7 +344,7 @@ Fleet condition
 
 ##### Decision tree.
 
-Appendix D.3, §11.13, Appendix C.13: name the missed uncertainty; choose containment; update the evidence path and production proxy.
+Appendix D.3, §11.1, Appendix C.13: name the missed uncertainty; choose containment; update the evidence path and production proxy.
 
 ##### Measurements selected.
 
@@ -388,7 +388,7 @@ Problem: field fails after passed qual. Impact: (rate / cohort). Evidence: (miss
 
 ##### Deep dive.
 
-Appendix D.3, §8.4, §11.13, Appendix C.13, §8.4.1.
+Appendix D.3, §8.4, §11.1, Appendix C.13, §8.4.1.
 
 ## Staged mock interviews
 

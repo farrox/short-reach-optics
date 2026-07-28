@@ -173,7 +173,7 @@ Three actuators show up repeatedly, and the bring-up order usually starts with t
 
 ##### Source versus ring isolation.
 
-When a loop loses lock, bisect laser versus ring by holding one side fixed and moving the other (Appendix E.1, §11.16, §6.7):
+When a loop loses lock, bisect laser versus ring by holding one side fixed and moving the other (Appendix E.1, §11.10, §6.7):
 
 <pre class="dectree" aria-label="Source wavelength actuator"><code>Source wavelength actuator
   |
@@ -196,7 +196,7 @@ Self-heating from the ring's own heater (and absorbed optical power) shifts its 
 
 ##### Design and validation implications.
 
-Budget heater range with headroom for crosstalk, manufacturing offset, temperature, and aging, not just for the coldest and hottest case alone. Lock range is the total region where acquisition or control is possible; control headroom is the remaining distance from the present operating point to a heater rail, TEC limit, laser-current trim limit, safe temperature, or calibration-map boundary. A locked unit with near-zero headroom is already a reliability risk. Layout (heater placement, thermal isolation trenches, ring pitch) is a reliability and yield problem as much as a control problem. Characterize the thermal coupling matrix; do not validate channels only in isolation. In validation, simultaneous full-traffic on neighbors plus max case $T$ is a *lock* test: unlock, BER walk, or TDECQ rise on one $\lambda$ under neighbor load supports a thermal-coupling or control hypothesis, not a confirmed bad laser die (§7.6, §11.16, Chapter 11). Widening heater or TEC range without checking noise, crosstalk, power, and lifetime is not the first fix.
+Budget heater range with headroom for crosstalk, manufacturing offset, temperature, and aging, not just for the coldest and hottest case alone. Lock range is the total region where acquisition or control is possible; control headroom is the remaining distance from the present operating point to a heater rail, TEC limit, laser-current trim limit, safe temperature, or calibration-map boundary. A locked unit with near-zero headroom is already a reliability risk. Layout (heater placement, thermal isolation trenches, ring pitch) is a reliability and yield problem as much as a control problem. Characterize the thermal coupling matrix; do not validate channels only in isolation. In validation, simultaneous full-traffic on neighbors plus max case $T$ is a *lock* test: unlock, BER walk, or TDECQ rise on one $\lambda$ under neighbor load supports a thermal-coupling or control hypothesis, not a confirmed bad laser die (§7.6, §11.10, Chapter 11). Widening heater or TEC range without checking noise, crosstalk, power, and lifetime is not the first fix.
 
 ## External multi-wavelength sources (CW-WDM)
 
@@ -309,7 +309,7 @@ If one $\lambda$ unlocks or walks, change one actuator at a time (§6.4):
 
 ##### Fleet telltales.
 
-Slow BER creep with rising bias on one line raises a laser-aging hypothesis (§8.5, Chapter 11). Sudden unlock under neighbor load with healthy LIV supports a thermal-coupling or lock-firmware hypothesis. One dark lane with neighbors up localizes investigation toward COD, FAU, or a single ring/heater path; classify with §11.16 before you open an 8D on the wrong supplier.
+Slow BER creep with rising bias on one line raises a laser-aging hypothesis (§8.5, Chapter 11). Sudden unlock under neighbor load with healthy LIV supports a thermal-coupling or lock-firmware hypothesis. One dark lane with neighbors up localizes investigation toward COD, FAU, or a single ring/heater path; classify with §11.10 before you open an 8D on the wrong supplier.
 
 > **What this usually means.** All lanes unlock after a temperature step
 >

@@ -382,7 +382,7 @@ If average received power is stable but BER worsened, isolate transmitter, chann
 
 - control: bias, APC, TEC/heaters, calibration, EQ authority.
 
-This fork often narrows an investigation in minutes. Power-path failures show up on a meter; signal-quality failures need FEC timing, DCA, BERT, or spectrum analysis, depending on access. Apply it before opening the package, changing settings, or blaming a supplier (§11.16, Chapter 11, Chapter 7).
+This fork often narrows an investigation in minutes. Power-path failures show up on a meter; signal-quality failures need FEC timing, DCA, BERT, or spectrum analysis, depending on access. Apply it before opening the package, changing settings, or blaming a supplier (§11.10, Chapter 11, Chapter 7).
 
 > **Why experienced engineers separate power from quality?**
 >

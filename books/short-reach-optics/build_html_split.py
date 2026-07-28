@@ -23,6 +23,7 @@ APPENDIX_TITLES = {
     # in HTML (do not remap A–F). Manufacturing is PDF Appendix G.
     "Manufacturing Validation Reference": ("G", "Manufacturing Validation Reference"),
     "AI Fabric Context": ("H", "AI Fabric Context"),
+    "Failure Analysis Reference": ("I", "Failure Analysis Reference"),
 }
 
 

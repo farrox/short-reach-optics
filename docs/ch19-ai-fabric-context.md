@@ -372,7 +372,7 @@ Optical engineering maps to these patterns indirectly. More rails and higher per
 
 > **Engineering heuristic.** Judge the fabric by delivered step time and collective tail, not by aggregate port rate on a clean bench.
 
-Telemetry versus complexity: same decision criteria as §11.16, Appendix C.14. Instrument ledgers that unlock contain or repair; skip vanity counters.
+Telemetry versus complexity: same decision criteria as §11.10, Appendix C.14. Instrument ledgers that unlock contain or repair; skip vanity counters.
 
 ## Fabric options
 
@@ -584,7 +584,7 @@ Fleet telemetry + corrective action</code></pre>
 
 8.  **Yield and supplier readiness.** Multi-lot yield, SPC, ATP coverage, NPI gates, first-article, and 8D discipline. Prove the part can be built at volume before committing the fleet. (Chapter 9, §9.5, §9.9)
 
-9.  **Fleet telemetry and corrective action.** Pilot, ramp, and fleet monitoring are operational readiness and sustaining evidence. CMIS monitors, FEC histograms, triage buckets, RMA codes, and the feedback loop from field to ATP. The system is not done until the fleet can detect, classify, and correct a failure without the design team. (§11.16, §10.9.1, §7.4.8)
+9.  **Fleet telemetry and corrective action.** Pilot, ramp, and fleet monitoring are operational readiness and sustaining evidence. CMIS monitors, FEC histograms, triage buckets, RMA codes, and the feedback loop from field to ATP. The system is not done until the fleet can detect, classify, and correct a failure without the design team. (§11.10, §10.9.1, §7.4.8)
 
 A design review should be able to point at evidence for every step. Where evidence is missing, the step is not done. Where two steps conflict (power budget versus serviceability, yield versus guardband), the trade must be stated and owned, not hidden behind a single-number spec.
 
@@ -592,5 +592,5 @@ A design review should be able to point at evidence for every step. Where eviden
 <div class="nav-links">
   <a href="ch18-manufacturing-validation-reference">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch20-optical-systems-staff-engineer-interview-questions">Next &rarr;</a>
+  <a href="ch20-failure-analysis-reference">Next &rarr;</a>
 </div>

@@ -62,7 +62,7 @@ BER waterfall $\rightarrow$ shift or floor? $\rightarrow$ sensitivity vs noise.
 
 **Thirty-second close.** Average power is stable, so I deprioritize gross loss, scope the population, chase signal quality on the black-box surface first, isolate Tx / channel / Rx / DSP, then close with the control that catches the next escape.
 
-**Deep dive.** Full prose: Appendix A.10.7, §11.2. Ledgers: Appendix A.8.4. Pattern: Appendix A.1.
+**Deep dive.** Full prose: Appendix A.10.7, Appendix I.2. Ledgers: Appendix A.8.4. Pattern: Appendix A.1.
 
 ## Received power decreased
 
@@ -209,7 +209,7 @@ OSA $\rightarrow$ spectral alignment? $\rightarrow$ lock / filter.
 
 **Thirty-second close.** I measure externally visible remaining margin at the failing temperature, ask whether cool-down recovers, fix table or thermal design, and put that loaded corner in ATP.
 
-**Deep dive.** Appendix A.10.3, §11.12. Control ledger: Appendix A.8.4.
+**Deep dive.** Appendix A.10.3, Appendix I.12. Control ledger: Appendix A.8.4.
 
 ## Laser aging versus calibration drift
 
@@ -429,7 +429,7 @@ Rate / trend / customer impact
 Bucket: performance / reliability / manufacturability
   |
 Decision + owner + telemetry control</code></pre>
-**Key concepts.** Fleet economics and scope pick the owner before FA. Pulling units without a bucket wastes the only failing state you had (Appendix A.6, §11.16).
+**Key concepts.** Fleet economics and scope pick the owner before FA. Pulling units without a bucket wastes the only failing state you had (Appendix A.6, §11.10).
 
 **Measurements.** Telemetry query $\rightarrow$ scope and trend? $\rightarrow$ contain vs monitor.\
 Lot/date correlation $\rightarrow$ manufacturability? $\rightarrow$ supplier.\
@@ -449,7 +449,7 @@ Golden host in rack $\rightarrow$ environment vs module? $\rightarrow$ owner.
 
 **Thirty-second close.** I scope first, pick the bucket, contain if growing and supplier-specific, and name the owner of the next control.
 
-**Deep dive.** Appendix A.6, Table 11.2.
+**Deep dive.** Appendix A.6, Table I.1.
 
 ## Supplier escape
 
@@ -547,7 +547,7 @@ Supply noise / FEC histogram $\rightarrow$ PSRR or burst? $\rightarrow$ owner.
 
 **Thirty-second close.** I confirm floor versus shift on a waterfall, then remove the non-power-limited impairment rather than raise launch power.
 
-**Deep dive.** Appendix A.10.8, §11.2.1, §4.3.
+**Deep dive.** Appendix A.10.8, Appendix I.2.1, §4.3.
 
 ## Intermittent failures
 
@@ -572,7 +572,7 @@ Reproduce with dwell / stress
 Scope population
   |
 Decision: contain / ATP dwell / monitor</code></pre>
-**Key concepts.** Intermittents die when the evidence is destroyed. NFF is often a triage failure, not a healthy part (§11.16).
+**Key concepts.** Intermittents die when the evidence is destroyed. NFF is often a triage failure, not a healthy part (§11.10).
 
 **Measurements.** FEC histogram $\rightarrow$ burst vs Gaussian? $\rightarrow$ MPI / intermittent.\
 Time sync + event capture $\rightarrow$ state preserved? $\rightarrow$ FA.\
@@ -594,7 +594,7 @@ Mate/demate $\rightarrow$ connector? $\rightarrow$ hygiene / replace.
 
 **Thirty-second close.** I preserve state before reseating, reproduce with dwell, and refuse NFF without a reproduction and control plan.
 
-**Deep dive.** §11.16, Table 11.1.
+**Deep dive.** §11.10, Table 11.1.
 
 ## Production recurrence-control update
 
@@ -655,7 +655,7 @@ Golden units across stations $\rightarrow$ correlation? $\rightarrow$ ship.
 
 > **30-second answer (memorize).** Log what discriminates hypotheses: per-lane power, bias, pre-FEC BER and FEC histograms; module temperature and actuator drive; LOS/LOL with context. Require timestamp accuracy, sampling cadence, aggregation window, units, calibration/scaling, missing-data behavior, firmware/schema version, serial/lot/platform, event trigger, retention, and a decision owner. Alarm on trends and disagreements, not only hard thresholds. Therefore I would instrument the ledgers margin testing said die first.
 
-Add a register only if it changes contain, derate, RMA, or FA ownership. Full tradeoff: §11.16.
+Add a register only if it changes contain, derate, RMA, or FA ownership. Full tradeoff: §11.10.
 
 <pre class="dectree" aria-label="Telemetry purpose: early margin erosion"><code>Telemetry purpose: early margin erosion
   |
@@ -795,7 +795,7 @@ Staff follow-ups often stop asking "what test?" and start asking "given constrai
 
 *Benefit:* faster fleet triage and earlier margin erosion detection.\
 *Downside:* firmware, storage, alarm fatigue.\
-*Criteria:* each field needs a decision owner and a reaction plan (Appendix C.14, §11.16).
+*Criteria:* each field needs a decision owner and a reaction plan (Appendix C.14, §11.10).
 
 ##### Would you run more qualification?
 

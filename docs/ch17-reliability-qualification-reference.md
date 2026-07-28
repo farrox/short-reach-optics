@@ -68,7 +68,7 @@ JEDEC *JESD47* is the baseline stress-test-driven qualification flow for a new I
 
 ##### ESD.
 
-A discharge event during handling or assembly damages a gate oxide or junction. Component-level classification uses the human-body model (HBM) and charged-device model (CDM) test standards, *ANSI/ESDA/JEDEC JS-001* and *JS-002* . A driver or TIA datasheet HBM/CDM rating is the number that protects the part on the factory floor, at the fiber-attach and wire-bond stations where a laser die is also exposed. Latent ESD rarely has an economical every-unit screen. Do not project ESD with an activation energy. A field ESD failure is a manufacturing or design-margin item (§11.16), not a wear-out FIT argument.
+A discharge event during handling or assembly damages a gate oxide or junction. Component-level classification uses the human-body model (HBM) and charged-device model (CDM) test standards, *ANSI/ESDA/JEDEC JS-001* and *JS-002* . A driver or TIA datasheet HBM/CDM rating is the number that protects the part on the factory floor, at the fiber-attach and wire-bond stations where a laser die is also exposed. Latent ESD rarely has an economical every-unit screen. Do not project ESD with an activation energy. A field ESD failure is a manufacturing or design-margin item (§11.10), not a wear-out FIT argument.
 
 ##### Latch-up (JESD78): method detail.
 
@@ -86,7 +86,7 @@ Supply overvoltage
 
 Temperature classification matters because latch-up susceptibility usually rises with temperature. Class II testing is performed at the maximum operating junction temperature (or an ambient/case temperature that achieves the equivalent $T_\mathrm{j}$). Class I testing at a lower temperature is a weaker claim and is not a substitute for Class II when the product thermal class reaches $T_\mathrm{j,max}$. After each stress pulse, supply current is compared with the pre-stress nominal current. Typical detection thresholds are an increase of about 10 mA when the nominal current is low, or about $1.4\times$ the nominal current when the device draws higher current; the exact acceptance limits follow the revision of JESD78 and the supplier report in force. A post-stress functional or ATE check is required because a short latch or EOS event can damage the die and then release before the latch-up tester records a sustained current increase.
 
-A latched driver or TIA can look like a dead laser on the bench: no light, no LIV signature, elevated supply current until power is cycled. Passing a component-level JESD78 classification supports IC robustness for the named injection and overvoltage stresses. It does not establish complete module immunity to hot-plug sequencing, shared-rail disturbance, connector events, or host-side grounding faults. Those remain system and manufacturing controls (Chapter 9, §11.16).
+A latched driver or TIA can look like a dead laser on the bench: no light, no LIV signature, elevated supply current until power is cycled. Passing a component-level JESD78 classification supports IC robustness for the named injection and overvoltage stresses. It does not establish complete module immunity to hot-plug sequencing, shared-rail disturbance, connector events, or host-side grounding faults. Those remain system and manufacturing controls (Chapter 9, §11.10).
 
 ##### AEC-Q100 is supplemental evidence, not a datacenter requirement.
 
@@ -160,7 +160,7 @@ Three practical consequences follow for an ELSFP or CPO fiber-attach program.
 
 ELSFP cycling adds connector wear and contamination that raise ORL (Appendix E.2, §5.14). The mating-cycle and endface-grade numbers above are what turn "the connector feels loose" into a measurable limit instead of a guess.
 
-Destructive physical analysis (cross-section, EDX) and structured 8D or CAPA with suppliers close the loop from RMA to design rule (§9.9, §11.16). Without that loop, packaging failures get mis-attributed to laser Arrhenius models and the wrong part gets redesigned.
+Destructive physical analysis (cross-section, EDX) and structured 8D or CAPA with suppliers close the loop from RMA to design rule (§9.9, §11.10). Without that loop, packaging failures get mis-attributed to laser Arrhenius models and the wrong part gets redesigned.
 
 ## Rapid Interview Checks
 
