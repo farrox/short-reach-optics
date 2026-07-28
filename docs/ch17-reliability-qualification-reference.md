@@ -17,7 +17,7 @@ No single standard covers an optical module. A laser die, a driver IC, a passive
 
 ### GR-468 as a qualification evidence source
 
-*GR-468-CORE*, Generic Reliability Assurance Requirements for Optoelectronic Devices Used in Telecommunications Equipment, is a Telcordia generic-requirements document for the reliability assurance of active optoelectronic devices . Its stated scope includes lasers, LEDs, photodetectors, modulators, tunable lasers, and optoelectronic receivers used in telecommunications equipment.[^39]
+*GR-468-CORE*, Generic Reliability Assurance Requirements for Optoelectronic Devices Used in Telecommunications Equipment, is a Telcordia generic-requirements document for the reliability assurance of active optoelectronic devices . Its stated scope includes lasers, LEDs, photodetectors, modulators, tunable lasers, and optoelectronic receivers used in telecommunications equipment.[^36]
 
 GR-468 provides an established vocabulary and method family for qualification testing, accelerated aging, reliability assessment, and lot-to-lot controls. It is an evidence source, not a substitute for the product's mechanism-driven qualification argument (§8.2, Appendix D.3). The applicable stresses, sample populations, observables, and acceptance criteria depend on the device type, device level, intended environment, and supported claim.
 

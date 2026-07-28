@@ -264,6 +264,20 @@ No new frameworks. Structural relocation of existing material is allowed.
 - **Three-limits comparison table:** Added `tab:mfg-three-limits` in
   Chapter~9 comparing control, specification, and ATP limits across governance,
   ownership, basis, use, purpose, and breach response. PDF about 468 pages.
+- **Ch10 link-health reorganization:** Retitled Chapter~10 to Optical Links in
+  Operation: From Physical Margin to Workload Impact. Rewrote around the
+  physical-impairment$\rightarrow$workload/fleet chain: link-up versus health,
+  FEC counter semantics, average versus burst behavior, recovery as a product
+  requirement, decision-oriented telemetry, cohorts, severity ladder, fabric
+  availability with explicit assumptions, pilot as bounded experiment, and
+  system-triage handoff to Chapter~11. Moved fabric survey (scale-up/out,
+  topologies, pluggables/LPO, CPO/XPO/OCS, latency/power/cost) to new
+  Appendix~H AI Fabric Context (`app:ai-fabric-context`), preserving existing
+  section labels. Dropped the Engineering lens. Expanded `sec:cmis` with
+  management-state semantics (no register map). Body cut from $\sim$1762 to
+  $\sim$650 lines; Chapter~10 about 42$\rightarrow$16 pages. HTML slug changes;
+  old `ch10-ai-datacenter-networking` becomes a Moved stub. PDF about 474
+  pages.
 
 ## Typographical fixes
 

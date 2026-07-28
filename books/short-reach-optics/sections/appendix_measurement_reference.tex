@@ -205,6 +205,23 @@ as a finding. ATP should prove ModuleReady across voltage and thermal corners
 and ECO-control firmware like other production revisions
 (\Cref{sec:supplier-exec}).
 
+Operational use of management state is decision-oriented, not a register
+inventory (\Cref{ch:networking,sec:networking-ops}):
+
+\begin{itemize}
+\item Management state must be trustworthy before counters drive containment.
+\item Every counter needs a semantic definition, accumulation window, and reset
+      behavior.
+\item Polling cadence sets what bursts and short recoveries you can observe.
+\item A reset or clear can erase the failing evidence; preserve dumps before
+      recovery when the event matters.
+\item Alarm latching and clearing must be understood before a ``cleared'' flag
+      is treated as healthy.
+\end{itemize}
+
+Exact page, bank, and bit maps remain vendor- and revision-specific; keep them
+in the product management reference, not in the operational chapter.
+
 \section{Rapid Interview Checks}
 
 \paragraph{Prompt.} What does a passing average-power measurement fail to

@@ -7,7 +7,7 @@ title: "Ch 0: Preface"
 
 Artificial intelligence has become an infrastructure problem. Training and serving frontier models at scale is no longer limited only by the accelerator at the center of the rack, but by how many accelerators can be wired together efficiently, reliably, and within a fixed power envelope. That wiring is increasingly optical, and the optics (especially the lasers inside them) have become a first-order lever on the cost, power, and reliability of the whole system.
 
-This book is a concise technical overview of that layer: the short-reach optical interconnects that stitch together AI datacenters, from in-package optical I/O out to intra-rack links, deliberately setting aside the 2--10 km campus links that belong to coherent optics (§3.3). It concentrates on the subjects that decide whether these links work at scale: IM/DD physics and vocabulary; lasers and external light sources; WDM and wavelength locking; quantitative noise and sensitivity models; validation from bench to fleet; reliability qualification; and manufacturing validation at volume. Two chapters bracket those fundamentals: the orientation from optical science to a shippable interconnect (Chapter 1), and how AI datacenter networks are built where optics dominate cost and power (Chapter 10).
+This book is a concise technical overview of that layer: the short-reach optical interconnects that stitch together AI datacenters, from in-package optical I/O out to intra-rack links, deliberately setting aside the 2--10 km campus links that belong to coherent optics (§3.3). It concentrates on the subjects that decide whether these links work at scale: IM/DD physics and vocabulary; lasers and external light sources; WDM and wavelength locking; quantitative noise and sensitivity models; validation from bench to fleet; reliability qualification; and manufacturing validation at volume. Two chapters bracket those fundamentals: the orientation from optical science to a shippable interconnect (Chapter 1), and how optical-link behavior becomes system and workload behavior in the fleet (Chapter 10). Fabric survey context lives in Appendix H.
 
 **How to use this handbook.** The book supports three modes. Pick one and stay in it until you switch deliberately.
 
@@ -17,11 +17,11 @@ Deep learning
 
 Interview preparation
 
-: Follow the one-week plan (Appendix A.13), practice cases (Appendix B), drill thirty-second answers and tradeoff questions (Appendix C), review the Top 25 index (Appendix H), and read how Staff judgment works (Appendix I).
+: Follow the one-week plan (Appendix A.13), practice cases (Appendix B), drill thirty-second answers and tradeoff questions (Appendix C), review the Top 25 index (Appendix I), and read how Staff judgment works (Appendix J).
 
 Incident / problem solving
 
-: Open the wall-chart trees (Appendix D), failure handbook (Chapter 11), case (Appendix B), Staff judgment (Appendix I), validation ladder (Chapter 7, Table 7.3), qualification (Chapter 8), or manufacturing validation (Chapter 9).
+: Open the wall-chart trees (Appendix D), failure handbook (Chapter 11), case (Appendix B), Staff judgment (Appendix J), validation ladder (Chapter 7, Table 7.3), qualification (Chapter 8), or manufacturing validation (Chapter 9).
 
 Start from the requirement, not the component. Move downward from system requirements to architecture, subsystem, component, and only then to the physics needed to make the decision. A choice at one layer constrains the next. The aim is operational judgment: reduce uncertainty enough to make the next decision, then name the control that prevents recurrence.
 

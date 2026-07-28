@@ -137,5 +137,5 @@ When is a field fail a manufacturing escape?\
 <div class="nav-links">
   <a href="ch17-reliability-qualification-reference">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch19-optical-systems-staff-engineer-interview-questions">Next &rarr;</a>
+  <a href="ch19-ai-fabric-context">Next &rarr;</a>
 </div>

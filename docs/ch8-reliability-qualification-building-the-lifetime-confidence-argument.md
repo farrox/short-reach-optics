@@ -130,7 +130,7 @@ Wear-out
 
 : A rate that rises with install age suggests physics-driven degradation. That points at derating, life projection, and replacement planning. Connector wear and contamination accumulate with mate cycles and are usage-driven, so budget them separately from a flat-hazard rate (Appendix F.5).
 
-The regime is an inference from the failure distribution, and it must be confirmed against a mechanism before corrective action starts (Chapter 11). The system consequence of each regime differs too: a steady random rate is absorbed by a resilient fabric, while a correlated early-life cluster is not (§10.17.6, Chapter 10).
+The regime is an inference from the failure distribution, and it must be confirmed against a mechanism before corrective action starts (Chapter 11). The system consequence of each regime differs too: a steady random rate is absorbed by a resilient fabric, while a correlated early-life cluster is not (§10.9.1, Chapter 10).
 
 ## Mechanism families and qualification evidence
 
@@ -157,7 +157,7 @@ Connector mate cycling, shock, and handling sequences address wear, debris, alig
 
 ##### Photonic packaging and attach.
 
-After lasers are screened, packaging and attach often dominate returns: FAU alignment, epoxy creep, solder voids, underfill cracks, and TEC or thermal-path failures that look like wavelength unlock (§10.10, §3.14.3, Chapter 6).
+After lasers are screened, packaging and attach often dominate returns: FAU alignment, epoxy creep, solder voids, underfill cracks, and TEC or thermal-path failures that look like wavelength unlock (Appendix H.10, §3.14.3, Chapter 6).
 
 ### Electrical overstress, ESD, and latch-up
 
@@ -223,7 +223,7 @@ Qualification exists to unlock a decision. Name which one, and state the residua
 
 Qualification identifies which mechanisms need control. It does not choose the control. Chapter 9 decides which production screen, supplier requirement, or SPC chart is economical at volume, and whether a room-temperature proxy correlates well enough to stand in for a stressed measurement.
 
-A component FIT is not a system availability number. Converting one into the other requires redundancy, detection and reroute behavior, repair time, spares, and the workload cost of each failure (§10.17.6, Chapter 10).
+A component FIT is not a system availability number. Converting one into the other requires redundancy, detection and reroute behavior, repair time, spares, and the workload cost of each failure (§10.9.1, Chapter 10).
 
 When a qualification test fails, preserve the stressed state, the baselines, the read history, the configuration, and the sample genealogy before anyone retests. Scope whether the failure is isolated, lot-correlated, stress-dependent, or systematic, then confirm the mechanism before choosing a response (Chapter 11).
 
@@ -383,7 +383,7 @@ Zero failures therefore do not establish a zero rate. Under an independent, cons
 *Answer pivot.* "With no acceleration credit, the total exposure is 20,000 device-hours. Under the constant-hazard Poisson assumptions, the one-sided 90% upper bound is $2.303/20{,}000$, or about $1.15\times10^{-4}$ failures per hour, approximately 115,000 FIT. A justified acceleration factor could increase the equivalent use-condition exposure, but twenty units would still provide limited coverage of population variation."
 
 *Pressure follow-up.* "How does component FIT become a fabric-level risk?"\
-*Answer pivot.* "I first keep the population unit consistent. Under an independent constant-hazard model, deployed population times FIT times exposure gives the expected failure count. I then translate failures into service impact using detection coverage, redundancy, reroute behavior, repair time, sparing, and workload sensitivity, and I treat common-cause failures separately. Component occurrence rate and system consequence are distinct parts of the availability argument" (§10.17.6, Chapter 10).
+*Answer pivot.* "I first keep the population unit consistent. Under an independent constant-hazard model, deployed population times FIT times exposure gives the expected failure count. I then translate failures into service impact using detection coverage, redundancy, reroute behavior, repair time, sparing, and workload sensitivity, and I treat common-cause failures separately. Component occurrence rate and system consequence are distinct parts of the availability argument" (§10.9.1, Chapter 10).
 
 *Trap:* "Twenty units passed, so the field failure rate is effectively zero and the lot is representative of production."
 

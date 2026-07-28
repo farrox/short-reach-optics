@@ -353,7 +353,7 @@ In a faceplate pluggable, double-digit-watt module power must leave through the 
 
 ##### Corrective action and recurrence control.
 
-System-level: improve airflow, lower ambient, or reduce module count per cage. Module-level: derate the laser (lower bias current reduces self-heating) or switch to a lower-power module style (LPO instead of retimed, §10.5.1). CPO: ensure the cold-plate thermal interface material (TIM) is intact and the liquid loop meets flow-rate spec. Long-term: specify a tighter thermal class in the laser requirements (§5.6). *Recurrence control:* loaded-cage thermal class in ATP or DV plan.
+System-level: improve airflow, lower ambient, or reduce module count per cage. Module-level: derate the laser (lower bias current reduces self-heating) or switch to a lower-power module style (LPO instead of retimed, Appendix H.5.1). CPO: ensure the cold-plate thermal interface material (TIM) is intact and the liquid loop meets flow-rate spec. Long-term: specify a tighter thermal class in the laser requirements (§5.6). *Recurrence control:* loaded-cage thermal class in ATP or DV plan.
 
 ## Intermittent failures
 
@@ -765,7 +765,7 @@ Classify every field issue before deep root-cause work:
 
 Performance
 
-: the design or operating point does not close the budget under the conditions seen in the fleet. Examples: TDECQ/RLM marginal at case temperature, host COM tight on LPO, ring unlock under thermal crosstalk, ORL-driven RIN that the architecture assumed away. Fix is usually retune, derate, firmware, or a design/spec change (Appendix E.3, §10.5.2, §3.14.3).
+: the design or operating point does not close the budget under the conditions seen in the fleet. Examples: TDECQ/RLM marginal at case temperature, host COM tight on LPO, ring unlock under thermal crosstalk, ORL-driven RIN that the architecture assumed away. Fix is usually retune, derate, firmware, or a design/spec change (Appendix E.3, Appendix H.5.2, §3.14.3).
 
 Reliability
 
@@ -923,7 +923,7 @@ NFF rate and lot Pareto are as important as FIT. A rising NFF with clean LIV poi
 
 **Key idea.** A useful failure analysis starts with a symptom and ends with a new control. Preserve the failing state, split shared from local behavior, clear the measurement system, and choose one measurement that can falsify the leading hypothesis. Return fleet and production evidence to the appropriate product-readiness step: requirement, architecture, characterization, system validation, reliability qualification, manufacturing validation, ATP, or fleet control. The corrective action is incomplete until production or fleet data show that the same signature no longer escapes.
 
-Junior mistake: reseat first, or close without a recurrence control (§11.16, Appendix B, Appendix C, Appendix I).
+Junior mistake: reseat first, or close without a recurrence control (§11.16, Appendix B, Appendix C, Appendix J).
 
 ### Interview Q&A: Failure Analysis
 
@@ -1065,7 +1065,7 @@ Score each answer using the shared chapter-interview rubric in Appendix A.12.1. 
 
 
 <div class="nav-links">
-  <a href="ch10-ai-datacenter-networking">&larr; Previous</a>
+  <a href="ch10-optical-links-in-operation-from-physical-margin-to-workload-impact">&larr; Previous</a>
   <a href="./">Table of Contents</a>
   <a href="ch12-one-week-optical-systems-interview-review">Next &rarr;</a>
 </div>

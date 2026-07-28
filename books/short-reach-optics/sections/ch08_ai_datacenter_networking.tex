@@ -1,2073 +1,866 @@
-\chapter{AI datacenter networking}
+\chapter{Optical Links in Operation: From Physical Margin to Workload Impact}
 \label{ch:networking}
 
-Optics only make sense once you see the fabric they sit in. Training and
-inference clusters are not one network; they are several overlapping networks
-with different bandwidth, latency, and reach needs. This chapter places the
-devices and validation methods from earlier chapters into that system context:
-how AI clusters are wired, why the interconnect sits on the inference critical
-path, and where optics dominates cost and power.
-
-\section{Scale-up versus scale-out}
-\label{sec:scale-up-out}
-
-The industry borrowed two words from computer architecture and overloaded them
-for AI fabrics. Keeping them straight matters, because they buy different optics.
-
-\begin{description}
-\item[Scale-up] tight coupling inside a node or rack: GPU-to-GPU over a
-      memory-semantic fabric (for example NVLink). Very high bandwidth, very low
-      latency. Increasingly optical as bandwidth outgrows copper reach.
-\item[Scale-out] coupling across racks and pods over a switched network
-      (Ethernet or InfiniBand). This is where pluggable and co-packaged optics
-      have long lived.
-\end{description}
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=\linewidth]{figures/fig_scale_up_node.pdf}
-\caption{Schematic AI compute node (one tray in a larger cluster). \emph{Accelerators}
-         are the heavy compute engines (typically GPUs; the book also uses XPU for
-         GPUs and custom ASICs). \textbf{Scale-up} links (red) tie accelerators through
-         a high-bandwidth, low-latency switch fabric inside the node or rack
-         (NVLink-class). \textbf{Scale-out} links (blue) leave via a dedicated NIC
-         per accelerator into the datacenter Ethernet or InfiniBand fabric.
-         The CPU and front-end NIC handle host, storage, and management traffic.\label{fig:scale-node}}
-\end{figure}
-
-\subsection{Three networks, two that set the optics budget}
-
-The OIF CEI-448G framework names \emph{three} distinct networks in a large AI
-cluster~\firstcite{cei448}. \Cref{fig:scale-node} shows two; the third is easy to
-overlook:
-
-\begin{description}
-\item[Scale-up] accelerator-to-accelerator inside a pod or rack. Highest bandwidth
-      per link, lowest latency, often lossless. Dominates compute time if under-
-      provisioned.
-\item[Scale-out] accelerator-to-accelerator (or node-to-node) across the cluster
-      over a switched fabric (InfiniBand, \term{UEC}\firstterm{UEC}/Ethernet with
-      RoCE or Ultra Ethernet Transport). Lower per-link bandwidth than scale-up,
-      but must reach $10^5$+ endpoints.
-\item[Front-end] CPU-attached traffic: management, control plane, checkpointing,
-      storage, and training-data ingest. Analogous to a conventional cloud
-      datacenter network; not the IM/DD bottleneck this book focuses on, but it
-      shares the same rack power and cabling budget.
-\end{description}
-
-Scale-up carries the majority of \emph{interconnect} bandwidth inside a training
-job; scale-out multiplies link count across the building. That is why both push
-448G-class lane rates and why optics shows up first on scale-out, then on
-scale-up as copper reach shrinks~\firstcite{cei448}.
-
-\subsection{Scale-up versus scale-out at a glance}
-
-\Cref{tab:oif-scale} condenses OIF Table~1 (CEI-448G framework, \S2.2): order-of-
-magnitude targets for node count, physical extent, and media type~\firstcite{cei448}.
-Numbers are industry snapshots, not hard limits, but they explain why ``optics
-inside the rack'' and ``optics between racks'' arrive on different timelines.
-
-\begin{table*}[ht]
-\refstepcounter{table}\label{tab:oif-scale}%
-\centering
-\setlength{\tabcolsep}{4pt}%
-\footnotesize
-\renewcommand{\arraystretch}{1.25}%
-\begin{tabular}{@{}p{0.22\linewidth}p{0.17\linewidth}p{0.17\linewidth}p{0.17\linewidth}p{0.17\linewidth}@{}}
-\toprule
- & \multicolumn{2}{c}{Scale-up} & \multicolumn{2}{c}{Scale-out} \\
-\cmidrule(lr){2-3}\cmidrule(lr){4-5}
-Metric & Today & Next gen & Today & Next gen \\
-\midrule
-Accelerator nodes in domain & $\sim$100 & $\sim$1\,k & 100\,k+ & $\gg$100\,k \\
-\addlinespace[1.5em]
-Physical extent & Rack & Rack to row & Datacenter & Datacenter \\
-\addlinespace[1.5em]
-Network properties & \multicolumn{2}{p{0.34\linewidth}}{Lossless, low latency} &
-  \multicolumn{2}{p{0.34\linewidth}}{Large scale; multi-tier switching} \\
-\addlinespace[1.5em]
-Media within rack &
-  \multicolumn{2}{p{0.34\linewidth}}{Electrical: passive PCB / twinax backplane} &
-  \multicolumn{2}{p{0.34\linewidth}}{Electrical: twinax backplane} \\
-\addlinespace[1.5em]
-Media between racks &
-  AEC (adjacent racks) & Optical (within row) &
-  \multicolumn{2}{p{0.34\linewidth}}{Optical (pluggable or CPO on switch/NIC)} \\
-\bottomrule
-\end{tabular}
-\par\medskip
-{\raggedright\footnotesize\textbf{Table~\thetable.} Scale-up vs.\ scale-out
-snapshots (adapted from OIF CEI-448G framework Table~1, 2025). Scale-up stays
-on copper as long as rack densification keeps channels short; scale-out is already
-optical at datacenter scale.\par}
-\end{table*}
-
-\subsection{Standards bodies: who owns what}
-
-448G/lane signaling is not owned by one standards body, and that is by design.
-Electrical reach, Ethernet naming, connectors, and rack packaging evolved in
-different rooms; AI fabrics forced them to meet at the same lane rate. OIF's
-CEI-448G framework (\S2.3) lists the groups that must align~\firstcite{cei448}.
-\Cref{tab:sdo-map} maps each body to the layer an optical engineer actually
-touches. The short version: OIF sets the electrical baud and reach classes; IEEE
-names the Ethernet optical PMD; UALink and UEC own scale-up and scale-out
-protocol stacks; SNIA and OCP decide connectors and where the optics physically
-live. The \term{LPO MSA} is not a standards body, but it publishes the only open
-end-to-end spec that stitches CEI Linear electrical limits to IEEE optical PMD
-limits for DSP-less modules (\Cref{sec:lpo-msa}). Prose below expands each row,
-OIF and non-OIF.
-
-\begin{table*}[ht]
-\refstepcounter{table}\label{tab:sdo-map}%
-\centering
-\setlength{\tabcolsep}{5pt}%
-\footnotesize
-\renewcommand{\arraystretch}{1.25}%
-\begin{tabular}{@{}p{0.12\linewidth}p{0.14\linewidth}p{0.70\linewidth}@{}}
-\toprule
-Body & Fabric & What matters for short-reach optics \\
-\midrule
-OIF CEI & All reaches & Electrical PHY: XSR/VSR/MR/LR, 448G PAM4/6/8, LPO/LRO; CMIS for module management \\
-\addlinespace[1.5em]
-UALink & Scale-up & Open load/store pod fabric; 200G/lane today, $\sim$400G/lane next; drives XSR-class PHY needs \\
-\addlinespace[1.5em]
-UEC & Scale-out & Ultra Ethernet Transport, congestion control; PHY group surveying 400G/lane enhancements \\
-\addlinespace[1.5em]
-SNIA SFF & Host / backplane & Cables, connectors, PCIe/EDSFF form factors; SFF 448G COM for backplane (complements CEI front-panel work) \\
-\addlinespace[1.5em]
-OCP & Rack / system & Open rack designs, CPO/XPO placement, optical circuit switching (OCS) for AI clusters \\
-\addlinespace[1.5em]
-IEEE 802.3 & Scale-out (+ optics PMD) & Ethernet MAC rates (802.3dj, 400G/lane SG), KP4 FEC, IM/DD PMD clauses (DR/FR, TDECQ) \\
-\addlinespace[1.5em]
-100G Lambda MSA & Scale-out optics & Originated the 100G/$\lambda$ single-mode PMDs (100G-FR/LR, 400G-DR4/FR4/LR4) later folded into IEEE 802.3; RIN$_x$OMA transmitter method the DR/FR and LPO specs inherit \\
-\addlinespace[1.5em]
-IBTA & Scale-out & InfiniBand Architecture; NDR 400G, XDR 800G/port at 200G/lane, 1.6T switch links; reuses QSFP/OSFP + MPO optics with Ethernet \\
-\addlinespace[1.5em]
-IEEE 802.1 & All fabrics & Link-layer security: MACsec (802.1AE) line-rate encryption; 802.1X port access control \\
-\addlinespace[1.5em]
-PCI-SIG / CXL & Scale-up, in-node & PCIe 7.0 (128~GT/s PAM4) and CXL 4.0 memory fabric; PCI-SIG Optical Workgroup for optical PCIe \\
-\addlinespace[1.5em]
-DMTF / OpenConfig / SONiC & Management & Box and fleet telemetry and config (Redfish, OpenConfig, SONiC); complement OIF CMIS module management \\
-\bottomrule
-\end{tabular}
-\par\medskip
-{\raggedright\footnotesize\textbf{Table~\thetable.} SDO and consortium roles at 448G/lane.
-The top six rows follow OIF CEI-448G \S2.3; the 100G Lambda MSA, IBTA, IEEE 802.1,
-PCI-SIG/CXL, and the management stack are added for coverage beyond OIF's own list.\par}
-\end{table*}
-
-\paragraph{OIF.} Common Electrical I/O (\term{CEI}) Implementation Agreements are
-the modular electrical PHY recipes: die-to-die (\term{XSR}), chip-to-module
-(\term{VSR}), chip-to-chip (\term{MR}), and backplane (\term{LR}). CEI-448G is
-the current AI-driven push beyond 224G/lane~\firstcite{cei448}. Related OIF tracks
-include energy-efficient interfaces (EEI), CMIS management extensions at 448G,
-and coherent DCI (out of scope for this book). For optics, CEI tells you the
-\emph{baud and reach} the module or CPO engine must meet; IEEE 802.3 tells you
-how Ethernet names the optical PMD.
-
-\paragraph{UALink Consortium.} \term{UALink}\firstterm{UALink} specifies an open \emph{scale-up}
-stack (transaction, data link, and physical layers) optimized for direct
-accelerator memory access, not IP/Ethernet~\firstcite{ualink200,cei448}. UALink
-1.0 targets 200G/lane and pods up to roughly 1\,k accelerators; the physical-layer
-working group is gathering requirements for $\sim$400G/lane. Optical engineers
-care because higher lane rate reduces port count on the accelerator package, and
-because scale-up eventually hits the same copper reach wall as CEI XSR
-(\Cref{sec:trace-loss}).
-
-\paragraph{Ultra Ethernet Consortium.} \term{UEC} builds a complete Ethernet-based
-stack for AI/HPC \emph{scale-out}: transport (UET), link layer, and PHY
-enhancements~\firstcite{uec10,cei448}. UEC 1.0 (June 2025) targets cluster-scale
-congestion control and RDMA\firstterm{RDMA}-class performance over standard Ethernet hardware,
-including NICs\firstterm{NIC}, switches, optics, and cables. The PHY working group is surveying
-400G/lane improvements. This is the protocol layer above the transceiver; IM/DD
-module specs still come from IEEE and MSAs.
-
-\paragraph{SNIA (SFF Technology Affiliate).} SNIA's SFF working group defines
-connectors, cables, and form factors for storage and compute backplanes, not
-front-panel Ethernet~\firstcite{snia448,cei448}. The SFF 448G project
-(SFF-TA-1043) parallels CEI-448G but focuses on backplane COM, package insertion
-loss, and PAM choice on copper channels inside the box. Pair OIF VSR (module
-connector) with SFF (host PCB and PCIe cable) when debugging a link budget.
-
-\paragraph{Open Compute Project.} OCP publishes open rack, server, and networking
-designs for hyperscale~\firstcite{ocpai,cei448}. Relevant work includes Open
-Systems for AI, short-reach optical interconnect guidelines, and the Optical
-Circuit Switching (OCS) subproject (2025) for reconfigurable cluster fabrics.
-OCP rarely specifies baud rate; it specifies \emph{where} the optical engine
-lives (faceplate pluggable vs.\ CPO vs.\ XPO) and how it is cooled and serviced.
-
-\paragraph{IEEE 802.3.} Ethernet standards define MAC rates, FEC (KP4 in
-Clause~91), and interoperable optical PMDs~\firstcite{ieee8023dj,e4ai448,cei448}.
-802.3dj (200G/lane) and the 400G/lane study group name the product generations
-that consume 224G and 448G-class optics. One naming trap: IEEE quotes
-\textbf{400~Gb/s per lane} (MAC/info rate); CEI quotes \textbf{$\sim$448~Gb/s}
-(line rate with coding overhead). Same physics, different accounting
-(\Cref{ch:imdd,tab:rate-stack}).
-
-\paragraph{100G Lambda MSA.} The single-mode PMDs this book leans on did not start
-at IEEE. The \emph{100G Lambda MSA}, formed in 2017 by a broad group of suppliers
-and hyperscalers, wrote the first interoperable optical specifications built on one
-wavelength carrying 100~Gb/s PAM4 ($\approx$53~GBd): 100G-FR and 100G-LR for
-single-wavelength 100~GbE, and 400G-DR4/FR4/LR4 for four-lane 400~GbE over duplex
-single-mode fiber~\firstcite{lambdamsa}. IEEE 802.3 then adopted the same
-100~Gb/s-per-$\lambda$ approach into its DR/FR/LR PMD clauses, and the LPO MSA
-100G-DR-LPO profile (\Cref{sec:lpo-msa}) inherits both that modulation and the
-RIN$_x$OMA transmitter method the MSA defined (\Cref{sec:rin}). For a short-reach
-engineer this is the body behind the reach-class names on almost every single-mode
-datasheet: when a module is called ``DR4'' or ``FR4,'' the per-wavelength recipe
-traces to this MSA even where the compliance point is now quoted against an IEEE
-clause.
-
-\paragraph{InfiniBand Trade Association.} The \term{IBTA}\firstterm{IBTA} maintains the InfiniBand
-Architecture Specification, the other dominant scale-out fabric for AI and HPC
-alongside Ethernet~\firstcite{ibta}. Data rates follow the same per-lane SerDes
-ladder: NDR reaches 400~Gb/s per port over four 100~Gb/s lanes, and XDR reaches
-800~Gb/s per port over four 200~Gb/s lanes, with switch-to-switch links at
-1.6~Tb/s (XDR figures are from the 2023 spec announcement and remain provisional).
-For the optical engineer the physical layer is close to the Ethernet
-case: the same QSFP and OSFP form factors, the same MPO fiber, and DR/FR-class
-IM/DD optics at matching lane rates. InfiniBand changes the transport and
-congestion model (credit-based flow control, RDMA), not the transceiver. It is
-absent from the OIF \S2.3 list because IBTA runs its own specification, but it
-occupies the same scale-out slot as UEC.
-
-\paragraph{IEEE 802.1 (link-layer security).} Encryption is a link-layer function,
-and at 800G and 1.6T it has to run at line rate. \term{MACsec} (IEEE 802.1AE)
-provides connectionless confidentiality, frame integrity, and data origin
-authenticity at the MAC layer, transparent to the MAC client; IEEE 802.1X handles
-port access control and the key agreement that establishes MACsec
-associations~\firstcite{ieee8021ae}. This lands on optics indirectly: line-rate
-MACsec costs latency and gate count in the switch ASIC or NIC, not in the
-transceiver, and an LPO or DSP-less module carries the ciphertext transparently.
-Encryption is therefore orthogonal to the optical PMD choice (\Cref{sec:lpo-msa}),
-but it belongs in the standards map because a fabric-security requirement can
-still gate a module program at qualification.
-
-\paragraph{PCI-SIG and CXL.} Inside the node, the load-store fabric is PCI Express
-and \term{CXL}\firstterm{CXL}. PCI-SIG released PCIe 7.0 in 2025 at 128~GT/s per lane using PAM4
-and flit encoding, and the CXL Consortium built CXL 4.0 on that same PCIe 7.0
-electrical base for coherent memory pooling~\firstcite{pcie7,cxl4}. Both are 2025
-releases, so treat the exact rates and the optical-interface scope as provisional. Both are
-copper-first and short today, but PCI-SIG runs an Optical Workgroup defining a
-technology-agnostic optical PCIe interface, and CXL memory disaggregation across a
-rack is exactly the reach that pulls optics into a bus that was never optical
-before. For a short-reach optics team this is the emerging in-node and in-rack
-case to watch: PAM4 at PCIe rates over fiber, with the same modulator and detector
-problems as an Ethernet lane.
-
-\paragraph{Management and telemetry.} Module management is OIF CMIS
-(\Cref{sec:cmis}), but the box and fleet layers above it are not OIF.
-\term{DMTF Redfish} is the RESTful standard for server and switch management and
-telemetry; \term{OpenConfig} defines vendor-neutral data models and streaming
-telemetry (gNMI) for network devices; and \term{SONiC} is the open network
-operating system many hyperscalers run, with its own dataplane telemetry
-hooks~\firstcite{netmgmt}. These are where per-module CMIS monitors surface as
-fleet signals: optical power, case temperature, FEC symbol-error counts, and
-pre-FEC BER aggregated across $10^5$ links (\Cref{ch:reliability,sec:fabric-availability}).
-A module program that ships without a telemetry contract into one of these systems
-is effectively invisible at fleet scale.
-
-The frontier is optics entering the scale-up domain (optical NVLink-class links,
-co-packaged switches), because copper reach at 200G/lane is only about a meter.
-
-\section{Topologies and why optics count explodes}
-\label{sec:topologies}
-
-Cluster topology is where optical count stops being ``a few modules per server''
-and becomes a fleet problem. Large AI fabrics mostly use fat-tree / Clos,
-rail-optimized, or dragonfly layouts. In a classic $k$-ary fat-tree, link count
-scales as $O(k^3)$ while endpoints scale as $O(k^2)$: optics multiply faster than
-compute. Rail-optimized designs (one NIC rail per accelerator row, all-to-all
-within a rail) rose with collective-heavy training and inference because they cut
-oversubscription on all-reduce paths, at the price of more parallel optical
-planes. Dragonfly and other hierarchical topologies trade some global bisection
-bandwidth for fewer long links.
-
-The optical engineer cares because every topology choice sets link count, which
-sets laser count, module count, and FIT budget (\Cref{ch:reliability}); rail
-layouts drive fan-out from leaf to spine and push denser 800G/1.6T ports toward
-CPO/XPO (\Cref{sec:cpo-status,sec:xpo}); and scale-up inside the rack stays
-electrical longer while scale-out between racks is already optical
-(\Cref{tab:oif-scale}). That explosion in link count is the economic reason a
-hyperscaler builds an in-house optical engineering team.
-
-\section{Pluggable form factors and module styles}
-\label{sec:pluggables}
-
-Faceplate modules differ in aggregate rate, lane count, electrical reach, and
-where the DSP lives. The form factor sets the passive channel the SerDes must
-survive, and the last decade of AI networking has mostly been a fight over that
-choice: keep a retimer in the module for interop, delete it for watts (LPO/LRO),
-or move the optics onto the package (CPO) and service the laser from the
-faceplate (ELSFP).
-
-\begin{description}
-\item[QSFP-DD / OSFP] the incumbent datacom pluggables. QSFP-DD carries 800G/1.6T
-      class products (eight lanes at 100G or 200G per lane). OSFP targets higher
-      power and density (1.6T today, 3.2T roadmaps) with a larger cage and better
-      thermal path. Both impose a VSR-class electrical channel from host PCB through
-      the connector (\Cref{sec:trace-loss,sec:conditioning}).
-\item[Retimed module] DSP/CDR inside the module (\Cref{sec:equalization}). Default
-      for interoperability; $\sim$15--20~W class at 800G/1.6T.
-\item[LPO / LRO] linear or lightly retimed: delete or slim module DSP
-      (\Cref{sec:conditioning,sec:drivers,fig:oif-448g-package,fig:eq-chains}). Power drops to $\sim$7--9~W but host
-      EQ and transmitter and dispersion eye closure quaternary (TDECQ) margin
-      tighten.
-\item[ELSFP / external laser] field-replaceable CW source for CPO
-      (\Cref{sec:cpo-status,ch:lasers}): decouples laser FIT from switch FIT.
-\item[XPO] liquid-cooled mega-pluggable (\Cref{sec:xpo}): 12.8~Tb/s per module,
-      front-panel serviceability with CPO-class density.
-\end{description}
-
-\term{CMIS} (\Cref{sec:cmis}) is the management layer for module identity, monitors,
-and (at 224G/448G) link-training and host-side signal-integrity tuning extensions.
-Optical engineers touch it when debugging lock, FEC, and equalizer settings across
-vendors.
-
-\paragraph{Half-retimed and asymmetric modules.}
-\label{sec:module-styles}
-
-Not every pluggable is fully retimed or fully linear. Common 2025--26 variants
-sit between those poles:
-
-\begin{description}
-\item[LPO] linear drive and linear receive: no module DSP/CDR
-      (\Cref{sec:equalization,sec:drivers}).
-\item[LRO / RTLR] retimed transmit, linear receive (OIF RTLR): DSP on electrical
-      $\to$ optical only; eases host TX while keeping a simpler RX path~\cite{lpo}.
-\item[TRO / half-retimed] symmetric opposite or partial retiming variants appear in
-      vendor roadmaps; always check which direction carries the DSP.
-\item[Fully retimed] DSP both directions; default for interoperability at 800G/1.6T.
-\end{description}
-
-Power scales with DSP content: retimed $\sim$15--20~W, LRO $\sim$9~W, LPO
-$\sim$7--9~W at 800G class (\Cref{sec:power}). The architecture choice is a trade
-between host margin (COM, TDECQ) and module watts.
-
-\subsection{The LPO MSA: stitching IEEE optics to CEI Linear}
-\label{sec:lpo-msa}
-
-OIF CEI tells you the electrical recipe at the module cage. IEEE 802.3 tells you
-how Ethernet names the optical PMD and its TDECQ/OMA limits. Neither document,
-by itself, is a complete product spec for a linear pluggable that deletes the
-module DSP. The \term{LPO MSA}\firstterm{LPO MSA} (Linear Pluggable Optics
-Multi-Source Agreement) fills that gap: one open specification for both sides of
-the module, with normative test points and host responsibilities spelled
-out~\firstcite{lpomsa,lpo}.
-
-The first published revision, \emph{100G-DR-LPO} (v1.0, March 2025), targets
-100~Gb/s per lane at 53.125~GBd PAM4 on single-mode fiber from 0.5~m to 500~m.
-It is explicitly a data-center profile: low power, low latency, high port density,
-RS(544,514) FEC on the host, and form-factor agnostic (QSFP, QSFP-DD, OSFP are
-examples, not the spec). The naming pattern generalizes to \texttt{n00G-DRn-LPO}
-for $n\in\{1,2,4,8\}$ lanes. Optical reach and modulation track IEEE DR-class
-PMDs; the electrical interface tracks OIF CEI-112G-LINEAR-PAM4. That split is the
-template 224G linear modules follow: CEI-224G-Linear on the AUI, 802.3dj optical
-PMD limits on the fiber (\Cref{sec:224g-deploy,sec:pmd-reach}).
-
-\paragraph{Who owns which block.}
-In an LPO link the host is not a passive cable driver. It runs KP4 FEC
-(\Cref{sec:kp4}), full SerDes equalization (CTLE, FFE, DFE, CDR;
-\Cref{sec:equalization,sec:serdes-dsp}), and optional nonlinear compensation
-(NLC) and startup protocol functions. The module is analog: linear driver,
-modulator or laser, photodiode, TIA, and at most a fixed CTLE. No retiming, no
-FEC, no heavy DSP. CMIS (\Cref{sec:cmis}) is the management contract. SFF
-hardware specs (QSFP-DD, OSFP cages) set the mechanical envelope. The MSA's job
-is to define what must pass at each interface between those blocks so modules
-from different vendors close on the same host.
-
-\tradeoff{Retimed module vs LPO host burden}{Module watts and faceplate density
-when DSP leaves the module}{Host SerDes margin, equalization depth, and interop
-risk on every platform}{When host channels and thermal budgets are proven for
-the linear path}{Pay for retimers when host margin is the scarce resource; delete
-them when watts dominate and the host can own EQ and FEC.}
-
-\paragraph{The test-point ladder.}
-LPO MSA normative compliance is organized around six electrical/optical test
-points (\Cref{tab:lpo-tp}), the concrete instance of the general TP0-to-TP5 planes
-in \Cref{sec:test-points}. Think of them as the validation script: host TX at
-TP1a, module optical TX at TP2, stressed optical RX at TP3, module electrical RX
-at TP4, and stressed host RX at TP4a. Section~10 of the MSA adds a host-to-host
-end-to-end BER test with FEC-encoded traffic, which is how you prove interop after
-the point tests pass.
-
-\begin{table}[ht]
-\centering
-\caption{LPO MSA test points (100G-DR-LPO).\label{tab:lpo-tp}}
-\setlength{\tabcolsep}{4pt}%
-\footnotesize
-\renewcommand{\arraystretch}{1.25}%
-\begin{tabular}{@{}p{0.08\linewidth}p{0.30\linewidth}p{0.54\linewidth}@{}}
-\toprule
-Point & Location & Principal measurements \\
-\midrule
-TP1a & Host SerDes output & EECQ (electrical eye closure), host TX quality \\
-\addlinespace[1.5em]
-TP1 & Module electrical input & Module input stressor calibration \\
-\addlinespace[1.5em]
-TP2 & Optical TX (2--5~m patch cord) & TDECQ, TECQ, OMA$_{\mathrm{outer}}$, RIN$_{x\mathrm{OMA}}$, ER \\
-\addlinespace[1.5em]
-TP3 & Optical RX input & Stressed receiver calibration (SECQ), sensitivity masks \\
-\addlinespace[1.5em]
-TP4 & Module electrical output & Module RX linear output (EECQ) \\
-\addlinespace[1.5em]
-TP4a & Stressed host input & Host RX under worst-case module output \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\paragraph{Optical limits that matter.}
-The MSA optical tables (\Cref{sec:tdecq,ch:validation}) inherit IEEE 802.3
-measurement methods with LPO-specific reference equalizers. The numbers you will
-quote in a datasheet review:
-
-\begin{itemize}
-\item TDECQ and TECQ capped at 3.4~dB per lane, measured with a 9-tap T-spaced
-      reference FFE and SER target $4.0\times10^{-4}$.
-\item OMA$_{\mathrm{outer}}$ coupled to transmitter quality: launch power in OMA
-      rises with max(TECQ, TDECQ) along a piecewise mask (for example
-      $-3.2 + \mathrm{max}(\mathrm{TECQ},\mathrm{TDECQ})$~dBm in the mid-TECQ
-      region).
-\item RIN$_{x\mathrm{OMA}} \le -138$~dB/Hz at 17.2~dB ORL (the ``$x$'' subscript
-      tracks return loss, same convention as IEEE DR PMDs).
-\item Illustrative link budget 6.7~dB total at 500~m (3~dB channel loss plus 0.3~dB
-      MPI penalty plus 3.4~dB TDECQ allocation). Do not stack that TDECQ
-      allocation on a SECQ-stressed sensitivity that already embeds Tx quality.
-\item Stressed receiver sensitivity $-3.1$~dBm OMA$_{\mathrm{outer}}$ at TP3 with
-      SECQ = 3.4~dB and aggressor lanes at 4.2~dBm OMA.
-\end{itemize}
-
-TECQ is TDECQ without the dispersion test fiber. The MSA uses both because outer
-OMA limits are written against max(TECQ, TDECQ), and a module can be fiber-limited
-even when the electrical eye looks clean.
-
-\paragraph{Electrical limits and host COM.}
-On the electrical side the MSA points to CEI-112G-LINEAR-PAM4 for the host-to-module
-interface and defines EECQ (electrical eye closure quaternary) at TP1a and TP4a.
-That is the electrical analogue of TDECQ: a host that passes optical TDECQ at TP2
-but fails EECQ at TP1a still will not interoperate. Host PCB insertion loss,
-connector, and module input return loss sit in the channel reference model
-(Section~7). For 224G deployment, swap CEI-112G-LINEAR for CEI-224G-Linear and run
-the same two-ledger program (\Cref{sec:224g-deploy,sec:com}).
-
-\paragraph{What to read first.}
-For a bring-up engineer the reading order is: Section~5 (system overview and host
-FEC requirements), Section~7 (electrical TPs and channel model), Section~8
-(optical TX/RX tables), Section~9 (parameter definitions, especially 9.5 TDECQ/TECQ
-and 9.10 stressed RX), then Section~10 (host-to-host FEC BER). Cross-check every
-optical definition against the cited IEEE 802.3 clause; the MSA adds reference
-equalizer taps and SER targets, not new physics.
-
-\keyidea{OIF owns the electrical baud at the cage. IEEE owns the optical PMD
-metrics on the fiber. The LPO MSA is the product contract that binds them for
-DSP-less modules: normative test points, host FEC/EQ duties, and TDECQ/OMA masks
-you can test without a module retimer safety net.}
-
-\subsection{The LPO supplier base and the adoption question}
-\label{sec:lpo-market}
-
-The MSA defines what a linear module must pass; it does not settle whether the
-market buys one. By 2025--26 the supplier base had formed around the analog parts
-that replace the DSP: high-linearity TIAs and linear drivers. Macom, Semtech, and
-Maxlinear are the named component proponents, and once the DSP is gone the TIA and
-driver become the make-or-break blocks~\cite{lpo}.
-
-The demonstrations track a fast rate climb. Eoptolink showed a
-200G/$\lambda$ four-channel LPO link with no DSP or CDR at OFC~2024 and moved a
-second-generation 100G/lane 800G and 400G single-mode line into volume, claiming
-full TP2 compliance at the transmit interface~\cite{eoptolinklpo}. Macom exhibited its
-PURE~DRIVE 200~Gb/s LPO parts at OFC~2024 and extended them toward
-212~Gb/s/lane for a 1.6T module, with the TIA and driver as the headline~\cite{macomlpo}. Marvell,
-a DSP house, announced a 200G/lane TIA and laser-driver chipset for 800G and 1.6T
-LPO aimed at scale-up XPU fabrics~\cite{marvelllpo}. Macom and Eoptolink are founding
-members of the LPO MSA (\Cref{sec:lpo-msa}).
-
-\newthought{LPO reaches into PCIe scale-up.} Alphawave and Innolight demonstrated
-a 64~Gb/s/lane PCIe~6.0 subsystem (controller plus PHY) over Innolight's LPO OSFP
-optics at OFC~2024, then a 128~Gb/s/lane platform pairing a PCIe~7.0-ready SerDes
-PHY with the same optics~\cite{alphawavelpo}. The pull is the switch-fabric pull again:
-larger, faster AI nodes need more PCIe reach than copper gives, and the linear
-module skips the DSP latency and power a retimed module would add
-(\Cref{sec:scale-up-out,sec:latency-budget}).
-
-\newthought{Whether LPO wins is a separate question.} Host support exists:
-Juniper's Broadcom-based QFX switches take LPO optics without hardware changes, and
-Arista has shown Broadcom TH5 compatibility for over two years~\cite{lpo}. The
-market read is still cautious. Cignal AI argues LPO stays a small share, at least
-at 800G, because the installed fabric was already designed around DSP-based
-modules; 100G/lane (800GbE) LPO looks late and likely to hold only a small slice
-long term~\firstcite{cignal}. At 200G/lane and 1.6T the balance tips toward LRO:
-early 1.6T LPO parts draw more than 30~W, a thermal problem at faceplate density
-(\Cref{sec:thermal-envelope}), while a transmit-DSP LRO design promises under 20~W
-with easier integration and interop~\cite{lpo}. Cignal notes that every vendor
-showing 1.6T LPO at OFC also showed an LRO part~\firstcite{cignal}. That matches
-the book's technical read: LPO and LRO win where the host electrical channel and
-TDECQ close without the module DSP, and lose where they do not
-(\Cref{sec:224g-deploy,sec:conditioning}).
-
-\section{Emerging link styles}
-
-The form-factor list above is the present. The industry argument for 2025--26 is
-where the DSP and the laser should live next. Retimed pluggables remain the
-interop default: a module DSP cleans the electrical channel, at the cost of
-watts. LPO and LRO delete or slim that DSP so the host SerDes carries more of the
-EQ burden, which is attractive for AI power budgets and painful for margin and
-interop. CPO moves the optical engine onto the switch or XPU substrate to cut
-electrical reach, and usually keeps the laser external and field-replaceable
-(ELSFP/CW-WDM). XPO appeared in 2026 as a middle path: a much larger,
-liquid-cooled pluggable that keeps front-panel serviceability while pushing
-density toward CPO territory (\Cref{sec:xpo}). The rest of this chapter treats
-electrical reach, eye budgets, and vendor CPO programs as consequences of that
-argument.
-\section{The electrical link: reach, conditioning, and the eye budget}
-\label{sec:trace-loss}
-
-Every form factor above is really an answer to one physical question: \emph{how far
-can the electrical signal travel before it is cheaper (in power and dB) to convert
-to light?} As the per-lane rate climbs, that distance collapses, and it is what
-pushes the optics from the faceplate toward the die.
-
-\newthought{Trace loss scales with frequency.} A PCB stripline's insertion loss
-grows roughly with $\sqrt{f}$ (skin effect) plus a dielectric term linear in $f$,
-so it is quoted per inch \emph{at the Nyquist frequency}. Going from 112G to 224G
-PAM4 moves Nyquist from 28~GHz to 56~GHz, and the loss per inch roughly doubles.
-Recent 224G board studies measure $\approx2.8$~dB/inch for regular stripline and
-$\approx1.9$~dB/inch with skip-layer routing at 56~GHz, against a next-generation
-\emph{target} of 1~dB/inch that demands ultra-low-loss dielectric, HVLP copper, and
-short via stubs~\cite{traceloss}. \Cref{fig:traceloss} shows the consequence: at a
-fixed PCB-trace budget, doubling the baud rate roughly halves the copper reach.
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=\linewidth]{figures/fig_trace_loss.pdf}
-\caption{PCB trace insertion loss versus length at each rate's Nyquist. The reach to
-a fixed budget shrinks from $\sim\!10$ inches (112G) to a few inches (224G), which
-is why the optical conversion must move closer to the ASIC.\label{fig:traceloss}}
-\end{figure}
-
-\newthought{The CEI channel classes name the reaches.} OIF's Common Electrical I/O
-project defines the electrical link budgets the whole industry designs to.
-\Cref{tab:cei224-reach} is the CEI-224G lookup card (XSR / VSR / MR / LR, plus
-Linear for DSP-less modules); the reach map is \Cref{fig:cei-reach-map}. At
-56~GHz Nyquist the same names mean much shorter copper than at 112G~\cite{cei224}:
-\begin{description}
-\item[XSR] \term{XSR}\firstterm{XSR}: die-to-die / die-to-engine: the shortest, lowest-power tier, the one CPO
-      and chiplet optics live in ($\lesssim$50~mm package).
-\item[VSR] \term{VSR}\firstterm{VSR}: chip-to-module: $\approx$200~mm of host plus 20~mm of module and one
-      connector: the classic pluggable channel.
-\item[MR] \term{MR}\firstterm{MR}: chip-to-chip across a board: $\approx$500~mm, one connector,
-      $\sim$32--34~dB die-to-die.
-\item[LR] \term{LR}\firstterm{LR}: backplane or copper cable: $\approx$1000~mm of host and daughter cards,
-      two connectors, up to $\sim$40~dB die-to-die (including a 1~m cable).
-\item[Linear] \term{CEI-224G-Linear}: same faceplate-class ports without a module
-      DSP/CDR; the electrical foundation for LPO (\Cref{sec:224g-deploy,sec:pluggables}).
-\end{description}
-
-\paragraph{Active copper: ACC, AEC, and DAC.}
-\label{sec:active-cables}
-
-Passive direct-attach copper (DAC) survives only where the reach is short: at 224G a
-passive DAC is good for roughly $0.5$--$1$~m (strong 224G PHYs have demonstrated
-2~m). \term{ACC}\firstterm{ACC} adds redrivers (CTLE + VGA) in the cable; \term{AEC}\firstterm{AEC}
-adds retimers (EQ + CDR) and stretches twinax to $\sim$2.5~m at higher power
-(\Cref{sec:conditioning,sec:equalization})~\cite{dac224}. Beyond that, and
-increasingly \emph{within} the rack for scale-up, the answer is optics
-(\Cref{tab:oif-scale}).
-
-\paragraph{Co-packaged and near-package copper: copper moves inward too.}
-\label{sec:cpc-npc}
-Optics is not the only thing the reach wall pushes toward the package. \term{CPC}
-(co-packaged copper) mates a copper cable or connector directly onto the ASIC package
-substrate, and \term{NPC} (near-package copper) places that connector just outside
-the package on the socket. Both leave the host at the package edge and skip the lossy
-PCB run to the faceplate, where most of the trace budget in \Cref{fig:traceloss} is
-spent. The move mirrors CPO: shorten the electrical path until the channel closes,
-but keep the signal in copper instead of converting it to light.
-
-On-substrate copper has been validated at 224G-PAM4 with a stated roadmap to 448G,
-and compression substrate connectors now target 224~Gb/s PAM4 and
-beyond~\firstcite{cpc}. Inside its reach, copper keeps the properties that make it the
-default: a long-reach 224G SerDes into a CPC cable runs near 4~pJ/bit with no
-electro-optic conversion, adds less latency than a retimed optical hop, and costs less
-per lane. Passive co-packaged copper reaches about a meter at 448G-PAM4 under
-optimistic connector assumptions (\Cref{sec:448g}), enough to cover many scale-up
-links inside a rack or between adjacent racks.
-
-Past that wall the conversion to light pays for itself. When the reach exceeds what a
-clean substrate channel can carry, or the port count makes copper bulk and cabling
-weight unmanageable, optics takes the link (\Cref{tab:oif-scale}). CPC and NPC do not
-remove that crossover; they move it, buying copper one more rate generation before the
-optics win. Read the placement ladder in \Cref{tab:placement} from the copper side and
-this is the same trade seen in reverse.
-
-\newthought{So the optics march inward.} Shortening the electrical path is exactly
-what trades power and reach for serviceability, the through-line of this chapter.
-\Cref{tab:placement} lays out the ladder from faceplate to interposer.
-
-\begin{table*}[ht]
-\refstepcounter{table}\label{tab:placement}%
-\centering
-\setlength{\tabcolsep}{5pt}%
-\renewcommand{\arraystretch}{1.25}%
-\begin{tabular}{@{}p{0.20\linewidth}p{0.22\linewidth}p{0.15\linewidth}p{0.30\linewidth}@{}}
-\toprule
-Placement & Host electrical reach & Energy/bit & Serviceability \\
-\midrule
-Pluggable (faceplate) & full VSR host run ($\sim$200~mm) + connector & highest ($>$30~pJ/bit w/ DSP; less for LPO) & hot-swap at faceplate (best) \\
-\addlinespace[1.5em]
-On-board optics (OBO / COBO) & shorter mid-board trace & lower & board-level (solder/socket); largely bypassed for CPO \\
-\addlinespace[1.5em]
-Near-packaged (NPO) & engine beside the ASIC on substrate & lower still & module on substrate; limited \\
-\addlinespace[1.5em]
-Co-packaged (CPO) & mm-scale die-to-engine (XSR) & $<$5~pJ/bit & soldered; ELSFP lasers field-replaceable \\
-\addlinespace[1.5em]
-Optical I/O on interposer & on-die / interposer & $<$2~pJ/bit & not field-serviceable (emerging) \\
-\bottomrule
-\end{tabular}
-\par\medskip
-{\raggedright\footnotesize\textbf{Table~\thetable.} The optics-placement ladder.
-Moving the electro-optic conversion inward cuts trace loss and energy per bit but
-erodes field serviceability, the central tension behind pluggables, OBO/NPO, CPO
-(\Cref{sec:cpo-status}), and the XPO middle ground (\Cref{sec:xpo}). A mid-board
-fiber connector can shift breakage risk from the costly engine to a cheap
-jumper.\par}
-\end{table*}
-
-\newthought{On-board optics: the step the industry mostly skipped.} OBO (standardized
-by the \term{Consortium for On-Board Optics}, COBO) moves the optical engine off the
-faceplate and onto the main PCB, cutting the copper run without abandoning silicon
-photonics~\cite{cobo}. It works, but it gives up hot-plug serviceability while only
-partly closing the power gap, so with CPO maturing, most hyperscalers are leapfrog\-ping
-OBO/NPO straight to co-packaging, keeping serviceability via field-replaceable lasers
-(\Cref{sec:cpo-status}) and the XPO pluggable hedge (\Cref{sec:xpo}).
-
-\newthought{The die-to-die interface is a standard too.} At the innermost tier
-(\Cref{tab:placement}), the electrical hand-off between chiplets is increasingly set
-by \term{UCIe}\firstterm{UCIe} (Universal Chiplet Interconnect Express), an open
-die-to-die interconnect whose 2.0 revision (August 2024) added 3D packaging and
-in-field manageability, with a 3.0 revision roughly doubling bandwidth in
-2025~\firstcite{ucie}. UCIe is the parallel counterpart to CEI XSR: XSR is a serial
-die-to-OE link, while UCIe carries wide parallel lanes across a package or interposer.
-It reaches optics because co-packaged engines and optical-I/O chiplets attach to the
-compute die over a UCIe port, and optical-UCIe proposals aim to carry that traffic
-over fiber instead of a few millimeters of substrate. The chiplet-protocol and
-packaging detail sits outside this book's scope; the point for short reach is that the
-die-to-die interface, copper or optical, sets the shortest reach an optical engine
-must beat.
-
-\subsection{Reshaping, retiming, and where the DSP lives}
-\label{sec:conditioning}
-
-To survive that lossy channel the signal is conditioned at several points
-(\Cref{sec:equalization}), and it helps to keep two device classes distinct.\sidenote{Rule of thumb: a redriver
-reshapes, a retimer rebuilds timing. Neither fixes reflections or a bad return
-path.}
-
-\begin{description}
-\item[Redriver] an analog \emph{reshaper/amplifier}: a \term{CTLE}\firstterm{CTLE} plus a VGA. It sharpens and boosts the eye but has
-      \emph{no} clock recovery, so it cannot reset accumulated jitter; it adds
-      almost no latency. This is the active element in active copper cables (ACC)
-      and on host boards used to stretch a marginal trace.
-\item[Retimer] adaptive EQ \emph{plus} a \term{CDR}\firstterm{CDR} that re-samples and regenerates the
-      data. It breaks the channel into independent jitter/loss segments, at the
-      cost of power and per-hop latency. Retimers sit in active electrical cables
-      (AEC) and in fully retimed modules (Broadcom's Agera is a host retimer).
-\end{description}
-
-Inside the optical module the traditional ``cleanup'' is a full DSP (retimer $+$
-FEC engine). The retimed-to-linear spectrum trades exactly cleanup for power and
-latency:
-\begin{description}
-\item[Fully retimed] DSPs in both directions: least sensitive to \term{ISI}\firstterm{ISI}/dispersion,
-      but highest power ($\sim$14--18~W/module at 800G) and most latency
-      ($\sim$8--10~ns/hop).
-\item[LPO (linear)] \term{LPO}\firstterm{LPO}: \emph{no} DSP or CDR in either direction: only a CTLE in the
-      TIA and a linear driver, so the host SerDes must do all the \term{FFE}\firstterm{FFE}/CTLE
-      equalization \emph{and} carry the FEC. Lowest power ($\sim$7--9~W), lowest
-      latency ($<$3~ns), but most ISI/dispersion-sensitive and shortest reach
-      ($<$2~km)~\cite{lpo}.
-\item[LRO / TRO (retimed TX, linear RX)] DSP only on the electrical$\to$optical
-      path, roughly half the power, sensitivity, and latency, with easier interop.
-\end{description}
-
-So yes: reshapers/amplifiers (redrivers) and retimers are routinely placed on the
-host path, and the module's own DSP is the last line of cleanup. The entire LPO bet
-(\Cref{sec:power,sec:224g-deploy}) is to \emph{delete} those active stages and let the host SerDes'
-CTLE/FFE carry the channel, trading electrical margin for power and latency.
-
-\subsection{The electrical eye: acceptable voltage and noise}
-\label{sec:eye-budget}
-
-What must the signal actually look like where it hands off to the module? The
-CEI-224G reference and draft numbers set the envelope~\cite{cei224}. Differential
-swing sits roughly in the 0.36--1.05~V\textsubscript{ppd} band (reference TX near
-1~V peak-to-peak differential; lossier channels use the larger swing). Transmitter
-\term{SNDR}\firstterm{SNDR} ($\mathrm{SNR_{TX}}$) is about 33~dB: the transmitter's own
-noise-plus-distortion ceiling. PAM4 level uniformity needs
-$\mathrm{RLM}\ge0.95$ (1.0 = perfectly even eyes). Jitter budgets are tight:
-random $\approx$0.01~\term{UI}\firstterm{UI} rms and bounded/uncorrelated
-$\approx$0.02~UI pk. The go/no-go metric that folds those pieces together is
-\term{COM}\firstterm{COM} (channel operating margin) $\ge3$~dB: a statistical SNR of
-the fully equalized link (\Cref{sec:com}).
-
-\paragraph{Jitter and level uniformity.}
-\label{sec:jitter}
-
-At 112~GBd, 1~UI $\approx$8.9~ps; 0.01~UI rms jitter is $\sim$90~fs rms. Random
-jitter adds vertical eye closure; deterministic jitter (ISI, crosstalk) shows up in
-bathtub curves and COM. \term{RLM}\firstterm{RLM} $\ge0.95$ keeps the three PAM4 eyes
-even; poor RLM wastes vertical margin the same way excess TDECQ does on the optical
-side (\Cref{sec:tdecq}).
-
-Retimers reset jitter per segment; redrivers do not. That is why long ACC chains
-accumulate timing budget stress while AEC segments stay independent
-(\Cref{sec:active-cables,sec:conditioning}).
-
-Here is the number that reframes ``acceptable noise.'' After the reference
-receiver's equalizer (an 8-tap \term{DFE}\firstterm{DFE}), the eye at the slicer is only about
-$4$--$10$~mV tall and $\sim$0.06~UI wide, with $\sim$11--14~dB of vertical eye
-closure, at a \emph{pre-FEC} error rate near $10^{-4}$. The channel is deliberately
-driven deep into ISI and closed nearly shut; \term{KP4} FEC (pre-FEC $2.4\times
-10^{-4}$ to post-FEC $10^{-15}$, \Cref{ch:models}) is what turns that into a working
-link. ``Acceptable,'' then, is not a clean open eye; it is whatever keeps
-COM~$\ge3$~dB and the pre-FEC BER under the KP4 threshold. It is also why the optics
-must present a clean, highly linear interface, especially for LPO: with only a few
-mV of margin, any added noise or nonlinearity from the driver or TIA comes straight
-off COM.
-
-\paragraph{Channel operating margin (COM) in one page.}
-\label{sec:com}
-
-\term{COM} is the electrical go/no-go statistic for CEI-class channels: after the
-reference transmitter, channel, and receiver (CTLE + 8-tap DFE) are applied, COM is
-the SNR margin at the slicer, in dB. COM $\ge3$~dB is the usual pass line
-(\Cref{sec:eye-budget,sec:equalization}).
-
-COM connects directly to optics because the module is the last analog segment before
-FEC. A retimed module can absorb some host-channel sin; LPO cannot
-(\Cref{sec:pluggables,sec:drivers}). When COM is tight, debug in this order:
-host TX SNDR and RLM, connector return loss, equalizer tap saturation, then module
-input swing and TIA noise (\Cref{sec:pd-tia,ch:models}).
-
-Optical-side analogs are not identical: TDECQ scores the transmitter with a
-reference equalizer; SECQ stresses the receiver (\Cref{sec:tdecq,sec:secq}). Think of
-COM as the \emph{electrical} counterpart to those optical margin tests.
-
-\keyidea{Electrical reach is the hidden clock behind form factors. Trace loss per
-inch roughly doubles from 112G (28~GHz) to 224G (56~GHz), collapsing copper reach
-to a few inches on-board and $\sim$1~m in cable. Each step inward (pluggable, OBO,
-NPO, CPO, on-interposer optical I/O) buys power and reach and spends
-serviceability. The signal is held together by redrivers (reshape), retimers
-(reclock), and DSPs (both), which LPO deletes, inside a brutal budget:
-$\sim$1~V\textsubscript{ppd} in, 33~dB TX SNDR, COM~$\ge3$~dB, and a post-equalizer
-eye of only a few mV rescued by FEC.}
-
-\section{The two phases of inference, revisited}
-\label{sec:inference-bottlenecks}
-
-\Cref{ch:role} introduced prefill and decode; here is why they matter for the
-network.
-
-\begin{description}
-\item[Prefill] compute-bound and highly parallel: crunches the whole prompt
-      through every layer at once.
-\item[Decode] memory-bandwidth-bound and autoregressive: one token at a time,
-      streaming all weights each step. The \term{KV cache} (scaling with batch
-      $\times$ context length) is a major and growing memory consumer.
-\end{description}
-
-\newthought{Why decode is memory-bandwidth-bound.} It comes down to
-\emph{arithmetic intensity}, FLOPs performed per byte read from memory. Each
-weight matrix $W\in\mathbb{R}^{d_\text{out}\times d_\text{in}}$ costs
-$d_\text{out}d_\text{in}$ parameters to read. In decode you generate one token, so
-every layer is a matrix--\emph{vector} product (GEMV): about $2\,d_\text{out}
-d_\text{in}$ FLOPs against $2\,d_\text{out}d_\text{in}$ bytes of FP16 weights, i.e.
-each weight is used once and discarded:
-\[
-\text{AI}_\text{decode}\;\approx\;
-\frac{2\,d_\text{out}d_\text{in}}{2\,d_\text{out}d_\text{in}}
-\;=\;1\ \text{FLOP/byte}.
-\]
-Prefill instead pushes $N$ prompt tokens through the \emph{same} weights at once, a
-matrix--matrix product (GEMM) that reuses each loaded weight $N$ times, so
-$\text{AI}_\text{prefill}\approx N$ FLOP/byte. On a roofline this is decisive: an
-H100 delivers $\sim$1000~TFLOP/s FP16 on $\sim$3.35~TB/s of HBM\firstterm{HBM}, so its balance
-point sits at
-\[
-\frac{1000\times10^{12}}{3.35\times10^{12}}\;\approx\;300\ \text{FLOP/byte}.
-\]
-Decode at $\sim$1~FLOP/byte runs $\sim$300$\times$ \emph{below} that ridge (under
-1\% of peak FLOPs) so token rate is set by
-$\text{HBM bandwidth}/\text{model bytes}$, not by compute~\cite{roofline}. Two
-effects compound it: the full weight set must be streamed from HBM \emph{per token},
-and attention re-reads the KV cache every step, with traffic that grows with context
-length.
-
-\newthought{Batching couples latency and throughput.} Larger batches amortize the
-weight-streaming cost (better throughput and energy per token) but make each
-individual response wait (worse latency). Squeezing both at once is a central goal
-of an inference platform.
-
-\newthought{Sharding puts the network on the critical path.} Because frontier
-models (especially mixture-of-experts\firstterm{MoE}) are sharded across many accelerators,
-each token triggers collectives: all-reduce for tensor parallelism, all-to-all
-for expert routing, point-to-point for pipeline stages. For MoE all-to-all in
-particular, interconnect bandwidth and tail latency can dominate. This is the
-concrete reason hyperscale inference platforms balance ``compute, memory, and
-networking.''
-
-\begin{table}[ht]
-\centering
-\caption{Where optics fits the inference bottlenecks.\label{tab:inference}}
-\renewcommand{\arraystretch}{1.25}%
-\begin{tabular}{@{}lll@{}}
-\toprule
-Phase & Bottleneck & Network role \\
-\midrule
-Prefill & compute & moderate (parallel) \\
-\addlinespace[1.5em]
-Decode & memory bandwidth & high for sharded models (collectives) \\
-\addlinespace[1.5em]
-MoE routing & interconnect & dominant (all-to-all) \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\section{Collective communication and optics demand}
-\label{sec:collectives}
-
-Once a model is sharded across many accelerators, the network stops carrying only
-point-to-point streams. Training and large inference jobs spend a large fraction
-of wall time in \term{collective} patterns: all-reduce for tensor-parallel layers,
-all-to-all for MoE expert routing, and steadier point-to-point streams for pipeline
-stages. Those patterns set optical requirements even when the PHY still looks like
-ordinary Ethernet or InfiniBand.
-
-\begin{description}
-\item[All-reduce] tensor-parallel layers sum partial results across a group; needs
-      high bisection bandwidth and low latency; latency sensitive at small message
-      sizes (decode).
-\item[All-to-all] MoE expert routing sends tokens to remote experts; bandwidth
-      dominates; tail latency spikes if any link in the pod is slow
-      (\Cref{tab:inference}).
-\item[Point-to-point] pipeline parallelism moves activations between stages; steady
-      streams rather than global sync.
-\end{description}
-
-Optical engineering maps to these patterns indirectly. More rails and higher
-per-lane rate cut time spent in collectives; CPO/XPO raise faceplate bandwidth so
-fewer hops are needed (\Cref{sec:cpo-status,sec:xpo,sec:topologies}). Protocol
-choice (UEC vs IB) sets lossless delivery and congestion behavior
-(\Cref{sec:fabric-protocols}), but the PHY job remains the same: deliver pre-FEC
-BER below KP4 at the lowest pJ/bit (\Cref{sec:power,sec:kp4}). The next section
-names the fabric stacks that carry those collectives; the sections after that
-show where the optics physically sit.
-
-\whyexp{chase one slow rail before rewriting the fabric?}{Because synchronous
-collectives amplify a single straggler. Average utilization can look healthy
-while one optical lane sets the job tail.}
-
-\heuristic{Judge the fabric by delivered step time and collective tail, not by
-aggregate port rate on a clean bench.}
-
-Telemetry versus complexity: same decision criteria as
-\Cref{sec:fleet-triage,fw:telemetry}. Instrument ledgers that unlock contain or
-repair; skip vanity counters.
-
-\section{Fabric options}
-\label{sec:fabric-protocols}
-
-InfiniBand, Ethernet, and the Ultra Ethernet Consortium's AI-tuned Ethernet are
-the scale-out contenders. Momentum in 2025--26 favors open Ethernet for AI; large
-vertical AI stacks commonly use Broadcom Tomahawk switch silicon
-(\Cref{ch:role,sec:cpo-status}).
-
-\begin{description}
-\item[InfiniBand / NVLink fabric] lossless, RDMA-native; NVIDIA Quantum switches;
-      strong in closed NVIDIA stacks; CPO photonics on Quantum-X (\Cref{sec:cpo-status}).
-\item[RoCEv2 Ethernet] RDMA over converged Ethernet; widely deployed; competes on
-      congestion control and tail latency versus IB.
-\item[Ultra Ethernet (UEC)] UET transport, enhanced PHY, congestion control aimed
-      at AI collectives (\Cref{tab:sdo-map}). PHY work tracks 400G/lane class electrical
-      and optical I/O.
-\end{description}
-
-Collectives (all-reduce, all-to-all for MoE) sit on this fabric
-(\Cref{sec:inference-bottlenecks}). The optical job is raw bandwidth and predictable
-latency at $\sim$200--400G per lane, not long-haul reach.
-
-\section{Optical circuit switching}
-\label{sec:ocs}
-
-The fabric options above are all \emph{packet} switches: every link terminates in a
-switch ASIC that turns light into electrons, reads the header, and turns it back into
-light for the next hop. That O-E-O conversion is where much of a fabric's power and
-latency goes (\Cref{sec:power}), and at $10^5$-plus endpoints it repeats at every tier.
-An \term{optical circuit switch}\firstterm{OCS} does a different job. It is a Layer-1
-switch that steers light from an input fiber to an output fiber with no O-E-O
-conversion, so it is transparent to bit rate, modulation format, and wavelength. The
-same switch that passes 200~Gb/s PAM4 today passes 448G or a full WDM comb tomorrow with
-no change (\Cref{ch:wdm,sec:224g}).
-
-Transparency is the point, and also the limit. Because an OCS never looks at a packet, it
-cannot buffer, arbitrate, or route per packet. It sets up a \emph{circuit}: a fixed light
-path held open as long as the topology needs it. The mirrors or waveguides that steer the
-light reconfigure in milliseconds, far slower than a packet time, so an OCS reshapes the
-\emph{topology} between jobs or around failures, not the traffic inside a job. In return
-it deletes a whole tier of packet switches and their pluggable optics, along with the
-power, cost, and FIT that tier carried (\Cref{sec:topologies,ch:reliability}).
-
-\paragraph{The device and its parameters.}
-Most production OCS today is free-space: a fiber-collimator array launches beams onto a
-two-axis MEMS\firstterm{MEMS} mirror array, and each mirror tilts to aim its beam at the chosen output
-collimator. \Cref{tab:ocs-tech} lists the main technologies. For an optics engineer the
-parameters that matter are the ones that land in the link budget and the fleet model.
-
-\begin{description}
-\item[Insertion loss] a hop through the switch costs roughly 2~dB, straight off the
-      optical budget (\Cref{sec:link-budget}). Higher launch power or better receiver
-      sensitivity has to cover it (\Cref{ch:lasers,sec:sensitivity}).
-\item[Radix] how many fibers the switch connects. Production MEMS OCS runs about
-      $136\times136$; circulators reuse each port in both directions and so double the
-      effective radix (below).
-\item[Reconfiguration time] milliseconds for MEMS, which fixes OCS as a topology switch.
-      Silicon-photonic and SOA switches reach nanoseconds, but at low radix and higher
-      loss (\Cref{tab:ocs-tech}).
-\item[Crosstalk, return loss, polarization] a mirror that leaks light into the wrong
-      port is crosstalk; a reflective interface raises ORL and feeds laser RIN
-      (\Cref{sec:optical-channel,sec:rin}). Free-space paths are largely
-      polarization-insensitive, which suits IM/DD.
-\end{description}
-
-\begin{table*}[ht]
-\refstepcounter{table}\label{tab:ocs-tech}%
-\centering
-\setlength{\tabcolsep}{4pt}%
-\footnotesize
-\renewcommand{\arraystretch}{1.25}%
-\begin{tabular}{@{}p{0.22\linewidth}p{0.16\linewidth}p{0.15\linewidth}p{0.13\linewidth}p{0.24\linewidth}@{}}
-\toprule
-Technology & Switching & Insertion loss & Radix & Where it fits \\
-\midrule
-MEMS mirror array (free-space) & ms & $\sim$1--3~dB & 100s ($136\times136$ shipping) & DC fabric and AI-pod topology reconfiguration \\
-\addlinespace[1.5em]
-Piezoelectric beam steering & ms & low--moderate & 10s--100s & free-space alternative to MEMS \\
-\addlinespace[1.5em]
-Liquid crystal (LCoS) & ms & moderate & wavelength-selective & wavelength add/drop, WSS roles \\
-\addlinespace[1.5em]
-3D robotic fiber & seconds--minutes & $\sim$0.5~dB & 1000s & automated patch and provisioning, not per-job \\
-\addlinespace[1.5em]
-Silicon photonic (MZI / SOA) & ns--$\mu$s & higher (integrated) & 10s & fast, low-radix; research and niche \\
-\bottomrule
-\end{tabular}
-\par\medskip
-{\raggedright\footnotesize\textbf{Table~\thetable.} OCS technologies. Free-space MEMS
-switches dominate AI deployments today; robotic-fiber switches trade speed for radix and
-very low loss; integrated photonic switches trade radix and loss for nanosecond
-speed.\par}
-\end{table*}
-
-\paragraph{What it buys at fleet scale.}
-Google's Jupiter datacenter fabric replaced a patch-panel Clos interconnect with a layer
-of MEMS OCS under software-defined control, and reported roughly 30\% lower capex, 41\%
-lower power, and 3x faster fabric reconfiguration while a direct-connect topology carried
-the same production traffic~\firstcite{jupiterocs}. The switch, Palomar, is a
-$136\times136$ MEMS OCS with about 2~dB insertion loss and millisecond switching, and
-circulators realize bidirectional links through it to double the effective
-radix~\firstcite{jupiterocs}. The same building block reshapes AI pods: a TPU~v4 pod
-wires 4096 accelerators through 48 OCS into a 3D torus that reconfigures per job and
-routes around failed racks, so a dead node becomes a topology the scheduler works around
-instead of a pod-wide outage~\firstcite{tpuv4ocs}. That reconfiguration is the
-fabric-reliability lever \Cref{ch:reliability} points at: component FIT still applies,
-but the fabric survives each failure by re-wiring optically rather than stalling the job.
-
-\paragraph{What OCS asks of the transceivers.}
-An OCS layer changes the module spec in ways this book cares about. Because the switch
-adds a fixed loss and is wavelength-transparent, single-fiber duplex reaches (FR, one
-fiber each way) fit an OCS better than parallel-fiber reaches (DR, many fibers), so an
-OCS deployment pulls the plant toward FR optics and toward circulators for bidirectional
-operation on one fiber~\firstcite{ocsmarket}. The insertion loss argues for higher launch
-power and tighter ORL budgets, since every mated interface and mirror is a reflection the
-laser sees (\Cref{sec:optical-channel,sec:rin-values}). Wavelength transparency means a
-WDM link passes through the switch unchanged, so CW-WDM and ring-based engines
-(\Cref{ch:wdm,sec:cwwdm}) compose with an OCS without a translation layer. None of this
-is exotic optics; it is the same DR/FR PMD and laser work from earlier chapters
-(\Cref{sec:pmd-reach,ch:lasers}), specified against a channel that now includes a switch.
-
-\paragraph{Status and where it sits next to CPO.}
-By 2025--26 OCS moved from a Google-specific technique to an industry theme, a headline
-topic at OFC~2026 with MEMS, piezoelectric, liquid-crystal, robotic-fiber, and
-silicon-photonic approaches competing on radix, loss, speed, and
-reliability~\firstcite{ocsmarket}. It complements co-packaged optics rather than
-competing with it: CPO shortens the electrical path at the switch package
-(\Cref{sec:cpo-status}), while OCS removes packet-switch hops between packages and racks.
-A fabric can use both, CPO optics feeding an OCS layer, and the reliability question for
-each is the one \Cref{ch:validation,ch:reliability} keeps returning to.
-
-\keyidea{An optical circuit switch reroutes light at Layer~1 with no O-E-O conversion, so
-it is transparent to rate, format, and wavelength and adds only insertion loss to the
-link budget. Millisecond MEMS switching makes it a topology and failure-reroute switch,
-not a packet switch. It buys fabric power, cost, and resilience (Google Jupiter and the
-TPU pods are the production proof), and it pulls the transceiver plant toward FR optics,
-circulators, and higher launch power. OCS and CPO are complementary bets on the same
-power and reliability problem.}
-
-\section{Co-packaged optics: 2025--26 status}
-\label{sec:cpo-status}
-
-By 2025--26, co-packaged optics crossed from demonstrations into shipping
-products, pushed by the power and reliability limits of pluggables in AI
-scale-out. The programs converge on a common recipe: a photonic engine
-co-packaged with the switch ASIC, 200~Gb/s per channel, microring modulators
-(\Cref{sec:siring}),
-\emph{field-replaceable} lasers pulled out of the package, and TSMC COUPE
-packaging underneath.
-
-\subsection{Broadcom Tomahawk and CPO}
-
-Broadcom entered CPO earlier than most switch vendors and treated it as a
-product line, not a one-off demo. The current flagship is \term{Tomahawk 6}, a
-102.4~Tb/s single-chip Ethernet switch (shipping 2025) offered with either copper
-or co-packaged optics, on 100G/200G SerDes.\sidenote{Broadcom's broader
-AI-Ethernet stack: Tomahawk and Jericho switches, Thor NICs, Agera retimers, Sian
-optical DSPs, and CPO. Large hyperscale inference fabrics draw on this family
-(\Cref{ch:role}).} The CPO variant, \term{TH6-Davisson}, began shipping in October
-2025 as Broadcom's \emph{third-generation} CPO switch. The public numbers sketch
-the architecture:
-
-\begin{itemize}
-\item 102.4~Tb/s optically enabled, built from sixteen 6.4~Tb/s ``Davisson DR''
-      optical engines at 200~Gb/s per channel.
-\item Photonic engines fabricated with \term{TSMC COUPE}; 64 Condor 3\,nm SerDes
-      cores (eight 212.5~Gb/s PAM4 lanes each).
-\item About 70\% lower optical-interconnect power than pluggables.
-\item \term{Field-replaceable ELSFP laser modules}: lasers, the highest-failure
-      component, made serviceable in the field.
-\item Scale-up to 512 XPUs; 100{,}000+ XPUs in a two-tier fabric at 200~Gb/s/link.
-\end{itemize}
-
-The lineage matters: CPO shipped on Tomahawk~4 and the second-generation
-\term{TH5-Bailly} (51.2~Tb/s), which logged ``millions of hours'' of reliability
-testing before Davisson. A fourth generation at 400~Gb/s per channel is already in
-development.
-
-\subsection{NVIDIA}
-
-NVIDIA's CPO story is the scale-up and scale-out fabric vendor converging on the
-same TSMC COUPE + microring recipe as Broadcom, announced as product families at
-GTC 2025: \term{Quantum-X} (InfiniBand) and \term{Spectrum-X} (Ethernet) Photonics
-switches, 200G SerDes, 1.6~Tb/s ports. Headline marketing claims include
-3.5$\times$ power efficiency, \emph{4$\times$ fewer lasers}, and large resiliency
-gains versus pluggables; treat those as vendor orientation, and validate against
-your own FIT and power model.
-
-\begin{itemize}
-\item \emph{Quantum-X InfiniBand}: 144 ports of 800G ($\approx$115~Tb/s),
-      liquid-cooled; available late 2025. Each package integrates eighteen
-      silicon-photonics engines fed by 36 laser inputs through six
-      \emph{detachable} optical sub-assemblies.
-\item \emph{Spectrum-X Ethernet}: up to 409.6~Tb/s; available in 2H~2026.
-\item Ecosystem: lasers from Lumentum, silicon photonics with Coherent, packaging
-      with TSMC.
-\end{itemize}
-
-\subsection{TSMC COUPE (the shared foundation)}
-
-\term{COUPE}\firstterm{COUPE} (Compact Universal Photonic Engine) stacks an electronic IC on a
-photonic IC via SoIC-X hybrid bonding (a 6\,nm EIC on a 65\,nm SOI PIC), giving a
-low-impedance die-to-die interface. The roadmap: pluggable qualification in 2025,
-CoWoS-based CPO integration and \emph{mass production in 2026}, with 800G/1.6T
-engines now and 3.2T/6.4T (toward 12.8~Tb/s on-package) to follow. TSMC cites the
-energy-per-bit trajectory from $>$30~pJ/bit for copper toward $<$5~pJ/bit for CPO
-on substrate and $<$2~pJ/bit once optical I/O moves onto the interposer
-(\Cref{sec:power}). The hard problems it names (wafer-level test, fiber-array-unit
-integration, and high-speed optical packaging assembly) are exactly the
-validation and manufacturing challenges of
-\Cref{ch:validation,ch:reliability,ch:manufacturing}.
-
-\begin{table*}[ht]
-\refstepcounter{table}\label{tab:cpo-programs}%
-\centering
-\setlength{\tabcolsep}{5pt}%
-\renewcommand{\arraystretch}{1.25}%
-\begin{tabular}{@{}p{0.20\linewidth}p{0.40\linewidth}p{0.36\linewidth}@{}}
-\toprule
-Program & Technology & Status \\
-\midrule
-Broadcom TH6-Davisson & 102.4~Tb/s, 200G/ch, COUPE, ELSFP lasers & 3rd-gen CPO, shipping Oct 2025 \\
-\addlinespace[1.5em]
-Broadcom TH5-Bailly & 51.2~Tb/s CPO & 2nd-gen, extensively field-tested \\
-\addlinespace[1.5em]
-NVIDIA Quantum-X (IB) & 144$\times$800G, MRM, COUPE, detachable lasers & available late 2025 \\
-\addlinespace[1.5em]
-NVIDIA Spectrum-X (Enet) & up to 409.6~Tb/s, MRM, COUPE & 2H 2026 \\
-\addlinespace[1.5em]
-TSMC COUPE & SoIC-X EIC-on-PIC packaging & mass production 2026 \\
-\addlinespace[1.5em]
-Samsung (foundry) & optical engines / turnkey CPO & OE 2027, CPO 2029 \\
-\addlinespace[1.5em]
-Ayar Labs & TeraPHY optical I/O + SuperNova CW-WDM source & merchant scale-up optical I/O \\
-\bottomrule
-\end{tabular}
-\par\medskip
-{\raggedright\footnotesize\textbf{Table~\thetable.} CPO programs, 2025--26.\par}
-\end{table*}
-
-\keyidea{The 2025--26 CPO wave shares one architecture: 200G/lane microring engines
-on TSMC COUPE, with field-replaceable lasers because lasers fail first. Tomahawk-class
-CPO at 200G/lane makes IM/DD validation and ELSFP laser reliability direct gates
-on how many accelerators a pod can wire together dependably.}
-
-\section{The serviceable-density middle ground: XPO (OFC 2026)}
-\label{sec:xpo}
-
-CPO buys density and power at a cost the operator feels: the optics are soldered to
-the switch, so a single failed engine can mean pulling the whole line card. That
-tension (pluggable serviceability versus co-packaged density) defined much of
-\term{OFC 2026}, where a third path drew the most attention.
-
-Arista, with Coherent, Marvell, Lightmatter, and a broad partner list, launched the
-\term{XPO}\firstterm{XPO} (eXtra-dense Pluggable Optics) multi-source agreement. The bet is to keep
-the front-panel pluggable form factor (slide a module out, snap a new one in) while
-closing most of the density and power gap to CPO:
-
-\begin{itemize}
-\item \textbf{12.8~Tb/s per module}: 64 electrical lanes at 200~Gb/s PAM4 (with a
-      roadmap to 400~Gb/s lanes for 25.6~Tb/s), roughly $4\times$ the density of a
-      1.6T-OSFP pluggable.
-\item \textbf{204.8~Tb/s per OCP rack unit}, from up to sixteen modules, front-panel
-      density approaching co-packaged designs.
-\item \textbf{Integrated liquid-cooled cold plate} rated for 400~W+ per module, with
-      blind-mate dripless quick-disconnects; this, not the connector, is what makes
-      the high per-module power serviceable.
-\item \textbf{Universal reach and interface}: SR/DR/FR/LR plus ZR/ZR+, and
-      fully-retimed, half-retimed, or linear (LPO/LRO) optics in one form factor.
-\end{itemize}
-
-\begin{table*}[ht]
-\refstepcounter{table}\label{tab:xpo-compare}%
-\centering
-\setlength{\tabcolsep}{5pt}%
-\footnotesize
-\renewcommand{\arraystretch}{1.25}%
-\begin{tabular}{@{}p{0.12\linewidth}p{0.22\linewidth}p{0.22\linewidth}p{0.38\linewidth}@{}}
-\toprule
-Attribute & Retimed / LPO pluggable & XPO & CPO \\
-\midrule
-Capacity & 0.8--1.6~Tb/s/module & 12.8~Tb/s/module & 100+~Tb/s on-package \\
-\addlinespace[1.5em]
-Density & baseline & $\sim$4$\times$ (204.8~Tb/s per RU) & highest \\
-\addlinespace[1.5em]
-Power path & full electrical run to faceplate & short run to dense faceplate & shortest (on substrate) \\
-\addlinespace[1.5em]
-Cooling & air (or LPO savings) & integrated cold plate, 400~W+ & switch-package liquid cooling \\
-\addlinespace[1.5em]
-Serviceability & field-replaceable (best) & field-replaceable (slide-out) & soldered; ELSFP lasers replaceable \\
-\addlinespace[1.5em]
-Energy/bit & highest & intermediate & lowest ($<$5, then $<$2~pJ/bit) \\
-\addlinespace[1.5em]
-Maturity & shipping & MSA launched OFC 2026 & shipping (Broadcom, NVIDIA) \\
-\bottomrule
-\end{tabular}
-\par\medskip
-{\raggedright\footnotesize\textbf{Table~\thetable.} Where XPO sits between pluggables and co-packaged optics.\par}
-\end{table*}
-
-\aside{XPO is best read as a hedge against CPO's serviceability problem. If
-field-replaceable ELSFP lasers (\Cref{sec:cpo-status}) prove insufficient and CPO
-repair economics stay painful, a liquid-cooled pluggable that reaches CPO-class
-density lets operators keep the failure model they already trust. The reliability
-and validation questions of
-\Cref{ch:validation,ch:reliability,ch:manufacturing} are exactly what
-decides which path wins.}
-
-\newthought{The broader OFC 2026 picture.} XPO landed inside a clear consensus: 1.6T
-transceivers went mainstream and 3.2T (400G/lane) previews appeared, with initial
-demos expected around 2027; CPO moved from demo to imminent, with new MSAs (Open
-CPX, ``socketed CPO'') blurring the pluggable/co-packaged line; and hollow-core
-fiber (record loss now $\sim$0.091~dB/km) advanced toward low-latency
-intra-datacenter use (\Cref{sec:hcf}).
-The through-line is the one this book opened with: rising per-lane rate forcing
-optics closer to the silicon and squeezing every last pJ/bit.
-
-\section{The latency budget}
-\label{sec:latency-budget}
-
-The book has a link budget in dB (\Cref{sec:link-budget}) and, next, an energy
-budget in pJ/bit. It needs a third ledger. Inference puts the optical link on the
-critical path (\Cref{sec:inference-bottlenecks}), so you should be able to add up a
-link's latency the way you add up its loss and its power. The contributors fall
-into two groups: fixed digital costs that do not care about distance, and a
-propagation term that does.
-
-\begin{table}[ht]
-\centering
-\caption{Approximate one-way latency contributors, 200G/lane class.\label{tab:latency}}
-\renewcommand{\arraystretch}{1.25}%
-\begin{tabular}{@{}ll@{}}
-\toprule
-Contributor & Typical latency \\
-\midrule
-PCS framing / serialization & a few ns \\
-\addlinespace[1.5em]
-FEC encode $+$ decode (KP4) & $\sim$20--100~ns each \\
-\addlinespace[1.5em]
-Module DSP / retimer (per hop) & $\sim$8--10~ns (fully retimed) \\
-\addlinespace[1.5em]
-\quad LPO (no DSP) & $<$3~ns \\
-\addlinespace[1.5em]
-Driver, modulator, PD, TIA & sub-ns \\
-\addlinespace[1.5em]
-Fiber propagation (silica) & $\sim$4.9~ns/m \\
-\addlinespace[1.5em]
-\quad hollow-core fiber & $\sim$3.3~ns/m \\
-\addlinespace[1.5em]
-Switch hop (O-E-O) & $\sim$100--560~ns \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\newthought{The fixed digital cost dominates a short link.} FEC is the largest
-single term. KP4 RS(544,514) (\Cref{sec:kp4}) costs roughly 20 to 100~ns to encode
-and again to decode, set by the codeword length and the implementation, not the
-fiber~\firstcite{feclatency}. The module DSP adds another 8 to 10~ns per hop when
-the link is fully retimed. The analog stages, driver, modulator, photodiode, and
-\term{TIA}, together contribute well under a nanosecond of group delay and are
-almost never the problem. On a 10~m in-rack link the fiber itself is about 50~ns,
-smaller than one pass through the FEC.
-
-\newthought{Propagation dominates only once the fabric is large.} Light in
-standard single-mode fiber travels at roughly $c/1.47$, about $4.9$~ns/m, because
-the glass has a group index near 1.47. A 100~m row-scale run is then about 490~ns,
-comparable to a switch hop and larger than the digital terms. Each switched tier
-adds an O-E-O conversion: a cut-through Ethernet switch forwards in a few hundred
-nanoseconds ($\sim$560~ns for an 800GbE class device), while InfiniBand reaches
-under 100~ns per hop~\firstcite{switchlat}. Across a multi-tier scale-out fabric,
-the switch hops and their conversions, not the fiber, set the tail latency that
-stalls a collective (\Cref{sec:inference-bottlenecks}). This is the latency
-argument for optical circuit switching (\Cref{sec:ocs}) and for co-packaging: both
-remove conversions and electrical runs from the path.
-
-\newthought{Latency is where the module architecture shows up again.} The
-retimed-to-linear choice you met in \Cref{sec:power} for power repeats here. A
-fully retimed module spends $\sim$8--10~ns per hop; \term{LRO} roughly halves that;
-\term{LPO} deletes the module DSP and lands under 3~ns~\cite{lpo}. On a link with a
-few hops, deleting the DSP saves more time than shortening the fiber does. Latency
-and energy point the same way, which is why LPO and CPO are attractive for the
-scale-up domain where both matter most.
-
-\subsection{Hollow-core fiber}
-\label{sec:hcf}
-
-The one distance term you can attack is the group index. Hollow-core fiber
-(\term{HCF})\firstterm{HCF} guides light mostly through air rather than glass, so its group index
-sits near 1.0 and light travels close to vacuum speed. A double nested antiresonant
-nodeless fiber (\term{DNANF}) design reported 0.091~dB/km at 1550~nm, below the
-$\sim$0.14~dB/km floor that silica has held since the 1980s, and about 0.2~dB/km
-across a 66~THz window~\firstcite{hcf2025}. The latency payoff is the headline for
-short reach: propagation drops from $\sim$4.9 to $\sim$3.3~ns/m, roughly 45\%
-faster or about a third lower latency, which on a 100~m run saves $\sim$150~ns, the
-size of a switch hop. Microsoft reports deploying cabled HCF in the Azure network.
-
-For short-reach IM/DD the low nonlinearity and near-zero dispersion of air guiding
-matter less than they do for coherent long-haul; the draw here is purely latency
-and, secondarily, the wider low-loss window for more wavelengths. The open problems
-are practical: low-loss splicing and connectorization to solid-core plant, yield at
-volume, and cost. These figures are recent records, so treat them as provisional.
-
-\section{Energy per bit and the power wall}
-\label{sec:power}
-
-Frontier AI is \emph{power-limited}: a site's usable megawatts, not just capital,
-caps how much compute it can host. Every watt spent moving bits is a watt not
-spent on compute, and interconnect energy multiplies across a fabric with millions
-of links, which is why energy per bit (\term{pJ/bit}) has become a headline
-design metric.
-
-The trajectory that CPO is chasing, per TSMC's COUPE disclosures:
-
-\begin{table}[ht]
-\centering
-\caption{Approximate interconnect energy per bit.\label{tab:pjbit}}
-\renewcommand{\arraystretch}{1.25}%
-\begin{tabular}{@{}ll@{}}
-\toprule
-Link style & Energy per bit \\
-\midrule
-Conventional copper / retimed & $>$30~pJ/bit \\
-\addlinespace[1.5em]
-Co-packaged optics on substrate & $<$5~pJ/bit \\
-\addlinespace[1.5em]
-Optical I/O on the interposer & $<$2~pJ/bit \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-This is the quantitative reason CPO exists: removing the power-hungry electrical
-run between a switch ASIC and a front-panel pluggable (and the module's retiming
-DSP) is roughly a $70\%$ cut in optical-interconnect power in Broadcom's
-Davisson (\Cref{sec:cpo-status}). \term{LPO/LRO} attacks the same target from the
-pluggable side by deleting the DSP; CPO attacks it by shortening the electrical
-path.
-
-\newthought{Why it compounds.} Multiply even a few pJ/bit by aggregate fabric
-bandwidth and link count and interconnect becomes a meaningful slice of cluster
-power. At a fabric moving petabits per second, a 5~pJ/bit versus 30~pJ/bit choice
-is megawatts, directly setting how many accelerators fit under a fixed power
-envelope. Laser wall-plug efficiency feeds the same budget: fewer, more efficient
-lasers (NVIDIA claims 4$\times$ fewer) cut both power and failure count at once.
-
-\newthought{The macro trend behind the metric.} The pJ/bit fight has grid-scale
-stakes. US data centers drew about 176~TWh in 2023, roughly 4.4\% of national
-electricity, up from 58~TWh in 2014; the Lawrence Berkeley National Laboratory
-projects 325 to 580~TWh, or 6.7 to 12\% of US electricity, by
-2028~\firstcite{lbnl2024}. Interconnect is a growing share of that draw as lane
-rates climb~\cite{lpo}. Every pJ/bit an LPO or CPO link removes is multiplied
-across that base, so interconnect power reads as an infrastructure problem, not
-only a per-module one.
-
-\subsection{The thermal envelope}
-\label{sec:thermal-envelope}
-
-Every watt from the budget above turns into heat that has to leave the box, so
-interconnect power is also a cooling problem, and cooling sets a second ceiling
-beside the power wall. On a faceplate switch the optics are a large part of that
-heat: a 32-port 800G switch dissipates on the order of a kilowatt, and the
-pluggable modules account for roughly half of it~\firstcite{switchthermal}. Air
-cooling loses headroom as per-module power climbs past the mid-teens of watts,
-which is why dense high-rate switches are moving to liquid and immersion cooling,
-and why the LPO power cut (from $\sim$14--18~W to $\sim$8~W, \Cref{sec:power})
-reads as a thermal cut as much as an electrical one~\cite{lpo}.
-
-\newthought{Co-packaging changes the shape of the problem.} Moving the optics onto
-the switch substrate (\Cref{sec:cpo-status}) puts heat-sensitive optical engines a
-few millimeters from a high-power ASIC. Absolute temperature still matters, but the
-steep on-package gradient becomes the performance-limiting term: rings drift off
-resonance and lock loops fight neighbor heaters (\Cref{sec:thermal-xtalk}), and the
-laser is the least tolerant part of all~\firstcite{cpocooling}. This is the thermal
-half of the argument for external lasers (\Cref{sec:elsfp}): holding the laser off
-the hot interposer at a controlled temperature protects both its wavelength and its
-life.
-
-\newthought{Cooling is a reliability lever, not only a power one.} Laser wear-out
-follows Arrhenius kinetics (\Cref{sec:laser-aging}): the acceleration factor is
-exponential in inverse junction temperature, so a few degrees of cooling buys a
-measurable drop in FIT and, across $10^5$-plus lasers, fewer failures per day
-(\Cref{sec:fit-example}). Power, cooling, and reliability are one constraint seen
-three ways. The link that fits under a fixed power and cooling envelope, and stays
-cool enough to last, is the one that scales.
-
-\keyidea{Energy per bit is a first-order lever on cluster size under a fixed power
-budget. The industry path, retimed pluggable ($>$30~pJ/bit) to LPO to CPO
-($<$5, then $<$2~pJ/bit), is why ``balance compute, memory, and networking''
-(\Cref{ch:role}) is a power statement as much as a performance one.}
-
-\section{A first-order cost model}
-\label{sec:cost-model}
-
-The book quantifies two of its three themes. Power has a ledger in pJ/bit
-(\Cref{sec:power}); reliability has one in FIT (\Cref{sec:fit-example}). Cost is
-invoked everywhere but never counted. It deserves the same first-order treatment,
-kept deliberately relative and order-of-magnitude. What follows is an illustrative
-model, not a price sheet: absolute module prices move too fast and vary too much by
-volume to write down usefully, so the numbers here are assumptions you should
-replace with your own.
-
-\term{Total cost of ownership}\ (TCO)\firstterm{TCO} for an optical link splits into three buckets.
-The first is acquisition, the \term{bill of materials}\ (BOM)\firstterm{BOM} and the yield of
-optical assembly and test: laser count, whether a DSP die is present, and the
-packaging and coupling steps that dominate transceiver cost. The second is lifetime
-energy, the module's power drawn over years and multiplied by a cooling overhead.
-The third is service: the failures per day implied by the fleet FIT
-(\Cref{sec:fit-example}), each one costing a replacement part and a hands-on visit.
-Acquisition is capital; the other two are recurring.
-
-\newthought{Energy is the bucket you can compute.} Take an 800G module drawing
-$\sim$15~W fully retimed against $\sim$8~W for LPO (\Cref{sec:power})~\cite{lpo}.
-Over a five-year life at \$0.10/kWh, with a \term{power usage effectiveness}\ (PUE)
-of $\sim$1.3 to cover cooling, the retimed module burns about 850~kWh, near \$85 of
-electricity; the LPO module about 460~kWh, near \$46. The $\sim$\$40 gap per module
-is a meaningful fraction of what the module itself costs, and it recurs every life
-cycle. Scaled up, the number stops being small: a vendor estimate puts the LPO
-saving on a 500{,}000-accelerator cluster on the order of 100~MW and roughly
-\$100~million a year in electricity~\firstcite{lpocost}. Treat that figure as
-vendor orientation, but the order of magnitude is the point.
-
-\newthought{Recurring cost is a large share of the total.} A gigawatt-class AI site
-has been quoted near \$38~billion of up-front capital and roughly \$0.9~billion a
-year to run~\firstcite{dctco}. Over a multi-year life the running cost is a real
-fraction of the capital, and interconnect power is a growing slice of it, so a
-pJ/bit cut reads directly as dollars saved. That estimate is an analyst breakdown,
-provisional, but it sets the scale: power and cost are the same argument seen
-through two units.
-
-\newthought{The architecture choice moves all three buckets at once.} Per delivered
-Gb/s, a fully retimed pluggable carries the highest BOM (a DSP die and its
-packaging) and the highest power. LPO and LRO delete or relax that DSP, cutting both
-the BOM and $\sim$40--50\% of the power~\cite{lpo}, and move the cost that remains
-into host validation risk rather than the module. CPO and XPO remove the faceplate
-connector and the long electrical run and push energy under 5~pJ/bit
-(\Cref{tab:pjbit}), but raise assembly and test cost and couple the optics to an
-expensive switch ASIC, which is why the lasers are field-replaceable: a laser
-failure must not scrap the package (\Cref{sec:cpo-status}). Co-packaged and
-near-package copper is cheaper still per Gb/s wherever it reaches, carrying only the
-connector and the host SerDes energy (\Cref{sec:cpc-npc}); the crossover to optics
-is set by the reach wall, not by cost. At the fabric level, optical circuit
-switching is itself a cost lever: replacing a tier of O-E-O packet switches with a
-MEMS OCS cut capex $\sim$30\% and power $\sim$41\% in Google's Jupiter
-(\Cref{sec:ocs})~\cite{jupiterocs}.
-
-\keyidea{Cost tracks power and reliability, not against them. The cheapest link per
-Gb/s is the one you do not light (copper within reach), then the one with the fewest
-active stages (LPO, then CPO), weighed against the validation risk and the failure
-blast radius each one adds. A pJ/bit saved is dollars saved every year the fabric
-runs, which is why the energy budget and the cost model point the same way.}
-
-\section{Synthesis: from workload to fleet}
-\label{sec:synthesis}
-
-This chapter sits at the end of the book because it joins the decisions from every
-earlier chapter into one system. The path below is not a waterfall; teams iterate.
-But each step produces evidence that either advances the design or sends it back.
-
-\begin{dectree}
-Workload / collectives
-  |
-Reach / topology
-  |
-Placement (pluggable / LPO / CPO / CPC)
-  |
-Laser / modulator / WDM
-  |
-Budgets (optical / electrical / energy / thermal)
-  |
-Validation ladder
-  |
-Supplier / ATP / SPC
-  |
-Fleet telemetry + corrective action
-\end{dectree}
-
-\begin{enumerate}
-\item \textbf{Workload and collective requirements.} What traffic pattern, latency
-      target, and tail tolerance does the job demand?
-      (\Cref{ch:role,sec:collectives,sec:inference-bottlenecks})
-\item \textbf{Reach and topology.} What physical extent, link count, and
-      oversubscription does the cluster need? Does copper close, or does optics
-      take the link? (\Cref{sec:topologies,sec:trace-loss,tab:oif-scale})
-\item \textbf{Electrical versus optical placement.} Pluggable, LPO, CPO, XPO, or
-      co-packaged copper? The answer follows from reach, power envelope, and
-      serviceability. (\Cref{tab:placement,sec:cpo-status,sec:xpo,sec:cpc-npc})
-\item \textbf{Laser, modulation, and WDM selection.} DFB, EML, CW+Si MZM, CW+ring,
-      or CW+TFLN? Single-wavelength DR or dense WDM with locking? The choice sets
-      the ATP, the supplier base, and the fleet FIT model.
-      (\Cref{ch:lasers,ch:wdm,tab:source-mod-matrix,tab:tx-modulator})
-\item \textbf{Link, power, and thermal budgets.} Close the optical ledger (OMA to
-      sensitivity with penalties), the electrical ledger (COM), the energy ledger
-      (pJ/bit), and the thermal envelope together.
-      (\Cref{sec:link-budget,sec:com,sec:power,sec:thermal-envelope})
-\item \textbf{Noise, sensitivity, and receiver design.} Match photodiode, TIA, and
-      equalization to the power the laser and channel deliver. Budget RIN, shot,
-      and thermal noise against the pre-FEC BER target.
-      (\Cref{ch:models,sec:sensitivity,sec:rin,sec:rxtech})
-\item \textbf{Product-readiness evidence.} Walk the lifecycle: bring-up,
-      characterization, requirement verification and system validation, stress
-      qualification, and manufacturing validation. Name the instrument and
-      reference plane for every number.
-      (\Cref{ch:product-readiness,sec:product-readiness,sec:prod-corners})
-\item \textbf{Yield and supplier readiness.} Multi-lot yield, SPC, ATP coverage,
-      NPI gates, first-article, and 8D discipline. Prove the part can be built at
-      volume before committing the fleet.
-      (\Cref{ch:manufacturing,sec:yield-analysis,sec:supplier-exec})
-\item \textbf{Fleet telemetry and corrective action.} Pilot, ramp, and fleet
-      monitoring are operational readiness and sustaining evidence. CMIS
-      monitors, FEC histograms, triage buckets, RMA codes, and the feedback loop
-      from field to ATP. The system is not done until the fleet can detect,
-      classify, and correct a failure without the design team.
-      (\Cref{sec:fleet-triage,sec:fabric-availability,sec:ladder-fleet})
-\end{enumerate}
-
-A design review should be able to point at evidence for every step. Where evidence
-is missing, the step is not done. Where two steps conflict (power budget versus
-serviceability, yield versus guardband), the trade must be stated and owned, not
-hidden behind a single-number spec.
-
-\section{Engineering lens}
-\label{sec:networking-engineering-lens}
-
-\subsection{How it works}
-
-An AI fabric is judged by delivered workload time, not port rate, and the optical
-layer sits on that critical path. The chapter places every earlier device into
-scale-up and scale-out networks and shows where copper ends and optics wins the
-link.
-
-\subsection{How it is measured}
-\label{sec:networking-how-measured}
+An optical link does not fail only when it goes dark. It can remain logically
+up while consuming FEC margin, producing bursts, retraining intermittently, or
+delaying synchronized workloads.
+
+Operating the fleet therefore requires more than monitoring average BER or link
+state. The engineering task is to connect physical margin, error behavior,
+recovery, topology, and workload consequence.
+
+This chapter develops that chain. It explains how to interpret FEC and
+link-health signals, validate recovery behavior, analyze cohorts, translate
+component events into system availability, and use controlled deployment
+evidence to bound operational risk. Fabric context (scale-up/out, topologies,
+module styles, CPO/XPO/OCS, power and cost) lives in
+\Cref{app:ai-fabric-context}. BER and noise models live in
+\Cref{ch:models}. Product readiness and pilot sequencing live in
+\Cref{ch:product-readiness}. Detailed failure analysis lives in
+\Cref{ch:failure-modes}.
+
+The dominant model is:
 
 \begin{quote}
-\noindent\textbf{Observe at four layers}\\[0.4em]
-\begin{description}
-\item[Workload] Step time, collective latency, accelerator idle time, and tail
-      behavior.
-\item[Fabric] Routes, queues, congestion, retries, and failed links.
-\item[Link] Pre-FEC error distribution, corrected and uncorrectable FEC,
-      equalizer state, retrains, and flaps.
-\item[Module] Power, temperature, wavelength or lock, alarms, firmware, and
-      control state.
-\end{description}
-Start at the layer where the impact is observed, then descend only far enough to
-isolate the cause.
+\noindent Physical impairment
+$\rightarrow$ margin or error change
+$\rightarrow$ FEC and link-health response
+$\rightarrow$ state transition or recovery
+$\rightarrow$ network consequence
+$\rightarrow$ workload consequence
+$\rightarrow$ fleet decision.
 \end{quote}
 
-A peak-rate test does not replace an all-reduce or all-to-all run on the intended
-topology (\Cref{sec:collectives,sec:fleet-triage,sec:networking-ops}).
+\section{What the system sees}
+\label{sec:ops-what-system-sees}
 
-\subsection{How it fails}
-\label{sec:networking-how-fails}
+Keep four layers distinct. A physical impairment is not a link-health
+indicator. A protocol event is not a workload failure. Mixing them hides the
+decision.
 
-Scaling can fail through oversubscription, poor route balance, head-of-line
-blocking, a straggling link, excess retries, switch-radix limits, fiber-count and
-service errors, or a power and cooling ceiling. Architecture adds distinct escape
-paths: pluggables can run out of faceplate power, linear optics can expose host
-margin, and co-packaged optics can turn package thermals, lock control, or fiber
-service into the limiting risk. A working link can still be a bad system choice if
-it cannot be monitored, replaced, or operated at fleet scale.
+Every major example in this chapter maps onto one chain. For example:
 
-\failuremode{Collective slowdown}{Accelerator count rises, but job throughput
-flattens or falls and tail step time grows.}{Fabric oversubscription, uneven
-routing, one degraded rail, retransmits, switch congestion, or synchronization
-amplifying a straggler.}{Collective traces, route and queue telemetry, per-link FEC
-and retry counters, topology map, and a scale sweep.}{Repair weak links, rebalance
-routes, remove oversubscription, change the collective or topology, and gate the
-next scale point on delivered workload performance.}
+\begin{quote}
+\noindent Reflection increase
+$\rightarrow$ waveform penalty and burst errors
+$\rightarrow$ corrected-error rise
+$\rightarrow$ uncorrectable block and retrain
+$\rightarrow$ temporary path loss
+$\rightarrow$ collective slowdown
+$\rightarrow$ hold or cohort containment.
+\end{quote}
 
-\subsection{How it is debugged}
-\label{sec:networking-how-debugged}
+Start observation at the layer where impact appears, then descend only far
+enough to isolate the next decision. A workload stall does not by itself prove
+an optical mechanism, and a rising laser current does not by itself prove a
+job impact.
 
-Start with the workload symptom and identify the slow collective, rail, or time
-window. Compare topology and route data with link counters. A single lane with
-rising FEC points to the optical path; many clean links with full queues point to
-fabric capacity or scheduling. On the optical path, use the power-versus-quality
-fork and five ledgers
-(\Cref{sec:debug-fork,sec:laser-margin-erosion,sec:tree-power-fork}). Remove one
-rail, reroute one group, or replace one suspect module to test causality. Keep
-optics, switch, and workload timestamps aligned. Otherwise a link flap and a
-collective stall cannot be ordered reliably.
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:ops-layer-translation}%
+\centering
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{@{}p{0.22\linewidth}p{0.72\linewidth}@{}}
+\toprule
+Layer & Example observation \\
+\midrule
+Optical or electrical &
+Power loss, reflection sensitivity, wavelength drift, receiver-margin loss \\
+\addlinespace[0.45em]
+Link health &
+Rising corrected errors, burst errors, lane skew, degraded eye margin \\
+\addlinespace[0.45em]
+Link state &
+Retrain, lane reset, link flap, loss of lock \\
+\addlinespace[0.45em]
+Network behavior &
+Packet loss, reroute, congestion, reduced path diversity \\
+\addlinespace[0.45em]
+Workload behavior &
+Straggler, collective delay, checkpoint/restart, reduced cluster efficiency \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Physical impairment becomes
+operational consequence only after it crosses these layers. Fabric topology
+context: \Cref{app:ai-fabric-context}.\par}
+\end{table*}
+\FloatBarrier
 
-\heuristic{Align timestamps across optics, switch, and workload before arguing
-causality. Without a common clock story, every flap looks like every stall.}
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:ops-concept-distinction}%
+\centering
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{@{}p{0.22\linewidth}p{0.72\linewidth}@{}}
+\toprule
+Concept & Question answered \\
+\midrule
+Physical margin &
+How far is the link from a failure boundary? \\
+\addlinespace[0.4em]
+Link health &
+How much impairment is present over time? \\
+\addlinespace[0.4em]
+Link state &
+Is the lane or link currently operational? \\
+\addlinespace[0.4em]
+Recovery &
+How is service restored after a detected event? \\
+\addlinespace[0.4em]
+Availability &
+How often and how long is required service unavailable? \\
+\addlinespace[0.4em]
+Workload impact &
+What does the event do to useful AI-compute progress? \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Use these questions instead
+of repeating informal definitions of ``up,'' ``healthy,'' and ``available.''\par}
+\end{table*}
+\FloatBarrier
 
-\debugstory{All-reduce tail latency rose after a rack expansion, while average
-link utilization looked normal.}{Per-rail traces showed one path with FEC bursts
-and retries. A module swap moved the symptom with the module.}{The fabric had
-capacity, but one marginal optical lane set the collective tail.}{A contaminated
-connector raised ORL and produced burst errors without a large average-power
-change.}{The connector was replaced, inspection was added to the expansion
-runbook, and collective-tail alarms were tied to link-level error bursts.}
+\section{Why link-up is not enough}
+\label{sec:ops-linkup-not-enough}
 
-\section{Operational events, telemetry, and availability}
-\label{sec:networking-ops}
+Link-up is a state. Link health is a distribution over time.
+
+A link can remain logically up while becoming operationally unhealthy. It may
+consume FEC margin through rising corrected-error activity, produce short
+bursts that the long-term average hides, retrain intermittently, or create
+workload stalls without a sustained down event. Steady-state pass at one
+operating point does not prove transition or recovery behavior.
+
+Corrected-error growth is often the first useful warning. Service can remain
+error-free while the physical margin shrinks. Average BER over a long window
+can look excellent while millisecond bursts still approach the decoder limit.
+A link that passes under constant load can still fail during thermal slew, fan
+step, firmware transition, or fiber movement.
 
 \subsection{Event vocabulary}
 \label{sec:networking-event-vocab}
 
-These events are related but not interchangeable. Debugging requires their order
-in time.
+Use a common event vocabulary and keep the order in time:
 
 \begin{description}
-\item[Correctable FEC event] The decoder successfully repairs errors; the link
-      remains logically usable.
+\item[Correctable FEC event] The decoder repairs errors; the link may remain
+      logically usable while margin is consumed.
 \item[Uncorrectable FEC event] The error pattern exceeds correction capability
       and may produce packet loss, a lane failure, or a link-state event.
 \item[Retrain] The PHY repeats equalization, CDR, lane alignment, or another
-      link-training function. Traffic may interrupt without a full MAC-level down.
+      link-training function. Traffic may interrupt without a full MAC-level
+      down.
 \item[Link flap] The operational link transitions down and later returns up,
       usually with a larger control-plane or topology reaction.
-\item[Retry or retransmission] A transport, link, or protocol response to failed
-      delivery. It does not identify the underlying layer by itself.
-\item[Workload stall] An application-visible delay or pause, potentially caused
-      by one or several lower-layer events.
+\item[Workload stall] An application-visible delay, potentially caused by one
+      or several lower-layer events.
 \end{description}
 
-\subsection{FEC telemetry interpretation}
+\heuristic{Do not close an investigation because the link is up and post-FEC
+traffic looks clean. Ask what the corrected-error distribution, burst timing,
+retrain count, recovery duration, and workload tail say over the same window.}
+
+\section{BER, FEC, and error distributions}
 \label{sec:fec-symbol-histogram}
 
-Averages are insufficient. For every FEC metric preserve lane, direction, code
-type, measurement interval, corrected and uncorrectable counts, codeword or
-symbol distribution, burst duration, threshold assumptions, and firmware or
-counter semantics. Two links with the same average error rate may have different
-operational risk if one has stationary random errors and the other has short
-bursts that approach the decoder limit. Do not state one universal pre-FEC
-threshold; tie thresholds to the actual FEC and PMD.
+Interpret counters as system evidence, not as interchangeable BER synonyms.
+Detailed BER and coding models live in \Cref{ch:models,sec:kp4}.
 
-An FEC \emph{symbol-error histogram} is not a DCA eye histogram. For a named
-KP4-class Reed--Solomon code on fixed-size symbols (\Cref{sec:kp4}), host or
-decoder counters report wrong symbols per codeword or versus time. Sparse,
-Poisson-like distributions fit steady noise. Bursty clumps fit time-local
-events: MPI, connector intermittents, unlock, supply or clock glitches. A burst
-can exceed correction capability even when long-run average BER still looks
-acceptable. Shape prioritizes hypotheses; confirm with ORL, timing, swaps, and
-plant disturbance (\Cref{sec:fm-ber-increase,ch:failure-modes}).
+\begin{description}
+\item[Pre-FEC\firstterm{preFEC} error activity]
+      indicates physical-link burden before correction. The counter may record
+      bits, symbols, codewords, or implementation-specific events, so its
+      definition and accumulation window must be stated.
+\item[Corrected errors\firstterm{correctedErrors}]
+      indicate FEC activity and consumed margin. Rising correction demand can
+      reveal shrinking physical margin even while delivered traffic remains
+      error-free. It is an early-warning signal, not by itself proof of an
+      imminent outage.
+\item[Uncorrectable events]
+      exceed correction capability and create service impact: packet loss, lane
+      failure, or a link-state event.
+\item[Post-FEC\firstterm{postFEC} residuals]
+      describe what remains after correction. Zero observed residuals do not
+      prove unlimited margin.
+\end{description}
 
-\subsection{Retrain, flap, and recovery counters}
+Average BER can hide burstiness. Threshold crossing and temporal clustering
+matter. FEC counters must be interpreted with lane rate, time window, code, and
+counter semantics.
 
-Extend the telemetry contract beyond optical power and temperature. Prefer
-actionable counters when the hardware exposes them: lane training, CDR loss and
-recovery, PCS alignment, FEC lock loss, link down/up, module reset, host reset,
-CMIS state change, firmware recovery, route reconvergence, packet retry or drop,
-and workload checkpoint or restart. Where a counter is missing, state the
-visibility gap rather than inferring the event from a distant proxy.
+\begin{quote}
+\noindent\textbf{FEC counter semantics}\\[0.35em]
+FEC counters are implementation-specific evidence. Their meaning depends on the
+code, lane rate, counter definition, accumulation window, reset behavior, and
+whether the counter records corrected bits, symbols, codewords, or threshold
+events.
+\end{quote}
 
-\begin{dectree}
-Workload tail rises
-  |
-Packet retries increase
-  |
-Link retrains / flaps
-  |
-FEC burst begins
-  |
-Optical / thermal / host state changes
-\end{dectree}
+An FEC symbol-error histogram is not a DCA eye histogram. Sparse, Poisson-like
+distributions fit steady noise. Bursty clumps fit time-local events: MPI,
+connector intermittents, unlock, supply or clock glitches. Shape prioritizes
+hypotheses; confirm with ORL, timing, swaps, and plant disturbance
+(\Cref{sec:fm-ber-increase,ch:failure-modes}).
 
-\noindent\textit{Illustrative order only.} Align timestamps to determine the
-actual order. The same events in reverse order imply a different mechanism.
+Do not claim that corrected errors mean the link is failing, that ``below
+threshold'' means safe, or that FEC hides the problem. Corrected activity
+indicates consumed margin. Uncorrectable events and recovery events indicate
+service impact.
 
-\subsection{Host and module ownership by architecture}
+\section{Bursts, transitions, and dynamic corners}
+\label{sec:ops-bursts-transitions}
+
+Long averages can look excellent while brief bursts still trigger FEC failure,
+retrain, lane reset, or workload interruption. Dynamic corners that create this
+gap include:
+
+\begin{itemize}
+\item thermal transitions;
+\item fan-speed or airflow changes;
+\item neighboring-port loading;
+\item power-supply disturbances;
+\item wavelength-control events;
+\item host reset or firmware transitions;
+\item fiber movement and reflection changes;
+\item startup and low-power transitions.
+\end{itemize}
+
+\begin{quote}
+\noindent\textbf{Average versus burst errors}\\[0.35em]
+Average BER compresses time. Two links can have the same average while behaving
+very differently. One may produce sparse independent errors that FEC handles
+easily; another may produce concentrated bursts during thermal, control, or
+power transitions. The second link may create uncorrectable events or retrains
+even when the long-term average appears acceptable.
+\end{quote}
+
+Ask three questions for every suspect burst: How large is it? How long does it
+last? What operational event does it trigger?
+
+\textit{Illustrative example.} A link with an average BER of $10^{-10}$ may
+still experience millisecond bursts during thermal transitions that exceed the
+FEC correction capability and trigger a retrain. Do not treat any one burst
+threshold as universal; tie the claim to the named code, window, and recovery
+behavior.
+
+\section{Recovery is part of the product}
+\label{sec:ops-recovery}
+
+Recovery is engineered behavior, not an afterthought. For each path, name the
+trigger, owning layer, duration, evidence preservation, return configuration,
+oscillation risk, and workload interruption. A retrain\firstterm{Retrain} is
+one recovery procedure that re-establishes timing, alignment, equalization, or
+protocol state.
+
+Canonical sequence:
+
+\begin{quote}
+\noindent Impairment
+$\rightarrow$ detection
+$\rightarrow$ local containment
+$\rightarrow$ retrain or reset
+$\rightarrow$ restoration
+$\rightarrow$ verification
+$\rightarrow$ recurrence monitoring.
+\end{quote}
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:ops-recovery-events}%
+\centering
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.15}%
+\begin{tabular}{@{}p{0.16\linewidth}p{0.20\linewidth}p{0.28\linewidth}p{0.28\linewidth}@{}}
+\toprule
+Event & Detection & Expected response & Evidence to preserve \\
+\midrule
+Loss of signal &
+Optical or PCS indication &
+Lane or link recovery sequence &
+Power, alarms, state history, time to restore \\
+\addlinespace[0.4em]
+Loss of lock &
+CDR or PCS state &
+Retrain or reset &
+Error counters, lock state, host conditions \\
+\addlinespace[0.4em]
+Thermal alarm &
+Module or host telemetry &
+Throttle, disable, or recover after cooling &
+Temperature history, workload, control demand \\
+\addlinespace[0.4em]
+Power transient &
+Voltage or reset monitor &
+Controlled restart &
+Rail history, reset cause, firmware state \\
+\addlinespace[0.4em]
+Firmware fault &
+Watchdog or management timeout &
+Local reset or host intervention &
+Logs, firmware identity, command history \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Recovery paths are product
+requirements. Validate detection, restoration time, evidence retention, and
+recurrence behavior before fleet exposure.\par}
+\end{table*}
+\FloatBarrier
+
+Ask for each recovery path:
+
+\begin{itemize}
+\item What triggers it?
+\item Which layer owns it?
+\item How long does it take?
+\item Does it preserve useful evidence?
+\item Does it return to the same configuration?
+\item Can it oscillate?
+\item What workload interruption does it create?
+\end{itemize}
+
+Repeated recovery loops are a product defect even when each loop eventually
+succeeds. Preserve state and counters across recovery when possible; a reset
+that erases the failing evidence forces guesswork. Escalate to host reset or
+human intervention only when the local path is exhausted or oscillating
+(\Cref{sec:ops-investigation,ch:failure-modes}).
+
+Align timestamps across optics, switch, and workload before arguing causality.
+Without a common clock story, every flap looks like every stall.
 
 \begin{table*}[ht]
 \refstepcounter{table}\label{tab:networking-ownership}%
 \centering
 \setlength{\tabcolsep}{3pt}%
 \footnotesize
-\renewcommand{\arraystretch}{1.25}%
+\renewcommand{\arraystretch}{1.2}%
 \begin{tabular}{@{}p{0.14\linewidth}p{0.26\linewidth}p{0.28\linewidth}p{0.26\linewidth}@{}}
 \toprule
 Architecture & Host owns & Module / engine owns & Main operational ambiguity \\
 \midrule
-Fully retimed & Host channel to module input; system FEC & Module CDR/DSP and optical conversion & DSP may hide where impairment began \\
-\addlinespace[1.25em]
-LPO & EQ, CDR, FEC, much of end-to-end margin & Analog optical conversion and linearity & Host and module behavior strongly coupled \\
-\addlinespace[1.25em]
-LRO & Direction-dependent shared ownership & Retimed direction plus analog direction & Failure ownership changes by direction \\
-\addlinespace[1.25em]
-CPO & Switch package, electrical XSR, system FEC & Co-packaged optical engine and external laser path & Larger thermal/service failure domain \\
+Fully retimed &
+Host channel to module input; system FEC &
+Module CDR/DSP and optical conversion &
+DSP may hide where impairment began \\
+\addlinespace[0.8em]
+LPO &
+EQ, CDR, FEC, much of end-to-end margin &
+Analog optical conversion and linearity &
+Host and module behavior strongly coupled \\
+\addlinespace[0.8em]
+LRO &
+Direction-dependent shared ownership &
+Retimed direction plus analog direction &
+Failure ownership changes by direction \\
+\addlinespace[0.8em]
+CPO &
+Switch package, electrical XSR, system FEC &
+Co-packaged optical engine and external laser path &
+Larger thermal/service failure domain \\
 \bottomrule
 \end{tabular}
 \par\medskip
-{\raggedright\footnotesize\textbf{Table~\thetable.} Operational ownership
-reference by architecture. Not a new architecture framework; use it when
-assigning debug ownership (\Cref{sec:lpo-msa,sec:cpo-status}).\par}
+{\raggedright\footnotesize\textbf{Table~\thetable.} Operational ownership by
+architecture when assigning recovery and debug responsibility
+(\Cref{sec:lpo-msa,sec:cpo-status}).\par}
 \end{table*}
 \FloatBarrier
 
-\subsection{Component reliability versus system availability}
+\section{Telemetry that supports decisions}
+\label{sec:networking-ops}
+
+A telemetry signal is valuable when it separates hypotheses, bounds a
+population, predicts degradation, or triggers an action. Organize evidence by
+purpose, not by register address. Register-level CMIS detail belongs in
+\Cref{sec:cmis,app:measurement-reference}.
+
+\subsection{Four evidence groups}
+
+\begin{description}
+\item[Identity and configuration]
+      Module serial, hardware revision, firmware, host, peer, port, fiber path,
+      and deployment cohort.
+\item[Physical state]
+      Temperature, voltage and current, optical power, wavelength or control
+      demand, laser current, and alarms.
+\item[Link-health state]
+      Pre-FEC or corrected-error counters, uncorrectable events, retrains, lane
+      state transitions, loss-of-lock events, and recovery duration.
+\item[Operational consequence]
+      Packet loss, reroute, congestion, path withdrawal, workload slowdown, and
+      job failure or restart.
+\end{description}
+
+\subsection{Decision-oriented signal matrix}
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:ops-telemetry-matrix}%
+\centering
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.15}%
+\begin{tabular}{@{}p{0.22\linewidth}p{0.34\linewidth}p{0.38\linewidth}@{}}
+\toprule
+Signal & Possible value & Limitation \\
+\midrule
+Optical power &
+Detect gross loss or drift &
+Cannot isolate source, coupling, or path loss alone \\
+\addlinespace[0.35em]
+Laser current or control demand &
+Reveal increasing control effort &
+May remain normal for path-loss failures \\
+\addlinespace[0.35em]
+Temperature &
+Correlate events with thermal state &
+Internal sensor may not equal junction temperature \\
+\addlinespace[0.35em]
+Corrected-error counters &
+Reveal consumed FEC margin &
+Counter semantics and accumulation window matter \\
+\addlinespace[0.35em]
+Retrain count &
+Quantify recovery events &
+Does not identify physical cause \\
+\addlinespace[0.35em]
+Alarm history &
+Reconstruct state transitions &
+Firmware definitions and latching behavior matter \\
+\addlinespace[0.35em]
+Genealogy &
+Bound affected populations &
+Correlation does not prove mechanism \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Prefer signals that change
+a decision over exhaustive register inventories.\par}
+\end{table*}
+\FloatBarrier
+
+Management state must be trustworthy. Counters need semantic definitions.
+Polling cadence affects observability. Reset behavior can erase evidence. Alarm
+latching and clearing must be understood before you trust a ``cleared'' state.
+
+\section{Operational severity}
+\label{sec:ops-severity}
+
+The same physical impairment can create different consequences. Assign severity
+from operational consequence, not only from the optical symptom.
+
+\begin{enumerate}
+\item \textbf{Invisible correction:} FEC corrects the event with no service
+      impact.
+\item \textbf{Degraded margin:} corrected-error rate rises but service
+      continues.
+\item \textbf{Local recovery:} lane retrains or resets automatically.
+\item \textbf{Path impact:} link or path is temporarily removed.
+\item \textbf{Workload impact:} traffic stalls, congestion spreads, or a
+      collective slows.
+\item \textbf{Job impact:} restart, checkpoint recovery, or job failure
+      occurs.
+\end{enumerate}
+
+\section{Cohorts and fleet interpretation}
+\label{sec:ops-cohorts}
+
+A cohort\firstterm{Cohort} is a defined population sharing one or more
+attributes: module lot, laser lot, assembly site, supplier, hardware revision,
+firmware, host platform, switch type, rack or thermal zone, fiber plant,
+installation date, or workload profile.
+
+One failure is an incident. A correlated cohort may be a systemic problem.
+Unaffected cohorts are as important as affected cohorts. Correlation raises a
+hypothesis but does not prove cause. Denominators and observation windows must
+be explicit.
+
+\textit{Example.} If retrains rise only on one host revision but across several
+module lots, the host or host--module interaction becomes more plausible than a
+single optical-component lot issue.
+
+\section{From component reliability to system availability}
 \label{sec:networking-availability}
 
-Component reliability describes how often a part is expected to fail under stated
-assumptions. System availability also depends on detection, redundancy, failover,
-repair time, spares, service access, and whether one failure interrupts useful
-work. A simple steady-state starting point is
-
-\begin{equation}
-A \approx \frac{\mathrm{MTBF}}{\mathrm{MTBF}+\mathrm{MTTR}}
-\end{equation}
-
-AI-fabric availability also depends on correlated failures, routing, detection
-and failover latency, repair access, spares, service policy, checkpoint or job
-restart cost, and workload-level impact. Independent component FIT addition is
-not a complete system-availability model (\Cref{sec:fit-dppm}). The rest of
-this section works that gap in detail.
+Component FIT is not system availability\firstterm{Availability}. Link-event
+frequency scales with population. Availability depends on detection,
+redundancy, topology, reroute, repair time, and workload consequence.
+Synchronized AI workloads may amplify a single weak link: a
+straggler\firstterm{Straggler} can delay an entire collective
+(\Cref{sec:collectives}). A low individual failure rate can still create
+frequent fleet events at large scale.
 
 \subsection{From component FIT to fabric availability}
 \label{sec:fabric-availability}
 
-The FIT arithmetic in \Cref{sec:fit-example} gives a rate: about $0.6$ laser
-failures per day for a fleet of $5\times10^5$ lasers at 50~FIT. That number
-sizes the RMA pipeline and the ELS spares bin (\Cref{sec:elsfp}), but it does
-not say what a failure costs or how a running job survives one. Two facts turn
-a per-component rate into a fabric problem.
+Component FIT arithmetic sizes RMA and sparing
+(\Cref{sec:fit-example,sec:fit-dppm}). It does not by itself state service
+impact.
 
-First, a training or large inference job is synchronous. A collective
-(\Cref{sec:collectives}) waits for its slowest member, so a single dead or slow
-link stalls the whole group, not just one endpoint
-(\Cref{sec:inference-bottlenecks}). A link that flaps for a second is a stall
-for every accelerator in that collective. The optical FIT that
-\Cref{ch:reliability} budgets therefore matters out of proportion to its share
-of the parts count.
+\textit{Illustrative example.} Consider a fleet of 500{,}000 optical links. If
+the observed event rate is two retrains per million link-hours, the expected
+fleet frequency is approximately one retrain every hour. That does not mean one
+hour of fleet downtime. The effect depends on retrain duration, topology,
+redundancy, traffic movement, and whether the workload is sensitive to the
+affected path. State the assumptions: population, event definition, observation
+window, and independence. This is a reasoning aid, not a universal availability
+model.
 
-Second, at cluster scale failures are continuous, not rare. Meta's published
-Llama~3 run is the clearest public data point: 16{,}384 H100 GPUs over 54 days
-logged 466 interruptions (419 unexpected), roughly one every three hours, while
-holding about 90\% effective training time~\firstcite{metallama3}. GPU and HBM3
-faults dominated at close to half; network switch and cable faults were 35
-events, 8.4\% of the total. The optical link is a minority of hard job stops,
-but 8.4\% of a failure every three hours is still tens of network events per
-run, and the ELS, module, and connector FIT budgeted in
-\Cref{sec:fit-dppm,sec:connector-reliability} lands in exactly that bucket.
+A second population-scale view uses hard failures rather than retrains. The FIT
+arithmetic in \Cref{sec:fit-example} gives about $0.6$ laser failures per day
+for a fleet of $5\times10^5$ lasers at 50~FIT. That number sizes the RMA
+pipeline and the ELS spares bin (\Cref{sec:elsfp}). It still does not say what
+a failure costs a running job. Meta's published Llama~3 run is a useful public
+anchor: 16{,}384 H100 GPUs over 54 days logged 466 interruptions (419
+unexpected), roughly one every three hours, while holding about 90\% effective
+training time~\firstcite{metallama3}. Network switch and cable faults were a
+minority of hard stops, but at that cadence they still contribute tens of
+network events per run. Treat the split as orientation, not as a universal
+budget for every fabric.
 
-So the design question shifts. It is no longer ``how reliable is one link'' but
-``how does a fabric of $10^5$ links keep a job running through a failure every
-few hours.'' The answers are architectural, and the optical engineer feeds each
-one.
+Keep five quantities separate when translating events to availability:
 
 \begin{description}
-\item[Redundancy and rails.] Rail-optimized topologies (\Cref{sec:topologies})
-      already give parallel planes; dual-plane and dual-ToR designs let a lost link
-      degrade bandwidth instead of dropping an endpoint. Redundancy multiplies the
-      link and laser count, which feeds straight back into the FIT budget: more
-      resilience is more parts that can fail.
-\item[Detection and reroute.] Transient faults stay below the job. KP4 FEC
-      (\Cref{sec:kp4}) absorbs the error bursts a marginal link throws; link-level
-      retry and sub-second link-flap detection plus adaptive routing steer traffic
-      off a degraded link before the scheduler notices. Vendor fabrics (NVIDIA
-      Spectrum-X and Quantum, Broadcom Tomahawk) advertise adaptive or ``cognitive''
-      routing and link-level retry for this. Treat the specifics as vendor
-      orientation, but the mechanism is why transient optical faults rarely reach
-      the hard-stop bucket above.
-\item[Topology reconfiguration.] When a link or rack dies for good, an optical
-      circuit switch re-wires the topology around it in milliseconds, so the
-      scheduler routes around the dead node instead of stalling the pod
-      (\Cref{sec:ocs})~\citep{tpuv4ocs}. Component FIT still applies; the fabric
-      survives each failure by re-wiring optically.
-\item[Sparing and field service.] Hot spare nodes and lanes cover the interval
-      between failure and repair. Field-replaceable external lasers (\Cref{sec:elsfp})
-      make a dead laser a faceplate swap rather than a fabric outage, which is the
-      architectural reason ELS decouples laser FIT from switch FIT. The connector
-      mating-cycle and endface budget (\Cref{sec:connector-reliability}) sets how
-      many of those swaps the plant survives.
+\item[Event rate] How often the named event occurs per link-hour or fleet-hour.
+\item[Duration] How long recovery or path loss lasts.
+\item[Affected scope] Lane, link, path, rack, or collective.
+\item[Recurrence] Isolated event versus oscillating recovery.
+\item[Workload consequence] Silent correction, stall, restart, or job failure.
 \end{description}
 
-The cost of a failure closes the loop. A hard interruption is lost compute plus
-the time to detect, reroute or reschedule, and restart from the last
-checkpoint. Fast detection and reroute shrink that lost time, which is the
-fabric-level reason the module work pays off: derating
-(\Cref{sec:laser-aging}), qualification and production screens
-(\Cref{ch:reliability,ch:manufacturing}), and a tight ATP
-(\Cref{sec:supplier-exec}) lower the failure rate, and a resilient fabric
-lowers the cost of each failure that slips through. The two multiply.
+Architectural mitigations change duration and scope; they do not erase the need
+for component reliability or production controls:
+
+\begin{description}
+\item[Redundancy and rails.] Parallel planes can degrade bandwidth instead of
+      dropping an endpoint (\Cref{sec:topologies}). More resilience is also more
+      parts that can fail.
+\item[Detection and reroute.] FEC, link-level retry, and adaptive routing can
+      keep many transient optical faults below the hard-stop bucket
+      (\Cref{sec:kp4}).
+\item[Topology reconfiguration.] Optical circuit switching can re-wire around a
+      dead link or rack when the architecture supports it (\Cref{sec:ocs}).
+\item[Sparing and field service.] Hot spares and field-replaceable external
+      lasers change repair time and failure domain (\Cref{sec:elsfp}).
+\end{description}
+
+The two multipliers are the failure rate and the cost of each failure that
+slips through. Qualification, manufacturing screens, and ATP lower the rate
+(\Cref{ch:reliability,ch:manufacturing}); resilient detection and recovery
+lower the cost.
+
+\section{Pilot and controlled ramp as operational evidence}
+\label{sec:ops-pilot-evidence}
+
+Chapter~7 owns the readiness lifecycle and pilot sequencing
+(\Cref{ch:product-readiness,sec:ladder-fleet}). Here the pilot is a bounded
+field experiment with:
+
+\begin{itemize}
+\item identifiable serials and genealogy;
+\item production-representative hardware and firmware;
+\item controlled topology and exposure;
+\item enhanced telemetry against the four evidence groups;
+\item expected distributions for corrected errors, retrains, and recovery time;
+\item hold, rollback, and expansion criteria;
+\item explicit ownership for containment decisions.
+\end{itemize}
+
+A small shipment is not automatically a pilot. A pilot has a hypothesis,
+bounded exposure, observability, exit criteria, and reversibility.
+
+Expansion requires metrics consistent with the release model, no unexplained
+cohort, adequate telemetry, bounded residual risk, and reversible containment.
+If corrected-error or retrain distributions diverge without a named residual
+risk acceptance, pause before the next volume step.
+
+\section{Operational investigation workflow}
+\label{sec:ops-investigation}
+
+Stay at system-triage level. Mechanism confirmation belongs to
+\Cref{ch:failure-modes,sec:fleet-triage}.
+
+Canonical sequence:
+
+\begin{quote}
+\noindent Verify the signal
+$\rightarrow$ bound the population
+$\rightarrow$ compare affected and unaffected cohorts
+$\rightarrow$ preserve state and genealogy
+$\rightarrow$ use reversible swaps or controlled comparisons
+$\rightarrow$ contain exposure
+$\rightarrow$ hand mechanism confirmation to failure analysis.
+\end{quote}
+
+Operational evidence should preserve the failing state, genealogy, timing, and
+configuration before swaps or resets destroy information.
+
+Useful reversible comparisons include module swap, host-port swap, fiber swap,
+firmware comparison, thermal or power comparison, and peer comparison. A module
+swap that moves the symptom raises a module or module--path hypothesis; it does
+not by itself establish root cause or supplier responsibility.
+
+\subsection{Worked example: intermittent retrains in a loaded rack}
+\label{sec:ops-worked-retrains}
+
+\textit{Observation.} Retrains rise in one rack during high-compute workloads.
+
+\textit{Verify.} Confirm counter semantics, time synchronization, and event
+duration.
+
+\textit{Scope.} Compare by module lot, host revision, firmware, port, thermal
+zone, fiber path, workload, and installation date.
+
+\textit{Physical-to-system hypotheses.} Thermal receiver-margin loss; host
+equalization interaction; reflection-sensitive fiber path; power-rail
+disturbance; firmware recovery defect.
+
+\textit{Reversible experiments.} Swap module while preserving port and fiber;
+swap fiber while preserving module and host; compare host firmware; reproduce
+under controlled thermal loading; correlate with corrected-error and power
+telemetry.
+
+\textit{Containment.} Hold expansion of the affected cohort and preserve
+failing units.
+
+\textit{Decision.} Module containment, host-firmware correction, fiber
+remediation, added telemetry, restricted operating envelope, or Chapter~11
+failure analysis.
 
 \section{Interview takeaway}
 \label{sec:networking-design-review}
 
-\keyidea{An AI fabric is judged by delivered workload time, not aggregate port
-rate. Connect collective traces to queue, route, FEC, optical, thermal, and service
-data. Choose pluggables, linear optics, or co-packaging by the measured system
-constraint and by how the fleet detects, contains, and repairs each failure.}
+\keyidea{Staff-level optical systems leadership means connecting a physical
+impairment to the system event it creates and the workload consequence that
+follows. I do not stop at link-up, average BER, or a component FIT value. I ask
+how the impairment appears in FEC and state telemetry, how the system detects
+and recovers, how the event scales across the fleet, and what containment or
+release decision the evidence supports.}
 
-Junior mistake: rewrite the topology before scoping one weak rail, or ignore
-optics FA when collectives stall
-(\Cref{sec:debug-fork,ch:failure-modes,app:decision-trees,app:staff-thinking}).
+The most useful operational signal is not necessarily the most detailed one. It
+is the signal that separates hypotheses or changes the decision.
 
-\subsection{Interview Q\&A: Networking and System Operation}
+Junior mistake: treat a link as healthy whenever it is up and post-FEC traffic
+appears clean. Better practice: examine corrected-error distributions, bursts,
+retrains, recovery time, physical telemetry, and workload impact across
+deployment cohorts
+(\Cref{sec:ops-linkup-not-enough,sec:ops-cohorts,ch:failure-modes}).
+
+\subsection{Interview Q\&A: Optical Links in Operation}
 \label{sec:networking-interview-qa}
 
-Practice speaking these answers aloud. Prefer first-person operational reasoning
-over topology slogans. Detail lives in
-\Cref{sec:networking-ops,sec:networking-event-vocab,sec:collectives,sec:fleet-triage,tab:networking-ownership}.
+Practice speaking these answers aloud. Prefer first-person operational
+reasoning. Detail lives in
+\Cref{sec:ops-what-system-sees,sec:fec-symbol-histogram,sec:ops-recovery,sec:networking-ops,sec:fabric-availability,sec:ops-investigation,sec:fleet-triage}.
 
-\paragraph{Question 1. What is the difference between scale-up and scale-out, and
-why does the distinction matter to an optical engineer?}
-\textit{Tests:} system architecture, reach, bandwidth, latency, and optical
-deployment.
-
-\textit{Spoken answer.}
-``Scale-up connects accelerators inside a tightly coupled node, rack, or pod. It
-usually has the highest bandwidth per endpoint and the strictest latency
-requirement, so copper remains attractive while the reach is short enough, but
-optics moves inward as lane rates and physical extent grow. Scale-out connects
-nodes and racks through a switched fabric across a much larger population. It
-already relies heavily on optics because of distance, routing, and link count.
-The distinction matters because scale-up prioritizes latency, power, and very
-short electrical reach, while scale-out adds topology, interoperability,
-serviceability, and fleet-scale availability''
-(\Cref{sec:scale-up-out}).
-
-\textit{Pressure follow-up.} ``Would you always choose lower-latency LPO for
-scale-up?''\\
-\textit{Answer pivot.} ``No. LPO reduces module power and retiming latency, but
-it transfers equalization, FEC, and channel-margin burden to the host. I would
-choose it only when the host electrical path and interop evidence close with
-adequate margin.''
-
-\textit{Trap:} ``Scale-up is copper and scale-out is optics.''
-
-\paragraph{Question 2. Explain pre-FEC errors, corrected errors, uncorrectable
-errors, and post-FEC behavior.}
-\textit{Tests:} FEC interpretation and operational meaning.
+\paragraph{Question 1. What does it mean for an optical link to be
+operationally healthy?}
+\textit{Tests:} link-up versus health; margin and temporal behavior.
 
 \textit{Spoken answer.}
-``Pre-FEC errors describe the raw impairment entering the decoder. Corrected
-symbol or codeword counts show how much work the FEC is doing while the link
-remains operational. Uncorrectable events occur when the error pattern exceeds
-the code's correction capability and may produce packet loss, lane failure, or a
-link-state event. Post-FEC BER is the residual error rate after decoding. I would
-never interpret one counter alone. I want the code type, measurement interval,
-lane distribution, burst shape, and trend relative to the specified threshold.
-Rising correctable errors can be an early warning even when post-FEC traffic is
-still clean''
-(\Cref{sec:networking-event-vocab}).
+``Link-up is necessary but not sufficient. I treat health as a distribution
+over time: corrected-error activity, burstiness, retrains, recovery duration,
+physical telemetry, and workload impact on the intended topology. A link that
+stays up while consuming FEC margin or stalling collectives is not healthy''
+(\Cref{sec:ops-linkup-not-enough}).
 
-\textit{Pressure follow-up.} ``The link has zero uncorrectable errors. Is it
-healthy?''\\
-\textit{Answer pivot.} ``Not necessarily. If correctable errors are rising,
-highly bursty, concentrated in one lane, or consuming most of the FEC margin, the
-link may be approaching a cliff. I would trend it and correlate it with
-temperature, power, equalizer state, and operational events.''
+\textit{Pressure follow-up.} ``The link has been up for a week with no
+post-FEC errors. Is it healthy?''\\
+\textit{Answer pivot.} ``Not without the corrected-error and retrain history
+over that week, plus behavior under thermal and workload transitions.''
 
-\textit{Trap:} ``If FEC corrects the errors, there is no problem.''
+\textit{Trap:} ``Up plus clean post-FEC means healthy.''
 
-\paragraph{Question 3. A lane has rising FEC errors, but average receive power is
-stable. How do you respond?}
-\textit{Tests:} power versus quality, layer isolation, and discriminating
-evidence.
+\paragraph{Question 2. How do pre-FEC errors, corrected errors, uncorrectable
+events, and retrains differ?}
+\textit{Tests:} layered error interpretation.
 
 \textit{Spoken answer.}
-``Stable average power makes gross attenuation less likely, but it does not clear
-the optical path. I would first confirm which lane and direction are affected and
-inspect the time distribution of the errors. Then I would compare optical power,
-temperature, wavelength or lock state, equalizer taps, host SerDes counters, and
-FEC histograms. Possible mechanisms include RIN, reflections or MPI, transmitter
-distortion, wavelength drift, receiver noise, timing, crosstalk, or control
-behavior. A module or fiber swap can help isolate ownership, but I would preserve
-the original state before disturbing it''
-(\Cref{sec:debug-fork}).
+``Pre-FEC activity measures physical-link burden before correction. Corrected
+errors show FEC consuming margin while service may still look clean.
+Uncorrectable events exceed the code and create service impact. Retrain is a
+recovery state transition, not an error counter. I never treat these as
+synonyms, and I always state counter semantics and window''
+(\Cref{sec:fec-symbol-histogram}).
 
-\textit{Pressure follow-up.} ``What would make you suspect connector reflection
-rather than loss?''\\
-\textit{Answer pivot.} ``BER bursts or a floor with little average-power
-movement, sensitivity to remating or fiber routing, and degraded ORL would
-support a reflection hypothesis. I would still confirm it with controlled
-inspection, cleaning, ORL measurement, or a known-good path.''
+\textit{Pressure follow-up.} ``Corrected errors are rising. Is the link
+failing?''\\
+\textit{Answer pivot.} ``It indicates shrinking margin. I then check bursts,
+uncorrectables, recovery events, and workload consequence before assigning
+severity.''
 
-\textit{Trap:} ``Power is normal, so the problem must be the host receiver.''
+\textit{Trap:} ``Corrected errors mean the link is failing.''
 
-\paragraph{Question 4. Distinguish a retrain, a link flap, a packet retry, and a
-workload stall.}
-\textit{Tests:} event hierarchy and causal ordering.
+\paragraph{Question 3. Why can average BER be misleading?}
+\textit{Tests:} bursts and temporal clustering.
 
 \textit{Spoken answer.}
-``A retrain is a PHY or SerDes recovery event in which equalization, clock
-recovery, lane alignment, or another link-training function is repeated. It may
-interrupt traffic without always producing a full MAC-level down event. A link
-flap is an observable transition from link up to down and back, usually causing a
-larger control-plane or topology reaction. A packet retry or retransmission is a
-higher-layer response to loss or delivery failure and does not by itself identify
-the physical cause. A workload stall is the application-level symptom. I align
-timestamps across those layers before deciding which event caused which''
-(\Cref{sec:networking-event-vocab}).
+``Average BER compresses time. Two links can share the same average while one
+has sparse independent errors and the other has millisecond bursts during
+thermal or power transitions that exceed FEC and trigger retrain. I ask burst
+size, duration, and operational event''
+(\Cref{sec:ops-bursts-transitions}).
 
-\textit{Pressure follow-up.} ``The collective stalled at the same minute as a
-link flap. Is causality established?''\\
-\textit{Answer pivot.} ``No. Minute-level coincidence is not enough. I need
-clocks aligned closely enough to order FEC bursts, retraining, link-state
-transitions, route changes, retries, and workload latency.''
+\textit{Pressure follow-up.} ``Our average is $10^{-12}$. Are we safe?''\\
+\textit{Answer pivot.} ``Only if the burst distribution, code, and recovery
+behavior under dynamic corners also support that claim.''
 
-\textit{Trap:} ``A retrain and a link flap are the same event with different
-names.''
+\textit{Trap:} ``A good long-term average proves transition safety.''
 
-\paragraph{Question 5. What telemetry contract would you require before deploying
-an optical module at scale?}
-\textit{Tests:} observability, metadata, cadence, and actionability.
+\paragraph{Question 4. How do you validate recovery behavior?}
+\textit{Tests:} detection, restoration, timing, and recurrence.
 
 \textit{Spoken answer.}
-``I would define telemetry around decisions rather than collecting every
-available field. At module level I want identity, serial and lot genealogy,
-firmware, case temperature, supply power, transmit and receive power, wavelength
-or lock state where applicable, alarms, and relevant control headroom. At link
-level I want lane-resolved pre-FEC errors, corrected and uncorrectable
-distributions, retrains, link-state events, and equalizer state where exposed. I
-also need host, switch, route, topology, workload, and maintenance timestamps.
-The schema, units, cadence, retention, clock source, and missing-data behavior
-must be defined before deployment''
-(\Cref{sec:networking-ops,sec:fleet-triage}).
+``I treat recovery as a product requirement. For each path I name the trigger,
+owner, expected response, time to restore, evidence preserved across the event,
+return configuration, oscillation risk, and workload interruption. Then I
+inject or observe the trigger and measure those quantities, including repeated
+recovery loops'' (\Cref{sec:ops-recovery}).
 
-\textit{Pressure follow-up.} ``Why not collect every register once per
-second?''\\
-\textit{Answer pivot.} ``More data can create storage, firmware, and
-interpretation burden without improving decisions. Cadence should match the
-mechanism: a daily drift metric and a millisecond-scale burst event need
-different collection strategies.''
+\textit{Pressure follow-up.} ``The link always comes back. Is recovery good
+enough?''\\
+\textit{Answer pivot.} ``Not if recurrence is high, evidence is erased, or
+collectives stall every time.''
 
-\textit{Trap:} ``Optical power and module temperature are enough for fleet
-monitoring.''
+\textit{Trap:} ``Successful restore equals validated recovery.''
 
-\paragraph{Question 6. How do you separate host, module, fiber-plant, peer, and
-switch ownership?}
-\textit{Tests:} system-boundary reasoning and controlled isolation.
+\paragraph{Question 5. What telemetry is most useful for optical fleet
+operation?}
+\textit{Tests:} actionable telemetry rather than register inventory.
 
 \textit{Spoken answer.}
-``I begin by naming the failing direction and reference plane, because a
-bidirectional link has two transmitters, two receivers, and several electrical
-and optical boundaries. I compare lane-resolved counters at both ends, then use
-the least disruptive controlled change: fiber swap, endpoint swap, module swap,
-host-port swap, or loopback. If the symptom moves with the module, that
-strengthens module ownership; if it stays with the port, I investigate host
-channel, switch SerDes, configuration, or thermal environment. For LPO, I am
-especially careful because the host owns more equalization, CDR, and FEC behavior
-while the module remains analog''
-(\Cref{tab:networking-ownership}).
+``I collect identity, physical state, link-health state, and operational
+consequence. The best signal separates hypotheses, bounds a population,
+predicts degradation, or triggers action. Optical power, control demand,
+corrected-error counters, retrain count, alarms, and genealogy matter when I
+know their semantics and limitations'' (\Cref{sec:networking-ops}).
 
-\textit{Pressure follow-up.} ``A module swap fixes the link. Is the original
-module confirmed bad?''\\
-\textit{Answer pivot.} ``It is strong localization evidence, but not always
-mechanism confirmation. Reseating may also clean a connector, reset state, or
-alter thermal and mechanical conditions. I preserve and retest the original unit
-under controlled conditions.''
+\textit{Pressure follow-up.} ``Should we log every CMIS register?''\\
+\textit{Answer pivot.} ``No. I define the decision-oriented set and keep
+register maps in the management reference (\Cref{sec:cmis}).''
 
-\textit{Trap:} ``If the problem disappears after replacing the module, the
-module was the root cause.''
+\textit{Trap:} ``More registers always mean better operations.''
 
-\paragraph{Question 7. How does ownership change among a fully retimed module,
-LPO, LRO, and CPO?}
-\textit{Tests:} architecture-specific operational boundaries.
+\paragraph{Question 6. How do you investigate a rising retrain rate?}
+\textit{Tests:} signal verification, scoping, cohorts, reversible experiments.
 
 \textit{Spoken answer.}
-``A fully retimed module breaks the host and optical paths into more independent
-segments; its DSP and CDR absorb much of the host-channel impairment, which helps
-interoperability but costs power and latency. LPO removes that isolation, so the
-host owns most equalization, clock recovery, and FEC while the analog module must
-remain highly linear. LRO places retiming in only part of the path, so direction
-matters. CPO shortens the electrical path but couples optics more tightly to the
-switch package, thermals, fiber attach, and service model. I would never assign
-ownership without first identifying which architecture and direction I am
-debugging''
-(\Cref{tab:networking-ownership,sec:lpo-msa,sec:cpo-status}).
+``I verify counter semantics and timing, bound the population, compare
+affected and unaffected cohorts, preserve state, run reversible swaps, contain
+exposure, and hand mechanism confirmation to failure analysis. I do not jump
+from retrain count to optical root cause''
+(\Cref{sec:ops-investigation,sec:ops-worked-retrains}).
 
-\textit{Pressure follow-up.} ``Why can two individually compliant LPO components
-still fail together?''\\
-\textit{Answer pivot.} ``Because the end-to-end margin depends on the combined
-host channel, equalizer behavior, module linearity, noise, and optical path.
-Point compliance reduces risk but does not replace host-to-host interoperability
-evidence.''
+\textit{Pressure follow-up.} ``Retrains rose after a firmware update. Blame
+firmware?''\\
+\textit{Answer pivot.} ``It raises a firmware hypothesis. I still compare
+cohorts and preserve units before concluding.''
 
-\textit{Trap:} ``The module vendor owns optical errors, and the host vendor owns
-electrical errors.''
+\textit{Trap:} ``A retrain proves an optical problem.''
 
-\paragraph{Question 8. A large all-reduce operation slows down, but average
-fabric utilization looks normal. How do you debug it?}
-\textit{Tests:} workload-to-link correlation, topology, and straggler
-amplification.
+\paragraph{Question 7. How do you distinguish module, host, fiber, firmware,
+and environmental hypotheses?}
+\textit{Tests:} controlled comparison and what-follows-the-symptom reasoning.
 
 \textit{Spoken answer.}
-``I would start with the workload trace and identify the affected collective,
-rail, rank group, and time window. Average utilization can hide a straggling
-path, so I would inspect tail latency, per-rail throughput, route balance, queue
-occupancy, retries, and lane-level FEC behavior. If one rail shows error bursts
-or flaps, I would reroute or remove that rail and see whether the collective tail
-improves. If links are clean but queues are persistently full, the problem is
-more likely congestion, oversubscription, or scheduling. I keep optics, switch,
-and workload timestamps aligned throughout''
-(\Cref{sec:collectives,sec:networking-how-debugged}).
+``I use reversible comparisons: module swap, fiber swap, host-port swap,
+firmware comparison, and thermal or power correlation. What the symptom follows
+bounds ownership. Architecture ownership tables tell me which layer is
+ambiguous (\Cref{tab:networking-ownership}). Correlation alone does not prove
+mechanism'' (\Cref{sec:ops-cohorts,ch:failure-modes}).
 
-\textit{Pressure follow-up.} ``Why can one weak link affect thousands of
-accelerators?''\\
-\textit{Answer pivot.} ``Many collectives synchronize participants at each
-phase. The slowest path can set the completion time, so one marginal link becomes
-a system-level straggler rather than merely losing its own bandwidth.''
+\textit{Pressure follow-up.} ``A module swap fixed it. Is the module the root
+cause?''\\
+\textit{Answer pivot.} ``It supports a module or module--path hypothesis. I
+still need genealogy, peer comparison, and, if needed, Chapter~11 FA.''
 
-\textit{Trap:} ``Normal average utilization proves the fabric has enough
-capacity.''
+\textit{Trap:} ``Swap recovery proves supplier root cause.''
 
-\paragraph{Question 9. How does topology change optical count, failure impact,
-and debugging strategy?}
-\textit{Tests:} Clos, rails, path diversity, and failure domains.
+\paragraph{Question 8. How does component FIT translate into system
+availability?}
+\textit{Tests:} population, topology, redundancy, duration, workload.
 
 \textit{Spoken answer.}
-``Topology determines how many optical links are deployed, which paths share
-failure domains, and whether traffic can be rerouted. A multi-tier Clos can
-provide path diversity but adds switch hops, optics, and more possible failure
-points. Rail-optimized fabrics reduce contention for collective traffic but make
-one degraded rail highly visible to a particular accelerator group. Hierarchical
-or dragonfly-style designs trade global bandwidth and long-link count
-differently. During debugging I need the physical topology and current routes,
-not just endpoint addresses, because the same workload symptom can result from
-one marginal link, route imbalance, or an oversubscribed tier''
-(\Cref{sec:topologies}).
+``Component FIT is a part rate. System availability also depends on detection,
+redundancy, reroute, repair time, and workload consequence. At fleet scale, a
+low per-link event rate can still produce frequent fleet events. I separate
+event rate, duration, scope, recurrence, and workload impact''
+(\Cref{sec:fabric-availability}).
 
-\textit{Pressure follow-up.} ``Would you redesign the topology after seeing
-repeated collective stalls?''\\
-\textit{Answer pivot.} ``Not before determining whether the stalls come from
-capacity, routing, or a small set of weak links. A topology rewrite is expensive
-and may hide a correctable optical or operational problem.''
+\textit{Pressure follow-up.} ``Low FIT means high availability, right?''\\
+\textit{Answer pivot.} ``Not by itself. A short retrain on a synchronized
+collective can matter more than a rare hard failure with fast failover.''
 
-\textit{Trap:} ``More path redundancy automatically gives higher availability.''
+\textit{Trap:} ``FIT equals availability.''
 
-\paragraph{Question 10. What is the difference between component reliability and
-system availability?}
-\textit{Tests:} FIT, redundancy, repair time, and operational consequence.
+\paragraph{Question 9. Why can a rare optical event matter in AI compute?}
+\textit{Tests:} synchronization, stragglers, and correlated impact.
 
 \textit{Spoken answer.}
-``Component reliability describes how often a component is expected to fail under
-stated assumptions. System availability depends not only on failure rate but also
-on detection, redundancy, failover behavior, repair time, spare strategy, service
-access, and whether one failure interrupts useful work. A module with a good FIT
-rate can still produce poor availability if replacement takes hours or if one
-failure stalls an entire collective. Conversely, a higher component failure rate
-may be tolerable when failures are detected quickly, isolated, rerouted, and
-repaired without workload impact''
-(\Cref{sec:networking-availability,sec:fabric-availability}).
+``Synchronized collectives wait for the slowest member. A short link event can
+create a straggler that delays many accelerators. Severity comes from workload
+consequence, not only from how rare the optical symptom looks in isolation''
+(\Cref{sec:ops-severity,sec:collectives}).
 
-\textit{Pressure follow-up.} ``What matters more: MTBF or MTTR?''\\
-\textit{Answer pivot.} ``Neither alone. Availability depends on both and on the
-architecture's ability to mask or contain the failure. I would also include
-workload restart cost and correlated failure domains.''
+\textit{Pressure follow-up.} ``Redundancy eliminates the impact, correct?''\\
+\textit{Answer pivot.} ``Redundancy can reduce path impact. It does not
+automatically eliminate stalls if recovery is slow or many paths are
+correlated.''
 
-\textit{Trap:} ``A high MTBF means the network will have high availability.''
+\textit{Trap:} ``Rare events can be ignored in AI fabrics.''
 
-\paragraph{Question 11. A link flaps intermittently in the fleet. Walk me through
-the operational response.}
-\textit{Tests:} evidence preservation, containment, event ordering, and
-recurrence control.
+\paragraph{Question 10. What makes a pilot an operational experiment rather
+than a small shipment?}
+\textit{Tests:} bounded exposure, telemetry, exit criteria, rollback.
 
 \textit{Spoken answer.}
-``I would preserve the pre-flap and post-flap telemetry before reseating or power
-cycling: FEC history, retrains, lane state, optical power, temperature, equalizer
-state, alarms, route changes, and workload impact. Then I would scope the
-population by module lot, host, port, peer, fiber path, firmware, site, and
-install age. Operationally, I may reroute, drain, or replace the affected link to
-protect the workload, but I preserve the original unit and path for controlled
-analysis. I then reproduce or isolate the mechanism and update the appropriate
-control: firmware, service procedure, connector inspection, ATP, supplier
-process, qualification, or telemetry''
-(\Cref{sec:escaped-defects,ch:failure-modes}).
+``A pilot has a hypothesis, identifiable production-representative units,
+controlled exposure, enhanced telemetry, expected distributions, exit criteria,
+and reversibility. A small shipment without those controls is just early
+volume'' (\Cref{sec:ops-pilot-evidence,sec:ladder-fleet}).
 
-\textit{Pressure follow-up.} ``The flap disappears after power cycling. What can
-you conclude?''\\
-\textit{Answer pivot.} ``Only that state reset affected the symptom. It could be
-firmware, control, CDR, thermal state, an intermittent interface, or a marginal
-physical path. The reset may have erased the most valuable evidence.''
+\textit{Pressure follow-up.} ``We shipped 200 units. Is that a pilot?''\\
+\textit{Answer pivot.} ``Only if the experiment design and rollback path exist.''
 
-\textit{Trap:} ``Power-cycle it, and replace the module if the flap returns.''
+\textit{Trap:} ``Any small deployment is a pilot.''
 
-\paragraph{Question 12. Give me a 60-second operational-debug plan for a degraded
-AI fabric.}
-\textit{Tests:} complete workload-to-optics Staff-level answer.
+\paragraph{Question 11. When do you pause or roll back a deployment?}
+\textit{Tests:} unexplained cohorts, containment, observability, workload
+consequence.
 
 \textit{Spoken answer.}
-``I start with the workload symptom and identify the affected collective,
-topology region, and time window. I align clocks across workload, switch, host,
-link, and module telemetry, then determine whether the evidence points to
-congestion, route imbalance, packet loss, a link-state event, or gradual
-PHY-margin loss. For suspect links I inspect lane-level pre-FEC and FEC
-distributions, retrains, equalizer state, optical power, temperature, wavelength
-or lock state, and relevant alarms. I use a controlled reroute, fiber swap,
-module swap, or port swap to isolate ownership while preserving evidence. I
-contain workload risk first, confirm the mechanism second, and close the case
-only when a recurrence control and fleet monitor are in place.''
+``I pause or roll back when metrics diverge from the release model, an
+unexplained cohort appears, telemetry cannot bound risk, recovery or workload
+impact is unacceptable, or containment is not reversible. I do not wait for
+hard job failures if early-warning signals already justify hold''
+(\Cref{sec:ops-pilot-evidence,sec:ops-cohorts}).
 
-\textit{Pressure follow-up.} ``What would make you stop deployment or drain a
-whole cohort?''\\
-\textit{Answer pivot.} ``I would escalate containment when the failure rate is
-growing, the mechanism can cause correlated loss, telemetry cannot bound the
-affected population, or the workload impact exceeds the available redundancy.
-The action should match exposure, confidence, and reversibility.''
+\textit{Pressure follow-up.} ``Corrected errors rose but jobs still finish.
+Continue?''\\
+\textit{Answer pivot.} ``I treat that as degraded margin. Expansion needs a
+named residual-risk decision, not silence.''
 
-\textit{Trap:} ``I would identify the worst link counters, replace those modules,
-and monitor the network.''
+\textit{Trap:} ``Only job failures justify rollback.''
 
-Score each response using the shared chapter-interview rubric in
-\Cref{sec:chapter-interview-rubric}. Repeat answers that do not connect the
-workload symptom, telemetry evidence, ownership decision, and operational
-action.
+\paragraph{Question 12. Give a 60-second plan for operating and monitoring a
+new optical module in the fleet.}
+\textit{Tests:} end-to-end systems reasoning.
+
+\textit{Spoken answer.}
+``I start from the physical-to-system chain. Freeze identity and genealogy,
+define the decision-oriented telemetry set, validate recovery paths, set
+severity and containment rules, run a bounded pilot with exit criteria, watch
+cohorts against the release model, and escalate mechanism confirmation to
+failure analysis when needed. Link-up and average BER are inputs, not the
+decision''
+(\Cref{sec:ops-what-system-sees,sec:ops-recovery,sec:ops-pilot-evidence}).
+
+\textit{Pressure follow-up.} ``Where do you start if collectives slow after
+expansion?''\\
+\textit{Answer pivot.} ``Verify the signal, bound the cohort, compare
+affected and unaffected populations, preserve failing state, then run
+reversible swaps before destructive FA.''
+
+\textit{Trap:} ``Start by redesigning the topology.''

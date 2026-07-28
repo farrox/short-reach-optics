@@ -675,5 +675,5 @@ Score each response using the shared chapter-interview rubric in Appendix A.12.1
 <div class="nav-links">
   <a href="ch8-reliability-qualification-building-the-lifetime-confidence-argument">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch10-ai-datacenter-networking">Next &rarr;</a>
+  <a href="ch10-optical-links-in-operation-from-physical-margin-to-workload-impact">Next &rarr;</a>
 </div>

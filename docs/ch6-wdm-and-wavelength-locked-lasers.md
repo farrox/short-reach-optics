@@ -109,7 +109,7 @@ Athermal design
 
 Digital supervisory loop
 
-: CMIS-exposed monitors and firmware on modern modules; link training at 224G/448G may iterate EQ and wavelength trim together (§10.3).
+: CMIS-exposed monitors and firmware on modern modules; link training at 224G/448G may iterate EQ and wavelength trim together (Appendix H.3).
 
 ##### Capture, hold, reacquisition, and headroom.
 

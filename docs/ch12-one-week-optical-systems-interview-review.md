@@ -886,7 +886,7 @@ Run a 45-minute mock interview. Pick six of the rehearsal questions at random. A
 
 ## Must-know abbreviations (drill list)
 
-Definitions live in Appendix J. Do not maintain a second glossary here. Drill the expansions cold, then say one measurement, stress, or decision each term unlocks.
+Definitions live in Appendix K. Do not maintain a second glossary here. Drill the expansions cold, then say one measurement, stress, or decision each term unlocks.
 
 ##### Optical / debug core.
 
@@ -1037,7 +1037,7 @@ Assume seven days, with the interview near the end of Day 7. Protect sleep. Eac
 
 ##### Day 7: Mock interviews.
 
-*Learn:* three cheat sheets below; Top 25 index (Appendix H); thirty-second callouts (Appendix C); whiteboard trees (Appendix D).\
+*Learn:* three cheat sheets below; Top 25 index (Appendix I); thirty-second callouts (Appendix C); whiteboard trees (Appendix D).\
 *Output:* Full mock. Light story review only. Stop two to three hours before the call. Sleep.
 
 ##### If you have less than seven days.

@@ -464,7 +464,7 @@ Multi-wavelength CW sources (CW-WDM MSA) feed dense ring or filter banks on a PI
 
 - RIN and ORL sensitivity for each line (§5.7, §4.3.1).
 
-Examples: Ayar Labs SuperNova (CW-WDM MSA-compliant, feeds TeraPHY)  ; Broadcom ELSFP banks on Tomahawk CPO (§10.10, §5.14); quantum-dot comb lasers (Ranovus, Quintessent) aimed at many $\lambda$ from one chip. Source tests live here; locking and on-chip MUX live in Chapter 6.
+Examples: Ayar Labs SuperNova (CW-WDM MSA-compliant, feeds TeraPHY)  ; Broadcom ELSFP banks on Tomahawk CPO (Appendix H.10, §5.14); quantum-dot comb lasers (Ranovus, Quintessent) aimed at many $\lambda$ from one chip. Source tests live here; locking and on-chip MUX live in Chapter 6.
 
 ## Light-source supply strategy
 

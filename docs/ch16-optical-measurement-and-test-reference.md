@@ -29,7 +29,7 @@ Did the spectrum or grid move?
 
 Did receiver margin shift or floor?
 
-: BERT with calibrated attenuator or stressor; FEC counters for shape (§4.4, Appendix E.4, §10.17.2).
+: BERT with calibrated attenuator or stressor; FEC counters for shape (§4.4, Appendix E.4, §10.3).
 
 Is intensity noise the floor?
 
@@ -37,7 +37,7 @@ Is intensity noise the floor?
 
 Is the error random, bursty, or state-driven?
 
-: Pre-FEC BER plus FEC histograms and management state (§10.17.2, Appendix E.7).
+: Pre-FEC BER plus FEC histograms and management state (§10.3, Appendix E.7).
 
 Does management telemetry match bench truth?
 
@@ -66,7 +66,7 @@ TDECQ is a composite metric. Uneven levels point toward modulator or driver line
 
 *SECQ* (stressed eye closure quaternary) is a *receiver-side* stressed-eye method under a named specification. It applies a calibrated optical stressor and asks how much margin remains before the receiver hits that clause's target pre-FEC metric.
 
-TDECQ evaluates transmitter quality through a reference-receiver model. SECQ is not the same test as a generic stressed-receiver sensitivity sweep, even when both use attenuation and ISI. Always state the PMD, FEC architecture, error model, metric, stress calibration, and test duration. For LPO, stressed Rx margin on the host-side receiver is as important as transmitter-quality metrics (§3.6, §10.5.1).
+TDECQ evaluates transmitter quality through a reference-receiver model. SECQ is not the same test as a generic stressed-receiver sensitivity sweep, even when both use attenuation and ISI. Always state the PMD, FEC architecture, error model, metric, stress calibration, and test duration. For LPO, stressed Rx margin on the host-side receiver is as important as transmitter-quality metrics (§3.6, Appendix H.5.1).
 
 ## Link-budget accounting reference
 
@@ -136,6 +136,20 @@ CMIS / host tools
 The host drives a module state machine toward ModuleReady before authorizing light. Data-path and network-path states in later CMIS revisions refine lane enable. A module forced into an emitting state that passes BER has not passed bring-up if the required management sequence, safe state, diagnostics, alarms, and recovery behavior are incorrect (§7.6).
 
 *DDM* provides per-lane Tx/Rx power, bias when exposed, temperature, rails, LOS/LOL, and alarms. On bring-up, dump the register map you will use in the field and treat disagreement between DDM and an external meter as a finding. ATP should prove ModuleReady across voltage and thermal corners and ECO-control firmware like other production revisions (§9.9).
+
+Operational use of management state is decision-oriented, not a register inventory (Chapter 10, §10.6):
+
+- Management state must be trustworthy before counters drive containment.
+
+- Every counter needs a semantic definition, accumulation window, and reset behavior.
+
+- Polling cadence sets what bursts and short recoveries you can observe.
+
+- A reset or clear can erase the failing evidence; preserve dumps before recovery when the event matters.
+
+- Alarm latching and clearing must be understood before a "cleared" flag is treated as healthy.
+
+Exact page, bank, and bit maps remain vendor- and revision-specific; keep them in the product management reference, not in the operational chapter.
 
 ## Rapid Interview Checks
 

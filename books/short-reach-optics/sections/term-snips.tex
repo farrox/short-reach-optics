@@ -53,11 +53,36 @@
 \declaretermsnip{RS544514}{Reed--Solomon block code: 544 symbols out, 514 payload, 30
   parity. Corrects up to 15 symbol errors per codeword.}
 
-\declaretermsnip{preFEC}{BER measured before the FEC decoder. Standards and
-  validation sweeps use this number, not post-FEC.}
+\declaretermsnip{preFEC}{Pre-FEC error activity describes errors observed before
+  forward-error correction. The exact counter may represent bits, symbols,
+  codewords, or implementation-specific events, so its definition and
+  accumulation window must be stated.}
 
 \declaretermsnip{postFEC}{BER after FEC correction. Quote the named residual /
   FLR / UCR objective and duration, not a universal ``error-free'' threshold.}
+
+\declaretermsnip{correctedErrors}{Corrected errors indicate that FEC restored
+  data that would otherwise have been erroneous. Rising correction demand can
+  reveal shrinking physical margin even while delivered traffic remains
+  error-free.}
+
+\declaretermsnip{Retrain}{Retrain is a link or lane recovery procedure that
+  re-establishes timing, alignment, equalization, or protocol state. Retrain
+  count alone does not identify the physical cause; duration and workload
+  consequence also matter.}
+
+\declaretermsnip{Cohort}{Cohort is a defined population sharing one or more
+  attributes, such as module lot, firmware, host type, rack, fiber plant, or
+  installation period. Cohort comparison helps bound systemic risk.}
+
+\declaretermsnip{Straggler}{Straggler is a slower participant that delays
+  completion of a synchronized distributed operation. A short link interruption
+  on one path can therefore affect many accelerators.}
+
+\declaretermsnip{Availability}{Availability is the fraction of required service
+  time during which the system can perform its intended function. It depends on
+  event frequency, duration, detection, redundancy, recovery, and repair, not
+  only on component failure rate.}
 
 \declaretermsnip{MLC}{Multi-level coding: coded modulation paired with PAM6/PAM8. OIF
   448G workshop models often add a strong outer RS code; $\sim$12\% overhead vs.\ KP4

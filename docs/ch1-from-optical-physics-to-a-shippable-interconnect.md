@@ -222,7 +222,7 @@ Chapter 11
 
 : Failure analysis: how to investigate escapes and feed learning back.
 
-The Preface describes reading modes (deep learning, interview preparation, and incident response). This chapter maps the engineering story those modes walk through. For a design drill, pick one link style (retimed 800G DR, LPO, or CPO WDM) and trace it through §3.2, §10.3, §10.10.
+The Preface describes reading modes (deep learning, interview preparation, and incident response). This chapter maps the engineering story those modes walk through. For a design drill, pick one link style (retimed 800G DR, LPO, or CPO WDM) and trace it through §3.2, Appendix H.3, Appendix H.10.
 
 ## A recurring example: an 800G short-reach link
 
@@ -260,7 +260,7 @@ The orientation above is general. The pressure that makes it urgent in this book
 
 A representative public example is *Jalapeño*, a purpose-built LLM inference accelerator Broadcom and a hyperscaler partner announced in 2026 as a blank-slate design, the first chip in a multi-generation compute platform.[^1] Public features of the class include Broadcom silicon and networking (including *Tomahawk*), Celestica board and rack integration, a roughly nine-month design-to-tape-out cadence, and gigawatt-scale multi-generation deployment planned from late 2026. The design thesis is to reduce data movement and balance compute, memory, and networking so realized utilization approaches theoretical peak. Once networking sits on that line, the optical interconnect is how the system scales past a single package, and laser quality plus IM/DD validation become infrastructure problems rather than module afterthoughts.
 
-Inference is not training. Prefill is highly parallel and compute-bound; decode is autoregressive and memory-bandwidth-bound (Chapter 10, §10.6). Frontier models are sharded, so every generated token triggers collective communication: all-reduce for tensor parallelism, all-to-all for mixture-of-experts routing, point-to-point for pipeline stages. The interconnect therefore sits on the latency critical path of inference, not merely the plumbing between training runs.
+Inference is not training. Prefill is highly parallel and compute-bound; decode is autoregressive and memory-bandwidth-bound (Chapter 10, Appendix H.6). Frontier models are sharded, so every generated token triggers collective communication: all-reduce for tensor parallelism, all-to-all for mixture-of-experts routing, point-to-point for pipeline stages. The interconnect therefore sits on the latency critical path of inference, not merely the plumbing between training runs.
 
 ### The shifting bottleneck
 
@@ -276,11 +276,11 @@ Memory-limited
 
 Network-limited
 
-: Sharded frontier models (2020--present). Collectives put fabric bandwidth and tail latency on the critical path (§10.7, §10.6).
+: Sharded frontier models (2020--present). Collectives put fabric bandwidth and tail latency on the critical path (Appendix H.7, Appendix H.6).
 
 Power-limited
 
-: Gigawatt-class deployments (emerging). Site megawatts cap total capacity; every pJ/bit the interconnect saves is a watt returned to compute (§10.13).
+: Gigawatt-class deployments (emerging). Site megawatts cap total capacity; every pJ/bit the interconnect saves is a watt returned to compute (Appendix H.13).
 
 The bottleneck did not replace the previous one; it stacked on top. A modern cluster is simultaneously memory-bandwidth-bound in decode, network-bound in collectives, and power-bound at the site. The interconnect sits at the intersection of the last two.
 
@@ -290,7 +290,7 @@ An accelerator does useful work only while its operands arrive on time. Three tr
 
 All-reduce
 
-: combines partial results across a group; the slowest path can hold the whole group (§10.7).
+: combines partial results across a group; the slowest path can hold the whole group (Appendix H.7).
 
 All-to-all
 
