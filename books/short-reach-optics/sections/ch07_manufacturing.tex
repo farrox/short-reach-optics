@@ -484,6 +484,66 @@ different questions:
       accept, reject, retest, rework, or review decision for each unit.
 \end{description}
 
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:mfg-three-limits}%
+\centering
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.15}%
+\begin{tabular}{@{}p{0.14\linewidth}p{0.27\linewidth}p{0.27\linewidth}p{0.27\linewidth}@{}}
+\toprule
+Attribute & Control limits & Specification limits &
+ATP limits / acceptance criteria \\
+\midrule
+What it governs &
+Whether the production process remains statistically stable over time &
+Whether the product meets engineering requirements &
+Whether a unit or lot is accepted, rejected, held, or routed for retest or
+rework \\
+\addlinespace[0.45em]
+Who defines it &
+Manufacturing, quality, test, and process engineers using stable process data
+and risk judgment &
+Design and systems engineering, often with customer or standards input &
+Manufacturing, test, quality, and design teams; contractual requirements may
+constrain it \\
+\addlinespace[0.45em]
+What it is based on &
+The observed process distribution and normal common-cause variation &
+Product function, interface requirements, safety, interoperability, and
+performance margins &
+Product requirements, defect risks, measurement uncertainty, validated test
+coverage, economics, and guardbands \\
+\addlinespace[0.45em]
+When it is used &
+Continuously during production monitoring &
+During design, verification, production disposition, and field support &
+During production acceptance, usually at final test or another defined control
+point \\
+\addlinespace[0.45em]
+Primary purpose &
+Detect process shifts, trends, or special causes before they create widespread
+fallout &
+Define what the product must satisfy &
+Make a repeatable shipping or lot-disposition decision using practical
+production measurements \\
+\addlinespace[0.45em]
+If breached &
+A special-cause signal is raised; follow the predefined reaction plan &
+The measured characteristic does not meet the requirement, subject to
+measurement uncertainty and disposition rules &
+The unit or lot fails the acceptance rule and is held, rejected, retested,
+reworked, or investigated \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Control, specification, and
+ATP limits answer different questions and must not be swapped.
+\Cref{sec:mfg-spc-ramp} for reaction plans; \Cref{sec:hvm-test} for ATP
+placement.\par}
+\end{table*}
+\FloatBarrier
+
 The distinctions matter most when the limits disagree:
 
 \begin{itemize}
@@ -1347,9 +1407,10 @@ and guardband economics.
 output. Control limits come from time-ordered process data and signal when the
 process has changed. ATP limits are production decision thresholds and may be
 tighter than the product specification. These limits have different owners and
-must not be substituted for one another: a stable process can be stably
-off-center and make bad units, while an unstable process can remain temporarily
-inside specification.
+must not be substituted for one another
+(\Cref{tab:mfg-three-limits}): a stable process can be stably off-center and
+make bad units, while an unstable process can remain temporarily inside
+specification.
 
 Yield reports the observed fraction passing a particular set of limits.
 Capability asks how the distribution of a stable process compares with those

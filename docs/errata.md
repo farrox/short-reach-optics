@@ -261,6 +261,9 @@ No new frameworks. Structural relocation of existing material is allowed.
   table (`tab:mfg-control-placement`); and a separate controlled-ramp section
   after supplier/change (`sec:mfg-controlled-ramp`, label
   `sec:mfg-spc-ramp` retained for SPC/reaction). PDF about 466 pages.
+- **Three-limits comparison table:** Added `tab:mfg-three-limits` in
+  Chapter~9 comparing control, specification, and ATP limits across governance,
+  ownership, basis, use, purpose, and breach response. PDF about 468 pages.
 
 ## Typographical fixes
 

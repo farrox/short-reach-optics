@@ -20,7 +20,7 @@ Program-phase labels (EVT, DVT, PVT, MP) are owned in §7.1, Table 7.1. They ar
 
 ## Laser-bearing production-control checklist
 
-Every second of ATP costs line capacity. Every omitted screen leaves risk. Buy evidence in categories that cannot substitute for each other. Table G.2 is a working checklist for an EML pluggable or an ELSFP CW module. Customize limits from the datasheet and the link budget; do not invent numbers in the ATP itself. Control-selection logic lives in §9.7, Table 9.3.
+Every second of ATP costs line capacity. Every omitted screen leaves risk. Buy evidence in categories that cannot substitute for each other. Table G.2 is a working checklist for an EML pluggable or an ELSFP CW module. Customize limits from the datasheet and the link budget; do not invent numbers in the ATP itself. Control-selection logic lives in §9.7, Table 9.4.
 
 ##### Every-unit fast screens.
 
