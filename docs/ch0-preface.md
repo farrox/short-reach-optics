@@ -17,7 +17,7 @@ Deep learning
 
 Interview preparation
 
-: Follow the one-week plan (Appendix A.13), practice cases (Appendix B), drill thirty-second answers and tradeoff questions (Appendix C), review the Top 25 index (Appendix J), and read how Staff judgment works (Appendix K).
+: Follow the one-week plan (Appendix A.13), review the printable chapter cheat sheets (Appendix M), practice cases (Appendix B), drill thirty-second answers and tradeoff questions (Appendix C), review the Top 25 index (Appendix J), and read how Staff judgment works (Appendix K).
 
 Incident / problem solving
 

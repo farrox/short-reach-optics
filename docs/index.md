@@ -37,7 +37,8 @@ title: "Table of Contents"
 - [**21.** Optical Systems Staff Engineer Interview Questions](ch21-optical-systems-staff-engineer-interview-questions)
 - [**22.** How Staff Engineers Think](ch22-how-staff-engineers-think)
 - [**Appendix D.** Abbreviations and terminology](ch23-abbreviations-and-terminology)
-- [**24.** References](ch24-references)
+- [**Appendix M.** Interview Cheat Sheets](ch24-interview-cheat-sheets)
+- [**25.** References](ch25-references)
 
 ---
 

@@ -1046,7 +1046,7 @@ Compress: Day 1, Day 3 validation, Day 4 reliability, Day 5 manufacturing, D
 
 ## Staff interview cheat sheets
 
-Interview-simple flows only. Full trees stay in Appendix D.
+Per-chapter printable one-pagers for Chapters 4--11 live in Appendix M. The three flows below are short method reminders only. Full trees stay in Appendix D.
 
 ### Cheat Sheet A: Debugging flow
 

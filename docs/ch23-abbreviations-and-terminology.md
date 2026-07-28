@@ -1049,5 +1049,5 @@ Retrain versus link flap; reliability versus availability?\
 <div class="nav-links">
   <a href="ch22-how-staff-engineers-think">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch24-references">Next &rarr;</a>
+  <a href="ch24-interview-cheat-sheets">Next &rarr;</a>
 </div>

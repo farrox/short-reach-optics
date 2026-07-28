@@ -24,6 +24,7 @@ APPENDIX_TITLES = {
     "Manufacturing Validation Reference": ("G", "Manufacturing Validation Reference"),
     "AI Fabric Context": ("H", "AI Fabric Context"),
     "Failure Analysis Reference": ("I", "Failure Analysis Reference"),
+    "Interview Cheat Sheets": ("M", "Interview Cheat Sheets"),
 }
 
 

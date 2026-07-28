@@ -289,6 +289,13 @@ No new frameworks. Structural relocation of existing material is allowed.
   $\sim$531 lines; Chapter~11 about 34$\rightarrow$12 pages. HTML slug changes;
   old `ch11-failure-analysis-handbook` becomes a Moved stub. References at
   `ch24-references`. PDF about 474 pages.
+- **Interview cheat-sheet appendix:** Added Appendix~M Interview Cheat Sheets
+  (`app:interview-cheatsheets`): one overview page, one printable page each for
+  Chapters~4--11 (spoken checklist, distinctions, trap/better, 60-second answer,
+  pressure pivot), and one cross-chapter habits page. Preface Interview mode and
+  Appendix~A Staff cheat sheets point at Appendix~M. HTML at
+  `ch24-interview-cheat-sheets`; references shifted to `ch25-references` with a
+  Moved stub at the old `ch24-references` URL. PDF about 489 pages.
 
 ## Typographical fixes
 
