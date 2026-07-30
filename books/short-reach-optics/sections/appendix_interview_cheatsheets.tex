@@ -38,8 +38,10 @@ Ch & Main question \\
 \end{center}
 
 \paragraph{How to use these sheets.}
-Spend about 2--3 minutes per page. Chapters~7--11 first if time is short. Full
-depth: \Cref{ch:models,ch:lasers,ch:wdm,ch:product-readiness,ch:reliability,ch:manufacturing,ch:networking,ch:failure-modes}.
+Spend about 2--3 minutes per page. Chapters~7--11 first if time is short. Drill
+the rapid-fire flashcards at the end of this appendix in one-breath answers.
+Full depth:
+\Cref{ch:models,ch:lasers,ch:wdm,ch:product-readiness,ch:reliability,ch:manufacturing,ch:networking,ch:failure-modes}.
 
 \clearpage
 \section{Chapter 4: Quantitative link behavior}
@@ -326,6 +328,7 @@ the argument explicitly says so.''
 \clearpage
 \section{Chapter 9: Manufacturing validation}
 \label{sec:cheat-ch9}
+\enlargethispage{3\baselineskip}
 
 \textit{Goal.} Prove the factory can repeatedly build, measure, and control the
 released design.
@@ -333,7 +336,8 @@ released design.
 \paragraph{Mental checklist.}
 Freeze $\rightarrow$ Represent $\rightarrow$ Trace $\rightarrow$ Trust
 measurement $\rightarrow$ Read yield $\rightarrow$ Check stability $\rightarrow$
-Measure capability $\rightarrow$ Control $\rightarrow$ React $\rightarrow$ Ramp
+Measure capability $\rightarrow$ Control $\rightarrow$ FAIR $\rightarrow$ React
+$\rightarrow$ Ramp
 
 \paragraph{What I need to know.}
 \begin{itemize}
@@ -342,6 +346,9 @@ Measure capability $\rightarrow$ Control $\rightarrow$ React $\rightarrow$ Ramp
 \item First-pass yield shows process health; final yield may hide rework.
 \item Look at the distribution before using capability numbers.
 \item Stable process first, then $C_p$ and $C_{pk}$.
+\item FAIR is the controlled first-article evidence package that gates open
+      volume after a relevant tooling, site, material, silicon, assembly, test,
+      or firmware change; evidence depth follows the affected risk.
 \item Every control needs a trigger, owner, action, and restart rule.
 \item Passing good units does not prove a screen catches bad ones.
 \end{itemize}
@@ -396,7 +403,8 @@ Pressure: ``Final yield is 99\%. Ship?''\\
 Pivot: ``Not until I know first-pass yield and what the recovery path is costing
 and hiding.''
 
-\footnotesize Depth: \Cref{ch:manufacturing,tab:mfg-three-limits}.
+\footnotesize Depth:
+\Cref{ch:manufacturing,tab:mfg-three-limits,sec:mfg-fair-checklist}.
 
 \clearpage
 \section{Chapter 10: Optical links in operation}
@@ -582,4 +590,257 @@ schedule intrusive tests only after traffic is drained or risk is contained.''
 \end{itemize}
 
 \textit{Design rule.} One page, one mental model, one spoken answer.
+
+\clearpage
+\small
+\section{Chapters 7--11: 100 rapid-fire interview flashcards}
+\label{sec:cheat-flashcards}
+
+Use these as short memory prompts. Say the answer in one breath, then expand
+only if asked. Depth:
+\Cref{ch:product-readiness,ch:reliability,ch:manufacturing,ch:networking,ch:failure-modes}.
+
+\subsection{Chapter 7: Product readiness}
+\begin{enumerate}
+\item \textbf{Q:} What is product readiness?\\
+\textbf{A:} The full path from requirements to fleet learning.
+\item \textbf{Q:} What is the first step?\\
+\textbf{A:} Define measurable requirements and the release decision.
+\item \textbf{Q:} Why review architecture early?\\
+\textbf{A:} Catch thin margins before hardware makes changes expensive.
+\item \textbf{Q:} What does bring-up prove?\\
+\textbf{A:} The hardware, firmware, states, and basic link work reproducibly.
+\item \textbf{Q:} What does characterization do?\\
+\textbf{A:} Maps nominal behavior, spread, sensitivities, and failure edges.
+\item \textbf{Q:} What does verification do?\\
+\textbf{A:} Checks frozen requirements at named planes and conditions.
+\item \textbf{Q:} What does system validation do?\\
+\textbf{A:} Proves the product works in the intended system and workload.
+\item \textbf{Q:} What does reliability qualification do?\\
+\textbf{A:} Supports life and environmental claims.
+\item \textbf{Q:} What does manufacturing validation do?\\
+\textbf{A:} Proves the factory can build and control the design repeatedly.
+\item \textbf{Q:} What is a pilot?\\
+\textbf{A:} A bounded field experiment with telemetry, exit rules, and rollback.
+\item \textbf{Q:} What justifies pilot expansion?\\
+\textbf{A:} Metrics match the release model and no unexplained cohort appears.
+\item \textbf{Q:} What makes a later test insufficient?\\
+\textbf{A:} It cannot replace missing earlier evidence.
+\item \textbf{Q:} What do EVT, DVT, and PVT mean?\\
+\textbf{A:} Program phases, not universal proof categories.
+\item \textbf{Q:} How do you interpret a phase gate?\\
+\textbf{A:} Ask which build, which evidence, which risks, and which decision.
+\item \textbf{Q:} Why not validate only on a reference host?\\
+\textbf{A:} Production hosts can move the real failure edge.
+\item \textbf{Q:} What must accompany every measurement?\\
+\textbf{A:} Plane, metric, conditions, population, uncertainty, and decision.
+\item \textbf{Q:} How do you choose the next test?\\
+\textbf{A:} Pick the cheapest safe test that separates the leading causes.
+\item \textbf{Q:} When is destructive analysis justified?\\
+\textbf{A:} When non-destructive evidence cannot unblock a major decision.
+\item \textbf{Q:} What do you protect when schedule is cut?\\
+\textbf{A:} Requirements, measurement integrity, thin margins, and reversible
+pilot.
+\item \textbf{Q:} Best one-line readiness summary?\\
+\textbf{A:} Define, prove, qualify, control, pilot, ramp, monitor, learn.
+\end{enumerate}
+
+\subsection{Chapter 8: Reliability qualification}
+\begin{enumerate}
+\setcounter{enumi}{20}
+\item \textbf{Q:} What is reliability qualification?\\
+\textbf{A:} A bounded confidence argument for life and environmental exposure.
+\item \textbf{Q:} What is the first step in a qual plan?\\
+\textbf{A:} Start with the claim, not the test list.
+\item \textbf{Q:} What comes after the claim?\\
+\textbf{A:} Identify the mechanism that could break it.
+\item \textbf{Q:} What makes an accelerated stress useful?\\
+\textbf{A:} It speeds up the same mechanism expected in the field.
+\item \textbf{Q:} What makes a stress invalid?\\
+\textbf{A:} It creates different failure physics.
+\item \textbf{Q:} Why define observables before stress?\\
+\textbf{A:} So acceptance is not invented after seeing the data.
+\item \textbf{Q:} Why use representative samples?\\
+\textbf{A:} One convenient lot does not represent the released population.
+\item \textbf{Q:} What does zero failures prove?\\
+\textbf{A:} A confidence bound, not a zero failure rate.
+\item \textbf{Q:} What is FIT?\\
+\textbf{A:} One failure per billion device-hours.
+\item \textbf{Q:} What must accompany a FIT claim?\\
+\textbf{A:} Population, exposure, failure definition, model, and confidence.
+\item \textbf{Q:} What is DPPM?\\
+\textbf{A:} Defective parts per million at a named quality boundary.
+\item \textbf{Q:} FIT versus DPPM?\\
+\textbf{A:} FIT uses time exposure; DPPM uses units inspected.
+\item \textbf{Q:} HTOL versus burn-in?\\
+\textbf{A:} HTOL supports life claims; burn-in is an optional production screen.
+\item \textbf{Q:} Can burn-in replace qualification?\\
+\textbf{A:} No.
+\item \textbf{Q:} Can qualification replace screening?\\
+\textbf{A:} No.
+\item \textbf{Q:} What is a failure mode?\\
+\textbf{A:} What you observe.
+\item \textbf{Q:} What is a failure mechanism?\\
+\textbf{A:} The physical or electrical cause.
+\item \textbf{Q:} Why does failure timing matter?\\
+\textbf{A:} Early, random, and late failures point to different risks.
+\item \textbf{Q:} What is the role of standards like GR-468?\\
+\textbf{A:} Common methods and language, not the whole engineering argument.
+\item \textbf{Q:} Best one-line qual summary?\\
+\textbf{A:} Claim, mechanism, stress, observable, sample, confidence, decision.
+\end{enumerate}
+
+\subsection{Chapter 9: Manufacturing validation}
+\begin{enumerate}
+\setcounter{enumi}{40}
+\item \textbf{Q:} What does manufacturing validation prove?\\
+\textbf{A:} The factory can build, measure, trace, and control the design.
+\item \textbf{Q:} What do you freeze first?\\
+\textbf{A:} Design, BOM, process, firmware, test software, and approved
+suppliers.
+\item \textbf{Q:} Why freeze the production reference?\\
+\textbf{A:} So changes are visible and traceable.
+\item \textbf{Q:} What is FAIR?\\
+\textbf{A:} First Article Inspection Report.
+\item \textbf{Q:} What does FAIR prove?\\
+\textbf{A:} The first production-intent units match the released design and
+process.
+\item \textbf{Q:} What is MSA?\\
+\textbf{A:} Measurement System Analysis.
+\item \textbf{Q:} What is GR\&R?\\
+\textbf{A:} Gauge repeatability and reproducibility.
+\item \textbf{Q:} What does GR\&R ask?\\
+\textbf{A:} Is the variation from the parts or from the measurement?
+\item \textbf{Q:} What comes before yield interpretation?\\
+\textbf{A:} Trust the measurement system.
+\item \textbf{Q:} What is first-pass yield?\\
+\textbf{A:} Units passing without retest or rework.
+\item \textbf{Q:} Why is first-pass yield important?\\
+\textbf{A:} It shows true process health.
+\item \textbf{Q:} What is final yield?\\
+\textbf{A:} Units eventually accepted after allowed rework and retest.
+\item \textbf{Q:} Why can final yield mislead?\\
+\textbf{A:} It can hide heavy rework and unstable process behavior.
+\item \textbf{Q:} What is a Pareto chart?\\
+\textbf{A:} A ranked view of the few causes driving most loss.
+\item \textbf{Q:} Distribution versus capability?\\
+\textbf{A:} Distribution is the raw shape; capability compares it with specs.
+\item \textbf{Q:} What is process stability?\\
+\textbf{A:} The process behaves predictably over time.
+\item \textbf{Q:} Why must stability come before $C_{pk}$?\\
+\textbf{A:} An unstable process makes capability numbers unreliable.
+\item \textbf{Q:} $C_p$ versus $C_{pk}$?\\
+\textbf{A:} $C_p$ is potential spread; $C_{pk}$ includes how off-center the
+process is.
+\item \textbf{Q:} Control limit versus spec limit?\\
+\textbf{A:} Control limits describe process behavior; specs define product
+acceptance.
+\item \textbf{Q:} What is ATP?\\
+\textbf{A:} The production acceptance test used to ship, hold, or reject units.
+\item \textbf{Q:} How do you validate an ATP test?\\
+\textbf{A:} Show it catches known bad cases, not just good units.
+\item \textbf{Q:} What is a false accept?\\
+\textbf{A:} A bad unit passes.
+\item \textbf{Q:} What is a false reject?\\
+\textbf{A:} A good unit fails.
+\item \textbf{Q:} How do you set a production threshold?\\
+\textbf{A:} Balance escapes, false rejects, cost, and customer risk.
+\item \textbf{Q:} What is SPC?\\
+\textbf{A:} Statistical Process Control for detecting drift over time.
+\item \textbf{Q:} What must every reaction plan include?\\
+\textbf{A:} Trigger, owner, containment, evidence, restart rule, and follow-up.
+\item \textbf{Q:} Where should a defect be caught?\\
+\textbf{A:} At the earliest reliable and economical point.
+\item \textbf{Q:} How do you choose builds?\\
+\textbf{A:} Cover real sources of variation and keep genealogy.
+\item \textbf{Q:} Representation versus sample size?\\
+\textbf{A:} First sample the right populations, then collect enough data.
+\item \textbf{Q:} Best one-line manufacturing summary?\\
+\textbf{A:} Freeze, trace, trust measurement, read yield, control, react, ramp.
+\end{enumerate}
+
+\subsection{Chapter 10: Optical links in operation}
+\begin{enumerate}
+\setcounter{enumi}{70}
+\item \textbf{Q:} What is the chapter's main message?\\
+\textbf{A:} Link-up is not the same as link health.
+\item \textbf{Q:} What does pre-FEC error activity show?\\
+\textbf{A:} The burden on the physical link before correction.
+\item \textbf{Q:} What do corrected errors show?\\
+\textbf{A:} FEC is working and margin may be shrinking.
+\item \textbf{Q:} What do uncorrectable events show?\\
+\textbf{A:} FEC could not recover the data.
+\item \textbf{Q:} What is a retrain?\\
+\textbf{A:} A recovery action that rebuilds link or lane state.
+\item \textbf{Q:} Why can average BER mislead?\\
+\textbf{A:} It can hide short, dangerous bursts.
+\item \textbf{Q:} What should you ask about an error burst?\\
+\textbf{A:} How big, how long, and what event it triggered.
+\item \textbf{Q:} What is operational severity based on?\\
+\textbf{A:} Workload consequence, not just optical symptoms.
+\item \textbf{Q:} What does good recovery look like?\\
+\textbf{A:} Fast, predictable, evidence-preserving, and not repetitive.
+\item \textbf{Q:} Why is recovery part of product behavior?\\
+\textbf{A:} A link will eventually hit faults and must return safely.
+\item \textbf{Q:} What makes telemetry useful?\\
+\textbf{A:} It separates causes, bounds a population, or triggers action.
+\item \textbf{Q:} What is a cohort?\\
+\textbf{A:} A group sharing lot, host, firmware, site, or another attribute.
+\item \textbf{Q:} Why compare affected and unaffected cohorts?\\
+\textbf{A:} To narrow the shared cause.
+\item \textbf{Q:} Does correlation prove root cause?\\
+\textbf{A:} No.
+\item \textbf{Q:} Why can a rare event matter at fleet scale?\\
+\textbf{A:} Large populations turn rare per-link events into frequent fleet
+events.
+\item \textbf{Q:} Why is FIT not availability?\\
+\textbf{A:} Availability also depends on duration, redundancy, reroute, and
+repair.
+\item \textbf{Q:} What makes a pilot real?\\
+\textbf{A:} Bounded exposure, telemetry, exit rules, and rollback.
+\item \textbf{Q:} When do you pause deployment?\\
+\textbf{A:} When risk is widening, unexplained, or hard to contain.
+\item \textbf{Q:} What is the T1-to-T5 memory hook?\\
+\textbf{A:} Trust measurement, know product, find edge, connect lab to system,
+monitor fleet.
+\item \textbf{Q:} Best one-line operations summary?\\
+\textbf{A:} Watch margin, FEC, bursts, recovery, cohorts, and workload impact.
+\end{enumerate}
+
+\subsection{Chapter 11: Failure analysis}
+\begin{enumerate}
+\setcounter{enumi}{90}
+\item \textbf{Q:} What is the first priority in production?\\
+\textbf{A:} Protect the workload, then preserve evidence.
+\item \textbf{Q:} What is the failure-analysis spine?\\
+\textbf{A:} Protect, preserve, scope, classify, test, prove, fix, prevent,
+verify.
+\item \textbf{Q:} Why preserve before resetting?\\
+\textbf{A:} Resets can erase the clues.
+\item \textbf{Q:} What does scoping mean?\\
+\textbf{A:} Find who is affected and what they share.
+\item \textbf{Q:} What timing patterns matter?\\
+\textbf{A:} Sudden, gradual, or intermittent.
+\item \textbf{Q:} What is a hypothesis tree?\\
+\textbf{A:} A short list of plausible causes and how to separate them.
+\item \textbf{Q:} Why use reversible swaps first?\\
+\textbf{A:} They localize ownership with low risk.
+\item \textbf{Q:} If the fault follows the module, is root cause proven?\\
+\textbf{A:} No. Ownership is localized; mechanism still needs proof.
+\item \textbf{Q:} Correlation versus root cause?\\
+\textbf{A:} Correlation moves together; root cause is reproducible and
+stoppable.
+\item \textbf{Q:} When is the case closed?\\
+\textbf{A:} When the fix works on fresh data and recurrence is controlled.
+\end{enumerate}
+
+\subsection{Five universal fallback lines}
+\begin{itemize}
+\item ``I would start by clarifying the decision.''
+\item ``I would not interpret that number without the plane and conditions.''
+\item ``That raises a hypothesis, but it does not prove the cause.''
+\item ``I would pick the smallest safe test that separates the leading causes.''
+\item ``Based on the evidence, here is my call and next step.''
+\end{itemize}
+
 \normalsize

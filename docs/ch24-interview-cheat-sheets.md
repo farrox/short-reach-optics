@@ -18,7 +18,7 @@ Model the link $\rightarrow$ choose the architecture $\rightarrow$ control wavel
 <table class="book-table"><tr><th>Ch</th><th>Main question</th></tr><tr><td>4</td><td>What sets BER and margin?</td></tr><tr><td>5</td><td>How do the source and modulator behave?</td></tr><tr><td>6</td><td>How do wavelength and WDM stay controlled?</td></tr><tr><td>7</td><td>What evidence is needed before release?</td></tr><tr><td>8</td><td>Will time and exposure cause permanent degradation?</td></tr><tr><td>9</td><td>Can the factory build and control it repeatedly?</td></tr><tr><td>10</td><td>How does optical behavior affect the system and workload?</td></tr><tr><td>11</td><td>How do I find and prevent the real cause of a failure?</td></tr></table>
 ##### How to use these sheets.
 
-Spend about 2--3 minutes per page. Chapters 7--11 first if time is short. Full depth: Chapter 4, Chapter 5, Chapter 6, Chapter 7, Chapter 8, Chapter 9, Chapter 10, Chapter 11.
+Spend about 2--3 minutes per page. Chapters 7--11 first if time is short. Drill the rapid-fire flashcards at the end of this appendix in one-breath answers. Full depth: Chapter 4, Chapter 5, Chapter 6, Chapter 7, Chapter 8, Chapter 9, Chapter 10, Chapter 11.
 
 ## Chapter 4: Quantitative link behavior
 
@@ -231,7 +231,7 @@ Depth: Chapter 8.
 
 ##### Mental checklist.
 
-Freeze $\rightarrow$ Represent $\rightarrow$ Trace $\rightarrow$ Trust measurement $\rightarrow$ Read yield $\rightarrow$ Check stability $\rightarrow$ Measure capability $\rightarrow$ Control $\rightarrow$ React $\rightarrow$ Ramp
+Freeze $\rightarrow$ Represent $\rightarrow$ Trace $\rightarrow$ Trust measurement $\rightarrow$ Read yield $\rightarrow$ Check stability $\rightarrow$ Measure capability $\rightarrow$ Control $\rightarrow$ FAIR $\rightarrow$ React $\rightarrow$ Ramp
 
 ##### What I need to know.
 
@@ -244,6 +244,8 @@ Freeze $\rightarrow$ Represent $\rightarrow$ Trace $\rightarrow$ Trust measureme
 - Look at the distribution before using capability numbers.
 
 - Stable process first, then $C_p$ and $C_{pk}$.
+
+- FAIR is the controlled first-article evidence package that gates open volume after a relevant tooling, site, material, silicon, assembly, test, or firmware change; evidence depth follows the affected risk.
 
 - Every control needs a trigger, owner, action, and restart rule.
 
@@ -275,7 +277,7 @@ Better: Separate first-pass yield, retest, rework, scrap, and final yield.
 Pressure: "Final yield is 99%. Ship?"\
 Pivot: "Not until I know first-pass yield and what the recovery path is costing and hiding."
 
-Depth: Chapter 9, Table 9.3.
+Depth: Chapter 9, Table 9.3, Appendix G.5.
 
 ## Chapter 10: Optical links in operation
 
@@ -428,6 +430,332 @@ Depth: Chapter 11, Appendix I.
 - Fixing the failed unit without preventing recurrence.
 
 *Design rule.* One page, one mental model, one spoken answer.
+
+## Chapters 7--11: 100 rapid-fire interview flashcards
+
+Use these as short memory prompts. Say the answer in one breath, then expand only if asked. Depth: Chapter 7, Chapter 8, Chapter 9, Chapter 10, Chapter 11.
+
+### Chapter 7: Product readiness
+
+1.  **Q:** What is product readiness?\
+    **A:** The full path from requirements to fleet learning.
+
+2.  **Q:** What is the first step?\
+    **A:** Define measurable requirements and the release decision.
+
+3.  **Q:** Why review architecture early?\
+    **A:** Catch thin margins before hardware makes changes expensive.
+
+4.  **Q:** What does bring-up prove?\
+    **A:** The hardware, firmware, states, and basic link work reproducibly.
+
+5.  **Q:** What does characterization do?\
+    **A:** Maps nominal behavior, spread, sensitivities, and failure edges.
+
+6.  **Q:** What does verification do?\
+    **A:** Checks frozen requirements at named planes and conditions.
+
+7.  **Q:** What does system validation do?\
+    **A:** Proves the product works in the intended system and workload.
+
+8.  **Q:** What does reliability qualification do?\
+    **A:** Supports life and environmental claims.
+
+9.  **Q:** What does manufacturing validation do?\
+    **A:** Proves the factory can build and control the design repeatedly.
+
+10. **Q:** What is a pilot?\
+    **A:** A bounded field experiment with telemetry, exit rules, and rollback.
+
+11. **Q:** What justifies pilot expansion?\
+    **A:** Metrics match the release model and no unexplained cohort appears.
+
+12. **Q:** What makes a later test insufficient?\
+    **A:** It cannot replace missing earlier evidence.
+
+13. **Q:** What do EVT, DVT, and PVT mean?\
+    **A:** Program phases, not universal proof categories.
+
+14. **Q:** How do you interpret a phase gate?\
+    **A:** Ask which build, which evidence, which risks, and which decision.
+
+15. **Q:** Why not validate only on a reference host?\
+    **A:** Production hosts can move the real failure edge.
+
+16. **Q:** What must accompany every measurement?\
+    **A:** Plane, metric, conditions, population, uncertainty, and decision.
+
+17. **Q:** How do you choose the next test?\
+    **A:** Pick the cheapest safe test that separates the leading causes.
+
+18. **Q:** When is destructive analysis justified?\
+    **A:** When non-destructive evidence cannot unblock a major decision.
+
+19. **Q:** What do you protect when schedule is cut?\
+    **A:** Requirements, measurement integrity, thin margins, and reversible pilot.
+
+20. **Q:** Best one-line readiness summary?\
+    **A:** Define, prove, qualify, control, pilot, ramp, monitor, learn.
+
+### Chapter 8: Reliability qualification
+
+21. **Q:** What is reliability qualification?\
+    **A:** A bounded confidence argument for life and environmental exposure.
+
+22. **Q:** What is the first step in a qual plan?\
+    **A:** Start with the claim, not the test list.
+
+23. **Q:** What comes after the claim?\
+    **A:** Identify the mechanism that could break it.
+
+24. **Q:** What makes an accelerated stress useful?\
+    **A:** It speeds up the same mechanism expected in the field.
+
+25. **Q:** What makes a stress invalid?\
+    **A:** It creates different failure physics.
+
+26. **Q:** Why define observables before stress?\
+    **A:** So acceptance is not invented after seeing the data.
+
+27. **Q:** Why use representative samples?\
+    **A:** One convenient lot does not represent the released population.
+
+28. **Q:** What does zero failures prove?\
+    **A:** A confidence bound, not a zero failure rate.
+
+29. **Q:** What is FIT?\
+    **A:** One failure per billion device-hours.
+
+30. **Q:** What must accompany a FIT claim?\
+    **A:** Population, exposure, failure definition, model, and confidence.
+
+31. **Q:** What is DPPM?\
+    **A:** Defective parts per million at a named quality boundary.
+
+32. **Q:** FIT versus DPPM?\
+    **A:** FIT uses time exposure; DPPM uses units inspected.
+
+33. **Q:** HTOL versus burn-in?\
+    **A:** HTOL supports life claims; burn-in is an optional production screen.
+
+34. **Q:** Can burn-in replace qualification?\
+    **A:** No.
+
+35. **Q:** Can qualification replace screening?\
+    **A:** No.
+
+36. **Q:** What is a failure mode?\
+    **A:** What you observe.
+
+37. **Q:** What is a failure mechanism?\
+    **A:** The physical or electrical cause.
+
+38. **Q:** Why does failure timing matter?\
+    **A:** Early, random, and late failures point to different risks.
+
+39. **Q:** What is the role of standards like GR-468?\
+    **A:** Common methods and language, not the whole engineering argument.
+
+40. **Q:** Best one-line qual summary?\
+    **A:** Claim, mechanism, stress, observable, sample, confidence, decision.
+
+### Chapter 9: Manufacturing validation
+
+41. **Q:** What does manufacturing validation prove?\
+    **A:** The factory can build, measure, trace, and control the design.
+
+42. **Q:** What do you freeze first?\
+    **A:** Design, BOM, process, firmware, test software, and approved suppliers.
+
+43. **Q:** Why freeze the production reference?\
+    **A:** So changes are visible and traceable.
+
+44. **Q:** What is FAIR?\
+    **A:** First Article Inspection Report.
+
+45. **Q:** What does FAIR prove?\
+    **A:** The first production-intent units match the released design and process.
+
+46. **Q:** What is MSA?\
+    **A:** Measurement System Analysis.
+
+47. **Q:** What is GR&R?\
+    **A:** Gauge repeatability and reproducibility.
+
+48. **Q:** What does GR&R ask?\
+    **A:** Is the variation from the parts or from the measurement?
+
+49. **Q:** What comes before yield interpretation?\
+    **A:** Trust the measurement system.
+
+50. **Q:** What is first-pass yield?\
+    **A:** Units passing without retest or rework.
+
+51. **Q:** Why is first-pass yield important?\
+    **A:** It shows true process health.
+
+52. **Q:** What is final yield?\
+    **A:** Units eventually accepted after allowed rework and retest.
+
+53. **Q:** Why can final yield mislead?\
+    **A:** It can hide heavy rework and unstable process behavior.
+
+54. **Q:** What is a Pareto chart?\
+    **A:** A ranked view of the few causes driving most loss.
+
+55. **Q:** Distribution versus capability?\
+    **A:** Distribution is the raw shape; capability compares it with specs.
+
+56. **Q:** What is process stability?\
+    **A:** The process behaves predictably over time.
+
+57. **Q:** Why must stability come before $C_{pk}$?\
+    **A:** An unstable process makes capability numbers unreliable.
+
+58. **Q:** $C_p$ versus $C_{pk}$?\
+    **A:** $C_p$ is potential spread; $C_{pk}$ includes how off-center the process is.
+
+59. **Q:** Control limit versus spec limit?\
+    **A:** Control limits describe process behavior; specs define product acceptance.
+
+60. **Q:** What is ATP?\
+    **A:** The production acceptance test used to ship, hold, or reject units.
+
+61. **Q:** How do you validate an ATP test?\
+    **A:** Show it catches known bad cases, not just good units.
+
+62. **Q:** What is a false accept?\
+    **A:** A bad unit passes.
+
+63. **Q:** What is a false reject?\
+    **A:** A good unit fails.
+
+64. **Q:** How do you set a production threshold?\
+    **A:** Balance escapes, false rejects, cost, and customer risk.
+
+65. **Q:** What is SPC?\
+    **A:** Statistical Process Control for detecting drift over time.
+
+66. **Q:** What must every reaction plan include?\
+    **A:** Trigger, owner, containment, evidence, restart rule, and follow-up.
+
+67. **Q:** Where should a defect be caught?\
+    **A:** At the earliest reliable and economical point.
+
+68. **Q:** How do you choose builds?\
+    **A:** Cover real sources of variation and keep genealogy.
+
+69. **Q:** Representation versus sample size?\
+    **A:** First sample the right populations, then collect enough data.
+
+70. **Q:** Best one-line manufacturing summary?\
+    **A:** Freeze, trace, trust measurement, read yield, control, react, ramp.
+
+### Chapter 10: Optical links in operation
+
+71. **Q:** What is the chapter's main message?\
+    **A:** Link-up is not the same as link health.
+
+72. **Q:** What does pre-FEC error activity show?\
+    **A:** The burden on the physical link before correction.
+
+73. **Q:** What do corrected errors show?\
+    **A:** FEC is working and margin may be shrinking.
+
+74. **Q:** What do uncorrectable events show?\
+    **A:** FEC could not recover the data.
+
+75. **Q:** What is a retrain?\
+    **A:** A recovery action that rebuilds link or lane state.
+
+76. **Q:** Why can average BER mislead?\
+    **A:** It can hide short, dangerous bursts.
+
+77. **Q:** What should you ask about an error burst?\
+    **A:** How big, how long, and what event it triggered.
+
+78. **Q:** What is operational severity based on?\
+    **A:** Workload consequence, not just optical symptoms.
+
+79. **Q:** What does good recovery look like?\
+    **A:** Fast, predictable, evidence-preserving, and not repetitive.
+
+80. **Q:** Why is recovery part of product behavior?\
+    **A:** A link will eventually hit faults and must return safely.
+
+81. **Q:** What makes telemetry useful?\
+    **A:** It separates causes, bounds a population, or triggers action.
+
+82. **Q:** What is a cohort?\
+    **A:** A group sharing lot, host, firmware, site, or another attribute.
+
+83. **Q:** Why compare affected and unaffected cohorts?\
+    **A:** To narrow the shared cause.
+
+84. **Q:** Does correlation prove root cause?\
+    **A:** No.
+
+85. **Q:** Why can a rare event matter at fleet scale?\
+    **A:** Large populations turn rare per-link events into frequent fleet events.
+
+86. **Q:** Why is FIT not availability?\
+    **A:** Availability also depends on duration, redundancy, reroute, and repair.
+
+87. **Q:** What makes a pilot real?\
+    **A:** Bounded exposure, telemetry, exit rules, and rollback.
+
+88. **Q:** When do you pause deployment?\
+    **A:** When risk is widening, unexplained, or hard to contain.
+
+89. **Q:** What is the T1-to-T5 memory hook?\
+    **A:** Trust measurement, know product, find edge, connect lab to system, monitor fleet.
+
+90. **Q:** Best one-line operations summary?\
+    **A:** Watch margin, FEC, bursts, recovery, cohorts, and workload impact.
+
+### Chapter 11: Failure analysis
+
+91. **Q:** What is the first priority in production?\
+    **A:** Protect the workload, then preserve evidence.
+
+92. **Q:** What is the failure-analysis spine?\
+    **A:** Protect, preserve, scope, classify, test, prove, fix, prevent, verify.
+
+93. **Q:** Why preserve before resetting?\
+    **A:** Resets can erase the clues.
+
+94. **Q:** What does scoping mean?\
+    **A:** Find who is affected and what they share.
+
+95. **Q:** What timing patterns matter?\
+    **A:** Sudden, gradual, or intermittent.
+
+96. **Q:** What is a hypothesis tree?\
+    **A:** A short list of plausible causes and how to separate them.
+
+97. **Q:** Why use reversible swaps first?\
+    **A:** They localize ownership with low risk.
+
+98. **Q:** If the fault follows the module, is root cause proven?\
+    **A:** No. Ownership is localized; mechanism still needs proof.
+
+99. **Q:** Correlation versus root cause?\
+    **A:** Correlation moves together; root cause is reproducible and stoppable.
+
+100. **Q:** When is the case closed?\
+     **A:** When the fix works on fresh data and recurrence is controlled.
+
+### Five universal fallback lines
+
+- "I would start by clarifying the decision."
+
+- "I would not interpret that number without the plane and conditions."
+
+- "That raises a hypothesis, but it does not prove the cause."
+
+- "I would pick the smallest safe test that separates the leading causes."
+
+- "Based on the evidence, here is my call and next step."
 
 
 <div class="nav-links">

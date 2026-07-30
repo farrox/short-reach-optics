@@ -296,6 +296,10 @@ No new frameworks. Structural relocation of existing material is allowed.
   Appendix~A Staff cheat sheets point at Appendix~M. HTML at
   `ch24-interview-cheat-sheets`; references shifted to `ch25-references` with a
   Moved stub at the old `ch24-references` URL. PDF about 489 pages.
+- **Ch7--11 rapid-fire flashcards:** Appended 100 one-breath Q\&A prompts plus
+  five universal fallback lines to Appendix~M
+  (`sec:cheat-flashcards`), covering product readiness, reliability,
+  manufacturing, operations, and failure analysis. PDF about 495 pages.
 
 ## Typographical fixes
 
