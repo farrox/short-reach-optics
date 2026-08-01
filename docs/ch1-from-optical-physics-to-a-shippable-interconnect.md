@@ -41,15 +41,15 @@ Product validation
 
 Reliability qualification
 
-: Which mechanisms may degrade the product? Does time or environmental exposure permanently change performance, and what lifetime claim does the evidence support (Chapter 8)?
+: Which mechanisms may degrade the product? Does time or environmental exposure permanently change performance, and what lifetime claim does the evidence support (Chapter 7)?
 
 Manufacturing validation
 
-: Can the factory reproduce the qualified result? Can production measurements distinguish acceptable and unacceptable units? Are yield, variation, traceability, and supplier controls understood (Chapter 9)?
+: Can the factory reproduce the qualified result? Can production measurements distinguish acceptable and unacceptable units? Are yield, variation, traceability, and supplier controls understood (Chapter 7)?
 
 Fleet operation
 
-: Does deployed behavior match the release model? Are failures clustering by lot, host, site, firmware, temperature, or age, and what changes after an escape (Chapter 11)?
+: Does deployed behavior match the release model? Are failures clustering by lot, host, site, firmware, temperature, or age, and what changes after an escape (Chapter 8)?
 
 Work from the system downward, then close the loop in the fleet:
 
@@ -64,7 +64,7 @@ Deployment
 Fleet (telemetry / RMA / FIT)
   |
 Feedback into requirements</code></pre>
-Inside architecture, descend only as far as the requirement forces: requirements $\rightarrow$ architecture $\rightarrow$ subsystem $\rightarrow$ component $\rightarrow$ needed physics. Freeze an architecture class only when reach, lane rate, power, lifetime, cost, and manufacturing volume have named owners. Do not pick a laser die before those constraints rule out the other paths. Chapter 7 expands the validation-to-fleet segment into the full numbered lifecycle (Table 7.3, Appendix D.2).
+Inside architecture, descend only as far as the requirement forces: requirements $\rightarrow$ architecture $\rightarrow$ subsystem $\rightarrow$ component $\rightarrow$ needed physics. Freeze an architecture class only when reach, lane rate, power, lifetime, cost, and manufacturing volume have named owners. Do not pick a laser die before those constraints rule out the other paths. Chapter 7 expands the validation-to-fleet segment into the full numbered lifecycle (Table 7.2, Appendix D.2).
 
 ## Begin with the system need, not a preferred technology
 
@@ -86,7 +86,7 @@ That boundary is not fixed. It moves as baud rates increase, packages change, Se
 
 Coherent recovery of amplitude and phase (often with polarization) buys spectral efficiency, stronger dispersion compensation, longer reach, and richer formats. It also buys a local oscillator, a coherent receiver, ADC/DAC burden, DSP, power, latency, calibration, and more qualification and manufacturing complexity.
 
-The question is not whether coherent is more sophisticated. The question is whether its added capability is worth its system cost for the intended reach and bandwidth. Chapter 3 develops the short-reach IM/DD baseline; Chapter 10 notes where coherent begins moving inward on the roadmap.
+The question is not whether coherent is more sophisticated. The question is whether its added capability is worth its system cost for the intended reach and bandwidth. Chapter 3 develops the short-reach IM/DD baseline; Chapter 7 notes where coherent begins moving inward on the roadmap.
 
 ## Why multimode versus single-mode matters
 
@@ -166,15 +166,15 @@ A product working once does not establish distribution, corner behavior, margin,
 
 Do not treat those Steps as interchangeable.
 
-System validation asks whether the product works for its intended use and supported ecosystem. Reliability qualification asks whether named mechanisms threaten its ability to continue working over time and environmental exposure: laser aging, thermal fatigue, humidity, corrosion, ESD, vibration, connector durability, acceleration models, sample confidence, and acceptance criteria. Qualification is not a collection of harsh tests. It is a confidence argument connecting a requirement, mechanism, stress, observable, and decision (Chapter 8).
+System validation asks whether the product works for its intended use and supported ecosystem. Reliability qualification asks whether named mechanisms threaten its ability to continue working over time and environmental exposure: laser aging, thermal fatigue, humidity, corrosion, ESD, vibration, connector durability, acceleration models, sample confidence, and acceptance criteria. Qualification is not a collection of harsh tests. It is a confidence argument connecting a requirement, mechanism, stress, observable, and decision (Chapter 7).
 
-A qualified engineering unit does not prove that a factory can reproduce the result. Manufacturing validation covers production-reference freeze, representative builds, genealogy and traceability, measurement-system analysis, first-pass yield, ATP, gauge R&R, process capability, SPC, supplier controls, change control, and ramp decisions. Reliability qualification asks whether the design survives. Manufacturing validation asks whether the production system can reproduce, measure, control, and protect it (Chapter 9).
+A qualified engineering unit does not prove that a factory can reproduce the result. Manufacturing validation covers production-reference freeze, representative builds, genealogy and traceability, measurement-system analysis, first-pass yield, ATP, gauge R&R, process capability, SPC, supplier controls, change control, and ramp decisions. Reliability qualification asks whether the design survives. Manufacturing validation asks whether the production system can reproduce, measure, control, and protect it (Chapter 7).
 
 ## Why networking and fleet learning belong in the loop
 
-An optical module exists inside switch or accelerator architecture, topology, radix and bandwidth requirements, rack power, cooling, cable plant, redundancy, and deployment or service procedures. A component metric may not map directly to system value: lower module power may reduce cooling burden; additional reach may simplify topology; higher radix may reduce stages; a serviceable pluggable may beat a denser but hard-to-repair architecture; an optical technology may shift failures from replaceable modules into board-level assemblies (Chapter 10).
+An optical module exists inside switch or accelerator architecture, topology, radix and bandwidth requirements, rack power, cooling, cable plant, redundancy, and deployment or service procedures. A component metric may not map directly to system value: lower module power may reduce cooling burden; additional reach may simplify topology; higher radix may reduce stages; a serviceable pluggable may beat a denser but hard-to-repair architecture; an optical technology may shift failures from replaceable modules into board-level assemblies (Chapter 7).
 
-Shipment is not the end of validation. The fleet may reveal rare interactions, process escapes, supplier correlations, installation problems, aging, environmental corners, firmware effects, and cohort differences. Failure analysis teaches how to preserve evidence, scope the population, separate symptom from mechanism, choose discriminating measurements, confirm the mechanism, contain risk, and change a recurrence control. A failure is not fully resolved when the unit works again. It is resolved when the affected population is understood and an effective recurrence control changes (Chapter 11, §11.10).
+Shipment is not the end of validation. The fleet may reveal rare interactions, process escapes, supplier correlations, installation problems, aging, environmental corners, firmware effects, and cohort differences. Failure analysis teaches how to preserve evidence, scope the population, separate symptom from mechanism, choose discriminating measurements, confirm the mechanism, contain risk, and change a recurrence control. A failure is not fully resolved when the unit works again. It is resolved when the affected population is understood and an effective recurrence control changes (Chapter 8, §8.10).
 
 ## How to read this book
 
@@ -206,19 +206,19 @@ Chapter 7
 
 : Validation: how to build evidence from requirements through fleet deployment.
 
-Chapter 8
+Chapter 7
 
 : Reliability qualification: what evidence supports life and environmental claims.
 
-Chapter 9
+Chapter 7
 
 : Manufacturing validation: whether the factory can reproduce, measure, and control the qualified design.
 
-Chapter 10
+Chapter 7
 
 : Networking: how the optical product affects datacenter architecture.
 
-Chapter 11
+Chapter 8
 
 : Failure analysis: how to investigate escapes and feed learning back.
 
@@ -260,7 +260,7 @@ The orientation above is general. The pressure that makes it urgent in this book
 
 A representative public example is *Jalapeño*, a purpose-built LLM inference accelerator Broadcom and a hyperscaler partner announced in 2026 as a blank-slate design, the first chip in a multi-generation compute platform.[^1] Public features of the class include Broadcom silicon and networking (including *Tomahawk*), Celestica board and rack integration, a roughly nine-month design-to-tape-out cadence, and gigawatt-scale multi-generation deployment planned from late 2026. The design thesis is to reduce data movement and balance compute, memory, and networking so realized utilization approaches theoretical peak. Once networking sits on that line, the optical interconnect is how the system scales past a single package, and laser quality plus IM/DD validation become infrastructure problems rather than module afterthoughts.
 
-Inference is not training. Prefill is highly parallel and compute-bound; decode is autoregressive and memory-bandwidth-bound (Chapter 10, Appendix H.6). Frontier models are sharded, so every generated token triggers collective communication: all-reduce for tensor parallelism, all-to-all for mixture-of-experts routing, point-to-point for pipeline stages. The interconnect therefore sits on the latency critical path of inference, not merely the plumbing between training runs.
+Inference is not training. Prefill is highly parallel and compute-bound; decode is autoregressive and memory-bandwidth-bound (Chapter 7, Appendix H.6). Frontier models are sharded, so every generated token triggers collective communication: all-reduce for tensor parallelism, all-to-all for mixture-of-experts routing, point-to-point for pipeline stages. The interconnect therefore sits on the latency critical path of inference, not merely the plumbing between training runs.
 
 ### The shifting bottleneck
 
@@ -323,7 +323,7 @@ Layer 1: System
 
 Layer 2: Signal quality
 
-: Eye, jitter, noise, equalization margin, FEC error distribution (Appendix E.7, §11.10).
+: Eye, jitter, noise, equalization margin, FEC error distribution (Appendix E.7, §8.10).
 
 Layer 3: Link budget
 
@@ -331,11 +331,11 @@ Layer 3: Link budget
 
 Layer 4: Subsystem
 
-: Laser, modulator, driver, photodiode, TIA, DSP, connector, fiber, or host SerDes; bisect with loopbacks and golden swaps (§4.8, §7.6).
+: Laser, modulator, driver, photodiode, TIA, DSP, connector, fiber, or host SerDes; bisect with loopbacks and golden swaps (§4.8, §7.11).
 
 Layer 5: Confirmed mechanism
 
-: Leading hypothesis until evidence confirms; then FA or 8D (§9.9).
+: Leading hypothesis until evidence confirms; then FA or 8D (Appendix G.16).
 
 Do not skip layers. A mechanism story without a confirmed system symptom and a localized subsystem is a story, not a close.
 

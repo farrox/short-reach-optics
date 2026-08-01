@@ -28,20 +28,17 @@ Ch & Main question \\
 4 & What sets BER and margin? \\
 5 & How do the source and modulator behave? \\
 6 & How do wavelength and WDM stay controlled? \\
-7 & What evidence is needed before release? \\
-8 & Will time and exposure cause permanent degradation? \\
-9 & Can the factory build and control it repeatedly? \\
-10 & How does optical behavior affect the system and workload? \\
-11 & How do I find and prevent the real cause of a failure? \\
+7 & How does a sound design become a controlled product? \\
+8 & How do I find and prevent the real cause of a failure? \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \paragraph{How to use these sheets.}
-Spend about 2--3 minutes per page. Chapters~7--11 first if time is short. Drill
-the rapid-fire flashcards at the end of this appendix in one-breath answers.
-Full depth:
-\Cref{ch:models,ch:lasers,ch:wdm,ch:product-readiness,ch:reliability,ch:manufacturing,ch:networking,ch:failure-modes}.
+Spend about 2--3 minutes per page. Prefer Chapters~4--6, the productization
+sheet, and failure analysis. The productization flashcards at the end are a
+secondary reference bank, not the primary study set. Full depth:
+\Cref{ch:models,ch:lasers,ch:wdm,ch:productization,ch:failure-modes}.
 
 \clearpage
 \section{Chapter 4: Quantitative link behavior}
@@ -208,28 +205,29 @@ aging, not only a room-temp lock.''
 \footnotesize Depth: \Cref{ch:wdm}.
 
 \clearpage
-\section{Chapter 7: Product readiness}
+\section{Productization and fleet readiness}
+\label{sec:cheat-productization}
 \label{sec:cheat-ch7}
+\label{sec:cheat-ch8}
+\label{sec:cheat-ch9}
+\label{sec:cheat-ch10}
 
-\textit{Goal.} Know what evidence is required before release, and which question
-each stage answers.
+\textit{Goal.} Show that a technically sound architecture becomes a controlled
+product with named residual risk.
 
 \paragraph{Mental checklist.}
-Define $\rightarrow$ Review $\rightarrow$ Bring up $\rightarrow$ Characterize
-$\rightarrow$ Verify/validate $\rightarrow$ Qualify $\rightarrow$ Validate
-factory $\rightarrow$ Pilot $\rightarrow$ Ramp $\rightarrow$ Monitor
-$\rightarrow$ Learn
+Define $\rightarrow$ Characterize $\rightarrow$ Validate $\rightarrow$ Qualify
+$\rightarrow$ Control factory $\rightarrow$ Pilot $\rightarrow$ Monitor
 
 \paragraph{What I need to know.}
 \begin{itemize}
-\item Product readiness is the umbrella lifecycle.
-\item Characterization maps behavior; verification checks frozen requirements.
-\item System validation proves intended use.
-\item Reliability qualification and manufacturing validation answer different
-      questions.
+\item One lifecycle, not five separate subjects.
+\item Characterization maps behavior; system validation proves intended use.
+\item Qualification is claim, mechanism, stress, observable, confidence.
+\item Factory readiness needs measurement trust, first-pass yield, and controls.
+\item A pilot needs bounded exposure, telemetry, exit rules, and rollback.
+\item Link-up is not link health.
 \item Later evidence cannot replace missing earlier evidence.
-\item Program labels such as EVT, DVT, and PVT do not define what the evidence
-      proves.
 \end{itemize}
 
 \paragraph{Key distinctions.}
@@ -239,244 +237,34 @@ $\rightarrow$ Learn
 \toprule
 Do not confuse & With \\
 \midrule
-Characterization & Verification \\
-System validation & Reliability qualification \\
-Manufacturing validation & Qualification life claim \\
+Characterization & System validation \\
+HTOL / qual stress & Production burn-in \\
+First-pass yield & Final yield \\
 Phase label (EVT/DVT/PVT) & Evidence content \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \paragraph{Trap.}
-Trap: Using a phase name as proof of readiness.\\
-Better: Translate the phase into hardware, evidence, open risks, and the exit
-decision.
+Trap: Reciting readiness terminology instead of naming the decision and
+residual risk.\\
+Better: State the claim, the evidence, the thin margin, and the next gate.
 
 \paragraph{60-second answer.}
-``I start from the claim and the decision gate. Characterization maps the
-behavior. Verification checks frozen requirements. System validation proves
-intended use. Qualification and manufacturing validation answer life and factory
-questions separately. I will not use a later pass to paper over a missing earlier
-step.''
+``I define the claim and planes, close the architecture, characterize margins,
+verify requirements, validate intended use, qualify the dominant life
+mechanisms, prove the factory can measure and control the design, run a
+bounded pilot with rollback, then ramp while monitoring cohorts.''
 
 \paragraph{Pressure.}
-Pressure: ``We are in PVT. Are we done?''\\
-Pivot: ``PVT is a program label. I ask what evidence exists for the remaining
-risks and what decision it supports.''
+Pressure: ``Schedule is cut. What do you protect?''\\
+Pivot: ``Requirements and planes, measurement integrity, thin margins,
+dominant life mechanisms, factory controls, and a reversible pilot.''
 
-\footnotesize Depth: \Cref{ch:product-readiness,tab:ladder}.
-
-\clearpage
-\section{Chapter 8: Reliability qualification}
-\label{sec:cheat-ch8}
-
-\textit{Goal.} Build a life or environment claim from mechanism and evidence,
-not from a copied test list.
-
-\paragraph{Mental checklist.}
-Claim $\rightarrow$ Mechanism $\rightarrow$ Stress $\rightarrow$ Observable
-$\rightarrow$ Acceptance $\rightarrow$ Samples $\rightarrow$ Confidence
-$\rightarrow$ Decision $\rightarrow$ Handoff
-
-\paragraph{What I need to know.}
-\begin{itemize}
-\item Start with the claim and failure mechanism, not a test list.
-\item The stress must accelerate the field mechanism without creating a
-      different one.
-\item Separate reversible hot behavior from permanent degradation.
-\item Zero failures do not mean zero failure rate.
-\item HTOL is qualification evidence; burn-in is an optional production screen.
-\item Standards provide methods, not the complete argument.
-\end{itemize}
-
-\paragraph{Key distinctions.}
-\begin{center}
-\footnotesize
-\begin{tabular}{@{}ll@{}}
-\toprule
-Do not confuse & With \\
-\midrule
-HTOL / qual stress & Production burn-in screen \\
-Reversible thermal behavior & Permanent wear-out \\
-Component FIT & System availability \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\paragraph{Numbers worth remembering.}
-One FIT $=1$ failure per $10^9$ device-hours. Zero observed fails still leaves a
-one-sided upper bound on rate.
-
-\paragraph{Trap.}
-Trap: Saying ``we passed GR-468'' as the whole reliability argument.\\
-Better: State the claim, mechanism, stress relevance, sample basis, and residual
-risk.
-
-\paragraph{60-second answer.}
-``I start from the life claim and the mechanism. I choose a stress that
-accelerates that mechanism, define the observable and acceptance rule, then size
-samples for the confidence I need. Zero fails still leave an upper bound. I
-handoff production screens only when the screen separates real escapes.''
-
-\paragraph{Pressure.}
-Pressure: ``Can we skip HTOL if burn-in looks clean?''\\
-Pivot: ``Burn-in is a screen. It does not replace the qualification claim unless
-the argument explicitly says so.''
-
-\footnotesize Depth: \Cref{ch:reliability}.
+\footnotesize Depth: \Cref{ch:productization,tab:ladder,app:reliability-reference,app:manufacturing-reference}.
 
 \clearpage
-\section{Chapter 9: Manufacturing validation}
-\label{sec:cheat-ch9}
-\enlargethispage{3\baselineskip}
-
-\textit{Goal.} Prove the factory can repeatedly build, measure, and control the
-released design.
-
-\paragraph{Mental checklist.}
-Freeze $\rightarrow$ Represent $\rightarrow$ Trace $\rightarrow$ Trust
-measurement $\rightarrow$ Read yield $\rightarrow$ Check stability $\rightarrow$
-Measure capability $\rightarrow$ Control $\rightarrow$ FAIR $\rightarrow$ React
-$\rightarrow$ Ramp
-
-\paragraph{What I need to know.}
-\begin{itemize}
-\item Freeze the production reference; changes need approval.
-\item Validate the measurement system before believing yield.
-\item First-pass yield shows process health; final yield may hide rework.
-\item Look at the distribution before using capability numbers.
-\item Stable process first, then $C_p$ and $C_{pk}$.
-\item FAIR is the controlled first-article evidence package that gates open
-      volume after a relevant tooling, site, material, silicon, assembly, test,
-      or firmware change; evidence depth follows the affected risk.
-\item Every control needs a trigger, owner, action, and restart rule.
-\item Passing good units does not prove a screen catches bad ones.
-\end{itemize}
-
-\paragraph{Key distinctions.}
-\begin{center}
-\footnotesize
-\begin{tabular}{@{}ll@{}}
-\toprule
-Do not confuse & With \\
-\midrule
-Control limits & Specification limits \\
-ATP / acceptance limits & Specification limits \\
-First-pass yield & Final yield \\
-$C_p$ (spread) & $C_{pk}$ (spread and offset) \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\paragraph{Numbers worth remembering.}
-$C_p$ asks whether the process spread could fit the specification if centered.
-$C_{pk}$ includes the actual process offset.
-
-\paragraph{Context.}
-\begin{center}
-\footnotesize
-\begin{tabular}{@{}ll@{}}
-\toprule
-Context & First priority \\
-\midrule
-Lab / learning build & Learn and separate variables \\
-Pilot lot & Protect lot integrity; collect representative evidence \\
-Production & Protect shipments; execute the reaction plan \\
-\bottomrule
-\end{tabular}
-\end{center}
-Same flow, different first priority.
-
-\paragraph{Trap.}
-Trap: Using final yield to hide heavy rework.\\
-Better: Separate first-pass yield, retest, rework, scrap, and final yield.
-
-\paragraph{60-second answer.}
-``I freeze the production reference, build a representative population, and clear
-the measurement system before I trust yield. I look at first-pass yield and the
-distribution, establish stability, then interpret $C_p$ or $C_{pk}$. Controls
-need owners and reaction plans. I ramp only when evidence supports the next
-volume.''
-
-\paragraph{Pressure.}
-Pressure: ``Final yield is 99\%. Ship?''\\
-Pivot: ``Not until I know first-pass yield and what the recovery path is costing
-and hiding.''
-
-\footnotesize Depth:
-\Cref{ch:manufacturing,tab:mfg-three-limits,sec:mfg-fair-checklist}.
-
-\clearpage
-\section{Chapter 10: Optical links in operation}
-\label{sec:cheat-ch10}
-
-\textit{Goal.} Connect physical margin to FEC, recovery, workload impact, and
-fleet decisions.
-
-\paragraph{Mental checklist.}
-Observe $\rightarrow$ Read FEC $\rightarrow$ Find bursts $\rightarrow$ Check
-recovery $\rightarrow$ Use telemetry $\rightarrow$ Compare cohorts $\rightarrow$
-Judge impact $\rightarrow$ Contain
-
-\paragraph{What I need to know.}
-\begin{itemize}
-\item Link-up is not the same as link health.
-\item Corrected errors can reveal shrinking margin before traffic fails.
-\item Average BER can hide short bursts.
-\item Recovery time and repeated retrains matter.
-\item Telemetry is useful when it separates a cause or changes an action.
-\item Component failure rate is not system availability.
-\item At fleet scale, a rare per-link event may happen frequently.
-\end{itemize}
-
-\paragraph{Key distinctions.}
-\begin{center}
-\footnotesize
-\begin{tabular}{@{}ll@{}}
-\toprule
-Do not confuse & With \\
-\midrule
-Link-up & Link health over time \\
-Corrected-error rise & Service already failing \\
-Component FIT & Fleet event rate and availability \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\paragraph{Context.}
-\begin{center}
-\footnotesize
-\begin{tabular}{@{}ll@{}}
-\toprule
-Context & First priority \\
-\midrule
-Lab & Learn and reproduce \\
-Pilot & Bound exposure; keep observability \\
-Production fleet & Protect the workload; contain first \\
-\bottomrule
-\end{tabular}
-\end{center}
-Same flow, different first priority.
-
-\paragraph{Trap.}
-Trap: Treating a link as healthy because it is up.\\
-Better: Check corrected errors, bursts, retrains, and recovery time.
-
-\paragraph{60-second answer.}
-``Link-up is a state; health is a distribution over time. I read FEC activity for
-consumed margin, look for bursts, and check recovery duration and repeats. I use
-telemetry that separates hypotheses, compare affected and unaffected groups, and
-judge severity from workload impact. Component FIT alone is not availability.''
-
-\paragraph{Pressure.}
-Pressure: ``Post-FEC looks clean. Why worry?''\\
-Pivot: ``Clean post-FEC can still hide rising corrected-error demand and short
-bursts. I would inspect those distributions before calling the link healthy.''
-
-\footnotesize Depth: \Cref{ch:networking}.
-
-\clearpage
-\section{Chapter 11: Failure analysis}
+\section{Chapter 8: Failure analysis}
 \label{sec:cheat-ch11}
 
 \textit{Goal.} Find the real cause without destroying the evidence, then stop it
@@ -593,12 +381,13 @@ schedule intrusive tests only after traffic is drained or risk is contained.''
 
 \clearpage
 \small
-\section{Chapters 7--11: 100 rapid-fire interview flashcards}
+\section{Secondary bank: productization rapid-fire flashcards}
 \label{sec:cheat-flashcards}
 
-Use these as short memory prompts. Say the answer in one breath, then expand
-only if asked. Depth:
-\Cref{ch:product-readiness,ch:reliability,ch:manufacturing,ch:networking,ch:failure-modes}.
+Secondary reference only. The primary productization interview set is the eight
+questions in \Cref{sec:productization-interview-qa}. Use these cards if you need
+extra one-breath drills after the architecture chapters. Depth:
+\Cref{ch:productization,ch:failure-modes,app:reliability-reference,app:manufacturing-reference}.
 
 \subsection{Chapter 7: Product readiness}
 \begin{enumerate}

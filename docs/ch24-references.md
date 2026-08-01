@@ -5,9 +5,6 @@ title: "Moved: References"
 
 # Moved
 
-References moved one slot later when Appendix~M (Interview Cheat Sheets) was
-added:
-
-- [**References**](ch25-references)
+References are now at [**References**](ch22-references).
 
 Return to the [table of contents](index).

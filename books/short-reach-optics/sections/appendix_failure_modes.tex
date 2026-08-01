@@ -1,12 +1,13 @@
 \chapter{Failure Analysis: From Symptom to Confirmed Mechanism}
 \label{ch:failure-modes}
 
-Chapter~10 detects and bounds the operational anomaly: FEC activity, retrains,
+Operational monitoring detects and bounds the anomaly: FEC activity, retrains,
 cohorts, severity, and initial containment
-(\Cref{ch:networking}). This chapter begins when the issue becomes an
-investigation that must confirm mechanism and ownership. Earlier chapters own
-the underlying physics (\Cref{ch:models,ch:lasers,ch:wdm}). Symptom recipes and
-the fleet-bucket map live in \Cref{app:failure-analysis-reference}.
+(\Cref{ch:networking,app:ai-fabric-context}). This chapter begins when the issue
+becomes an investigation that must confirm mechanism and ownership. Earlier
+chapters own the underlying physics (\Cref{ch:models,ch:lasers,ch:wdm}). Symptom
+recipes and the fleet-bucket map live in
+\Cref{app:failure-analysis-reference}.
 
 The only general incident sequence is:
 
@@ -421,7 +422,7 @@ or cleaning. What now?}
 ``I treat reseat recovery as a clue, not a diagnosis. If state was destroyed, I
 document what changed, inspect endfaces, check ORL, and reproduce with controlled
 mate cycles before claiming wear-out. Operational retrain counting belongs to
-Chapter~10; mechanism confirmation belongs here''
+productization and operations reference; mechanism confirmation belongs here''
 (\Cref{sec:fm-intermittent,ch:networking}).
 
 \textit{Pressure follow-up.} ``Cleaning fixed it. Close the ticket?''\\
@@ -520,7 +521,7 @@ incident.}
 ``Preserve state. Scope and contain. Classify timing and the first-moving
 margin. Pick one falsifying experiment. Confirm ownership before corrective
 action. Close only with a recurrence control and an effectiveness check. Use
-Chapter~10 for operational detection and the FA reference for symptom recipes''
+the operations reference for operational detection and the FA reference for symptom recipes''
 (\Cref{ch:networking,app:failure-analysis-reference}).
 
 \textit{Pressure follow-up.} ``Where do you start if collectives slow after a

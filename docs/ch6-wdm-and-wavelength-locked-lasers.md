@@ -70,16 +70,16 @@ Hybrid
 
 : some engines use a coarse AWG plus fine ring filters; count every stage in the ledger.
 
-**MZMs trade area for calm wavelength behavior.** When each lane carries its own laser (DR/FR SiPh modules), silicon Mach--Zehnder modulators sidestep ring locking (§3.14.3). Rings remain the default when many $\lambda$ share one PIC and area dominates (§3.14.3, Chapter 10).
+**MZMs trade area for calm wavelength behavior.** When each lane carries its own laser (DR/FR SiPh modules), silicon Mach--Zehnder modulators sidestep ring locking (§3.14.3). Rings remain the default when many $\lambda$ share one PIC and area dominates (§3.14.3, Chapter 7).
 
 ##### Where MUX defects land.
 
 Table 6.2 maps common MUX faults to the measurement that catches them.
 
 <table class="book-table"><tr><th>Fault</th><th>Optical symptom</th><th>Hits</th><th>Catch with</th></tr><tr><td>Stage insertion loss</td><td>Lower launch OMA on all</td><td>Link budget OMA</td><td>Power meter / OMA</td></tr><tr><td>Passband ripple / tilt</td><td>Uneven OMA across bank</td><td>Weakest</td><td>Per- OMA map</td></tr><tr><td>Adjacent-channel crosstalk</td><td>Closed eyes, RLM/TDECQ up</td><td>Tx quality / BER</td><td>Isolation sweep + DCA</td></tr><tr><td>MUX imbalance</td><td>One weak, neighbors OK</td><td>Single-lane BER</td><td>Per-lane power + BER</td></tr><tr><td>Grid misalignment</td><td>Filter edge clipping</td><td>TDECQ, unlock risk</td><td>OSA + lock status</td></tr></table>
-**Table 6.2.** MUX/demux defects and where they appear in validation. Isolation and imbalance maps need a named evidence owner; they are not automatically every-unit ATP (§6.7, Chapter 9).
+**Table 6.2.** MUX/demux defects and where they appear in validation. Isolation and imbalance maps need a named evidence owner; they are not automatically every-unit ATP (§6.7, Chapter 7).
 
-Validation adds channel isolation sweeps, grid alignment across temperature, and MUX imbalance (uneven OMA per $\lambda$). Treat the weakest channel as the budget-limiting lane, not the average. Every wavelength-control requirement needs a named evidence source: engineering characterization, qualification, supplier data, process monitoring, ATP, sampled audit, or fleet telemetry (Chapter 9, Chapter 8). Dense passband, isolation, and neighbor-hold maps often stay sample or characterization; identity, basic power and wavelength proxies, capture status, actuator codes, alarms, and limited functional checks are more common every-unit controls.
+Validation adds channel isolation sweeps, grid alignment across temperature, and MUX imbalance (uneven OMA per $\lambda$). Treat the weakest channel as the budget-limiting lane, not the average. Every wavelength-control requirement needs a named evidence source: engineering characterization, qualification, supplier data, process monitoring, ATP, sampled audit, or fleet telemetry (Chapter 7). Dense passband, isolation, and neighbor-hold maps often stay sample or characterization; identity, basic power and wavelength proxies, capture status, actuator codes, alarms, and limited functional checks are more common every-unit controls.
 
 ##### How to read the MUX budget.
 
@@ -173,7 +173,7 @@ Three actuators show up repeatedly, and the bring-up order usually starts with t
 
 ##### Source versus ring isolation.
 
-When a loop loses lock, bisect laser versus ring by holding one side fixed and moving the other (Appendix E.1, §11.10, §6.7):
+When a loop loses lock, bisect laser versus ring by holding one side fixed and moving the other (Appendix E.1, §8.10, §6.7):
 
 <pre class="dectree" aria-label="Source wavelength actuator"><code>Source wavelength actuator
   |
@@ -184,7 +184,7 @@ Ring / filter actuator</code></pre>
 
 - Ring or filter moves while source is fixed: error that follows the heater localizes toward the ring, monitor path, calibration, or local thermal coupling.
 
-Localization is not mechanism confirmation (Chapter 11). The one-lane and intermittent signatures this produces are catalogued in §6.9.3.
+Localization is not mechanism confirmation (Chapter 8). The one-lane and intermittent signatures this produces are catalogued in §6.9.3.
 
 ## Thermal crosstalk and heater budget
 
@@ -192,11 +192,11 @@ Dense ring banks share a substrate. Heating one ring to stay on resonance shifts
 
 ##### Where heat comes from.
 
-Self-heating from the ring's own heater (and absorbed optical power) shifts its resonance, so the lock loop must settle with the lane at operating optical power, not dark. Adjacent heaters on nearest-neighbor and next-nearest rings in a WDM bank are the next disturbance; the worst case is all neighbors at max heater power while you hold lock. Package and ASIC load add a common-mode walk: switch or XPU case-temperature ramps and local hotspots move the whole bank, and a shared TEC or cold plate sets how much of that walk the lock loop must reject (§7.6).
+Self-heating from the ring's own heater (and absorbed optical power) shifts its resonance, so the lock loop must settle with the lane at operating optical power, not dark. Adjacent heaters on nearest-neighbor and next-nearest rings in a WDM bank are the next disturbance; the worst case is all neighbors at max heater power while you hold lock. Package and ASIC load add a common-mode walk: switch or XPU case-temperature ramps and local hotspots move the whole bank, and a shared TEC or cold plate sets how much of that walk the lock loop must reject (§7.11).
 
 ##### Design and validation implications.
 
-Budget heater range with headroom for crosstalk, manufacturing offset, temperature, and aging, not just for the coldest and hottest case alone. Lock range is the total region where acquisition or control is possible; control headroom is the remaining distance from the present operating point to a heater rail, TEC limit, laser-current trim limit, safe temperature, or calibration-map boundary. A locked unit with near-zero headroom is already a reliability risk. Layout (heater placement, thermal isolation trenches, ring pitch) is a reliability and yield problem as much as a control problem. Characterize the thermal coupling matrix; do not validate channels only in isolation. In validation, simultaneous full-traffic on neighbors plus max case $T$ is a *lock* test: unlock, BER walk, or TDECQ rise on one $\lambda$ under neighbor load supports a thermal-coupling or control hypothesis, not a confirmed bad laser die (§7.6, §11.10, Chapter 11). Widening heater or TEC range without checking noise, crosstalk, power, and lifetime is not the first fix.
+Budget heater range with headroom for crosstalk, manufacturing offset, temperature, and aging, not just for the coldest and hottest case alone. Lock range is the total region where acquisition or control is possible; control headroom is the remaining distance from the present operating point to a heater rail, TEC limit, laser-current trim limit, safe temperature, or calibration-map boundary. A locked unit with near-zero headroom is already a reliability risk. Layout (heater placement, thermal isolation trenches, ring pitch) is a reliability and yield problem as much as a control problem. Characterize the thermal coupling matrix; do not validate channels only in isolation. In validation, simultaneous full-traffic on neighbors plus max case $T$ is a *lock* test: unlock, BER walk, or TDECQ rise on one $\lambda$ under neighbor load supports a thermal-coupling or control hypothesis, not a confirmed bad laser die (§7.11, §8.10, Chapter 8). Widening heater or TEC range without checking noise, crosstalk, power, and lifetime is not the first fix.
 
 ## External multi-wavelength sources (CW-WDM)
 
@@ -204,7 +204,7 @@ Dense WDM with ring modulators needs a source of many clean, stable wavelengths.
 
 ##### Architecture contract.
 
-Specify the source at the optical-engine input, not only at the laser output. For every line name power and flatness, absolute wavelength or grid error, spectral purity (SMSR), RIN under the relevant reflection environment, and stability across temperature, ports, aging, and operating states. Add polarization requirements when the engine input is polarization-sensitive, plus startup, hot-swap, alarm, safety, and management behavior (§6.6.3, §6.5, §5.16). Miss any one and a single $\lambda$ looks like a modulator or lock failure when the source is the cause. Total comb power does not replace per-line evidence. A shared source is a common failure domain: telemetry must distinguish one weak line from source-wide degradation. Moving the laser into a replaceable external source can reduce the service blast radius when the source is an important lifetime-limiting element. Whether availability improves depends on source reliability, optical interfaces, connector and polarization controls, detection, redundancy, and replacement time (Chapter 5, Chapter 8, Chapter 10).
+Specify the source at the optical-engine input, not only at the laser output. For every line name power and flatness, absolute wavelength or grid error, spectral purity (SMSR), RIN under the relevant reflection environment, and stability across temperature, ports, aging, and operating states. Add polarization requirements when the engine input is polarization-sensitive, plus startup, hot-swap, alarm, safety, and management behavior (§6.6.3, §6.5, §5.16). Miss any one and a single $\lambda$ looks like a modulator or lock failure when the source is the cause. Total comb power does not replace per-line evidence. A shared source is a common failure domain: telemetry must distinguish one weak line from source-wide degradation. Moving the laser into a replaceable external source can reduce the service blast radius when the source is an important lifetime-limiting element. Whether availability improves depends on source reliability, optical interfaces, connector and polarization controls, detection, redundancy, and replacement time (Chapter 5, Chapter 7).
 
 ##### Reference: CW-WDM MSA grid and measurement detail.
 
@@ -220,7 +220,7 @@ Core normative content:
 
 - **Power classes and AS parameters:** output power classes span low to high launch; SMSR, RIN, and linewidth floors are defined with measurement methods, with many limits marked application-specific (AS) in the normative tables.
 
-Informative appendix examples (not universal product guarantees) often quote $\approx$30 dB SMSR, $\approx-135$ dB/Hz RIN, $\approx$20 MHz linewidth, $\pm$1 dB per-line power variation, and $-20$ dB ORL tolerance for 18 nm-span examples. Treat those as negotiation anchors; write production and qualification controls to your link budget (§5.16, Table 5.4, Chapter 9).
+Informative appendix examples (not universal product guarantees) often quote $\approx$30 dB SMSR, $\approx-135$ dB/Hz RIN, $\approx$20 MHz linewidth, $\pm$1 dB per-line power variation, and $-20$ dB ORL tolerance for 18 nm-span examples. Treat those as negotiation anchors; write production and qualification controls to your link budget (§5.16, Table 5.4, Chapter 7).
 
 ##### Exemplar: SuperNova + TeraPHY.
 
@@ -286,7 +286,7 @@ Instruments and BER methods live in Chapter 7. What is special to WDM is the or
 
 3.  **Close lock:** enable the feedback loop; verify capture on every $\lambda$ at operating optical power.
 
-4.  **Stress neighbors / temperature:** max case $T$, neighbor heaters and traffic on (§6.5, §7.6). Confirm hold, not just capture.
+4.  **Stress neighbors / temperature:** max case $T$, neighbor heaters and traffic on (§6.5, §7.11). Confirm hold, not just capture.
 
 5.  **Close the link:** BER / TDECQ / sensitivity on the weakest lane first (Appendix E.3, Appendix E.5).
 
@@ -309,7 +309,7 @@ If one $\lambda$ unlocks or walks, change one actuator at a time (§6.4):
 
 ##### Fleet telltales.
 
-Slow BER creep with rising bias on one line raises a laser-aging hypothesis (§8.5, Chapter 11). Sudden unlock under neighbor load with healthy LIV supports a thermal-coupling or lock-firmware hypothesis. One dark lane with neighbors up localizes investigation toward COD, FAU, or a single ring/heater path; classify with §11.10 before you open an 8D on the wrong supplier.
+Slow BER creep with rising bias on one line raises a laser-aging hypothesis (Appendix F.11, Chapter 8). Sudden unlock under neighbor load with healthy LIV supports a thermal-coupling or lock-firmware hypothesis. One dark lane with neighbors up localizes investigation toward COD, FAU, or a single ring/heater path; classify with §8.10 before you open an 8D on the wrong supplier.
 
 > **What this usually means.** All lanes unlock after a temperature step
 >
@@ -317,7 +317,7 @@ Slow BER creep with rising bias on one line raises a laser-aging hypothesis (§8
 >
 > *Not:* independent failures of every lane's laser in the same second
 
-> **Engineering heuristic.** One-lane unlock raises local hypotheses; all-lane unlock raises shared hypotheses first. Lane correlation prioritizes ownership; it does not confirm the mechanism (Chapter 11).
+> **Engineering heuristic.** One-lane unlock raises local hypotheses; all-lane unlock raises shared hypotheses first. Lane correlation prioritizes ownership; it does not confirm the mechanism (Chapter 8).
 
 Local one-lane hypotheses include that lane's source line, ring or filter, heater, monitor, MUX channel, calibration entry, attach, or electrical lane. Shared all-lane hypotheses include common source or TEC, supply, controller, firmware, package thermal event, shared MUX, polarization path, or telemetry.
 
@@ -382,13 +382,13 @@ Failures that appear and clear on their own point to control-loop dynamics rathe
 
 First decide whether the fault affects one lane or all lanes. Apply the power-versus-quality fork, then ask which ledger moved: often spectral or control (§4.8, §5.19). Freeze heater and laser actuators long enough to measure the open-loop spectrum. Move the source while holding the ring fixed, then move the ring while holding the source fixed. If neither follows the failing BER, inspect MUX loss, polarization, connector ORL, and the electrical lane. For intermittent unlock, align lock-error, heater, temperature, supply, and neighbor-traffic traces on one time axis. A control loop cannot be debugged from final register values alone.
 
-\> \*\*Debug story\*\* \> \> \*\*Observed.\*\* One lane failed only after adjacent lanes began traffic. \> \> \*\*Investigation.\*\* The source line stayed on grid, while the suspect ring heater railed and lock error grew with neighbor temperature. \> \> \*\*Finding.\*\* The optical source and receiver passed; the resonance was being pushed out of hold range. \> \> \*\*Root cause.\*\* Thermal coupling from the adjacent heater exceeded the control-loop budget. \> \> \*\*Resolution.\*\* The heater map and feed-forward terms were corrected, and neighbor-load hold behavior became a required recurrence control. Depending on production access and test time, that control may be an engineering qualification corner, a sampled production audit, an ATP proxy based on heater headroom, or an SPC monitor tied to the affected process (Chapter 9).
+\> \*\*Debug story\*\* \> \> \*\*Observed.\*\* One lane failed only after adjacent lanes began traffic. \> \> \*\*Investigation.\*\* The source line stayed on grid, while the suspect ring heater railed and lock error grew with neighbor temperature. \> \> \*\*Finding.\*\* The optical source and receiver passed; the resonance was being pushed out of hold range. \> \> \*\*Root cause.\*\* Thermal coupling from the adjacent heater exceeded the control-loop budget. \> \> \*\*Resolution.\*\* The heater map and feed-forward terms were corrected, and neighbor-load hold behavior became a required recurrence control. Depending on production access and test time, that control may be an engineering qualification corner, a sampled production audit, an ATP proxy based on heater headroom, or an SPC monitor tied to the affected process (Chapter 7).
 
 ## Interview takeaway
 
-**Key idea.** Wavelength locking is a control-system problem wrapped around an optical link. Define the grid, identify everything that can move, prove capture and hold separately, stress shared thermal paths, and decide from the weakest channel with measured control headroom. A locked flag is not absolute grid or margin proof. One-lane versus all-lane behavior routes ownership hypotheses; it does not confirm mechanism (Table 6.4, Chapter 11).
+**Key idea.** Wavelength locking is a control-system problem wrapped around an optical link. Define the grid, identify everything that can move, prove capture and hold separately, stress shared thermal paths, and decide from the weakest channel with measured control headroom. A locked flag is not absolute grid or margin proof. One-lane versus all-lane behavior routes ownership hypotheses; it does not confirm mechanism (Table 6.4, Chapter 8).
 
-Junior mistake: blame every unlock on the laser, or debug lock from final register values without neighbor-load and time-aligned traces (§4.8, Chapter 7, Chapter 11).
+Junior mistake: blame every unlock on the laser, or debug lock from final register values without neighbor-load and time-aligned traces (§4.8, Chapter 7, Chapter 8).
 
 ### Interview Q&A: WDM and Wavelength Control
 
@@ -532,5 +532,5 @@ Score each response using the shared chapter-interview rubric in Appendix A.12.1
 <div class="nav-links">
   <a href="ch5-choosing-light-sources-and-modulation">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch7-optical-product-readiness-from-requirements-to-fleet">Next &rarr;</a>
+  <a href="ch7-productization-from-requirements-to-controlled-ramp">Next &rarr;</a>
 </div>

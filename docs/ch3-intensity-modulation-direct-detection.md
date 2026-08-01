@@ -111,7 +111,7 @@ CDR (clock-data recovery)
 
 : extracts bit timing from the data stream and re-samples the eye. A *retimer* includes CDR plus equalization and regenerates a clean output; a *redriver* has CTLE/VGA but no CDR (Appendix H.5.1).
 
-Where these blocks sit depends on the module style (Appendix H.3, Chapter 10):
+Where these blocks sit depends on the module style (Appendix H.3, Chapter 7):
 
 - **Fully retimed pluggable:** host SerDes $\to$ connector $\to$ module DSP (FFE/DFE/CDR) $\to$ optical engine. The module cleans a bad electrical channel.
 
@@ -130,7 +130,7 @@ Where these blocks sit depends on the module style (Appendix H.3, Chapter 10):
 
 ## SerDes and DSP: who does the work
 
-The equalizers above have to run somewhere, and "SerDes" and "DSP" get used loosely for that somewhere. They are not the same thing, and at 112 GBd the line between them has mostly dissolved. Pinning down the vocabulary makes the retimed versus LPO versus CPO argument (Appendix H.5.1, Chapter 10) concrete instead of a wall of acronyms.
+The equalizers above have to run somewhere, and "SerDes" and "DSP" get used loosely for that somewhere. They are not the same thing, and at 112 GBd the line between them has mostly dissolved. Pinning down the vocabulary makes the retimed versus LPO versus CPO argument (Appendix H.5.1, Chapter 7) concrete instead of a wall of acronyms.
 
 ### What the SerDes is
 
@@ -166,7 +166,7 @@ The PHY is itself a stack. §3.4 lists the sublayers a 400G/800G port walks thro
 <table class="book-table"><tr><th>Sublayer</th><th>Function</th><th>Domain</th></tr><tr><td>MAC</td><td>Frame, address, CRC</td><td>Digital, host</td></tr><tr><td>RS sublayer</td><td>Reconciliation Sublayer: adapt MAC to the PHY across the xMII</td><td>Digital, host</td></tr><tr><td>PCS</td><td>64B/66B, 256B/257B transcode, scramble, RS-FEC encoding</td><td>Digital</td></tr><tr><td>PMA</td><td>Serialize, lane mux, clock recovery (SerDes)</td><td>Mixed-signal</td></tr><tr><td>PMD</td><td>Modulate/detect light: laser, driver, PD, TIA</td><td>Optical</td></tr></table>
 Do not confuse the RS *sublayer* (Reconciliation) with *RS-FEC* (Reed--Solomon forward error correction) inside the PCS. Same letters, different jobs.
 
-Two interface names sit between these blocks and cause most of the confusion. The *xMII* (for example 400GMII) is a wide parallel bus inside the chip between MAC and PCS. The *AUI* (for example 400GAUI-4) is the electrical serial lane set that leaves the host and crosses the faceplate connector to the module. The AUI is the CEI electrical channel your SerDes has to survive (§3.7, Chapter 10). The optical modulation and detection function belongs to the *PMD*. A physical module may also contain PMA, PCS, FEC, gearbox, retiming, and management functions on either side of the AUI.
+Two interface names sit between these blocks and cause most of the confusion. The *xMII* (for example 400GMII) is a wide parallel bus inside the chip between MAC and PCS. The *AUI* (for example 400GAUI-4) is the electrical serial lane set that leaves the host and crosses the faceplate connector to the module. The AUI is the CEI electrical channel your SerDes has to survive (§3.7, Chapter 7). The optical modulation and detection function belongs to the *PMD*. A physical module may also contain PMA, PCS, FEC, gearbox, retiming, and management functions on either side of the AUI.
 
 ### Where the optics attaches
 
@@ -278,7 +278,7 @@ Two consequences matter in practice:
 
 1.  Validation targets are stated in pre-FEC BER, and FEC symbol-error histograms are a rich debug signal (they reveal *how* a link is failing, not just that it is).
 
-2.  Emerging *linear-drive* optics (*LPO*/*LRO*, Chapter 10) remove the DSP/retimer to save power, which tightens the link budget and leans even harder on FEC and on transmitter quality (§3.6).
+2.  Emerging *linear-drive* optics (*LPO*/*LRO*, Chapter 7) remove the DSP/retimer to save power, which tightens the link budget and leans even harder on FEC and on transmitter quality (§3.6).
 
 ##### KP4 in practice.
 
@@ -321,7 +321,7 @@ Per-lane rate is the axis the whole industry advances along, because doubling it
 
 ### 224G is settled; the frontier is deployment
 
-*CEI-224G* kicked off in 2022 as the electrical follow-on to CEI-112G. It kept PAM4 and roughly doubled the baud, to about 112 GBd per lane, with reach projects from XSR through LR now maturing. That choice is no longer the open debate; it is the shipping baseline. Eight 224G lanes make a 1.6 Tb/s port, and the same SerDes generation feeds 102.4 Tb/s-class switch silicon (Appendix H.10). Copper reach has collapsed to about a meter, DSP-based SerDes are assumed, and a *CEI-224G-Linear* variant defines linear operation without a DSP/retimer in the optical module: the electrical foundation for LPO (Chapter 10). The remaining work is deployment: closing LPO margins, qualifying ELSFP banks for CPO, and holding yield at volume, not inventing a new modulation alphabet.
+*CEI-224G* kicked off in 2022 as the electrical follow-on to CEI-112G. It kept PAM4 and roughly doubled the baud, to about 112 GBd per lane, with reach projects from XSR through LR now maturing. That choice is no longer the open debate; it is the shipping baseline. Eight 224G lanes make a 1.6 Tb/s port, and the same SerDes generation feeds 102.4 Tb/s-class switch silicon (Appendix H.10). Copper reach has collapsed to about a meter, DSP-based SerDes are assumed, and a *CEI-224G-Linear* variant defines linear operation without a DSP/retimer in the optical module: the electrical foundation for LPO (Chapter 7). The remaining work is deployment: closing LPO margins, qualifying ELSFP banks for CPO, and holding yield at volume, not inventing a new modulation alphabet.
 
 §3.5 is the reach map those projects sit on: *XSR*/XSR+ inside the package (die-to-die and die-to-optical-engine), *VSR* from ASIC to a faceplate pluggable, *MR* chip-to-chip on the board (PCB or twinax), and *LR* for backplane and longer copper cables . The media labels (host PCB traces, twinax, optical fiber, optical module) are where the loss budget actually lives; the CEI class name is the electrical recipe for that hop. Table 3.8 is the matching lookup card from the CEI-224G project map (OFC 2025 demo framing) .
 
@@ -337,7 +337,7 @@ One SerDes core may not cover XSR through LR efficiently: short reaches want sim
 
 ### Deploying 224G: LPO, COM, and TDECQ corners
 
-At 224G the alphabet is settled (PAM4 + KP4). What fails in the field is the *margin stack*: electrical channel operating margin (COM) on the host side, transmitter and dispersion eye closure quaternary (TDECQ) on the optical side, and the production corners that couple them (§7.6). Retimed modules still dominate 1.6T faceplate ports because their DSP absorbs host-channel sin. LPO and LRO exist to delete that DSP for power and latency; they only ship when both ledgers close without it .
+At 224G the alphabet is settled (PAM4 + KP4). What fails in the field is the *margin stack*: electrical channel operating margin (COM) on the host side, transmitter and dispersion eye closure quaternary (TDECQ) on the optical side, and the production corners that couple them (§7.11). Retimed modules still dominate 1.6T faceplate ports because their DSP absorbs host-channel sin. LPO and LRO exist to delete that DSP for power and latency; they only ship when both ledgers close without it .
 
 ##### The two ledgers that must close together.
 
@@ -357,7 +357,7 @@ CEI-224G-Linear defines the host/module electrical test points (TP1/TP1a, TP4/TP
 
 The failure modes are familiar once you stop treating LPO as a cheaper OSFP:
 
-- **Host FIR / CTLE mistuned.** Taps pegged or CTLE boost too aggressive raises COM loss and looks like a bad module. Golden-swap the module first (§7.6).
+- **Host FIR / CTLE mistuned.** Taps pegged or CTLE boost too aggressive raises COM loss and looks like a bad module. Golden-swap the module first (§7.11).
 
 - **Connector and package return loss.** VSR/MR channels already sit near the edge at 112 GBd; a resonant stub or long bondwire eats the few mV of slicer margin (Appendix H.5, Appendix H.5.1).
 
@@ -434,7 +434,7 @@ Higher FEC overhead feeds back into the modulation debate: every extra parity bi
 
 The blocker is not the PLL or the DAC; it is the *passive channel*. Connector bandwidth near 90 GHz forces a fork:
 
-1.  **Fix the channel for PAM4:** new high-density connectors, shorter reach, skip-layer PCBs, cabled-host internal twinax. Simulations show passive CPC reach up to $\sim$1.2 m at 448G-PAM4 under optimistic connector assumptions . This path preserves electrical/optical format alignment and keeps LPO/LRO architectures viable (Chapter 10).
+1.  **Fix the channel for PAM4:** new high-density connectors, shorter reach, skip-layer PCBs, cabled-host internal twinax. Simulations show passive CPC reach up to $\sim$1.2 m at 448G-PAM4 under optimistic connector assumptions . This path preserves electrical/optical format alignment and keeps LPO/LRO architectures viable (Chapter 7).
 
 2.  **Keep the channel, change modulation:** PAM6 at 173 GBd fits a 90 GHz channel but adds $\sim$2 dB SNR penalty and pushes the host toward stronger FEC than KP4. PAM8 relaxes bandwidth further at $\sim$4--5 dB penalty .
 
@@ -472,7 +472,7 @@ Integration is where rings win. A single SOI die can pack dozens of ring modulat
 
 State of the art in 2025--26 shows how far that peaking path has been pushed. Inductive and wavelength tuning carried silicon MRMs to 224 Gb/s PAM4 at 90 GHz EO BW . T-coil-peaked designs report 416 Gb/s PAM4 ($\approx$208 GBd) with $>$110 GHz 1-dB EO BW and TDECQ 2.88 dB at 1 Vpp . Euler microdisk rings show 256 Gb/s PAM4 with $>$67 GHz EO BW and 3 THz FSR in O-band . These are lab and conference results, but they match the 200G/lane CPO shipping point and probe 448G-class lane rates when paired with sufficient electrical drive.
 
-The platform choice is a packaging and control decision as much as a bandwidth one. Prefer rings when many $\lambda$ must fit on one PIC and modulator area dominates: CPO WDM engines, scale-up optical I/O, and any architecture that already budgets for wavelength locking (Chapter 6, Chapter 10). Prefer a silicon MZM for single-$\lambda$ DR/FR where a flat passband avoids lock loops (§3.14.3). Prefer TFLN when you need native 224 GBd in a pluggable and ring thermal control at fleet scale looks harder than hybrid assembly (§3.14.3).
+The platform choice is a packaging and control decision as much as a bandwidth one. Prefer rings when many $\lambda$ must fit on one PIC and modulator area dominates: CPO WDM engines, scale-up optical I/O, and any architecture that already budgets for wavelength locking (Chapter 6, Chapter 7). Prefer a silicon MZM for single-$\lambda$ DR/FR where a flat passband avoids lock loops (§3.14.3). Prefer TFLN when you need native 224 GBd in a pluggable and ring thermal control at fleet scale looks harder than hybrid assembly (§3.14.3).
 
 ##### Silicon Mach--Zehnder modulators.
 
@@ -498,7 +498,7 @@ Integration looks unlike monolithic silicon photonics. A CW DFB or ELS feeds the
 
 An *EML* integrates a DFB laser with an *EAM* (electro-absorption modulator) on one InP chip. The EAM is a reverse-biased absorption region: voltage shifts the band edge (Franz-Keldysh or quantum-confined Stark effect), attenuating light with far less chirp than direct current modulation (§3.11).
 
-EMLs dominate 100G/lane and 200G/lane DR/FR pluggables because they are single-chip, mature in supply chain, and match $\sim$70--100 GHz class EO bandwidth (Table 3.12). The design limits that show up in validation are EAM bias and aging (bias sets extinction and chirp; aging drifts the curve and shows up as TDECQ/RLM creep, Chapter 7, Chapter 8), driver swing (a few volts inside the linear absorption region; 448G-class EML drivers appeared alongside MZM drivers in 2026 ), and thermal headroom (uncooled datacom is standard; slope efficiency and bias must stay in range across case temperature).
+EMLs dominate 100G/lane and 200G/lane DR/FR pluggables because they are single-chip, mature in supply chain, and match $\sim$70--100 GHz class EO bandwidth (Table 3.12). The design limits that show up in validation are EAM bias and aging (bias sets extinction and chirp; aging drifts the curve and shows up as TDECQ/RLM creep, Chapter 7), driver swing (a few volts inside the linear absorption region; 448G-class EML drivers appeared alongside MZM drivers in 2026 ), and thermal headroom (uncooled datacom is standard; slope efficiency and bias must stay in range across case temperature).
 
 EML wins on cost and integration through 200G/lane. Above that, external modulators (Si MZM, TFLN, rings with CW laser) chase bandwidth and chirp headroom (§3.14.3).
 
@@ -523,7 +523,7 @@ For *LPO*, the host SerDes (or a linear driver in the module with no retimer) is
 
 ##### Outlook.
 
-Driver roadmaps are no longer waiting on papers alone. Commercial 448G-class parts are shipping as dies: MACOM's $>$120 GHz MZM and EML drivers (OFC 2026) are the clearest public 400G/lane announcement [MACOM](https://www.macom.com/updates/news/2026/macom-announces-two-new-448g-per-lane-drivers-for-3-2t-data-cent), while research benches already run past 200 GBd on short RF paths. Expect a short period where optics and drivers lead host SerDes, so gearboxed 224G electrical into 448G optical remains common (§3.14.3). The hard problems are packaging (bondwire, FAU, faceplate connectors), co-design of peaking with modulator $S_{21}$, and LPO cases where driver linearity and host COM sit beside TDECQ as first-order validation items (Appendix H.5.2, §7.6). After the driver, the next ceilings are modulator EO bandwidth and the PD/TIA noise stack (§3.14.3, §4.5).
+Driver roadmaps are no longer waiting on papers alone. Commercial 448G-class parts are shipping as dies: MACOM's $>$120 GHz MZM and EML drivers (OFC 2026) are the clearest public 400G/lane announcement [MACOM](https://www.macom.com/updates/news/2026/macom-announces-two-new-448g-per-lane-drivers-for-3-2t-data-cent), while research benches already run past 200 GBd on short RF paths. Expect a short period where optics and drivers lead host SerDes, so gearboxed 224G electrical into 448G optical remains common (§3.14.3). The hard problems are packaging (bondwire, FAU, faceplate connectors), co-design of peaking with modulator $S_{21}$, and LPO cases where driver linearity and host COM sit beside TDECQ as first-order validation items (Appendix H.5.2, §7.11). After the driver, the next ceilings are modulator EO bandwidth and the PD/TIA noise stack (§3.14.3, §4.5).
 
 **Key idea.** A 448G-class modulator driver is a $>$100 GHz linear SiGe amp with swing matched to $V_\pi$, not a SerDes pin. Commercial dies now claim $>$120 GHz for MZM/EML/TFLN; research shows $\sim$230 GBd on co-designed benches. Package and modulator match set the real ceiling; LPO makes the host the driver.
 

@@ -37,7 +37,7 @@ A binary receiver samples a noisy voltage and compares it to a threshold. If the
 
 ##### BER and FEC terminology.
 
-Pre-FEC BER or symbol-error behavior describes the decoder input. Post-FEC behavior describes residual errors after decoding. Corrected-codeword counts can reveal declining margin before post-FEC failure. FEC thresholds depend on code, interleaving, PMD, error distribution, and implementation. Burst errors can be more harmful than an equal average random BER. A quoted FEC threshold is not a universal analog receiver specification (Chapter 10, Chapter 3).
+Pre-FEC BER or symbol-error behavior describes the decoder input. Post-FEC behavior describes residual errors after decoding. Corrected-codeword counts can reveal declining margin before post-FEC failure. FEC thresholds depend on code, interleaving, PMD, error distribution, and implementation. Burst errors can be more harmful than an equal average random BER. A quoted FEC threshold is not a universal analog receiver specification (Chapter 7, Chapter 3).
 
     from scipy.special import erfc, erfcinv
     import numpy as np
@@ -328,9 +328,9 @@ A BER model earns trust only when every term has a bench measurement. Use a BERT
 Thermal noise dominates at low optical power, shot noise grows with photocurrent, and RIN grows with signal power. Reflections, crosstalk, jitter, and compression break a simple Gaussian fit. Curve shape chooses the next experiment; it is not a root-cause label (Table 4.7).
 
 <table class="book-table"><tr><th>Measured behavior</th><th>Raises these hypotheses</th><th>Does not prove</th></tr><tr><td>Uniform waterfall shift</td><td>Lost OMA, loss, greater Rx noise, calibration offset</td><td>Which component caused it</td></tr><tr><td>High-power floor</td><td>RIN, reflections, crosstalk, jitter, bursts, distortion</td><td>Intrinsic laser RIN</td></tr><tr><td>High-power degradation</td><td>TIA/PD overload, compression, AGC/adaptation corner</td><td>Excess launch alone</td></tr><tr><td>Temperature-dependent shift</td><td>Responsivity, noise, OMA, loss, wavelength, EQ</td><td>Aging</td></tr><tr><td>One-lane-only movement</td><td>Lane-local optical or electrical path</td><td>Defective laser</td></tr><tr><td>Correlated lane movement</td><td>Shared rail, source, clock, thermal or control</td><td>Common source failure</td></tr></table>
-**Table 4.7.** BER-waterfall signatures: hypothesis routing, not mechanism confirmation (Chapter 11).
+**Table 4.7.** BER-waterfall signatures: hypothesis routing, not mechanism confirmation (Chapter 8).
 
-\> \*\*Failure mode: BER floor\*\* \> \> \*\*Symptoms.\*\* BER improves with received power, then stops improving. \> \> \*\*Likely causes.\*\* RIN, reflection-driven multipath interference, laser-bias noise, crosstalk, or periodic jitter. \> \> \*\*Measurements.\*\* BER versus OMA, RF RIN spectrum (PD+ESA or RIN analyzer, not OSA), ORL sweep, FEC error distribution, and a quiet laser-bias source. \> \> \*\*Mitigations.\*\* Remove the correlated noise source, improve ORL, or isolate supplies. The recurrence control may be source qualification, stressed-RIN screening, supplier process control, bias-board validation, ORL control, sampled audit, ATP proxy, or fleet monitoring, depending on where the mechanism can be detected reliably (Chapter 5, Chapter 8, Chapter 9).
+\> \*\*Failure mode: BER floor\*\* \> \> \*\*Symptoms.\*\* BER improves with received power, then stops improving. \> \> \*\*Likely causes.\*\* RIN, reflection-driven multipath interference, laser-bias noise, crosstalk, or periodic jitter. \> \> \*\*Measurements.\*\* BER versus OMA, RF RIN spectrum (PD+ESA or RIN analyzer, not OSA), ORL sweep, FEC error distribution, and a quiet laser-bias source. \> \> \*\*Mitigations.\*\* Remove the correlated noise source, improve ORL, or isolate supplies. The recurrence control may be source qualification, stressed-RIN screening, supplier process control, bias-board validation, ORL control, sampled audit, ATP proxy, or fleet monitoring, depending on where the mechanism can be detected reliably (Chapter 5, Chapter 7).
 
 ### How it is debugged
 
@@ -354,7 +354,7 @@ Stable average received power?
 Highest-value measurement
   |
 Decision + recurrence control</code></pre>
-Stable average received power deprioritizes gross optical loss but does not clear fast fluctuations, reflections, clipping, wavelength filtering, or monitor-calibration error. The fork chooses an investigation route; it does not establish mechanism ownership (Chapter 11).
+Stable average received power deprioritizes gross optical loss but does not clear fast fluctuations, reflections, clipping, wavelength filtering, or monitor-calibration error. The fork chooses an investigation route; it does not establish mechanism ownership (Chapter 8).
 
 ##### Did average received optical power change?
 
@@ -382,7 +382,7 @@ If average received power is stable but BER worsened, isolate transmitter, chann
 
 - control: bias, APC, TEC/heaters, calibration, EQ authority.
 
-This fork often narrows an investigation in minutes. Power-path failures show up on a meter; signal-quality failures need FEC timing, DCA, BERT, or spectrum analysis, depending on access. Apply it before opening the package, changing settings, or blaming a supplier (§11.10, Chapter 11, Chapter 7).
+This fork often narrows an investigation in minutes. Power-path failures show up on a meter; signal-quality failures need FEC timing, DCA, BERT, or spectrum analysis, depending on access. Apply it before opening the package, changing settings, or blaming a supplier (§8.10, Chapter 8, Chapter 7).
 
 > **Why experienced engineers separate power from quality?**
 >

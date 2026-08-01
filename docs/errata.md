@@ -300,6 +300,19 @@ No new frameworks. Structural relocation of existing material is allowed.
   five universal fallback lines to Appendix~M
   (`sec:cheat-flashcards`), covering product readiness, reliability,
   manufacturing, operations, and failure analysis. PDF about 495 pages.
+- **Pass 1 productization merge (freeze override):** Merged former Chapters~7--9
+  and the deployment spine of Chapter~10 into one compact Chapter~7
+  Productization: From Requirements to Controlled Ramp
+  (`ch_productization.tex`, labels `ch:productization` plus aliases
+  `ch:product-readiness`, `ch:validation`, `ch:reliability`, `ch:manufacturing`,
+  `ch:networking`). Relocated full narratives into Apps~F/G/H as
+  `body_*.tex` inputs, preserving section/table labels. Failure analysis is now
+  Chapter~8. Productization interview Q\&A cut to eight questions; App~M
+  readiness sheets collapsed to one Productization page; flashcards demoted to a
+  secondary bank. Preface interview priorities and subtitle rebalanced toward
+  signaling, devices, packaging, and fabrics. Productization chapter about 20
+  PDF pages. HTML Moved stubs for old chapter slugs; references at
+  `ch22-references`, cheat sheets at `ch21-interview-cheat-sheets`.
 
 ## Typographical fixes
 

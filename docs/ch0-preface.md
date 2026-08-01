@@ -7,21 +7,21 @@ title: "Ch 0: Preface"
 
 Artificial intelligence has become an infrastructure problem. Training and serving frontier models at scale is no longer limited only by the accelerator at the center of the rack, but by how many accelerators can be wired together efficiently, reliably, and within a fixed power envelope. That wiring is increasingly optical, and the optics (especially the lasers inside them) have become a first-order lever on the cost, power, and reliability of the whole system.
 
-This book is a concise technical overview of that layer: the short-reach optical interconnects that stitch together AI datacenters, from in-package optical I/O out to intra-rack links, deliberately setting aside the 2--10 km campus links that belong to coherent optics (§3.3). It concentrates on the subjects that decide whether these links work at scale: IM/DD physics and vocabulary; lasers and external light sources; WDM and wavelength locking; quantitative noise and sensitivity models; validation from bench to fleet; reliability qualification; and manufacturing validation at volume. Two chapters bracket those fundamentals: the orientation from optical science to a shippable interconnect (Chapter 1), and how optical-link behavior becomes system and workload behavior in the fleet (Chapter 10). Fabric survey context lives in Appendix H.
+This book is a concise technical overview of that layer: the short-reach optical interconnects that stitch together AI datacenters, from in-package optical I/O out to intra-rack links, deliberately setting aside the 2--10 km campus links that belong to coherent optics (§3.3). It concentrates on high-speed signaling, optical devices, wavelength control, packaging and fabric context, and a compact productization path from requirements to controlled ramp. Failure analysis closes the loop (Chapter 8). Detailed qualification, manufacturing, and operations catalogs live in the appendices. Fabric survey context lives in Appendix H.
 
 **How to use this handbook.** The book supports three modes. Pick one and stay in it until you switch deliberately.
 
 Deep learning
 
-: Read the body chapters from requirements downward (Chapter 1 through Chapter 10), then the failure-analysis handbook (Chapter 11). Every major chapter asks: How does it work? How is it measured, and what uncertainty does the measurement remove? How does it fail? How is it debugged?
+: Read the body chapters from requirements downward (Chapter 1 through Chapter 7), then the failure-analysis method (Chapter 8). Every major chapter asks: How does it work? How is it measured, and what uncertainty does the measurement remove? How does it fail? How is it debugged?
 
 Interview preparation
 
-: Follow the one-week plan (Appendix A.13), review the printable chapter cheat sheets (Appendix M), practice cases (Appendix B), drill thirty-second answers and tradeoff questions (Appendix C), review the Top 25 index (Appendix J), and read how Staff judgment works (Appendix K).
+: Follow the one-week plan (Appendix A.13), review the printable chapter cheat sheets (Appendix M), practice cases (Appendix B), drill thirty-second answers and tradeoff questions (Appendix C), review the Top 25 index (Appendix J), and read how Staff judgment works (Appendix K). Prioritize signaling, devices, packaging, and fabric architecture over readiness terminology.
 
 Incident / problem solving
 
-: Open the wall-chart trees (Appendix D), failure handbook (Chapter 11), case (Appendix B), Staff judgment (Appendix K), validation ladder (Chapter 7, Table 7.3), qualification (Chapter 8), or manufacturing validation (Chapter 9).
+: Open the wall-chart trees (Appendix D), failure handbook (Chapter 8), case (Appendix B), Staff judgment (Appendix K), or the productization spine (Chapter 7, Table 7.2) and its appendix depth (Appendix F, Appendix G, Appendix H).
 
 Start from the requirement, not the component. Move downward from system requirements to architecture, subsystem, component, and only then to the physics needed to make the decision. A choice at one layer constrains the next. The aim is operational judgment: reduce uncertainty enough to make the next decision, then name the control that prevents recurrence.
 
@@ -29,7 +29,9 @@ Start from the requirement, not the component. Move downward from system require
 
 **Key idea.** The goal of an optical systems engineer is not to know every component. It is to make good engineering decisions under uncertainty using measurements, physics, and evidence. At gigawatt, multi-generation scale, the optical interconnect and its lasers are a first-order lever on power, cost, and reliability. Everything here serves that argument.
 
-Content freeze: this handbook is frozen for expansion except structural relocation of existing material. Prefer cuts, cross-refs, and errata over new frameworks.
+Editorial note: earlier interview-preparation weighting overemphasized product-readiness processes. The revised structure prioritizes signaling, device design, packaging, and AI-fabric architecture based on actual interview coverage. Productization remains as one compact lifecycle chapter; detailed operational and qualification catalogs are reference content.
+
+Content freeze: prefer cuts, cross-refs, and errata over new frameworks. Structural relocation and interview-priority rebalancing from the reorientation guide are allowed and recorded in the errata.
 
 
 <div class="nav-links">

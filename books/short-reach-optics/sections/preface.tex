@@ -9,23 +9,20 @@ system.
 This book is a concise technical overview of that layer: the short-reach optical
 interconnects that stitch together AI datacenters, from in-package optical I/O
 out to intra-rack links, deliberately setting aside the 2--10~km campus links that
-belong to coherent optics (\Cref{sec:reach}). It concentrates on the subjects that
-decide whether these links work at scale: IM/DD physics and vocabulary; lasers
-and external light sources; WDM and wavelength locking; quantitative noise and
-sensitivity models; validation from bench to fleet; reliability qualification;
-and manufacturing validation at volume. Two chapters bracket those
-fundamentals: the orientation from optical science to a shippable interconnect
-(\Cref{ch:role}), and how optical-link behavior becomes system and workload
-behavior in the fleet (\Cref{ch:networking}). Fabric survey context lives in
-\Cref{app:ai-fabric-context}.
+belong to coherent optics (\Cref{sec:reach}). It concentrates on high-speed
+signaling, optical devices, wavelength control, packaging and fabric context, and
+a compact productization path from requirements to controlled ramp. Failure
+analysis closes the loop (\Cref{ch:failure-modes}). Detailed qualification,
+manufacturing, and operations catalogs live in the appendices. Fabric survey
+context lives in \Cref{app:ai-fabric-context}.
 
 \newthought{How to use this handbook.} The book supports three modes. Pick one
 and stay in it until you switch deliberately.
 
 \begin{description}
 \item[Deep learning] Read the body chapters from requirements downward
-      (\Cref{ch:role} through \Cref{ch:networking}), then the failure-analysis
-      handbook (\Cref{ch:failure-modes}). Every major chapter asks: How does it
+      (\Cref{ch:role} through \Cref{ch:productization}), then the failure-analysis
+      method (\Cref{ch:failure-modes}). Every major chapter asks: How does it
       work? How is it measured, and what uncertainty does the measurement
       remove? How does it fail? How is it debugged?
 \item[Interview preparation] Follow the one-week plan
@@ -34,14 +31,14 @@ and stay in it until you switch deliberately.
       (\Cref{app:case-studies}), drill thirty-second answers and tradeoff
       questions (\Cref{app:interview-frameworks}), review the Top~25 index
       (\Cref{app:top25}), and read how Staff judgment works
-      (\Cref{app:staff-thinking}).
+      (\Cref{app:staff-thinking}). Prioritize signaling, devices, packaging, and
+      fabric architecture over readiness terminology.
 \item[Incident / problem solving] Open the wall-chart trees
       (\Cref{app:decision-trees}), failure handbook
       (\Cref{ch:failure-modes}), case (\Cref{app:case-studies}),
-      Staff judgment (\Cref{app:staff-thinking}), validation ladder
-      (\Cref{ch:validation,tab:ladder}), qualification
-      (\Cref{ch:reliability}), or manufacturing validation
-      (\Cref{ch:manufacturing}).
+      Staff judgment (\Cref{app:staff-thinking}), or the productization spine
+      (\Cref{ch:productization,tab:ladder}) and its appendix depth
+      (\Cref{app:reliability-reference,app:manufacturing-reference,app:ai-fabric-context}).
 \end{description}
 
 Start from the requirement, not the component. Move downward from system
@@ -63,6 +60,12 @@ measurements, physics, and evidence. At gigawatt, multi-generation scale, the
 optical interconnect and its lasers are a first-order lever on power, cost, and
 reliability. Everything here serves that argument.}
 
-Content freeze: this handbook is frozen for expansion except structural
-relocation of existing material. Prefer cuts, cross-refs, and errata over new
-frameworks.
+Editorial note: earlier interview-preparation weighting overemphasized
+product-readiness processes. The revised structure prioritizes signaling, device
+design, packaging, and AI-fabric architecture based on actual interview coverage.
+Productization remains as one compact lifecycle chapter; detailed operational and
+qualification catalogs are reference content.
+
+Content freeze: prefer cuts, cross-refs, and errata over new frameworks. Structural
+relocation and interview-priority rebalancing from the reorientation guide are
+allowed and recorded in the errata.

@@ -101,7 +101,7 @@ Compare measured link power against the design budget, split by block. If the to
 
 > **Engineering heuristic.** A power rise after a firmware update is often deeper equalization, retries, or thermal control, not a new laser physics. Check what the software asked the hardware to do.
 
-Junior mistake: quote faceplate watts without a measured energy-per-bit split, or treat peak FLOPs as proof the fabric is not the limit (Chapter 10, Appendix H.7).
+Junior mistake: quote faceplate watts without a measured energy-per-bit split, or treat peak FLOPs as proof the fabric is not the limit (Chapter 7, Appendix H.7).
 
 ## Interview takeaway
 

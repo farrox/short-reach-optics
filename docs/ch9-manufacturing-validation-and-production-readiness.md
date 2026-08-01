@@ -1,14 +1,10 @@
 ---
 layout: default
-title: "Moved: Manufacturing Validation and Production Readiness"
+title: "Moved: Manufacturing validation and production readiness"
 ---
 
 # Moved
 
-Chapter 9 was retitled:
-
-- [**Chapter 9.** Manufacturing Validation: Reproducing and Controlling the Design](ch9-manufacturing-validation-reproducing-and-controlling-the-design)
-
-NPI/ATP/FAIR lookup tables now live in [**Appendix G.** Manufacturing Validation Reference](ch18-manufacturing-validation-reference).
+See [**Chapter 7.** Productization](ch7-productization-from-requirements-to-controlled-ramp) and [Appendix G](ch15-manufacturing-validation-reference).
 
 Return to the [table of contents](index).
