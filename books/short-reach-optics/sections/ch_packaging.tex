@@ -1,0 +1,506 @@
+\chapter{Advanced Packaging for Optical Engines}
+\label{ch:packaging}
+\label{sec:advanced-packaging}
+
+This chapter is the design judgment home for short-reach optical packaging:
+what 2.5D and 3D actually mean, why co-packaged optics is a placement choice
+rather than a stack recipe, and how thermal partitioning, known-good die,
+yield, fiber attach, and serviceability decide whether the engine ships.
+Program status, shipping CPO products, and XPO hedges stay in
+\Cref{app:ai-fabric-context,sec:cpo-status,sec:xpo}. External laser modules
+live in \Cref{sec:elsfp}. SerDes reach classes and module styles are in
+\Cref{sec:serdes-dsp,sec:conditioning,sec:pluggables}.
+
+\textit{Read first:} 2.5D versus 3D, CPO is not automatically 3D, thermal
+partitioning, and known-good-die / yield.
+
+\textit{Deep dive:} placement ladder energy and serviceability in
+\Cref{tab:placement}; ELSFP architecture in \Cref{sec:elsfp}; COUPE and
+vendor programs in \Cref{sec:cpo-status}.
+
+\keyidea{CPO means the optical engine sits in or next to the ASIC package. It
+may use 2.5D, 3D, substrate-mounted engines, or an interposer. Do not equate
+CPO with vertical stacking. The first packaging question is which impairment
+you are buying: electrical reach, thermal access, yield, or field service.}
+
+\section{Define the terms carefully}
+\label{sec:pkg-terms}
+
+\subsection{2.5D integration}
+\label{sec:pkg-25d}
+
+\term{2.5D} integration places multiple dies side by side
+on a shared platform: a silicon interposer, an organic interposer, a bridge
+die, or a redistribution layer. Communication is primarily lateral through
+dense interconnect. Chiplets, HBM stacks beside logic, and photonics sitting
+next to a switch ASIC are common 2.5D patterns. Electrical reaches are short
+compared with a faceplate VSR run, but the dies still sit in one plane for
+heat extraction and often for separate test before attach.
+
+\subsection{3D integration}
+\label{sec:pkg-3d}
+
+\term{3D} integration stacks dies vertically using hybrid
+bonding, microbumps, through-silicon vias, or face-to-face / face-to-back
+bonds. Communication is vertical and very dense. Bandwidth density rises;
+thermal access and test access get harder. Stack yield can multiply die
+yields, so known-good-die strategy becomes critical. Optical I/O through a
+tall stack is not automatic. Fiber exit, laser placement, and heat paths
+must be designed into the stack, not assumed.
+
+\subsection{Co-packaged optics}
+\label{sec:pkg-cpo-def}
+
+\term{Co-packaged optics}\firstterm{CPO} places optical engines in the same
+package as the switch or accelerator ASIC, or close enough that the
+electrical hop is XSR-class millimeters rather than VSR-class host traces
+(\Cref{tab:placement,sec:224g}). CPO may use:
+
+\begin{itemize}
+\item 2.5D integration (engine beside the ASIC on an interposer or substrate);
+\item 3D integration (electronics bonded onto photonics, or the reverse);
+\item substrate-mounted optical engines without a full interposer;
+\item interposer-attached photonic I/O;
+\item external laser sources feeding the package (\Cref{sec:elsfp}).
+\end{itemize}
+
+The interview trap is ``CPO means 3D hybrid bonding.'' That is one recipe,
+not the definition. Ask what electrical reach, thermal budget, and
+serviceability the design actually bought.
+
+\section{2.5D versus 3D}
+\label{sec:pkg-25d-vs-3d}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{0.22\linewidth}p{0.34\linewidth}p{0.34\linewidth}@{}}
+\toprule
+Topic & 2.5D & 3D \\
+\midrule
+Electrical reach & Short lateral links & Very short vertical links \\
+Bandwidth density & High & Extremely high \\
+Thermal access & Easier & Harder \\
+Test access & Better & More difficult \\
+Known-good-die strategy & More manageable & Critical and harder \\
+Yield interaction & Dies can be screened separately & Stack yield can multiply \\
+Repairability & Better & Poor \\
+Optical access & Often easier & Depends strongly on stack \\
+Package complexity & High & Very high \\
+Best use & Chiplets, HBM, adjacent photonics & Dense logic/memory or bonded
+electronics-photonics \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+{\raggedright\footnotesize Interview memory: 2.5D is side-by-side with lateral
+wiring. 3D is stacked with vertical wiring. CPO can use either. Thermal and
+KGD often decide before bandwidth density does.\par}
+
+\section{Optical-engine packaging issues}
+\label{sec:pkg-engine-issues}
+
+Once the stack style is named, the engine still has to close a list of hard
+physical problems.
+
+\begin{description}
+\item[Fiber attach / FAU] Fiber-array units set coupling loss, polarization
+      alignment, and lane-to-lane uniformity. A one-channel FAU miss looks
+      like a dark lane after the package is sealed.
+\item[Optical I/O orientation] Edge coupling, grating coupling, and vertical
+      fiber exits fight different keep-out zones, lid designs, and board
+      clearances.
+\item[Thermal isolation] Lasers hate the ASIC hotspot. Rings and filters
+      drift with local heaters and neighbor channels
+      (\Cref{ch:wdm,ch:lasers}). Partition heat deliberately.
+\item[Modulator temperature] Resonant modulators transfer package thermal
+      gradient into wavelength and OMA control burden.
+\item[PD/TIA proximity] Co-packaging the detector with the TIA cuts
+      capacitance and noise (\Cref{ch:models}). Bondwire length is a noise
+      budget line, not a drawing convenience.
+\item[Bump pitch and RF loss] Dense electrical interfaces buy bandwidth and
+      spend SI margin. Package discontinuities show up as EQ and COM
+      problems (\Cref{ch:equalization}).
+\item[Power delivery] Optical engines and SerDes share rails and return
+      paths with a multi-hundred-watt ASIC. Supply noise becomes optical
+      margin.
+\item[Warpage] Large packages warp over reflow and temperature. Alignment
+      and bump reliability move with the warp.
+\item[Known-good die] Screen dies before you stack or co-package them when
+      you can. A bad photonic engine bonded to a good switch scrapes both.
+\item[Assembly yield] Optical attach, underfill, lid, and fiber steps often
+      dominate module cost more than the PIC wafer.
+\item[Test strategy] Define what you measure before lid attach, after fiber
+      attach, and at system bring-up. Late discovery is expensive.
+\item[Serviceability] Decide what fails in the field and what you can
+      replace: laser module, fiber jumper, whole package, or nothing.
+\end{description}
+
+\section{Co-packaging tradeoffs}
+\label{sec:pkg-cpo-tradeoffs}
+
+Moving optics onto the package buys and spends at the same time.
+
+\paragraph{What you buy.}
+\begin{itemize}
+\item Shorter SerDes reach (XSR-class) and lower electrical energy per bit
+      (\Cref{tab:placement,sec:power}).
+\item Higher shoreline bandwidth density than a faceplate cage farm.
+\item Less host-board SI pain for the optical hop.
+\end{itemize}
+
+\paragraph{What you spend.}
+\begin{itemize}
+\item Thermal coupling to a large ASIC: rings walk, lasers age faster if
+      left on-package, lock loops fight neighbors.
+\item Package and assembly yield: one bad optical attach can scrap an
+      expensive switch package.
+\item Fiber management at the package edge instead of at a pluggable cage.
+\item Harder test access after final assembly.
+\item Field replacement: soldered engines are not hot-swappable; that is why
+      many CPO recipes pull lasers into ELSFP banks (\Cref{sec:elsfp}).
+\end{itemize}
+
+XPO and pluggable hedges exist because some fleets still want faceplate
+serviceability while they close CPO yield and thermal stories
+(\Cref{sec:xpo,sec:pluggables}). Productization then has to prove the factory
+can reproduce the package claim (\Cref{ch:productization}).
+
+\subsection{External versus integrated lasers}
+\label{sec:pkg-laser-place}
+
+Three common laser placements:
+
+\begin{description}
+\item[On-engine / on-PIC] Shortest optical path; hottest and least
+      serviceable. Attractive when reliability and thermal headroom are
+      proven.
+\item[On-package but separated] Laser die near the engine with some
+      thermal isolation. Compromise on coupling length versus heat.
+\item[External (ELS / ELSFP)] Lasers at the cool faceplate, fiber or
+      waveguide into the package. Best serviceability and laser ambient;
+      adds coupling, connectors, and shared-source failure domains
+      (\Cref{sec:elsfp}).
+\end{description}
+
+Interview line: ``I choose laser placement from thermal life and field
+replaceability first, then from coupling loss. Power per bit alone does not
+pick the architecture.''
+
+\section{Placement ladder}
+\label{sec:pkg-placement-ladder}
+
+Read the optics-placement ladder once as a design menu, not as a chronology
+you must climb:
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}ll@{}}
+\toprule
+Step & Design question \\
+\midrule
+Pluggable & Can faceplate serviceability and VSR SI still close? \\
+OBO / COBO & Is mid-board optics worth losing hot-swap? \\
+NPO & Engine beside ASIC on substrate: enough reach cut? \\
+CPO & XSR die-to-engine worth package yield and thermal risk? \\
+Interposer optical I/O & On-package photonics with almost no copper left? \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\Cref{tab:placement} carries energy-per-bit and serviceability numbers.
+\Cref{sec:cpo-status} carries who is shipping what. This chapter asks whether
+your constraints match the step you named.
+
+Copper counter-moves (CPC / NPC) push the crossover outward for one more rate
+generation (\Cref{app:ai-fabric-context}). They do not erase the packaging
+trade when reach or port count forces optics inward.
+
+\section{Thermal and power design for optical engines}
+\label{sec:pkg-thermal}
+
+Package thermal design is not a heatsink footnote.
+
+\begin{itemize}
+\item Map ASIC hotspot, optical-engine location, and laser location on one
+      sketch.
+\item Budget junction temperature for lasers separately from case
+      temperature for the module (\Cref{ch:lasers}).
+\item Treat microring heaters as both actuators and heat sources
+      (\Cref{ch:wdm}).
+\item Liquid cooling at the rack does not automatically cool a laser buried
+      under a lid next to a switch die.
+\item Power delivery noise and simultaneous switching can look like optical
+      BER if supplies are shared carelessly.
+\end{itemize}
+
+\Cref{sec:thermal-envelope,sec:power} expand fabric-level envelopes. Here the
+rule is local: if the optical engine sees the ASIC thermal gradient, wavelength
+and life margins shrink even when the room looks fine.
+
+\section{Known-good die, yield, and test before assembly}
+\label{sec:pkg-kgd}
+
+A whiteboard packaging answer that skips test is incomplete.
+
+\begin{enumerate}
+\item Screen ASICs and optical engines as far as probe, known-good-die, and
+      partial assembly allow.
+\item Define optical attach metrics before lid seal: coupling loss, dark
+      lanes, polarization, monitor PD continuity.
+\item Keep a rework path where the business case allows it. Pure 3D stacks
+      often do not.
+\item Plan system-level bring-up that can still localize package versus host
+      versus fiber plant (\Cref{ch:productization,ch:failure-modes}).
+\end{enumerate}
+
+Package yield is multiplicative when you stack. Separate screening is why many
+CPO engines stay 2.5D-adjacent rather than fully bonded until the optical test
+story matures.
+
+\section{Whiteboard vignette}
+\label{sec:pkg-vignette}
+
+Prompt: ``Design the packaging for a 102.4~Tb/s switch optical shoreline.
+Do we go CPO? 2.5D or 3D? Where do the lasers live?''
+
+A strong answer stays ordered:
+
+\begin{enumerate}
+\item Name the binding constraint: SerDes energy, faceplate density, or
+      serviceability.
+\item If CPO is required, pick 2.5D-adjacent engines unless a bonded 3D
+      electronics-photonics stack has a proven KGD and thermal path.
+\item Put lasers in ELSFP-class banks unless on-package laser life is already
+      proven at the ASIC hotspot.
+\item Define FAU attach screens and dark-lane reject before lid seal.
+\item Co-design XSR, power rails, and heatsink keep-outs with the ASIC team.
+\item State the field replaceables explicitly for the reliability model.
+\end{enumerate}
+
+Weak answers jump to ``use COUPE 3D'' without naming yield and service. Strong
+answers treat vendor process names as options inside a constraint set.
+
+\section{Interview takeaway}
+\label{sec:pkg-design-review}
+
+\keyidea{I name the placement first: pluggable, NPO, or CPO. Then I name the
+integration style: 2.5D or 3D. I do not treat those as synonyms. I partition
+laser heat from the ASIC, insist on a known-good-die and fiber-attach story,
+and I only accept soldered engines when field replacement of the laser bank
+or a clear non-serviceable cost model closes.}
+
+\section{Interview Q\&A}
+\label{sec:pkg-interview-qa}
+
+Practice aloud. Prefer first-person reasoning. Score with
+\Cref{sec:chapter-interview-rubric}.
+
+\paragraph{Question 1. What is the difference between 2.5D and 3D?}
+\textit{Tests:} lateral versus vertical integration.
+
+\textit{Spoken answer.}
+``2.5D puts dies side by side on an interposer, bridge, or RDL, so the dense
+wiring is lateral. 3D stacks dies with hybrid bonds, microbumps, or TSVs, so
+the dense wiring is vertical. 3D wins bandwidth density and pays in thermal
+access, test access, and stack yield.''
+
+\textit{Pressure follow-up.} ``Is CPO the same as 3D?''\\
+\textit{Answer pivot.} ``No. CPO is where the optical engine sits relative to
+the ASIC. It can be 2.5D, 3D, or substrate-mounted.''
+
+\textit{Trap:} ``CPO means hybrid-bonded 3D photonics.''
+
+\paragraph{Question 2. Why choose CPO?}
+\textit{Tests:} electrical reach and energy density.
+
+\textit{Spoken answer.}
+``I choose CPO when faceplate VSR copper and pluggable power stop closing the
+port-count or energy budget. Shortening to XSR cuts SerDes energy and board SI
+pain, and it raises shoreline density. I still have to close thermal, yield,
+fiber, and serviceability.''
+
+\textit{Pressure follow-up.} ``Why not just use LPO pluggables?''\\
+\textit{Answer pivot.} ``LPO deletes module DSP but keeps the long host
+electrical run and cage. CPO attacks the copper reach itself.''
+
+\textit{Trap:} ``CPO is always lower power, so always choose it.''
+
+\paragraph{Question 3. Why might you refuse CPO?}
+\textit{Tests:} yield, thermal, serviceability judgment.
+
+\textit{Spoken answer.}
+``I refuse CPO when package yield is unproven, when the laser cannot be kept
+off the ASIC hotspot, when fiber attach scrap risk is unacceptable, or when
+the fleet requires faceplate hot-swap of the whole optical path. XPO or
+pluggables can be the rational hold.''
+
+\textit{Pressure follow-up.} ``Management says competitors shipped CPO.''\\
+\textit{Answer pivot.} ``Shipping proves a recipe can work. It does not prove
+our thermal partition, FAU yield, or service model are ready.''
+
+\textit{Trap:} ``Never do CPO until every vendor program looks perfect.''
+
+\paragraph{Question 4. External versus integrated laser?}
+\textit{Tests:} thermal life versus coupling and failure domain.
+
+\textit{Spoken answer.}
+``An integrated laser shortens the optical path but sits near the heat and is
+hard to replace. An ELSFP-class external laser keeps the source cool and
+field-replaceable, at the cost of coupling, connectors, and a shared-source
+failure domain. I pick from life and service first, then from coupling loss
+(\Cref{sec:elsfp}).''
+
+\textit{Pressure follow-up.} ``Does external laser make CPO unnecessary?''\\
+\textit{Answer pivot.} ``No. It often enables CPO by removing the least
+reliable part from the hot package.''
+
+\textit{Trap:} ``External lasers are only for discrete pluggables.''
+
+\paragraph{Question 5. How do you partition thermally?}
+\textit{Tests:} hotspot map and wavelength/life coupling.
+
+\textit{Spoken answer.}
+``I sketch ASIC hotspot, engine, laser, and fiber exit. I keep lasers off the
+hottest region when life matters, treat ring heaters as heat sources, and I
+budget junction temperature separately from case temperature. Rack liquid
+cooling does not automatically fix an on-die thermal gradient.''
+
+\textit{Pressure follow-up.} ``The case temperature meets spec. Why are rings
+walking?''\\
+\textit{Answer pivot.} ``Local gradient and neighbor heaters can move
+resonances even when case average looks fine.''
+
+\textit{Trap:} ``If the heatsink is sized for ASIC watts, optics are covered.''
+
+\paragraph{Question 6. What is known-good die in this context?}
+\textit{Tests:} screen before irreversible attach.
+
+\textit{Spoken answer.}
+``Known-good die means I screen the ASIC and the optical engine as far as
+probe and partial assembly allow before I commit to a stack or sealed
+co-package. A bad PIC bonded to a good switch wastes both. 3D makes this
+harder because stack yield multiplies.''
+
+\textit{Pressure follow-up.} ``Can you fully optically test at wafer probe?''\\
+\textit{Answer pivot.} ``Often not completely. I define which optical metrics
+are probeable, which need partial assembly, and which wait for FAU attach.''
+
+\textit{Trap:} ``Wafer sort of the ASIC is enough; optics will be caught in
+system test.''
+
+\paragraph{Question 7. How does package yield change the architecture?}
+\textit{Tests:} multiplicative yield and cost of scrap.
+
+\textit{Spoken answer.}
+``If optical attach or fiber alignment yield is soft, I avoid architectures
+that scrap a whole switch package on every miss. That pushes toward separable
+engines, reworkable attach, or keeping lasers in replaceable modules. Yield
+is an architecture input, not only a factory metric.''
+
+\textit{Pressure follow-up.} ``Yield is a manufacturing problem.''\\
+\textit{Answer pivot.} ``Manufacturing executes it. Architecture chooses
+whether a fail scraps \$X or \$100X.''
+
+\textit{Trap:} ``Ship the densest stack and let the factory climb the yield
+curve.''
+
+\paragraph{Question 8. What matters for optical I/O in the package?}
+\textit{Tests:} coupling style and keep-outs.
+
+\textit{Spoken answer.}
+``I name edge versus grating coupling, fiber exit direction, polarization
+control, and lid or socket keep-outs. Optical I/O has to coexist with the
+heatsink, power planes, and board clearance. A beautiful electrical 3D stack
+that cannot exit fiber cleanly is not a product.''
+
+\textit{Pressure follow-up.} ``Can we always use grating couplers for easier
+vertical fiber?''\\
+\textit{Answer pivot.} ``Sometimes. They trade efficiency, polarization, and
+wavelength dependence. Edge coupling may win on loss if the mechanical design
+allows it.''
+
+\textit{Trap:} ``Optical I/O is just a FAU drawing detail after electrical
+floorplanning.''
+
+\paragraph{Question 9. Why is fiber attach a first-class risk?}
+\textit{Tests:} coupling, dark lanes, sealed-package discovery.
+
+\textit{Spoken answer.}
+``FAU attach sets insertion loss, lane balance, and often polarization. A
+single misaligned channel looks like a dead laser or bad PIC after the lid is
+on. I want attach metrics and dark-lane screens before irreversible seal, and
+I track FAU variation in FA when one lane is weak
+(\Cref{sec:photonic-packaging}).''
+
+\textit{Pressure follow-up.} ``Average coupling looks fine.''\\
+\textit{Answer pivot.} ``I still check the weakest lane. Averages hide the
+channel that fails the link.''
+
+\textit{Trap:} ``If total power out of the FAU is in family, attach is good.''
+
+\paragraph{Question 10. How do you think about repairability?}
+\textit{Tests:} field replaceable elements versus soldered engines.
+
+\textit{Spoken answer.}
+``I list what can fail and what a tech can replace: ELSFP laser bank, fiber
+jumper, pluggable module, or nothing because the engine is soldered. CPO often
+keeps the engine soldered and makes the laser replaceable. I state that
+explicitly so reliability and ops models match the hardware.''
+
+\textit{Pressure follow-up.} ``Is a soldered engine always a bad idea?''\\
+\textit{Answer pivot.} ``No, if the dominant fails are elsewhere and the cost
+model accepts package replacement. It is a bad idea if laser FIT still
+dominates and lasers are trapped on the hot die.''
+
+\textit{Trap:} ``CPO cannot be serviced, so it cannot ship.''
+
+\paragraph{Question 11. What does switch-ASIC co-design mean here?}
+\textit{Tests:} shoreline, SerDes, power, and thermal co-ownership.
+
+\textit{Spoken answer.}
+``The optical engine and the switch SerDes share shoreline, bump map, power
+delivery, and thermal path. I co-design lane count, XSR budget, retimer or
+DSP placement, and heatsinking. A perfect PIC that the ASIC cannot drive
+cleanly, or that cooks the rings, is not an engine.''
+
+\textit{Pressure follow-up.} ``Who owns the XSR budget?''\\
+\textit{Answer pivot.} ``Both sides. Package SI and SerDes EQ share it
+(\Cref{ch:equalization,sec:serdes-dsp}).''
+
+\textit{Trap:} ``The optics team owns optics; the ASIC team owns silicon;
+package is NPI's problem.''
+
+\paragraph{Question 12. How do you test an optical engine before final
+assembly?}
+\textit{Tests:} staged test plan.
+
+\textit{Spoken answer.}
+``I stage tests: die or engine probe where possible, electrical continuity and
+basic photonic metrics after attach, optical power and dark-lane screens after
+FAU, then full link metrics after lid and at system bring-up. Each stage needs
+pass/fail that prevents carrying a known-bad unit into a more expensive
+assembly step.''
+
+\textit{Pressure follow-up.} ``System BER is the only test that matters.''\\
+\textit{Answer pivot.} ``System BER is necessary, but it is a late, expensive
+screen. Earlier stages protect yield.''
+
+\textit{Trap:} ``Build the full package, then characterize everything at the
+host.''
+
+\paragraph{Question 13. Give a 60-second packaging plan for a CPO engine.}
+\textit{Tests:} end-to-end judgment order.
+
+\textit{Spoken answer.}
+``I start from reach and port density to decide if CPO is needed. I choose
+2.5D versus 3D from thermal access, KGD, and optical I/O, not from buzzwords.
+I place lasers for life and service, often external. I define FAU attach and
+dark-lane screens before seal, co-design XSR and power with the ASIC, and I
+only freeze the package when yield, thermal corners, and field replacement
+match the fleet model.''
+
+\textit{Pressure follow-up.} ``Schedule is cut. What do you protect?''\\
+\textit{Answer pivot.} ``Laser thermal partition, FAU yield evidence, and a
+service story for the highest-FIT part. Density slides after those.''
+
+\textit{Trap:} ``Pick the densest COUPE-like stack and qualify later.''

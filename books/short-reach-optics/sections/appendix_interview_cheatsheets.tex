@@ -30,18 +30,19 @@ Ch & Main question \\
 6 & What sets BER and margin? \\
 7 & How do the source and modulator behave? \\
 8 & How do wavelength and WDM stay controlled? \\
-9 & How does a sound design become a controlled product? \\
-10 & How do I find and prevent the real cause of a failure? \\
+9 & 2.5D versus 3D / CPO: which integration, which risk? \\
+10 & How does a sound design become a controlled product? \\
+11 & How do I find and prevent the real cause of a failure? \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \paragraph{How to use these sheets.}
-Spend about 2--3 minutes per page. Prefer the PAM4 versus PAM8 and FFE versus
-DFE sheets, then models through WDM, productization, and failure analysis. The
-productization flashcards at the end are a secondary reference bank, not the
-primary study set. Full depth:
-\Cref{ch:multilevel,ch:equalization,ch:models,ch:lasers,ch:wdm,ch:productization,ch:failure-modes}.
+Spend about 2--3 minutes per page. Prefer the PAM4 versus PAM8, FFE versus DFE,
+and 2.5D versus 3D/CPO sheets, then models through WDM, productization, and
+failure analysis. The productization flashcards at the end are a secondary
+reference bank, not the primary study set. Full depth:
+\Cref{ch:multilevel,ch:equalization,ch:models,ch:lasers,ch:wdm,ch:packaging,ch:productization,ch:failure-modes}.
 
 \clearpage
 \section{PAM4 versus PAM8}
@@ -320,7 +321,62 @@ aging, not only a room-temp lock.''
 \footnotesize Depth: \Cref{ch:wdm}.
 
 \clearpage
-\section{Chapter 9: Productization and fleet readiness}
+\section{2.5D versus 3D / CPO}
+\label{sec:cheat-pkg}
+
+\textit{Goal.} Pick packaging from reach, thermal, yield, and service, not from
+the densest stack acronym.
+
+\paragraph{Mental checklist.}
+Placement (pluggable / NPO / CPO) $\rightarrow$ 2.5D vs 3D $\rightarrow$
+Laser location $\rightarrow$ Thermal partition $\rightarrow$ FAU / optical I/O
+$\rightarrow$ KGD and yield $\rightarrow$ Field replaceables $\rightarrow$
+Test stages
+
+\paragraph{What I need to know.}
+\begin{itemize}
+\item 2.5D is side-by-side; 3D is stacked.
+\item CPO is engine placement, not automatically 3D.
+\item External lasers often enable CPO by moving FIT and heat.
+\item FAU attach and dark lanes are first-class scrap risks.
+\item Stack yield multiplies; screen before irreversible attach.
+\item Serviceability must match the reliability model.
+\end{itemize}
+
+\paragraph{Key distinctions.}
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}ll@{}}
+\toprule
+Do not confuse & With \\
+\midrule
+CPO & 3D hybrid bonding \\
+2.5D & ``Almost 3D'' \\
+Case temperature & Local hotspot / ring walk \\
+Package density & Closed thermal and yield story \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Trap.}
+Trap: ``Ship the densest COUPE-like stack.''\\
+Better: ``Name placement, stack style, laser service, and FAU yield evidence.''
+
+\paragraph{60-second answer.}
+``I decide if CPO is needed from reach and port density. I choose 2.5D or 3D
+from thermal access, KGD, and optical I/O. I place lasers for life and field
+replacement, often external. I screen attach before seal, co-design XSR with
+the ASIC, and I freeze only when yield and service match the fleet.''
+
+\paragraph{Pressure.}
+Pressure: ``Competitors shipped CPO. Why wait?''\\
+Pivot: ``Shipping proves a recipe can work. I still need our thermal partition,
+FAU yield, and replaceable-laser story.''
+
+\footnotesize Depth: \Cref{ch:packaging,tab:placement,sec:elsfp,sec:cpo-status}.
+
+\clearpage
+\section{Chapter 10: Productization and fleet readiness}
 \label{sec:cheat-productization}
 \label{sec:cheat-ch7}
 \label{sec:cheat-ch8}
@@ -379,7 +435,7 @@ dominant life mechanisms, factory controls, and a reversible pilot.''
 \footnotesize Depth: \Cref{ch:productization,tab:ladder,app:reliability-reference,app:manufacturing-reference}.
 
 \clearpage
-\section{Chapter 10: Failure analysis}
+\section{Chapter 11: Failure analysis}
 \label{sec:cheat-ch11}
 
 \textit{Goal.} Find the real cause without destroying the evidence, then stop it

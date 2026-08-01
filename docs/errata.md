@@ -333,6 +333,17 @@ No new frameworks. Structural relocation of existing material is allowed.
   renumber in print only; labels preserved. HTML:
   `ch5-channel-equalization-ctle-ffe-dfe-and-dsp`; cheat sheets at
   `ch23-interview-cheat-sheets`; references at `ch24-references`.
+- **Pass 4 advanced packaging:** Added Chapter~9 Advanced Packaging for Optical
+  Engines (`ch_packaging.tex`, labels `ch:packaging` /
+  `sec:advanced-packaging`): 2.5D versus 3D definitions and comparison table,
+  CPO as placement not stack recipe, optical-engine issues, co-packaging
+  tradeoffs, placement ladder, thermal/KGD/yield/test, whiteboard vignette, and
+  13 interview Q\&As (~12 PDF pages). App~H CPO/XPO/pluggable survey and
+  `sec:elsfp` stay in place with pointers. Appendix~M gains a 2.5D versus
+  3D/CPO cheat sheet; overview table renumbered. Later body chapters renumber
+  in print only; labels preserved. HTML:
+  `ch9-advanced-packaging-for-optical-engines`; cheat sheets at
+  `ch24-interview-cheat-sheets`; references at `ch25-references`.
 
 ## Typographical fixes
 

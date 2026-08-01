@@ -5,6 +5,6 @@ title: "Moved: Manufacturing Validation Reference"
 
 # Moved
 
-Now at [**Manufacturing Validation Reference**](ch17-manufacturing-validation-reference).
+Now at [**Manufacturing Validation Reference**](ch18-manufacturing-validation-reference).
 
 Return to the [table of contents](index).

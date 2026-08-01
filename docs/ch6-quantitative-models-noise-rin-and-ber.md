@@ -37,7 +37,7 @@ A binary receiver samples a noisy voltage and compares it to a threshold. If the
 
 ##### BER and FEC terminology.
 
-Pre-FEC BER or symbol-error behavior describes the decoder input. Post-FEC behavior describes residual errors after decoding. Corrected-codeword counts can reveal declining margin before post-FEC failure. FEC thresholds depend on code, interleaving, PMD, error distribution, and implementation. Burst errors can be more harmful than an equal average random BER. A quoted FEC threshold is not a universal analog receiver specification (Chapter 9, Chapter 3).
+Pre-FEC BER or symbol-error behavior describes the decoder input. Post-FEC behavior describes residual errors after decoding. Corrected-codeword counts can reveal declining margin before post-FEC failure. FEC thresholds depend on code, interleaving, PMD, error distribution, and implementation. Burst errors can be more harmful than an equal average random BER. A quoted FEC threshold is not a universal analog receiver specification (Chapter 10, Chapter 3).
 
     from scipy.special import erfc, erfcinv
     import numpy as np
@@ -185,7 +185,7 @@ Turning the question around (*what is the least power that meets a target BER?*)
   \qquad\text{(average power)},\qquad
   P_{\text{sens}}^{\text{OMA}} = \frac{2\,Q\,i_n}{\mathcal{R}}.$$ These simple expressions assume binary signaling, a stated relation between average power and OMA, high or explicitly handled extinction ratio, signal-independent effective rms noise for the simplified form, a linear detector and TIA, no substantial ISI, jitter, compression, or RIN floor, and an optimal or defined decision threshold. For PAM4, treat the calculation as a *first-order binary-equivalent estimate*, not a standards-compliance receiver calculation. A noise density in A/$\sqrt{\mathrm{Hz}}$ must be integrated through the effective noise bandwidth before it enters these equations.
 
-Modern short-reach standards specify *OMA* rather than average power. For binary NRZ, $\mathrm{OMA}=P_1-P_0$; for PAM4, outer OMA is $P_3-P_0$. OMA decouples the sensitivity spec from extinction ratio. As a check, the textbook example ($i_n = 1~\mu$A, $\mathcal{R}=0.8$ A/W, $\mathrm{BER}=10^{-12}$) gives $P_{\text{sens}}=7.03\times1~\mu\text{A}/0.8 = 8.8~\mu$W, or $-20.6$ dBm, which the code reproduces. A finite extinction ratio costs an idealized further $\mathrm{PP}_\mathrm{dB}=10\log_{10}[(\mathrm{ER}_\mathrm{lin}+1)/(\mathrm{ER}_\mathrm{lin}-1)]$: $0.87$ dB at 10 dB ER, $2.2$ dB at 6 dB ER. These penalties feed link budgets (Chapter 3) and TDECQ discussion (Chapter 9); do not double-count TDECQ as an independent penalty if the compliance method already includes it. Do not convert every impairment into arbitrary dB, mix average-power sensitivity with OMA penalties, or combine nominal values from one plane with worst-case values from another as if they were independent.
+Modern short-reach standards specify *OMA* rather than average power. For binary NRZ, $\mathrm{OMA}=P_1-P_0$; for PAM4, outer OMA is $P_3-P_0$. OMA decouples the sensitivity spec from extinction ratio. As a check, the textbook example ($i_n = 1~\mu$A, $\mathcal{R}=0.8$ A/W, $\mathrm{BER}=10^{-12}$) gives $P_{\text{sens}}=7.03\times1~\mu\text{A}/0.8 = 8.8~\mu$W, or $-20.6$ dBm, which the code reproduces. A finite extinction ratio costs an idealized further $\mathrm{PP}_\mathrm{dB}=10\log_{10}[(\mathrm{ER}_\mathrm{lin}+1)/(\mathrm{ER}_\mathrm{lin}-1)]$: $0.87$ dB at 10 dB ER, $2.2$ dB at 6 dB ER. These penalties feed link budgets (Chapter 3) and TDECQ discussion (Chapter 10); do not double-count TDECQ as an independent penalty if the compliance method already includes it. Do not convert every impairment into arbitrary dB, mix average-power sensitivity with OMA penalties, or combine nominal values from one plane with worst-case values from another as if they were independent.
 
 ##### Worked example: DR4-class budget check.
 
@@ -328,9 +328,9 @@ A BER model earns trust only when every term has a bench measurement. Use a BERT
 Thermal noise dominates at low optical power, shot noise grows with photocurrent, and RIN grows with signal power. Reflections, crosstalk, jitter, and compression break a simple Gaussian fit. Curve shape chooses the next experiment; it is not a root-cause label (Table 6.7).
 
 <table class="book-table"><tr><th>Measured behavior</th><th>Raises these hypotheses</th><th>Does not prove</th></tr><tr><td>Uniform waterfall shift</td><td>Lost OMA, loss, greater Rx noise, calibration offset</td><td>Which component caused it</td></tr><tr><td>High-power floor</td><td>RIN, reflections, crosstalk, jitter, bursts, distortion</td><td>Intrinsic laser RIN</td></tr><tr><td>High-power degradation</td><td>TIA/PD overload, compression, AGC/adaptation corner</td><td>Excess launch alone</td></tr><tr><td>Temperature-dependent shift</td><td>Responsivity, noise, OMA, loss, wavelength, EQ</td><td>Aging</td></tr><tr><td>One-lane-only movement</td><td>Lane-local optical or electrical path</td><td>Defective laser</td></tr><tr><td>Correlated lane movement</td><td>Shared rail, source, clock, thermal or control</td><td>Common source failure</td></tr></table>
-**Table 6.7.** BER-waterfall signatures: hypothesis routing, not mechanism confirmation (Chapter 10).
+**Table 6.7.** BER-waterfall signatures: hypothesis routing, not mechanism confirmation (Chapter 11).
 
-\> \*\*Failure mode: BER floor\*\* \> \> \*\*Symptoms.\*\* BER improves with received power, then stops improving. \> \> \*\*Likely causes.\*\* RIN, reflection-driven multipath interference, laser-bias noise, crosstalk, or periodic jitter. \> \> \*\*Measurements.\*\* BER versus OMA, RF RIN spectrum (PD+ESA or RIN analyzer, not OSA), ORL sweep, FEC error distribution, and a quiet laser-bias source. \> \> \*\*Mitigations.\*\* Remove the correlated noise source, improve ORL, or isolate supplies. The recurrence control may be source qualification, stressed-RIN screening, supplier process control, bias-board validation, ORL control, sampled audit, ATP proxy, or fleet monitoring, depending on where the mechanism can be detected reliably (Chapter 7, Chapter 9).
+\> \*\*Failure mode: BER floor\*\* \> \> \*\*Symptoms.\*\* BER improves with received power, then stops improving. \> \> \*\*Likely causes.\*\* RIN, reflection-driven multipath interference, laser-bias noise, crosstalk, or periodic jitter. \> \> \*\*Measurements.\*\* BER versus OMA, RF RIN spectrum (PD+ESA or RIN analyzer, not OSA), ORL sweep, FEC error distribution, and a quiet laser-bias source. \> \> \*\*Mitigations.\*\* Remove the correlated noise source, improve ORL, or isolate supplies. The recurrence control may be source qualification, stressed-RIN screening, supplier process control, bias-board validation, ORL control, sampled audit, ATP proxy, or fleet monitoring, depending on where the mechanism can be detected reliably (Chapter 7, Chapter 10).
 
 ### How it is debugged
 
@@ -354,7 +354,7 @@ Stable average received power?
 Highest-value measurement
   |
 Decision + recurrence control</code></pre>
-Stable average received power deprioritizes gross optical loss but does not clear fast fluctuations, reflections, clipping, wavelength filtering, or monitor-calibration error. The fork chooses an investigation route; it does not establish mechanism ownership (Chapter 10).
+Stable average received power deprioritizes gross optical loss but does not clear fast fluctuations, reflections, clipping, wavelength filtering, or monitor-calibration error. The fork chooses an investigation route; it does not establish mechanism ownership (Chapter 11).
 
 ##### Did average received optical power change?
 
@@ -382,7 +382,7 @@ If average received power is stable but BER worsened, isolate transmitter, chann
 
 - control: bias, APC, TEC/heaters, calibration, EQ authority.
 
-This fork often narrows an investigation in minutes. Power-path failures show up on a meter; signal-quality failures need FEC timing, DCA, BERT, or spectrum analysis, depending on access. Apply it before opening the package, changing settings, or blaming a supplier (§10.10, Chapter 10, Chapter 9).
+This fork often narrows an investigation in minutes. Power-path failures show up on a meter; signal-quality failures need FEC timing, DCA, BERT, or spectrum analysis, depending on access. Apply it before opening the package, changing settings, or blaming a supplier (§11.10, Chapter 11, Chapter 10).
 
 > **Why experienced engineers separate power from quality?**
 >
@@ -398,7 +398,7 @@ This fork often narrows an investigation in minutes. Power-path failures show up
 
 **Key idea.** Name the metric and reference plane, state the model assumptions, and close only what the model can defend: Gaussian $\mathrm{BER}(Q)$, the variance noise budget (thermal + shot + RIN), the simplified dominant-RIN ceiling $Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$, and $P_{\text{sens}}=Q\,i_n/\mathcal{R}$ with integrated rms noise. Verify with a measured BER waterfall. Let disagreement reveal missing physics (Table 6.3, §6.4.3, Table 6.7).
 
-Junior mistake: raise launch power into a BER floor, or quote sensitivity without the measurement conditions (§6.3, §6.8, Chapter 7, Chapter 9).
+Junior mistake: raise launch power into a BER floor, or quote sensitivity without the measurement conditions (§6.3, §6.8, Chapter 7, Chapter 10).
 
 ### Interview Q&A: Quantitative Models, Noise, RIN, and BER
 
