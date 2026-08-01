@@ -250,73 +250,31 @@ to stay on PAM4 at still higher baud or move to PAM6/PAM8 to ease the electrical
 channel (\Cref{sec:448g}). PAM8 design judgment, level spacing, Gray coding, and
 optical generation options are in \Cref{ch:multilevel}.
 
-\section{Equalization and clock recovery}
-\label{sec:equalization}
+\section{Equalization and clock recovery (survey)}
+\label{sec:imdd-eq-survey}
 
 Once PAM4 became the default, the electrical channel stopped looking like a wire
 and started looking like a filter. PCB traces, connectors, and cables low-pass
-the signal; the receiver must undo that inter-symbol interference (ISI)\firstterm{ISI} before
-slicing. Three equalizer classes appear in every short-reach link, plus clock
-recovery when the bit clock is rebuilt.
+the signal; the receiver must undo inter-symbol interference (ISI)\firstterm{ISI}
+before slicing. The design-level treatment of CTLE, FFE, DFE, TX versus RX
+equalization, adaptation, and optical complications is
+\Cref{ch:equalization,sec:equalization}. Chain placement for retimed modules,
+redrivers, and LPO is in \Cref{fig:eq-chains} there.
 
-\begin{description}
-\item[CTLE (continuous-time linear equalizer)] \firstterm{CTLE} provides analog
-      high-frequency boost, often a zero-pole pair in the SerDes front-end, the TIA,
-      or a redriver chip. CTLE is cheap and low latency but fixed: it cannot adapt
-      tap-by-tap to an arbitrary channel.
-\item[FFE (feed-forward equalizer)] \firstterm{FFE} is a finite-impulse-response
-      filter with pre- and post-cursor taps. Host SerDes and module DSPs use FFE
-      (often with CTLE ahead of it) to open the eye.
-      Transmitter and dispersion eye closure quaternary (TDECQ)\firstterm{TDECQ} applies a
-      \emph{bounded} reference FFE when scoring transmitters (\Cref{sec:tdecq}).
-\item[DFE (decision-feedback equalizer)] \firstterm{DFE} cancels post-cursor ISI
-      using past symbol decisions. CEI electrical eye budgets reference an 8-tap DFE
-      at the slicer (\Cref{sec:eye-budget}). DFE creates feedback-loop timing
-      complexity and error propagation; system latency depends on implementation and
-      any additional block processing or retiming. It recovers more ISI than FFE
-      alone at high loss.
-\item[CDR (clock-data recovery)] \firstterm{CDR} extracts bit timing from the
-      data stream and re-samples the eye. A \emph{retimer} includes CDR plus
-      equalization and regenerates a clean output; a \emph{redriver} has CTLE/VGA but
-      no CDR (\Cref{sec:conditioning}).
-\end{description}
-
-Where these blocks sit depends on the module style (\Cref{sec:pluggables,ch:networking}):
-
-\begin{itemize}
-\item \textbf{Fully retimed pluggable:} host SerDes $\to$ connector $\to$ module DSP
-      (FFE/DFE/CDR) $\to$ optical engine. The module cleans a bad electrical channel.
-\item \textbf{Redriver / ACC:} CTLE (+ VGA) in the cable or mid-channel; host SerDes
-      still owns CDR and heavy EQ.
-\item \textbf{LPO:} no module DSP/CDR. Host SerDes EQ and FEC must survive the full
-      path; module may add only CTLE in the TIA and a linear driver
-      (\Cref{sec:conditioning}). Optical TDECQ and electrical margin both tighten.
-\end{itemize}
-
-\Cref{fig:eq-chains} shows the correct SerDes equalizer order, then where those
-blocks live in a retimed module versus LPO.
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=\linewidth]{figures/fig_eq_chains.pdf}
-\caption{Equalization chains. (A)~Correct order on one electrical lane: Tx FFE,
-channel, CTLE, Rx FFE, DFE, then slicer/CDR. (B)~Fully retimed pluggable: module
-DSP owns FFE/DFE/CDR on both sides of the optics. (C)~LPO: no module DSP; the host
-SerDes must close the full EQ and FEC path.\label{fig:eq-chains}}
-\end{figure}
-
-\keyidea{CTLE boosts analog bandwidth; FFE/DFE cancel ISI digitally; CDR rebuilds
-timing in retimers. LPO deletes the module-side safety net, so host equalization and
-KP4 margin (\Cref{sec:kp4}) become the whole electrical story.}
+A \term{CDR}\firstterm{CDR} extracts bit timing and re-samples the eye. A
+\emph{retimer} includes CDR plus equalization and regenerates a clean output; a
+\emph{redriver} has CTLE/VGA but no CDR (\Cref{sec:conditioning}). LPO deletes
+the module-side DSP safety net, so host equalization and KP4 margin
+(\Cref{sec:kp4}) become the whole electrical story.
 
 \section{SerDes and DSP: who does the work}
 \label{sec:serdes-dsp}
 
-The equalizers above have to run somewhere, and ``SerDes'' and ``DSP'' get used
-loosely for that somewhere. They are not the same thing, and at 112~GBd the line
-between them has mostly dissolved. Pinning down the vocabulary makes the retimed
-versus LPO versus CPO argument (\Cref{sec:conditioning,ch:networking}) concrete
-instead of a wall of acronyms.
+CTLE, FFE, and DFE have to run somewhere, and ``SerDes'' and ``DSP'' get used
+loosely for that somewhere (\Cref{ch:equalization}). They are not the same
+thing, and at 112~GBd the line between them has mostly dissolved. Pinning down
+the vocabulary makes the retimed versus LPO versus CPO argument
+(\Cref{sec:conditioning,ch:networking}) concrete instead of a wall of acronyms.
 
 \subsection{What the SerDes is}
 

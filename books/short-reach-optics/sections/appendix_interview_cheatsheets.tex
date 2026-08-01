@@ -26,21 +26,22 @@ $\rightarrow$ investigate failures.
 Ch & Main question \\
 \midrule
 4 & PAM4 versus PAM8: baud relief versus vertical cost? \\
-5 & What sets BER and margin? \\
-6 & How do the source and modulator behave? \\
-7 & How do wavelength and WDM stay controlled? \\
-8 & How does a sound design become a controlled product? \\
-9 & How do I find and prevent the real cause of a failure? \\
+5 & FFE versus DFE: which impairment, which risk? \\
+6 & What sets BER and margin? \\
+7 & How do the source and modulator behave? \\
+8 & How do wavelength and WDM stay controlled? \\
+9 & How does a sound design become a controlled product? \\
+10 & How do I find and prevent the real cause of a failure? \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \paragraph{How to use these sheets.}
-Spend about 2--3 minutes per page. Prefer the PAM4 versus PAM8 sheet,
-Chapters~5--7, productization, and failure analysis. The productization
-flashcards at the end are a secondary reference bank, not the primary study
-set. Full depth:
-\Cref{ch:multilevel,ch:models,ch:lasers,ch:wdm,ch:productization,ch:failure-modes}.
+Spend about 2--3 minutes per page. Prefer the PAM4 versus PAM8 and FFE versus
+DFE sheets, then models through WDM, productization, and failure analysis. The
+productization flashcards at the end are a secondary reference bank, not the
+primary study set. Full depth:
+\Cref{ch:multilevel,ch:equalization,ch:models,ch:lasers,ch:wdm,ch:productization,ch:failure-modes}.
 
 \clearpage
 \section{PAM4 versus PAM8}
@@ -100,7 +101,62 @@ would inspect level uniformity and compression next.''
 \footnotesize Depth: \Cref{ch:multilevel,sec:nrzpam4,tab:448-mod}.
 
 \clearpage
-\section{Chapter 5: Quantitative link behavior}
+\section{FFE versus DFE}
+\label{sec:cheat-eq}
+
+\textit{Goal.} Pick equalization from the impairment, not from the acronym.
+
+\paragraph{Mental checklist.}
+Channel response $\rightarrow$ Precursor vs postcursor $\rightarrow$ CTLE tilt
+$\rightarrow$ TX vs RX FFE $\rightarrow$ DFE only if postcursor remains
+$\rightarrow$ Noise / error propagation $\rightarrow$ FEC cost $\rightarrow$
+Stop if nonlinear
+
+\paragraph{What I need to know.}
+\begin{itemize}
+\item FFE filters samples; DFE filters past decisions.
+\item Precursor needs FFE or TX pre-emphasis; DFE cannot fix precursor.
+\item FFE can enhance noise; DFE can propagate errors.
+\item TX FFE does not amplify RX noise; RX FFE can.
+\item Pegged taps mean the channel or optic is outside EQ authority.
+\item Open eye with bad BER: check adaptation, thresholds, and bursts.
+\end{itemize}
+
+\paragraph{Key distinctions.}
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}ll@{}}
+\toprule
+Do not confuse & With \\
+\midrule
+TX FFE & RX FFE \\
+Precursor ISI & Postcursor ISI \\
+Noise enhancement & Error propagation \\
+Reference DFE in a standard & Your product DFE health \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Trap.}
+Trap: ``Max EQ on every lane.''\\
+Better: ``Tune until residual ISI falls without driving FEC demand up.''
+
+\paragraph{60-second answer.}
+``I start from precursor and postcursor. CTLE fixes smooth tilt. FFE handles
+linear pre- and post-cursor ISI. DFE helps remaining postcursor if decisions are
+solid. I keep TX pre-emphasis separate from RX EQ, watch noise enhancement and
+error propagation, and stop when the problem is nonlinearity or noise, not
+ISI.''
+
+\paragraph{Pressure.}
+Pressure: ``The eye is open. Why is BER bad?''\\
+Pivot: ``I check sampling phase, thresholds, adaptation lock, and bursts. An
+open scope eye can still hide decision errors.''
+
+\footnotesize Depth: \Cref{ch:equalization,fig:eq-chains,sec:serdes-dsp}.
+
+\clearpage
+\section{Chapter 6: Quantitative link behavior}
 \label{sec:cheat-ch4}
 
 \textit{Goal.} Explain what sets bit-error rate (BER) and margin without hiding
@@ -158,7 +214,7 @@ distortion. I would pull a waterfall and check for a floor.''
 \footnotesize Depth: \Cref{ch:models}.
 
 \clearpage
-\section{Chapter 6: Sources and modulation}
+\section{Chapter 7: Sources and modulation}
 \label{sec:cheat-ch5}
 
 \textit{Goal.} Choose and operate a source so the modulated link closes the
@@ -212,7 +268,7 @@ show the net margin, not one power number.''
 \footnotesize Depth: \Cref{ch:lasers}.
 
 \clearpage
-\section{Chapter 7: WDM and wavelength control}
+\section{Chapter 8: WDM and wavelength control}
 \label{sec:cheat-ch6}
 
 \textit{Goal.} Keep channels on the grid across temperature, process, and aging
@@ -264,7 +320,7 @@ aging, not only a room-temp lock.''
 \footnotesize Depth: \Cref{ch:wdm}.
 
 \clearpage
-\section{Productization and fleet readiness}
+\section{Chapter 9: Productization and fleet readiness}
 \label{sec:cheat-productization}
 \label{sec:cheat-ch7}
 \label{sec:cheat-ch8}
@@ -323,7 +379,7 @@ dominant life mechanisms, factory controls, and a reversible pilot.''
 \footnotesize Depth: \Cref{ch:productization,tab:ladder,app:reliability-reference,app:manufacturing-reference}.
 
 \clearpage
-\section{Chapter 9: Failure analysis}
+\section{Chapter 10: Failure analysis}
 \label{sec:cheat-ch11}
 
 \textit{Goal.} Find the real cause without destroying the evidence, then stop it

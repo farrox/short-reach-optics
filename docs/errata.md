@@ -322,6 +322,17 @@ No new frameworks. Structural relocation of existing material is allowed.
   chapters renumber in print only; labels preserved. HTML:
   `ch4-multilevel-signaling-from-pam4-to-pam8`; cheat sheets at
   `ch22-interview-cheat-sheets`; references at `ch23-references`.
+- **Pass 3 channel equalization:** Added Chapter~5 Channel Equalization: CTLE,
+  FFE, DFE, and DSP (`ch_equalization.tex`, labels `ch:equalization` and
+  `sec:equalization`): channel impairments, CTLE/FFE/DFE, FFE versus DFE table,
+  TX versus RX FFE, optical complications, adaptation, EQ versus FEC, debug
+  vignette, and 13 interview Q\&As (~14 PDF pages). Compressed the IM/DD
+  equalization survey to a pointer; kept SerDes/DSP placement there with
+  cross-refs. Moved `fig:eq-chains` into the new chapter. Appendix~M gains an
+  FFE versus DFE cheat sheet; overview table renumbered. Later body chapters
+  renumber in print only; labels preserved. HTML:
+  `ch5-channel-equalization-ctle-ffe-dfe-and-dsp`; cheat sheets at
+  `ch23-interview-cheat-sheets`; references at `ch24-references`.
 
 ## Typographical fixes
 

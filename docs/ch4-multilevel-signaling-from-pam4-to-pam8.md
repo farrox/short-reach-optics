@@ -5,11 +5,11 @@ title: "Ch 4: Multilevel Signaling: From PAM4 to PAM8"
 
 # 4 Multilevel Signaling: From PAM4 to PAM8
 
-This chapter is the design judgment home for multilevel intensity modulation: why more levels exist, what you pay in SNR and linearity, how Gray coding changes the bit-error story, and when PAM8 is or is not worth it. Roadmaps and per-lane rates live in Chapter 3. Noise and BER math live in Chapter 5. Equalizer classes live in §3.6.
+This chapter is the design judgment home for multilevel intensity modulation: why more levels exist, what you pay in SNR and linearity, how Gray coding changes the bit-error story, and when PAM8 is or is not worth it. Roadmaps and per-lane rates live in Chapter 3. Noise and BER math live in Chapter 6. Equalizer design lives in Chapter 5.
 
 *Read first:* baud versus bit rate, level spacing, Gray coding, and the PAM8 pressure list.
 
-*Deep dive:* 448G alphabet options in §3.14.3, §3.9; NRZ/PAM4 quantitative comparison in §5.6.
+*Deep dive:* 448G alphabet options in §3.14.3, §3.9; NRZ/PAM4 quantitative comparison in §6.6.
 
 **Key idea.** PAM8 lowers the baud rate for a given bit rate, but the level spacing becomes much tighter, so you pay more in SNR, linearity, calibration, and DSP. Lower baud is purchased with smaller vertical eyes and harder detection.
 
@@ -49,7 +49,7 @@ NRZ has one eye. PAM4 has three eyes. PAM8 has seven eyes. With the same full-sc
 
 - PAM8 adjacent spacing is one-seventh of the total swing.
 
-Relative to NRZ's full swing as one step, the ideal amplitude-separation comparisons are about $20\log_{10}3\approx9.5$ dB for PAM4 and $20\log_{10}7\approx16.9$ dB for PAM8 before bandwidth, coding, and implementation effects. Those are spacing comparisons, not automatic sensitivity penalties on a finished link (§5.6).
+Relative to NRZ's full swing as one step, the ideal amplitude-separation comparisons are about $20\log_{10}3\approx9.5$ dB for PAM4 and $20\log_{10}7\approx16.9$ dB for PAM8 before bandwidth, coding, and implementation effects. Those are spacing comparisons, not automatic sensitivity penalties on a finished link (§6.6).
 
 Tighter spacing raises the SNR needed to keep the same symbol-error rate. It also tightens linearity: compression that was tolerable on a two-level eye can crush the inner PAM8 eyes. Noise that was acceptable for NRZ can dominate the smallest PAM8 openings.
 
@@ -112,7 +112,7 @@ Multilevel light can be generated several ways. The architecture choice sets lin
 
 Directly modulated laser (DML)
 
-: Simple, but chirp and nonlinear $L$--$I$ behavior fight dense eyes. Harder as $M$ grows (Chapter 6).
+: Simple, but chirp and nonlinear $L$--$I$ behavior fight dense eyes. Harder as $M$ grows (Chapter 7).
 
 EML
 
@@ -154,7 +154,7 @@ For many DR/FR-class modules the credible PAM8 paths are a linear MZM or EML wit
 
 ##### Outer OMA.
 
-For PAM4, outer OMA is $P_3-P_0$, not an inner-eye span. For PAM8, the outer span is $P_7-P_0$. Quoting "OMA" without saying outer versus per-eye invites a wrong budget (Chapter 5, Appendix E).
+For PAM4, outer OMA is $P_3-P_0$, not an inner-eye span. For PAM8, the outer span is $P_7-P_0$. Quoting "OMA" without saying outer versus per-eye invites a wrong budget (Chapter 6, Appendix E).
 
 ##### Per-eye thinking.
 
@@ -222,7 +222,7 @@ Practice aloud. Prefer first-person reasoning. Score with Appendix A.12.1.
 
 *Tests:* level spacing $\Delta=A/(M-1)$.
 
-*Spoken answer.* "For equal spacing over the same total swing, PAM4 adjacent spacing is one third of the outer swing and PAM8 is one seventh. Ideal amplitude-separation comparisons are about 9.5 dB and 17 dB versus a full NRZ step before bandwidth and implementation effects. The practical power penalty also depends on noise bandwidth, EQ, and FEC" (§5.6).
+*Spoken answer.* "For equal spacing over the same total swing, PAM4 adjacent spacing is one third of the outer swing and PAM8 is one seventh. Ideal amplitude-separation comparisons are about 9.5 dB and 17 dB versus a full NRZ step before bandwidth and implementation effects. The practical power penalty also depends on noise bandwidth, EQ, and FEC" (§6.6).
 
 *Pressure follow-up.* "Can I quote 9.54 dB as the PAM4 link penalty?"\
 *Answer pivot.* "Only as the ideal spacing comparison. I would not call it the finished sensitivity penalty."
@@ -244,7 +244,7 @@ Practice aloud. Prefer first-person reasoning. Score with Appendix A.12.1.
 
 *Tests:* EQ handoff without claiming Pass 3 depth.
 
-*Spoken answer.* "Lower baud can ease channel loss, but denser eyes leave less margin for residual ISI and noise enhancement. I still need to know whether the impairment is precursor or postcursor and whether FFE, DFE, or DSP is doing the work (§3.6). PAM8 makes tap precision and adaptation errors more expensive."
+*Spoken answer.* "Lower baud can ease channel loss, but denser eyes leave less margin for residual ISI and noise enhancement. I still need to know whether the impairment is precursor or postcursor and whether FFE, DFE, or DSP is doing the work (Chapter 5). PAM8 makes tap precision and adaptation errors more expensive."
 
 *Pressure follow-up.* "Does lower baud remove the need for EQ?"\
 *Answer pivot.* "No. It can reduce the boost required, but multilevel links still live or die on residual ISI."
@@ -310,7 +310,7 @@ Practice aloud. Prefer first-person reasoning. Score with Appendix A.12.1.
 
 *Tests:* DML/EML/MZM/ring/segmented trade.
 
-*Spoken answer.* "I ask where the alphabet is generated and which device can stay linear across eight levels. A DML is usually the hardest for dense PAM. An MZM or segmented optical approach is often more credible if the electrical DAC and bias control are solid. Rings need thermal and resonance control in the story (Chapter 6, §4.5)."
+*Spoken answer.* "I ask where the alphabet is generated and which device can stay linear across eight levels. A DML is usually the hardest for dense PAM. An MZM or segmented optical approach is often more credible if the electrical DAC and bias control are solid. Rings need thermal and resonance control in the story (Chapter 7, §4.5)."
 
 *Pressure follow-up.* "Can I reuse a PAM4 EML for PAM8?"\
 *Answer pivot.* "Only if linearity, bandwidth, and calibration evidence support eight levels, not because the part shipped as PAM4."
@@ -343,5 +343,5 @@ Practice aloud. Prefer first-person reasoning. Score with Appendix A.12.1.
 <div class="nav-links">
   <a href="ch3-intensity-modulation-direct-detection">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch5-quantitative-models-noise-rin-and-ber">Next &rarr;</a>
+  <a href="ch5-channel-equalization-ctle-ffe-dfe-and-dsp">Next &rarr;</a>
 </div>

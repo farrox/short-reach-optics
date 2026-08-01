@@ -315,9 +315,24 @@ def render_markdown(entries: list[dict], citeurls: dict[str, str]) -> str:
 def find_refs_filename(docs_dir: str) -> str:
     # Match only the bibliography page (…-references.md), not appendix pages
     # whose slugs contain "reference" (measurement / reliability reference).
-    for name in sorted(os.listdir(docs_dir)):
-        if re.fullmatch(r"ch\d+-references\.md", name):
-            return os.path.join(docs_dir, name)
+    # Prefer the highest chapter number so historical Moved stubs such as
+    # ch22-references.md do not steal the write target.
+    candidates = []
+    for name in os.listdir(docs_dir):
+        m = re.fullmatch(r"ch(\d+)-references\.md", name)
+        if not m:
+            continue
+        path = os.path.join(docs_dir, name)
+        try:
+            head = open(path, encoding="utf-8").read(400)
+        except OSError:
+            head = ""
+        if 'title: "Moved:' in head or "\n# Moved\n" in head:
+            continue
+        candidates.append((int(m.group(1)), path))
+    if candidates:
+        candidates.sort()
+        return candidates[-1][1]
     return os.path.join(docs_dir, "ch15-references.md")
 
 

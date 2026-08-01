@@ -6,7 +6,7 @@ This chapter is the design judgment home for multilevel intensity modulation:
 why more levels exist, what you pay in SNR and linearity, how Gray coding
 changes the bit-error story, and when PAM8 is or is not worth it. Roadmaps and
 per-lane rates live in \Cref{ch:imdd}. Noise and BER math live in
-\Cref{ch:models}. Equalizer classes live in \Cref{sec:equalization}.
+\Cref{ch:models}. Equalizer design lives in \Cref{ch:equalization}.
 
 \textit{Read first:} baud versus bit rate, level spacing, Gray coding, and the
 PAM8 pressure list.
@@ -348,7 +348,7 @@ linearity.''
 ``Lower baud can ease channel loss, but denser eyes leave less margin for
 residual ISI and noise enhancement. I still need to know whether the impairment
 is precursor or postcursor and whether FFE, DFE, or DSP is doing the work
-(\Cref{sec:equalization}). PAM8 makes tap precision and adaptation errors more
+(\Cref{ch:equalization}). PAM8 makes tap precision and adaptation errors more
 expensive.''
 
 \textit{Pressure follow-up.} ``Does lower baud remove the need for EQ?''\\
