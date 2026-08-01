@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "Ch 10: Engineering case studies"
+title: "Ch 11: Engineering case studies"
 ---
 
-# 10 Engineering case studies
+# 11 Engineering case studies
 
-This appendix is practice under incomplete information. The frameworks already live in Appendix A, Appendix C, Appendix D and Table 7.2. Here you apply them. Do not jump to the mechanism. Score yourself with Appendix A.12 after each case.
+This appendix is practice under incomplete information. The frameworks already live in Appendix A, Appendix C, Appendix D and Table 8.2. Here you apply them. Do not jump to the mechanism. Score yourself with Appendix A.12 after each case.
 
 ## Information value
 
@@ -54,7 +54,7 @@ Next decision
 
 : What unlocks the next ship or hold call?
 
-Illustrative executive line (Case [10.5](#sec:case-fleet-ber) style): "About three percent of modules from lot X show rising pre-FEC BER after roughly 90 days. Average received power is stable. Evidence points toward analog-supply degradation correlated with that lot. Shipment from the lot is paused while supplier FA proceeds."
+Illustrative executive line (Case [11.5](#sec:case-fleet-ber) style): "About three percent of modules from lot X show rising pre-FEC BER after roughly 90 days. Average received power is stable. Evidence points toward analog-supply degradation correlated with that lot. Shipment from the lot is paused while supplier FA proceeds."
 
 ## Supplier conversation
 
@@ -135,7 +135,7 @@ Add or tighten the production proxy that would have caught the signature; review
 
 ##### Fleet prevention.
 
-Burn down the installed cohort; keep the control owner until rates fall; feed the lesson into §7.9.11.
+Burn down the installed cohort; keep the control owner until rates fall; feed the lesson into §8.9.11.
 
 ##### Score yourself.
 
@@ -169,7 +169,7 @@ Not "it will work if the datasheet matches." Equivalence must be defined across 
 
 ##### Decision tree.
 
-Freeze requirements first (Table 7.2). Then walk bring-up through margin, interop, mechanism-based qualification, manufacturing validation, controlled pilot, and fleet monitoring. A hero sample is not a gate.
+Freeze requirements first (Table 8.2). Then walk bring-up through margin, interop, mechanism-based qualification, manufacturing validation, controlled pilot, and fleet monitoring. A hero sample is not a gate.
 
 ##### Measurements selected.
 
@@ -213,7 +213,7 @@ Problem: second-source equivalence claim. Impact: single-vendor risk reduction v
 
 ##### Deep dive.
 
-Appendix C.7, Appendix C.15, Appendix F.4, Table 7.2, Appendix G.16.
+Appendix C.7, Appendix C.15, Appendix F.4, Table 8.2, Appendix G.16.
 
 ## Case 3: Temperature-dependent BER failure
 
@@ -258,7 +258,7 @@ Mechanical alignment
 Power supply / PSRR</code></pre>
 ##### Decision tree.
 
-Appendix C.4, Appendix D.4, §7.9.5: scope; power versus quality; measure remaining margin at the failing temperature first.
+Appendix C.4, Appendix D.4, §8.9.5: scope; power versus quality; measure remaining margin at the failing temperature first.
 
 ##### Measurements selected.
 
@@ -302,7 +302,7 @@ Problem: BER fail at high temperature, power stable. Impact: envelope risk. Evid
 
 ##### Deep dive.
 
-Appendix C.4, §7.9.5, Appendix A.10.3, Appendix I.12.
+Appendix C.4, §8.9.5, Appendix A.10.3, Appendix I.12.
 
 ## Case 4: Qualification escape
 
@@ -344,7 +344,7 @@ Fleet condition
 
 ##### Decision tree.
 
-Appendix D.3, §8.1, Appendix C.13: name the missed uncertainty; choose containment; update the evidence path and production proxy.
+Appendix D.3, §9.1, Appendix C.13: name the missed uncertainty; choose containment; update the evidence path and production proxy.
 
 ##### Measurements selected.
 
@@ -376,7 +376,7 @@ Add the stress or observable that would have caught it; widen sample strategy; a
 
 ##### Fleet prevention.
 
-Keep cohort burn-down and a decision owner until rates fall; feed §7.9.11.
+Keep cohort burn-down and a decision owner until rates fall; feed §8.9.11.
 
 ##### Score yourself.
 
@@ -388,7 +388,7 @@ Problem: field fails after passed qual. Impact: (rate / cohort). Evidence: (miss
 
 ##### Deep dive.
 
-Appendix D.3, Appendix F.10, §8.1, Appendix C.13, Appendix F.10.1.
+Appendix D.3, Appendix F.10, §9.1, Appendix C.13, Appendix F.10.1.
 
 ## Staged mock interviews
 
@@ -414,7 +414,7 @@ Attenuation sweep: BER waterfall is shifted, not floored. Faceplate OMA is low o
 
 ##### Stage 4. Mechanism evidence.
 
-External eye / Tx-quality metric is marginal at the module faceplate. Plant ORL is within the stated budget. FA finds a degraded Tx coupling path on that lane; monitor PD calibration had been masking the drop (Chapter 7, Chapter 5, Chapter 8). *Ask:* What is the mechanism and enabling condition?
+External eye / Tx-quality metric is marginal at the module faceplate. Plant ORL is within the stated budget. FA finds a degraded Tx coupling path on that lane; monitor PD calibration had been masking the drop (Chapter 8, Chapter 6, Chapter 9). *Ask:* What is the mechanism and enabling condition?
 
 ##### Stage 5. Decision.
 
@@ -432,7 +432,7 @@ Suspect units pass on the lab reference bench after cool-down. Station A reads l
 
 ##### Stage 3. Controlled experiment.
 
-Golden and range-spanning units show a station bias after the cleaning change. Rework history shows most first-fail units were retested on Station B and passed. Supplier lot samples on a correlated Station B still meet the written spec, but tails sit closer to the guardband than the previous source (Chapter 7). *Ask:* What has been localized, and what is still unconfirmed?
+Golden and range-spanning units show a station bias after the cleaning change. Rework history shows most first-fail units were retested on Station B and passed. Supplier lot samples on a correlated Station B still meet the written spec, but tails sit closer to the guardband than the previous source (Chapter 8). *Ask:* What has been localized, and what is still unconfirmed?
 
 ##### Stage 4. Mechanism evidence.
 
@@ -454,7 +454,7 @@ Absolute wavelength on the OSA is still near the assigned grid when unlocked BER
 
 ##### Stage 3. Controlled experiment.
 
-With source fixed, neighbor heaters on/off move the suspect ring resonance and rail the heater code. With neighbors off, a case-$T$ ramp alone does not unlock at the same bias. Source TEC sweep with ring fixed does not reproduce the unlock (Chapter 6, §6.5). *Ask:* What has been localized, and what is still unconfirmed?
+With source fixed, neighbor heaters on/off move the suspect ring resonance and rail the heater code. With neighbors off, a case-$T$ ramp alone does not unlock at the same bias. Source TEC sweep with ring fixed does not reproduce the unlock (Chapter 7, §7.5). *Ask:* What has been localized, and what is still unconfirmed?
 
 ##### Stage 4. Mechanism evidence.
 
@@ -462,7 +462,7 @@ Thermal coupling matrix shows strong nearest-neighbor terms. Calibration park le
 
 ##### Stage 5. Decision.
 
-Contain high-$T$ neighbor-loaded operation or derate until fixed. Correct heater map / feed-forward / thermal design as owned. Recurrence control may be a qualification corner, sampled production audit, ATP proxy on heater headroom, or SPC on the affected process (Chapter 7). Fleet: alarm on heater rail and unlock under neighbor load.
+Contain high-$T$ neighbor-loaded operation or derate until fixed. Correct heater map / feed-forward / thermal design as owned. Recurrence control may be a qualification corner, sampled production audit, ATP proxy on heater headroom, or SPC on the affected process (Chapter 8). Fleet: alarm on heater rail and unlock under neighbor load.
 
 ##### Score the staged mocks.
 
@@ -470,7 +470,7 @@ Fail any case that treats a swap, locked flag, date-code correlation, or passing
 
 
 <div class="nav-links">
-  <a href="ch9-one-week-optical-systems-interview-review">&larr; Previous</a>
+  <a href="ch10-one-week-optical-systems-interview-review">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch11-thirty-second-interview-frameworks">Next &rarr;</a>
+  <a href="ch12-thirty-second-interview-frameworks">Next &rarr;</a>
 </div>

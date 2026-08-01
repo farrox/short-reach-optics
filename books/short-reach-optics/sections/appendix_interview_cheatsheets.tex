@@ -25,23 +25,82 @@ $\rightarrow$ investigate failures.
 \toprule
 Ch & Main question \\
 \midrule
-4 & What sets BER and margin? \\
-5 & How do the source and modulator behave? \\
-6 & How do wavelength and WDM stay controlled? \\
-7 & How does a sound design become a controlled product? \\
-8 & How do I find and prevent the real cause of a failure? \\
+4 & PAM4 versus PAM8: baud relief versus vertical cost? \\
+5 & What sets BER and margin? \\
+6 & How do the source and modulator behave? \\
+7 & How do wavelength and WDM stay controlled? \\
+8 & How does a sound design become a controlled product? \\
+9 & How do I find and prevent the real cause of a failure? \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \paragraph{How to use these sheets.}
-Spend about 2--3 minutes per page. Prefer Chapters~4--6, the productization
-sheet, and failure analysis. The productization flashcards at the end are a
-secondary reference bank, not the primary study set. Full depth:
-\Cref{ch:models,ch:lasers,ch:wdm,ch:productization,ch:failure-modes}.
+Spend about 2--3 minutes per page. Prefer the PAM4 versus PAM8 sheet,
+Chapters~5--7, productization, and failure analysis. The productization
+flashcards at the end are a secondary reference bank, not the primary study
+set. Full depth:
+\Cref{ch:multilevel,ch:models,ch:lasers,ch:wdm,ch:productization,ch:failure-modes}.
 
 \clearpage
-\section{Chapter 4: Quantitative link behavior}
+\section{PAM4 versus PAM8}
+\label{sec:cheat-pam}
+
+\textit{Goal.} Explain why denser PAM lowers baud and raises SNR, linearity, and
+calibration burden.
+
+\paragraph{Mental checklist.}
+Bits per symbol $\rightarrow$ Baud
+$\rightarrow$ Level spacing $\rightarrow$ Gray coding $\rightarrow$ Linearity
+$\rightarrow$ Where PAM is generated $\rightarrow$ FEC/EQ bill $\rightarrow$
+Keep or reject PAM8
+
+\paragraph{What I need to know.}
+\begin{itemize}
+\item $R_s=R_b/\log_2 M$: PAM4 is 2 bits/symbol; PAM8 is 3.
+\item Same total swing: PAM4 spacing is $1/3$; PAM8 is $1/7$.
+\item Gray coding makes nearest-level mistakes one-bit errors; SER $\neq$ BER.
+\item Outer OMA is $P_3-P_0$ (PAM4) or $P_7-P_0$ (PAM8), not an inner eye.
+\item PAM8 needs seven thresholds and tighter DAC/driver/modulator linearity.
+\item Baud relief is worthless if linearity, FEC power, or calibration fails.
+\end{itemize}
+
+\paragraph{Key distinctions.}
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}ll@{}}
+\toprule
+Do not confuse & With \\
+\midrule
+Bit rate & Baud (symbol rate) \\
+Outer OMA & Inner-eye quality / RLM \\
+Ideal spacing dB & Finished link sensitivity penalty \\
+PAM8 roadmap slogan & Closed SNR and linearity budget \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Trap.}
+Trap: ``PAM8 is better because it is higher-order modulation.''\\
+Better: ``PAM8 buys baud relief and spends vertical margin, linearity, and
+calibration.''
+
+\paragraph{60-second answer.}
+``At a fixed bit rate, PAM8 cuts baud to about one-third of the bit rate, so
+the channel bandwidth demand drops. The cost is seven eyes and one-seventh
+level spacing for the same outer swing, so SNR, linearity, threshold
+calibration, and often FEC get harder. I only choose PAM8 when that baud
+relief outweighs the bill.''
+
+\paragraph{Pressure.}
+Pressure: ``Outer OMA looks fine. Why is PAM8 failing?''\\
+Pivot: ``Outer OMA does not prove inner-eye spacing or modulator linearity. I
+would inspect level uniformity and compression next.''
+
+\footnotesize Depth: \Cref{ch:multilevel,sec:nrzpam4,tab:448-mod}.
+
+\clearpage
+\section{Chapter 5: Quantitative link behavior}
 \label{sec:cheat-ch4}
 
 \textit{Goal.} Explain what sets bit-error rate (BER) and margin without hiding
@@ -99,7 +158,7 @@ distortion. I would pull a waterfall and check for a floor.''
 \footnotesize Depth: \Cref{ch:models}.
 
 \clearpage
-\section{Chapter 5: Sources and modulation}
+\section{Chapter 6: Sources and modulation}
 \label{sec:cheat-ch5}
 
 \textit{Goal.} Choose and operate a source so the modulated link closes the
@@ -153,7 +212,7 @@ show the net margin, not one power number.''
 \footnotesize Depth: \Cref{ch:lasers}.
 
 \clearpage
-\section{Chapter 6: WDM and wavelength control}
+\section{Chapter 7: WDM and wavelength control}
 \label{sec:cheat-ch6}
 
 \textit{Goal.} Keep channels on the grid across temperature, process, and aging
@@ -264,7 +323,7 @@ dominant life mechanisms, factory controls, and a reversible pilot.''
 \footnotesize Depth: \Cref{ch:productization,tab:ladder,app:reliability-reference,app:manufacturing-reference}.
 
 \clearpage
-\section{Chapter 8: Failure analysis}
+\section{Chapter 9: Failure analysis}
 \label{sec:cheat-ch11}
 
 \textit{Goal.} Find the real cause without destroying the evidence, then stop it

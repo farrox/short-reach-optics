@@ -5,7 +5,7 @@ title: "Appendix I: Failure Analysis Reference"
 
 # Appendix I: Failure Analysis Reference
 
-This appendix is a symptom-route lookup for failure analysis. The investigation method (preserve, scope, falsify, confirm, correct, prevent) lives in Chapter 8. Use these routes after the population is scoped and the failing state is preserved. Do not treat a recipe as a substitute for the canonical sequence.
+This appendix is a symptom-route lookup for failure analysis. The investigation method (preserve, scope, falsify, confirm, correct, prevent) lives in Chapter 9. Use these routes after the population is scoped and the failing state is preserved. Do not treat a recipe as a substitute for the canonical sequence.
 
 *Read first:* power loss; BER waterfall versus floor; intermittent failures; contamination; yield drop.
 
@@ -118,7 +118,7 @@ Pre-FEC BER improves as you increase transmit or received power, then stops impr
 
 ##### Likely hypotheses.
 
-A BER floor means additional received power no longer removes the dominant impairment. That is a diagnostic pattern, not one mechanism. RIN can create a floor when signal-proportional intensity noise dominates the receiver budget: $\sigma_\mathrm{RIN} \propto I$, so $Q$ can saturate at $Q_\mathrm{max} = 1/\sqrt{\mathrm{RIN}_\mathrm{lin} \cdot \mathrm{BW}}$ under a dominant-RIN model (§4.3). Do not define every floor as RIN-limited. Other leading mechanisms include multipath interference (MPI), bias-rail noise that converts to equivalent intensity noise (§5.8), pattern-dependent distortion or residual ISI, crosstalk, timing or CDR limits, and DSP or equalization limits.
+A BER floor means additional received power no longer removes the dominant impairment. That is a diagnostic pattern, not one mechanism. RIN can create a floor when signal-proportional intensity noise dominates the receiver budget: $\sigma_\mathrm{RIN} \propto I$, so $Q$ can saturate at $Q_\mathrm{max} = 1/\sqrt{\mathrm{RIN}_\mathrm{lin} \cdot \mathrm{BW}}$ under a dominant-RIN model (§5.3). Do not define every floor as RIN-limited. Other leading mechanisms include multipath interference (MPI), bias-rail noise that converts to equivalent intensity noise (§6.8), pattern-dependent distortion or residual ISI, crosstalk, timing or CDR limits, and DSP or equalization limits.
 
 MPI may produce deterministic interference, power-independent floors, pattern sensitivity, environmental sensitivity, or time-correlated errors depending on coherence, path delay, motion, and modulation. Useful evidence includes ORL dependence, delay-related structure on an ESA, aggressor dependence, pattern dependence, thermal or mechanical sensitivity, and FEC error timing. Do not treat "bursty FEC histogram" alone as proof of MPI.
 
@@ -132,7 +132,7 @@ MPI may produce deterministic interference, power-independent floors, pattern se
 
 1.  Confirm the floor exists: sweep received power (or Tx OMA) at a named reference plane and plot BER vs. power. A floor appears as a horizontal asymptote.
 
-2.  Where engineering access exists, bisect optical vs. electrical RIN: quiet SMU (intrinsic) versus product bias board. If the floor moves, the electrical path is injecting noise (§5.8).
+2.  Where engineering access exists, bisect optical vs. electrical RIN: quiet SMU (intrinsic) versus product bias board. If the floor moves, the electrical path is injecting noise (§6.8).
 
 3.  Sweep ORL with a controlled reflector. If the floor worsens with lower ORL, the path is feedback-sensitive. Check isolator, connector, and fiber-attach cleanliness.
 
@@ -156,7 +156,7 @@ Linear extinction ratio is $\mathrm{ER}_\mathrm{lin}=P_1/P_0$ (for PAM4 outer le
 
 An idealized receiver OMA penalty for finite ER is $$\mathrm{PP}_\mathrm{dB}
 =
-10\log_{10}\!\left(\frac{\mathrm{ER}_\mathrm{lin}+1}{\mathrm{ER}_\mathrm{lin}-1}\right).$$ At 10 dB ER the penalty is $\sim$0.87 dB; at 6 dB ER it rises to $\sim$2.2 dB (§4.4). This is an idealized receiver-penalty model, not a measured compliance quantity such as TDECQ.
+10\log_{10}\!\left(\frac{\mathrm{ER}_\mathrm{lin}+1}{\mathrm{ER}_\mathrm{lin}-1}\right).$$ At 10 dB ER the penalty is $\sim$0.87 dB; at 6 dB ER it rises to $\sim$2.2 dB (§5.4). This is an idealized receiver-penalty model, not a measured compliance quantity such as TDECQ.
 
 ##### Measurements, mechanism isolation, and confirmation.
 
@@ -172,7 +172,7 @@ An idealized receiver OMA penalty for finite ER is $$\mathrm{PP}_\mathrm{dB}
 
 ##### If confirmed: possible controls and recurrence.
 
-Recalibrate the modulator operating point. For EML aging, update the EAM bias setpoint in firmware or flag the module for replacement if the absorption curve has shifted beyond the correctable range. For MZM drift, verify the bias controller and its monitor PD. For rings, retune or check for neighbor thermal crosstalk (§6.5). *Recurrence control:* ER or modulator-bias check in ATP or cal audit.
+Recalibrate the modulator operating point. For EML aging, update the EAM bias setpoint in firmware or flag the module for replacement if the absorption curve has shifted beyond the correctable range. For MZM drift, verify the bias controller and its monitor PD. For rings, retune or check for neighbor thermal crosstalk (§7.5). *Recurrence control:* ER or modulator-bias check in ATP or cal audit.
 
 ## Lane imbalance
 
@@ -218,7 +218,7 @@ In a WDM system, one or more channels walk off the ITU grid or the ring/filter p
 
 ##### Likely hypotheses.
 
-Laser wavelength moves with temperature and bias current. If the TEC or wavelength-locker servo cannot track, the channel walks off its assigned slot. In microring systems, resonance also moves strongly with temperature, and neighbor heaters create thermal crosstalk that pushes adjacent channels (§6.4, §6.5).
+Laser wavelength moves with temperature and bias current. If the TEC or wavelength-locker servo cannot track, the channel walks off its assigned slot. In microring systems, resonance also moves strongly with temperature, and neighbor heaters create thermal crosstalk that pushes adjacent channels (§7.4, §7.5).
 
 ##### Measurements, mechanism isolation, and confirmation.
 
@@ -234,7 +234,7 @@ Laser wavelength moves with temperature and bias current. If the TEC or waveleng
 
 ##### If confirmed: possible controls and recurrence.
 
-TEC saturation: reduce case temperature (improve airflow or liquid cooling) or derate the laser operating current. Ring unlock: increase heater headroom in the design, reduce thermal crosstalk with layout changes, or shift the CW-WDM source grid to re-center the ring tuning range. Aging: schedule preventive replacement (ELSFP hot-swap, §5.14). *Recurrence control:* TEC headroom and lock-error telemetry alarms.
+TEC saturation: reduce case temperature (improve airflow or liquid cooling) or derate the laser operating current. Ring unlock: increase heater headroom in the design, reduce thermal crosstalk with layout changes, or shift the CW-WDM source grid to re-center the ring tuning range. Aging: schedule preventive replacement (ELSFP hot-swap, §6.14). *Recurrence control:* TEC headroom and lock-error telemetry alarms.
 
 ## Eye closure (high TDECQ)
 
@@ -278,7 +278,7 @@ In a faceplate pluggable, double-digit-watt module power must leave through the 
 
 2.  **Check TEC current.** A TEC at max drive current is saturated; it cannot pump more heat. The junction temperature is higher than the case $T$ suggests.
 
-3.  **Measure LIV at temperature.** If threshold rises and slope drops steeply with $T$, the laser is near thermal rollover (§5.13). The operating point may be marginal.
+3.  **Measure LIV at temperature.** If threshold rises and slope drops steeply with $T$, the laser is near thermal rollover (§6.13). The operating point may be marginal.
 
 4.  **Neighbor loading.** Bring all lanes and neighbor modules to full traffic simultaneously. If the problem only appears under full-cage load, the thermal design margin is insufficient.
 
@@ -286,7 +286,7 @@ In a faceplate pluggable, double-digit-watt module power must leave through the 
 
 ##### If confirmed: possible controls and recurrence.
 
-System-level: improve airflow, lower ambient, or reduce module count per cage. Module-level: derate the laser (lower bias current reduces self-heating) or switch to a lower-power module style (LPO instead of retimed, Appendix H.5.1). CPO: ensure the cold-plate thermal interface material (TIM) is intact and the liquid loop meets flow-rate spec. Long-term: specify a tighter thermal class in the laser requirements (§5.6). *Recurrence control:* loaded-cage thermal class in ATP or DV plan.
+System-level: improve airflow, lower ambient, or reduce module count per cage. Module-level: derate the laser (lower bias current reduces self-heating) or switch to a lower-power module style (LPO instead of retimed, Appendix H.5.1). CPO: ensure the cold-plate thermal interface material (TIM) is intact and the liquid loop meets flow-rate spec. Long-term: specify a tighter thermal class in the laser requirements (§6.6). *Recurrence control:* loaded-cage thermal class in ATP or DV plan.
 
 ## Intermittent failures
 
@@ -398,7 +398,7 @@ Retest BER and sensitivity</code></pre>
 
 ##### If confirmed: possible controls and recurrence.
 
-After evidence is preserved: clean, re-inspect, and verify IL/ORL and BER. Preventive: dust caps on unused ports, "inspect before connect" in the service runbook, sealed cassettes or trunk cables that minimize open-ferrule exposure. For high-power paths (ELSFP, CW-WDM), burn damage requires replacement, not re-cleaning. Track contamination RMAs as a distinct failure code (not "laser failure") so FIT accounting stays honest (§8.10).
+After evidence is preserved: clean, re-inspect, and verify IL/ORL and BER. Preventive: dust caps on unused ports, "inspect before connect" in the service runbook, sealed cassettes or trunk cables that minimize open-ferrule exposure. For high-power paths (ELSFP, CW-WDM), burn damage requires replacement, not re-cleaning. Track contamination RMAs as a distinct failure code (not "laser failure") so FIT accounting stays honest (§9.10).
 
 > **Engineering heuristic.** Inspect before you clean, and photograph before you disturb. Cleaning first can erase the only evidence that the mate was dirty.
 
@@ -442,11 +442,11 @@ Use time scale and recovery to route the incident. A reversible shift during a t
 
 3.  Repeat the temperature sweep with source, wavelength-selective element, receiver, and neighbors isolated in turn.
 
-4.  Update the power, noise, timing, spectral, and control ledgers (§5.19). Several small shifts can explain a BER failure even when each component remains inside its stand-alone limit.
+4.  Update the power, noise, timing, spectral, and control ledgers (§6.19). Several small shifts can explain a BER failure even when each component remains inside its stand-alone limit.
 
 5.  Route reversible thermal loss to cooling, control, calibration, or derating. Route cumulative change to HTOL and life-model review. Route lot-clustered permanent steps to manufacturing failure analysis.
 
-On margin versus power, see §5.19: add margin only on the ledger that is empty; do not raise launch power by habit.
+On margin versus power, see §6.19: add margin only on the ledger that is empty; do not raise launch power by habit.
 
 The corrective action must restore margin at combined corners. A room-temperature retest does not close a high-temperature incident, and one clean HTOL readout does not explain a reversible lock failure.
 
@@ -474,11 +474,11 @@ Laser threshold and slope drift, wavelength movement, ring-resonance drift, TEC 
 
 ##### If confirmed: possible controls and recurrence.
 
-Restore thermal headroom, correct calibration and control limits, reduce coupling, or derate the operating point. Add the loaded-neighbor temperature ramp to the ATP or the product-readiness plan step that missed it (Chapter 7). *Recurrence control:* loaded-neighbor temperature ramp in ATP or requirement-verification / system-validation evidence.
+Restore thermal headroom, correct calibration and control limits, reduce coupling, or derate the operating point. Add the loaded-neighbor temperature ramp to the ATP or the product-readiness plan step that missed it (Chapter 8). *Recurrence control:* loaded-neighbor temperature ramp in ATP or requirement-verification / system-validation evidence.
 
 ## The debugging fork: power versus signal quality
 
-Apply the debugging fork (§4.8) before sweeping parameters or changing firmware: check the power meter or CMIS Rx power monitor first. If power moved, the fault is in the optical path (laser, coupling, connector, fiber, MUX); if power held but BER or TDECQ worsened, it is signal quality (bandwidth, noise, jitter, bias, equalization, reflection). This one check prevents the most common incident mistake: retuning an equalizer or laser bias when the real cause is a dirty connector. Then check which margin ledger moved (§5.19) before descending to component physics.
+Apply the debugging fork (§5.8) before sweeping parameters or changing firmware: check the power meter or CMIS Rx power monitor first. If power moved, the fault is in the optical path (laser, coupling, connector, fiber, MUX); if power held but BER or TDECQ worsened, it is signal quality (bandwidth, noise, jitter, bias, equalization, reflection). This one check prevents the most common incident mistake: retuning an equalizer or laser bias when the real cause is a dirty connector. Then check which margin ledger moved (§6.19) before descending to component physics.
 
 > **Why experienced engineers separate power from quality first?**
 >
@@ -511,7 +511,7 @@ Recurrence control</code></pre>
 
 ## Fleet triage map and field buckets
 
-Lab debug asks: *what is broken on this unit?* Fleet triage asks: *which bucket does this failure belong in, and who owns the fix?* The investigation method lives in Chapter 8. Optical programs at fleet scale own that bucket split across performance, reliability, and manufacturability. Wrong bucket wastes weeks.
+Lab debug asks: *what is broken on this unit?* Fleet triage asks: *which bucket does this failure belong in, and who owns the fix?* The investigation method lives in Chapter 9. Optical programs at fleet scale own that bucket split across performance, reliability, and manufacturability. Wrong bucket wastes weeks.
 
 > **Engineering heuristic.** Contain the population and clear the measurement system before you open supplier FA. A wrong ticket burns calendar time you cannot get back.
 
@@ -541,7 +541,7 @@ Performance
 
 Reliability
 
-: the unit met spec at ship and later degraded. Examples: LIV threshold rise, SMSR collapse, EAM bias creep, COD, TEC wear, epoxy creep on fiber attach. Fix is Arrhenius-backed life projection, burn-in/screen, derating, or field-replaceable lasers (Appendix F.11, §5.13, Appendix F.1.1, §5.14).
+: the unit met spec at ship and later degraded. Examples: LIV threshold rise, SMSR collapse, EAM bias creep, COD, TEC wear, epoxy creep on fiber attach. Fix is Arrhenius-backed life projection, burn-in/screen, derating, or field-replaceable lasers (Appendix F.11, §6.13, Appendix F.1.1, §6.14).
 
 Manufacturability
 
@@ -557,7 +557,7 @@ The discriminations in this section belong here: COD versus ESD damage on a dark
 
 At scale you rarely start with a DCA. Start with what the host and module already report:
 
-- *CMIS* monitors and alarms: module temperature, supply rails, Tx/Rx optical power, laser bias (when exposed), wavelength or channel ID on WDM parts, LOS/LOL flags, and interrupt history (`IntL` on ELSFP; §5.14).
+- *CMIS* monitors and alarms: module temperature, supply rails, Tx/Rx optical power, laser bias (when exposed), wavelength or channel ID on WDM parts, LOS/LOL flags, and interrupt history (`IntL` on ELSFP; §6.14).
 
 - Host link state: CDR lock, pre-FEC BER, FEC symbol-error histogram shape (§3.12), equalizer tap saturation (§3.6).
 
@@ -623,7 +623,7 @@ Ask whether the spectral or lock ledger was spent while average power looked fin
 
 ##### ELSFP swap restores link.
 
-Ask whether the external laser, the connector, or the engine owned the fail. Compare old versus new CMIS and connector cycles. Confirm MT inspect and LIV on the returned module. **Decision:** split RMA codes for laser versus connector. **Risk if skipped:** FIT burns down the wrong wear-out mode (§5.14).
+Ask whether the external laser, the connector, or the engine owned the fail. Compare old versus new CMIS and connector cycles. Confirm MT inspect and LIV on the returned module. **Decision:** split RMA codes for laser versus connector. **Risk if skipped:** FIT burns down the wrong wear-out mode (§6.14).
 
 ### Why triage order matters
 
@@ -643,7 +643,7 @@ Scope before mechanism. Telemetry before destructive FA. Bucket before owner. Co
 
     - Performance: change operating policy (derate, FIR, lock loop) or open a design/spec defect.
 
-    - Reliability: replace (ELSFP hot-swap when available), update FIT burn-down, tighten burn-in or derate (§5.13).
+    - Reliability: replace (ELSFP hot-swap when available), update FIT burn-down, tighten burn-in or derate (§6.13).
 
     - Manufacturability: quarantine lot, incoming hold, then structured 8D/CAPA with DPA when the physical mechanism is not yet confirmed (Appendix I.14.2, Appendix G.16).
 
@@ -661,15 +661,15 @@ When a lot fails ATP or incoming, or field triage lands in the manufacturability
 
 4.  **Verify closure:** containment confirmed effective; mechanism reproduced or physically confirmed; corrective action removes the failure; no unacceptable regression introduced; production control detects recurrence; next lots remain stable; field cohort trend improves. Re-run FAIR alone is not enough for environmental, intermittent, or fleet-specific escapes (Appendix D.16, Appendix G.5).
 
-Do not close 8D on "operator error" without a control that would have caught it at ATP or in process. If FA shows laser wear-out on a young unit, it may be a reliability screen gap, not a supplier process bug; reclassify with the buckets above before you argue FIT. Production-control and supplier-gate context: Chapter 7, Appendix G.16, Appendix G.
+Do not close 8D on "operator error" without a control that would have caught it at ATP or in process. If FA shows laser wear-out on a young unit, it may be a reliability screen gap, not a supplier process bug; reclassify with the buckets above before you argue FIT. Production-control and supplier-gate context: Chapter 8, Appendix G.16, Appendix G.
 
 ##### Worked paths (three common tickets).
 
-*"High temp only."* CMIS shows module near thermal limit and Tx power sagging. Bucket starts as performance (thermal design / derate). A permanent LIV or spectrum shift at temperature that matches an aged lot raises $P(\mathrm{aging})$ and justifies moving the ticket toward reliability; cool-down recovery without baseline shift keeps it in performance. Measure OSA wavelength before blaming the laser: a ring unlock is still performance (§3.14.3, Chapter 6).
+*"High temp only."* CMIS shows module near thermal limit and Tx power sagging. Bucket starts as performance (thermal design / derate). A permanent LIV or spectrum shift at temperature that matches an aged lot raises $P(\mathrm{aging})$ and justifies moving the ticket toward reliability; cool-down recovery without baseline shift keeps it in performance. Measure OSA wavelength before blaming the laser: a ring unlock is still performance (§3.14.3, Chapter 7).
 
-*"Random burst errors, average power fine."* Check FEC histogram for clustered errors and CMIS for Rx power dropouts. Clean and measure ORL. If RIN rises with ORL, treat feedback/ORL as the leading performance hypothesis until confirmed. If ORL is fine and bursts track a date code, treat intermittent fiber attach as the leading manufacturing hypothesis. If bursts grow over months at fixed ORL, suspect laser or driver aging (§5.8, §5.13).
+*"Random burst errors, average power fine."* Check FEC histogram for clustered errors and CMIS for Rx power dropouts. Clean and measure ORL. If RIN rises with ORL, treat feedback/ORL as the leading performance hypothesis until confirmed. If ORL is fine and bursts track a date code, treat intermittent fiber attach as the leading manufacturing hypothesis. If bursts grow over months at fixed ORL, suspect laser or driver aging (§6.8, §6.13).
 
-*"ELSFP replace fixed it; returned module looks alive on the bench."* Alive LIV with high ORL sensitivity or a dirty MT face supports connector/ORL over laser wear-out; confirm with IL/ORL and recurrence. Dead or kinked LIV supports a reliability path. Split those RMA codes or FIT math blames the wrong mode (§5.14, Appendix F.11.4).
+*"ELSFP replace fixed it; returned module looks alive on the bench."* Alive LIV with high ORL sensitivity or a dirty MT face supports connector/ORL over laser wear-out; confirm with IL/ORL and recurrence. Dead or kinked LIV supports a reliability path. Split those RMA codes or FIT math blames the wrong mode (§6.14, Appendix F.11.4).
 
 ##### RMA labels that keep FIT honest.
 
@@ -693,7 +693,7 @@ NFF rate and lot Pareto are as important as FIT. A rising NFF with clean LIV poi
 
 
 <div class="nav-links">
-  <a href="ch16-ai-fabric-context">&larr; Previous</a>
+  <a href="ch17-ai-fabric-context">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch18-optical-systems-staff-engineer-interview-questions">Next &rarr;</a>
+  <a href="ch19-optical-systems-staff-engineer-interview-questions">Next &rarr;</a>
 </div>

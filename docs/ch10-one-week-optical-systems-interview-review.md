@@ -49,7 +49,7 @@ Decision
 Control
   |
 Learning</code></pre>
-Do not invent a second framework. Use this loop inside the product-readiness lifecycle (Table 7.2), the qualification evidence path (Appendix D.3), and the failure-analysis handbook (Chapter 8).
+Do not invent a second framework. Use this loop inside the product-readiness lifecycle (Table 8.2), the qualification evidence path (Appendix D.3), and the failure-analysis handbook (Chapter 9).
 
 > **Why experienced engineers force this loop before naming a part?**
 >
@@ -211,7 +211,7 @@ Interpret evidence (observation / correlation / hypothesis / confirmation)
 Decision + owner
   |
 Recurrence control</code></pre>
-The diagram is a memory aid, not the answer. Speak one clear paragraph per phase under time pressure, and expand a node only when asked. Do not jump from a symptom to a component. End every debug answer with the decision (Table A.1). The systems loop in §1.1, the debugging pyramid in §1.16, and the failure-analysis method in Chapter 8 are the full versions of this spine.
+The diagram is a memory aid, not the answer. Speak one clear paragraph per phase under time pressure, and expand a node only when asked. Do not jump from a symptom to a component. End every debug answer with the decision (Table A.1). The systems loop in §1.1, the debugging pyramid in §1.16, and the failure-analysis method in Chapter 9 are the full versions of this spine.
 
 ##### Requirements.
 
@@ -219,7 +219,7 @@ Start by stating what the system must do before you name a part. Reach, lane rat
 
 ##### Architecture.
 
-Translate the requirement into an architecture path: fiber plant, wavelength, source, modulator, receiver, and digital stack. A VCSEL path commits you to 850 nm multimode fiber and direct modulation. A DFB or EML path at 1310 nm commits you to single-mode fiber and leaves a choice among direct modulation, electro- absorption, a silicon MZM, or a ring. Each path then sets detector material, thermal control, test coverage, and service policy. Architecture is where you show that component choices are not preferences; they are consequences of the requirement (Table 5.1).
+Translate the requirement into an architecture path: fiber plant, wavelength, source, modulator, receiver, and digital stack. A VCSEL path commits you to 850 nm multimode fiber and direct modulation. A DFB or EML path at 1310 nm commits you to single-mode fiber and leaves a choice among direct modulation, electro- absorption, a silicon MZM, or a ring. Each path then sets detector material, thermal control, test coverage, and service policy. Architecture is where you show that component choices are not preferences; they are consequences of the requirement (Table 6.1).
 
 ##### Measurements.
 
@@ -328,7 +328,7 @@ Derate / second source
 
 RMA / FA / DPA
 
-: Climb only as far as the decision requires; preserve first (§8.1).
+: Climb only as far as the decision requires; preserve first (§9.1).
 
 Firmware / calibration
 
@@ -447,13 +447,13 @@ For a new link, walk downward from capacity to the service model. Capacity sets 
 &\longrightarrow \text{validation and service model}.
 \end{split}$$
 
-A good answer explains why each choice constrains the next one. A VCSEL path points toward 850 nm, multimode fiber, silicon detection, and direct modulation with a short reach. A DFB path at 1310 nm points toward single-mode fiber, germanium detection, and a choice among a directly modulated laser, an EML, or an external silicon-photonic modulator. Neither path is "better." Each closes a different reach, power, cost, and manufacturing problem. The decision matrix is in Table 5.1.
+A good answer explains why each choice constrains the next one. A VCSEL path points toward 850 nm, multimode fiber, silicon detection, and direct modulation with a short reach. A DFB path at 1310 nm points toward single-mode fiber, germanium detection, and a choice among a directly modulated laser, an EML, or an external silicon-photonic modulator. Neither path is "better." Each closes a different reach, power, cost, and manufacturing problem. The decision matrix is in Table 6.1.
 
 ### Scope before mechanism chase
 
 Before you open an instrument, walk the failure up the scope ladder (unit $\rightarrow$ lot $\rightarrow$ vendor $\rightarrow$ site $\rightarrow$ fleet). Each rung changes the owner and the next action (Appendix D.5, Appendix D.9). Also ask time and change: sudden versus gradual, intermittent versus constant, and what changed just before the symptom. Scope often removes more hypotheses than the first bench measurement. A fleet-wide gradual drift cannot be a single dirty connector. A vendor-lot signature points to supplier containment before you redesign the module.
 
-Preserve the failing state and its telemetry before you reseat, clean, reboot, or change calibration. Capture CMIS monitors, pre-FEC BER, bias currents, temperatures, LOS and LOL flags, and firmware versions. An intermittent that disappears under debugging is still a real failure; you destroyed the evidence (§8.10, Table 8.1).
+Preserve the failing state and its telemetry before you reseat, clean, reboot, or change calibration. Capture CMIS monitors, pre-FEC BER, bias currents, temperatures, LOS and LOL flags, and firmware versions. An intermittent that disappears under debugging is still a real failure; you destroyed the evidence (§9.10, Table 9.1).
 
 > **Why experienced engineers ask about scope first?**
 >
@@ -467,7 +467,7 @@ Preserve the failing state and its telemetry before you reseat, clean, reboot, o
 
 ### Use the power-versus-signal-quality fork
 
-First ask whether received optical power changed. That one question splits the debug tree. Full instrument paths and worked examples live in §4.8, Appendix I.13.
+First ask whether received optical power changed. That one question splits the debug tree. Full instrument paths and worked examples live in §5.8, Appendix I.13.
 
 If power changed, stay on the power ledger: source enable, coupling, connectors, ORL, plant loss, and monitor calibration. Confirm with an external meter at a named plane before retuning eyes or equalizers.
 
@@ -477,7 +477,7 @@ If power held but BER worsened, leave the power ledger. Signal quality, receiver
 
 ### Track five margin ledgers
 
-Links rarely fail from one dramatic excursion. They fail when several small shifts spend different ledgers at once. The five-ledger map is a teaching and debug framework: name which ledger moved, what spent it, and which decision that update unlocks. Full device treatment is in §5.19.
+Links rarely fail from one dramatic excursion. They fail when several small shifts spend different ledgers at once. The five-ledger map is a teaching and debug framework: name which ledger moved, what spent it, and which decision that update unlocks. Full device treatment is in §6.19.
 
 <pre class="dectree" aria-label="Power · Noise · Timing · Spectral · Control"><code>Power · Noise · Timing · Spectral · Control</code></pre>
 ##### Power.
@@ -514,7 +514,7 @@ Name the spent ledger before naming a laser, TIA, or connector. The ledger picks
 
 **Key idea.** Product readiness is staged uncertainty reduction. Engineering is decision making; decision making is uncertainty reduction; measurements reduce uncertainty; therefore measurements exist to improve decisions.
 
-For every stage, name the question the stage answers and the uncertainty it removes. A test that answers no question is cost, not confidence. Do not re-list the lifecycle here; memorize the order in Table 7.2 and the exit criteria in §7.3.
+For every stage, name the question the stage answers and the uncertainty it removes. A test that answers no question is cost, not confidence. Do not re-list the lifecycle here; memorize the order in Table 8.2 and the exit criteria in §8.3.
 
 Night-before path: readiness playbook in Appendix C.8. Practice prose: Appendix A.10.2.
 
@@ -568,19 +568,19 @@ Average BER alone hides how errors arrive in time. A burst pattern means errors 
 
 Thermal effects are usually reversible when you return to the starting temperature: wavelength shift, ring detuning, EAM or MZM bias movement, TEC loading, and receiver-noise increase. Aging is cumulative and does not reverse on cool-down: threshold rise, slope loss, contact degradation, defect growth, and permanent absorption or spectral change.
 
-The practical test is simple. Return to the starting temperature and compare with pre-stress data at the same junction temperature. Full recovery supports a thermal or control hypothesis, often a calibration-table segment or an actuator that ran out of range. A permanently moved LIV baseline supports aging, damage, or assembly change. Mixing the two owners wastes weeks: a reliability team cannot fix a wrong table, and a firmware team cannot fix a worn facet (§5.10).
+The practical test is simple. Return to the starting temperature and compare with pre-stress data at the same junction temperature. Full recovery supports a thermal or control hypothesis, often a calibration-table segment or an actuator that ran out of range. A permanently moved LIV baseline supports aging, damage, or assembly change. Mixing the two owners wastes weeks: a reliability team cannot fix a wrong table, and a firmware team cannot fix a worn facet (§6.10).
 
 ### Accelerated life tests need a mechanism
 
 HTOL predicts field life only if elevated temperature and bias accelerate the same physical mechanism the fleet will see. The stress must not introduce a different mechanism, such as solder creep at a temperature the product never reaches, and it must not omit a dominant field stress, such as thermal cycling or connector wear.
 
-In the interview, state the assumed mechanism, the activation energy and why it applies to this process, the sample size and confidence bound, the stress and use temperatures, the measured drift parameter (threshold, slope, wavelength), and the field-data check. Treat the projected FIT result as a hypothesis that field returns must confirm or falsify. A FIT number without those pieces is a spreadsheet, not a prediction. The life acceleration model is Arrhenius (§5.13).
+In the interview, state the assumed mechanism, the activation energy and why it applies to this process, the sample size and confidence bound, the stress and use temperatures, the measured drift parameter (threshold, slope, wavelength), and the field-data check. Treat the projected FIT result as a hypothesis that field returns must confirm or falsify. A FIT number without those pieces is a spreadsheet, not a prediction. The life acceleration model is Arrhenius (§6.13).
 
 ### Calibration is part of the product
 
 The operating points a product actually stores are as much the product as the die. Know them by name: laser bias or APC target; EAM bias versus temperature; MZM quadrature; ring heater or wavelength-lock point; monitor-photodiode calibration; and receiver and power-monitor offsets. Tables are usually segmented by temperature, and segment boundaries are a real failure mode.
 
-Recalibrate when evidence demands it, not by habit: loop residual stops converging, an actuator approaches its rail, telemetry disagrees with an external reference, temperature leaves the table range, or repair, rework, or firmware changes invalidate coefficients. ATP must verify calibration at the temperature corners the fleet will see, not only at station ambient (§5.11).
+Recalibrate when evidence demands it, not by habit: loop residual stops converging, an actuator approaches its rail, telemetry disagrees with an external reference, temperature leaves the table range, or repair, rework, or firmware changes invalidate coefficients. ATP must verify calibration at the temperature corners the fleet will see, not only at station ambient (§6.11).
 
 ### Corrective action must prevent recurrence
 
@@ -622,7 +622,7 @@ Each long question opens with a **30-second answer** callout. Prefer the canonic
 
 ### How would you set laser requirements for a new IM/DD link?
 
-This is the ownership question. Start from the system, not from a laser datasheet. The output is a requirements slice a supplier and an ATP can both test against (Table 5.4, Table 5.1).
+This is the ownership question. Start from the system, not from a laser datasheet. The output is a requirements slice a supplier and an ATP can both test against (Table 6.4, Table 6.1).
 
 > **30-second answer (memorize).** Freeze reach, lane rate, fiber, power, lifetime, and volume. Those choose the source path. Then write OMA and RIN at a named plane and ORL, thermal and control headroom, a named HTOL mechanism, and an ATP with supplier reaction plan. Therefore I would freeze requirements that let us ship and second-source, not pick the laser that looks best on a bench.
 
@@ -632,11 +632,11 @@ Walk four steps: (1) system constraints choose the architecture path before any
 
 ##### 10-minute reference (read only).
 
-Open Appendix C.8 only if the interviewer expands into the ladder; otherwise expand one constraint into the budget table and ATP/FAIR landing. Architecture forks: §5.1, Table 5.1.
+Open Appendix C.8 only if the interviewer expands into the ladder; otherwise expand one constraint into the budget table and ATP/FAIR landing. Architecture forks: §6.1, Table 6.1.
 
 ### How would you establish readiness for a new optical transmitter from bring-up through production?
 
-This is the question most likely to open the interview. The lifecycle itself is in Appendix A.8.5, Table 7.2. Frame first: product readiness is staged uncertainty reduction. Each stage answers a question the previous stage could not.
+This is the question most likely to open the interview. The lifecycle itself is in Appendix A.8.5, Table 8.2. Frame first: product readiness is staged uncertainty reduction. Each stage answers a question the previous stage could not.
 
 > **30-second answer (memorize).** See Appendix C.8 for the canonical 30-second answer. Deliver that first; expand below only if asked.
 
@@ -646,7 +646,7 @@ Walk the ladder in order. For each stage, name one instrument, the uncertainty r
 
 ##### 10-minute reference (read only).
 
-Open Appendix C.8 for the thirty-second playbook. Expand only the stage the interviewer picks using Table 7.2: entry condition, key uncertainty, exit criteria, decision unlocked. Body detail is in Chapter 7. Prefer customer-visible measurements unless engineering access is available (Appendix D.11).
+Open Appendix C.8 for the thirty-second playbook. Expand only the stage the interviewer picks using Table 8.2: entry condition, key uncertainty, exit criteria, decision unlocked. Body detail is in Chapter 8. Prefer customer-visible measurements unless engineering access is available (Appendix D.11).
 
 ### BER worsens at high temperature but average power is stable. What do you do?
 
@@ -670,7 +670,7 @@ Playbook: Appendix C.4. Offer the calibration-table segment-boundary story or th
 
 ### How do you distinguish laser aging from calibration drift?
 
-Separates device physics from control-loop bookkeeping (§5.11, §5.10).
+Separates device physics from control-loop bookkeeping (§6.11, §6.10).
 
 > **30-second answer (memorize).** See Appendix C.5 for the canonical 30-second answer. Deliver that first; expand below only if asked.
 
@@ -684,7 +684,7 @@ Playbook: Appendix C.5. Monitor-PD corruption is the silent drift mode: APC hold
 
 ### How would you qualify a second laser or photonic-integrated-circuit supplier?
 
-This question tests supplier judgment, not vendor names. Night-before playbook: Appendix C.6. The frame: the first supplier's failure distribution does not transfer. Qualify against the requirements slice, not against the incumbent's datasheet (Table 5.4, Appendix G.16). Prefer customer-visible remaining margin; request engineering access only when black-box evidence is insufficient (Appendix D.11).
+This question tests supplier judgment, not vendor names. Night-before playbook: Appendix C.6. The frame: the first supplier's failure distribution does not transfer. Qualify against the requirements slice, not against the incumbent's datasheet (Table 6.4, Appendix G.16). Prefer customer-visible remaining margin; request engineering access only when black-box evidence is insufficient (Appendix D.11).
 
 > **30-second answer (memorize).** See Appendix C.6 for the canonical 30-second answer (component / PIC path). For a finished module or cable second source, use Appendix C.7. Deliver that first; expand below only if asked.
 
@@ -746,7 +746,7 @@ List location-tagged hypotheses (Tx ER/RIN/jitter, channel MPI or filter walk, R
 
 ### Why can a link show a BER floor that more launch power does not fix?
 
-This question has a short physics answer and a longer debug answer. Give both (Appendix I.2.1, §4.3).
+This question has a short physics answer and a longer debug answer. Give both (Appendix I.2.1, §5.3).
 
 ##### Step 1: state the pattern in one sentence.
 
@@ -770,7 +770,7 @@ Isolator or connector hygiene for feedback. Supply filtering for electrical nois
 
 ### What makes an HTOL projection credible?
 
-A FIT number without a mechanism is a spreadsheet. The frame is four conditions, said in order (§5.13). HTOL is only as credible as those four.
+A FIT number without a mechanism is a spreadsheet. The frame is four conditions, said in order (§6.13). HTOL is only as credible as those four.
 
 ##### Condition 1: a named failure mechanism.
 
@@ -814,7 +814,7 @@ Given a field return, can you reproduce the exact shipping measurement and decid
 
 ### When would you choose an EML, silicon MZM, or ring modulator?
 
-Choose by constraint, not preference. State the requirement slice first, then name what each path buys and costs (Table 5.1, Table 3.12).
+Choose by constraint, not preference. State the requirement slice first, then name what each path buys and costs (Table 6.1, Table 3.12).
 
 ##### When an EML wins.
 
@@ -834,7 +834,7 @@ A ring wins when many wavelengths must fit on one die, in dense WDM and co-packa
 
 ### How do you decide whether a field issue is performance, reliability, or manufacturability?
 
-Wrong bucket, wrong owner, wasted weeks. Classify on the ticket before failure analysis starts (§8.10).
+Wrong bucket, wrong owner, wasted weeks. Classify on the ticket before failure analysis starts (§9.10).
 
 ##### Bucket 1: performance.
 
@@ -860,7 +860,7 @@ Install age, lot correlation, and trend shape (sudden, gradual, or corner- depen
 
 ### What would you put in fleet telemetry, and why?
 
-Telemetry exists to catch margin erosion early and to triage without pulling hardware. Log what discriminates hypotheses, not every register on the chip (Appendix E.7, §8.10).
+Telemetry exists to catch margin erosion early and to triage without pulling hardware. Log what discriminates hypotheses, not every register on the chip (Appendix E.7, §9.10).
 
 ##### Per-lane observables.
 
@@ -992,7 +992,7 @@ Question: "BER is rising, but average optical power is stable. What would you do
 
 *Competent response.* "I would run a BER waterfall, check transmitter quality such as OMA or TDECQ, and compare receiver sensitivity at a named plane before changing parts."
 
-*Staff-level response.* "I would name the receive reference plane, preserve lane-resolved BER and FEC history, and ask whether the waterfall shifted or hit a floor. Stable average power does not clear the optical path. I would pick discriminating evidence (OMA or Tx quality, ORL or RIN if a floor is present, timing or EQ behavior) and state containment plus the decision criterion before FA" (Chapter 7, §4.8, Chapter 8).
+*Staff-level response.* "I would name the receive reference plane, preserve lane-resolved BER and FEC history, and ask whether the waterfall shifted or hit a floor. Stable average power does not clear the optical path. I would pick discriminating evidence (OMA or Tx quality, ORL or RIN if a floor is present, timing or EQ behavior) and state containment plus the decision criterion before FA" (Chapter 8, §5.8, Chapter 9).
 
 <table class="book-table"><tr><th>Dimension (0--2)</th><th>Weak</th><th>Competent</th><th>Staff</th></tr><tr><td>Scope and assumptions</td><td>0</td><td>1</td><td>2</td></tr><tr><td>Technical or causal reasoning</td><td>0</td><td>1</td><td>2</td></tr><tr><td>Evidence selection</td><td>0</td><td>1</td><td>2</td></tr><tr><td>Decision and remaining risk</td><td>0</td><td>1</td><td>2</td></tr><tr><td>Communication</td><td>1</td><td>2</td><td>2</td></tr><tr><td>Total / 10</td><td>1</td><td>6</td><td>10</td></tr></table>
 **Table A.2.** Example scores on Appendix A.12.1. The Staff answer earns the maximum because it names plane, waterfall shape, discriminating evidence, and a decision, not because it lists every instrument.
@@ -1007,7 +1007,7 @@ Assume seven days, with the interview near the end of Day 7. Protect sleep. Eac
 
 ##### Day 1: Mental models.
 
-*Learn:* five ledgers (Appendix A.8.4), validation lifecycle (Table 7.2), margin thinking, reference planes, Staff pattern (Appendix A.1).\
+*Learn:* five ledgers (Appendix A.8.4), validation lifecycle (Table 8.2), margin thinking, reference planes, Staff pattern (Appendix A.1).\
 *Output:* Explain aloud, "How would you debug a BER failure?"
 
 ##### Day 2: Optical fundamentals.
@@ -1017,22 +1017,22 @@ Assume seven days, with the interview near the end of Day 7. Protect sleep. Eac
 
 ##### Day 3: Validation.
 
-*Learn:* characterization, margin, interoperability, and where qualification and manufacturing sit in the lifecycle (Appendix A.8.5, Appendix C.8, Table 7.2).\
+*Learn:* characterization, margin, interoperability, and where qualification and manufacturing sit in the lifecycle (Appendix A.8.5, Appendix C.8, Table 8.2).\
 *Output:* Design a validation plan for a new optical module in two minutes.
 
 ##### Day 4: Reliability qualification.
 
-*Learn:* mechanism-driven qualification, HTOL versus burn-in, sample confidence (Chapter 7, Appendix C.15, Appendix D.3).\
+*Learn:* mechanism-driven qualification, HTOL versus burn-in, sample confidence (Chapter 8, Appendix C.15, Appendix D.3).\
 *Output:* Walk a laser-degradation qualification argument aloud.
 
 ##### Day 5: Manufacturing.
 
-*Learn:* measurement systems, ATP, yield, SPC, and scale-up (Chapter 7, Appendix C.13, Appendix G.11, Table G.1).\
+*Learn:* measurement systems, ATP, yield, SPC, and scale-up (Chapter 8, Appendix C.13, Appendix G.11, Table G.1).\
 *Output:* Discuss how you would take a link to volume production.
 
 ##### Day 6: Architecture and failure analysis.
 
-*Learn:* IM/DD, WDM, AI networking (Chapter 3, Chapter 6, Chapter 7, Chapter 1); fleet trees and cases (Appendix D, Appendix C.9, Appendix B.5). Rehearse two true stories (Appendix A.9).\
+*Learn:* IM/DD, WDM, AI networking (Chapter 3, Chapter 7, Chapter 8, Chapter 1); fleet trees and cases (Appendix D, Appendix C.9, Appendix B.5). Rehearse two true stories (Appendix A.9).\
 *Output:* Defend an architecture tradeoff; debug one fleet case without naming a component first.
 
 ##### Day 7: Mock interviews.
@@ -1060,7 +1060,7 @@ Full trees: Appendix D.1, Appendix D.4. Pick the next measurement by information
 ### Cheat Sheet B: Validation / decision loop
 
 <table class="book-table"><tr><th>Requirement Risk Mechanism</th></tr><tr><td>[0.4em]</td></tr><tr><td>[0.2em] Measurement Evidence Decision Control</td></tr></table>
-Staff pattern and lifecycle: Appendix A.1, Table 7.2.
+Staff pattern and lifecycle: Appendix A.1, Table 8.2.
 
 ##### Executive frame (one breath).
 
@@ -1085,7 +1085,7 @@ Three pairs only. Grade yourself against the strong column, then open the matchi
 ##### 2. Validate a new module.
 
 *Weak:* "I would use a DCA, a power meter, and a temperature chamber."\
-*Strong:* Walk the lifecycle stage that matches the risk: requirements, characterization, margin, interop, qual, manufacturing control (Appendix C.8, Table 7.2). Instruments are means, not the plan.
+*Strong:* Walk the lifecycle stage that matches the risk: requirements, characterization, margin, interop, qual, manufacturing control (Appendix C.8, Table 8.2). Instruments are means, not the plan.
 
 ##### 3. Qual escape in the field.
 
@@ -1094,7 +1094,7 @@ Three pairs only. Grade yourself against the strong column, then open the matchi
 
 
 <div class="nav-links">
-  <a href="ch8-failure-analysis-from-symptom-to-confirmed-mechanism">&larr; Previous</a>
+  <a href="ch9-failure-analysis-from-symptom-to-confirmed-mechanism">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch10-engineering-case-studies">Next &rarr;</a>
+  <a href="ch11-engineering-case-studies">Next &rarr;</a>
 </div>

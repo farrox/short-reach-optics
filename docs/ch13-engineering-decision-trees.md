@@ -32,7 +32,7 @@ Controlled confirmation
 Decision + owner + timeline + reversibility
   |
 Follow-up control (ATP / SPC / telemetry / supplier)</code></pre>
-Stable average power deprioritizes gross optical loss but does not eliminate fast power fluctuations, clipping, monitor averaging, or reflection-dependent effects. A surviving hypothesis is only the leading mechanism until confirmed by reproduction, controlled swap, stress dependence, rollback, or physical evidence (§4.8, Appendix I.13, Appendix D.16).
+Stable average power deprioritizes gross optical loss but does not eliminate fast power fluctuations, clipping, monitor averaging, or reflection-dependent effects. A surviving hypothesis is only the leading mechanism until confirmed by reproduction, controlled swap, stress dependence, rollback, or physical evidence (§5.8, Appendix I.13, Appendix D.16).
 
 > **Why experienced engineers ask about scope before touching the lab?**
 >
@@ -65,13 +65,13 @@ Step 9: Ramp mass production
 Step 10: Monitor the fleet
   |
 Step 11: Feed learning / next revision</code></pre>
-Same order as Table 7.2, not a second Staff loop. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness (§7.3, Appendix A.8.5, Appendix F.1.1).
+Same order as Table 8.2, not a second Staff loop. Do not treat a bring-up pass as margin evidence, or an HTOL pass as production readiness (§8.3, Appendix A.8.5, Appendix F.1.1).
 
-*Legend.* Program phases: EVT, DVT, PVT, pilot, MP. Engineering disciplines: characterization, verification, system validation, reliability qualification, manufacturing validation, production control, fleet monitoring. Program phases group work. Engineering disciplines define the evidence (§7.4, Appendix F.18).
+*Legend.* Program phases: EVT, DVT, PVT, pilot, MP. Engineering disciplines: characterization, verification, system validation, reliability qualification, manufacturing validation, production control, fleet monitoring. Program phases group work. Engineering disciplines define the evidence (§8.4, Appendix F.18).
 
-Step 6 (qualify reliability): mechanism $\rightarrow$ stress $\rightarrow$ observable $\rightarrow$ acceptance $\rightarrow$ confidence. See Chapter 7.
+Step 6 (qualify reliability): mechanism $\rightarrow$ stress $\rightarrow$ observable $\rightarrow$ acceptance $\rightarrow$ confidence. See Chapter 8.
 
-Step 7 (validate manufacturing): production reference $\rightarrow$ representative builds $\rightarrow$ trusted measurement $\rightarrow$ yield/ATP/SPC $\rightarrow$ ramp. See Chapter 7.
+Step 7 (validate manufacturing): production reference $\rightarrow$ representative builds $\rightarrow$ trusted measurement $\rightarrow$ yield/ATP/SPC $\rightarrow$ ramp. See Chapter 8.
 
 ## Qualification evidence tree
 
@@ -116,7 +116,7 @@ Highest-value measurement
 Leading mechanism -&gt; controlled confirmation
   |
 Decision + recurrence control</code></pre>
-One check before retuning equalizers or bias tables (§4.8, Appendix D.1).
+One check before retuning equalizers or bias tables (§5.8, Appendix D.1).
 
 > **Engineering heuristic.** Name the power-versus-quality branch before you name a laser, TIA, or connector. Parts without a branch are guesses.
 
@@ -136,7 +136,7 @@ Correlation analysis (which cohort?)
   |-- lot / date code / FW / cal / platform / location
   |
 Containment and corrective action</code></pre>
-Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (§8.10, Appendix G.12).
+Scope sets severity and priors. Correlation after isolation unlocks contain, pause, replace, or supplier escalate (§9.10, Appendix G.12).
 
 > **Engineering heuristic.** Population behavior is usually more informative than one failing unit. A cohort plot often beats another hour on the same sample.
 
@@ -151,7 +151,7 @@ Gradual?
   |-- aging / drift / margin erosion / contamination / cal movement
   |
 Prioritize measurements (priors, not conclusions)</code></pre>
-Sudden and gradual are priors that reorder the bench, not confirmed-mechanism claims (Chapter 8).
+Sudden and gradual are priors that reorder the bench, not confirmed-mechanism claims (Chapter 9).
 
 ## Transmitter, channel, or receiver
 
@@ -165,7 +165,7 @@ Golden swap / loopback
 Evidence
   |
 Owner + decision</code></pre>
-Bisect domains before opening packages (§4.8, Appendix I.2).
+Bisect domains before opening packages (§5.8, Appendix I.2).
 
 ## Supplier qualification
 
@@ -205,7 +205,7 @@ Recurrence control
 Decision closure: owner / timeline / reversibility / follow-up</code></pre>
 > **Engineering heuristic.** Contain first when the population can grow. Perfect mechanism stories do not unship yesterday's lot.
 
-Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (Appendix G.18, §8.10, Appendix D.16).
+Use provisional containment when the population can grow, then refine the hold after scope analysis. The system owner keeps responsibility for evidence quality and verifying corrective action (Appendix G.18, §9.10, Appendix D.16).
 
 ## Margin-consumption flow
 
@@ -230,7 +230,7 @@ Remaining margin
 Above deployment requirement?
   |-- YES --&gt; proceed
   |-- NO  --&gt; redesign / restrict / recalibrate / reject</code></pre>
-This is a conceptual margin flow. Measure net margin at a defined reference plane and avoid double-counting overlapping penalties (§5.19, Appendix E.5).
+This is a conceptual margin flow. Measure net margin at a defined reference plane and avoid double-counting overlapping penalties (§6.19, Appendix E.5).
 
 ## Black-box versus engineering access
 
@@ -355,20 +355,20 @@ Reversibility: how hard to undo?
 Follow-up control: ATP / SPC / telemetry / supplier CA</code></pre>
 Example (supplier defect): stop shipment of the scoped lot; owner Operations plus Quality; follow-up is supplier corrective action and the production or fleet control that would catch the next escape.
 
-Chapter 7, Chapter 8, Appendix C point here rather than restating the list.
+Chapter 8, Chapter 9, Appendix C point here rather than restating the list.
 
 ##### Boundaries (trees are not proof).
 
-Decision trees prioritize the next measurement. They do not convert a symptom into a confirmed mechanism. A controlled swap localizes ownership only to the extent that other variables remain unchanged. A passing retest is not closure: restore the original failing condition with margin and implement a recurrence control (Chapter 8, Chapter 7, Appendix A.12).
+Decision trees prioritize the next measurement. They do not convert a symptom into a confirmed mechanism. A controlled swap localizes ownership only to the extent that other variables remain unchanged. A passing retest is not closure: restore the original failing condition with margin and implement a recurrence control (Chapter 9, Chapter 8, Appendix A.12).
 
 ## Decision-Tree Interview Drills
 
-Compact navigation drills. Enter the correct route quickly. Do not invent a second lifecycle; re-enter Appendix D.2, Table 7.2 when the decision requires it. Score spoken answers with Appendix A.12.1 if useful; use Appendix A.12 for full case practice.
+Compact navigation drills. Enter the correct route quickly. Do not invent a second lifecycle; re-enter Appendix D.2, Table 8.2 when the decision requires it. Score spoken answers with Appendix A.12.1 if useful; use Appendix A.12 for full case practice.
 
 ##### Scenario 1. BER rises while average power remains stable.
 
 *First action.* Preserve lane-resolved BER and FEC history and identify the receive reference plane.\
-*Route.* BER shift-versus-floor (§4.8, Appendix D.4).\
+*Route.* BER shift-versus-floor (§5.8, Appendix D.4).\
 *Evidence needed.* BER waterfall, OMA or transmitter-quality evidence, receiver sensitivity, ORL or reflection evidence, timing and equalizer behavior.\
 *Decision point.* Which ledger limits first: power, noise, timing, spectrum, or control.\
 *Common trap.* Stable average power clears the optical path.
@@ -376,7 +376,7 @@ Compact navigation drills. Enter the correct route quickly. Do not invent a seco
 ##### Scenario 2. One station disagrees with the laboratory reference.
 
 *First action.* Hold suspect production output and preserve software, limits, calibration, and fixture state.\
-*Route.* Measurement-system and station-correlation (Chapter 7, Appendix D.14).\
+*Route.* Measurement-system and station-correlation (Chapter 8, Appendix D.14).\
 *Evidence needed.* Golden and range-spanning units, repeatability, cross-station bias, and trusted reference-bench measurements.\
 *Decision point.* Separate station bias from product variation before changing limits or supplier ownership.\
 *Common trap.* Correct the station by changing its acceptance limit.
@@ -384,7 +384,7 @@ Compact navigation drills. Enter the correct route quickly. Do not invent a seco
 ##### Scenario 3. Qualification sample fails after temperature cycling.
 
 *First action.* Preserve the stressed state and compare with the pre-stress baseline.\
-*Route.* Package-fatigue and intermittent-mechanism (Chapter 7, Appendix D.3).\
+*Route.* Package-fatigue and intermittent-mechanism (Chapter 8, Appendix D.3).\
 *Evidence needed.* Continuity, intermittent monitoring, optical alignment, BER, physical inspection, lot genealogy, and cycle chronology.\
 *Decision point.* Isolated, lot-correlated, process-related, or design-wide.\
 *Common trap.* One failure automatically invalidates the entire qualification matrix.
@@ -392,7 +392,7 @@ Compact navigation drills. Enter the correct route quickly. Do not invent a seco
 ##### Scenario 4. Failures cluster by date code after 90 days.
 
 *First action.* Scope by installation age, supplier lot, production history, host, site, and firmware.\
-*Route.* Manufacturing-escape versus reliability-gap (Chapter 7, Appendix D.9).\
+*Route.* Manufacturing-escape versus reliability-gap (Chapter 8, Appendix D.9).\
 *Evidence needed.* ATP first-pass data, rework history, degradation signature, physical evidence, and qualification coverage.\
 *Decision point.* Manufacturing, qualification, system, or mixed ownership.\
 *Common trap.* Date-code correlation proves supplier root cause.
@@ -400,7 +400,7 @@ Compact navigation drills. Enter the correct route quickly. Do not invent a seco
 ##### Scenario 5. One wavelength reports locked but has poor BER.
 
 *First action.* Verify absolute wavelength, channel assignment, actuator headroom, and transmitter quality.\
-*Route.* Source-versus-ring/filter alignment (Chapter 6, §6.4).\
+*Route.* Source-versus-ring/filter alignment (Chapter 7, §7.4).\
 *Evidence needed.* OSA or wavemeter, heater or TEC code, lock error, OMA, filter alignment, and BER during controlled source and filter sweeps.\
 *Decision point.* Locked state correct, marginal, or on the wrong resonance.\
 *Common trap.* A locked-status bit proves correct grid placement.
@@ -408,7 +408,7 @@ Compact navigation drills. Enter the correct route quickly. Do not invent a seco
 ##### Scenario 6. A module swap clears the failure.
 
 *First action.* Record every variable changed by the swap and preserve the original module, fiber, and port.\
-*Route.* Controlled-swap ownership (Chapter 8, Appendix D.5).\
+*Route.* Controlled-swap ownership (Chapter 9, Appendix D.5).\
 *Evidence needed.* Reverse swap, original-condition reproduction, connector inspection, firmware state, thermal contact, and path comparison.\
 *Decision point.* Symptom follows module, port, fiber, contact disturbance, or reset state.\
 *Common trap.* The swapped module is the confirmed root cause.
@@ -416,7 +416,7 @@ Compact navigation drills. Enter the correct route quickly. Do not invent a seco
 ##### Scenario 7. Link flaps disappear after power cycling.
 
 *First action.* Preserve remaining event history and identify which states were reset.\
-*Route.* Intermittent and state-transition (Chapter 7, Appendix D.6).\
+*Route.* Intermittent and state-transition (Chapter 8, Appendix D.6).\
 *Evidence needed.* Retrains, FEC bursts, CMIS transitions, host events, thermal state, rail behavior, and firmware logs.\
 *Decision point.* Software or control recovery versus electrical, optical, thermal, or contact mechanisms.\
 *Common trap.* Power-cycle recovery proves firmware ownership.
@@ -424,7 +424,7 @@ Compact navigation drills. Enter the correct route quickly. Do not invent a seco
 ##### Scenario 8. One lane degrades under neighbor loading.
 
 *First action.* Capture lane and neighbor state, thermal telemetry, control codes, and error timing.\
-*Route.* Local thermal-crosstalk or shared-resource (Chapter 6, §6.5, Appendix D.5).\
+*Route.* Local thermal-crosstalk or shared-resource (Chapter 7, §7.5, Appendix D.5).\
 *Evidence needed.* Neighbor on/off experiment, temperature mapping, wavelength or lock state, electrical crosstalk evidence, and lane remap where supported.\
 *Decision point.* Symptom follows optical channel, electrical lane, local thermal path, or shared supply.\
 *Common trap.* One-lane behavior proves a defective source.
@@ -477,7 +477,7 @@ Compact navigation drills. Enter the correct route quickly. Do not invent a seco
 
 
 <div class="nav-links">
-  <a href="ch11-thirty-second-interview-frameworks">&larr; Previous</a>
+  <a href="ch12-thirty-second-interview-frameworks">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch13-optical-measurement-and-test-reference">Next &rarr;</a>
+  <a href="ch14-optical-measurement-and-test-reference">Next &rarr;</a>
 </div>

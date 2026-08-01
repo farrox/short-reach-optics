@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "Ch 14: Reliability Qualification Reference"
+title: "Ch 15: Reliability Qualification Reference"
 ---
 
-# 14 Reliability Qualification Reference
+# 15 Reliability Qualification Reference
 
-This appendix is a lookup reference for qualification standards ownership, named stress methods, sample and confidence arithmetic, the qualification planning matrix, and connector and optical-interface test methods. The compact productization spine lives in Chapter 7. The relocated full readiness and qualification narratives follow after the lookup material below.
+This appendix is a lookup reference for qualification standards ownership, named stress methods, sample and confidence arithmetic, the qualification planning matrix, and connector and optical-interface test methods. The compact productization spine lives in Chapter 8. The relocated full readiness and qualification narratives follow after the lookup material below.
 
 *Read first:* which standard owns which part of the link; what each named stress method reveals and how it is misread.
 
@@ -37,7 +37,7 @@ A statement that a device "passed GR-468" is therefore incomplete unless it iden
 
 - and the life or environmental claim being supported.
 
-GR-468 is an important active-optoelectronic reliability reference. It supplies established methods and a common evidence language, but the engineering team must still demonstrate that the selected stresses accelerate credible mechanisms, that the samples represent the released design and process, and that the results support the product's actual life and environmental claims. GR-468 qualification does not by itself prove complete transceiver readiness, a universal field lifetime, manufacturing reproducibility, system interoperability, or fleet availability. Those claims require the additional evidence developed in Chapter 7.
+GR-468 is an important active-optoelectronic reliability reference. It supplies established methods and a common evidence language, but the engineering team must still demonstrate that the selected stresses accelerate credible mechanisms, that the samples represent the released design and process, and that the results support the product's actual life and environmental claims. GR-468 qualification does not by itself prove complete transceiver readiness, a universal field lifetime, manufacturing reproducibility, system interoperability, or fleet availability. Those claims require the additional evidence developed in Chapter 8.
 
 <table class="book-table"><tr><th>Reference family</th><th>Typical scope</th><th>Contribution to the evidence argument</th><th>Does not establish by itself</th></tr><tr><td>GR-468</td><td>Active optoelectronic devices and applicable device levels</td><td>Established reliability-assurance and accelerated-aging methods</td><td>Complete product readiness or universal field life</td></tr><tr><td>GR-3013</td><td>Active optoelectronic devices in short-life information-handling equipment</td><td>Reliability and quality-assurance criteria for shorter-life applications gr3013</td><td>Automatic applicability to the current product</td></tr><tr><td>GR-1221</td><td>Passive optical components</td><td>Reliability-assurance evidence for splitters, couplers, WDM filters, and related passive paths gr1221</td><td>Active-device life or system interoperability</td></tr><tr><td>GR-1209</td><td>Passive optical-component generic requirements</td><td>Functional, environmental, and network-use criteria gr1209</td><td>Complete reliability qualification by itself</td></tr><tr><td>JEDEC device methods</td><td>Electronic ICs and semiconductor mechanisms</td><td>IC, ESD, latch-up, moisture, and process evidence (sec:ic-reliability)</td><td>Assembled optical-product readiness</td></tr></table>
 **Table F.1.** Standards ownership for optical-product reliability evidence. Choose the reference family from the architecture and claim, not from habit.
@@ -48,19 +48,19 @@ Three practices keep GR-468-style evidence honest when you map named stresses on
 
 - Keep burn-in and qualification HTOL distinct. Burn-in screens infant mortality from a production population. Qualification HTOL gathers life or mechanism evidence from representative samples. A long life test may justify a room-temperature production proxy, a sampled hot audit, a process monitor, or no direct production screen at all. It is not itself a per-unit screen.
 
-- Document the activation energy and confidence bounds whenever HTOL hours are converted into field years, and keep sample-size humility (Appendix F.10.1, Chapter 7, Appendix F.9).
+- Document the activation energy and confidence bounds whenever HTOL hours are converted into field years, and keep sample-size humility (Appendix F.10.1, Chapter 8, Appendix F.9).
 
-- Qualify the laser die, the package, and the module assembly separately when failures split across those boundaries (Appendix F.11.4, §5.13, §5.14).
+- Qualify the laser die, the package, and the module assembly separately when failures split across those boundaries (Appendix F.11.4, §6.13, §6.14).
 
 ### GR-1221 and GR-1209: the passive-component companions
 
 GR-468 covers active optoelectronics. For passive optics, use *Telcordia GR-1221-CORE* (Generic Reliability Assurance Requirements for Passive Optical Components) together with *GR-1209-CORE* (Generic Requirements for Passive Optical Components) . GR-1221 uses the same style of stress sequence, including damp heat, temperature cycling, mechanical tests, and aging, but scores pass or fail on insertion loss and return loss rather than on LIV. GR-1209 supplies the functional, environmental, and network-use criteria that the reliability stresses sit against.
 
-A short-reach link that leans on an on-package or blind-mate MUX and on external multi-wavelength sources therefore carries a passive reliability budget that lives in GR-1221/GR-1209, not GR-468 (Appendix F.5, Chapter 6, Table F.1).
+A short-reach link that leans on an on-package or blind-mate MUX and on external multi-wavelength sources therefore carries a passive reliability budget that lives in GR-1221/GR-1209, not GR-468 (Appendix F.5, Chapter 7, Table F.1).
 
 ### Electronics: JESD47, ESD, latch-up, and AEC-Q100
 
-The modulator driver, TIA, retimer, and DSP (§3.14.3, §4.5) are ordinary CMOS or SiGe BiCMOS ICs. They fail by a different and better-documented set of mechanisms than the laser, so they use the semiconductor industry's own qualification language rather than laser-aging math borrowed from §5.13.
+The modulator driver, TIA, retimer, and DSP (§3.14.3, §5.5) are ordinary CMOS or SiGe BiCMOS ICs. They fail by a different and better-documented set of mechanisms than the laser, so they use the semiconductor industry's own qualification language rather than laser-aging math borrowed from §6.13.
 
 ##### JESD47: the silicon-side GR-468.
 
@@ -68,7 +68,7 @@ JEDEC *JESD47* is the baseline stress-test-driven qualification flow for a new I
 
 ##### ESD.
 
-A discharge event during handling or assembly damages a gate oxide or junction. Component-level classification uses the human-body model (HBM) and charged-device model (CDM) test standards, *ANSI/ESDA/JEDEC JS-001* and *JS-002* . A driver or TIA datasheet HBM/CDM rating is the number that protects the part on the factory floor, at the fiber-attach and wire-bond stations where a laser die is also exposed. Latent ESD rarely has an economical every-unit screen. Do not project ESD with an activation energy. A field ESD failure is a manufacturing or design-margin item (§8.10), not a wear-out FIT argument.
+A discharge event during handling or assembly damages a gate oxide or junction. Component-level classification uses the human-body model (HBM) and charged-device model (CDM) test standards, *ANSI/ESDA/JEDEC JS-001* and *JS-002* . A driver or TIA datasheet HBM/CDM rating is the number that protects the part on the factory floor, at the fiber-attach and wire-bond stations where a laser die is also exposed. Latent ESD rarely has an economical every-unit screen. Do not project ESD with an activation energy. A field ESD failure is a manufacturing or design-margin item (§9.10), not a wear-out FIT argument.
 
 ##### Latch-up (JESD78): method detail.
 
@@ -86,7 +86,7 @@ Supply overvoltage
 
 Temperature classification matters because latch-up susceptibility usually rises with temperature. Class II testing is performed at the maximum operating junction temperature (or an ambient/case temperature that achieves the equivalent $T_\mathrm{j}$). Class I testing at a lower temperature is a weaker claim and is not a substitute for Class II when the product thermal class reaches $T_\mathrm{j,max}$. After each stress pulse, supply current is compared with the pre-stress nominal current. Typical detection thresholds are an increase of about 10 mA when the nominal current is low, or about $1.4\times$ the nominal current when the device draws higher current; the exact acceptance limits follow the revision of JESD78 and the supplier report in force. A post-stress functional or ATE check is required because a short latch or EOS event can damage the die and then release before the latch-up tester records a sustained current increase.
 
-A latched driver or TIA can look like a dead laser on the bench: no light, no LIV signature, elevated supply current until power is cycled. Passing a component-level JESD78 classification supports IC robustness for the named injection and overvoltage stresses. It does not establish complete module immunity to hot-plug sequencing, shared-rail disturbance, connector events, or host-side grounding faults. Those remain system and manufacturing controls (Chapter 7, §8.10).
+A latched driver or TIA can look like a dead laser on the bench: no light, no LIV signature, elevated supply current until power is cycled. Passing a component-level JESD78 classification supports IC robustness for the named injection and overvoltage stresses. It does not establish complete module immunity to hot-plug sequencing, shared-rail disturbance, connector events, or host-side grounding faults. Those remain system and manufacturing controls (Chapter 8, §9.10).
 
 ##### AEC-Q100 is supplemental evidence, not a datacenter requirement.
 
@@ -96,7 +96,7 @@ Treat a published Q100 grade as a useful supplemental signal instead. A driver, 
 
 ##### Where IC qualification lands after release.
 
-Carry IC-level qualification into the production acceptance and SPC structure in Chapter 7. Require the supplier's JESD47 report and the HBM/CDM/latch-up ratings for driver and TIA die at DVT. Add an ESD handling audit to the incoming-QC checklist alongside laser LIV and SMSR sampling. Treat a driver or TIA silicon revision the same way you treat a laser die revision or a CMIS firmware revision: an ECO that needs first-article requalification, not a silent BOM swap.
+Carry IC-level qualification into the production acceptance and SPC structure in Chapter 8. Require the supplier's JESD47 report and the HBM/CDM/latch-up ratings for driver and TIA die at DVT. Add an ESD handling audit to the incoming-QC checklist alongside laser LIV and SMSR sampling. Treat a driver or TIA silicon revision the same way you treat a laser die revision or a CMIS firmware revision: an ECO that needs first-article requalification, not a silent BOM swap.
 
 ## Stress-method quick reference
 
@@ -158,17 +158,17 @@ Three practical consequences follow for an ELSFP or CPO fiber-attach program.
 
 3.  Acceptance limits may include an explicit mating-cycle count and endface grade rather than an inherited generic MPO datasheet number (Table G.2). An ELS bank that hot-swaps weekly reaches a 500-cycle floor in under ten years, and a CPO fiber array that is field-serviced more aggressively reaches it faster.
 
-ELSFP cycling adds connector wear and contamination that raise ORL (Appendix E.2, §5.14). The mating-cycle and endface-grade numbers above are what turn "the connector feels loose" into a measurable limit instead of a guess.
+ELSFP cycling adds connector wear and contamination that raise ORL (Appendix E.2, §6.14). The mating-cycle and endface-grade numbers above are what turn "the connector feels loose" into a measurable limit instead of a guess.
 
-Destructive physical analysis (cross-section, EDX) and structured 8D or CAPA with suppliers close the loop from RMA to design rule (Appendix G.16, §8.10). Without that loop, packaging failures get mis-attributed to laser Arrhenius models and the wrong part gets redesigned.
+Destructive physical analysis (cross-section, EDX) and structured 8D or CAPA with suppliers close the loop from RMA to design rule (Appendix G.16, §9.10). Without that loop, packaging failures get mis-attributed to laser Arrhenius models and the wrong part gets redesigned.
 
 ## Relocated reliability narrative
 
-The following sections are the former reliability-qualification chapter body, kept as reference depth. Start from Chapter 7 for the interview spine.
+The following sections are the former reliability-qualification chapter body, kept as reference depth. Start from Chapter 8 for the interview spine.
 
 ## Relocated product-readiness lifecycle detail
 
-The following sections are the former product-readiness chapter body, kept as reference depth. The compact lifecycle and eight interview questions live in Chapter 7, §7.14. Extended drills remain in Appendix F.21.1, Appendix M.8.
+The following sections are the former product-readiness chapter body, kept as reference depth. The compact lifecycle and eight interview questions live in Chapter 8, §8.14. Extended drills remain in Appendix F.21.1, Appendix M.9.
 
 ## Rapid Interview Checks
 
@@ -204,7 +204,7 @@ Why is stable average power insufficient after connector cycling?\
 
 
 <div class="nav-links">
-  <a href="ch13-optical-measurement-and-test-reference">&larr; Previous</a>
+  <a href="ch14-optical-measurement-and-test-reference">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch15-manufacturing-validation-reference">Next &rarr;</a>
+  <a href="ch16-manufacturing-validation-reference">Next &rarr;</a>
 </div>

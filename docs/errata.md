@@ -242,7 +242,7 @@ No new frameworks. Structural relocation of existing material is allowed.
   the Engineering lens. Kept the worked yield case and all 12 Interview Q\&As.
   Body cut from $\sim$794 to $\sim$509 lines; PDF Chapter~9 about 24$\rightarrow$16
   pages. HTML title mapping adds Appendix~G only (A--D lettered titles unchanged);
-  old Ch9 slug redirects; references page at `ch22-references` with stubs at
+  old Ch9 slug redirects; references page at `ch23-references` with stubs at
   `ch19`--`ch21-references`. PDF about 447 pages.
 - **ANOVA gauge R\&R background:** Chapter~9 measurement-system section now
   states that ANOVA gauge R\&R is a measurement-system analysis method using a
@@ -312,7 +312,16 @@ No new frameworks. Structural relocation of existing material is allowed.
   secondary bank. Preface interview priorities and subtitle rebalanced toward
   signaling, devices, packaging, and fabrics. Productization chapter about 20
   PDF pages. HTML Moved stubs for old chapter slugs; references at
-  `ch22-references`, cheat sheets at `ch21-interview-cheat-sheets`.
+  `ch23-references`, cheat sheets at `ch22-interview-cheat-sheets`.
+- **Pass 2 multilevel signaling:** Added Chapter~4 Multilevel Signaling: From
+  PAM4 to PAM8 (`ch_multilevel_signaling.tex`, `ch:multilevel` / `ch:pam`):
+  baud versus bit rate, level spacing, Gray coding, PAM8 design pressure,
+  optical generation options, when PAM8 is not worth it, and 13 interview Q\&As
+  (~10 PDF pages). IM/DD and models keep rates/roadmaps and noise math with
+  forward pointers. Appendix~M gains a PAM4 versus PAM8 cheat sheet. Later body
+  chapters renumber in print only; labels preserved. HTML:
+  `ch4-multilevel-signaling-from-pam4-to-pam8`; cheat sheets at
+  `ch22-interview-cheat-sheets`; references at `ch23-references`.
 
 ## Typographical fixes
 

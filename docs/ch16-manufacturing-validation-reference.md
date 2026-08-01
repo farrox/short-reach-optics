@@ -5,7 +5,7 @@ title: "Appendix G: Manufacturing Validation Reference"
 
 # Appendix G: Manufacturing Validation Reference
 
-This appendix is a lookup reference for program-gate manufacturing evidence, laser-bearing production-control checklists, gauge and station templates, and supplier first-article packages. The compact factory spine lives in Chapter 7. The relocated full manufacturing narrative follows after the lookup material below.
+This appendix is a lookup reference for program-gate manufacturing evidence, laser-bearing production-control checklists, gauge and station templates, and supplier first-article packages. The compact factory spine lives in Chapter 8. The relocated full manufacturing narrative follows after the lookup material below.
 
 *Read first:* which gate asks which manufacturing question; how control classes differ.
 
@@ -13,10 +13,10 @@ This appendix is a lookup reference for program-gate manufacturing evidence, las
 
 ## Program-gate manufacturing evidence
 
-Program-phase labels (EVT, DVT, PVT, MP) are owned in §7.4, Table 7.3. They are not a second lifecycle. The table below is a manufacturing-evidence lookup: which release call the gate evidence supports when the program uses those names.
+Program-phase labels (EVT, DVT, PVT, MP) are owned in §8.4, Table 8.3. They are not a second lifecycle. The table below is a manufacturing-evidence lookup: which release call the gate evidence supports when the program uses those names.
 
 <table class="book-table"><tr><th>Gate</th><th>Question</th><th>Representative evidence</th><th>Release decision</th></tr><tr><td>EVT</td><td>Does it operate at all?</td><td>First light; CMIS bring-up; basic LIV/SMSR/RIN; one link closes BER</td><td>Continue / redesign integration</td></tr><tr><td>DVT</td><td>Does it meet spec across corners?</td><td>Full ATP at T/V; prod-rep corners; stress plan + FIT model frozen</td><td>Enter qual / PVT / hold</td></tr><tr><td>Qual</td><td>Env / reliability evidence ready?</td><td>Named mechanisms; sample plan; confidence (sec:tree-qual-evidence)</td><td>Enter PVT / hold</td></tr><tr><td>PVT</td><td>Is it buildable at yield?</td><td>Multi-lot first-pass yield; MSA; ATP coverage; process capability; traceability; supplier readiness; validated rework; FAIR; production-host bring-up</td><td>Enter pilot / hold</td></tr><tr><td>Pilot</td><td>Do assumptions hold in a bounded field trial?</td><td>Known serials/lots; enhanced telemetry; exit/rollback criteria</td><td>Open MP / restrict</td></tr><tr><td>MP</td><td>Is quality sustained?</td><td>Steady DPPM; owned RMA Pareto; ECO control; fleet feedback</td><td>Keep shipping / CAPA / restrict</td></tr></table>
-**Table G.1.** NPI gates as a manufacturing evidence lookup. Pilot sits between PVT and MP. MP is sustained control, not fleet monitoring alone. Phase definitions: §7.4. Argument structure: Chapter 7.
+**Table G.1.** NPI gates as a manufacturing evidence lookup. Pilot sits between PVT and MP. MP is sustained control, not fleet monitoring alone. Phase definitions: §8.4. Argument structure: Chapter 8.
 
 ## Laser-bearing production-control checklist
 
@@ -40,7 +40,7 @@ SPC on LIV, SMSR, RIN, TDECQ, and mate-cycle yield; golden-unit tracking; gauge 
 
 ##### Fleet controls.
 
-Telemetry, lot traceability, RMA codes split by mechanism, and recurrence monitoring (§8.10). These catch what ATP never saw.
+Telemetry, lot traceability, RMA codes split by mechanism, and recurrence monitoring (§9.10). These catch what ATP never saw.
 
 A fast production power check does not establish life. HTOL does not prove every shipped unit has correct firmware. SPC does not detect an unmeasured mechanism. Source-level LIV, SMSR, and wavelength measurements can detect selected material or device shifts when those measurements are directly available and correlated to product risk. In a closed module, use a validated module-level proxy, supplier evidence, sampled audit, or genealogy-based control; do not claim internal measurement coverage when the production architecture does not expose it. RIN and ORL protect the reflection environment; EAM/DCA protects Tx quality on EML paths; CMIS protects field evidence. Burn-in may screen a demonstrated infant-mortality population. ESD robustness is primarily established through design qualification and handling controls; a finished-unit production screen may not reliably detect latent ESD damage. Thermal class protects the derate claim.
 
@@ -93,17 +93,17 @@ When tooling, epi, assembly site, driver/TIA silicon, TEC vendor, FAU epoxy, or 
 
 - Capability and guardband check on critical parameters.
 
-- Qualification re-entry depth when life or environmental mechanisms are affected (Chapter 7, Appendix F).
+- Qualification re-entry depth when life or environmental mechanisms are affected (Chapter 8, Appendix F).
 
 - Incoming sample plan and SPC metrics with owners and reaction plans.
 
-- ECO and firmware version control matching the production reference freeze in Chapter 7.
+- ECO and firmware version control matching the production reference freeze in Chapter 8.
 
 ## Sample control-plan mapping
 
 Requirements and the production control plan form the contract. Every requirement needs a named evidence source and owner, but that evidence may be ATP, a sampled audit, qualification, process control, supplier evidence, or fleet monitoring.
 
-1.  **Requirements / PRD slice for the laser path:** fill Table 5.4, §5.6 (power class, grid, RIN@ORL, SMSR, derating, CMIS, FIT). Version it with the production control plan.
+1.  **Requirements / PRD slice for the laser path:** fill Table 6.4, §6.6 (power class, grid, RIN@ORL, SMSR, derating, CMIS, FIT). Version it with the production control plan.
 
 2.  **Acceptance test plan (ATP):** the measurable tests that prove those requirements on every ship lot (or on a defined sample) when every-unit or sampled production test is the right control. Map each ATP line to a requirement; map life claims to qualification where appropriate (Appendix F.1.1, Table G.2).
 
@@ -111,7 +111,7 @@ Requirements and the production control plan form the contract. Every requiremen
 
 ## Relocated manufacturing narrative
 
-The following sections are the former manufacturing-validation chapter body, kept as reference depth. Start from Chapter 7 for the interview spine. Extended drills remain in Appendix G.20.1, Appendix M.8.
+The following sections are the former manufacturing-validation chapter body, kept as reference depth. Start from Chapter 8 for the interview spine. Extended drills remain in Appendix G.20.1, Appendix M.9.
 
 ## Rapid Interview Checks
 
@@ -135,11 +135,11 @@ What proves an ATP screen detects defects?\
 ##### Prompt.
 
 When is a field fail a manufacturing escape?\
-*Check.* Only when evidence ties the mechanism to a preventable production or test-control gap. Otherwise wear-out, interop, install, service, software, or residual latent risk (Appendix G.18, Chapter 8).
+*Check.* Only when evidence ties the mechanism to a preventable production or test-control gap. Otherwise wear-out, interop, install, service, software, or residual latent risk (Appendix G.18, Chapter 9).
 
 
 <div class="nav-links">
-  <a href="ch14-reliability-qualification-reference">&larr; Previous</a>
+  <a href="ch15-reliability-qualification-reference">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch16-ai-fabric-context">Next &rarr;</a>
+  <a href="ch17-ai-fabric-context">Next &rarr;</a>
 </div>

@@ -112,7 +112,7 @@ Lot query $\rightarrow$ population? $\rightarrow$ contain vs unit fix.
 
 **Thirty-second close.** I confirm power at a named plane with an external meter, bisect the optical path, contain if lot-correlated, and update the screen that missed it.
 
-**Deep dive.** Power fork and instruments: Appendix A.8.3. APC and calibration: §5.11.
+**Deep dive.** Power fork and instruments: Appendix A.8.3. APC and calibration: §6.11.
 
 ## One weak lane
 
@@ -159,7 +159,7 @@ LIV on weak lane $\rightarrow$ device or coupling? $\rightarrow$ FAU vs die.
 
 **Thirty-second close.** I compare siblings, swap optical versus electrical, then own the assembly or array element and the ATP row that would have caught it.
 
-**Deep dive.** Worked answer: Appendix A.10.6. FAU and parallel optics appear throughout Chapter 8.
+**Deep dive.** Worked answer: Appendix A.10.6. FAU and parallel optics appear throughout Chapter 9.
 
 ## High-temperature failures
 
@@ -260,7 +260,7 @@ Stress-hours plot $\rightarrow$ monotonic or step? $\rightarrow$ confirms.
 
 **Thirty-second close.** I start black-box, treat recal recovery as evidence not proof, then compare physical baselines when access exists; aging goes to life actions and drift to table control plus a loaded-corner screen.
 
-**Deep dive.** Appendix A.10.4, §5.11, §5.10.
+**Deep dive.** Appendix A.10.4, §6.11, §6.10.
 
 ## Second component source
 
@@ -402,7 +402,7 @@ Margin sweeps $\rightarrow$ which ledger dies first? $\rightarrow$ telemetry ala
 
 **Thirty-second close.** I walk the ladder as staged uncertainty reduction and refuse any measurement that answers no new question about remaining margin.
 
-**Deep dive.** Appendix A.10.2, Table 7.2, Appendix A.8.7.
+**Deep dive.** Appendix A.10.2, Table 8.2, Appendix A.8.7.
 
 ## Fleet issue
 
@@ -429,7 +429,7 @@ Rate / trend / customer impact
 Bucket: performance / reliability / manufacturability
   |
 Decision + owner + telemetry control</code></pre>
-**Key concepts.** Fleet economics and scope pick the owner before FA. Pulling units without a bucket wastes the only failing state you had (Appendix A.6, §8.10).
+**Key concepts.** Fleet economics and scope pick the owner before FA. Pulling units without a bucket wastes the only failing state you had (Appendix A.6, §9.10).
 
 **Measurements.** Telemetry query $\rightarrow$ scope and trend? $\rightarrow$ contain vs monitor.\
 Lot/date correlation $\rightarrow$ manufacturability? $\rightarrow$ supplier.\
@@ -547,7 +547,7 @@ Supply noise / FEC histogram $\rightarrow$ PSRR or burst? $\rightarrow$ owner.
 
 **Thirty-second close.** I confirm floor versus shift on a waterfall, then remove the non-power-limited impairment rather than raise launch power.
 
-**Deep dive.** Appendix A.10.8, Appendix I.2.1, §4.3.
+**Deep dive.** Appendix A.10.8, Appendix I.2.1, §5.3.
 
 ## Intermittent failures
 
@@ -572,7 +572,7 @@ Reproduce with dwell / stress
 Scope population
   |
 Decision: contain / ATP dwell / monitor</code></pre>
-**Key concepts.** Intermittents die when the evidence is destroyed. NFF is often a triage failure, not a healthy part (§8.10).
+**Key concepts.** Intermittents die when the evidence is destroyed. NFF is often a triage failure, not a healthy part (§9.10).
 
 **Measurements.** FEC histogram $\rightarrow$ burst vs Gaussian? $\rightarrow$ MPI / intermittent.\
 Time sync + event capture $\rightarrow$ state preserved? $\rightarrow$ FA.\
@@ -594,7 +594,7 @@ Mate/demate $\rightarrow$ connector? $\rightarrow$ hygiene / replace.
 
 **Thirty-second close.** I preserve state before reseating, reproduce with dwell, and refuse NFF without a reproduction and control plan.
 
-**Deep dive.** §8.10, Table 8.1.
+**Deep dive.** §9.10, Table 9.1.
 
 ## Production recurrence-control update
 
@@ -655,7 +655,7 @@ Golden units across stations $\rightarrow$ correlation? $\rightarrow$ ship.
 
 > **30-second answer (memorize).** Log what discriminates hypotheses: per-lane power, bias, pre-FEC BER and FEC histograms; module temperature and actuator drive; LOS/LOL with context. Require timestamp accuracy, sampling cadence, aggregation window, units, calibration/scaling, missing-data behavior, firmware/schema version, serial/lot/platform, event trigger, retention, and a decision owner. Alarm on trends and disagreements, not only hard thresholds. Therefore I would instrument the ledgers margin testing said die first.
 
-Add a register only if it changes contain, derate, RMA, or FA ownership. Full tradeoff: §8.10.
+Add a register only if it changes contain, derate, RMA, or FA ownership. Full tradeoff: §9.10.
 
 <pre class="dectree" aria-label="Telemetry purpose: early margin erosion"><code>Telemetry purpose: early margin erosion
   |
@@ -735,7 +735,7 @@ ATP correlation $\rightarrow$ factory control? $\rightarrow$ volume.
 
 **Thirty-second close.** I budget which stresses spend which ledgers, run HTOL only with a named mechanism, and gate ship on remaining margin.
 
-**Deep dive.** Appendix A.8.5, Appendix F.1.1, §5.13.
+**Deep dive.** Appendix A.8.5, Appendix F.1.1, §6.13.
 
 ## Unknown failure
 
@@ -789,13 +789,13 @@ Staff follow-ups often stop asking "what test?" and start asking "given constrai
 
 *Benefit of margin:* reach, temperature, aging, contamination tolerance.\
 *Downside:* laser power, heat, efficiency, sometimes lifetime.\
-*Criteria:* allocate margin where uncertainty is highest; do not maximize every ledger (§5.19, Chapter 7).
+*Criteria:* allocate margin where uncertainty is highest; do not maximize every ledger (§6.19, Chapter 8).
 
 ##### Would you add more telemetry?
 
 *Benefit:* faster fleet triage and earlier margin erosion detection.\
 *Downside:* firmware, storage, alarm fatigue.\
-*Criteria:* each field needs a decision owner and a reaction plan (Appendix C.14, §8.10).
+*Criteria:* each field needs a decision owner and a reaction plan (Appendix C.14, §9.10).
 
 ##### Would you run more qualification?
 
@@ -819,7 +819,7 @@ Staff follow-ups often stop asking "what test?" and start asking "given constrai
 
 
 <div class="nav-links">
-  <a href="ch10-engineering-case-studies">&larr; Previous</a>
+  <a href="ch11-engineering-case-studies">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch12-engineering-decision-trees">Next &rarr;</a>
+  <a href="ch13-engineering-decision-trees">Next &rarr;</a>
 </div>

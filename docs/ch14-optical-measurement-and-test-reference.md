@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "Ch 13: Optical Measurement and Test Reference"
+title: "Ch 14: Optical Measurement and Test Reference"
 ---
 
-# 13 Optical Measurement and Test Reference
+# 14 Optical Measurement and Test Reference
 
-This appendix is a lookup reference for measurement selection, metric conditions, instruments, stressed-receiver methods, link-budget accounting, and CMIS diagnostics. It does not define the product-readiness lifecycle; that story lives in Chapter 7.
+This appendix is a lookup reference for measurement selection, metric conditions, instruments, stressed-receiver methods, link-budget accounting, and CMIS diagnostics. It does not define the product-readiness lifecycle; that story lives in Chapter 8.
 
 *Read first:* measurement selection by question; metric and plane table; TDECQ and SECQ distinctions; consistent link-budget accounting.
 
@@ -25,15 +25,15 @@ Did modulation quality move?
 
 Did the spectrum or grid move?
 
-: OSA or wavemeter for wavelength, SMSR, and side modes (Chapter 5).
+: OSA or wavemeter for wavelength, SMSR, and side modes (Chapter 6).
 
 Did receiver margin shift or floor?
 
-: BERT with calibrated attenuator or stressor; FEC counters for shape (§4.4, Appendix E.4, Appendix H.19).
+: BERT with calibrated attenuator or stressor; FEC counters for shape (§5.4, Appendix E.4, Appendix H.19).
 
 Is intensity noise the floor?
 
-: PD plus ESA or a dedicated RIN analyzer under a defined ORL (§4.3.1).
+: PD plus ESA or a dedicated RIN analyzer under a defined ORL (§5.3.1).
 
 Is the error random, bursty, or state-driven?
 
@@ -52,7 +52,7 @@ Use electrical loopback, optical loopback, and golden-host or golden-module swap
 
 ##### Channel evidence.
 
-Insertion loss, ORL, dispersion, and filtering belong with the plant assumptions used in the link budget. Reflections can seed feedback noise, MPI, distortion, and power-independent floors even when average power is stable (§4.3.1, Chapter 5).
+Insertion loss, ORL, dispersion, and filtering belong with the plant assumptions used in the link budget. Reflections can seed feedback noise, MPI, distortion, and power-independent floors even when average power is stable (§5.3.1, Chapter 6).
 
 ## TDECQ reference
 
@@ -70,7 +70,7 @@ TDECQ evaluates transmitter quality through a reference-receiver model. SECQ is 
 
 ## Link-budget accounting reference
 
-A link budget is a signed ledger from transmitter to receiver. For IM/DD short reach, start from outer OMA at a named Tx plane, subtract each loss once, and compare the remainder to receiver sensitivity at the named BER or FEC objective (§3.12, §4.4).
+A link budget is a signed ledger from transmitter to receiver. For IM/DD short reach, start from outer OMA at a named Tx plane, subtract each loss once, and compare the remainder to receiver sensitivity at the named BER or FEC objective (§3.12, §5.4).
 
 <pre class="dectree" aria-label="Transmitter output (OMA)"><code>Transmitter output (OMA)
   |
@@ -89,7 +89,7 @@ Sensitivity requirement
 Remaining margin</code></pre>
 Use one internally consistent convention. State whether transmitter-quality effects are embedded in the compliance requirement or represented as a separate engineering penalty, and never count the same impairment twice. Do not mix average-power and OMA budgets, reference planes, or embedded and explicit transmitter penalties.
 
-Keep power, signal-quality, timing, thermal, and control authority as separate ledgers when the impairment is not a pure optical-power number (§5.19, Appendix D.10). Distinguish design allocation from measured net margin across the operating envelope.
+Keep power, signal-quality, timing, thermal, and control authority as separate ledgers when the impairment is not a pure optical-power number (§6.19, Appendix D.10). Distinguish design allocation from measured net margin across the operating envelope.
 
 ## Instrument quick reference
 
@@ -133,11 +133,11 @@ CMIS / host tools
 
 *CMIS* (Common Management Interface Specification) is the vendor-neutral management layer between a host and a module that implements it. Form factors and optional pages vary; do not imply identical behavior across pluggables, ELSFP, and CPO engines .
 
-The host drives a module state machine toward ModuleReady before authorizing light. Data-path and network-path states in later CMIS revisions refine lane enable. A module forced into an emitting state that passes BER has not passed bring-up if the required management sequence, safe state, diagnostics, alarms, and recovery behavior are incorrect (§7.11).
+The host drives a module state machine toward ModuleReady before authorizing light. Data-path and network-path states in later CMIS revisions refine lane enable. A module forced into an emitting state that passes BER has not passed bring-up if the required management sequence, safe state, diagnostics, alarms, and recovery behavior are incorrect (§8.11).
 
 *DDM* provides per-lane Tx/Rx power, bias when exposed, temperature, rails, LOS/LOL, and alarms. On bring-up, dump the register map you will use in the field and treat disagreement between DDM and an external meter as a finding. ATP should prove ModuleReady across voltage and thermal corners and ECO-control firmware like other production revisions (Appendix G.16).
 
-Operational use of management state is decision-oriented, not a register inventory (Chapter 7, Appendix H.22):
+Operational use of management state is decision-oriented, not a register inventory (Chapter 8, Appendix H.22):
 
 - Management state must be trustworthy before counters drive containment.
 
@@ -161,7 +161,7 @@ What does a passing average-power measurement fail to establish?\
 ##### Prompt.
 
 What must accompany a sensitivity number?\
-*Check.* Optical reference plane, BER or FEC condition, pattern, temperature, wavelength, and stress method when claimed (Chapter 7, §4.4).
+*Check.* Optical reference plane, BER or FEC condition, pattern, temperature, wavelength, and stress method when claimed (Chapter 8, §5.4).
 
 ##### Prompt.
 
@@ -185,7 +185,7 @@ Which decision should precede instrument selection?\
 
 
 <div class="nav-links">
-  <a href="ch12-engineering-decision-trees">&larr; Previous</a>
+  <a href="ch13-engineering-decision-trees">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch14-reliability-qualification-reference">Next &rarr;</a>
+  <a href="ch15-reliability-qualification-reference">Next &rarr;</a>
 </div>
