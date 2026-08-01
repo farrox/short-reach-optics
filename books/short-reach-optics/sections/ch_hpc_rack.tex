@@ -1,0 +1,542 @@
+\chapter{AI and HPC Rack Architecture}
+\label{ch:hpc}
+\label{sec:hpc-rack}
+
+This chapter is the design judgment home for short-reach AI and HPC fabrics:
+how workload shapes topology, what fat-tree and Clos actually buy, how
+oversubscription and rails change optics count, and how to walk a rack design
+on a whiteboard. Protocol surveys, OCS programs, power tables, and module-style
+catalogs stay in \Cref{app:ai-fabric-context}. Packaging of optical engines is
+in \Cref{ch:packaging}. Productization closes the fleet claim in
+\Cref{ch:productization}.
+
+\textit{Read first:} fat-tree / Clos, bisection bandwidth, oversubscription,
+rails, and scale-up versus scale-out.
+
+\textit{Deep dive:} topology survey in \Cref{sec:topologies}; collectives in
+\Cref{sec:collectives}; OCS in \Cref{sec:ocs}; energy and thermal envelopes in
+\Cref{sec:power,sec:thermal-envelope}.
+
+\keyidea{A fat tree buys path diversity and bisection bandwidth, but it costs
+switch radix, cables, optics, and power. The first fabric question is which
+collective pattern and failure domain you are designing for, not which topology
+name is fashionable.}
+
+\section{Workload characteristics}
+\label{sec:hpc-workload}
+
+Before you draw a Clos, name the traffic.
+
+\begin{description}
+\item[All-reduce] Every rank contributes; every rank needs the result.
+      Bandwidth and synchronization both matter. Stragglers set job time.
+\item[All-to-all] Dense exchange across ranks. Stresses bisection and wiring
+      symmetry more than a single reduction tree.
+\item[Parameter / gradient exchange] Often periodic and synchronized across
+      a training step. Many links go busy at once.
+\item[Incast] Many senders hit one receiver or one switch uplink. Creates
+      congestion even when average utilization looks modest.
+\item[Burstiness] Idle then full-rate. Average link load understates peak
+      demand on optics and FEC.
+\item[Stragglers and tail latency] The slowest hop or the slowest rail stalls
+      the collective. Tail, not mean, sets iteration time.
+\end{description}
+
+Optical count follows from how many parallel planes you build to keep those
+patterns from colliding. Deeper optics-to-collective mapping is in
+\Cref{sec:collectives}.
+
+\section{Fat-tree and Clos}
+\label{sec:hpc-fattree}
+
+A \term{fat-tree} is a folded \term{Clos} network: leaf (or ToR) switches face
+accelerators or servers; spine switches interconnect the leaves; aggregate
+bandwidth grows toward the upper layers when the design is nonblocking.
+
+Core ideas:
+
+\begin{description}
+\item[Leaf / ToR] Edge switch with downlinks to compute and uplinks toward the
+      fabric.
+\item[Spine] Upper-tier switches that provide path diversity across leaves.
+\item[Equal-cost paths] Multiple routes between endpoints; load can spread.
+\item[Path diversity] A single leaf or spine failure need not partition the
+      cluster if radix and wiring allow alternate paths.
+\item[Bisection bandwidth] The worst-case cut capacity between two equal halves
+      of the fabric. Collective-heavy jobs care about this number.
+\end{description}
+
+\subsection{A leaf-scale example}
+\label{sec:hpc-leaf-example}
+
+Suppose:
+
+\begin{itemize}
+\item 32 leaf switches;
+\item 32 accelerator-facing ports per leaf;
+\item 32 uplinks per leaf, at the same speed as the downlinks.
+\end{itemize}
+
+At each leaf the downstream offered bandwidth equals the upstream fabric
+bandwidth: a 1:1 leaf. Subject to spine connectivity, the fabric can approach
+nonblocking behavior for that leaf tier. The full fat tree still needs enough
+spine ports and enough cables to realize that promise across all leaves.
+
+\subsection{Why a full fat tree gets expensive}
+\label{sec:hpc-fattree-cost}
+
+Nonblocking Clos fabrics multiply:
+
+\begin{itemize}
+\item switch count and radix;
+\item cable and optical module count;
+\item power and cooling;
+\item management and failure domains.
+\end{itemize}
+
+In a classic $k$-ary fat-tree sketch, endpoints scale roughly as $O(k^2)$ while
+links scale faster (\Cref{sec:topologies}). Optics multiply faster than GPUs.
+That is why oversubscription, rails, and dragonfly-style hierarchies appear as
+cost controls, not as fashion.
+
+\section{Oversubscription}
+\label{sec:hpc-oversub}
+
+Define oversubscription as the ratio of offered downstream bandwidth to
+available upstream fabric bandwidth:
+\begin{equation}
+\text{oversubscription}
+=
+\frac{\text{downstream offered bandwidth}}
+{\text{upstream fabric bandwidth}}.
+\label{eq:oversub}
+\end{equation}
+
+\begin{description}
+\item[1:1] Upstream matches downstream at the named tier. Expensive; kind to
+      synchronized collectives.
+\item[2:1] Upstream is half of downstream. Cheaper; can still work if traffic
+      is not fully concurrent across all downlinks.
+\item[Traffic dependence] A sparse pattern may never stress the cut. A
+      synchronized all-reduce can.
+\item[Average utilization misleads] Links that idle most of the time can still
+      collide on the step boundary. Design for the collective peak you claim,
+      not for the daily mean.
+\end{description}
+
+Interview line: ``I state the tier and the traffic pattern before I call an
+oversubscription ratio acceptable.''
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{0.18\linewidth}p{0.36\linewidth}p{0.36\linewidth}@{}}
+\toprule
+Ratio & Often survivable when & Hostile when \\
+\midrule
+1:1 & Synchronized collectives claimed & Cost or radix cannot close \\
+2:1 & Traffic rarely fully concurrent & All-reduce across all downlinks \\
+$>$2:1 & Strong locality / scheduling & Job sold as nonblocking bisection \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Rail-optimized design}
+\label{sec:hpc-rails}
+
+A \term{rail} is an independent network plane. Rail-optimized designs give each
+accelerator multiple NICs (or ports) and assign one port to each rail so that
+collectives can stripe or stay within a plane.
+
+Why rails appear in AI fabrics:
+
+\begin{itemize}
+\item They reduce shared failure domains: one rail fault need not take every
+      path.
+\item They support topology-aware collectives that keep heavy traffic inside a
+      rail.
+\item They raise optical count: more parallel planes mean more modules, fibers,
+      and lasers.
+\end{itemize}
+
+Rails are not free diversity. They are an explicit purchase of parallelism and
+isolation against more optics and more ToR radix.
+
+\section{Scale-up versus scale-out}
+\label{sec:hpc-scale}
+
+\begin{description}
+\item[Scale-up] Inside a node, tray, rack, or tightly coupled domain. Very high
+      bandwidth, very low latency, stronger ordering or coherence needs, short
+      reach. Copper still competes; CPO and short-reach optics are entering as
+      lane rates rise (\Cref{sec:scale-up-out,ch:packaging}).
+\item[Scale-out] Across racks or clusters. Routable fabric, more hops, fault
+      tolerance and congestion control, optical dominance for reach beyond a
+      meter-class copper wall.
+\end{description}
+
+Do not treat ``the fabric'' as one network. Many AI clusters run a scale-up
+plane and a scale-out plane with different optics, FEC, and failure models
+(\Cref{fig:scale-node}).
+
+\section{Rack-level design exercise}
+\label{sec:hpc-rack-exercise}
+
+Worked prompt (guide numbers):
+
+\begin{quote}
+\noindent Design a rack with 64 accelerators, eight accelerators per tray,
+eight 800G network links per tray, and two independent network rails.
+\end{quote}
+
+Walk the whiteboard in this order. Numbers below are a consistent sketch, not a
+vendor BOM.
+
+\subsection{Inventory}
+\label{sec:hpc-rack-inventory}
+
+\begin{itemize}
+\item Accelerators: 64.
+\item Trays: $64/8 = 8$ trays.
+\item Network links per tray: 8 at 800G each $\Rightarrow$ 6.4~Tb/s of
+      network attach per tray if all links are active.
+\item Rack network attach: $8\times 6.4 = 51.2$~Tb/s aggregate endpoint
+      bandwidth before oversubscription toward spines.
+\item Rails: 2. A natural split is 4 links per tray per rail (still 8 links
+      per tray total), so each rail carries half the tray attach if balanced.
+\end{itemize}
+
+\subsection{Switch radix and ToR placement}
+\label{sec:hpc-rack-tor}
+
+Questions to close:
+
+\begin{itemize}
+\item Are ToRs in-tray, mid-rack, or end-of-row?
+\item How many downlinks per ToR versus uplinks to spine?
+\item Does each rail have its own ToR set, or do ToRs fan into both rails?
+\end{itemize}
+
+Example sketch: one ToR per tray per rail (16 ToRs if fully separated), each
+seeing 4$\times$800G down from its tray half and a chosen uplink ratio to
+spine. A shared-ToR sketch uses fewer switches and couples the rails in the
+failure domain. Say which one you mean.
+
+\subsection{Links, optics, and cables}
+\label{sec:hpc-rack-optics}
+
+Count:
+
+\begin{itemize}
+\item Endpoint-facing 800G ports: $8\text{ trays}\times 8 = 64$ ports
+      (one per named network link in the prompt).
+\item Uplinks: set by oversubscription. At 1:1 from those 64 ports you need
+      64 same-speed fabric ports toward the next tier; at 2:1 you need 32.
+\item Optics versus copper: inside the rack, DAC/ACC may still close short
+      tray-to-ToR runs; rack-to-spine and rack-to-rack are usually optical
+      (\Cref{sec:pluggables,sec:trace-loss}).
+\end{itemize}
+
+Module count is not optional arithmetic. It sets FIT, power, and sparing
+(\Cref{ch:productization,app:ai-fabric-context}).
+
+\subsection{Power, cooling, fiber, serviceability}
+\label{sec:hpc-rack-ops}
+
+\begin{itemize}
+\item Power: sum accelerator, ToR, optics, and fans or pumps. Optics power is
+      small next to GPUs but large next to a naive ``ignore modules'' budget
+      (\Cref{sec:power}).
+\item Liquid cooling: cold plates and manifolds constrain ToR and fiber
+      routing; do not place optics where service needs a dry teardown of the
+      cooling loop.
+\item Fiber routing: trunk versus breakout, polarity, and which plane is which
+      rail. Mis-patched rails look like fabric bugs.
+\item Serviceability: hot-swap pluggables versus CPO engines versus ELSFP laser
+      banks (\Cref{ch:packaging,sec:elsfp}). Match the replaceable unit to the
+      FIT story.
+\end{itemize}
+
+\subsection{Tradeoffs, not a winner}
+\label{sec:hpc-rack-tradeoffs}
+
+Valid answers disagree on ToR count, oversubscription, and copper versus optics
+inside the rack. A strong answer states the binding constraint (collective
+bisection, cost, service, or power) and shows what was sacrificed. A weak
+answer crowns one vendor rack photo as universal.
+
+\section{Fat tree versus dragonfly}
+\label{sec:hpc-dragonfly}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{0.28\linewidth}p{0.32\linewidth}p{0.32\linewidth}@{}}
+\toprule
+Topic & Fat-tree / Clos & Dragonfly-class \\
+\midrule
+Hop count & Often more hops at scale & Fewer global hops by design \\
+Global links & Many equivalent uplinks & Fewer long global links \\
+Wiring & Regular, cable-heavy & Hierarchical, wiring-sensitive \\
+Routing & ECMP-friendly & Needs careful global routing \\
+Congestion & Localize with enough bisection & Global links can hotspot \\
+Failure domains & Path diversity if provisioned & Global-link loss hurts more \\
+Scalability & Radix and cost limited & Grows with hierarchy \\
+Collectives & Strong when bisection is real & Pattern-dependent \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Use dragonfly when long-global-link cost dominates and the routing stack is
+ready. Use fat-tree when you want regular ECMP behavior and will pay for
+bisection. Survey context: \Cref{sec:topologies}.
+
+\section{Optical switches in the fabric}
+\label{sec:hpc-ocs-place}
+
+Optical circuit switches sit at Layer~1: they rearrange connectivity without
+O-E-O packet processing (\Cref{sec:ocs}). On a whiteboard:
+
+\begin{itemize}
+\item They help topology and failure reroute on millisecond-class timescales.
+\item They do not replace a packet switch for fine-grained congestion control.
+\item They change the transceiver plant (reach, power, connectors) more than
+      they change SerDes EQ theory.
+\end{itemize}
+
+Say whether the OCS is a spine substitute, a patch-panel replacement, or a
+maintenance plane before you claim power savings.
+
+\section{Whiteboard debug vignette}
+\label{sec:hpc-vignette}
+
+Prompt: ``Jobs stall on all-reduce. Average link utilization is 25\%. The
+fabric team says the Clos is fine. Walk the debug.''
+
+\begin{enumerate}
+\item Name the plane: scale-up or scale-out, which rail, which tier.
+\item Compare collective-period peaks to averages; look for incast and
+      synchronized steps.
+\item Check bisection and oversubscription at the leaf-to-spine cut, not only
+      at the NIC.
+\item Ask whether rails are truly independent or share ToRs and trunks.
+\item Separate optics/FEC faults from topology thinness
+      (\Cref{ch:failure-modes,sec:collectives}).
+\item Only then propose more spines, less oversubscription, or collective
+      schedule changes.
+\end{enumerate}
+
+Weak answers blame ``optics'' or ``buy a bigger switch'' without naming the
+cut. Strong answers rename the bottleneck before changing hardware.
+
+\section{Interview takeaway}
+\label{sec:hpc-design-review}
+
+\keyidea{I start from the collective and the failure domain. I size bisection
+and oversubscription at a named tier, decide how many rails I am buying, split
+scale-up from scale-out, then close a rack sketch with port count, optics
+count, power, and serviceability. Topology names come after those numbers.}
+
+\section{Interview Q\&A}
+\label{sec:hpc-interview-qa}
+
+Practice aloud. Prefer first-person reasoning. Score with
+\Cref{sec:chapter-interview-rubric}.
+
+\paragraph{Question 1. Explain a fat tree.}
+\textit{Tests:} Clos structure and why it exists.
+
+\textit{Spoken answer.}
+``A fat tree is a folded Clos: leaves face compute, spines interconnect leaves,
+and aggregate bandwidth grows upward when the design is nonblocking. You buy
+path diversity and bisection bandwidth. You pay switch radix, cables, optics,
+and power.''
+
+\textit{Pressure follow-up.} ``Is every Clos a fat tree?''\\
+\textit{Answer pivot.} ``Fat tree usually means the folded Clos form used in
+datacenters. Clos is the broader switching idea.''
+
+\textit{Trap:} ``Fat tree means every link is optical.''
+
+\paragraph{Question 2. What is bisection bandwidth?}
+\textit{Tests:} worst-case cut capacity.
+
+\textit{Spoken answer.}
+``Bisection bandwidth is the capacity across the worst cut that splits the
+fabric into two equal halves. Collective-heavy jobs care because many patterns
+push traffic across that cut. Average link utilization can look fine while
+bisection is the bottleneck.''
+
+\textit{Pressure follow-up.} ``How do you increase it?''\\
+\textit{Answer pivot.} ``More spine bandwidth, less oversubscription, or a
+topology that places heavy flows on richer cuts. All cost optics and switches.''
+
+\textit{Trap:} ``Bisection is the sum of all link speeds in the cluster.''
+
+\paragraph{Question 3. When is oversubscription acceptable?}
+\textit{Tests:} pattern dependence.
+
+\textit{Spoken answer.}
+``Oversubscription is acceptable when the claimed traffic cannot fully load the
+downstream tier at once, or when the job can tolerate congestion and retries.
+Synchronized all-reduce across all downlinks is the hostile case. I name the
+tier and the pattern before I accept 2:1.''
+
+\textit{Pressure follow-up.} ``Our monitoring shows 20\% average utilization.''\\
+\textit{Answer pivot.} ``Averages miss step-boundary bursts. I ask for
+collective-period peaks and incast events.''
+
+\textit{Trap:} ``Any oversubscription is fine if mean utilization is low.''
+
+\paragraph{Question 4. Walk a 64-accelerator rack design.}
+\textit{Tests:} structured rack arithmetic.
+
+\textit{Spoken answer.}
+``Sixty-four accelerators, eight per tray, gives eight trays. Eight 800G links
+per tray is 64 endpoint network ports and 51.2~Tb/s of attach if all run.
+With two rails I split planes and failure domains. Then I choose ToR count,
+uplink oversubscription, copper versus optics inside the rack, power, fiber
+routing, and what is field-replaceable.''
+
+\textit{Pressure follow-up.} ``What is the first number you refuse to guess?''\\
+\textit{Answer pivot.} ``Whether the eight links are scale-up, scale-out, or
+mixed, and whether rails are fully independent ToR planes.''
+
+\textit{Trap:} ``Just copy a public 64-GPU reference rack.''
+
+\paragraph{Question 5. How do you choose switch radix?}
+\textit{Tests:} ports, tiers, and cost.
+
+\textit{Spoken answer.}
+``Radix sets how many downlinks and uplinks a switch can land. Higher radix can
+flatten the fabric and cut hops, but the ASIC, optics, and power get harder.
+I choose radix from endpoint count, target tiers, and the oversubscription I
+can afford, not from the largest switch on a slide.''
+
+\textit{Pressure follow-up.} ``Why not one giant switch for the rack?''\\
+\textit{Answer pivot.} ``Radix, blast radius, and serviceability. One chassis
+failure takes more of the rack.''
+
+\textit{Trap:} ``Always pick the highest-radix switch available.''
+
+\paragraph{Question 6. Optical versus copper inside a rack?}
+\textit{Tests:} reach wall and service.
+
+\textit{Spoken answer.}
+``Inside a rack, short tray-to-ToR runs may still close on DAC or ACC. Past
+about a meter-class copper wall at high lane rates, or when density and cable
+bulk hurt, optics win. Rack-to-rack is usually optical. I check reach, SI,
+power, and whether hot-swap pluggables matter
+(\Cref{sec:trace-loss,sec:pluggables}).''
+
+\textit{Pressure follow-up.} ``Copper is always cheaper.''\\
+\textit{Answer pivot.} ``Per meter maybe. Per delivered rack bandwidth after
+reach fails, optics can be cheaper and smaller.''
+
+\textit{Trap:} ``AI racks are all-optical everywhere.''
+
+\paragraph{Question 7. Why multiple rails?}
+\textit{Tests:} isolation and collective striping.
+
+\textit{Spoken answer.}
+``Rails buy independent planes so collectives can stripe and so one fault does
+not share every path. The cost is more NICs, more ToR ports, and more optics.
+I only buy rails I can wire, name, and monitor.''
+
+\textit{Pressure follow-up.} ``Are two rails enough?''\\
+\textit{Answer pivot.} ``Enough for the failure model and collective schedule
+you claim. More rails help until optics count and radix dominate.''
+
+\textit{Trap:} ``More rails always improve job time.''
+
+\paragraph{Question 8. How do you design failure domains?}
+\textit{Tests:} blast radius thinking.
+
+\textit{Spoken answer.}
+``I ask what one failed ToR, spine, rail, optical engine, or fiber trunk takes
+down. Then I align redundancy: dual rails, dual uplinks, spare optics, and
+repair procedures. Packaging choices change the replaceable unit
+(\Cref{ch:packaging}).''
+
+\textit{Pressure follow-up.} ``We have ECMP, so we are fine.''\\
+\textit{Answer pivot.} ``ECMP needs surviving alternate capacity. A
+shared-risk link group can still take both paths.''
+
+\textit{Trap:} ``Fat tree automatically means no single points of failure.''
+
+\paragraph{Question 9. How does topology interact with all-reduce?}
+\textit{Tests:} bisection and synchronization.
+
+\textit{Spoken answer.}
+``All-reduce wants enough bisection and predictable latency across ranks.
+Oversubscription and hot spines create stragglers. Rail-aware collectives can
+keep traffic inside a plane. I design topology and collective library together,
+not as separate teams' afterthoughts (\Cref{sec:collectives}).''
+
+\textit{Pressure follow-up.} ``Can software fix a thin bisection?''\\
+\textit{Answer pivot.} ``Software can schedule and compress. It cannot create
+missing cut bandwidth.''
+
+\textit{Trap:} ``Collectives are a software problem; topology only sets hop
+count.''
+
+\paragraph{Question 10. Where do optical circuit switches fit?}
+\textit{Tests:} OCS role versus packet switching.
+
+\textit{Spoken answer.}
+``OCS rearranges Layer~1 connectivity. It can cut O-E-O hops for topology or
+failure reroute on millisecond scales. It is not a packet switch for
+per-flow congestion. I place it only when the control plane and transceiver
+plant match that job (\Cref{sec:ocs}).''
+
+\textit{Pressure follow-up.} ``Does OCS replace CPO?''\\
+\textit{Answer pivot.} ``No. CPO shortens the electrical path at the package.
+OCS changes how packages interconnect. They can coexist.''
+
+\textit{Trap:} ``OCS means we can use dumb optics and no FEC.''
+
+\paragraph{Question 11. Scale-up versus scale-out?}
+\textit{Tests:} two networks, two optics stories.
+
+\textit{Spoken answer.}
+``Scale-up is the short, high-bandwidth, low-latency domain inside a node or
+rack. Scale-out is the routable cluster fabric across racks. They differ in
+reach, protocol, FEC, and optics. I never answer a rack question until I know
+which plane the links belong to (\Cref{sec:scale-up-out}).''
+
+\textit{Pressure follow-up.} ``Can one 800G port do both?''\\
+\textit{Answer pivot.} ``Sometimes in product marketing. In design I still
+budget them as different jobs if latency and reach targets differ.''
+
+\textit{Trap:} ``Scale-up and scale-out are just marketing synonyms.''
+
+\paragraph{Question 12. What power and thermal constraints matter?}
+\textit{Tests:} rack envelope realism.
+
+\textit{Spoken answer.}
+``Accelerators dominate watts, but switches and optics still move the rack
+envelope and the service model. Liquid cooling constrains where ToRs and fiber
+can sit. On-package optics add local hotspots near ASICs
+(\Cref{sec:power,sec:thermal-envelope,ch:packaging}). I close power and cooling
+before I freeze port count.''
+
+\textit{Pressure follow-up.} ``Optics are only a few percent of rack power.''\\
+\textit{Answer pivot.} ``True at fleet scale sometimes, but optics still set
+shoreline density, repair load, and whether the copper reach closes.''
+
+\textit{Trap:} ``If the GPUs fit the PDU, the network fits too.''
+
+\paragraph{Question 13. Give a 60-second fabric plan.}
+\textit{Tests:} end-to-end judgment order.
+
+\textit{Spoken answer.}
+``I start from the collective and the failure domain. I split scale-up from
+scale-out. I size bisection and oversubscription at each tier, decide rail
+count, sketch the rack with port and optics counts, choose copper versus optics
+by reach, and I state power, cooling, and replaceable units. Topology names
+come after those numbers.''
+
+\textit{Pressure follow-up.} ``Schedule is cut. What do you protect?''\\
+\textit{Answer pivot.} ``Claimed collective bisection, rail independence if we
+sold it, and a serviceable optics story. Cosmetic oversubscription savings
+come last.''
+
+\textit{Trap:} ``Pick fat tree, buy the biggest switch, and tune later.''

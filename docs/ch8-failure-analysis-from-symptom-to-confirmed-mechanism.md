@@ -5,6 +5,6 @@ title: "Moved: Failure Analysis"
 
 # Moved
 
-Now at [**Failure Analysis**](ch11-failure-analysis-from-symptom-to-confirmed-mechanism).
+Now at [**Failure Analysis**](ch12-failure-analysis-from-symptom-to-confirmed-mechanism).
 
 Return to the [table of contents](index).

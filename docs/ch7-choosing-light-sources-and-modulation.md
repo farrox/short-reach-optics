@@ -56,7 +56,7 @@ Reliability and service
 
 Validation and production evidence
 
-: name characterization, qualification, ATP, sample audit, SPC, or fleet telemetry for each remaining risk (Chapter 10).
+: name characterization, qualification, ATP, sample audit, SPC, or fleet telemetry for each remaining risk (Chapter 11).
 
 The choices are coupled. A cost-driven, short multimode link points toward an 850 nm VCSEL, multimode fiber, silicon photodiodes, and direct modulation. A longer single-mode path points toward a 1310 nm DFB or EML and germanium or III-V detection. Dense WDM and co-packaged optics often move the CW source away from the modulator, which adds wavelength control, fiber attach, and service requirements. §7.6, Table 7.3 turns these paths into supplier specifications.
 
@@ -77,7 +77,7 @@ Source placement
 : **CW-WDM / multi-wavelength sources**: multi-line CW feed for comb-like WDM architectures (§7.16, §8.6). **ELS / ELSFP**: field-replaceable external CW module for co-packaged engines (§7.14).
 
 <table class="book-table"><tr><th>Attribute</th><th>VCSEL direct</th><th>DFB direct</th><th>DFB + EAM</th><th>CW DFB/DBR + MZM</th><th>CW DFB/DBR + ring</th><th>External cavity + modulator</th></tr><tr><td>Wavelength / fiber</td><td>850--940 nm / MMF</td><td>1310 nm / SMF</td><td>1310 nm / SMF</td><td>1310 or 1550 nm / SMF</td><td>WDM grid / SMF</td><td>Tunable grid / SMF</td></tr><tr><td>Modulation fit</td><td>Direct only</td><td>Direct</td><td>Integrated EML</td><td>Si or TFLN MZM</td><td>Resonant Si ring</td><td>External MZM or ring</td></tr><tr><td>Bandwidth / reach</td><td>Short, modal limit</td><td>Chirp-limited</td><td>High BW, low chirp</td><td>High BW, broad passband</td><td>High BW, lock-limited</td><td>High BW, architecture-specific</td></tr><tr><td>RIN / linewidth</td><td>RIN and modal noise</td><td>RIN and chirp</td><td>RIN plus EAM bias</td><td>RIN; linewidth usually secondary</td><td>RIN plus spectral alignment</td><td>Low linewidth; verify feedback response</td></tr><tr><td>Power / efficiency</td><td>Low Tx complexity</td><td>Low Tx complexity</td><td>Driver and EAM loss</td><td>Laser, driver, and MZM loss</td><td>Laser, heater, and lock power</td><td>Laser plus control overhead</td></tr><tr><td>Reliability</td><td>Junction and temperature wear</td><td>Facet and active-region wear</td><td>Laser plus EAM aging</td><td>Source, attach, and bias drift</td><td>Source, heater, and lock faults</td><td>Cavity, package, and lock faults</td></tr><tr><td>Manufacturing</td><td>Array-friendly, MMF plant</td><td>Simple Tx, SMF attach</td><td>Mature integrated Tx</td><td>Multi-die attach and RF match</td><td>Dense PIC, tight thermal control</td><td>Tight optical assembly and control</td></tr><tr><td>Evidence burden</td><td>Modal, temperature, aging</td><td>Chirp, LIV, RIN</td><td>LIV, RIN, EAM sweep, TDECQ</td><td>Source plus bias and RF path</td><td>Source plus resonance and crosstalk</td><td>Spectrum, lock, feedback, environment</td></tr></table>
-**Table 7.1.** Decision matrix for common source and modulation paths. "Evidence burden" mixes characterization/ATP with life qualification; keep those jobs separate (Table 10.2, Chapter 10). Program limits come from Table 7.4.
+**Table 7.1.** Decision matrix for common source and modulation paths. "Evidence burden" mixes characterization/ATP with life qualification; keep those jobs separate (Table 11.2, Chapter 11). Program limits come from Table 7.4.
 
 ### Reading the source and modulation matrix
 
@@ -145,7 +145,7 @@ Each "Specs you must freeze early" cell is the exit criterion for that fork. **E
 
 ##### One-page requirements slice.
 
-Table 7.4 is the PRD-sized list. Fill every row with a number (or an explicit "N/A for this architecture") and a named evidence source before you negotiate production controls. Every requirement needs an owner; evidence may be engineering characterization, supplier data, qualification, incoming inspection, ATP, sampled audit, SPC, or fleet telemetry (Chapter 10). Do not leave RIN without an ORL, or power without a case-temperature class.
+Table 7.4 is the PRD-sized list. Fill every row with a number (or an explicit "N/A for this architecture") and a named evidence source before you negotiate production controls. Every requirement needs an owner; evidence may be engineering characterization, supplier data, qualification, incoming inspection, ATP, sampled audit, SPC, or fleet telemetry (Chapter 11). Do not leave RIN without an ORL, or power without a case-temperature class.
 
 <table class="book-table"><tr><th>Parameter</th><th>How to set the number</th><th>Evidence / production control</th><th>Reject if</th><th>Derate / ops note</th></tr><tr><td>Launch power / class</td><td>Link budget + connector loss + aging margin (sec:link-budget)</td><td>Power meter; ATP or sample; ELSFP class</td><td>Below min at rated T</td><td>Cap max power for COD</td></tr><tr><td>Wavelength / grid</td><td>PMD or ring FSR plan; d/dT headroom (ch:wdm)</td><td>OSA / wavemeter; ATP or sample</td><td>Off-grid at case T</td><td>TEC setpoints</td></tr><tr><td>SMSR floor</td><td>Datasheet + modal-noise budget</td><td>OSA at source/subasm or sample</td><td>Below floor at T</td><td>Watch aging</td></tr><tr><td>RIN (quiet + stressed)</td><td>BER floor vs BW (sec:rin); ORL from plant</td><td>PD+ESA; stated ORL; sample / supplier</td><td>Above limit at ORL</td><td>Bias-driver noise budget (sec:laser-drivers)</td></tr><tr><td>Bias window</td><td>LIV kink-free range at max case T</td><td>LIV at die/subasm; module proxy</td><td>Kink in window</td><td>Run below abs-max I</td></tr><tr><td>EAM / MZM (if any)</td><td>ER, RLM, TDECQ at baud (sec:tdecq)</td><td>DCA + bias sweep; ATP proxy</td><td>TDECQ/RLM fail</td><td>Bias aging policy</td></tr><tr><td>ORL / isolator</td><td>Architecture: isolator-free needs tighter RIN</td><td>ORL meter; mate cycles</td><td>ORL out of range</td><td>Cleaning / ELS mate life</td></tr><tr><td>CMIS monitors</td><td>What fleet triage will read (sec:fleet-triage)</td><td>CMIS dump; ATP state check</td><td>Missing alarms / bad state machine</td><td>Enable sequence (sec:bringup)</td></tr><tr><td>Life / degradation</td><td>Fleet life and availability target (sec:fit-example)</td><td>Qual: mechanism stress, lots, confidence (ch:reliability); not ATP</td><td>Claim unsupported</td><td>Derating; supplier ECO; sampled audit; bias/headroom telemetry; burn-in only if infant pop.\ justified</td></tr></table>
 **Table 7.4.** Laser requirements one-pager. Every cell needs a program number and an evidence owner; this table is the structure, not the limits. Life claims belong in qualification; ATP is only one possible production control.
@@ -168,15 +168,15 @@ Work backward from the link, not forward from a marketing slide. The four steps 
 
 2.  From receiver BW and the RIN ceiling $Q_{\max}=1/\sqrt{\mathrm{RIN}\cdot\mathrm{BW}}$ (§6.3), set a stressed RIN limit with margin under the plant ORL you will actually see (not only a quiet bench).
 
-3.  From case-temperature and derating policy, set the LIV bias window and thermal class so the laser never sits on a kink or at abs-max in the fleet (§7.13, §10.11).
+3.  From case-temperature and derating policy, set the LIV bias window and thermal class so the laser never sits on a kink or at abs-max in the fleet (§7.13, §11.11).
 
 4.  From service model, choose ELSFP mate-cycle / hot-swap requirements or accept on-package life risk and write COD/aging controls accordingly (§7.14).
 
-Hand the filled slice to the supplier with the production-control checklist (Table G.2, Chapter 10). If a roadmap slide cannot point to a row in Table 7.4, the requirement is not real yet.
+Hand the filled slice to the supplier with the production-control checklist (Table G.2, Chapter 11). If a roadmap slide cannot point to a row in Table 7.4, the requirement is not real yet.
 
 **Exit when** every cell in Table 7.4 is a program number or explicit N/A, with ORL stated wherever RIN appears and case-$T$ class stated wherever power or bias appears. **Decision unlocked:** negotiate evidence and production controls, or reopen the architecture fork that left a cell empty.
 
-**Key idea.** Laser leadership is a requirements sheet: architecture forks force specific specs (power, grid, RIN@ORL, SMSR, bias window, CMIS, life). Fill Table 7.4 from the link budget and fleet model, then assign each row an evidence source. ATP is only one possible control (Chapter 10, Appendix G.16).
+**Key idea.** Laser leadership is a requirements sheet: architecture forks force specific specs (power, grid, RIN@ORL, SMSR, bias window, CMIS, life). Fill Table 7.4 from the link budget and fleet model, then assign each row an evidence source. ATP is only one possible control (Chapter 11, Appendix G.16).
 
 ## LIV, SMSR, and RIN: the measurement playbook
 
@@ -326,11 +326,11 @@ Ring heater / lock point
 
 Tables are usually segmented by temperature. Segment boundaries are a real failure mode: the debug story in §7.20.4 is a healthy laser reading the wrong temperature segment after thermal cycling. Keep calibration tables under change control and record the table version with every test result, or failures cannot be replayed.
 
-Recalibration should be triggered by evidence, not habit: a control-loop error residual that no longer converges, an actuator (TEC, heater, bias DAC) that approaches its rail, telemetry that disagrees with an external reference, a temperature excursion beyond the table range, or a repair, rework, or firmware change that invalidates stored coefficients. Repeated recalibration can mask physical drift: if coefficients keep walking, treat that as an aging, attach, monitor, or control problem, not a permanent fix. ATP must verify calibration at the temperature corners the fleet will see, not only at the station ambient (§10.11, Chapter 10).
+Recalibration should be triggered by evidence, not habit: a control-loop error residual that no longer converges, an actuator (TEC, heater, bias DAC) that approaches its rail, telemetry that disagrees with an external reference, a temperature excursion beyond the table range, or a repair, rework, or firmware change that invalidates stored coefficients. Repeated recalibration can mask physical drift: if coefficients keep walking, treat that as an aging, attach, monitor, or control problem, not a permanent fix. ATP must verify calibration at the temperature corners the fleet will see, not only at the station ambient (§11.11, Chapter 11).
 
 ## How lasers are qualified
 
-Qualification supports a bounded life or degradation claim when the stress accelerates a credible field mechanism, the sample population is representative, observables and failure criteria are predefined, and the acceleration model and uncertainty are justified (Chapter 10, Appendix F.1.1). Three stress classes do most of the work:
+Qualification supports a bounded life or degradation claim when the stress accelerates a credible field mechanism, the sample population is representative, observables and failure criteria are predefined, and the acceleration model and uncertainty are justified (Chapter 11, Appendix F.1.1). Three stress classes do most of the work:
 
 HTOL (high-temperature operating life)
 
@@ -338,7 +338,7 @@ HTOL (high-temperature operating life)
 
 Burn-in
 
-: An optional production screen for a demonstrated infant-mortality population. Burn-in trades test time for escape rate; it does not replace life qualification (Appendix G.14, Chapter 10).
+: An optional production screen for a demonstrated infant-mortality population. Burn-in trades test time for escape rate; it does not replace life qualification (Appendix G.14, Chapter 11).
 
 Environmental stress
 
@@ -360,7 +360,7 @@ Watch LIV and spectrum over HTOL or field life:
 
 - COD (catastrophic optical damage) at the facet under overstress.
 
-Each signature needs an evidence owner in qualification, production control, or fleet telemetry (§11.10, Appendix F.1.1, Chapter 10).
+Each signature needs an evidence owner in qualification, production control, or fleet telemetry (§12.10, Appendix F.1.1, Chapter 11).
 
 ## Aging curves, derating, and fleet FIT
 
@@ -390,7 +390,7 @@ Telcordia GR-468-CORE qualifies optoelectronic parts with accelerated stress (HT
 
 ##### When the projection is valid.
 
-Acceleration assumes the stress speeds up the *same* physical mechanism the fleet will see. The projection fails in two ways: the stress activates a mechanism the field never sees (solder creep or moisture ingress at a stress temperature the product never reaches), or the field sees a mechanism the stress never exercises (connector wear, bias-rail transients, thermal cycling from traffic load). So a qual number is a hypothesis, not a fact: compare field-return Pareto and failure signatures against the qual projection, and treat divergence as evidence that $E_a$ or the mechanism model is wrong, not that the fleet is unlucky (§11.10). Sudden fails (COD, ESD, cracked fiber attach) sit outside §7.2; classify those separately before you fit Arrhenius parameters.
+Acceleration assumes the stress speeds up the *same* physical mechanism the fleet will see. The projection fails in two ways: the stress activates a mechanism the field never sees (solder creep or moisture ingress at a stress temperature the product never reaches), or the field sees a mechanism the stress never exercises (connector wear, bias-rail transients, thermal cycling from traffic load). So a qual number is a hypothesis, not a fact: compare field-return Pareto and failure signatures against the qual projection, and treat divergence as evidence that $E_a$ or the mechanism model is wrong, not that the fleet is unlucky (§12.10). Sudden fails (COD, ESD, cracked fiber attach) sit outside §7.2; classify those separately before you fit Arrhenius parameters.
 
 ##### Derating.
 
@@ -399,7 +399,7 @@ Run below absolute-max current, case temperature, and optical power. Derating ex
 ##### Worked FIT example (assumptions labeled).
 
 FIT is failures per $10^9$ device-hours. For illustration only, assume 50 FIT per laser (confirm against your supplier qual; do not treat 50 as a measured claim) and a fabric with $5\times10^5$ lasers (order-of-magnitude for a large AI cluster with several optical links per accelerator). Expected failures per day: $$\frac{5\times10^5 \times 50 \times 24}{10^9}
-\approx 0.6\ \text{laser failures/day}.$$ That is why field-replaceable ELSFP modules, burn-in screens, and derating are design inputs, not afterthoughts (Chapter 10).
+\approx 0.6\ \text{laser failures/day}.$$ That is why field-replaceable ELSFP modules, burn-in screens, and derating are design inputs, not afterthoughts (Chapter 11).
 
 ## ELS and ELSFP: architecture, pinout, qual
 
@@ -422,7 +422,7 @@ extitDeep dive / pin map. Skip unless you are wiring the host connector. Twenty-
 
 ##### Qual hooks for suppliers.
 
-Acceptance test plans should cover the checklist in Table G.2, Appendix G: laser LIV/SMSR/RIN inside the module; optical power-class compliance; connector mating cycles and contamination/ORL; burn-in before ship; CMIS register sanity; and thermal class at rated case temperature. Module bring-up must also prove the CMIS enable sequence and ModuleReady laser policy (§10.11). Field returns split between laser wear-out and connector/fiber-attach faults; keep both in the triage tree (§11.10).
+Acceptance test plans should cover the checklist in Table G.2, Appendix G: laser LIV/SMSR/RIN inside the module; optical power-class compliance; connector mating cycles and contamination/ORL; burn-in before ship; CMIS register sanity; and thermal class at rated case temperature. Module bring-up must also prove the CMIS enable sequence and ModuleReady laser policy (§11.11). Field returns split between laser wear-out and connector/fiber-attach faults; keep both in the triage tree (§12.10).
 
 ## Optical safety and laser classes
 
@@ -442,11 +442,11 @@ The safety case scales with *total* launched power at an accessible location, no
 
 When fiber continuity is lost, open connectors and broken fiber can expose hazardous power. *APR* (automatic power reduction) holds output at or below Hazard Level 1M and probes for re-mate with safe low-power pulses. *ALS* (automatic laser shutdown) cuts power entirely and was common on older SDH links; for modern high-power systems APR with automatic restart is the preferred pattern because restart probes stay within the hazard limit . ITU-T G.664 requires power reduction to Hazard Level 1M within about 3 s of a continuity break, a restart inhibit window, and restart only at safe power.
 
-These mechanisms tie directly to CMIS and bring-up policy: lasers enable only when the host commands ModuleReady (§10.11, Appendix E.7). APR/ALS is what makes a live ELSFP hot-swap survivable in a running rack (§10.11).
+These mechanisms tie directly to CMIS and bring-up policy: lasers enable only when the host commands ModuleReady (§11.11, Appendix E.7). APR/ALS is what makes a live ELSFP hot-swap survivable in a running rack (§11.11).
 
 ### What validation and ops owe
 
-Optical safety is a validation deliverable, not a compliance sticker. ATP should verify APR/ALS trip threshold and timing on representative open-fiber faults; label modules and cages with the rated class; document max launched power per port and per MPO breakout; and write service procedures for multi-fiber connectors. At fleet scale, a hot-swap runbook that assumes ALS works but was never tested in ATP is a real hazard. Fold the APR/ALS check into the ELS hot-swap corner in §10.11 alongside mate-cycle and ORL tests.
+Optical safety is a validation deliverable, not a compliance sticker. ATP should verify APR/ALS trip threshold and timing on representative open-fiber faults; label modules and cages with the rated class; document max launched power per port and per MPO breakout; and write service procedures for multi-fiber connectors. At fleet scale, a hot-swap runbook that assumes ALS works but was never tested in ATP is a real hazard. Fold the APR/ALS check into the ELS hot-swap corner in §11.11 alongside mate-cycle and ORL tests.
 
 ## CW-WDM source validation
 
@@ -499,7 +499,7 @@ Choose the service and ownership model before you freeze the optical architectur
 
 ## Why lasers can be a reliability bottleneck
 
-The laser can be an important reliability-limiting component because it is an active optical device with temperature- and bias-dependent degradation. The dominant fleet mechanism remains architecture-specific: connectors, electronics, packaging, cooling, control loops, and software may dominate another design (Chapter 10, Chapter 11).
+The laser can be an important reliability-limiting component because it is an active optical device with temperature- and bias-dependent degradation. The dominant fleet mechanism remains architecture-specific: connectors, electronics, packaging, cooling, control loops, and software may dominate another design (Chapter 11, Chapter 12).
 
 Laser-specific mechanisms that still need a plan include:
 
@@ -537,7 +537,7 @@ Control margin
 
 : headroom in APC, TEC, heaters, ring lock, bias DACs, and calibration tables. A railed loop can fail the link while the diode is still healthy. Calibration corrects predictable variation; it does not restore exhausted physical or control margin (§7.11).
 
-Recompute the link at combined production corners. A nominal part at nominal temperature says little about whether a slow loss in two ledgers will push a tail unit across the pre-FEC BER limit. A composite external measurement (TDECQ, BER waterfall) may already include several internal penalties; do not subtract the same impairment again in the system budget (Appendix E.5). §10.11, Table I.1 carry the same ledgers into validation and fleet triage. The interview review compresses this checklist in Appendix A.8.4. The wall-chart form is Appendix D.10.
+Recompute the link at combined production corners. A nominal part at nominal temperature says little about whether a slow loss in two ledgers will push a tail unit across the pre-FEC BER limit. A composite external measurement (TDECQ, BER waterfall) may already include several internal penalties; do not subtract the same impairment again in the system budget (Appendix E.5). §11.11, Table I.1 carry the same ledgers into validation and fleet triage. The interview review compresses this checklist in Appendix A.8.4. The wall-chart form is Appendix D.10.
 
 > **Why experienced engineers track five ledgers instead of one margin number?**
 >
@@ -580,7 +580,7 @@ Not every debit is naturally in decibels. Depending on the subsystem, remaining 
 
 ### How it works
 
-A laser is an active device with wear-out physics, so it is both the first line of the link budget and often an important reliability risk. The dominant fleet mechanism remains architecture-specific (§7.9, Chapter 10). The chapter's transmitter paths and LIV/SMSR/RIN measurements all serve one question: will this source stay in spec for years at temperature?
+A laser is an active device with wear-out physics, so it is both the first line of the link budget and often an important reliability risk. The dominant fleet mechanism remains architecture-specific (§7.9, Chapter 11). The chapter's transmitter paths and LIV/SMSR/RIN measurements all serve one question: will this source stay in spec for years at temperature?
 
 ### How it is measured
 
@@ -691,7 +691,7 @@ Table 7.10 is the decision sequence for a laser program. Measurement methods fo
 
 ##### Fleet operation.
 
-**Purpose.** Which monitors distinguish source, modulator, cooler, and optical path (§11.10)?
+**Purpose.** Which monitors distinguish source, modulator, cooler, and optical path (§12.10)?
 
 **Exit criteria.** **Exit when** telemetry map, alarm thresholds, and golden baselines are named and owned.
 
@@ -705,9 +705,9 @@ Architecture first, or you characterize the wrong path. LIV and spectrum establi
 
 ## Interview takeaway
 
-**Key idea.** Measure LIV, SMSR, wavelength, and RIN as distributions across temperature, lot, and age. Tie each requirement to a named evidence source (characterization, supplier data, qualification, ATP, sample audit, SPC, or fleet telemetry), each life claim to a physical mechanism, and each field alarm to a measurement that separates the laser from its driver, monitor, cooler, and optical path. Not every requirement is an every-unit ATP line (Table 7.4, Chapter 10).
+**Key idea.** Measure LIV, SMSR, wavelength, and RIN as distributions across temperature, lot, and age. Tie each requirement to a named evidence source (characterization, supplier data, qualification, ATP, sample audit, SPC, or fleet telemetry), each life claim to a physical mechanism, and each field alarm to a measurement that separates the laser from its driver, monitor, cooler, and optical path. Not every requirement is an every-unit ATP line (Table 7.4, Chapter 11).
 
-Junior mistake: declare wear-out from monitor telemetry alone, or raise launch power before naming which ledger spent (§7.19, Chapter 8, Chapter 10).
+Junior mistake: declare wear-out from monitor telemetry alone, or raise launch power before naming which ledger spent (§7.19, Chapter 8, Chapter 11).
 
 ### Interview Q&A: Choosing Light Sources and Modulation
 
@@ -816,7 +816,7 @@ Practice speaking these answers aloud. Prefer first-person reasoning over defini
 
 *Tests:* density, serviceability, ownership, and system reliability.
 
-*Spoken answer.* "An integrated source reduces optical interfaces and can improve density, coupling, and packaging simplicity, but its yield, thermal exposure, and wear-out become part of the optical-engine or switch-package life. A field-replaceable external source can reduce replacement blast radius and improve serviceability, but it adds connectors, return-loss exposure, mate-cycle limits, fiber routing, hot-swap control, safety behavior, and another interoperability boundary. I would compare component failure rates together with population size, detection, redundancy, replacement time, connector reliability, thermal environment, and operational access. The correct decision comes from system availability and service policy, not source FIT alone" (§7.14, Chapter 10).
+*Spoken answer.* "An integrated source reduces optical interfaces and can improve density, coupling, and packaging simplicity, but its yield, thermal exposure, and wear-out become part of the optical-engine or switch-package life. A field-replaceable external source can reduce replacement blast radius and improve serviceability, but it adds connectors, return-loss exposure, mate-cycle limits, fiber routing, hot-swap control, safety behavior, and another interoperability boundary. I would compare component failure rates together with population size, detection, redundancy, replacement time, connector reliability, thermal environment, and operational access. The correct decision comes from system availability and service policy, not source FIT alone" (§7.14, Chapter 11).
 
 *Pressure follow-up.* "Does moving the laser into an ELS automatically improve reliability?"\
 *Answer pivot.* "It can improve serviceability and isolate source replacement, but it introduces interface and operational risks. The architecture must qualify both the source module and the optical, management, hot-swap, and safety interfaces."
@@ -827,7 +827,7 @@ Practice speaking these answers aloud. Prefer first-person reasoning over defini
 
 *Tests:* equivalence, distributions, mechanisms, and production control.
 
-*Spoken answer.* "I would begin with the system requirements rather than asking the second source to copy the first supplier's nominal values. I would compare representative lots and sites across LIV distributions, wavelength and SMSR, quiet and stressed RIN, modulation behavior where applicable, thermal response, control headroom, aging evidence, package interaction, and closed-module performance. I would verify measurement correlation between supplier, engineering, and production stations and evaluate whether ATP or upstream controls detect the relevant variation. I also need supplier change control and genealogy. Meeting a datasheet does not establish identical tails, failure mechanisms, calibration behavior, or system margin" (Table 7.4, Chapter 10, Appendix G.16).
+*Spoken answer.* "I would begin with the system requirements rather than asking the second source to copy the first supplier's nominal values. I would compare representative lots and sites across LIV distributions, wavelength and SMSR, quiet and stressed RIN, modulation behavior where applicable, thermal response, control headroom, aging evidence, package interaction, and closed-module performance. I would verify measurement correlation between supplier, engineering, and production stations and evaluate whether ATP or upstream controls detect the relevant variation. I also need supplier change control and genealogy. Meeting a datasheet does not establish identical tails, failure mechanisms, calibration behavior, or system margin" (Table 7.4, Chapter 11, Appendix G.16).
 
 *Pressure follow-up.* "The replacement supplier meets every written laser specification. Is that sufficient?"\
 *Answer pivot.* "Only if the written requirements capture the system-relevant conditions and the supplier's distributions and package interactions remain inside the allocated margin. Nominal specification compliance alone is not an interoperability or life argument."

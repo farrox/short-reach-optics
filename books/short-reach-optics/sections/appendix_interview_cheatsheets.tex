@@ -31,18 +31,19 @@ Ch & Main question \\
 7 & How do the source and modulator behave? \\
 8 & How do wavelength and WDM stay controlled? \\
 9 & 2.5D versus 3D / CPO: which integration, which risk? \\
-10 & How does a sound design become a controlled product? \\
-11 & How do I find and prevent the real cause of a failure? \\
+10 & Fat-tree and HPC rack: bisection, rails, oversubscription? \\
+11 & How does a sound design become a controlled product? \\
+12 & How do I find and prevent the real cause of a failure? \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \paragraph{How to use these sheets.}
 Spend about 2--3 minutes per page. Prefer the PAM4 versus PAM8, FFE versus DFE,
-and 2.5D versus 3D/CPO sheets, then models through WDM, productization, and
-failure analysis. The productization flashcards at the end are a secondary
-reference bank, not the primary study set. Full depth:
-\Cref{ch:multilevel,ch:equalization,ch:models,ch:lasers,ch:wdm,ch:packaging,ch:productization,ch:failure-modes}.
+2.5D versus 3D/CPO, and fat-tree/HPC sheets, then models through WDM,
+productization, and failure analysis. The productization flashcards at the end
+are a secondary reference bank, not the primary study set. Full depth:
+\Cref{ch:multilevel,ch:equalization,ch:models,ch:lasers,ch:wdm,ch:packaging,ch:hpc,ch:productization,ch:failure-modes}.
 
 \clearpage
 \section{PAM4 versus PAM8}
@@ -376,7 +377,63 @@ FAU yield, and replaceable-laser story.''
 \footnotesize Depth: \Cref{ch:packaging,tab:placement,sec:elsfp,sec:cpo-status}.
 
 \clearpage
-\section{Chapter 10: Productization and fleet readiness}
+\section{Fat-tree and HPC rack}
+\label{sec:cheat-hpc}
+
+\textit{Goal.} Size topology from collectives and failure domains, not from a
+vendor rack photo.
+
+\paragraph{Mental checklist.}
+Workload / collective $\rightarrow$ Scale-up vs scale-out $\rightarrow$
+Bisection $\rightarrow$ Oversubscription at named tier $\rightarrow$ Rails
+$\rightarrow$ Rack port and optics count $\rightarrow$ Copper vs optics
+$\rightarrow$ Power / cooling / service
+
+\paragraph{What I need to know.}
+\begin{itemize}
+\item Fat tree is folded Clos: leaves, spines, path diversity.
+\item Bisection is the worst equal cut, not average utilization.
+\item Oversubscription needs a tier and a traffic pattern.
+\item Rails buy isolation and cost more optics.
+\item Scale-up and scale-out are different planes.
+\item A rack sketch must count ports, modules, and replaceables.
+\end{itemize}
+
+\paragraph{Key distinctions.}
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}ll@{}}
+\toprule
+Do not confuse & With \\
+\midrule
+Bisection bandwidth & Sum of all link speeds \\
+Mean link utilization & Collective peak demand \\
+Scale-up & Scale-out \\
+Fat-tree name & Closed optics and power budget \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Trap.}
+Trap: ``Pick fat tree and the biggest switch.''\\
+Better: ``Name collective, bisection, rails, then port and optics counts.''
+
+\paragraph{60-second answer.}
+``I start from the collective and failure domain. I split scale-up from
+scale-out, size bisection and oversubscription at each tier, choose rail
+count, sketch the rack with ports and optics, pick copper versus optics by
+reach, and I state power and serviceability. Topology names come after those
+numbers.''
+
+\paragraph{Pressure.}
+Pressure: ``Average utilization is only 20\%. Why not 4:1 oversub?''\\
+Pivot: ``Averages miss synchronized bursts. I need the collective-period peak
+at that tier.''
+
+\footnotesize Depth: \Cref{ch:hpc,sec:topologies,sec:collectives,sec:scale-up-out}.
+
+\clearpage
+\section{Chapter 11: Productization and fleet readiness}
 \label{sec:cheat-productization}
 \label{sec:cheat-ch7}
 \label{sec:cheat-ch8}
@@ -435,7 +492,7 @@ dominant life mechanisms, factory controls, and a reversible pilot.''
 \footnotesize Depth: \Cref{ch:productization,tab:ladder,app:reliability-reference,app:manufacturing-reference}.
 
 \clearpage
-\section{Chapter 11: Failure analysis}
+\section{Chapter 12: Failure analysis}
 \label{sec:cheat-ch11}
 
 \textit{Goal.} Find the real cause without destroying the evidence, then stop it

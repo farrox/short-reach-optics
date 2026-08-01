@@ -344,6 +344,16 @@ No new frameworks. Structural relocation of existing material is allowed.
   in print only; labels preserved. HTML:
   `ch9-advanced-packaging-for-optical-engines`; cheat sheets at
   `ch24-interview-cheat-sheets`; references at `ch25-references`.
+- **Pass 5 HPC rack architecture:** Added Chapter~10 AI and HPC Rack
+  Architecture (`ch_hpc_rack.tex`, labels `ch:hpc` / `sec:hpc-rack`): workload
+  characteristics, fat-tree/Clos, oversubscription, rails, scale-up versus
+  scale-out, worked 64-accelerator rack exercise, fat-tree versus dragonfly,
+  OCS placement notes, debug vignette, and 13 interview Q\&As (~12 PDF
+  pages). App~H topology/scale-up survey stays with pointers. Appendix~M gains
+  a Fat-tree and HPC rack cheat sheet; overview table renumbered. Later body
+  chapters renumber in print only; labels preserved. HTML:
+  `ch10-ai-and-hpc-rack-architecture`; cheat sheets at
+  `ch25-interview-cheat-sheets`; references at `ch26-references`.
 
 ## Typographical fixes
 

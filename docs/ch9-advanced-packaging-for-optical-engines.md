@@ -120,7 +120,7 @@ Moving optics onto the package buys and spends at the same time.
 
 - Field replacement: soldered engines are not hot-swappable; that is why many CPO recipes pull lasers into ELSFP banks (§7.14).
 
-XPO and pluggable hedges exist because some fleets still want faceplate serviceability while they close CPO yield and thermal stories (Appendix H.11, Appendix H.3). Productization then has to prove the factory can reproduce the package claim (Chapter 10).
+XPO and pluggable hedges exist because some fleets still want faceplate serviceability while they close CPO yield and thermal stories (Appendix H.11, Appendix H.3). Productization then has to prove the factory can reproduce the package claim (Chapter 11).
 
 ### External versus integrated lasers
 
@@ -175,7 +175,7 @@ A whiteboard packaging answer that skips test is incomplete.
 
 3.  Keep a rework path where the business case allows it. Pure 3D stacks often do not.
 
-4.  Plan system-level bring-up that can still localize package versus host versus fiber plant (Chapter 10, Chapter 11).
+4.  Plan system-level bring-up that can still localize package versus host versus fiber plant (Chapter 11, Chapter 12).
 
 Package yield is multiplicative when you stack. Separate screening is why many CPO engines stay 2.5D-adjacent rather than fully bonded until the optical test story matures.
 
@@ -354,5 +354,5 @@ Practice aloud. Prefer first-person reasoning. Score with Appendix A.12.1.
 <div class="nav-links">
   <a href="ch8-wdm-and-wavelength-locked-lasers">&larr; Previous</a>
   <a href="./">Table of Contents</a>
-  <a href="ch10-productization-from-requirements-to-controlled-ramp">Next &rarr;</a>
+  <a href="ch10-ai-and-hpc-rack-architecture">Next &rarr;</a>
 </div>

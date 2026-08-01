@@ -368,7 +368,7 @@ Practice aloud. Prefer first-person reasoning. Score with Appendix A.12.1.
 
 *Tests:* shared margin budget.
 
-*Spoken answer.* "EQ reduces ISI; FEC cleans residual errors. Aggressive EQ that boosts noise can increase FEC demand. I treat them as one budget: open the eye without driving corrected-error rate into a corner" (Chapter 6, Chapter 10).
+*Spoken answer.* "EQ reduces ISI; FEC cleans residual errors. Aggressive EQ that boosts noise can increase FEC demand. I treat them as one budget: open the eye without driving corrected-error rate into a corner" (Chapter 6, Chapter 11).
 
 *Pressure follow-up.* "Post-FEC is clean. Can I ignore EQ?"\
 *Answer pivot.* "Not if corrected errors are climbing or bursts are growing. Post-FEC can hide a shrinking physical margin."
