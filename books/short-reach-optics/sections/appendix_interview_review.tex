@@ -1627,43 +1627,47 @@ slips, cut new reading first, not stories or the mock. Prefer the measurement
 with the highest information gain per cost
 (\Cref{sec:case-info-value,sec:interview-access-levels}).
 
-\paragraph{Day 1: Mental models.}
-\textit{Learn:} five ledgers (\Cref{sec:interview-margin-ledgers}), validation
-lifecycle (\Cref{tab:ladder}), margin thinking, reference planes, Staff pattern
-(\Cref{sec:interview-staff-pattern}).\\
-\textit{Output:} Explain aloud, ``How would you debug a BER failure?''
-
-\paragraph{Day 2: Optical fundamentals.}
-\textit{Learn:} power, OMA, ER, RIN, BER, sensitivity
+\paragraph{Day 1: Mental models and IM/DD fundamentals.}
+\textit{Learn:} five ledgers (\Cref{sec:interview-margin-ledgers}), margin
+thinking, reference planes, Staff pattern
+(\Cref{sec:interview-staff-pattern}); power, OMA, ER, RIN, BER, sensitivity
 (\Cref{ch:imdd,sec:interview-waterfall}).\\
-\textit{Output:} Explain aloud, ``Why does power not equal quality?''
+\textit{Output:} Explain aloud, ``Why does power not equal quality?'' Then
+debug a BER failure in sixty seconds.
 
-\paragraph{Day 3: Validation.}
-\textit{Learn:} characterization, margin, interoperability, and where
-qualification and manufacturing sit in the lifecycle
-(\Cref{sec:interview-validation-ladder,fw:validation-plan,tab:ladder}).\\
-\textit{Output:} Design a validation plan for a new optical module in two
-minutes.
+\paragraph{Day 2: PAM4 / PAM8 and quantitative models.}
+\textit{Learn:} multilevel signaling and when PAM8 is worth it
+(\Cref{ch:multilevel}); noise, RIN, and BER arithmetic
+(\Cref{ch:models}).\\
+\textit{Output:} Defend PAM4 versus PAM8 at a fixed bit rate with baud and SNR
+named.
 
-\paragraph{Day 4: Reliability qualification.}
-\textit{Learn:} mechanism-driven qualification, HTOL versus burn-in, sample
-confidence (\Cref{ch:reliability,fw:qual-plan,sec:tree-qual-evidence}).\\
-\textit{Output:} Walk a laser-degradation qualification argument aloud.
+\paragraph{Day 3: Equalization and link budgets.}
+\textit{Learn:} CTLE, FFE, DFE, and EQ versus FEC
+(\Cref{ch:equalization,sec:serdes-dsp}); short-reach link-budget accounting
+(\Cref{sec:link-budget}).\\
+\textit{Output:} When do you use FFE versus DFE, and what can each correct?
 
-\paragraph{Day 5: Manufacturing.}
-\textit{Learn:} measurement systems, ATP, yield, SPC, and scale-up
-(\Cref{ch:manufacturing,fw:atp-update,sec:gauge-rr,tab:npi}).\\
-\textit{Output:} Discuss how you would take a link to volume production.
+\paragraph{Day 4: Lasers, modulation, and WDM.}
+\textit{Learn:} sources and modulators (\Cref{ch:lasers,ch:imdd}); wavelength
+control and WDM (\Cref{ch:wdm}).\\
+\textit{Output:} Choose EML, silicon MZM, or ring for a named reach and state
+the laser requirements you would freeze.
 
-\paragraph{Day 6: Architecture and failure analysis.}
-\textit{Learn:} multilevel signaling, equalization, packaging, and HPC rack
-architecture
-(\Cref{ch:multilevel,ch:equalization,ch:packaging,ch:hpc}); IM/DD and WDM as
-needed (\Cref{ch:imdd,ch:wdm}); fleet trees and cases
-(\Cref{app:decision-trees,fw:fleet,sec:case-fleet-ber}). Rehearse two true
-stories (\Cref{sec:interview-story-template}).\\
-\textit{Output:} Defend an architecture tradeoff; debug one fleet case without
-naming a component first.
+\paragraph{Day 5: Packaging / CPO and rack architecture.}
+\textit{Learn:} 2.5D versus 3D and CPO placement
+(\Cref{ch:packaging}); fat-tree, network rails, and the rack-to-PHY bridge
+(\Cref{ch:hpc,sec:hpc-rack-to-phy}).\\
+\textit{Output:} Walk a 64-accelerator, two-rail rack from ports to optical
+endpoints, placement, and replaceables.
+
+\paragraph{Day 6: Debugging, stories, and compact productization.}
+\textit{Learn:} decision trees and fleet cases
+(\Cref{app:decision-trees,fw:fleet,sec:case-fleet-ber}); productization spine
+only (\Cref{ch:productization,tab:ladder,tab:validation-jobs}). Rehearse two
+true stories (\Cref{sec:interview-story-template}).\\
+\textit{Output:} Debug one fleet case without naming a component first; give a
+two-minute readiness plan only if asked.
 
 \paragraph{Day 7: Mock interviews.}
 \textit{Learn:} three cheat sheets below; architecture-first Top~25 index
@@ -1673,9 +1677,10 @@ whiteboard trees (\Cref{app:decision-trees}).\\
 before the call. Sleep.
 
 \paragraph{If you have less than seven days.}
-Compress: Day~2 fundamentals, Day~6 architecture, Day~1 mental models, Day~7
-mock. Keep the cheat sheets and Top~25. Add Day~3--5 readiness only if the role
-is lifecycle-led. Cut new chapter reading first.
+Compress: Day~1 fundamentals, Days~2--5 architecture (PAM, EQ, lasers/WDM,
+packaging/HPC), Day~7 mock. Keep the cheat sheets and Top~25. Add Day~6
+productization depth only if the role is lifecycle-led. Cut new chapter
+reading first.
 
 \clearpage
 \section{Staff interview cheat sheets}

@@ -268,7 +268,7 @@ Depth: Chapter 9, Table H.4, §7.14, Appendix H.10.
 
 ##### Mental checklist.
 
-Workload / collective $\rightarrow$ Scale-up vs scale-out $\rightarrow$ Bisection $\rightarrow$ Oversubscription at named tier $\rightarrow$ Rails $\rightarrow$ Rack port and optics count $\rightarrow$ Copper vs optics $\rightarrow$ Power / cooling / service
+Workload / collective $\rightarrow$ Scale-up vs scale-out $\rightarrow$ Bisection $\rightarrow$ Oversubscription at named tier $\rightarrow$ Network rails $\rightarrow$ Ports $\rightarrow$ Optical endpoints $\rightarrow$ Lanes/$\lambda$ $\rightarrow$ PAM/baud $\rightarrow$ EQ/FEC owner $\rightarrow$ Placement $\rightarrow$ Lasers/watts $\rightarrow$ Replaceables $\rightarrow$ Power / cooling / service
 
 ##### What I need to know.
 
@@ -278,11 +278,11 @@ Workload / collective $\rightarrow$ Scale-up vs scale-out $\rightarrow$ Bisectio
 
 - Oversubscription needs a tier and a traffic pattern.
 
-- Rails buy isolation and cost more optics.
+- Network rails can buy isolation; state shared switches, trunks, control, power, and software.
 
 - Scale-up and scale-out are different planes.
 
-- A rack sketch must count ports, modules, and replaceables.
+- A rack sketch must count ports, optical endpoints, modules, and replaceables (§10.7).
 
 ##### Key distinctions.
 
@@ -301,7 +301,7 @@ Better: "Name collective, bisection, rails, then port and optics counts."
 Pressure: "Average utilization is only 20%. Why not 4:1 oversub?"\
 Pivot: "Averages miss synchronized bursts. I need the collective-period peak at that tier."
 
-Depth: Chapter 10, Appendix H.2, Appendix H.7, Appendix H.1.
+Depth: Chapter 10, §10.7, Appendix H.2, Appendix H.7, Appendix H.1.
 
 ## Chapter 11: Productization and fleet readiness
 

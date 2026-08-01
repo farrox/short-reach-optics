@@ -95,7 +95,7 @@ Nonblocking Clos fabrics multiply:
 
 In a conventional $k$-ary three-stage fat tree, both host count and physical link count scale as $O(k^3)$. The usual construction has hosts $k^3/4$, edge-to-host links $k^3/4$, edge-to-aggregation links $k^3/4$, and aggregation-to-core links $k^3/4$. The economic pressure is not a different asymptotic exponent. It is the large number of switch ports, cable ends, and optical endpoints required per host.
 
-Concrete sketch for $k=32$: about $32^3/4 = 8192$ hosts and about $3\times 8192 = 24576$ bidirectional network link attachments across the three tiers (plus the host-edge tier). That is tens of thousands of cable ends and optical endpoints before oversubscription or multi-rail multiplication (Appendix H.2). Oversubscription, network rails, and dragonfly-style hierarchies appear as cost controls on that constant-factor burden, not as fashion.
+Concrete sketch for $k=32$: about $32^3/4 = 8192$ hosts; 8192 host-edge, 8192 edge-aggregation, and 8192 aggregation-core physical links; 24576 physical links total; and $2\times 24576 = 49152$ link endpoints or cable terminations. That is tens of thousands of cable ends and optical endpoints before oversubscription or multi-rail multiplication (Appendix H.2). Oversubscription, network rails, and dragonfly-style hierarchies appear as cost controls on that constant-factor burden, not as fashion.
 
 ## Oversubscription
 
@@ -184,7 +184,7 @@ Assume the rack must support synchronized all-reduce across both network rails w
 
 ##### 2. Endpoint ports and uplinks.
 
-Sixty-four 800G endpoint-facing ports give 51.2 Tb/s of attach. At 1:1 you need 64 same-speed uplink ports toward the next tier; at 2:1 you need 32. State which tier owns that ratio.
+Sixty-four 800G endpoint-facing ports give 51.2 Tb/s of attach per direction (full-duplex ports; do not double-count or under-count bidirectional bandwidth). At 1:1 you need 64 same-speed uplink ports toward the next tier; at 2:1 you need 32. State which tier owns that ratio.
 
 ##### 3. Optical link endpoints, not merely ports.
 
@@ -198,13 +198,19 @@ A common short-reach sketch is $8\times100$G PAM4 lanes (electrical) into an 800
 
 For this sketch stay on PAM4 unless a named reach or SerDes generation forces a baud cut that PAM8 might buy (Chapter 4). PAM8 is preferable only when the saved baud closes electrical or optical bandwidth that PAM4 cannot, and when SNR, linearity, and calibration still close. Do not choose PAM8 to sound denser.
 
-##### 6. Reach class and EQ ownership.
+##### 6. Electrical reach, optical PMD, and FEC ownership.
 
-Tray-to-ToR may be copper or short optics. ToR-to-spine and rack-to-rack set VSR/MR versus longer optics. Retimed pluggables keep heavy EQ in the module; LPO pushes EQ and FEC onto the host SerDes; CPO shortens to XSR at the package (Chapter 5, §3.7, Appendix H.5.1). Name who owns CTLE, FFE, DFE, and KP4 for each hop.
+Keep these three ledgers separate (Chapter 5, §3.7, Appendix H.5.1):
+
+- **Electrical reach / EQ--CDR owner.** Name the ASIC-to-engine or host-to-module electrical class (XSR, VSR, or MR) and who owns CTLE, FFE, DFE, and CDR on that hop. CPO shortens the electrical path toward XSR at the package; retimed pluggables keep heavy EQ in the module; LPO removes module retiming/DSP and forces the host SerDes to close the analog channel.
+
+- **Optical PMD.** Name DR, FR, SR, or copper, the lane/wavelength plan, and the pre-FEC objective. Electrical reach classes are not optical PMD names.
+
+- **PCS/FEC location.** The host PCS commonly owns end-to-end Ethernet FEC. Some module DSPs can contain FEC or transcoding. LPO does not universally move FEC onto the host; state the named implementation.
 
 ##### 7. Pluggable, LPO, or CPO.
 
-Use pluggables when faceplate serviceability dominates. Use LPO when module DSP power is the binding constraint and host EQ/FEC are proven. Use CPO when shoreline density and SerDes energy dominate and package yield/thermal/service stories are closed (Chapter 9, Table H.4). A mixed rack (copper inside, optics out) is a valid answer if the reaches match.
+Use pluggables when faceplate serviceability dominates. Use LPO when module DSP power is the binding constraint and the host SerDes (and host FEC story) are proven. Use CPO when shoreline density and SerDes energy dominate and package yield/thermal/service stories are closed (Chapter 9, Table H.4). A mixed rack (copper inside, optics out) is a valid answer if the reaches match.
 
 ##### 8. Lasers, fibers, watts, replaceable units.
 
@@ -214,7 +220,11 @@ From the lane/wavelength choice, count lasers or CW lines, FAU or MPO fibers, an
 
 Module and laser count set FIT exposure and sparing. Ask what one failed rail, ToR, or trunk does to job completion, and whether the rack runs degraded or drains (Chapter 11, Chapter 12). Topology that looks cheap per port can be expensive per fleet event.
 
-Worked memory: collective $\rightarrow$ ports $\rightarrow$ endpoints $\rightarrow$ lanes/$\lambda$ $\rightarrow$ PAM/baud $\rightarrow$ EQ owner $\rightarrow$ placement $\rightarrow$ lasers/watts $\rightarrow$ replaceables and degraded behavior.
+##### Closing ledger (1:1 all-optical sketch).
+
+Assume tray-to-ToR and ToR-to-spine are both discrete optics at 1:1, so 64 downlink plus 64 uplink links give 128 optical links and 256 optical endpoints. Let $L$ be Tx lanes or source channels per endpoint (for example $L=8$ for $8\times100$G). Then the illustrative exposure is $256L$ Tx lanes or source channels, $256\times$ (endpoint watts), and (endpoint FIT)$\times 256$, plus the named consequence of one failed network rail or ToR. Watts and FIT stay assumption-bound; do not invent a vendor number. Change $L$, copper short hops, or CPO folding only if you rename the assumption.
+
+Worked memory: collective $\rightarrow$ ports $\rightarrow$ endpoints $\rightarrow$ lanes/$\lambda$ $\rightarrow$ PAM/baud $\rightarrow$ EQ/FEC owner $\rightarrow$ placement $\rightarrow$ lasers/watts $\rightarrow$ replaceables and degraded behavior.
 
 ## Finishing the rack sketch
 
@@ -315,7 +325,7 @@ Weak answers blame "optics" or "buy a bigger switch" without naming the cut. Str
 
 ## Interview takeaway
 
-**Key idea.** I start from the collective and the failure domain. I size bisection and oversubscription at a named tier, decide how many rails I am buying, split scale-up from scale-out, then close a rack sketch with port count, optics count, power, and serviceability. Topology names come after those numbers.
+**Key idea.** I start from the collective and the failure domain. I size bisection and oversubscription at a named tier, decide how many network rails I am buying and what they share, split scale-up from scale-out, then close a rack sketch through ports, optical endpoints, PAM/EQ/placement, lasers, power, and serviceability (§10.7). Topology names come after those numbers.
 
 ## Interview Q&A
 

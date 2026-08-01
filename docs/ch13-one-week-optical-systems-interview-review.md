@@ -1005,35 +1005,35 @@ Answer the question directly first. State assumptions. Do not list every test. E
 
 Assume seven days, with the interview near the end of Day 7. Protect sleep. Each day has a Learn list (pointers only) and one speakable Output. If a day slips, cut new reading first, not stories or the mock. Prefer the measurement with the highest information gain per cost (Appendix B.1, Appendix A.2).
 
-##### Day 1: Mental models.
+##### Day 1: Mental models and IM/DD fundamentals.
 
-*Learn:* five ledgers (Appendix A.8.4), validation lifecycle (Table 11.2), margin thinking, reference planes, Staff pattern (Appendix A.1).\
-*Output:* Explain aloud, "How would you debug a BER failure?"
+*Learn:* five ledgers (Appendix A.8.4), margin thinking, reference planes, Staff pattern (Appendix A.1); power, OMA, ER, RIN, BER, sensitivity (Chapter 3, Appendix A.8.9).\
+*Output:* Explain aloud, "Why does power not equal quality?" Then debug a BER failure in sixty seconds.
 
-##### Day 2: Optical fundamentals.
+##### Day 2: PAM4 / PAM8 and quantitative models.
 
-*Learn:* power, OMA, ER, RIN, BER, sensitivity (Chapter 3, Appendix A.8.9).\
-*Output:* Explain aloud, "Why does power not equal quality?"
+*Learn:* multilevel signaling and when PAM8 is worth it (Chapter 4); noise, RIN, and BER arithmetic (Chapter 6).\
+*Output:* Defend PAM4 versus PAM8 at a fixed bit rate with baud and SNR named.
 
-##### Day 3: Validation.
+##### Day 3: Equalization and link budgets.
 
-*Learn:* characterization, margin, interoperability, and where qualification and manufacturing sit in the lifecycle (Appendix A.8.5, Appendix C.8, Table 11.2).\
-*Output:* Design a validation plan for a new optical module in two minutes.
+*Learn:* CTLE, FFE, DFE, and EQ versus FEC (Chapter 5, §3.7); short-reach link-budget accounting (Appendix E.5).\
+*Output:* When do you use FFE versus DFE, and what can each correct?
 
-##### Day 4: Reliability qualification.
+##### Day 4: Lasers, modulation, and WDM.
 
-*Learn:* mechanism-driven qualification, HTOL versus burn-in, sample confidence (Chapter 11, Appendix C.15, Appendix D.3).\
-*Output:* Walk a laser-degradation qualification argument aloud.
+*Learn:* sources and modulators (Chapter 7, Chapter 3); wavelength control and WDM (Chapter 8).\
+*Output:* Choose EML, silicon MZM, or ring for a named reach and state the laser requirements you would freeze.
 
-##### Day 5: Manufacturing.
+##### Day 5: Packaging / CPO and rack architecture.
 
-*Learn:* measurement systems, ATP, yield, SPC, and scale-up (Chapter 11, Appendix C.13, Appendix G.11, Table G.1).\
-*Output:* Discuss how you would take a link to volume production.
+*Learn:* 2.5D versus 3D and CPO placement (Chapter 9); fat-tree, network rails, and the rack-to-PHY bridge (Chapter 10, §10.7).\
+*Output:* Walk a 64-accelerator, two-rail rack from ports to optical endpoints, placement, and replaceables.
 
-##### Day 6: Architecture and failure analysis.
+##### Day 6: Debugging, stories, and compact productization.
 
-*Learn:* multilevel signaling, equalization, packaging, and HPC rack architecture (Chapter 4, Chapter 5, Chapter 9, Chapter 10); IM/DD and WDM as needed (Chapter 3, Chapter 8); fleet trees and cases (Appendix D, Appendix C.9, Appendix B.5). Rehearse two true stories (Appendix A.9).\
-*Output:* Defend an architecture tradeoff; debug one fleet case without naming a component first.
+*Learn:* decision trees and fleet cases (Appendix D, Appendix C.9, Appendix B.5); productization spine only (Chapter 11, Table 11.2, Table 11.1). Rehearse two true stories (Appendix A.9).\
+*Output:* Debug one fleet case without naming a component first; give a two-minute readiness plan only if asked.
 
 ##### Day 7: Mock interviews.
 
@@ -1042,7 +1042,7 @@ Assume seven days, with the interview near the end of Day 7. Protect sleep. Eac
 
 ##### If you have less than seven days.
 
-Compress: Day 2 fundamentals, Day 6 architecture, Day 1 mental models, Day 7 mock. Keep the cheat sheets and Top 25. Add Day 3--5 readiness only if the role is lifecycle-led. Cut new chapter reading first.
+Compress: Day 1 fundamentals, Days 2--5 architecture (PAM, EQ, lasers/WDM, packaging/HPC), Day 7 mock. Keep the cheat sheets and Top 25. Add Day 6 productization depth only if the role is lifecycle-led. Cut new chapter reading first.
 
 ## Staff interview cheat sheets
 

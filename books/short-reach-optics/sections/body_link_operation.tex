@@ -170,21 +170,21 @@ Interpret counters as system evidence, not as interchangeable BER synonyms.
 Detailed BER and coding models live in \Cref{ch:models,sec:kp4}.
 
 \begin{description}
-\item[Pre-FEC\firstterm{preFEC} error activity]
-      indicates physical-link burden before correction. The counter may record
-      bits, symbols, codewords, or implementation-specific events, so its
-      definition and accumulation window must be stated.
-\item[Corrected errors\firstterm{correctedErrors}]
-      indicate FEC activity and consumed margin. Rising correction demand can
-      reveal shrinking physical margin even while delivered traffic remains
-      error-free. It is an early-warning signal, not by itself proof of an
-      imminent outage.
+\item[Pre-FEC error activity]
+      \firstterm{preFEC} indicates physical-link burden before correction. The
+      counter may record bits, symbols, codewords, or implementation-specific
+      events, so its definition and accumulation window must be stated.
+\item[Corrected errors]
+      \firstterm{correctedErrors} indicate FEC activity and consumed margin.
+      Rising correction demand can reveal shrinking physical margin even while
+      delivered traffic remains error-free. It is an early-warning signal, not
+      by itself proof of an imminent outage.
 \item[Uncorrectable events]
       exceed correction capability and create service impact: packet loss, lane
       failure, or a link-state event.
-\item[Post-FEC\firstterm{postFEC} residuals]
-      describe what remains after correction. Zero observed residuals do not
-      prove unlimited margin.
+\item[Post-FEC residuals]
+      \firstterm{postFEC} residuals describe what remains after correction. Zero
+      observed residuals do not prove unlimited margin.
 \end{description}
 
 Average BER can hide burstiness. Threshold crossing and temporal clustering

@@ -385,8 +385,10 @@ vendor rack photo.
 
 \paragraph{Mental checklist.}
 Workload / collective $\rightarrow$ Scale-up vs scale-out $\rightarrow$
-Bisection $\rightarrow$ Oversubscription at named tier $\rightarrow$ Rails
-$\rightarrow$ Rack port and optics count $\rightarrow$ Copper vs optics
+Bisection $\rightarrow$ Oversubscription at named tier $\rightarrow$ Network
+rails $\rightarrow$ Ports $\rightarrow$ Optical endpoints $\rightarrow$
+Lanes/$\lambda$ $\rightarrow$ PAM/baud $\rightarrow$ EQ/FEC owner
+$\rightarrow$ Placement $\rightarrow$ Lasers/watts $\rightarrow$ Replaceables
 $\rightarrow$ Power / cooling / service
 
 \paragraph{What I need to know.}
@@ -394,9 +396,11 @@ $\rightarrow$ Power / cooling / service
 \item Fat tree is folded Clos: leaves, spines, path diversity.
 \item Bisection is the worst equal cut, not average utilization.
 \item Oversubscription needs a tier and a traffic pattern.
-\item Rails buy isolation and cost more optics.
+\item Network rails can buy isolation; state shared switches, trunks, control,
+      power, and software.
 \item Scale-up and scale-out are different planes.
-\item A rack sketch must count ports, modules, and replaceables.
+\item A rack sketch must count ports, optical endpoints, modules, and
+      replaceables (\Cref{sec:hpc-rack-to-phy}).
 \end{itemize}
 
 \paragraph{Key distinctions.}
@@ -430,7 +434,8 @@ Pressure: ``Average utilization is only 20\%. Why not 4:1 oversub?''\\
 Pivot: ``Averages miss synchronized bursts. I need the collective-period peak
 at that tier.''
 
-\footnotesize Depth: \Cref{ch:hpc,sec:topologies,sec:collectives,sec:scale-up-out}.
+\footnotesize Depth:
+\Cref{ch:hpc,sec:hpc-rack-to-phy,sec:topologies,sec:collectives,sec:scale-up-out}.
 
 \clearpage
 \section{Chapter 11: Productization and fleet readiness}

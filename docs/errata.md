@@ -374,6 +374,20 @@ No new frameworks. Structural relocation of existing material is allowed.
   `ch11-productization-from-requirements-to-controlled-ramp`,
   `ch22-optical-systems-staff-engineer-interview-questions`; references remain
   `ch26-references`.
+- **Pass 6 cleanup:** Fixed six `Not in outer par mode` errors from
+  `\firstterm` inside description labels in `body_link_operation.tex` (moved
+  into item bodies so margin notes render). Made `compile.sh` keep passes 1--2
+  permissive but fail the final pass on LaTeX Error, fatal/undefined-control,
+  undefined or multiply-defined references, or a missing PDF; copy
+  `.build/main.log` to root `main.log`; default `check_overfull.sh` to
+  `.build/main.log`. Corrected \(k=32\) fat-tree counting to 24576 physical
+  links / 49152 terminations (no ``plus host-edge tier''). Split bridge
+  paragraph~6 into electrical reach, optical PMD, and PCS/FEC ownership;
+  clarified 51.2~Tb/s per direction; added parameterized closing ledger.
+  Rebalanced the seven-day interview plan to architecture-first; synced the
+  HPC cheat sheet network-rail and bridge checklist; split the
+  \(C_{pk,\mathrm{ATP}}\) display to clear the 43~pt overfull. Book still 553
+  pages; largest remaining overfull under 5~pt.
 
 ## Typographical fixes
 

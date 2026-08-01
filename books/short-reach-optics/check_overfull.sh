@@ -11,9 +11,9 @@
 
 set -euo pipefail
 cd "$(dirname "$0")"
-LOG="${1:-main.log}"
+LOG="${1:-.build/main.log}"
 if [[ ! -f "$LOG" ]]; then
-  echo "check_overfull: missing $LOG (run xelatex first)" >&2
+  echo "check_overfull: missing $LOG (run ./compile.sh first)" >&2
   exit 2
 fi
 

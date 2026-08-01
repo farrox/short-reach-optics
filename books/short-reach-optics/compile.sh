@@ -17,21 +17,47 @@ fi
 trap 'rmdir "$LOCK" 2>/dev/null || true' EXIT
 
 run_xelatex() {
-  # XeLaTeX often exits non-zero when the log only has warnings (undefined
-  # refs on early passes). Keep going so passes 2--3 can resolve them.
-  xelatex -interaction=nonstopmode -synctex=1 -output-directory="$BUILD" main.tex \
-    || true
+  xelatex -interaction=nonstopmode -synctex=1 -output-directory="$BUILD" main.tex
 }
 
-run_xelatex
-run_xelatex
+# Passes 1--2 may exit non-zero on unresolved cross-refs; keep going.
+run_xelatex || true
+run_xelatex || true
+# Final pass is strict: do not swallow the exit code.
 run_xelatex
 
 # Atomic replace: viewer always sees a complete PDF.
+if [[ ! -f "$BUILD/main.pdf" ]]; then
+  echo "compile.sh: FAIL missing $BUILD/main.pdf" >&2
+  exit 1
+fi
 mv -f "$BUILD/main.pdf" main.pdf.tmp
 mv -f main.pdf.tmp main.pdf
 if [[ -f "$BUILD/main.synctex.gz" ]]; then
   mv -f "$BUILD/main.synctex.gz" main.synctex.gz
+fi
+cp -f "$BUILD/main.log" main.log
+
+LOG="$BUILD/main.log"
+fail=0
+if grep -q 'LaTeX Error' "$LOG"; then
+  echo "compile.sh: FAIL LaTeX Error in $LOG" >&2
+  fail=1
+fi
+if grep -Eqi 'Fatal error|Emergency stop|Undefined control sequence' "$LOG"; then
+  echo "compile.sh: FAIL fatal / undefined control sequence in $LOG" >&2
+  fail=1
+fi
+if grep -Eq 'undefined references|multiply-defined' "$LOG"; then
+  echo "compile.sh: FAIL undefined or multiply-defined references in $LOG" >&2
+  fail=1
+fi
+if [[ ! -f main.pdf ]]; then
+  echo "compile.sh: FAIL missing main.pdf" >&2
+  fail=1
+fi
+if [[ "$fail" -ne 0 ]]; then
+  exit 1
 fi
 
 echo "==> $(pwd)/main.pdf"
