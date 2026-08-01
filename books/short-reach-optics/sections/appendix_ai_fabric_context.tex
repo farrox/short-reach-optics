@@ -11,8 +11,9 @@ is at the end of this appendix.
 \section{Scale-up versus scale-out}
 \label{sec:scale-up-out}
 
-Design-level rack arithmetic, fat-tree judgment, rails, and oversubscription
-live in \Cref{ch:hpc}. This section keeps the fabric vocabulary survey.
+Design-level rack arithmetic, fat-tree judgment, network rails, and
+oversubscription live in \Cref{ch:hpc}. This section keeps the fabric
+vocabulary survey.
 
 The industry borrowed two words from computer architecture and overloaded them
 for AI fabrics. Keeping them straight matters, because they buy different optics.
@@ -281,10 +282,12 @@ Whiteboard topology design, bisection, and the worked rack exercise live in
 
 Cluster topology is where optical count stops being ``a few modules per server''
 and becomes a fleet problem. Large AI fabrics mostly use fat-tree / Clos,
-rail-optimized, or dragonfly layouts. In a classic $k$-ary fat-tree, link count
-scales as $O(k^3)$ while endpoints scale as $O(k^2)$: optics multiply faster than
-compute. Rail-optimized designs (one NIC rail per accelerator row, all-to-all
-within a rail) rose with collective-heavy training and inference because they cut
+rail-optimized, or dragonfly layouts. In a conventional $k$-ary three-stage fat
+tree, both host count and physical link count scale as $O(k^3)$; the pressure
+is ports, cable ends, and optical endpoints per host, not a different
+asymptotic exponent (\Cref{ch:hpc,sec:hpc-fattree-cost}). Network-rail designs
+(corresponding NIC ports across nodes, with stated shared-risk boundaries) rose
+with collective-heavy training and inference because they can cut
 oversubscription on all-reduce paths, at the price of more parallel optical
 planes. Dragonfly and other hierarchical topologies trade some global bisection
 bandwidth for fewer long links.
@@ -844,6 +847,10 @@ MoE routing & interconnect & dominant (all-to-all) \\
 \section{Collective communication and optics demand}
 \label{sec:collectives}
 
+Rack-level bisection, oversubscription, and network-rail design for collectives
+live in \Cref{ch:hpc}. This section keeps the workload vocabulary and optics
+mapping.
+
 Once a model is sharded across many accelerators, the network stops carrying only
 point-to-point streams. Training and large inference jobs spend a large fraction
 of wall time in \term{collective} patterns: all-reduce for tensor-parallel layers,
@@ -862,10 +869,11 @@ ordinary Ethernet or InfiniBand.
       streams rather than global sync.
 \end{description}
 
-Optical engineering maps to these patterns indirectly. More rails and higher
-per-lane rate cut time spent in collectives; CPO/XPO raise faceplate bandwidth so
-fewer hops are needed (\Cref{sec:cpo-status,sec:xpo,sec:topologies}). Protocol
-choice (UEC vs IB) sets lossless delivery and congestion behavior
+Optical engineering maps to these patterns indirectly. More network rails and
+higher per-lane rate cut time spent in collectives; CPO/XPO raise faceplate
+bandwidth so fewer hops are needed
+(\Cref{sec:cpo-status,sec:xpo,sec:topologies,ch:hpc}). Protocol choice (UEC vs
+IB) sets lossless delivery and congestion behavior
 (\Cref{sec:fabric-protocols}), but the PHY job remains the same: deliver pre-FEC
 BER below KP4 at the lowest pJ/bit (\Cref{sec:power,sec:kp4}). The next section
 names the fabric stacks that carry those collectives; the sections after that

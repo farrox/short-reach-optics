@@ -529,6 +529,10 @@ NIC
 
 : Network interface card. A host adapter connecting an accelerator or CPU to the scale-out fabric (Ethernet or InfiniBand).
 
+Network rail
+
+: A topology-aligned path group in an AI/HPC fabric, commonly formed from corresponding NIC ports across nodes. Rails may be physically independent or may share switches, trunks, control, power, or software; state the shared-risk boundaries. Distinct from an electrical supply rail (§10.4).
+
 NPC
 
 : Near-package copper. NPC uses a copper cable to bring the front panel signal to a location close to the host silicon to minimize the host PCB losses. It reduces PCB losses by bringing the signals to a connector on the PCB close to the ASIC whereas CPC (Co-packaged copper) brings the signal to a connector on the ASIC package.
@@ -659,7 +663,7 @@ Reliability qualification
 
 System validation
 
-: Evidence that the complete product is suitable for its intended system use, including supported hosts, peers, fiber plant, management, environment, and workload (Step 5 of the product-readiness lifecycle; §11.9.5).
+: Evidence that the complete product is suitable for its intended system use, including supported hosts, peers, fiber plant, management, environment, and workload (Step 5 of the product-readiness lifecycle; Appendix F.21.3).
 
 QSFP-DD
 

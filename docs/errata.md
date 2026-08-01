@@ -354,6 +354,26 @@ No new frameworks. Structural relocation of existing material is allowed.
   chapters renumber in print only; labels preserved. HTML:
   `ch10-ai-and-hpc-rack-architecture`; cheat sheets at
   `ch25-interview-cheat-sheets`; references at `ch26-references`.
+- **Pass 6 interview synthesis (freeze override; laser redesign deferred):**
+  Corrected fat-tree scaling to $O(k^3)$ hosts and links with a $k=32$ sketch
+  in Chapter~10 and App~H; redefined **network rail** (glossary + term snip)
+  versus electrical supply rail; refined burstiness, scale-up, OCS timescale,
+  and optical-endpoint arithmetic. Added
+  `sec:hpc-rack-to-phy` (From rack bandwidth to an optical architecture) as a
+  2--3 page worked bridge after the rack inventory, plus a finishing-sketch
+  section for ToR/optics/power. Rebuilt Top~25 (`app:top25`) to an
+  architecture-first 4/4/4/4/4/3/2 balance (PAM, EQ, laser, packaging, HPC,
+  debug, productization) including the five mandatory questions. Compressed
+  productization EVT/DVT/PVT essays and Steps~1--11 exposition; relocated
+  derating examples, characterization map, and Step~5 evidence-domain detail
+  into App~F `body_product_readiness.tex` (labels preserved). App~H
+  topology/scale-up/collective intros point at Chapter~10. App~M week plan
+  prefers architecture before lifecycle. Productization chapter about 16 PDF
+  pages (was ~20). Book about 553 pages. HTML: updated
+  `ch10-ai-and-hpc-rack-architecture`,
+  `ch11-productization-from-requirements-to-controlled-ramp`,
+  `ch22-optical-systems-staff-engineer-interview-questions`; references remain
+  `ch26-references`.
 
 ## Typographical fixes
 

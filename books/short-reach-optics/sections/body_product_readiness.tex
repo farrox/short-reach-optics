@@ -48,8 +48,43 @@ team names are not used as engineering definitions in this book. Abbreviations
 are collected in \Cref{app:abbreviations}.
 
 \section{Why program-phase names are not enough (pointer)}
-Phase-label guidance and \Cref{tab:phase-readiness-map} live in
-\Cref{ch:productization,sec:phase-labels}.
+Compact phase-label guidance and \Cref{tab:phase-readiness-map} live in
+\Cref{ch:productization,sec:phase-labels}. Expanded EVT/DVT/PVT goal lists
+follow.
+
+\subsection{Expanded EVT / DVT / PVT goals}
+\label{sec:phase-labels-detail}
+
+\paragraph{EVT.}
+Engineering Validation Test or Engineering Verification Test.
+Typical emphasis: proving the architecture and critical technologies are
+viable. Hardware: early prototypes or low-volume engineering builds.
+Typical goals: bring up the hardware; identify major design and integration
+risks; characterize early performance; verify a credible path to the
+requirements; develop measurements, firmware, and test methods. EVT hardware
+may differ substantially from the final production configuration.
+
+\paragraph{DVT.}
+Design Validation Test or Design Verification Test.
+Typical emphasis: demonstrating that a substantially frozen design meets its
+requirements and works in its intended use. Hardware: more representative
+builds with tighter configuration control. Typical goals: complete requirement
+verification; validate margin and interoperability; exercise environmental and
+mechanical conditions; mature firmware and management; collect substantial
+reliability and compliance evidence. Not every program finishes all
+qualification inside DVT.
+
+\paragraph{PVT.}
+Production Validation Test or Production Verification Test.
+Typical emphasis: proving that the production-intent factory system can
+repeatedly build, measure, trace, and control the design. Hardware:
+production-intent materials, tooling, processes, fixtures, software, and
+suppliers. Typical goals: validate assembly and test; establish
+measurement-system confidence; evaluate first-pass yield and process
+capability; validate ATP coverage, traceability, rework, and reaction plans;
+demonstrate supplier and line readiness; support a controlled pilot or ramp
+decision. A PVT label alone does not make units unrestricted saleable
+production.
 
 \section{The evidence disciplines and their decisions}
 \label{sec:evidence-disciplines}
@@ -157,8 +192,183 @@ See \Cref{tab:readiness-ownership}.
 
 \section{Detailed readiness steps (pointer)}
 \label{sec:readiness-steps-pointer}
-The step-by-step readiness narrative lives in
-\Cref{ch:productization,sec:readiness-steps}.
+Compact Steps~1--11 handoffs live in
+\Cref{ch:productization,sec:readiness-steps}. Derating examples,
+characterization maps, and Step~5 evidence domains follow.
+
+\section{Readiness-step detail}
+\label{sec:readiness-steps-detail}
+
+\subsection{Derating rules, in practical terms}
+\label{sec:derating-rules}
+
+A derating rule deliberately keeps a component or control variable away from a
+boundary that may be technically legal but leaves too little margin for
+temperature, aging, manufacturing spread, transients, calibration error, or
+measurement uncertainty.
+
+There are usually three different limits:
+\begin{itemize}
+\item Absolute maximum: crossing it may damage the component.
+\item Recommended operating range: the vendor supports normal operation there.
+\item Internal design limit: the product team chooses a narrower range so the
+      system retains lifetime and control margin.
+\end{itemize}
+Derating is therefore not just ``add 20\% margin.'' A good derating rule is tied
+to a specific risk or failure mechanism.
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:derating-examples}%
+\centering
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
+\renewcommand{\arraystretch}{1.12}%
+\begin{tabular}{@{}p{0.22\linewidth}p{0.28\linewidth}p{0.44\linewidth}@{}}
+\toprule
+Design variable & Boundary & Example derating logic \\
+\midrule
+Laser bias current & Maximum rated current or thermal
+rollover & Require the worst-case hot, aged unit to remain below an internal
+current limit and retain APC headroom \\
+\addlinespace[0.45em]
+Laser junction temperature & Maximum operating or qualification
+temperature & Design cooling so the estimated junction temperature remains
+below the life-model limit at maximum traffic and ambient temperature \\
+\addlinespace[0.45em]
+Ring heater or TEC command & Actuator rail & Require remaining authority at
+the worst thermal corner so the loop can still reject drift and neighbor
+heating \\
+\addlinespace[0.45em]
+Receiver input power & Overload boundary & Keep the strongest supported
+transmitter and lowest-loss fiber plant below receiver overload with
+uncertainty included \\
+\addlinespace[0.45em]
+Receiver sensitivity & Minimum detectable OMA or power & Require additional
+system margin beyond the nominal sensitivity crossing for unit, temperature,
+reflection, and aging variation \\
+\addlinespace[0.45em]
+Supply voltage or current & Recommended range and transient limit & Allocate
+tolerance for regulator error, ripple, droop, startup overshoot, and host
+variation \\
+\addlinespace[0.45em]
+Solder joint or package stress & Material fatigue limit & Limit temperature
+swing, ramp rate, mechanical load, or package mismatch based on fatigue
+evidence \\
+\addlinespace[0.45em]
+Optical connector power & Safety, contamination, and reflection
+limits & Avoid operating points that increase accessible-power risk, feedback
+sensitivity, or contamination damage \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Illustrative derating
+logic. All numbers should be product-specific. A rule such as ``never exceed
+80\% of the actuator range'' can be a useful initial prior, but it is not a
+universal law. The proper limit depends on the failure mechanism, expected
+distribution, control behavior, and available evidence.\par}
+\end{table*}
+
+\paragraph{Where the rules come from.}
+
+Derating rules usually begin as engineering priors from vendor ranges and
+qualification reports; internal characterization across temperature, voltage,
+lot, and age; physics-of-failure models; previous product and supplier data;
+field-return and fleet history; standards and safety constraints; and
+manufacturing distribution plus measurement uncertainty. Architecture review
+assumes a defensible derating rule. Qualification tests whether the current
+design and process support the resulting life claim
+(\Cref{ch:reliability}).
+
+\subsection{Characterization map}
+\label{sec:ladder-characterization-detail}
+
+Characterization asks what the design does, how much it varies, what moves it,
+and where it stops working, not only whether it passes.
+
+\begin{description}
+\item[Nominal behavior] Typical performance under a defined baseline condition.
+\item[Distributions] Variation across units, lanes, lots, suppliers, and sites.
+\item[Sensitivities] How strongly a result changes with temperature, voltage,
+      loss, reflection, wavelength, or host conditions.
+\item[Interactions] Combined variables may cause a larger penalty than each
+      variable tested alone.
+\item[Failure boundary] The condition where a requirement is first violated.
+\item[Failure cliff] A small additional change causes a large performance
+      collapse. A characterization cliff improves understanding; it does not
+      automatically fail the product (\Cref{sec:evidence-disciplines}).
+\item[Failure signature] The pattern near failure, such as a shifted BER
+      waterfall, a BER floor, intermittent bursts, or a control output
+      approaching its limit.
+\end{description}
+
+For example, a receiver may typically fail at $-9.5$~dBm, while the weakest unit
+fails at $-8.7$~dBm. High temperature and a production host may move that
+boundary to $-7.4$~dBm. If the supported plant delivers $-7.0$~dBm, the design
+passes, but only with $0.4$~dB of measured margin.
+
+\subsection{Step~5 verify and validate detail}
+\label{sec:ladder-verify}
+\label{sec:ladder-system-validation}
+
+Margin testing is verification when it checks a defined margin requirement under
+specified conditions. Track optical, electrical, thermal, and control ledgers
+separately and stack once. Do not mix average-power and
+OMA\sidenote{OMA: optical modulation amplitude. For PAM4, outer OMA is
+$P_3-P_0$; do not use $P_1-P_0$ as the general PAM4 definition.}
+budgets, reference planes, or embedded and explicit transmitter penalties
+(\Cref{sec:link-budget}).
+
+Exercise production-representative hosts, peers, firmware, chassis loading, and
+plant conditions. Receiver-margin evidence may include a named stressed-receiver
+method, including SECQ where applicable to the
+PMD\sidenote{PMD: physical medium dependent. The IEEE~802.3 sublayer that
+modulates and detects light: the optical transceiver (laser, driver, PD,
+TIA).};
+state the method, stress calibration, and metric
+(\Cref{sec:secq}). Transmitter evidence should include average power and
+modulation-quality evidence such as OMA,
+RLM\sidenote{RLM: relative level mismatch. A measure of PAM4 level spacing
+uniformity ($1.0$ = perfectly even); CEI typically requires $\ge 0.95$.},
+and the applicable transmitter-quality metric. Passing average power does not
+establish a valid PAM4 transmitter
+(\Cref{sec:tdecq,ch:models,ch:lasers}).
+
+\begin{table*}[ht]
+\refstepcounter{table}\label{tab:evidence-domains}%
+\centering
+\setlength{\tabcolsep}{3pt}%
+\footnotesize
+\begin{tabular}{@{}p{0.14\linewidth}p{0.26\linewidth}p{0.28\linewidth}p{0.26\linewidth}@{}}
+\toprule
+Evidence domain & Readiness question & Representative evidence & Detailed
+ownership \\
+\midrule
+Transmitter & Is sufficient modulated optical quality launched? & OMA, level
+quality, wavelength, applicable Tx-quality metric &
+\Cref{ch:models,ch:lasers,ch:wdm,app:measurement-reference} \\
+\addlinespace[0.5em]
+Channel & Does the supported plant preserve required margin? & Insertion loss,
+ORL/reflection, dispersion or filtering &
+\Cref{ch:imdd,ch:models,ch:wdm} \\
+\addlinespace[0.5em]
+Receiver & Can the receiver meet the stated objective under named stress? &
+Sensitivity, overload, stressed-receiver evidence &
+\Cref{ch:imdd,ch:models,app:measurement-reference} \\
+\addlinespace[0.5em]
+Link/system & Does the complete supported combination close? & BER/FEC behavior,
+margin waterfall, interoperability, recovery &
+\Cref{ch:product-readiness,ch:networking} \\
+\addlinespace[0.5em]
+Control/management & Can the product enter, report, and recover from required
+states? & CMIS state, diagnostics correlation, alarms, restart &
+\Cref{sec:bringup,app:measurement-reference} \\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\raggedright\footnotesize\textbf{Table~\thetable.} Evidence domains for
+Step~5. Instruments and procedures:
+\Cref{app:measurement-reference}.\par}
+\end{table*}
 
 \section{Interview takeaway}
 \label{sec:validation-design-review}

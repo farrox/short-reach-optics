@@ -29,7 +29,7 @@ Write measurable requirements at named reference planes: optical, electrical, th
 
 ##### Close the architecture.
 
-Ask whether optical, electrical, thermal, control, lifetime, and factory budgets have a credible path. Catch thin margins before hardware makes changes expensive. Derating and corner intent belong here (§11.9.2).
+Ask whether optical, electrical, thermal, control, lifetime, and factory budgets have a credible path. Catch thin margins before hardware makes changes expensive. Derating and corner intent belong here (Appendix F.21.1, §11.9.2).
 
 ##### Characterize margins.
 
@@ -41,7 +41,7 @@ Compare evidence with frozen requirements at named planes and conditions. Verifi
 
 ##### Validate the system.
 
-Prove the product works in the intended host, peer, fiber, firmware, thermal, and workload envelope. System validation is narrower than productization (Table 11.1, §11.9.5).
+Prove the product works in the intended host, peer, fiber, firmware, thermal, and workload envelope. System validation is narrower than productization (Table 11.1, Appendix F.21.3).
 
 ##### Bring-up before characterization.
 
@@ -62,63 +62,11 @@ Program names such as EVT, DVT, and PVT are company containers, not universal pr
 
 ## Why program-phase names are not enough
 
-EVT[^15], DVT[^16], and PVT[^17] are commonly used program-phase labels in hardware development. They usually describe a progression from engineering learning to design closure and then production readiness, but their exact meaning, acronym expansion, sample size, and exit criteria vary by company. They are company-specific containers for work, not universal technical definitions. One organization may perform reliability qualification during DVT, while another begins it in EVT and completes it during PVT. One may call a build "DVT" when it is primarily verifying requirements; another may use the same label for interoperability and system validation.
+EVT[^15], DVT[^16], and PVT[^17] are company containers for program timing, not universal technical definitions. Sample size, exit criteria, and which evidence lands in which phase vary by organization. Manufacturing-gate lookup for the same names lives in Table G.1. Expanded EVT/DVT/PVT goal lists live in Appendix F.17.1.
 
-##### EVT.
+**Key idea.** EVT, DVT, and PVT describe program timing and maturity. Characterization, verification, system validation, reliability qualification, and manufacturing validation describe what the evidence proves. When someone says EVT, DVT, or PVT, ask four questions. Which hardware and software configuration is included? Which engineering evidence is expected? Which risks remain intentionally open? What decision or exit gate does the phase enable?
 
-Engineering Validation Test or Engineering Verification Test. Typical emphasis: proving the architecture and critical technologies are viable. Hardware: early prototypes or low-volume engineering builds. Typical goals:
-
-- bring up the hardware;
-
-- identify major design and integration risks;
-
-- characterize early performance;
-
-- verify that the architecture has a credible path to the requirements;
-
-- develop measurements, firmware, and test methods.
-
-EVT hardware may differ substantially from the final production configuration.
-
-##### DVT.
-
-Design Validation Test or Design Verification Test. Typical emphasis: demonstrating that a substantially frozen design meets its requirements and works in its intended use. Hardware: more representative builds, usually with tighter configuration control. Typical goals:
-
-- complete requirement verification;
-
-- validate margin and interoperability;
-
-- exercise environmental and mechanical conditions;
-
-- mature firmware and management behavior;
-
-- collect substantial reliability and compliance evidence.
-
-Regulatory and environmental testing may occur during DVT, but not every program completes all qualification or certification work entirely within this phase.
-
-##### PVT.
-
-Production Validation Test or Production Verification Test. Typical emphasis: proving that the production-intent factory system can repeatedly build, measure, trace, and control the design. Hardware: production-intent materials, tooling, processes, fixtures, software, and suppliers. Typical goals:
-
-- validate assembly and test processes;
-
-- establish measurement-system confidence;
-
-- evaluate first-pass yield and process capability;
-
-- validate ATP coverage, traceability, rework, and reaction plans;
-
-- demonstrate supplier and line readiness;
-
-- support a controlled pilot or ramp decision.
-
-PVT units may be used in controlled pilots or customer deployments when formally approved, but a PVT label alone does not make them unrestricted saleable production.
-
-**Key idea.** EVT, DVT, and PVT describe program timing and maturity. Characterization, verification, system validation, reliability qualification, and manufacturing validation describe what the evidence proves. When someone says EVT, DVT, or PVT, ask four questions. Which hardware and software configuration is included? Which engineering evidence is expected? Which risks remain intentionally open? What decision or exit gate does the phase enable? The phase name is useful only after those four questions are answered.
-
-The stable engineering questions remain: What behavior has been characterized? Which requirements have been verified? Has intended system use been validated? Have lifetime mechanisms been qualified? Can the production system reproduce and control the design?
-
-After pilot, programs often speak of MP[^18] (mass production) and sustaining. Those labels still need an exit decision.
+After pilot, programs often speak of MP[^18] and sustaining. Those labels still need an exit decision.
 
 <table class="book-table"><tr><th>Program label</th><th>Common emphasis</th><th>Typical product-readiness work</th></tr><tr><td>EVT</td><td>Architecture and engineering learning</td><td>Architecture review, prototype bring-up, risk retirement, early characterization, measurement development</td></tr><tr><td>DVT</td><td>Design evidence and intended-use closure</td><td>Characterization completion, requirement verification, margin, interoperability, system validation, substantial qualification evidence</td></tr><tr><td>PVT</td><td>Production-intent and ramp readiness</td><td>Production-reference freeze, manufacturing validation, measurement-system analysis, ATP coverage, process capability, controlled ramp evidence</td></tr><tr><td>Pilot / limited deployment</td><td>Bounded operational evidence</td><td>Cohort deployment, enhanced telemetry, success criteria, rollback, fleet comparison</td></tr><tr><td>MP / sustaining</td><td>Controlled volume and field learning</td><td>Ramp, SPC, supplier controls, fleet monitoring, failure analysis, next-revision feedback</td></tr></table>
 **Table 11.3.** Illustrative mapping from program-phase labels to product-readiness work. EVT, DVT, and PVT are not standards, and their activities overlap. Always ask what hardware population, evidence, and exit decision the phase label represents. Reliability planning may begin in EVT, representative qualification may run through DVT, and corrective requalification may continue into PVT.
@@ -216,100 +164,29 @@ Compress schedule by overlapping work and shrinking sample depth where residual 
 
 ## Steps 1--11
 
+Use Table 11.2 as the wall chart. The subsections below keep the step labels and handoff rules. Derating examples, characterization maps, and Step 5 evidence-domain detail live in Appendix F.21, Appendix F.21.1.
+
 ### Step 1: Define the requirements
 
-Define what success means before instruments enter the conversation. Write performance, environment, reliability, manufacturing, and operational requirement classes with owners and named planes where applicable (§1.1, Table 7.4).
+Define performance, environment, reliability, manufacturing, and operational requirement classes with owners and named planes (§1.1, Table 7.4).
 
-*Evidence and handoff:* Freeze a signed requirements slice specific enough for architecture and later pass criteria; refuse hardware spend until success is defined.
+*Evidence and handoff:* Freeze a signed requirements slice; refuse hardware spend until success is defined.
 
 ### Step 2: Review the architecture
 
-Decide whether the architecture can meet the requirements before tooling makes changes expensive. Close optical-power, noise, bandwidth, electrical, thermal, wavelength-control, reliability, manufacturing, and serviceability budgets on stated assumptions and named reference planes (§1.1, Table 7.10). Apply mechanism-based derating so temperature, aging, process spread, transients, and measurement uncertainty do not consume the last remaining margin. The output is not a passing spreadsheet. It is a set of thin margins, unproven assumptions, and high-risk interactions that later characterization, system validation, and qualification must challenge.
+Close optical-power, noise, bandwidth, electrical, thermal, wavelength-control, reliability, manufacturing, and serviceability budgets on stated assumptions (§1.1, Table 7.10). Apply mechanism-based derating so temperature, aging, process spread, and measurement uncertainty do not consume the last margin (Appendix F.21.1).
 
-##### Derating rules, in practical terms.
-
-A derating rule deliberately keeps a component or control variable away from a boundary that may be technically legal but leaves too little margin for temperature, aging, manufacturing spread, transients, calibration error, or measurement uncertainty.
-
-There are usually three different limits:
-
-- Absolute maximum: crossing it may damage the component.
-
-- Recommended operating range: the vendor supports normal operation there.
-
-- Internal design limit: the product team chooses a narrower range so the system retains lifetime and control margin.
-
-Derating is therefore not just "add 20% margin." A good derating rule is tied to a specific risk or failure mechanism.
-
-<table class="book-table"><tr><th>Design variable</th><th>Boundary</th><th>Example derating logic</th></tr><tr><td>Laser bias current</td><td>Maximum rated current or thermal rollover</td><td>Require the worst-case hot, aged unit to remain below an internal current limit and retain APC headroom</td></tr><tr><td>Laser junction temperature</td><td>Maximum operating or qualification temperature</td><td>Design cooling so the estimated junction temperature remains below the life-model limit at maximum traffic and ambient temperature</td></tr><tr><td>Ring heater or TEC command</td><td>Actuator rail</td><td>Require remaining authority at the worst thermal corner so the loop can still reject drift and neighbor heating</td></tr><tr><td>Receiver input power</td><td>Overload boundary</td><td>Keep the strongest supported transmitter and lowest-loss fiber plant below receiver overload with uncertainty included</td></tr><tr><td>Receiver sensitivity</td><td>Minimum detectable OMA or power</td><td>Require additional system margin beyond the nominal sensitivity crossing for unit, temperature, reflection, and aging variation</td></tr><tr><td>Supply voltage or current</td><td>Recommended range and transient limit</td><td>Allocate tolerance for regulator error, ripple, droop, startup overshoot, and host variation</td></tr><tr><td>Solder joint or package stress</td><td>Material fatigue limit</td><td>Limit temperature swing, ramp rate, mechanical load, or package mismatch based on fatigue evidence</td></tr><tr><td>Optical connector power</td><td>Safety, contamination, and reflection limits</td><td>Avoid operating points that increase accessible-power risk, feedback sensitivity, or contamination damage</td></tr></table>
-**Table 11.5.** Illustrative derating logic. All numbers should be product-specific. A rule such as "never exceed 80% of the actuator range" can be a useful initial prior, but it is not a universal law. The proper limit depends on the failure mechanism, expected distribution, control behavior, and available evidence.
-
-##### Where the rules come from.
-
-Derating rules usually begin as engineering priors from several sources:
-
-- vendor recommended operating ranges and qualification reports;
-
-- internal characterization across temperature, voltage, lot, and age;
-
-- physics-of-failure models;
-
-- previous product and supplier data;
-
-- field-return and fleet history;
-
-- standards, customer requirements, and safety constraints;
-
-- manufacturing distribution and measurement uncertainty.
-
-Architecture review uses those priors to determine whether the design has a credible path. Later characterization and qualification either support them, refine them, or show that the architecture needs more margin.
-
-A useful distinction is: architecture review assumes a defensible derating rule. Qualification tests whether the current design and process support the resulting life or environmental claim (Chapter 11). Qualification does not magically justify an arbitrary derating rule after the design is complete.
-
-*Evidence and handoff:* Proceed to bring-up only when budgets close or open items are named with redesign triggers; otherwise redesign first.
+*Evidence and handoff:* Proceed to bring-up only when budgets close or open items are named with redesign triggers.
 
 ### Step 3: Bring up the hardware
 
-Establish a known, reproducible operating state so later sweeps are interpretable. Separate integration fails from product-performance questions. Detail lives in §11.11.
+Establish a known, reproducible operating state. Separate integration fails from product-performance questions (§11.11).
 
-*Evidence and handoff:* Continue to characterization when identity, rails, management-ready state, basic optical power, lock, and a simple link are reproducible; otherwise debug integration.
+*Evidence and handoff:* Continue when identity, supply rails, management-ready state, basic optical power, lock, and a simple link are reproducible.
 
 ### Step 4: Characterize the behavior
 
-##### Characterization builds a behavioral model.
-
-Characterization asks what the design does, how much it varies, what moves it, and where it stops working, not only whether it passes.
-
-Nominal behavior
-
-: Typical performance under a defined baseline condition.
-
-Distributions
-
-: Variation across units, lanes, lots, suppliers, and sites. An average may look healthy while the weak tail has little margin.
-
-Sensitivities
-
-: How strongly a result changes with temperature, voltage, loss, reflection, wavelength, or host conditions.
-
-Interactions
-
-: Combined variables may cause a larger penalty than each variable tested alone.
-
-Failure boundary
-
-: The condition where a requirement is first violated, such as the received power at which BER crosses its limit.
-
-Failure cliff
-
-: A small additional change causes a large performance collapse. A characterization cliff improves understanding; it does not automatically fail the product (Appendix F.18).
-
-Failure signature
-
-: The pattern near failure, such as a shifted BER waterfall, a BER floor, intermittent bursts, or a control output approaching its limit.
-
-For example, a receiver may typically fail at $-9.5$ dBm, while the weakest unit fails at $-8.7$ dBm. High temperature and a production host may move that boundary to $-7.4$ dBm. If the supported plant delivers $-7.0$ dBm, the design passes, but only with $0.4$ dB of measured margin.
-
-The output of characterization is therefore a map of population tails, thin margins, and high-risk combinations that verification and system validation must challenge.
+Map nominal behavior, distributions, sensitivities, interactions, failure boundaries, and signatures. Averages can hide weak tails (Appendix F.21.2, Appendix F.18).
 
 *Evidence and handoff:* Name thin ledgers and candidate corners; proceed to Step 5, derate, or redesign before loaded-fleet claims.
 
@@ -317,52 +194,37 @@ The output of characterization is therefore a map of population tails, thin marg
 
  
 
-Verification closes frozen requirements at named planes with stated uncertainty. System validation closes intended use across supported hosts, peers, firmware, fiber plants, and workloads. Related evidence can serve both claims; the claim still differs (Appendix F.18).
+Verification closes frozen requirements at named planes. System validation closes intended use across supported hosts, peers, firmware, fiber plants, and workloads (Appendix F.18, Appendix F.21.3). Track optical, electrical, thermal, and control ledgers separately (Appendix E.5, Table F.9). Golden-host margin is not the ecosystem exit (§11.11, Appendix F.21.3).
 
-##### Verify requirements and margin.
-
-Margin testing is verification when it checks a defined margin requirement under specified conditions. Track optical, electrical, thermal, and control ledgers separately and stack once. Do not mix average-power and OMA[^19] budgets, reference planes, or embedded and explicit transmitter penalties (Appendix E.5).
-
-##### Validate interoperability and intended use.
-
-Exercise production-representative hosts, peers, firmware, chassis loading, and plant conditions. Golden-host margin is not the ecosystem exit (§11.11).
-
-Receiver-margin evidence may include a named stressed-receiver method, including SECQ where applicable to the PMD[^20]; the method, stress calibration, and metric must be stated explicitly (Appendix E.4).
-
-Transmitter evidence should include average power and modulation-quality evidence such as OMA, RLM[^21], and the applicable transmitter-quality metric. Passing average power does not establish a valid PAM4 transmitter. A composite transmitter metric supports acceptance or margin accounting but does not identify a unique physical mechanism (Appendix E.3, Chapter 6, Chapter 7).
-
-<table class="book-table"><tr><th>Evidence domain</th><th>Readiness question</th><th>Representative evidence</th><th>Detailed ownership</th></tr><tr><td>Transmitter</td><td>Is sufficient modulated optical quality launched?</td><td>OMA, level quality, wavelength, applicable Tx-quality metric</td><td>ch:models,ch:lasers,ch:wdm,app:measurement-reference</td></tr><tr><td>Channel</td><td>Does the supported plant preserve required margin?</td><td>Insertion loss, ORL/reflection, dispersion or filtering</td><td>ch:imdd,ch:models,ch:wdm</td></tr><tr><td>Receiver</td><td>Can the receiver meet the stated objective under named stress?</td><td>Sensitivity, overload, stressed-receiver evidence</td><td>ch:imdd,ch:models,app:measurement-reference</td></tr><tr><td>Link/system</td><td>Does the complete supported combination close?</td><td>BER/FEC behavior, margin waterfall, interoperability, recovery</td><td>ch:product-readiness,ch:networking</td></tr><tr><td>Control/management</td><td>Can the product enter, report, and recover from required states?</td><td>CMIS state, diagnostics correlation, alarms, restart</td><td>sec:bringup,app:measurement-reference</td></tr></table>
-**Table 11.6.** Evidence domains for Step 5. Instruments and procedures: Appendix E.
-
-*Evidence and handoff:* Freeze traceable requirement results, margin boundaries, and supported combinations; unresolved operating-envelope risk returns to architecture or characterization before qualification claims rely on it.
+*Evidence and handoff:* Freeze requirement results, margin boundaries, and supported combinations before qualification claims rely on them.
 
 ### Step 6: Qualify reliability
 
-Reliability qualification is a separate evidence discipline within the product-readiness lifecycle. It is not a more severe version of system validation. Convert the known operating envelope and credible mechanisms into a bounded life and environmental confidence argument: mechanism-relevant stresses, observables, representative samples, acceptance criteria, and confidence. Distinguish operation while exposed, permanent post-exposure degradation, and justified life projection. Chapter 11 develops the complete method.
+Convert the operating envelope and credible mechanisms into a bounded life and environmental confidence argument. This is not a harder system-validation suite (Chapter 11, §11.5).
 
-*Evidence and handoff:* Accept, derate, or hold life risk for the envelope; unresolved mechanism ownership returns before unrestricted ramp.
+*Evidence and handoff:* Accept, derate, or hold life risk before unrestricted ramp.
 
 ### Step 7: Validate manufacturing
 
-Manufacturing validation does not re-prove system suitability or product lifetime. Establish that the production reference, measurement system, process distributions, ATP coverage, genealogy, supplier controls, and reaction plans can reproduce and control the supported design. A hand-built design may pass Steps 5 and 6 and still fail here. Chapter 11 develops the complete method.
+Prove the factory can reproduce and control the supported design: production reference, measurement system, yield, ATP, genealogy, and reaction plans (Chapter 11, §11.6).
 
-*Evidence and handoff:* Authorize controlled production exposure only when multi-lot yield, measurement confidence, and escape detection support it.
+*Evidence and handoff:* Authorize controlled production exposure only when multi-lot yield and escape detection support it.
 
 ### Step 8: Run a controlled pilot
 
-A pilot is a bounded production-representative deployment with cohort identity, success criteria, enhanced telemetry, and rollback. It tests whether lab and factory models survive install practice and traffic mix (Appendix F.18, Chapter 11).
+Bounded production-representative deployment with cohort identity, success criteria, enhanced telemetry, and rollback (Appendix F.18, Chapter 11, §11.7).
 
 *Evidence and handoff:* Expand, hold, restrict, or roll back from exit metrics versus the release model.
 
 ### Step 9: Ramp mass production
 
-Sustain volume under ATP, SPC, supplier, and change controls after pilot exit. Pilot luck is not proof of sustained control (Chapter 11, Table G.1).
+Sustain volume under ATP, SPC, supplier, and change controls after pilot exit (Chapter 11, Table G.1).
 
 *Evidence and handoff:* Increase volume only while factory, supplier, and early-field indicators remain controlled.
 
 ### Step 10: Monitor the fleet
 
-Fleet monitoring compares deployed cohorts with the release model using lane-, module-, lot-, site-, firmware-, topology-, and installation-age evidence. It detects distribution shifts and identifies populations requiring containment or investigation. Fleet correlation prioritizes hypotheses but does not confirm a mechanism. Average pre-FEC BER can hide whether errors are stationary and sparse or concentrated into operationally dangerous bursts (Appendix H.19, Chapter 11). Procedures and bucket maps live in §12.10, Chapter 12.
+Compare deployed cohorts with the release model. Correlation prioritizes hypotheses; it does not confirm a mechanism (Appendix H.19, §12.10, Chapter 12).
 
 *Evidence and handoff:* Contain, sustain, or investigate; return evidence to the appropriate earlier readiness step when the release model fails.
 
@@ -398,12 +260,12 @@ Bring-up proves a module and system can be powered, managed, and linked the way 
 
 6.  Run basic traffic and capture a reproducible baseline.
 
-A module forced into an emitting state and passing BER has not passed bring-up if its required management sequence, safe state, diagnostics, alarms, and recovery behavior are incorrect. That includes pluggable and external-laser forms such as ELSFP[^22]. Register-level CMIS detail lives in Appendix E.7, Appendix E.
+A module forced into an emitting state and passing BER has not passed bring-up if its required management sequence, safe state, diagnostics, alarms, and recovery behavior are incorrect. That includes pluggable and external-laser forms such as ELSFP[^19]. Register-level CMIS detail lives in Appendix E.7, Appendix E.
 
 ##### Production-representative corners.
 
 <table class="book-table"><tr><th>Corner class</th><th>Representative challenges</th></tr><tr><td>Thermal and loading</td><td>Case temperature, airflow, neighboring modules, full traffic</td></tr><tr><td>Electrical and host</td><td>Supported hosts, voltage corners, SerDes/equalization, reset and restart</td></tr><tr><td>Optical plant</td><td>Production fiber, connectors, reflections, loss, supported peers</td></tr><tr><td>Control and service</td><td>CMIS transitions, alarms, hot-swap, recovery, firmware combinations</td></tr></table>
-**Table 11.6.** Production-representative corners for system validation. Mechanism detail: Chapter 7, Chapter 8, Chapter 11.
+**Table 11.4.** Production-representative corners for system validation. Mechanism detail: Chapter 7, Chapter 8, Chapter 11.
 
 ## Worked example: 800G DR4-class module
 

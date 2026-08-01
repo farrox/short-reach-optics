@@ -9,7 +9,7 @@ This appendix holds the fabric survey that places optics in scale-up and scale-o
 
 ## Scale-up versus scale-out
 
-Design-level rack arithmetic, fat-tree judgment, rails, and oversubscription live in Chapter 10. This section keeps the fabric vocabulary survey.
+Design-level rack arithmetic, fat-tree judgment, network rails, and oversubscription live in Chapter 10. This section keeps the fabric vocabulary survey.
 
 The industry borrowed two words from computer architecture and overloaded them for AI fabrics. Keeping them straight matters, because they buy different optics.
 
@@ -108,7 +108,7 @@ The frontier is optics entering the scale-up domain (optical NVLink-class links,
 
 Whiteboard topology design, bisection, and the worked rack exercise live in Chapter 10. This section keeps the fleet-scale survey.
 
-Cluster topology is where optical count stops being "a few modules per server" and becomes a fleet problem. Large AI fabrics mostly use fat-tree / Clos, rail-optimized, or dragonfly layouts. In a classic $k$-ary fat-tree, link count scales as $O(k^3)$ while endpoints scale as $O(k^2)$: optics multiply faster than compute. Rail-optimized designs (one NIC rail per accelerator row, all-to-all within a rail) rose with collective-heavy training and inference because they cut oversubscription on all-reduce paths, at the price of more parallel optical planes. Dragonfly and other hierarchical topologies trade some global bisection bandwidth for fewer long links.
+Cluster topology is where optical count stops being "a few modules per server" and becomes a fleet problem. Large AI fabrics mostly use fat-tree / Clos, rail-optimized, or dragonfly layouts. In a conventional $k$-ary three-stage fat tree, both host count and physical link count scale as $O(k^3)$; the pressure is ports, cable ends, and optical endpoints per host, not a different asymptotic exponent (Chapter 10, §10.2.2). Network-rail designs (corresponding NIC ports across nodes, with stated shared-risk boundaries) rose with collective-heavy training and inference because they can cut oversubscription on all-reduce paths, at the price of more parallel optical planes. Dragonfly and other hierarchical topologies trade some global bisection bandwidth for fewer long links.
 
 The optical engineer cares because every topology choice sets link count, which sets laser count, module count, and FIT budget (Chapter 11); rail layouts drive fan-out from leaf to spine and push denser 800G/1.6T ports toward CPO/XPO (Appendix H.10, Appendix H.11); and scale-up inside the rack stays electrical longer while scale-out between racks is already optical (Table H.1). That explosion in link count is the economic reason a hyperscaler builds an in-house optical engineering team.
 
@@ -281,7 +281,7 @@ Past that wall the conversion to light pays for itself. When the reach exceeds w
 
 ### Reshaping, retiming, and where the DSP lives
 
-To survive that lossy channel the signal is conditioned at several points (Chapter 5), and it helps to keep two device classes distinct.[^24]
+To survive that lossy channel the signal is conditioned at several points (Chapter 5), and it helps to keep two device classes distinct.[^21]
 
 Redriver
 
@@ -354,6 +354,8 @@ d_\text{in}$ FLOPs against $2\,d_\text{out}d_\text{in}$ bytes of FP16 weights, i
 <table class="book-table"><tr><th>Phase</th><th>Bottleneck</th><th>Network role</th></tr><tr><td>Prefill</td><td>compute</td><td>moderate (parallel)</td></tr><tr><td>Decode</td><td>memory bandwidth</td><td>high for sharded models (collectives)</td></tr><tr><td>MoE routing</td><td>interconnect</td><td>dominant (all-to-all)</td></tr></table>
 ## Collective communication and optics demand
 
+Rack-level bisection, oversubscription, and network-rail design for collectives live in Chapter 10. This section keeps the workload vocabulary and optics mapping.
+
 Once a model is sharded across many accelerators, the network stops carrying only point-to-point streams. Training and large inference jobs spend a large fraction of wall time in *collective* patterns: all-reduce for tensor-parallel layers, all-to-all for MoE expert routing, and steadier point-to-point streams for pipeline stages. Those patterns set optical requirements even when the PHY still looks like ordinary Ethernet or InfiniBand.
 
 All-reduce
@@ -368,7 +370,7 @@ Point-to-point
 
 : pipeline parallelism moves activations between stages; steady streams rather than global sync.
 
-Optical engineering maps to these patterns indirectly. More rails and higher per-lane rate cut time spent in collectives; CPO/XPO raise faceplate bandwidth so fewer hops are needed (Appendix H.10, Appendix H.11, Appendix H.2). Protocol choice (UEC vs IB) sets lossless delivery and congestion behavior (Appendix H.8), but the PHY job remains the same: deliver pre-FEC BER below KP4 at the lowest pJ/bit (Appendix H.13, §3.12). The next section names the fabric stacks that carry those collectives; the sections after that show where the optics physically sit.
+Optical engineering maps to these patterns indirectly. More network rails and higher per-lane rate cut time spent in collectives; CPO/XPO raise faceplate bandwidth so fewer hops are needed (Appendix H.10, Appendix H.11, Appendix H.2, Chapter 10). Protocol choice (UEC vs IB) sets lossless delivery and congestion behavior (Appendix H.8), but the PHY job remains the same: deliver pre-FEC BER below KP4 at the lowest pJ/bit (Appendix H.13, §3.12). The next section names the fabric stacks that carry those collectives; the sections after that show where the optics physically sit.
 
 > **Why experienced engineers chase one slow rail before rewriting the fabric?**
 >
@@ -447,7 +449,7 @@ By 2025--26, co-packaged optics crossed from demonstrations into shipping produc
 
 ### Broadcom Tomahawk and CPO
 
-Broadcom entered CPO earlier than most switch vendors and treated it as a product line, not a one-off demo. The current flagship is *Tomahawk 6*, a 102.4 Tb/s single-chip Ethernet switch (shipping 2025) offered with either copper or co-packaged optics, on 100G/200G SerDes.[^25] The CPO variant, *TH6-Davisson*, began shipping in October 2025 as Broadcom's *third-generation* CPO switch. The public numbers sketch the architecture:
+Broadcom entered CPO earlier than most switch vendors and treated it as a product line, not a one-off demo. The current flagship is *Tomahawk 6*, a 102.4 Tb/s single-chip Ethernet switch (shipping 2025) offered with either copper or co-packaged optics, on 100G/200G SerDes.[^22] The CPO variant, *TH6-Davisson*, began shipping in October 2025 as Broadcom's *third-generation* CPO switch. The public numbers sketch the architecture:
 
 - 102.4 Tb/s optically enabled, built from sixteen 6.4 Tb/s "Davisson DR" optical engines at 200 Gb/s per channel.
 
@@ -497,7 +499,7 @@ Arista, with Coherent, Marvell, Lightmatter, and a broad partner list, launched 
 <table class="book-table"><tr><th>Attribute</th><th>Retimed / LPO pluggable</th><th>XPO</th><th>CPO</th></tr><tr><td>Capacity</td><td>0.8--1.6 Tb/s/module</td><td>12.8 Tb/s/module</td><td>100+ Tb/s on-package</td></tr><tr><td>Density</td><td>baseline</td><td>4 (204.8 Tb/s per RU)</td><td>highest</td></tr><tr><td>Power path</td><td>full electrical run to faceplate</td><td>short run to dense faceplate</td><td>shortest (on substrate)</td></tr><tr><td>Cooling</td><td>air (or LPO savings)</td><td>integrated cold plate, 400 W+</td><td>switch-package liquid cooling</td></tr><tr><td>Serviceability</td><td>field-replaceable (best)</td><td>field-replaceable (slide-out)</td><td>soldered; ELSFP lasers replaceable</td></tr><tr><td>Energy/bit</td><td>highest</td><td>intermediate</td><td>lowest (<5, then <2 pJ/bit)</td></tr><tr><td>Maturity</td><td>shipping</td><td>MSA launched OFC 2026</td><td>shipping (Broadcom, NVIDIA)</td></tr></table>
 **Table H.8.** Where XPO sits between pluggables and co-packaged optics.
 
-[^26]
+[^23]
 
 **The broader OFC 2026 picture.** XPO landed inside a clear consensus: 1.6T transceivers went mainstream and 3.2T (400G/lane) previews appeared, with initial demos expected around 2027; CPO moved from demo to imminent, with new MSAs (Open CPX, "socketed CPO") blurring the pluggable/co-packaged line; and hollow-core fiber (record loss now $\sim$0.091 dB/km) advanced toward low-latency intra-datacenter use (Appendix H.12.1). The through-line is the one this book opened with: rising per-lane rate forcing optics closer to the silicon and squeezing every last pJ/bit.
 

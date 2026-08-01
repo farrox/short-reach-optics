@@ -211,87 +211,23 @@ DVT\sidenote{DVT: Design Validation Test or Design Verification Test,
 depending on the organization.},
 and PVT\sidenote{PVT: Production Validation Test or Production Verification
 Test, depending on the organization.}
-are commonly used program-phase labels in hardware development. They usually
-describe a progression from engineering learning to design closure and then
-production readiness, but their exact meaning, acronym expansion, sample size,
-and exit criteria vary by company. They are company-specific containers for
-work, not universal technical definitions. One organization may perform
-reliability qualification during DVT, while another begins it in EVT and
-completes it during PVT. One may call a build ``DVT'' when it is primarily
-verifying requirements; another may use the same label for interoperability
-and system validation.
-
-\paragraph{EVT.}
-Engineering Validation Test or Engineering Verification Test.
-Typical emphasis: proving the architecture and critical technologies are
-viable.
-Hardware: early prototypes or low-volume engineering builds.
-Typical goals:
-\begin{itemize}
-\item bring up the hardware;
-\item identify major design and integration risks;
-\item characterize early performance;
-\item verify that the architecture has a credible path to the requirements;
-\item develop measurements, firmware, and test methods.
-\end{itemize}
-EVT hardware may differ substantially from the final production configuration.
-
-\paragraph{DVT.}
-Design Validation Test or Design Verification Test.
-Typical emphasis: demonstrating that a substantially frozen design meets its
-requirements and works in its intended use.
-Hardware: more representative builds, usually with tighter configuration
-control.
-Typical goals:
-\begin{itemize}
-\item complete requirement verification;
-\item validate margin and interoperability;
-\item exercise environmental and mechanical conditions;
-\item mature firmware and management behavior;
-\item collect substantial reliability and compliance evidence.
-\end{itemize}
-Regulatory and environmental testing may occur during DVT, but not every
-program completes all qualification or certification work entirely within this
-phase.
-
-\paragraph{PVT.}
-Production Validation Test or Production Verification Test.
-Typical emphasis: proving that the production-intent factory system can
-repeatedly build, measure, trace, and control the design.
-Hardware: production-intent materials, tooling, processes, fixtures, software,
-and suppliers.
-Typical goals:
-\begin{itemize}
-\item validate assembly and test processes;
-\item establish measurement-system confidence;
-\item evaluate first-pass yield and process capability;
-\item validate ATP coverage, traceability, rework, and reaction plans;
-\item demonstrate supplier and line readiness;
-\item support a controlled pilot or ramp decision.
-\end{itemize}
-PVT units may be used in controlled pilots or customer deployments when
-formally approved, but a PVT label alone does not make them unrestricted
-saleable production.
+are company containers for program timing, not universal technical
+definitions. Sample size, exit criteria, and which evidence lands in which
+phase vary by organization. Manufacturing-gate lookup for the same names lives
+in \Cref{tab:npi}. Expanded EVT/DVT/PVT goal lists live in
+\Cref{sec:phase-labels-detail}.
 
 \keyidea{EVT, DVT, and PVT describe program timing and maturity.
 Characterization, verification, system validation, reliability qualification,
 and manufacturing validation describe what the evidence proves. When someone
 says EVT, DVT, or PVT, ask four questions. Which hardware and software
 configuration is included? Which engineering evidence is expected? Which risks
-remain intentionally open? What decision or exit gate does the phase enable?
-The phase name is useful only after those four questions are answered.}
-
-The stable engineering questions remain: What behavior has been characterized?
-Which requirements have been verified? Has intended system use been validated?
-Have lifetime mechanisms been qualified? Can the production system reproduce
-and control the design?
+remain intentionally open? What decision or exit gate does the phase enable?}
 
 After pilot, programs often speak of
 MP\sidenote{MP: mass production. MP describes production exposure and
-operating cadence, not evidence quality by itself. A product is ready for
-unrestricted MP only when the applicable design, reliability, manufacturing,
-supply, service, and monitoring decisions have been supported.}
-(mass production) and sustaining. Those labels still need an exit decision.
+operating cadence, not evidence quality by itself.}
+and sustaining. Those labels still need an exit decision.
 
 \begin{table*}[ht]
 \refstepcounter{table}\label{tab:phase-readiness-map}%
@@ -530,170 +466,49 @@ measurement trust.
 \section{Steps 1--11}
 \label{sec:readiness-steps}
 
+Use \Cref{tab:ladder} as the wall chart. The subsections below keep the step
+labels and handoff rules. Derating examples, characterization maps, and Step~5
+evidence-domain detail live in
+\Cref{sec:readiness-steps-detail,sec:derating-rules}.
+
 \subsection{Step 1: Define the requirements}
 \label{sec:ladder-requirements}
 
-Define what success means before instruments enter the conversation. Write
-performance, environment, reliability, manufacturing, and operational
-requirement classes with owners and named planes where applicable
+Define performance, environment, reliability, manufacturing, and operational
+requirement classes with owners and named planes
 (\Cref{sec:systems-engineering-loop,tab:laser-prd}).
 
-\textit{Evidence and handoff:} Freeze a signed requirements slice specific
-enough for architecture and later pass criteria; refuse hardware spend until
-success is defined.
+\textit{Evidence and handoff:} Freeze a signed requirements slice; refuse
+hardware spend until success is defined.
 
 \subsection{Step 2: Review the architecture}
 \label{sec:ladder-architecture}
 
-Decide whether the architecture can meet the requirements before tooling makes
-changes expensive. Close optical-power, noise, bandwidth, electrical, thermal,
-wavelength-control, reliability, manufacturing, and serviceability budgets on
-stated assumptions and named reference planes
-(\Cref{sec:systems-engineering-loop,tab:laser-engineering-checklist}).
-Apply mechanism-based derating so temperature, aging, process spread,
-transients, and measurement uncertainty do not consume the last remaining
-margin. The output is not a passing spreadsheet. It is a set of thin margins,
-unproven assumptions, and high-risk interactions that later characterization,
-system validation, and qualification must challenge.
-
-\paragraph{Derating rules, in practical terms.}
-\label{sec:derating-rules}
-
-A derating rule deliberately keeps a component or control variable away from a
-boundary that may be technically legal but leaves too little margin for
-temperature, aging, manufacturing spread, transients, calibration error, or
-measurement uncertainty.
-
-There are usually three different limits:
-\begin{itemize}
-\item Absolute maximum: crossing it may damage the component.
-\item Recommended operating range: the vendor supports normal operation there.
-\item Internal design limit: the product team chooses a narrower range so the
-      system retains lifetime and control margin.
-\end{itemize}
-Derating is therefore not just ``add 20\% margin.'' A good derating rule is tied
-to a specific risk or failure mechanism.
-
-\begin{table*}[ht]
-\refstepcounter{table}\label{tab:derating-examples}%
-\centering
-\setlength{\tabcolsep}{3pt}%
-\footnotesize
-\renewcommand{\arraystretch}{1.12}%
-\begin{tabular}{@{}p{0.22\linewidth}p{0.28\linewidth}p{0.44\linewidth}@{}}
-\toprule
-Design variable & Boundary & Example derating logic \\
-\midrule
-Laser bias current & Maximum rated current or thermal
-rollover & Require the worst-case hot, aged unit to remain below an internal
-current limit and retain APC headroom \\
-\addlinespace[0.45em]
-Laser junction temperature & Maximum operating or qualification
-temperature & Design cooling so the estimated junction temperature remains
-below the life-model limit at maximum traffic and ambient temperature \\
-\addlinespace[0.45em]
-Ring heater or TEC command & Actuator rail & Require remaining authority at
-the worst thermal corner so the loop can still reject drift and neighbor
-heating \\
-\addlinespace[0.45em]
-Receiver input power & Overload boundary & Keep the strongest supported
-transmitter and lowest-loss fiber plant below receiver overload with
-uncertainty included \\
-\addlinespace[0.45em]
-Receiver sensitivity & Minimum detectable OMA or power & Require additional
-system margin beyond the nominal sensitivity crossing for unit, temperature,
-reflection, and aging variation \\
-\addlinespace[0.45em]
-Supply voltage or current & Recommended range and transient limit & Allocate
-tolerance for regulator error, ripple, droop, startup overshoot, and host
-variation \\
-\addlinespace[0.45em]
-Solder joint or package stress & Material fatigue limit & Limit temperature
-swing, ramp rate, mechanical load, or package mismatch based on fatigue
-evidence \\
-\addlinespace[0.45em]
-Optical connector power & Safety, contamination, and reflection
-limits & Avoid operating points that increase accessible-power risk, feedback
-sensitivity, or contamination damage \\
-\bottomrule
-\end{tabular}
-\par\medskip
-{\raggedright\footnotesize\textbf{Table~\thetable.} Illustrative derating
-logic. All numbers should be product-specific. A rule such as ``never exceed
-80\% of the actuator range'' can be a useful initial prior, but it is not a
-universal law. The proper limit depends on the failure mechanism, expected
-distribution, control behavior, and available evidence.\par}
-\end{table*}
-
-\paragraph{Where the rules come from.}
-
-Derating rules usually begin as engineering priors from several sources:
-\begin{itemize}
-\item vendor recommended operating ranges and qualification reports;
-\item internal characterization across temperature, voltage, lot, and age;
-\item physics-of-failure models;
-\item previous product and supplier data;
-\item field-return and fleet history;
-\item standards, customer requirements, and safety constraints;
-\item manufacturing distribution and measurement uncertainty.
-\end{itemize}
-Architecture review uses those priors to determine whether the design has a
-credible path. Later characterization and qualification either support them,
-refine them, or show that the architecture needs more margin.
-
-A useful distinction is: architecture review assumes a defensible derating
-rule. Qualification tests whether the current design and process support the
-resulting life or environmental claim
-(\Cref{ch:reliability}). Qualification does not magically justify an arbitrary
-derating rule after the design is complete.
+Close optical-power, noise, bandwidth, electrical, thermal, wavelength-control,
+reliability, manufacturing, and serviceability budgets on stated assumptions
+(\Cref{sec:systems-engineering-loop,tab:laser-engineering-checklist}). Apply
+mechanism-based derating so temperature, aging, process spread, and measurement
+uncertainty do not consume the last margin (\Cref{sec:derating-rules}).
 
 \textit{Evidence and handoff:} Proceed to bring-up only when budgets close or
-open items are named with redesign triggers; otherwise redesign first.
+open items are named with redesign triggers.
 
 \subsection{Step 3: Bring up the hardware}
 \label{sec:ladder-bringup}
 
-Establish a known, reproducible operating state so later sweeps are
-interpretable. Separate integration fails from product-performance questions.
-Detail lives in \Cref{sec:bringup}.
+Establish a known, reproducible operating state. Separate integration fails
+from product-performance questions (\Cref{sec:bringup}).
 
-\textit{Evidence and handoff:} Continue to characterization when identity,
-rails, management-ready state, basic optical power, lock, and a simple link are
-reproducible; otherwise debug integration.
+\textit{Evidence and handoff:} Continue when identity, supply rails,
+management-ready state, basic optical power, lock, and a simple link are
+reproducible.
 
 \subsection{Step 4: Characterize the behavior}
 \label{sec:ladder-characterization}
 
-\paragraph{Characterization builds a behavioral model.}
-Characterization asks what the design does, how much it varies, what moves it,
-and where it stops working, not only whether it passes.
-
-\begin{description}
-\item[Nominal behavior] Typical performance under a defined baseline condition.
-\item[Distributions] Variation across units, lanes, lots, suppliers, and sites.
-      An average may look healthy while the weak tail has little margin.
-\item[Sensitivities] How strongly a result changes with temperature, voltage,
-      loss, reflection, wavelength, or host conditions.
-\item[Interactions] Combined variables may cause a larger penalty than each
-      variable tested alone.
-\item[Failure boundary] The condition where a requirement is first violated,
-      such as the received power at which BER crosses its limit.
-\item[Failure cliff] A small additional change causes a large performance
-      collapse. A characterization cliff improves understanding; it does not
-      automatically fail the product (\Cref{sec:evidence-disciplines}).
-\item[Failure signature] The pattern near failure, such as a shifted BER
-      waterfall, a BER floor, intermittent bursts, or a control output
-      approaching its limit.
-\end{description}
-
-For example, a receiver may typically fail at $-9.5$~dBm, while the weakest unit
-fails at $-8.7$~dBm. High temperature and a production host may move that
-boundary to $-7.4$~dBm. If the supported plant delivers $-7.0$~dBm, the design
-passes, but only with $0.4$~dB of measured margin.
-
-The output of characterization is therefore a map of population tails, thin
-margins, and high-risk combinations that verification and system validation
-must challenge.
+Map nominal behavior, distributions, sensitivities, interactions, failure
+boundaries, and signatures. Averages can hide weak tails
+(\Cref{sec:ladder-characterization-detail,sec:evidence-disciplines}).
 
 \textit{Evidence and handoff:} Name thin ledgers and candidate corners; proceed
 to Step~5, derate, or redesign before loaded-fleet claims.
@@ -703,121 +518,42 @@ to Step~5, derate, or redesign before loaded-fleet claims.
 \label{sec:ladder-margin-interop}
 \label{sec:ladder-interop}
 
-Verification closes frozen requirements at named planes with stated uncertainty.
-System validation closes intended use across supported hosts, peers, firmware,
-fiber plants, and workloads. Related evidence can serve both claims; the claim
-still differs (\Cref{sec:evidence-disciplines}).
+Verification closes frozen requirements at named planes. System validation
+closes intended use across supported hosts, peers, firmware, fiber plants, and
+workloads (\Cref{sec:evidence-disciplines,sec:ladder-verify}). Track optical,
+electrical, thermal, and control ledgers separately
+(\Cref{sec:link-budget,tab:evidence-domains}). Golden-host margin is not the
+ecosystem exit (\Cref{sec:prod-corners,sec:ladder-system-validation}).
 
-\paragraph{Verify requirements and margin.}
-\label{sec:ladder-verify}
-Margin testing is verification when it checks a defined margin requirement under
-specified conditions. Track optical, electrical, thermal, and control ledgers
-separately and stack once. Do not mix average-power and
-OMA\sidenote{OMA: optical modulation amplitude. For PAM4, outer OMA is
-$P_3-P_0$; do not use $P_1-P_0$ as the general PAM4 definition. Distinct from
-average optical power.}
-budgets, reference planes, or embedded and explicit transmitter penalties
-(\Cref{sec:link-budget}).
-
-\paragraph{Validate interoperability and intended use.}
-\label{sec:ladder-system-validation}
-Exercise production-representative hosts, peers, firmware, chassis loading, and
-plant conditions. Golden-host margin is not the ecosystem exit
-(\Cref{sec:prod-corners}).
-
-Receiver-margin evidence may include a named stressed-receiver method,
-including SECQ where applicable to the
-PMD\sidenote{PMD: physical medium dependent. The IEEE~802.3 sublayer that
-modulates and detects light: the optical transceiver (laser, driver, PD,
-TIA).};
-the method, stress calibration, and metric must be stated explicitly
-(\Cref{sec:secq}).
-
-Transmitter evidence should include average power and modulation-quality
-evidence such as OMA,
-RLM\sidenote{RLM: relative level mismatch. A measure of PAM4 level spacing
-uniformity ($1.0$ = perfectly even); CEI typically requires $\ge 0.95$.},
-and the applicable transmitter-quality metric.
-Passing average power does not establish a valid PAM4 transmitter. A composite
-transmitter metric supports acceptance or margin accounting but does not
-identify a unique physical mechanism (\Cref{sec:tdecq,ch:models,ch:lasers}).
-
-\begin{table*}[ht]
-\refstepcounter{table}\label{tab:evidence-domains}%
-\centering
-\setlength{\tabcolsep}{3pt}%
-\footnotesize
-\begin{tabular}{@{}p{0.14\linewidth}p{0.26\linewidth}p{0.28\linewidth}p{0.26\linewidth}@{}}
-\toprule
-Evidence domain & Readiness question & Representative evidence & Detailed
-ownership \\
-\midrule
-Transmitter & Is sufficient modulated optical quality launched? & OMA, level
-quality, wavelength, applicable Tx-quality metric &
-\Cref{ch:models,ch:lasers,ch:wdm,app:measurement-reference} \\
-\addlinespace[0.5em]
-Channel & Does the supported plant preserve required margin? & Insertion loss,
-ORL/reflection, dispersion or filtering &
-\Cref{ch:imdd,ch:models,ch:wdm} \\
-\addlinespace[0.5em]
-Receiver & Can the receiver meet the stated objective under named stress? &
-Sensitivity, overload, stressed-receiver evidence &
-\Cref{ch:imdd,ch:models,app:measurement-reference} \\
-\addlinespace[0.5em]
-Link/system & Does the complete supported combination close? & BER/FEC behavior,
-margin waterfall, interoperability, recovery &
-\Cref{ch:product-readiness,ch:networking} \\
-\addlinespace[0.5em]
-Control/management & Can the product enter, report, and recover from required
-states? & CMIS state, diagnostics correlation, alarms, restart &
-\Cref{sec:bringup,app:measurement-reference} \\
-\bottomrule
-\end{tabular}
-\par\medskip
-{\raggedright\footnotesize\textbf{Table~\thetable.} Evidence domains for
-Step~5. Instruments and procedures:
-\Cref{app:measurement-reference}.\par}
-\end{table*}
-
-\textit{Evidence and handoff:} Freeze traceable requirement results, margin
-boundaries, and supported combinations; unresolved operating-envelope risk
-returns to architecture or characterization before qualification claims rely on
-it.
+\textit{Evidence and handoff:} Freeze requirement results, margin boundaries,
+and supported combinations before qualification claims rely on them.
 
 \subsection{Step 6: Qualify reliability}
 \label{sec:ladder-stress}
 
-Reliability qualification is a separate evidence discipline within the
-product-readiness lifecycle. It is not a more severe version of system
-validation. Convert the known operating envelope and credible mechanisms into a
-bounded life and environmental confidence argument: mechanism-relevant stresses,
-observables, representative samples, acceptance criteria, and confidence.
-Distinguish operation while exposed, permanent post-exposure degradation, and
-justified life projection. \Cref{ch:reliability} develops the complete method.
+Convert the operating envelope and credible mechanisms into a bounded life and
+environmental confidence argument. This is not a harder system-validation
+suite (\Cref{ch:reliability,sec:productization-qualification}).
 
-\textit{Evidence and handoff:} Accept, derate, or hold life risk for the
-envelope; unresolved mechanism ownership returns before unrestricted ramp.
+\textit{Evidence and handoff:} Accept, derate, or hold life risk before
+unrestricted ramp.
 
 \subsection{Step 7: Validate manufacturing}
 \label{sec:ladder-production}
 
-Manufacturing validation does not re-prove system suitability or product
-lifetime. Establish that the production reference, measurement system, process
-distributions, ATP coverage, genealogy, supplier controls, and reaction plans
-can reproduce and control the supported design. A hand-built design may pass
-Steps~5 and~6 and still fail here. \Cref{ch:manufacturing} develops the
-complete method.
+Prove the factory can reproduce and control the supported design: production
+reference, measurement system, yield, ATP, genealogy, and reaction plans
+(\Cref{ch:manufacturing,sec:productization-manufacturing}).
 
 \textit{Evidence and handoff:} Authorize controlled production exposure only
-when multi-lot yield, measurement confidence, and escape detection support it.
+when multi-lot yield and escape detection support it.
 
 \subsection{Step 8: Run a controlled pilot}
 \label{sec:ladder-fleet}
 
-A pilot is a bounded production-representative deployment with cohort identity,
-success criteria, enhanced telemetry, and rollback. It tests whether lab and
-factory models survive install practice and traffic mix
-(\Cref{sec:evidence-disciplines,ch:networking}).
+Bounded production-representative deployment with cohort identity, success
+criteria, enhanced telemetry, and rollback
+(\Cref{sec:evidence-disciplines,ch:networking,sec:productization-pilot}).
 
 \textit{Evidence and handoff:} Expand, hold, restrict, or roll back from exit
 metrics versus the release model.
@@ -825,8 +561,8 @@ metrics versus the release model.
 \subsection{Step 9: Ramp mass production}
 \label{sec:ladder-mp}
 
-Sustain volume under ATP, SPC, supplier, and change controls after pilot exit.
-Pilot luck is not proof of sustained control (\Cref{ch:manufacturing,tab:npi}).
+Sustain volume under ATP, SPC, supplier, and change controls after pilot exit
+(\Cref{ch:manufacturing,tab:npi}).
 
 \textit{Evidence and handoff:} Increase volume only while factory, supplier, and
 early-field indicators remain controlled.
@@ -834,14 +570,9 @@ early-field indicators remain controlled.
 \subsection{Step 10: Monitor the fleet}
 \label{sec:ladder-fleet-monitor}
 
-Fleet monitoring compares deployed cohorts with the release model using lane-,
-module-, lot-, site-, firmware-, topology-, and installation-age evidence. It
-detects distribution shifts and identifies populations requiring containment or
-investigation. Fleet correlation prioritizes hypotheses but does not confirm a
-mechanism. Average pre-FEC BER can hide whether errors are stationary and sparse
-or concentrated into operationally dangerous bursts
-(\Cref{sec:fec-symbol-histogram,ch:networking}). Procedures and bucket maps live
-in \Cref{sec:fleet-triage,ch:failure-modes}.
+Compare deployed cohorts with the release model. Correlation prioritizes
+hypotheses; it does not confirm a mechanism
+(\Cref{sec:fec-symbol-histogram,sec:fleet-triage,ch:failure-modes}).
 
 \textit{Evidence and handoff:} Contain, sustain, or investigate; return evidence
 to the appropriate earlier readiness step when the release model fails.

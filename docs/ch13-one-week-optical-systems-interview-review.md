@@ -1032,17 +1032,17 @@ Assume seven days, with the interview near the end of Day 7. Protect sleep. Eac
 
 ##### Day 6: Architecture and failure analysis.
 
-*Learn:* IM/DD, WDM, AI networking (Chapter 3, Chapter 8, Chapter 11, Chapter 1); fleet trees and cases (Appendix D, Appendix C.9, Appendix B.5). Rehearse two true stories (Appendix A.9).\
+*Learn:* multilevel signaling, equalization, packaging, and HPC rack architecture (Chapter 4, Chapter 5, Chapter 9, Chapter 10); IM/DD and WDM as needed (Chapter 3, Chapter 8); fleet trees and cases (Appendix D, Appendix C.9, Appendix B.5). Rehearse two true stories (Appendix A.9).\
 *Output:* Defend an architecture tradeoff; debug one fleet case without naming a component first.
 
 ##### Day 7: Mock interviews.
 
-*Learn:* three cheat sheets below; Top 25 index (Appendix J); thirty-second callouts (Appendix C); whiteboard trees (Appendix D).\
+*Learn:* three cheat sheets below; architecture-first Top 25 index (Appendix J); thirty-second callouts (Appendix C); whiteboard trees (Appendix D).\
 *Output:* Full mock. Light story review only. Stop two to three hours before the call. Sleep.
 
 ##### If you have less than seven days.
 
-Compress: Day 1, Day 3 validation, Day 4 reliability, Day 5 manufacturing, Day 7 mock. Keep the cheat sheets and Top 25. Cut new chapter reading first.
+Compress: Day 2 fundamentals, Day 6 architecture, Day 1 mental models, Day 7 mock. Keep the cheat sheets and Top 25. Add Day 3--5 readiness only if the role is lifecycle-led. Cut new chapter reading first.
 
 ## Staff interview cheat sheets
 

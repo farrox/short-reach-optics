@@ -3,97 +3,105 @@
 
 Index only. Each item is one speakable question plus a pointer to the worked
 answer, playbook, or chapter home. Do not invent new topics here; expand in
-those homes.
+those homes. Architecture and PHY judgment come first. Validation,
+qualification, manufacturing, and supplier drills live in the productization
+Q\&As, App~M secondary flashcards, and their appendix homes.
+
+\section{PAM4 / PAM8 and quantitative link}
+
+\begin{enumerate}
+\item When is PAM8 preferable to higher-baud PAM4?
+      \hfill \Cref{ch:multilevel}
+\item At fixed bit rate, how do NRZ, PAM4, and PAM8 baud and SNR trade?
+      \hfill \Cref{ch:multilevel,ch:models}
+\item Outer OMA looks fine but the link fails. What do you check next?
+      \hfill \Cref{ch:multilevel,sec:interview-worked-sensitivity}
+\item Walk a short-reach link budget from launch to pre-FEC BER.
+      \hfill \Cref{ch:imdd,sec:link-budget,ch:models}
+\end{enumerate}
+
+\section{Equalization}
+
+\begin{enumerate}
+\setcounter{enumi}{4}
+\item When do you use FFE versus DFE, and what can each correct?
+      \hfill \Cref{ch:equalization}
+\item TX FFE versus RX FFE: who owns what, and why?
+      \hfill \Cref{ch:equalization,sec:serdes-dsp}
+\item What does CTLE buy, and where does it fail?
+      \hfill \Cref{ch:equalization}
+\item How does equalization change for PAM8 versus PAM4?
+      \hfill \Cref{ch:equalization,ch:multilevel}
+\end{enumerate}
+
+\section{Laser / source / modulator}
+
+\begin{enumerate}
+\setcounter{enumi}{8}
+\item When would you choose an EML, silicon MZM, or ring modulator?
+      \hfill \Cref{sec:interview-worked-modulator,ch:imdd,ch:lasers}
+\item How would you set laser requirements for a new IM/DD link?
+      \hfill \Cref{sec:interview-worked-laser-reqs,tab:laser-prd}
+\item Why can a link show a BER floor that more launch power does not fix?
+      \hfill \Cref{fw:ber-floor,sec:interview-worked-ber-floor}
+\item How do you distinguish laser aging from calibration drift?
+      \hfill \Cref{fw:aging-vs-cal,sec:interview-worked-aging-vs-cal}
+\end{enumerate}
+
+\section{Packaging / CPO}
+
+\begin{enumerate}
+\setcounter{enumi}{12}
+\item Compare 2.5D, 3D, and CPO without treating them as synonyms.
+      \hfill \Cref{ch:packaging}
+\item When do you choose pluggable, LPO, or CPO?
+      \hfill \Cref{ch:packaging,tab:placement,sec:conditioning}
+\item Where should the lasers live for a CPO engine, and why?
+      \hfill \Cref{ch:packaging,sec:elsfp,ch:lasers}
+\item How does packaging change the field-replaceable unit and FIT story?
+      \hfill \Cref{ch:packaging,ch:reliability}
+\end{enumerate}
+
+\section{HPC / rack / fabric}
+
+\begin{enumerate}
+\setcounter{enumi}{16}
+\item Walk a 64-accelerator, two-rail rack design.
+      \hfill \Cref{ch:hpc,sec:hpc-rack-exercise}
+\item How does topology determine optical module, laser, power, and failure
+      exposure? \hfill \Cref{ch:hpc,sec:hpc-rack-to-phy}
+\item When is oversubscription acceptable in a collective-heavy fabric?
+      \hfill \Cref{ch:hpc,sec:hpc-interview-qa}
+\item Scale-up versus scale-out: what changes for optics?
+      \hfill \Cref{ch:hpc,sec:scale-up-out}
+\end{enumerate}
 
 \section{Debugging}
 
 \begin{enumerate}
+\setcounter{enumi}{20}
 \item Pre-FEC BER rose while average received power held steady. How do you
       debug it? \hfill
       \Cref{fw:ber-stable-power,sec:interview-worked-sensitivity}
-\item Received power decreased. What do you check first?
-      \hfill \Cref{fw:power-down,sec:tree-power-fork}
 \item A single lane is weak in a multi-lane module. How do you isolate it?
       \hfill \Cref{fw:weak-lane,sec:interview-worked-lane}
 \item BER worsens at high temperature but average power is stable. What next?
       \hfill \Cref{fw:hot-fail,sec:interview-worked-hot-ber,sec:case-hot-ber}
-\item The failure is intermittent. How do you scope and trap it?
-      \hfill \Cref{fw:intermittent,sec:tree-time-behavior}
 \end{enumerate}
 
-\section{Validation}
+\section{Productization}
 
 \begin{enumerate}
-\setcounter{enumi}{5}
+\setcounter{enumi}{23}
 \item How would you validate a new optical transmitter from bring-up through
       margin? \hfill
       \Cref{fw:validation-plan,sec:interview-worked-validation,tab:ladder}
-\item How would you set laser requirements for a new IM/DD link?
-      \hfill \Cref{sec:interview-worked-laser-reqs,tab:laser-prd}
-\item Received power is unchanged but required receiver power increased. Why?
-      \hfill \Cref{sec:interview-worked-sensitivity,sec:interview-waterfall}
-\item Why can a link show a BER floor that more launch power does not fix?
-      \hfill \Cref{fw:ber-floor,sec:interview-worked-ber-floor}
-\item Which measurement do you choose next when access is limited?
-      \hfill \Cref{sec:interview-access-levels,sec:case-info-value}
-\end{enumerate}
-
-\section{Qualification}
-
-\begin{enumerate}
-\setcounter{enumi}{10}
-\item How would you qualify reliability?
-      \hfill \Cref{ch:reliability,fw:qual-plan,sec:tree-qual-evidence}
-\item How do you build a qualification plan that maps mechanisms to stress?
-      \hfill \Cref{fw:qual-plan,sec:tree-qual-evidence,sec:qual-planning-matrix}
-\item What makes an HTOL projection credible?
-      \hfill \Cref{sec:interview-worked-htol,ch:reliability}
-\item How do you distinguish laser aging from calibration drift?
-      \hfill \Cref{fw:aging-vs-cal,sec:interview-worked-aging-vs-cal}
-\item What evidence closes a qualification decision?
-      \hfill \Cref{sec:tree-qual-evidence,sec:tree-decision-closure}
-\end{enumerate}
-
-\section{Manufacturing}
-
-\begin{enumerate}
-\setcounter{enumi}{15}
-\item How would you validate manufacturing?
-      \hfill \Cref{ch:manufacturing,tab:mfg-vs-adjacent,tab:npi}
-\item How would you respond to a yield drop?
-      \hfill \Cref{ch:manufacturing,sec:mfg-case-yield,ch:failure-modes}
-\item When would you update ATP after a field or lab escape?
-      \hfill \Cref{fw:atp-update,sec:tree-production-loop,sec:escaped-defects}
-\item Which data must an automated test save so a failure can be replayed?
-      \hfill \Cref{sec:interview-worked-test-data,ch:manufacturing}
 \item How do you decide whether a field issue is performance, reliability, or
       manufacturability? \hfill
       \Cref{sec:interview-worked-triage-class,tab:mfg-vs-adjacent}
 \end{enumerate}
 
-\section{Supplier}
-
-\begin{enumerate}
-\setcounter{enumi}{20}
-\item How would you qualify a second laser or PIC supplier?
-      \hfill
-      \Cref{fw:second-component,sec:interview-worked-second-source,ch:manufacturing,ch:reliability}
-\item How would you qualify a second transceiver or cable-assembly supplier?
-      \hfill \Cref{fw:second-module,sec:tree-supplier,ch:manufacturing}
-\item A supplier lot looks correlated with a fleet cohort. What do you do?
-      \hfill \Cref{fw:fleet,sec:case-fleet-ber,sec:tree-scope-population}
-\end{enumerate}
-
-\section{Architecture}
-
-\begin{enumerate}
-\setcounter{enumi}{23}
-\item When would you choose an EML, silicon MZM, or ring modulator?
-      \hfill \Cref{sec:interview-worked-modulator,ch:imdd}
-\item How do optics choices constrain AI datacenter networking cost and power?
-      \hfill \Cref{ch:networking,ch:role}
-\end{enumerate}
-
-\keyidea{Speak the question home first: scope, ledger, measurement, decision,
-control. Then open the matching playbook only if the interviewer asks for
-depth.}
+\keyidea{Lead with architecture and PHY judgment: signaling, equalization,
+sources, packaging, and fabric. Speak the question home first, then open the
+matching playbook only if the interviewer asks for depth. Readiness and
+supplier detail stay secondary unless the role is explicitly lifecycle-led.}

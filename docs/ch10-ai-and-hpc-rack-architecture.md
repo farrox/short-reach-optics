@@ -7,7 +7,7 @@ title: "Ch 10: AI and HPC Rack Architecture"
 
 This chapter is the design judgment home for short-reach AI and HPC fabrics: how workload shapes topology, what fat-tree and Clos actually buy, how oversubscription and rails change optics count, and how to walk a rack design on a whiteboard. Protocol surveys, OCS programs, power tables, and module-style catalogs stay in Appendix H. Packaging of optical engines is in Chapter 9. Productization closes the fleet claim in Chapter 11.
 
-*Read first:* fat-tree / Clos, bisection bandwidth, oversubscription, rails, and scale-up versus scale-out.
+*Read first:* fat-tree / Clos, bisection bandwidth, oversubscription, network rails, and scale-up versus scale-out.
 
 *Deep dive:* topology survey in Appendix H.2; collectives in Appendix H.7; OCS in Appendix H.9; energy and thermal envelopes in Appendix H.13, Appendix H.13.1.
 
@@ -35,11 +35,11 @@ Incast
 
 Burstiness
 
-: Idle then full-rate. Average link load understates peak demand on optics and FEC.
+: Idle then full-rate. Burstiness stresses buffers, congestion control, and collective completion time. It does not raise the instantaneous line rate on an already-active fixed-rate optical PHY, but it can expose traffic-dependent PHY weaknesses: simultaneous-switching noise, thermal excursions, marginal adaptation, or clustered FEC errors.
 
 Stragglers and tail latency
 
-: The slowest hop or the slowest rail stalls the collective. Tail, not mean, sets iteration time.
+: The slowest hop or the slowest network rail stalls the collective. Tail, not mean, sets iteration time.
 
 Optical count follows from how many parallel planes you build to keep those patterns from colliding. Deeper optics-to-collective mapping is in Appendix H.7.
 
@@ -93,7 +93,9 @@ Nonblocking Clos fabrics multiply:
 
 - management and failure domains.
 
-In a classic $k$-ary fat-tree sketch, endpoints scale roughly as $O(k^2)$ while links scale faster (Appendix H.2). Optics multiply faster than GPUs. That is why oversubscription, rails, and dragonfly-style hierarchies appear as cost controls, not as fashion.
+In a conventional $k$-ary three-stage fat tree, both host count and physical link count scale as $O(k^3)$. The usual construction has hosts $k^3/4$, edge-to-host links $k^3/4$, edge-to-aggregation links $k^3/4$, and aggregation-to-core links $k^3/4$. The economic pressure is not a different asymptotic exponent. It is the large number of switch ports, cable ends, and optical endpoints required per host.
+
+Concrete sketch for $k=32$: about $32^3/4 = 8192$ hosts and about $3\times 8192 = 24576$ bidirectional network link attachments across the three tiers (plus the host-edge tier). That is tens of thousands of cable ends and optical endpoints before oversubscription or multi-rail multiplication (Appendix H.2). Oversubscription, network rails, and dragonfly-style hierarchies appear as cost controls on that constant-factor burden, not as fashion.
 
 ## Oversubscription
 
@@ -126,23 +128,25 @@ Interview line: "I state the tier and the traffic pattern before I call an overs
 <table class="book-table"><tr><th>Ratio</th><th>Often survivable when</th><th>Hostile when</th></tr><tr><td>1:1</td><td>Synchronized collectives claimed</td><td>Cost or radix cannot close</td></tr><tr><td>2:1</td><td>Traffic rarely fully concurrent</td><td>All-reduce across all downlinks</td></tr><tr><td>>2:1</td><td>Strong locality / scheduling</td><td>Job sold as nonblocking bisection</td></tr></table>
 ## Rail-optimized design
 
-A *rail* is an independent network plane. Rail-optimized designs give each accelerator multiple NICs (or ports) and assign one port to each rail so that collectives can stripe or stay within a plane.
+A *network rail* is a topology-aligned path group, commonly formed from corresponding NIC ports across nodes. Rails may be physically independent, or they may share switches, trunks, control planes, power, or software. The designer must state the actual shared-risk boundaries. (Do not confuse a network rail with an electrical supply rail.)
 
-Why rails appear in AI fabrics:
+Rail-optimized designs give each accelerator multiple NICs (or ports) and assign one port to each network rail so collectives can stripe or stay within a plane.
 
-- They reduce shared failure domains: one rail fault need not take every path.
+Why network rails appear in AI fabrics:
+
+- They can reduce shared failure domains when the planes do not share risk.
 
 - They support topology-aware collectives that keep heavy traffic inside a rail.
 
 - They raise optical count: more parallel planes mean more modules, fibers, and lasers.
 
-Rails are not free diversity. They are an explicit purchase of parallelism and isolation against more optics and more ToR radix.
+Network rails are not free diversity. They are an explicit purchase of parallelism and (claimed) isolation against more optics and more ToR radix. If ToRs or trunks are shared, say so.
 
 ## Scale-up versus scale-out
 
 Scale-up
 
-: Inside a node, tray, rack, or tightly coupled domain. Very high bandwidth, very low latency, stronger ordering or coherence needs, short reach. Copper still competes; CPO and short-reach optics are entering as lane rates rise (Appendix H.1, Chapter 9).
+: Inside a node, tray, rack, or tightly coupled domain. Very high bandwidth, very low latency, short reach. It may impose stronger ordering, memory-semantic, or coherence requirements depending on the interconnect. Copper still competes; CPO and short-reach optics are entering as lane rates rise (Appendix H.1, Chapter 9).
 
 Scale-out
 
@@ -154,7 +158,7 @@ Do not treat "the fabric" as one network. Many AI clusters run a scale-up plane 
 
 Worked prompt (guide numbers):
 
-> Design a rack with 64 accelerators, eight accelerators per tray, eight 800G network links per tray, and two independent network rails.
+> Design a rack with 64 accelerators, eight accelerators per tray, eight 800G network links per tray, and two network rails (state shared-risk boundaries).
 
 Walk the whiteboard in this order. Numbers below are a consistent sketch, not a vendor BOM.
 
@@ -168,7 +172,53 @@ Walk the whiteboard in this order. Numbers below are a consistent sketch, not a 
 
 - Rack network attach: $8\times 6.4 = 51.2$ Tb/s aggregate endpoint bandwidth before oversubscription toward spines.
 
-- Rails: 2. A natural split is 4 links per tray per rail (still 8 links per tray total), so each rail carries half the tray attach if balanced.
+- Network rails: 2. A natural split is 4 links per tray per rail (still 8 links per tray total), so each rail carries half the tray attach if balanced. State whether the rails share ToRs or trunks.
+
+## From rack bandwidth to an optical architecture
+
+The inventory above stops at attach bandwidth. The optical-engineering decision starts here. Keep one consistent sketch; change an assumption only if you rename it.
+
+##### 1. Collective and bisection target.
+
+Assume the rack must support synchronized all-reduce across both network rails without intentional leaf-to-spine oversubscription on the claimed plane. That sets a 1:1 starting point; a cost cut to 2:1 is a named sacrifice, not a silent default.
+
+##### 2. Endpoint ports and uplinks.
+
+Sixty-four 800G endpoint-facing ports give 51.2 Tb/s of attach. At 1:1 you need 64 same-speed uplink ports toward the next tier; at 2:1 you need 32. State which tier owns that ratio.
+
+##### 3. Optical link endpoints, not merely ports.
+
+If tray-to-ToR and ToR-to-spine are both discrete optical links, 64 downlink links imply about 128 optical endpoints, and 64 uplink links imply another about 128. Copper DAC on the short side deletes endpoints there. CPO on the switch side can fold an endpoint into an engine. The lesson is to count terminations, not only ASIC port stickers (§10.8.2).
+
+##### 4. Lanes and wavelengths per 800G.
+
+A common short-reach sketch is $8\times100$G PAM4 lanes (electrical) into an 800G DR8-class or similar optical PMD, or $4\times200$G PAM4 as lane rates rise. Parallel SMF (DR) multiplies fibers; WDM (FR) multiplies wavelengths on fewer fibers (Chapter 8, Appendix H.3). Pick one and keep fiber and laser counts consistent.
+
+##### 5. PAM format and baud.
+
+For this sketch stay on PAM4 unless a named reach or SerDes generation forces a baud cut that PAM8 might buy (Chapter 4). PAM8 is preferable only when the saved baud closes electrical or optical bandwidth that PAM4 cannot, and when SNR, linearity, and calibration still close. Do not choose PAM8 to sound denser.
+
+##### 6. Reach class and EQ ownership.
+
+Tray-to-ToR may be copper or short optics. ToR-to-spine and rack-to-rack set VSR/MR versus longer optics. Retimed pluggables keep heavy EQ in the module; LPO pushes EQ and FEC onto the host SerDes; CPO shortens to XSR at the package (Chapter 5, §3.7, Appendix H.5.1). Name who owns CTLE, FFE, DFE, and KP4 for each hop.
+
+##### 7. Pluggable, LPO, or CPO.
+
+Use pluggables when faceplate serviceability dominates. Use LPO when module DSP power is the binding constraint and host EQ/FEC are proven. Use CPO when shoreline density and SerDes energy dominate and package yield/thermal/service stories are closed (Chapter 9, Table H.4). A mixed rack (copper inside, optics out) is a valid answer if the reaches match.
+
+##### 8. Lasers, fibers, watts, replaceable units.
+
+From the lane/wavelength choice, count lasers or CW lines, FAU or MPO fibers, and module or engine watts (Appendix H.13, Chapter 7). Prefer ELSFP-class external lasers when CPO engines are soldered and laser FIT still dominates (§7.14). State the field-replaceable unit: pluggable, laser bank, fiber jumper, or whole package.
+
+##### 9. Fleet event rate and degraded-rack behavior.
+
+Module and laser count set FIT exposure and sparing. Ask what one failed rail, ToR, or trunk does to job completion, and whether the rack runs degraded or drains (Chapter 11, Chapter 12). Topology that looks cheap per port can be expensive per fleet event.
+
+Worked memory: collective $\rightarrow$ ports $\rightarrow$ endpoints $\rightarrow$ lanes/$\lambda$ $\rightarrow$ PAM/baud $\rightarrow$ EQ owner $\rightarrow$ placement $\rightarrow$ lasers/watts $\rightarrow$ replaceables and degraded behavior.
+
+## Finishing the rack sketch
+
+Return to the same 64-accelerator sketch. Close switch placement, optics count, power, and the tradeoffs you will defend.
 
 ### Switch radix and ToR placement
 
@@ -184,15 +234,35 @@ Example sketch: one ToR per tray per rail (16 ToRs if fully separated), each see
 
 ### Links, optics, and cables
 
-Count:
+Keep the counting vocabulary separate:
 
-- Endpoint-facing 800G ports: $8\text{ trays}\times 8 = 64$ ports (one per named network link in the prompt).
+Switch ports
 
-- Uplinks: set by oversubscription. At 1:1 from those 64 ports you need 64 same-speed fabric ports toward the next tier; at 2:1 you need 32.
+: Faces on a ToR or NIC ASIC. The prompt names 64 endpoint-facing 800G ports ($8\text{ trays}\times 8$).
 
-- Optics versus copper: inside the rack, DAC/ACC may still close short tray-to-ToR runs; rack-to-spine and rack-to-rack are usually optical (Appendix H.3, Appendix H.5).
+Link pairs
 
-Module count is not optional arithmetic. It sets FIT, power, and sparing (Chapter 11, Appendix H).
+: Complete connections between two ports. Sixty-four complete optical links normally imply 128 optical endpoints unless one side is integrated into an engine or package.
+
+Optical endpoints
+
+: Module or engine faces that terminate light.
+
+Pluggable modules / optical engines
+
+: Field-replaceable or soldered units that may host one or more endpoints.
+
+Lanes / wavelengths
+
+: Electrical or optical channels inside an 800G port.
+
+Fiber count
+
+: Physical strands after breakout and polarity.
+
+Uplinks: set by oversubscription. At 1:1 from those 64 ports you need 64 same-speed fabric ports toward the next tier (another 64 links and, if both ends are discrete optics, another 128 optical endpoints). At 2:1 you need 32 uplink ports. Inside the rack, DAC/ACC may still close short tray-to-ToR runs; rack-to-spine and rack-to-rack are usually optical (Appendix H.3, Appendix H.5).
+
+Module and endpoint count is not optional arithmetic. It sets FIT, power, and sparing (Chapter 11, Appendix H). Carry the same sketch into §10.7.
 
 ### Power, cooling, fiber, serviceability
 
@@ -217,7 +287,7 @@ Use dragonfly when long-global-link cost dominates and the routing stack is read
 
 Optical circuit switches sit at Layer 1: they rearrange connectivity without O-E-O packet processing (Appendix H.9). On a whiteboard:
 
-- They help topology and failure reroute on millisecond-class timescales.
+- They operate on circuit-reconfiguration timescales, not packet timescales. The useful transition can range from fast protection switching to scheduled topology changes, depending on the device and on the surrounding control plane and link-recovery path.
 
 - They do not replace a packet switch for fine-grained congestion control.
 
@@ -317,16 +387,16 @@ Practice aloud. Prefer first-person reasoning. Score with Appendix A.12.1.
 
 *Trap:* "AI racks are all-optical everywhere."
 
-##### Question 7. Why multiple rails?
+##### Question 7. Why multiple network rails?
 
 *Tests:* isolation and collective striping.
 
-*Spoken answer.* "Rails buy independent planes so collectives can stripe and so one fault does not share every path. The cost is more NICs, more ToR ports, and more optics. I only buy rails I can wire, name, and monitor."
+*Spoken answer.* "Network rails are topology-aligned path groups, often matching NIC ports. They can buy striping and failure isolation, but only if I state what they share: switches, trunks, control, power, or software. The cost is more NICs, ToR ports, and optics. I only buy rails I can wire, name, and monitor."
 
 *Pressure follow-up.* "Are two rails enough?"\
 *Answer pivot.* "Enough for the failure model and collective schedule you claim. More rails help until optics count and radix dominate."
 
-*Trap:* "More rails always improve job time."
+*Trap:* "More rails always improve job time," or treating a rail as automatically an independent physical plane.
 
 ##### Question 8. How do you design failure domains?
 
@@ -354,7 +424,7 @@ Practice aloud. Prefer first-person reasoning. Score with Appendix A.12.1.
 
 *Tests:* OCS role versus packet switching.
 
-*Spoken answer.* "OCS rearranges Layer 1 connectivity. It can cut O-E-O hops for topology or failure reroute on millisecond scales. It is not a packet switch for per-flow congestion. I place it only when the control plane and transceiver plant match that job (Appendix H.9)."
+*Spoken answer.* "OCS rearranges Layer 1 connectivity. It can cut O-E-O hops for topology change or protection, but the reconfiguration timescale depends on the switch device, control plane, and link recovery, from fast protection to scheduled topology change. It is not a packet switch for per-flow congestion. I place it only when the control plane and transceiver plant match that job (Appendix H.9)."
 
 *Pressure follow-up.* "Does OCS replace CPO?"\
 *Answer pivot.* "No. CPO shortens the electrical path at the package. OCS changes how packages interconnect. They can coexist."
@@ -383,7 +453,18 @@ Practice aloud. Prefer first-person reasoning. Score with Appendix A.12.1.
 
 *Trap:* "If the GPUs fit the PDU, the network fits too."
 
-##### Question 13. Give a 60-second fabric plan.
+##### Question 13. From 64$\times$800G attach to an optical architecture?
+
+*Tests:* rack-to-PHY bridge.
+
+*Spoken answer.* "I start from the collective and bisection target, then count endpoint ports and 1:1 versus 2:1 uplinks. I convert ports to optical link endpoints, pick lanes and wavelengths per 800G, decide PAM4 versus PAM8 and baud, name EQ ownership by hop, choose pluggable, LPO, or CPO, then close lasers, fibers, watts, replaceable units, and degraded-rack behavior (§10.7)."
+
+*Pressure follow-up.* "Why not stop at port count?"\
+*Answer pivot.* "Ports are stickers. Endpoints, lasers, and replaceables set FIT, power, and service."
+
+*Trap:* "64 ports means 64 optical modules."
+
+##### Question 14. Give a 60-second fabric plan.
 
 *Tests:* end-to-end judgment order.
 
