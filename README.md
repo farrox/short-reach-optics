@@ -29,5 +29,5 @@ Optional local citation PDFs go in `books/short-reach-optics/docs/` (gitignored)
 
 ## Links
 
-- [LinkedIn](https://www.linkedin.com/in/ehsansh/)
+- [LinkedIn](https://www.linkedin.com/in/shahos/)
 - [Google Scholar](https://scholar.google.com/citations?user=i6EaMioAAAAJ&hl=en)
